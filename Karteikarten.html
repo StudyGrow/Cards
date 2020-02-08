@@ -23,10 +23,11 @@
         i{
           color:black;
         }
-        form{
+        form,.alert{
           display: block;
           margin-left: auto;
           margin-right: auto;
+          width:80%;
         }
         .carousel-control-prev{
           width: 10%;
@@ -34,16 +35,20 @@
         .carousel-control-next{
           width: 10%;
         }
+        h3{
+          text-align: center;
+        }
+        
     </style>
   </head>
   <body>
-    <nav class="navbar  navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar  navbar-expand-lg navbar-light bg-light" role="alert">
       
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
+        <ul id= 'navlist' class="navbar-nav">
          
           <li class="nav-item">
             <a class="nav-link disabled" href="kategorie.html">Kategorie wählen</a>
@@ -60,12 +65,18 @@
         </ul>
       </div>
     </nav>
-      <br>
+    
+    <br>
             
-     
-      <div class="container">
+      
+      <div id='mainContainer'class="container">
+        <h3 id="vorlesung">
+          Berechenbarkeit und Komplexität
+        </h3>
+        <br>
+        
         <div id="carouselExampleControls" class="carousel slide" data-ride="carousel" data-interval="false">
-            <div class="carousel-inner">
+            <div id='carouselInner' class="carousel-inner">
               <div class="carousel-item active">
                 
                 <div class="card">
@@ -130,9 +141,10 @@
           <br>
           
            
-            <form style="width: 80%;">
+            <form id='addCard'>
               <h4>
                 Karteikarte hinzufügen
+<<<<<<< HEAD
             </h4>
             <form action="/" method="POST">
               <div class="form-group">
@@ -145,6 +157,18 @@
               </div>
               <button type="submit" class="btn btn-primary mb-2">Hinzufügen</button>
             </foxrm>
+=======
+              </h4>
+              <div class="form-group">
+                <label for="thema">Thema</label>
+                <input id='thema' name="thema" type="text" class="form-control" placeholder="Thema">
+              </div>
+              <div class="form-group">
+                <label for="content">Informationen</label>
+                <textarea id='content'class="form-control" name="content" rows="5"></textarea>
+              </div>
+              <input id='#addBtn' type="button" class="btn btn-primary mb-2" onclick="addCard()" value="Hinzufügen">
+>>>>>>> 9730d86461c770e533bb022a3970398193171fc1
           </form>
           
          
@@ -152,7 +176,88 @@
       </div>
       
         
+      <script>
+        document.getElementById('addCard').addEventListener('submit',addCard);
+        function showMore(){
+          $('.collapse').collapse('toggle');
+        }
+        
+        function addCard(){  //Funktion um eine neue Karte hinzuzufügen
+          //event.preventDefault(); 
+          //Lese Daten aus der Form aus
+          
+          var thema = document.getElementById("thema").value;
+          var content = document.getElementById('content').value;
+          var vl= document.getElementById('vorlesung').value;
+          //Poste card an server
+          
+         
 
+          var count =0; //anzahl der bereits exisiterenden Karten
+          var ul = document.getElementById("navlist");
+          for (var i = 0; i < ul.childNodes.length; i++) {
+            if (ul.childNodes[i].nodeName == "LI") {
+              count++;
+            }
+          }
+          count--;  //wegen Kategorie wählen auch in Liste
+          // Neue Karte ins carousel einfügen
+          var newCarouselItem = document.createElement("div");
+          newCarouselItem.setAttribute('class','carousel-item');
+          newCarouselItem.innerHTML =`
+                <div class="card">
+                    <div class="card-header">
+                      ${thema}
+                    </div>
+                    <div class="card-body">
+                      <button class="btn btn-light" type="button" data-toggle="collapse" onclick="showMore()" data-target=${count} aria-expanded="false" aria-controls=${count}>
+                        Show more <i class="fas fa-caret-down"></i>
+                      </button>
+                      <div class="collapse" id=${count}>
+                        <p>
+                          ${content}
+                        </p>
+                      </div>
+                    </div>
+                  </div>`;
+          document.getElementById('carouselInner').appendChild(newCarouselItem); //Karteikarte ins Carousel einfügen
+          
+          //Erstelle die neue Karte als DOM element        
+          var newListEntry = document.createElement('LI');
+          newListEntry.setAttribute('class','nav-item');
+          newListEntry.innerHTML=`
+            <a class="nav-link" data-target="#carouselExampleControls" data-slide-to=${count} href="#">${thema}</a>
+          `;
+          document.getElementById("navlist").appendChild(newListEntry); //neuen Link in die navbar setzen
+          
+          //Leere form
+          document.getElementById("thema").value = "";
+          document.getElementById('content').value="";
+          //Success message
+         
+          var successMsg = document.createElement("div");
+          successMsg.setAttribute('class','alert alert-success alert-dismissible fade show');
+          successMsg.setAttribute('role','alert');
+          successMsg.setAttribute('style','width:80%');
+          successMsg.innerHTML= 'Karteikarte erfolgreich hinzufügt<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
+          document.getElementById('mainContainer').prepend(successMsg);
+        }
+        
+        function getCards(){
+          var vl= document.getElementById('vorlesung').value;
+          fetch('/karten/'+vl,{ //Nicht sicher ob richtige syntax
+            method:'GET',
+            headers:{
+              'Accept': 'application/json, text/plain, */*',
+              'Content-type': 'application/json' 
+            }
+          })
+          .then((res)=> res.json())
+          .then((cards)=>{
+            //load the cards into the DOM
+          })
+        }
+      </script>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
