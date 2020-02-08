@@ -185,7 +185,21 @@
               count++;
             }
           }
-          count--;  //wegen Kategorie wählen auch in Liste
+          count--;  //wegen "Kategorie wählen "auch in Liste
+
+          fetch('/addCard',{ 
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json, text/plain, */*',
+              'Content-type': 'application/json' 
+            },
+            body:JSON.stringify({
+              vorlesung:vl,
+              thema:thema,
+              content:content
+            })
+          });
+          
           // Neue Karte ins carousel einfügen
           var newCarouselItem = document.createElement("div");
           newCarouselItem.setAttribute('class','carousel-item');
