@@ -15,7 +15,7 @@ const app = express();
 // app.set('view engine', 'pug');
 
 
-const Card = require('./models/card');
+// const Card = require('./models/card');
 
 app.get('/karten/:vl',(req,res)=>{
     Card.find({vorlesung:req.params.vl},(err,cards)=>{//suche in der Datenbank nach allen Karten die der Vorlesung vl zugeordnet sind
@@ -32,6 +32,9 @@ app.post('addCard',(req,res)=>{
     card.vorlesung = req.body.vorlesung;
     card.thema = req.body.thema;
     card.content = req.body.content;
+
+    console.log(req)
+    console.log(res)
 
     card.save((err,c)=>{ //speichere sie in der Datenbank
         if(err){

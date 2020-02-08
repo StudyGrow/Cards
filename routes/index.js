@@ -6,6 +6,13 @@ const router = express.Router();
 
 router.get('/',function(req,res){
   res.sendFile(path.join(__dirname+'/../Karteikarten.html'));
+  console.log(req.query)
+  //__dirname : It will resolve to your project folder.
+});
+router.post('/',function(req,res){
+  res.sendFile(path.join(__dirname+'/../Karteikarten.html'));
+  console.log("fdafds")
+  console.log(req.query)
   //__dirname : It will resolve to your project folder.
 });
 
@@ -15,13 +22,27 @@ router.get('/',function(req,res){
 //   res.sendFile('Karteikarten.html')
 // });
 
-router.post('/?exampleFormControlInput1=1&exampleFormControlTextarea1=',
+router.get('/?exampleFormControlInput1=a&exampleFormControlTextarea1=b&thema=&content=',(req, res) => {
+    console.log("kjihiuhiu")
+    const errors = validationResult(req);
+
+    if (errors.isEmpty()) {
+      res.send('Thank you for your registration!');
+    } else {
+      res.send('FUCK');
+
+    }
+  }
+);
+
+router.get('/?exampleFormControlInput1=a&exampleFormControlTextarea1=b&thema=&content=',
   [
     body('/exampleFormControlTextarea1')
       .isLength({ min: 1 })
       .withMessage('Please enter a name'),
   ],
   (req, res) => {
+    console.log("kjihiuhiu")
     const errors = validationResult(req);
 
     if (errors.isEmpty()) {
