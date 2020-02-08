@@ -1,24 +1,52 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const path = require('path');
 const { body, validationResult } = require('express-validator/check');
-
 const router = express.Router();
+const Registration = mongoose.model('Registration');
 
 router.get('/',function(req,res){
-  res.sendFile(path.join(__dirname+'/../Karteikarten.html'));
+  // res.sendFile(path.join(__dirname+'/../Karteikarten.html'));
+  res.render('Karteikarten')
   console.log(req.query)
   //__dirname : It will resolve to your project folder.
 });
 router.post('/',function(req,res){
   res.sendFile(path.join(__dirname+'/../Karteikarten.html'));
   console.log("fdafds")
-  console.log(req.query)
+
   //__dirname : It will resolve to your project folder.
 });
+
+router.get('/karten/:vl',function(req,res){
+  // console.log(typeof(req.params.vl))
+  var vl = req.params.vl;
+  Registration.find({vorlesung: vl},(err,cards)=>{
+  if(err){
+    console.log(err);
+  }else{
+    console.log(cards)
+    res.render('Karteikarten', {karten:cards})
+  }
+});
+  
+  // Registration.find({vorlesung: vl})
+  // .then((registrations) => {
+  //   console.log(registration);
+  //   res.send(registration);
+  // })
+  // .catch(() => { res.send('Sorry! Something went wrong.'); });
+
+  //__dirname : It will resolve to your project folder.
+});
+
 router.post('/addCard',function(req,res){
   // res.sendFile(path.join(__dirname+'/../Karteikarten.html'));
   console.log("TEST:")
   console.log(req.body.thema)
+  const registration = new Registration(req.body);
+  registration.save()
+  console.log(req.query)
   // console.log(req.query)
   //__dirname : It will resolve to your project folder.
 });
