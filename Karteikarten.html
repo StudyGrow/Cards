@@ -34,6 +34,16 @@
         .carousel-control-next{
           width: 10%;
         }
+        h3{
+          text-align: center;
+        }
+        .alert{
+          width: 80%;
+          display: block;
+          margin-left: auto;
+          margin-right: auto;
+          display: none;
+        }
     </style>
   </head>
   <body>
@@ -62,8 +72,13 @@
     </nav>
       <br>
             
-     
+      
       <div class="container">
+        <h3 id="vorlesung">
+          Berechenbarkeit und Komplexität
+        </h3>
+        <br>
+        <div id="alert"></div>
         <div id="carouselExampleControls" class="carousel slide" data-ride="carousel" data-interval="false">
             <div class="carousel-inner">
               <div class="carousel-item active">
@@ -130,19 +145,19 @@
           <br>
           
            
-            <form style="width: 80%;">
+            <form id='addCard' style="width: 80%;">
               <h4>
                 Karteikarte hinzufügen
             </h4>
               <div class="form-group">
               <label for="exampleFormControlInput1">Titel</label>
-              <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Thema">
+              <input id='#thema 'type="text" class="form-control" id="exampleFormControlInput1" placeholder="Thema">
               </div>
               <div class="form-group">
               <label for="exampleFormControlTextarea1">Informationen</label>
-              <textarea class="form-control" id="exampleFormControlTextarea1" rows="5"></textarea>
+              <textarea id='content'class="form-control" id="exampleFormControlTextarea1" rows="5"></textarea>
               </div>
-              <button type="submit" class="btn btn-primary mb-2">Hinzufügen</button>
+              <button id='#addBtn' type="submit" class="btn btn-primary mb-2">Hinzufügen</button>
           </form>
           
          
@@ -150,7 +165,52 @@
       </div>
       
         
+      <script>
+        document.getElementById('addBtn').addEventListener('submit',addCard);
+        function addCard(event){
+          event.preventDefault();
+          var thema = document.getElementById('thema').value;
+          var content = document.getElementById('content').value;
+          var vl= document.getElementById('vorlesung').value;
+          
+          fetch('/addCard',{ 
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json, text/plain, */*',
+              'Content-type': 'application/json' 
+            },
+            body:JSON.stringify({
+              vorlesung:vl,
+              thema:thema,
+              content:content
+            })
+          })
+          .then((res)=> res.json())
+          .then((card)=>{
+            // add the new card in the DOM
 
+            //show success alert
+            var element = document.getElementById('alert');
+            var alertHTML = '<div class="alert alert-success alert-dismissible fade show" role="alert">Karteikarte erfolgreich hinzufügt<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
+            element.innerHTML = alertHTML; 
+          })
+        }
+        
+        function getCards(){
+          var vl= document.getElementById('vorlesung').value;
+          fetch('/karten/'+vl,{ //Nicht sicher ob richtige syntax
+            method:'GET',
+            headers:{
+              'Accept': 'application/json, text/plain, */*',
+              'Content-type': 'application/json' 
+            }
+          })
+          .then((res)=> res.json())
+          .then((cards)=>{
+            //load the cards into the DOM
+          })
+        }
+      </script>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
