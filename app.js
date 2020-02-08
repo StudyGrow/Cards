@@ -22,8 +22,9 @@ app.get('/karten/:vl',(req,res)=>{
     });
 });
 
-app.post('addCard',(req,res)=>{
+app.post('/addCard',(req,res)=>{
     var card = new Card(); //erstelle neue Karte
+    
     card.vorlesung = req.body.vorlesung;
     card.thema = req.body.thema;
     card.content = req.body.content;
