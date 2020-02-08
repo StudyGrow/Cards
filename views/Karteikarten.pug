@@ -53,7 +53,18 @@ br
   br
   #carouselExampleControls.carousel.slide(data-ride='carousel' data-interval='false')
     #carouselInner.carousel-inner
-      - var n = 0;
+      .carousel-item-active
+        .card
+          .card-header
+            | #{karten[0].thema}
+          .card-body
+            button.btn.btn-light(type='button' data-toggle='collapse' onclick="showMore(#{0})" data-target='#{0}' aria-expanded='false' aria-controls='collapseExample')
+              | Show more 
+              i.fas.fa-caret-down
+            #0.collapse
+              p
+                |#{karten[0].content}
+      - var n = 1;
       while n < karten.length
         .carousel-item
           .card
