@@ -49,21 +49,22 @@ nav.navbar.navbar-expand-lg.navbar-light.bg-light(role='alert')
         -n++;
 br
 #mainContainer.container
-  h3#vorlesung #{karten[0].vorlesung}
+  h3#vorlesung #{vorlesung}
   br
   #carouselExampleControls.carousel.slide(data-ride='carousel' data-interval='false')
     #carouselInner.carousel-inner
-      .carousel-item-active
-        .card
-          .card-header
-            | #{karten[0].thema}
-          .card-body
-            button.btn.btn-light(type='button' data-toggle='collapse' onclick="showMore(#{0})" data-target='#{0}' aria-expanded='false' aria-controls='collapseExample')
-              | Show more 
-              i.fas.fa-caret-down
-            #0.collapse
-              p
-                |#{karten[0].content}
+      if karten.length != 0
+        .carousel-item.active
+          .card
+            .card-header
+              | #{karten[0].thema}
+            .card-body
+              button.btn.btn-light(type='button' data-toggle='collapse' onclick="showMore(0)" data-target=0 aria-expanded='false' aria-controls='collapseExample')
+                | Show more 
+                i.fas.fa-caret-down
+              #0.collapse
+                p
+                  |#{karten[0].content}
       - var n = 1;
       while n < karten.length
         .carousel-item
@@ -71,17 +72,18 @@ br
             .card-header
               | #{karten[n].thema}
             .card-body
-              button.btn.btn-light(type='button' data-toggle='collapse' onclick="showMore(#{count})" data-target='#{count}' aria-expanded='false' aria-controls='collapseExample')
+              button.btn.btn-light(type='button' data-toggle='collapse' onclick="showMore("+n+")" data-target=n aria-expanded='false' aria-controls='collapseExample')
                 | Show more 
                 i.fas.fa-caret-down
-            //-   ##{count}.collapse
+              .collapse(id=n)
                 p
                   |#{karten[n].content}
         -n++
-    a.carousel-control-prev(href='#carouselExampleControls' role='button' data-slide='prev')
-      i.fas.fa-chevron-left
-    a.carousel-control-next(href='#carouselExampleControls' role='button' data-slide='next')
-      i.fas.fa-chevron-right
+    if karten.length != 0
+      a.carousel-control-prev(href='#carouselExampleControls' role='button' data-slide='prev')
+        i.fas.fa-chevron-left
+      a.carousel-control-next(href='#carouselExampleControls' role='button' data-slide='next')
+        i.fas.fa-chevron-right
   br
   form#addCard
     h4
@@ -95,9 +97,10 @@ br
     input.btn.btn-primary.mb-2(id='#addBtn' type='button' onclick='addCard()' value='Hinzufügen')
 script.
   document.getElementById('addCard').addEventListener('submit',addCard);
-  function showMore(){
-  $('.collapse').collapse('toggle');
-  }
+  function showMore(count){
+  $(`#${count}`).collapse('toggle');
+    }
+  
   function addCard(){  //Funktion um eine neue Karte hinzuzufügen
   //event.preventDefault();
   //Lese Daten aus der Form aus
@@ -128,6 +131,9 @@ script.
   // Neue Karte ins carousel einfügen
   var newCarouselItem = document.createElement("div");
   newCarouselItem.setAttribute('class','carousel-item');
+  if (count == 0){
+    newCarouselItem.setAttribute('class','active');
+  }
   newCarouselItem.innerHTML =`
   <div class="card">
   <div class="card-header">

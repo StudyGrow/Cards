@@ -26,7 +26,7 @@ router.get('/karten/:vl',function(req,res){
     console.log(err);
   }else{
     console.log(cards)
-    res.render('Karteikarten', {karten:cards})
+    res.render('Karteikarten', {karten:cards, vorlesung:vl})
   }
 });
   
