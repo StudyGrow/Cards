@@ -1,0 +1,193 @@
+doctype html
+head
+  // Required meta tags
+  meta(charset='utf-8')
+  meta(name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no')
+  // Bootstrap CSS
+  link(rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css' integrity='sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh' crossorigin='anonymous')
+  link(rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css' integrity='sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ' crossorigin='anonymous')
+  title Karteikarten
+  style.
+    .carousel-item{
+    min-height: 100px;
+    }
+    .card{
+    max-width: 80%;
+    margin: 2px;
+    margin-left: auto;
+    margin-right: auto;
+    }
+    i{
+    color:black;
+    }
+    form,.alert{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width:80%;
+    }
+    .carousel-control-prev{
+    width: 10%;
+    }
+    .carousel-control-next{
+    width: 10%;
+    }
+    h3{
+    text-align: center;
+    }
+nav.navbar.navbar-expand-lg.navbar-light.bg-light(role='alert')
+  button.navbar-toggler(type='button' data-toggle='collapse' data-target='#navbarNav' aria-controls='navbarNav' aria-expanded='false' aria-label='Toggle navigation')
+    span.navbar-toggler-icon
+  #navbarNav.collapse.navbar-collapse
+    ul#navlist.navbar-nav
+      li.nav-item
+        a.nav-link.disabled(href='kategorie.html') Kategorie w&auml;hlen
+      li.nav-item
+        a.nav-link(data-target='#carouselExampleControls' data-slide-to='0' href='#') Slide 1
+      li.nav-item
+        a.nav-link(data-target='#carouselExampleControls' data-slide-to='1' href='#') Slide 2
+      li.nav-item
+        a.nav-link(data-target='#carouselExampleControls' data-slide-to='2' href='#') Slide 3
+br
+#mainContainer.container
+  h3#vorlesung BuK
+  br
+  #carouselExampleControls.carousel.slide(data-ride='carousel' data-interval='false')
+    #carouselInner.carousel-inner
+      .carousel-item.active
+        .card
+          .card-header
+            | Slide 1
+          .card-body
+            button.btn.btn-light(type='button' data-toggle='collapse' data-target='#collapseExample' aria-expanded='false' aria-controls='collapseExample')
+              | Show more 
+              i.fas.fa-caret-down
+            #collapseExample.collapse
+              p
+                | Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit officiis et architecto vero asperiores quaerat minus, suscipit laudantium nihil debitis qui esse possimus. Quam voluptatibus voluptatum aperiam aut iste voluptas?
+      .carousel-item
+        .card
+          .card-header
+            | Slide 2
+          .card-body
+            button.btn.btn-light(type='button' data-toggle='collapse' data-target='#collapseExample' aria-expanded='false' aria-controls='collapseExample')
+              | Show more 
+              i.fas.fa-caret-down
+            #collapseExample.collapse
+              p
+                | Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit officiis et architecto vero asperiores quaerat minus, suscipit laudantium nihil debitis qui esse possimus. Quam voluptatibus voluptatum aperiam aut iste voluptas?
+      .carousel-item
+        .card
+          .card-header
+            | Slide 3
+          .card-body
+            button.btn.btn-light(type='button' data-toggle='collapse' data-target='#collapseExample' aria-expanded='false' aria-controls='collapseExample')
+              | Show more 
+              i.fas.fa-caret-down
+            #collapseExample.collapse
+              p
+                | Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit officiis et architecto vero asperiores quaerat minus, suscipit laudantium nihil debitis qui esse possimus. Quam voluptatibus voluptatum aperiam aut iste voluptas?
+    a.carousel-control-prev(href='#carouselExampleControls' role='button' data-slide='prev')
+      i.fas.fa-chevron-left
+    a.carousel-control-next(href='#carouselExampleControls' role='button' data-slide='next')
+      i.fas.fa-chevron-right
+  br
+  form#addCard
+    h4
+      | Karteikarte hinzuf&uuml;gen
+    .form-group
+      label(for='thema') Thema
+      input#thema.form-control(name='thema' type='text' placeholder='Thema')
+    .form-group
+      label(for='content') Informationen
+      textarea#content.form-control(name='content' rows='5')
+    input.btn.btn-primary.mb-2(id='#addBtn' type='button' onclick='addCard()' value='Hinzufügen')
+script.
+  document.getElementById('addCard').addEventListener('submit',addCard);
+  function showMore(){
+  $('.collapse').collapse('toggle');
+  }
+  function addCard(){  //Funktion um eine neue Karte hinzuzufügen
+  //event.preventDefault();
+  //Lese Daten aus der Form aus
+  var thema = document.getElementById("thema").value;
+  var content = document.getElementById('content').value;
+  var vl= document.getElementById('vorlesung').textContent;
+  //Poste card an server
+  var count =0; //anzahl der bereits exisiterenden Karten
+  var ul = document.getElementById("navlist");
+  for (var i = 0; i < ul.childNodes.length; i++) {
+  if (ul.childNodes[i].nodeName == "LI") {
+  count++;
+  }
+  }
+  count--;  //wegen "Kategorie wählen "auch in Liste
+  fetch('/addCard',{
+  method: 'POST',
+  headers: {
+  'Accept': 'application/json, text/plain, */*',
+  'Content-type': 'application/json'
+  },
+  body:JSON.stringify({
+  vorlesung:vl,
+  thema:thema,
+  content:content
+  })
+  });
+  // Neue Karte ins carousel einfügen
+  var newCarouselItem = document.createElement("div");
+  newCarouselItem.setAttribute('class','carousel-item');
+  newCarouselItem.innerHTML =`
+  <div class="card">
+  <div class="card-header">
+  ${thema}
+  </div>
+  <div class="card-body">
+  <button class="btn btn-light" type="button" data-toggle="collapse" onclick="showMore()" data-target=${count} aria-expanded="false" aria-controls=${count}>
+  Show more <i class="fas fa-caret-down"></i>
+  </button>
+  <div class="collapse" id=${count}>
+  <p>
+  ${content}
+  </p>
+  </div>
+  </div>
+  </div>`;
+  document.getElementById('carouselInner').appendChild(newCarouselItem); //Karteikarte ins Carousel einfügen
+  //Erstelle die neue Karte als DOM element
+  var newListEntry = document.createElement('LI');
+  newListEntry.setAttribute('class','nav-item');
+  newListEntry.innerHTML=`
+  <a class="nav-link" data-target="#carouselExampleControls" data-slide-to=${count} href="#">${thema}</a>
+  `;
+  document.getElementById("navlist").appendChild(newListEntry); //neuen Link in die navbar setzen
+  //Leere form
+  document.getElementById("thema").value = "";
+  document.getElementById('content').value="";
+  //Success message
+  var successMsg = document.createElement("div");
+  successMsg.setAttribute('class','alert alert-success alert-dismissible fade show');
+  successMsg.setAttribute('role','alert');
+  successMsg.setAttribute('style','width:80%');
+  successMsg.innerHTML= 'Karteikarte erfolgreich hinzufügt<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
+  document.getElementById('mainContainer').prepend(successMsg);
+  }
+  function getCards(){
+  var vl= document.getElementById('vorlesung').value;
+  fetch('/karten/'+vl,{ //Nicht sicher ob richtige syntax
+  method:'GET',
+  headers:{
+  'Accept': 'application/json, text/plain, */*',
+  'Content-type': 'application/json'
+  }
+  })
+  .then((res)=> res.json())
+  .then((cards)=>{
+  //load the cards into the DOM
+  })
+  }
+// Optional JavaScript
+// jQuery first, then Popper.js, then Bootstrap JS
+script(src='https://code.jquery.com/jquery-3.4.1.slim.min.js' integrity='sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n' crossorigin='anonymous')
+script(src='https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js' integrity='sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo' crossorigin='anonymous')
+script(src='https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js' integrity='sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6' crossorigin='anonymous')
