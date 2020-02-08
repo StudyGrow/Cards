@@ -42,51 +42,31 @@ nav.navbar.navbar-expand-lg.navbar-light.bg-light(role='alert')
     ul#navlist.navbar-nav
       li.nav-item
         a.nav-link.disabled(href='kategorie.html') Kategorie w&auml;hlen
-      li.nav-item
-        a.nav-link(data-target='#carouselExampleControls' data-slide-to='0' href='#') Slide 1
-      li.nav-item
-        a.nav-link(data-target='#carouselExampleControls' data-slide-to='1' href='#') Slide 2
-      li.nav-item
-        a.nav-link(data-target='#carouselExampleControls' data-slide-to='2' href='#') Slide 3
+      - var n = 0;
+      while n < karten.length
+        li.nav-item
+          a.nav-link(data-target='#carouselExampleControls' data-slide-to=n href='#') #{karten[n].thema}
+        -n++;
 br
 #mainContainer.container
-  h3#vorlesung BuK
+  h3#vorlesung #{karten[0].vorlesung}
   br
   #carouselExampleControls.carousel.slide(data-ride='carousel' data-interval='false')
     #carouselInner.carousel-inner
-      .carousel-item.active
-        .card
-          .card-header
-            | Slide 1
-          .card-body
-            button.btn.btn-light(type='button' data-toggle='collapse' data-target='#collapseExample' aria-expanded='false' aria-controls='collapseExample')
-              | Show more 
-              i.fas.fa-caret-down
-            #collapseExample.collapse
-              p
-                | Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit officiis et architecto vero asperiores quaerat minus, suscipit laudantium nihil debitis qui esse possimus. Quam voluptatibus voluptatum aperiam aut iste voluptas?
-      .carousel-item
-        .card
-          .card-header
-            | Slide 2
-          .card-body
-            button.btn.btn-light(type='button' data-toggle='collapse' data-target='#collapseExample' aria-expanded='false' aria-controls='collapseExample')
-              | Show more 
-              i.fas.fa-caret-down
-            #collapseExample.collapse
-              p
-                | Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit officiis et architecto vero asperiores quaerat minus, suscipit laudantium nihil debitis qui esse possimus. Quam voluptatibus voluptatum aperiam aut iste voluptas?
-      .carousel-item
-        .card
-          .card-header
-            | Slide 3
-          .card-body
-            button.btn.btn-light(type='button' data-toggle='collapse' data-target='#collapseExample' aria-expanded='false' aria-controls='collapseExample')
-              | Show more 
-              i.fas.fa-caret-down
-            #collapseExample.collapse
-              p
-                | Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit officiis et architecto vero asperiores quaerat minus, suscipit laudantium nihil debitis qui esse possimus. Quam voluptatibus voluptatum aperiam aut iste voluptas?
+      - var n = 0;
+      while n < karten.length
+        .carousel-item
+          .card
+            .card-header
+              | #{karten[n].thema}
+            .card-body
+              button.btn.btn-light(type='button' data-toggle='collapse' onclick="showMore(#{count})" data-target='#{count}' aria-expanded='false' aria-controls='collapseExample')
+                | Show more 
+                i.fas.fa-caret-down
+              ##{count}.collapse
+                p
+                  |#{karten[n].content}
+        -n++
     a.carousel-control-prev(href='#carouselExampleControls' role='button' data-slide='prev')
       i.fas.fa-chevron-left
     a.carousel-control-next(href='#carouselExampleControls' role='button' data-slide='next')
