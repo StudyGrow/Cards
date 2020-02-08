@@ -15,14 +15,11 @@ router.get('/',function(req,res){
 //   res.sendFile('Karteikarten.html')
 // });
 
-router.post('/',
+router.post('/?exampleFormControlInput1=1&exampleFormControlTextarea1=',
   [
-    body('exampleFormControlTextarea1')
+    body('/exampleFormControlTextarea1')
       .isLength({ min: 1 })
       .withMessage('Please enter a name'),
-    body('exampleFormControlTextarea1')
-      .isLength({ min: 1 })
-      .withMessage('Please enter an email'),
   ],
   (req, res) => {
     const errors = validationResult(req);
@@ -30,11 +27,8 @@ router.post('/',
     if (errors.isEmpty()) {
       res.send('Thank you for your registration!');
     } else {
-      res.render('form', {
-        title: 'Registration form',
-        errors: errors.array(),
-        data: req.body,
-      });
+      res.send('FUCK');
+
     }
   }
 );
