@@ -26,26 +26,27 @@ app.get('/karten/:vl',(req,res)=>{
       }
     });
 });
-
-app.post('/addCard',(req,res)=>{
-    var card = new Card(); //erstelle neue Karte
+app.use(bodyParser.urlencoded({ extended: false}))
+app.use(bodyParser.json())
+// app.post('/addCard',(req,res)=>{
+//     // // var card = new Card(); //erstelle neue Karte
     
-    card.vorlesung = req.body.vorlesung;
-    card.thema = req.body.thema;
-    card.content = req.body.content;
+//     // // card.vorlesung = req.body.vorlesung;
+//     // // card.thema = req.body.thema;
+//     // // card.content = req.body.content;
 
-    console.log(req)
-    console.log(res)
+//     // console.log(req)
+//     // console.log(res)
 
-    card.save((err,c)=>{ //speichere sie in der Datenbank
-        if(err){
-            console.log(err);
-        }else{
-            res.send(c);
-        }
-    });
-});
-//app.use('/', routes);
+//     // card.save((err,c)=>{ //speichere sie in der Datenbank
+//     //     if(err){
+//     //         console.log(err);
+//     //     }else{
+//     //         res.send(c);
+//     //     }
+//     // });
+// });
+// //app.use('/', routes);
 
 // app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/', routes);

@@ -15,7 +15,13 @@ router.post('/',function(req,res){
   console.log(req.query)
   //__dirname : It will resolve to your project folder.
 });
-
+router.post('/addCard',function(req,res){
+  // res.sendFile(path.join(__dirname+'/../Karteikarten.html'));
+  console.log("TEST:")
+  console.log(req.body.thema)
+  // console.log(req.query)
+  //__dirname : It will resolve to your project folder.
+});
 
 // router.get('/', (req, res) => {
 //   // res.render('form', { title: 'Registration form' });
