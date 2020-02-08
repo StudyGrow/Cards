@@ -163,8 +163,9 @@
         
       <script>
         document.getElementById('addCard').addEventListener('submit',addCard);
-        function showMore(){
-          $('.collapse').collapse('toggle');
+
+        function showMore(count){
+          $(`#${count}`).collapse('toggle');
         }
         
         function addCard(){  //Funktion um eine neue Karte hinzuzufügen
@@ -209,7 +210,7 @@
                       ${thema}
                     </div>
                     <div class="card-body">
-                      <button class="btn btn-light" type="button" data-toggle="collapse" onclick="showMore()" data-target=${count} aria-expanded="false" aria-controls=${count}>
+                      <button class="btn btn-light" type="button" data-toggle="collapse" onclick="showMore(${count})" data-target=${count} aria-expanded="false" aria-controls=${count}>
                         Show more <i class="fas fa-caret-down"></i>
                       </button>
                       <div class="collapse" id=${count}>
