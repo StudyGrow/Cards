@@ -11,13 +11,32 @@
 <body>
 
     <div class="container">
-        <ul class="list-group">
+        <ul id="vlList" class="list-group">
             <li class="list-group-item">
                 <a href="/karten/Berechenbarkeit und Komplexität">Berechenbarkeit und Komlexität</a>
             </li>
-            
           </ul>
+          <br>
+          <h4>Vorlesung hinzufügen</h4>
+          <br>
+          <form id="addVl">
+            <div class="form-group">
+                <input id='vl' name="thema" type="text" class="form-control" placeholder="Vorlesung">
+              </div>
+              <input id='#addBtn' type="button" class="btn btn-primary mb-2" onclick="addVl()" value="Hinzufügen">
+          </form>
     </div>
+
+    <script>
+        function addVl(){
+            var ul = document.getElementById("vlList");
+            var vl = document.getElementById('vl');
+            var li = document.createElement('LI');
+            li.setAttribute('class','list-group-item');
+            li.innerHTML = `<a href="/karten/${vl.value}">${vl.value}</a>`;
+            ul.appendChild(li);
+          }
+    </script>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
