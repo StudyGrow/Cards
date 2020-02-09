@@ -7,16 +7,26 @@ const Registration = mongoose.model('Registration');
 const Vorlesung = mongoose.model('Vorlesung');
 
 router.get('/',function(req,res){
-  res.sendFile(path.join(__dirname+'/../Karteikarten.html'));
-  // res.render('Karteikarten')
-  console.log(req.query)
-  //__dirname : It will resolve to your project folder.
+   // console.log(typeof(req.params.vl))
+   Vorlesung.find((err,vls)=>{
+    if(err){
+      console.log(err);
+    }else{
+      console.log(vls);
+      res.render('kategorie', {vorlesungen:vls});
+    }
+    }); 
 });
-router.post('/',function(req,res){
-  res.sendFile(path.join(__dirname+'/../Karteikarten.html'));
-  console.log("fdafds")
-
-  //__dirname : It will resolve to your project folder.
+router.get('/kategorien',function(req,res){
+  // console.log(typeof(req.params.vl))
+  Vorlesung.find((err,vls)=>{
+  if(err){
+    console.log(err);
+  }else{
+    console.log(vls);
+    res.render('kategorie', {vorlesungen:vls});
+  }
+  }); 
 });
 
 router.get('/:vl',function(req,res){
@@ -31,17 +41,7 @@ router.get('/:vl',function(req,res){
   }
   });
 });
-router.get('/kategorien',function(req,res){
-  // console.log(typeof(req.params.vl))
-  Vorlesung.find((err,vls)=>{
-  if(err){
-    console.log(err);
-  }else{
-    console.log(vls);
-    res.render('kategorie', {vorlesungen:vls});
-  }
-  }); 
-});
+
 
 router.post('/addCard',function(req,res){
   // res.sendFile(path.join(__dirname+'/../Karteikarten.html'));
