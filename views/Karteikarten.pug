@@ -41,7 +41,7 @@ nav.navbar.navbar-expand-lg.navbar-light.bg-light(role='alert')
   #navbarNav.collapse.navbar-collapse
     ul#navlist.navbar-nav
       li.nav-item
-        a.nav-link.disabled(href='kategorie.html') Kategorie w&auml;hlen
+        a.nav-link(href='kategorie.html') Kategorie w&auml;hlen
       - var n = 0;
       while n < karten.length
         li.nav-item
@@ -133,6 +133,23 @@ script.
   newCarouselItem.setAttribute('class','carousel-item');
   if (count == 0){
     newCarouselItem.setAttribute('class','active');
+  }else if(count==1){
+    var prev = document.createElement('a');
+    prev.setAttribute('class','carousel-control-prev');
+    prev.setAttribute('href','#carouselExampleControls');
+    prev.setAttribute('role','button');
+    prev.setAttribute('data-slide','prev');
+    prev.innerHTML = '<i class="fas fa-chevron-left"></i>';
+
+    var nxt = document.createElement('a');
+    nxt.setAttribute('class','carousel-control-next');
+    nxt.setAttribute('href','#carouselExampleControls');
+    nxt.setAttribute('role','button');
+    nxt.setAttribute('data-slide','next');
+    nxt.innerHTML = '<i class="fas fa-chevron-right"></i>';
+
+    document.getElementById('carouselExampleControls').appendChild(prev);
+    document.getElementById('carouselExampleControls').appendChild(nxt);
   }
   newCarouselItem.innerHTML =`
   <div class="card">
@@ -140,7 +157,7 @@ script.
   ${thema}
   </div>
   <div class="card-body">
-  <button class="btn btn-light" type="button" data-toggle="collapse" onclick="showMore()" data-target=${count} aria-expanded="false" aria-controls=${count}>
+  <button class="btn btn-light" type="button" data-toggle="collapse" onclick="showMore(${count})" data-target=${count} aria-expanded="false" aria-controls=${count}>
   Show more <i class="fas fa-caret-down"></i>
   </button>
   <div class="collapse" id=${count}>

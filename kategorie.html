@@ -11,18 +11,24 @@
 <body>
 
     <div class="container">
+        <br>
+        <h4>Vorlesungen</h4>
+        
         <ul id="vlList" class="list-group">
             <li class="list-group-item">
-                <a href="/karten/Berechenbarkeit und Komplexität">Berechenbarkeit und Komlexität</a>
+                <a href="/BuK">Berechenbarkeit und Komlexität</a>
             </li>
           </ul>
           <br>
           <h4>Vorlesung hinzufügen</h4>
-          <br>
+          
           <form id="addVl">
             <div class="form-group">
-                <input id='vl' name="thema" type="text" class="form-control" placeholder="Vorlesung">
-              </div>
+                <input id='vorlesung' name="thema" type="text" class="form-control" placeholder="Vorlesung">
+            </div>
+            <div class="form-group">
+                <input id='vl' name="url" type="text" class="form-control" placeholder="Abkürzung">
+            </div>
               <input id='#addBtn' type="button" class="btn btn-primary mb-2" onclick="addVl()" value="Hinzufügen">
           </form>
     </div>
@@ -30,11 +36,25 @@
     <script>
         function addVl(){
             var ul = document.getElementById("vlList");
+            var vorlesung = document.getElementById('vorlesung');
             var vl = document.getElementById('vl');
             var li = document.createElement('LI');
             li.setAttribute('class','list-group-item');
-            li.innerHTML = `<a href="/karten/${vl.value}">${vl.value}</a>`;
+            li.innerHTML = `<a href="/${vl.value}">${vorlesung.value}</a>`;
             ul.appendChild(li);
+            vl.value='';
+            vorlesung.value='';
+
+            fetch('/addVl',{ 
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json, text/plain, */*',
+              'Content-type': 'application/json' 
+            },
+            body:JSON.stringify({
+              vorlesung:vl
+            })
+          });
           }
     </script>
     <!-- Optional JavaScript -->
