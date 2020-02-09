@@ -56,12 +56,19 @@ router.post('/addCard',function(req,res){
 
 router.post('/addVl',function(req,res){
   // res.sendFile(path.join(__dirname+'/../Karteikarten.html'));
-  
-  console.log(req.body);
-  const vl = new Vorlesung();
-  vl.name = req.body.name;
-  vl.abrv = req.body.abrv;
-  vl.save();
+  req.body.name.length
+  const errors = validationResult(req);
+  if (  (req.body.name.length < 20 &&   req.body.abrv.length < 20) && ((req.body.name.length != 0 &&   req.body.abrv.length != 0) )) {
+    console.log(req.body);
+    const vl = new Vorlesung();
+    vl.name = req.body.name;
+    vl.abrv = req.body.abrv;
+    vl.save();  } 
+    else {
+    console.log("NOOOOO");
+
+  }
+
   // console.log(req.query)
   //__dirname : It will resolve to your project folder.
 });
