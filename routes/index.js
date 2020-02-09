@@ -12,7 +12,7 @@ router.get('/',function(req,res){
     if(err){
       console.log(err);
     }else{
-      console.log(vls);
+      //console.log(vls);
       res.render('kategorie', {vorlesungen:vls});
     }
     }); 
@@ -23,7 +23,7 @@ router.get('/kategorien',function(req,res){
   if(err){
     console.log(err);
   }else{
-    console.log(vls);
+    //console.log(vls);
     res.render('kategorie', {vorlesungen:vls});
   }
   }); 
@@ -36,7 +36,7 @@ router.get('/:vl',function(req,res){
   if(err){
     console.log(err);
   }else{
-    console.log(cards)
+    ////console.log(cards)
     res.render('Karteikarten', {karten:cards, vorlesung:vl})
   }
   });
@@ -45,11 +45,11 @@ router.get('/:vl',function(req,res){
 
 router.post('/addCard',function(req,res){
   // res.sendFile(path.join(__dirname+'/../Karteikarten.html'));
-  console.log("TEST:")
-  console.log(req.body.thema)
+  //console.log("TEST:")
+  //console.log(req.body.thema)
   const registration = new Registration(req.body);
   registration.save();
-  console.log(req.body)
+  //console.log(req.body)
   // console.log(req.query)
   //__dirname : It will resolve to your project folder.
 });
@@ -59,13 +59,13 @@ router.post('/addVl',function(req,res){
   req.body.name.length
   const errors = validationResult(req);
   if (  (req.body.name.length < 20 &&   req.body.abrv.length < 20) && ((req.body.name.length != 0 &&   req.body.abrv.length != 0) )) {
-    console.log(req.body);
+    //console.log(req.body);
     const vl = new Vorlesung();
     vl.name = req.body.name;
     vl.abrv = req.body.abrv;
     vl.save();  } 
     else {
-    console.log("NOOOOO");
+    //console.log("NOOOOO");
 
   }
 
