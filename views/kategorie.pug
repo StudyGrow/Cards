@@ -20,10 +20,10 @@ head
   h4 Vorlesung hinzuf&uuml;gen
   form#addVl
     .form-group
-      input#vorlesung.form-control(name='thema' type='text' placeholder='Vorlesung')
+      input#vorlesung.form-control(name='thema' type='text' placeholder='Vorlesung' required)
     .form-group
-      input#abrv.form-control(name='url' type='text' placeholder='Abkürzung')
-    input.btn.btn-primary.mb-2(id='#addBtn' type='button' onclick='addVl()' value='Hinzufügen')
+      input#abrv.form-control(name='url' type='text' placeholder='Abkürzung' required)
+    input.btn.btn-primary.mb-2(id='#addBtn' type='button' onclick='addVl()' value='Hinzufügen' )
 script.
   function addVl(){
   
@@ -31,12 +31,14 @@ script.
   var vorlesung = document.getElementById('vorlesung');
   var abrv = document.getElementById('abrv');
   var li = document.createElement('LI');
-      if( !document.getElementById("vlList")){
-          ul=document.createElement('UL');
-          ul.setAttribute('id','vlList');
-           ul.setAttribute('class','list-group');
-           document.getElementById('con').prepend(ul);
-      }
+  if(vorlesung.value.length>0 && abrv.value.length>0){
+
+    if( !document.getElementById("vlList")){
+        ul=document.createElement('UL');
+        ul.setAttribute('id','vlList');
+        ul.setAttribute('class','list-group');
+        document.getElementById('con').prepend(ul);
+    }
   var ul = document.getElementById("vlList");
   var vorlesung = document.getElementById('vorlesung');
   var abrv = document.getElementById('abrv');
@@ -54,10 +56,30 @@ script.
     name:vorlesung.value,
     abrv:abrv.value
   })
+  })
+  .then((res)=>{
+      if(res.status==406){
+          var msg = document.createElement("div");
+            msg.setAttribute('class','alert alert-warning alert-dismissible fade show');
+            msg.setAttribute('role','alert');
+            msg.innerHTML= 'Fehlerhaftes Format: dein Input ist zu groß<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
+            document.getElementById('con').prepend(msg);
+      }
+      res.json()
+  })
+  .catch((err)=>{
+      
   });
-  
   abrv.value='';
   vorlesung.value='';
+  }
+  else{
+       var msg = document.createElement("div");
+            msg.setAttribute('class','alert alert-warning alert-dismissible fade show');
+            msg.setAttribute('role','alert');
+            msg.innerHTML= 'Bitte fülle alle Felder<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
+            document.getElementById('con').prepend(msg);
+  }
   }
 // Optional JavaScript
 // jQuery first, then Popper.js, then Bootstrap JS
