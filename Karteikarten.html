@@ -202,6 +202,9 @@
           // Neue Karte ins carousel einfügen
           var newCarouselItem = document.createElement("div");
           newCarouselItem.setAttribute('class','carousel-item');
+          if(count==0){
+            newCarouselItem.setAttribute('class','active');
+          }
           newCarouselItem.innerHTML =`
                 <div class="card">
                     <div class="card-header">
@@ -243,7 +246,7 @@
         
         function getCards(){
           var vl= document.getElementById('vorlesung').value;
-          fetch('/karten/'+vl,{ //Nicht sicher ob richtige syntax
+          fetch('/karten/'+vl,{ 
             method:'GET',
             headers:{
               'Accept': 'application/json, text/plain, */*',

@@ -4,18 +4,29 @@ const path = require('path');
 const { body, validationResult } = require('express-validator/check');
 const router = express.Router();
 const Registration = mongoose.model('Registration');
+const Vorlesung = mongoose.model('Vorlesung');
 
 router.get('/',function(req,res){
-  res.sendFile(path.join(__dirname+'/../Karteikarten.html'));
-  // res.render('Karteikarten')
-  console.log(req.query)
-  //__dirname : It will resolve to your project folder.
+   // console.log(typeof(req.params.vl))
+   Vorlesung.find((err,vls)=>{
+    if(err){
+      console.log(err);
+    }else{
+      console.log(vls);
+      res.render('kategorie', {vorlesungen:vls});
+    }
+    }); 
 });
-router.post('/',function(req,res){
-  res.sendFile(path.join(__dirname+'/../Karteikarten.html'));
-  console.log("fdafds")
-
-  //__dirname : It will resolve to your project folder.
+router.get('/kategorien',function(req,res){
+  // console.log(typeof(req.params.vl))
+  Vorlesung.find((err,vls)=>{
+  if(err){
+    console.log(err);
+  }else{
+    console.log(vls);
+    res.render('kategorie', {vorlesungen:vls});
+  }
+  }); 
 });
 
 router.get('/:vl',function(req,res){
@@ -28,17 +39,9 @@ router.get('/:vl',function(req,res){
     console.log(cards)
     res.render('Karteikarten', {karten:cards, vorlesung:vl})
   }
+  });
 });
-  
-  // Registration.find({vorlesung: vl})
-  // .then((registrations) => {
-  //   console.log(registration);
-  //   res.send(registration);
-  // })
-  // .catch(() => { res.send('Sorry! Something went wrong.'); });
 
-  //__dirname : It will resolve to your project folder.
-});
 
 router.post('/addCard',function(req,res){
   // res.sendFile(path.join(__dirname+'/../Karteikarten.html'));
@@ -47,6 +50,18 @@ router.post('/addCard',function(req,res){
   const registration = new Registration(req.body);
   registration.save()
   console.log(req.query)
+  // console.log(req.query)
+  //__dirname : It will resolve to your project folder.
+});
+
+router.post('/addVl',function(req,res){
+  // res.sendFile(path.join(__dirname+'/../Karteikarten.html'));
+  
+  console.log(req.body);
+  const vl = new Vorlesung();
+  vl.name = req.body.name;
+  vl.abrv = req.body.abrv;
+  vl.save();
   // console.log(req.query)
   //__dirname : It will resolve to your project folder.
 });
