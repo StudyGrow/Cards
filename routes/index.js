@@ -48,8 +48,8 @@ router.post('/addCard',function(req,res){
   console.log("TEST:")
   console.log(req.body.thema)
   const registration = new Registration(req.body);
-  registration.save()
-  console.log(req.query)
+  registration.save();
+  console.log(req.body)
   // console.log(req.query)
   //__dirname : It will resolve to your project folder.
 });
@@ -73,40 +73,5 @@ router.post('/addVl',function(req,res){
   //__dirname : It will resolve to your project folder.
 });
 
-// router.get('/', (req, res) => {
-//   // res.render('form', { title: 'Registration form' });
-//   res.sendFile('Karteikarten.html')
-// });
 
-router.get('/?exampleFormControlInput1=a&exampleFormControlTextarea1=b&thema=&content=',(req, res) => {
-    console.log("kjihiuhiu")
-    const errors = validationResult(req);
-
-    if (errors.isEmpty()) {
-      res.send('Thank you for your registration!');
-    } else {
-      res.send('FUCK');
-
-    }
-  }
-);
-
-router.get('/?exampleFormControlInput1=a&exampleFormControlTextarea1=b&thema=&content=',
-  [
-    body('/exampleFormControlTextarea1')
-      .isLength({ min: 1 })
-      .withMessage('Please enter a name'),
-  ],
-  (req, res) => {
-    console.log("kjihiuhiu")
-    const errors = validationResult(req);
-
-    if (errors.isEmpty()) {
-      res.send('Thank you for your registration!');
-    } else {
-      res.send('FUCK');
-
-    }
-  }
-);
 module.exports = router;
