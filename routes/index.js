@@ -6,8 +6,8 @@ const router = express.Router();
 const Registration = mongoose.model('Registration');
 
 router.get('/',function(req,res){
-  // res.sendFile(path.join(__dirname+'/../Karteikarten.html'));
-  res.render('Karteikarten')
+  res.sendFile(path.join(__dirname+'/../Karteikarten.html'));
+  // res.render('Karteikarten')
   console.log(req.query)
   //__dirname : It will resolve to your project folder.
 });
@@ -18,7 +18,7 @@ router.post('/',function(req,res){
   //__dirname : It will resolve to your project folder.
 });
 
-router.get('/karten/:vl',function(req,res){
+router.get('/:vl',function(req,res){
   // console.log(typeof(req.params.vl))
   var vl = req.params.vl;
   Registration.find({vorlesung: vl},(err,cards)=>{
