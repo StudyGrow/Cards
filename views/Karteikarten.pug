@@ -16,6 +16,7 @@ head
     margin: 2px;
     margin-left: auto;
     margin-right: auto;
+    
     }
     i{
     color:black;
@@ -35,6 +36,10 @@ head
     h3{
     text-align: center;
     }
+    #rand{
+      
+    }
+  
 nav.navbar.navbar-expand-lg.navbar-light.bg-light(role='alert')
   button.navbar-toggler(type='button' data-toggle='collapse' data-target='#navbarNav' aria-controls='navbarNav' aria-expanded='false' aria-label='Toggle navigation')
     span.navbar-toggler-icon
@@ -50,16 +55,14 @@ nav.navbar.navbar-expand-lg.navbar-light.bg-light(role='alert')
 br
 #mainContainer.container
   h3#vorlesung #{vorlesung}
-  script.
-    var getRandomCard = function() {
-      randomShowCard();
-    }
-  button(onclick='getRandomCard()') Click
+      button#rand.btn.btn-light.float-right(onclick='getRandomCard()') 
+        .fas.fa-random
   br
+
   #carouselExampleControls.carousel.slide(data-ride='carousel' data-interval='false')
     #carouselInner.carousel-inner
       if karten.length != 0
-        .carousel-item.active
+        .carousel-item.active#0
           .card
             .card-header
               | #{karten[0].thema}
@@ -72,7 +75,7 @@ br
                   |#{karten[0].content}
       - var n = 1;
       while n < karten.length
-        .carousel-item
+        .carousel-item(id=n)
           .card
             .card-header
               | #{karten[n].thema}
@@ -102,18 +105,42 @@ br
     input.btn.btn-primary.mb-2(id='#addBtn' type='button' onclick='addCard()' value='Hinzufügen')
 script.
   document.getElementById('addCard').addEventListener('submit',addCard);
+  
+  var getRandomCard = function() {
+      randomShowCard();
+    }
+  function countCards(){
+    var ul = document.getElementById("navlist");
+    var count=0;
+    for (var i = 0; i < ul.childNodes.length; i++) {
+      if (ul.childNodes[i].nodeName == "LI") {
+      count++;
+      }
+    } 
+    return count-1//-1 wegen Kategorie wählen
+  }
   function showMore(count){
   $(`#${count}`).collapse('toggle');
     }
   function randomShowCard(){
-    var activeCarousel = document.getElementsByClassName("carousel-item active")
-    console.log(typeof(activeCarousel))
-    activeCarousel[0].setAttribute('class','carousel-item');
+    //- var activeCarousel = document.getElementsByClassName("carousel-item active")
+    //- console.log(typeof(activeCarousel))
+    //- activeCarousel[0].setAttribute('class','carousel-item');
 
-    var inactiveCarousel = document.getElementsByClassName("carousel-item")
-    var numberOfCarousels = inactiveCarousel.length-1
-    var rand = Math.floor(Math.random() * (numberOfCarousels - 0 + 1)) + 0;
-    inactiveCarousel[rand].setAttribute('class','carousel-item active');
+    //- var inactiveCarousel = document.getElementsByClassName("carousel-item")
+    //- var numberOfCarousels = inactiveCarousel.length-1
+    //- var rand = Math.floor(Math.random() * (numberOfCarousels - 0 + 1)) + 0;
+    //- inactiveCarousel[rand].setAttribute('class','carousel-item active');
+    
+    
+    var activeCardIndex =$('.active').attr('id'); //id of the card that is currently active
+    var i = document.getElementById('carouselInner').children.length; //count the current amount of cards
+    var rand = activeCardIndex;
+    while(rand == activeCardIndex) //calculate a new random index
+    {
+      rand = Math.floor(Math.random() *i); //random index
+    } 
+    $('.carousel').carousel(rand); //use bootstrap method to go to a different slide
   }
   
   function addCard(){  //Funktion um eine neue Karte hinzuzufügen
@@ -124,14 +151,9 @@ script.
   var vl= document.getElementById('vorlesung').textContent;
   var img = document.getElementById('vorlesung').textContent;
   //Poste card an server
-  var count =0; //anzahl der bereits exisiterenden Karten
+  var count =document.getElementById('carouselInner').children.length; //anzahl der bereits exisiterenden Karten
   var ul = document.getElementById("navlist");
-  for (var i = 0; i < ul.childNodes.length; i++) {
-  if (ul.childNodes[i].nodeName == "LI") {
-  count++;
-  }
-  }
-  count--;  //wegen "Kategorie wählen "auch in Liste
+  
   fetch('/addCard',{
   method: 'POST',
   headers: {
@@ -169,6 +191,7 @@ script.
     document.getElementById('carouselExampleControls').appendChild(prev);
     document.getElementById('carouselExampleControls').appendChild(nxt);
   }
+  newCarouselItem.setAttribute('id',count);
   newCarouselItem.innerHTML =`
   <div class="card">
   <div class="card-header">
