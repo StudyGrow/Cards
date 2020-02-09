@@ -63,10 +63,10 @@ router.post('/addVl',function(req,res){
     const vl = new Vorlesung();
     vl.name = req.body.name;
     vl.abrv = req.body.abrv;
-    vl.save();  } 
-    else {
-    //console.log("NOOOOO");
-
+    vl.save();
+  } 
+  else{
+    res.status(406).send();
   }
 
   // console.log(req.query)

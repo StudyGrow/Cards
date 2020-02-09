@@ -36,9 +36,7 @@ head
     h3{
     text-align: center;
     }
-    #rand{
-      
-    }
+
   
 nav.navbar.navbar-expand-lg.navbar-light.bg-light(role='alert')
   button.navbar-toggler(type='button' data-toggle='collapse' data-target='#navbarNav' aria-controls='navbarNav' aria-expanded='false' aria-label='Toggle navigation')
@@ -62,7 +60,7 @@ br
   #carouselExampleControls.carousel.slide(data-ride='carousel' data-interval='false')
     #carouselInner.carousel-inner
       if karten.length != 0
-        .carousel-item.active#0
+        .carousel-item.active
           .card
             .card-header
               | #{karten[0].thema}
@@ -75,7 +73,7 @@ br
                   |#{karten[0].content}
       - var n = 1;
       while n < karten.length
-        .carousel-item(id=n)
+        .carousel-item
           .card
             .card-header
               | #{karten[n].thema}
@@ -120,8 +118,8 @@ script.
     return count-1//-1 wegen Kategorie wählen
   }
   function showMore(count){
-  $(`#${count}`).collapse('toggle');
-    }
+    $(`#${count}`).collapse('toggle');
+  }
   function randomShowCard(){
     //- var activeCarousel = document.getElementsByClassName("carousel-item active")
     //- console.log(typeof(activeCarousel))
@@ -133,13 +131,15 @@ script.
     //- inactiveCarousel[rand].setAttribute('class','carousel-item active');
     
     
-    var activeCardIndex =$('.active').attr('id'); //id of the card that is currently active
+    var activeCardIndex = document.getElementsByClassName('active')[0].getElementsByClassName('collapse')[0].id; //id of the card that is currently active
+
     var i = document.getElementById('carouselInner').children.length; //count the current amount of cards
     var rand = activeCardIndex;
     while(rand == activeCardIndex) //calculate a new random index
     {
       rand = Math.floor(Math.random() *i); //random index
     } 
+  
     $('.carousel').carousel(rand); //use bootstrap method to go to a different slide
   }
   
@@ -191,7 +191,7 @@ script.
     document.getElementById('carouselExampleControls').appendChild(prev);
     document.getElementById('carouselExampleControls').appendChild(nxt);
   }
-  newCarouselItem.setAttribute('id',count);
+  
   newCarouselItem.innerHTML =`
   <div class="card">
   <div class="card-header">
@@ -220,12 +220,14 @@ script.
   document.getElementById("thema").value = "";
   document.getElementById('content').value="";
   //Success message
-  var successMsg = document.createElement("div");
-  successMsg.setAttribute('class','alert alert-success alert-dismissible fade show');
-  successMsg.setAttribute('role','alert');
-  successMsg.setAttribute('style','width:80%');
-  successMsg.innerHTML= 'Karteikarte erfolgreich hinzufügt<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
-  document.getElementById('mainContainer').prepend(successMsg);
+    if(!document.getElementsByClassName('alert')){
+      var successMsg = document.createElement("div");
+      successMsg.setAttribute('class','alert alert-success alert-dismissible fade show');
+      successMsg.setAttribute('role','alert');
+      successMsg.setAttribute('style','width:80%');
+      successMsg.innerHTML= 'Karteikarte erfolgreich hinzufügt<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
+      document.getElementById('mainContainer').prepend(successMsg);
+    }
   }
   function getCards(){
   var vl= document.getElementById('vorlesung').value;
