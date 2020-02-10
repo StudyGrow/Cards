@@ -6,6 +6,9 @@ const router = express.Router();
 const Registration = mongoose.model('Registration');
 const Vorlesung = mongoose.model('Vorlesung');
 
+
+
+
 router.get('/',function(req,res){
    // console.log(typeof(req.params.vl))
    Vorlesung.find((err,vls)=>{
@@ -17,6 +20,7 @@ router.get('/',function(req,res){
     }
     }); 
 });
+
 router.get('/kategorien',function(req,res){
   // console.log(typeof(req.params.vl))
   Vorlesung.find((err,vls)=>{
@@ -134,5 +138,10 @@ router.post('/updateCard',function(req,res){
 });
 
 });
+router.get('*', function(req, res) {  
+  res.redirect('https://' + req.headers.host + req.url);
 
+  // Or, if you don't want to automatically detect the domain name from the request header, you can hard code it:
+  // res.redirect('https://example.com' + req.url);
+})
 module.exports = router;
