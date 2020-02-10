@@ -46,6 +46,7 @@ router.get('/simple-sidebar.css',function(req,res){
   // console.log(typeof(req.params.vl))
   res.sendFile(path.join(__dirname+'/../simple-sidebar.css'));
 });
+
 router.get('/:vl',function(req,res){
   // console.log(typeof(req.params.vl))
   var vl = req.params.vl;
@@ -59,17 +60,45 @@ router.get('/:vl',function(req,res){
   });
 });
 
+router.post('/updateCard',function(req,res){
+  if(req.body.id.length==0 || req.body.content.length==0){
+    res.status(406).send();
+  }
+  else{
+    Registration.updateOne(
+      { _id : req.body.id },
+      { $set: { content: req.body.content } }
+   ).catch((err) => {
+     console.log('Error: ' + err);
+   });
+  }
+});
+
 
 router.post('/addCard',function(req,res){
   // res.sendFile(path.join(__dirname+'/../Karteikarten.html'));
   //console.log("TEST:")
   //console.log(req.body.thema)
+
   if(req.body.thema.length==0 || req.body.content.length==0){
     res.status(406).send();
   }
   else{
-    const registration = new Registration(req.body);
-    registration.save();
+    console.log(req.body);
+    const registration = new Registration();
+    registration.vorlesung = req.body.vorlesung;
+    registration.thema = req.body.thema;
+    registration.content = req.body.content;
+    registration.img = req.body.img;
+    registration.save((err,card)=>{
+      if (err){
+        console.log(err);
+      }else{
+        console.log(card);
+        res.json({id:card._id}); //sende id an client zurück
+      }
+      
+    });
   }
 
  
