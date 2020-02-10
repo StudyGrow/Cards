@@ -51,11 +51,12 @@ head
         position:absolute;
         top:51px;
         z-index:1000;
-        left: 0;
+        right: 0;
 
       }
       #rndid{
         position: relative;
+        margin-right:5px;
       }
        
 // Optional JavaScript
@@ -71,9 +72,8 @@ nav.navbar.navbar-expand-lg.navbar-light.bg-light(role='alert')
     ul#navlist.navbar-nav
       li.nav-item
         a.nav-link(href='/') Kategorie w&auml;hlen
-    form#rndid.form-inline.my-2.my-lg-0
+    form#rndid
       input.form-control#search.mr-sm-2.float-right(type='search' placeholder='Thema')
-      button.btn.btn-outline-primary.my-2.my-sm-0.float-right(type='submit') Suchen
       br
       #matches
     
