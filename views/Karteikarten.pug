@@ -21,7 +21,7 @@ head
     i{
     color:black;
     }
-    form,.alert{
+    form,.alert,#Headercontent{
     display: block;
     margin-left: auto;
     margin-right: auto;
@@ -61,7 +61,14 @@ head
         position: relative;
         margin-right:5px;
       }
-       
+      #Headercontent{
+        position:relative;
+      }
+      #btnDiv{
+        position:absolute;
+        right:0;
+        top:0;
+      }
 // Optional JavaScript
 // jQuery first, then Popper.js, then Bootstrap JS
 script(src='https://code.jquery.com/jquery-3.4.1.slim.min.js' integrity='sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n' crossorigin='anonymous')
@@ -97,9 +104,11 @@ br
         .modal-footer
           button.btn.btn-secondary(type='button' data-dismiss='modal') Nein, zurück
           button.btn.btn-danger(type='button' onclick="cancelEdit()") Ja
-
-  h3#vorlesung #{vorlesung}
-      button#rand.btn.btn-light.float-right(onclick='getRandomCard()') 
+  div#Headercontent
+    h3#vorlesung
+      |#{vorlesung}
+    div#btnDiv
+      button#rand.btn.btn-light(onclick='getRandomCard()') 
         .fas.fa-random
   br
 
