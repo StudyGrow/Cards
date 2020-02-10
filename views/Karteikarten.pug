@@ -461,13 +461,16 @@ script.
         e.preventDefault();
   });
 
-  document.getElementById('mainContainer').addEventListener('click',hideResults);
+  document.addEventListener('click',hideResults);
   document.getElementById('addCard').addEventListener('submit',addCard);
 
   $('#carouselExampleControls').on('slide.bs.carousel', function () {
     $('.collapse').collapse('hide');
-    var editBtn  = document.getElementById(editBtnId);
-      editBtn.setAttribute('class','btn btn-light');
-      editBtn.innerHTML = '<i class="fas fa-pen"></i>';
-      editBtn.setAttribute('onClick',f);  
+      var editBtn  = document.getElementById(editBtnId);
+      if(editBtn){
+        editBtn.setAttribute('class','btn btn-light');
+        editBtn.innerHTML = '<i class="fas fa-pen"></i>';
+        editBtn.setAttribute('onClick',f);  
+      }
+      
   })
