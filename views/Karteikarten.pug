@@ -392,7 +392,7 @@ script.
   
 
   function updateCard(cardNumber, id){
-    console.log(id)
+    //console.log(id)
     var oldTitle = document.getElementById('t'+cardNumber).innerText;
     var newTitle = document.getElementById('thema').value;
     
@@ -403,7 +403,7 @@ script.
       var content = document.getElementById('content').value;
       var vl= document.getElementById('vorlesung').textContent;
       var img = document.getElementById('vorlesung').textContent;
-      var id = id;
+      //var id = id;
       //Poste card an server
       var count =document.getElementById('carouselInner').children.length; //anzahl der bereits exisiterenden Karten
       var ul = document.getElementById("navlist");
@@ -466,4 +466,8 @@ script.
 
   $('#carouselExampleControls').on('slide.bs.carousel', function () {
     $('.collapse').collapse('hide');
+    var editBtn  = document.getElementById(editBtnId);
+      editBtn.setAttribute('class','btn btn-light');
+      editBtn.innerHTML = '<i class="fas fa-pen"></i>';
+      editBtn.setAttribute('onClick',f);  
   })
