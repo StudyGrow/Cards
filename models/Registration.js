@@ -16,11 +16,7 @@ const registrationSchema = new mongoose.Schema({
   },
   img: {
     type: Buffer
-  },
-  id: {
-    type: String,
-    required: true
-  },
+  }
 });
 
 module.exports = mongoose.model('Registration', registrationSchema);
