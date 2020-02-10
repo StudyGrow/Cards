@@ -44,8 +44,19 @@ head
          margin-left:0;
        } 
       }
+      @media (min-width: 992px){
+        .li{
+          position:absolute;
+          margin-left:5px;
+        }
+        
+      }
       .form-inline{
         margin-right:0;
+      }
+      nav{
+        position:relative;
+        padding:0;
       }
       #matches{
         position:absolute;
@@ -60,6 +71,7 @@ head
       #rndid{
         position: relative;
         margin-right:5px;
+        margin.top:10px;
       }
       #Headercontent{
         position:relative;
@@ -69,6 +81,9 @@ head
         right:0;
         top:0;
       }
+      .row{
+        width:100%
+      }
 // Optional JavaScript
 // jQuery first, then Popper.js, then Bootstrap JS
 script(src='https://code.jquery.com/jquery-3.4.1.slim.min.js' integrity='sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n' crossorigin='anonymous')
@@ -76,17 +91,20 @@ script(src='https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js
 script(src='https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js' integrity='sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6' crossorigin='anonymous')
 
 nav.navbar.navbar-expand-lg.navbar-light.bg-light(role='alert')
-  button.navbar-toggler(type='button' data-toggle='collapse' data-target='#navbarNav' aria-controls='navbarNav' aria-expanded='false' aria-label='Toggle navigation')
-    span.navbar-toggler-icon
-  #navbarNav.collapse.navbar-collapse
-    ul#navlist.navbar-nav
-      li.nav-item
-        a.nav-link(href='/' tabindex="1") Kategorie w&auml;hlen
-    form#rndid
-      input.form-control#search.mr-sm-2.float-right(type='search' placeholder='Thema' tabindex="0")
-      br
-      #matches
+  .row 
+    .col-6
+      button.navbar-toggler(type='button' data-toggle='collapse' data-target='#navbarNav' aria-controls='navbarNav' aria-expanded='false' aria-label='Toggle navigation')
+        span.navbar-toggler-icon
     
+      #navbarNav.collapse.navbar-collapse
+        ul#navlist.navbar-nav
+          li.nav-item
+            a.nav-link(href='/' tabindex="1") Kategorie w&auml;hlen
+    .col-6
+      input.form-control#search.float-right(type='search' placeholder='Thema' tabindex="0")
+  
+      #matches
+  
 
 br
 #mainContainer.container
