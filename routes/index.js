@@ -7,7 +7,14 @@ const Registration = mongoose.model('Registration');
 const Vorlesung = mongoose.model('Vorlesung');
 
 
-
+router.get('*', function(req, res , next) {
+  if(req.secure == false){
+    res.redirect('https://' + req.headers.host + req.url);
+  }
+  else{
+    next()
+  }
+  })
 
 router.get('/',function(req,res){
    // console.log(typeof(req.params.vl))
@@ -138,10 +145,5 @@ router.post('/updateCard',function(req,res){
 });
 
 });
-router.get('*', function(req, res) {  
-  res.redirect('https://' + req.headers.host + req.url);
 
-  // Or, if you don't want to automatically detect the domain name from the request header, you can hard code it:
-  // res.redirect('https://example.com' + req.url);
-})
 module.exports = router;
