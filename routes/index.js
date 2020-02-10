@@ -64,8 +64,15 @@ router.post('/addCard',function(req,res){
   // res.sendFile(path.join(__dirname+'/../Karteikarten.html'));
   //console.log("TEST:")
   //console.log(req.body.thema)
-  const registration = new Registration(req.body);
-  registration.save();
+  if(req.body.thema.length==0 || req.body.content.length==0){
+    res.status(406).send();
+  }
+  else{
+    const registration = new Registration(req.body);
+    registration.save();
+  }
+
+ 
   //console.log(req.body)
   // console.log(req.query)
   //__dirname : It will resolve to your project folder.
