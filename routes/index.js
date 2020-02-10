@@ -125,6 +125,14 @@ router.post('/addVl',function(req,res){
   // console.log(req.query)
   //__dirname : It will resolve to your project folder.
 });
+router.post('/updateCard',function(req,res){
+  Registration.updateOne(
+     { _id : req.body.id },
+     { $set: { content: req.body.content } }
+  ).catch((err) => {
+    console.log('Error: ' + err);
+});
 
+});
 
 module.exports = router;

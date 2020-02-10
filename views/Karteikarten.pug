@@ -342,7 +342,7 @@ script.
   var f;
   var editBtnId;
 
-  function enableEdit(cardNumber){
+  function enableEdit(cardNumber, id){
     var h4 = document.getElementById('addCard').getElementsByTagName('H4')[0];
     h4.innerText = 'Bearbeiten'; //überschrift ändern
     //button ändern
@@ -391,7 +391,8 @@ script.
   } 
   
 
-  function updateCard(cardNumber){
+  function updateCard(cardNumber, id){
+    console.log(id)
     var oldTitle = document.getElementById('t'+cardNumber).innerText;
     var newTitle = document.getElementById('thema').value;
     
@@ -402,6 +403,7 @@ script.
       var content = document.getElementById('content').value;
       var vl= document.getElementById('vorlesung').textContent;
       var img = document.getElementById('vorlesung').textContent;
+      var id = id;
       //Poste card an server
       var count =document.getElementById('carouselInner').children.length; //anzahl der bereits exisiterenden Karten
       var ul = document.getElementById("navlist");
