@@ -6,6 +6,7 @@ const helmet = require("helmet");
 
 
 const app = express();
+app.use(helmet()); 
 
 app.use(bodyParser.urlencoded({ extended: false}))
 app.use(bodyParser.json())
