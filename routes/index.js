@@ -8,11 +8,12 @@ const Vorlesung = mongoose.model('Vorlesung');
 
 
 router.get('*', function(req, res) {
-  console.log(req.httpVersion)
+  if(req.secure == false){
     res.redirect('https://' + req.headers.host + req.url);
+  }
+  else{
     next()
-    // Or, if you don't want to automatically detect the domain name from the request header, you can hard code it:
-    // res.redirect('https://example.com' + req.url);
+  }
   })
 
 router.get('/',function(req,res){
