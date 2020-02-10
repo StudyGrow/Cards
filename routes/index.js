@@ -28,7 +28,24 @@ router.get('/kategorien',function(req,res){
   }
   }); 
 });
+router.get('/test',function(req,res){
+  // console.log(typeof(req.params.vl))
+  console.log('test route');
+  var vl = req.params.vl;
+  Registration.find({vorlesung: 'BuK'},(err,cards)=>{
+  if(err){
+    console.log(err);
+  }else{
+    ////console.log(cards)
+    res.render('Karteikarten copy', {karten:cards, vorlesung:vl})
+  }
+  });
+});
 
+router.get('/simple-sidebar.css',function(req,res){
+  // console.log(typeof(req.params.vl))
+  res.sendFile(path.join(__dirname+'/../simple-sidebar.css'));
+});
 router.get('/:vl',function(req,res){
   // console.log(typeof(req.params.vl))
   var vl = req.params.vl;
