@@ -90,10 +90,11 @@ br
       if karten.length != 0
         .carousel-item.active
           .card
+            //- .id(id = karten[0]._id)
             .card-header#t0
               | #{karten[0].thema}
               .float-right
-                button.btn.btn-light(type='button' data-toggle='collapse' onclick="enableEdit(0)")
+                button.btn.btn-light(type='button' data-toggle='collapse' onclick="enableEdit(0, \"'"+karten[0]._id+"'\")")
                   .fas.fa-pen
             .card-body
               button.btn.btn-light(type='button' data-toggle='collapse' onclick="showMore(0)" data-target=0 aria-expanded='false' aria-controls='collapseExample')
@@ -107,10 +108,11 @@ br
       while n < karten.length
         .carousel-item
           .card
+            //- .id(id = karten[0]._id)
             .card-header(id='t'+n)
               | #{karten[n].thema}
               .float-right
-                button.btn.btn-light(type='button' data-toggle='collapse' onclick="enableEdit("+n+")")
+                button.btn.btn-light(type='button' data-toggle='collapse' onclick="enableEdit("+n+", \"'"+karten[n]._id+"'\")")
                   .fas.fa-pen
             .card-body
               button.btn.btn-light(type='button' data-toggle='collapse' onclick="showMore("+n+")" data-target=n aria-expanded='false' aria-controls='collapseExample')
@@ -298,21 +300,22 @@ script.
       }
   }
 
-  function enableEdit(cardNumber){
+  function enableEdit(cardNumber, id){
     var h4 = document.getElementById('addCard').getElementsByTagName('H4')[0];
     h4.innerText = 'Bearbeiten'; //überschrift ändern
     //button ändern
     var btn =  document.getElementById('addBtn');
     btn.setAttribute('class','btn btn-success mb-2')
     btn.setAttribute('value', 'Sichern');
-    btn.setAttribute('onClick','updateCard('+cardNumber+')');
+    btn.setAttribute('onClick','updateCard('+cardNumber+', '+id+')');
     var activeCarouselItem = document.getElementsByClassName('active')[0]; //aktive karte auswählen
     //Karteninhalt in die Textfelder laden
     document.getElementById('thema').value= activeCarouselItem.getElementsByClassName('card-header')[0].innerText;
     document.getElementById('content').value = activeCarouselItem.getElementsByClassName('card-body')[0].getElementsByClassName('collapse')[0].getElementsByTagName('p')[0].innerText;;
   }
 
-  function updateCard(cardNumber){
+  function updateCard(cardNumber, id){
+    console.log(id)
     var oldTitle = document.getElementById('t'+cardNumber).innerText;
     var newTitle = document.getElementById('thema').value;
     
@@ -324,6 +327,7 @@ script.
       var content = document.getElementById('content').value;
       var vl= document.getElementById('vorlesung').textContent;
       var img = document.getElementById('vorlesung').textContent;
+      var id = id;
       //Poste card an server
       var count =document.getElementById('carouselInner').children.length; //anzahl der bereits exisiterenden Karten
       var ul = document.getElementById("navlist");
@@ -339,7 +343,7 @@ script.
       thema:thema,
       content:content,
       img:img,
-      id:count
+      id:id
       })
       });
 
