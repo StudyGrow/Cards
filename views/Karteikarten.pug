@@ -8,6 +8,10 @@ head
   link(rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css' integrity='sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ' crossorigin='anonymous')
   title Karteikarten
   style.
+    
+    #mainContainer{
+      padding:15px;
+    }
     .carousel-item{
     min-height: 100px;
     }
@@ -60,10 +64,11 @@ head
       }
       #matches{
         position:absolute;
-        top:51px;
+        top:40px;
         z-index:1000;
         right: 0;
-
+        max-width:300px;
+        padding:1px
       }
       .fa-times{
         color:white;
@@ -107,7 +112,7 @@ nav.navbar.navbar-expand-lg.navbar-light.bg-light(role='alert' style='padding-ri
       #matches
   
 
-br
+
 #mainContainer.container
 
   // Modal
@@ -394,7 +399,7 @@ script.
     //Karteninhalt in die Textfelder laden
     document.getElementById('thema').value= activeCarouselItem.getElementsByClassName('card-header')[0].innerText;
     document.getElementById('content').value = activeCarouselItem.getElementsByClassName('card-body')[0].getElementsByClassName('collapse')[0].getElementsByTagName('p')[0].innerText;
-    $('#conent').focus();
+    $('#content').focus();
   }
   
   function openModal(){
@@ -419,6 +424,7 @@ script.
     editBtn.innerHTML = '<i class="fas fa-pen"></i>';
     editBtn.setAttribute('onClick',f); 
     //console.log(f);
+    
   } 
   
 

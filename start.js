@@ -18,7 +18,7 @@ const helmet = require("helmet");
 // 	ca: ca
 // };
 
-mongoose.connect(process.env.DATABASE, { useMongoClient: true });
+mongoose.connect(process.env.DATABASE, { useNewUrlParser: true,useUnifiedTopology: true });
 mongoose.Promise = global.Promise;
 mongoose.connection
   .on('connected', () => {
