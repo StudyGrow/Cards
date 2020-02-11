@@ -214,8 +214,8 @@ script.
       matches=[];
       document.getElementById('matches').innerHTML='';
     }
-   
-    outputHTML(matches);
+    outputHTML(matches.slice(0,5));// show max 5 results
+    
   }
   function getRelatedIndex(content){
     var cards = document.getElementsByClassName('card-header');
