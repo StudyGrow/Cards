@@ -146,7 +146,7 @@ br
                 i.fas.fa-caret-down
               #0.collapse
                 br
-                p
+                p(lang="de")
                   |#{karten[0].content}
       - var n = 1;
       while n < karten.length
@@ -355,6 +355,9 @@ script.
       document.getElementById("thema").value = "";
       document.getElementById('content').value="";
       //Success message
+      //zeige neue Karte an
+      
+       $('.carousel').carousel(count);
       if(document.getElementsByClassName('alert').length==0){
         var successMsg = document.createElement("div");
         successMsg.setAttribute('class','alert alert-success alert-dismissible fade show');
@@ -390,7 +393,7 @@ script.
     //Karteninhalt in die Textfelder laden
     document.getElementById('thema').value= activeCarouselItem.getElementsByClassName('card-header')[0].innerText;
     document.getElementById('content').value = activeCarouselItem.getElementsByClassName('card-body')[0].getElementsByClassName('collapse')[0].getElementsByTagName('p')[0].innerText;
-    $('#thema').focus();
+    $('#conent').focus();
   }
   
   function openModal(){
@@ -441,6 +444,7 @@ script.
       //Leere form
       document.getElementById("thema").value = "";
       document.getElementById('content').value="";
+       
       //Success message
       if(document.getElementsByClassName('alert').length==0){
         var msg = document.createElement("div");
@@ -464,7 +468,8 @@ script.
       editBtn.setAttribute('onClick',f);  
 
       var cardID = document.getElementById(cardNumber).parentNode.parentNode.getAttribute('id'); 
-
+           
+        $('.carousel').carousel(cardNumber);
       fetch('/updateCard',{
         method: 'POST',
         headers: {
@@ -480,7 +485,9 @@ script.
         })
       })
       .catch((err)=> console.log(err));
+  
     }
+   
   }
 
 
