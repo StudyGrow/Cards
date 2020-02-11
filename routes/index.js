@@ -1,20 +1,20 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const path = require('path');
-const { body, validationResult } = require('express-validator/check');
+const { body, validationResult } = require('express-validator');
 const router = express.Router();
 const Registration = mongoose.model('Registration');
 const Vorlesung = mongoose.model('Vorlesung');
 
 
-router.get('*', function(req, res , next) {
-  if(req.secure == false){
-    res.redirect('https://' + req.headers.host + req.url);
-  }
-  else{
-    next()
-  }
-  })
+// router.get('*', function(req, res , next) {
+//   if(req.secure == false){
+//     res.redirect('https://' + req.headers.host + req.url);
+//   }
+//   else{
+//     next()
+//   }
+//   })
 
 router.get('/',function(req,res){
    // console.log(typeof(req.params.vl))

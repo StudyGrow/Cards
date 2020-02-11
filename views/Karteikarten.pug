@@ -8,6 +8,10 @@ head
   link(rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css' integrity='sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ' crossorigin='anonymous')
   title Karteikarten
   style.
+    
+    #mainContainer{
+      padding:15px;
+    }
     .carousel-item{
     min-height: 100px;
     }
@@ -44,15 +48,27 @@ head
          margin-left:0;
        } 
       }
+      @media (min-width: 992px){
+        .li{
+          position:absolute;
+          margin-left:5px;
+        }
+        
+      }
       .form-inline{
         margin-right:0;
       }
+      nav{
+        position:relative;
+        padding:0;
+      }
       #matches{
         position:absolute;
-        top:51px;
+        top:40px;
         z-index:1000;
         right: 0;
-
+        max-width:300px;
+        padding:1px
       }
       .fa-times{
         color:white;
@@ -60,6 +76,7 @@ head
       #rndid{
         position: relative;
         margin-right:5px;
+        margin.top:10px;
       }
       #Headercontent{
         position:relative;
@@ -69,26 +86,33 @@ head
         right:0;
         top:0;
       }
+      .row{
+        width:100%
+      }
 // Optional JavaScript
 // jQuery first, then Popper.js, then Bootstrap JS
 script(src='https://code.jquery.com/jquery-3.4.1.slim.min.js' integrity='sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n' crossorigin='anonymous')
 script(src='https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js' integrity='sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo' crossorigin='anonymous')
 script(src='https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js' integrity='sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6' crossorigin='anonymous')
 
-nav.navbar.navbar-expand-lg.navbar-light.bg-light(role='alert')
-  button.navbar-toggler(type='button' data-toggle='collapse' data-target='#navbarNav' aria-controls='navbarNav' aria-expanded='false' aria-label='Toggle navigation')
-    span.navbar-toggler-icon
-  #navbarNav.collapse.navbar-collapse
-    ul#navlist.navbar-nav
-      li.nav-item
-        a.nav-link(href='/' tabindex="1") Kategorie w&auml;hlen
-    form#rndid
-      input.form-control#search.mr-sm-2.float-right(type='search' placeholder='Thema' tabindex="0")
-      br
-      #matches
-    
 
-br
+nav.navbar.navbar-expand-lg.navbar-light.bg-light(role='alert' style='padding-right:0')
+  .row 
+    .col-6
+      button.navbar-toggler(type='button' data-toggle='collapse' data-target='#navbarNav' aria-controls='navbarNav' aria-expanded='false' aria-label='Toggle navigation')
+        span.navbar-toggler-icon
+    
+      #navbarNav.collapse.navbar-collapse
+        ul#navlist.navbar-nav
+          li.nav-item
+            a.nav-link(href='/' tabindex="1") Kategorie w&auml;hlen
+    .col-6(style='padding-right:0')
+      input.form-control#search.float-right(type='search' placeholder='Thema' tabindex="0")
+  
+      #matches
+  
+
+
 #mainContainer.container
 
   // Modal
@@ -124,11 +148,11 @@ br
                   .fas.fa-pen
             .card-body
               button.btn.btn-light(type='button' data-toggle='collapse' onclick="showMore(0)" data-target=0 aria-expanded='false' aria-controls='collapseExample')
-                | Show more 
+                | Mehr dazu 
                 i.fas.fa-caret-down
               #0.collapse
                 br
-                p
+                p(lang="de")
                   |#{karten[0].content}
       - var n = 1;
       while n < karten.length
@@ -141,7 +165,7 @@ br
                   .fas.fa-pen
             .card-body
               button.btn.btn-light(type='button' data-toggle='collapse' onclick="showMore("+n+")" data-target=n aria-expanded='false' aria-controls='collapseExample')
-                | Show more 
+                | Mehr dazu 
                 i.fas.fa-caret-down
               .collapse(id=n)
                 br
@@ -294,7 +318,7 @@ script.
       </div>
       <div class="card-body">
       <button class="btn btn-light" type="button" data-toggle="collapse" onclick="showMore(${count})" data-target=${count} aria-expanded="false" aria-controls=${count}>
-      Show more <i class="fas fa-caret-down"></i>
+      Mehr dazu <i class="fas fa-caret-down"></i>
       </button>
       <div class="collapse" id=${count}>
       <br>
@@ -337,6 +361,9 @@ script.
       document.getElementById("thema").value = "";
       document.getElementById('content').value="";
       //Success message
+      //zeige neue Karte an
+      
+       $('.carousel').carousel(count);
       if(document.getElementsByClassName('alert').length==0){
         var successMsg = document.createElement("div");
         successMsg.setAttribute('class','alert alert-success alert-dismissible fade show');
@@ -372,7 +399,7 @@ script.
     //Karteninhalt in die Textfelder laden
     document.getElementById('thema').value= activeCarouselItem.getElementsByClassName('card-header')[0].innerText;
     document.getElementById('content').value = activeCarouselItem.getElementsByClassName('card-body')[0].getElementsByClassName('collapse')[0].getElementsByTagName('p')[0].innerText;
-    $('#thema').focus();
+    $('#content').focus();
   }
   
   function openModal(){
@@ -397,6 +424,7 @@ script.
     editBtn.innerHTML = '<i class="fas fa-pen"></i>';
     editBtn.setAttribute('onClick',f); 
     //console.log(f);
+    
   } 
   
 
@@ -423,6 +451,7 @@ script.
       //Leere form
       document.getElementById("thema").value = "";
       document.getElementById('content').value="";
+       
       //Success message
       if(document.getElementsByClassName('alert').length==0){
         var msg = document.createElement("div");
@@ -446,7 +475,8 @@ script.
       editBtn.setAttribute('onClick',f);  
 
       var cardID = document.getElementById(cardNumber).parentNode.parentNode.getAttribute('id'); 
-
+           
+        $('.carousel').carousel(cardNumber);
       fetch('/updateCard',{
         method: 'POST',
         headers: {
@@ -462,7 +492,9 @@ script.
         })
       })
       .catch((err)=> console.log(err));
+  
     }
+   
   }
 
 
