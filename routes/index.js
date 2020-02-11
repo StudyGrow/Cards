@@ -8,21 +8,12 @@ const Vorlesung = mongoose.model('Vorlesung');
 
 
 router.get('*', function(req, res , next) {
-<<<<<<< HEAD
-  if(req.secure == false){
-    res.redirect('https://' + req.headers.host + req.url);
-  }
-  else{
-    next()
-  }
-=======
    if(req.secure == false){
      res.redirect('https://' + req.headers.host + req.url);
    }
    else{
      next()
    }
->>>>>>> 55b04772e8acb337c644799581154bf0a8a80204
   })
 
 router.get('/',function(req,res){

@@ -13,21 +13,12 @@ const certificate = fs.readFileSync('/etc/letsencrypt/live/rwth-aachen.tk/cert.p
 const ca = fs.readFileSync('/etc/letsencrypt/live/rwth-aachen.tk/chain.pem', 'utf8');
 
 const credentials = {
-<<<<<<< HEAD
 	key: privateKey,
 	cert: certificate,
 	ca: ca
 };
 
 mongoose.connect(process.env.DATABASE, { useNewUrlParser: true,useUnifiedTopology: true });
-=======
- 	key: privateKey,
-  cert: certificate,
-  ca: ca
-};
-
-mongoose.connect(process.env.DATABASE, { useNewUrlParser: true } );
->>>>>>> 55b04772e8acb337c644799581154bf0a8a80204
 mongoose.Promise = global.Promise;
 mongoose.connection
   .on('connected', () => {
@@ -45,7 +36,6 @@ mongoose.connection
   const httpsServer = https.createServer(credentials, app);
 
   httpServer.listen(80, () => {
-<<<<<<< HEAD
      console.log('HTTP Server running on port 80');
   });
   app.use(helmet()); 
@@ -56,14 +46,3 @@ mongoose.connection
 // const server = app.listen(80, () => {
 //   console.log(`Express is running on port ${server.address().port}`);
 // });
-=======
-      console.log('HTTP Server running on port 80');
-  });
-
-  httpsServer.listen(443, () => {
-    console.log('HTTPS Server running on port 443');
-  });
-const server = app.listen(80, () => {
-  console.log(`Express is running on port ${server.address().port}`);
-});
->>>>>>> 55b04772e8acb337c644799581154bf0a8a80204
