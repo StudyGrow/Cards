@@ -90,7 +90,7 @@ script(src='https://code.jquery.com/jquery-3.4.1.slim.min.js' integrity='sha384-
 script(src='https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js' integrity='sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo' crossorigin='anonymous')
 script(src='https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js' integrity='sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6' crossorigin='anonymous')
 
-nav.navbar.navbar-expand-lg.navbar-light.bg-light(role='alert')
+nav.navbar.navbar-expand-lg.navbar-light.bg-light(role='alert' style='padding-right:0')
   .row 
     .col-6
       button.navbar-toggler(type='button' data-toggle='collapse' data-target='#navbarNav' aria-controls='navbarNav' aria-expanded='false' aria-label='Toggle navigation')
@@ -100,7 +100,7 @@ nav.navbar.navbar-expand-lg.navbar-light.bg-light(role='alert')
         ul#navlist.navbar-nav
           li.nav-item
             a.nav-link(href='/' tabindex="1") Kategorie w&auml;hlen
-    .col-6
+    .col-6(style='padding-right:0')
       input.form-control#search.float-right(type='search' placeholder='Thema' tabindex="0")
   
       #matches
@@ -142,11 +142,11 @@ br
                   .fas.fa-pen
             .card-body
               button.btn.btn-light(type='button' data-toggle='collapse' onclick="showMore(0)" data-target=0 aria-expanded='false' aria-controls='collapseExample')
-                | Show more 
+                | Mehr dazu 
                 i.fas.fa-caret-down
               #0.collapse
                 br
-                p
+                p(lang="de")
                   |#{karten[0].content}
       - var n = 1;
       while n < karten.length
@@ -159,7 +159,7 @@ br
                   .fas.fa-pen
             .card-body
               button.btn.btn-light(type='button' data-toggle='collapse' onclick="showMore("+n+")" data-target=n aria-expanded='false' aria-controls='collapseExample')
-                | Show more 
+                | Mehr dazu
                 i.fas.fa-caret-down
               .collapse(id=n)
                 br
@@ -312,7 +312,7 @@ script.
       </div>
       <div class="card-body">
       <button class="btn btn-light" type="button" data-toggle="collapse" onclick="showMore(${count})" data-target=${count} aria-expanded="false" aria-controls=${count}>
-      Show more <i class="fas fa-caret-down"></i>
+      Mehr dazu <i class="fas fa-caret-down"></i>
       </button>
       <div class="collapse" id=${count}>
       <br>
@@ -355,6 +355,9 @@ script.
       document.getElementById("thema").value = "";
       document.getElementById('content').value="";
       //Success message
+      //zeige neue Karte an
+      
+       $('.carousel').carousel(count);
       if(document.getElementsByClassName('alert').length==0){
         var successMsg = document.createElement("div");
         successMsg.setAttribute('class','alert alert-success alert-dismissible fade show');
@@ -390,7 +393,7 @@ script.
     //Karteninhalt in die Textfelder laden
     document.getElementById('thema').value= activeCarouselItem.getElementsByClassName('card-header')[0].innerText;
     document.getElementById('content').value = activeCarouselItem.getElementsByClassName('card-body')[0].getElementsByClassName('collapse')[0].getElementsByTagName('p')[0].innerText;
-    $('#thema').focus();
+    $('#conent').focus();
   }
   
   function openModal(){
@@ -441,6 +444,7 @@ script.
       //Leere form
       document.getElementById("thema").value = "";
       document.getElementById('content').value="";
+       
       //Success message
       if(document.getElementsByClassName('alert').length==0){
         var msg = document.createElement("div");
@@ -464,7 +468,8 @@ script.
       editBtn.setAttribute('onClick',f);  
 
       var cardID = document.getElementById(cardNumber).parentNode.parentNode.getAttribute('id'); 
-
+           
+        $('.carousel').carousel(cardNumber);
       fetch('/updateCard',{
         method: 'POST',
         headers: {
@@ -480,7 +485,9 @@ script.
         })
       })
       .catch((err)=> console.log(err));
+  
     }
+   
   }
 
 
