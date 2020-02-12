@@ -153,7 +153,13 @@ nav.navbar.navbar-expand-lg.navbar-light.bg-light(role='alert' style='padding-ri
               #0.collapse
                 br
                 p(lang="de")
-                  |#{karten[0].content}
+                //- zeige new lines beim den Karten
+                - var contentParse = function(content){  
+                -   content = content.replace(/\n/gi, "<br>");
+                -   return content;
+                - }
+                - var parsedContent = contentParse(karten[0].content)
+                  |!{parsedContent}
       - var n = 1;
       while n < karten.length
         .carousel-item
@@ -170,7 +176,13 @@ nav.navbar.navbar-expand-lg.navbar-light.bg-light(role='alert' style='padding-ri
               .collapse(id=n)
                 br
                 p
-                  |#{karten[n].content}
+                //- zeige new lines beim den Karten
+                - var contentParse = function(content){  
+                -   content = content.replace(/\n/gi, "<br>");
+                -   return content;
+                - }
+                - var parsedContent = contentParse(karten[n].content)
+                  |!{parsedContent}
         -n++
     if karten.length != 0
       a.carousel-control-prev(href='#carouselExampleControls' role='button' data-slide='prev')
@@ -201,6 +213,10 @@ script.
     findMatches();
   });
 
+  function convertds(content){
+    content = content.replace(/\n?\r\n/g, '<br />' );
+    return content;
+    };
   function findMatches(){
     var sText = $('#search').val();
     var cards = $('.card-header').map(function(){
@@ -229,6 +245,7 @@ script.
     }
   }
 
+  
   function outputHTML(matches){
     if(matches.length>0){
       const html = matches.map(match=> `<li class="list-group-item">
@@ -267,7 +284,9 @@ script.
     var content = document.getElementById('content').value;
     var vl= document.getElementById('vorlesung').textContent;
     var img = document.getElementById('vorlesung').textContent;
-    
+    // zeige new lines beim adden neuer Karten
+    content = content.replace(/\n/gi, "<br>");
+
     var count =document.getElementById('carouselInner').children.length; //anzahl der bereits exisiterenden Karten
     var ul = document.getElementById("navlist");
     if(content.length==0||thema.lenght==0){
@@ -341,7 +360,7 @@ script.
         body:JSON.stringify({
           vorlesung:vl,
           thema:thema,
-          content:content,
+          content: content,
           img:img
         })
       })
