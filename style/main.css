@@ -1,0 +1,76 @@
+#mainContainer{
+    padding:15px;
+  }
+  .carousel-item{
+  min-height: 100px;
+  }
+  .card{
+  max-width: 90%;
+  margin: 2px;
+  margin-left: auto;
+  margin-right: auto;
+  
+  }
+  i{
+  color:black;
+  }
+  #btnDiv,form,.alert,#Headercontent{
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width:90%;
+  }
+  .carousel-control-prev{
+  width: 5%;
+  }
+  .carousel-control-next{
+  width: 5%;
+  }
+  h3{
+    text-align: center;
+  }
+      #search{
+      max-width:150px;
+    }
+    @media (max-width: 992px){
+     .form-inline{
+       margin-left:0;
+     } 
+    }
+    @media (min-width: 992px){
+      .li{
+        position:absolute;
+        margin-left:5px;
+      }
+      
+    }
+    .form-inline{
+      margin-right:0;
+    }
+    nav{
+      position:relative;
+      padding:0;
+    }
+    #matches{
+      position:absolute;
+      top:40px;
+      z-index:1000;
+      right: 0;
+      max-width:300px;
+      padding:1px
+    }
+    .fa-times{
+      color:white;
+    }
+    #rndid{
+      position: relative;
+      margin-right:5px;
+      margin-top:10px;
+    }
+    
+    .row{
+      width:100%
+    }
+   
+  
+      
