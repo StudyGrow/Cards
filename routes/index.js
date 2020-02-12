@@ -48,7 +48,7 @@ router.get('/test',function(req,res){
     console.log(err);
   }else{
     ////console.log(cards)
-    res.render('Karteikarten copy', {karten:cards, vorlesung:vl})
+    res.render('test', {karten:cards, vorlesung:vl})
   }
   });
 });
