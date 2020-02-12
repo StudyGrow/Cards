@@ -8,24 +8,48 @@ head
   link(rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css' integrity='sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ' crossorigin='anonymous')
   title Karteikarten
   style.
+    #cardContainer {
+      width: 200px;
+      height: 100px;
+      position: relative;
+      perspective: 800px;
+    }
+
+    #card {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      transform-style: preserve-3d;
+      transition: transform 1s;
+    }
+
+    #card figure {
+      margin: 0;
+      display: block;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+    }
+
+    #card .front {
+      background: red;
+    }
+
+    #card .back {
+      background: blue;
+      transform: rotateY( 180deg);
+    }
+
+    #card.flipped {
+      transform: rotateY( 180deg);
+    }
+
     
-    #mainContainer{
-      padding:15px;
-    }
-    .carousel-item{
-    min-height: 100px;
-    }
-    .card{
-    max-width: 80%;
-    margin: 2px;
-    margin-left: auto;
-    margin-right: auto;
-    
-    }
     i{
     color:black;
     }
-    form,.alert,#Headercontent{
+    .card,form,.alert,#Headercontent{
     display: block;
     margin-left: auto;
     margin-right: auto;
@@ -128,30 +152,36 @@ nav.navbar.navbar-expand-lg.navbar-light.bg-light(role='alert' style='padding-ri
         .modal-footer
           button.btn.btn-secondary(type='button' data-dismiss='modal') Nein, zurück
           button.btn.btn-danger(type='button' onclick="cancelEdit()") Ja
+
   div#Headercontent
     h3#vorlesung
       |#{vorlesung}
     div#btnDiv
+      
       button#rand.btn.btn-light(onclick='getRandomCard()') 
         .fas.fa-random
+      
   br
+  #cardContainer
+    #card
+      figure.front 1
+      figure.back 2
+
 
   #carouselExampleControls.carousel.slide(data-ride='carousel' data-interval='false')
     #carouselInner.carousel-inner
       if karten.length != 0
         .carousel-item.active
-          .card(id=karten[0]._id)
+          .card#cardContainer
             .card-header#t0
+              button.btn.btn-light#flip
+                .fas.fa-sync-alt
+              button.btn.btn-light(id="edit"+0 type='button'  onclick="enableEdit(0)")
+                .fas.fa-pen
+            .card-body#card
+              .front
               | #{karten[0].thema}
-              .float-right
-                button.btn.btn-light(id="edit"+0 type='button'  onclick="enableEdit(0)")
-                  .fas.fa-pen
-            .card-body
-              button.btn.btn-light(type='button' data-toggle='collapse' onclick="showMore(0)" data-target=0 aria-expanded='false' aria-controls='collapseExample')
-                | Mehr dazu 
-                i.fas.fa-caret-down
-              #0.collapse
-                br
+              .back
                 p(lang="de")
                   |#{karten[0].content}
       - var n = 1;
@@ -163,6 +193,8 @@ nav.navbar.navbar-expand-lg.navbar-light.bg-light(role='alert' style='padding-ri
               .float-right
                 button.btn.btn-light(id="edit"+n type='button'  onclick="enableEdit("+n+")")
                   .fas.fa-pen
+                button.btn.btn-light#flip
+                  .fas.fa-sync-alt
             .card-body
               button.btn.btn-light(type='button' data-toggle='collapse' onclick="showMore("+n+")" data-target=n aria-expanded='false' aria-controls='collapseExample')
                 | Mehr dazu 
@@ -191,7 +223,11 @@ nav.navbar.navbar-expand-lg.navbar-light.bg-light(role='alert' style='padding-ri
     input.btn.btn-primary.mb-2(id='addBtn' type='button' onclick='addCard()' value='Hinzufügen')
 
 script.
-  
+  var card = document.getElementById('card');
+
+  document.getElementById('flip').addEventListener('click', function() {
+      card.classList.toggle('flipped');
+  }, false);
 
   function hideResults(){
     document.getElementById('matches').innerHTML='';
@@ -415,7 +451,7 @@ script.
     h4.innerText = 'Karteikarte hinzufügen'; //überschrift ändern
     var btn =  document.getElementById('addBtn');//ändere Buttons
     btn.setAttribute('class','btn btn-primary mb-2')
-    btn.setAttribute('value', 'Hinzufügen');
+    btn.setAttribute('value', 'Hnizufügen');
     btn.setAttribute('onClick','addCard()');
 
      
