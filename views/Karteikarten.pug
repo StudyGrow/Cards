@@ -59,6 +59,8 @@ nav.navbar.navbar-expand-lg.navbar-light.bg-light(role='alert' style='padding-ri
         .fas.fa-random
       button.btn.btn-light#editCard(type='button' state='pen')
         .fas.fa-pen
+      button.btn.btn-light#toggleAdd(type='button')
+        .fas.fa-plus
   br
   #carouselExampleControls.carousel.slide(data-ride='carousel' data-interval='false')
     #carouselInner.carousel-inner
@@ -110,16 +112,17 @@ nav.navbar.navbar-expand-lg.navbar-light.bg-light(role='alert' style='padding-ri
         i.fas.fa-chevron-right
   
   br
-  form#addCard
-    h4
-      | Karteikarte hinzuf&uuml;gen
-    .form-group
-      label(for='thema') Thema
-      input#thema.form-control(name='thema' type='text' placeholder='Thema')
-    .form-group
-      label(for='content') Informationen
-      textarea#content.form-control(name='content' rows='5')
-    input.btn.btn-primary.mb-2(id='addBtn' type='button' state='add' value='Hinzufügen')
+  #addCard(style='display:none')
+    form
+      h4
+        | Karteikarte hinzuf&uuml;gen
+      .form-group
+        label(for='thema') Thema
+        input#thema.form-control(name='thema' type='text' placeholder='Thema')
+      .form-group
+        label(for='content') Informationen
+        textarea#content.form-control(name='content' rows='5')
+      input.btn.btn-primary.mb-2(id='addBtn' type='button' state='add' value='Hinzufügen')
   script(src='/main.js')
 
 

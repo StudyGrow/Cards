@@ -1,10 +1,9 @@
 function hideResults(){
     document.getElementById('matches').innerHTML='';
     document.getElementById('search').value='';
-  }
-  document.getElementById('search').addEventListener('input',()=>{
-    findMatches();
-  });
+}
+
+  $('#search').on('input',findMatches);
 
   function findMatches(){
     var sText = $('#search').val();
@@ -193,9 +192,7 @@ function hideResults(){
     $('#content').focus();
   }
   
-  function openModal(){
-   $('#staticBackdrop').modal('show');
-  }
+
   function cancelEdit(){
     $('#staticBackdrop').modal('hide');
     //leere Form
@@ -205,18 +202,15 @@ function hideResults(){
     var h4 = document.getElementById('addCard').getElementsByTagName('H4')[0];
     h4.innerText = 'Karteikarte hinzufügen'; //überschrift ändern
     var btn =  document.getElementById('addBtn');//ändere Buttons
+    //addButton
     btn.setAttribute('class','btn btn-primary mb-2')
     btn.setAttribute('value', 'Hinzufügen');
     btn.setAttribute('state','add');
-    
-
-     
+    //editButton
     var editBtn  = document.getElementById('editCard');
     editBtn.setAttribute('class','btn btn-light');
     editBtn.innerHTML = '<i class="fas fa-pen"></i>';
     editBtn.setAttribute('state','pen');
-     
-    
   } 
   
 
@@ -234,28 +228,28 @@ function hideResults(){
       var img = document.getElementById('vorlesung').textContent;
           
       var oldContent = document.getElementById(cardNumber).getElementsByTagName('P')[0].innerText
+      if(oldContent==content){
+          return;
+      }
       document.getElementById(cardNumber).getElementsByTagName('P')[0].innerText = content; //update Karteninhalt
       
       //Leere form
-      document.getElementById("thema").value = "";
+      document.getElementById("thema").value ="";
       document.getElementById('content').value="";
-       
-      //Success message
-      
+      //überschrift ändern
       var h4 = document.getElementById('addCard').getElementsByTagName('H4')[0];
-      h4.innerText = 'Karteikarte hinzufügen'; //überschrift ändern
-      //button ändern
+      h4.innerText = 'Karteikarte hinzufügen'; 
+      //add button ändern
       var btn =  document.getElementById('addBtn');
       btn.setAttribute('class','btn btn-primary mb-2')
       btn.setAttribute('value', 'Hinzufügen');
       btn.setAttribute('state','add'); 
-
+      //edit button ändern
       var editBtn  = document.getElementById('editCard');
       editBtn.setAttribute('class','btn btn-light');
       editBtn.innerHTML = '<i class="fas fa-pen"></i>';
       editBtn.setAttribute('state','pen');
         
-
       var cardID = document.getElementById(cardNumber).parentNode.parentNode.getAttribute('id'); 
            
       $('.carousel').carousel(cardNumber);
@@ -275,15 +269,25 @@ function hideResults(){
         })
       })
       .catch((err)=> console.log(err));
-  
     }
    
   }
 
-
+  function toggleAddView(){
+      
+    var x = document.getElementById("addCard");
+    if (x.getAttribute('style')=='display:none') {
+      x.setAttribute('style','display:block')
+      document.getElementById('toggleAdd').setAttribute('class','btn btn-success');
+    } else {
+        x.setAttribute('style','display:none')
+        document.getElementById('toggleAdd').setAttribute('class','btn btn-light');
+    }  
+  }
   $("form").submit(function(e){
         e.preventDefault();
   });
+
   $('.showMore').on('click',()=>{
      var relatedId = getActiveCardIndex();
      $(`#${relatedId}`).collapse('toggle');
@@ -298,6 +302,7 @@ function hideResults(){
       $('#staticBackdrop').modal('show');
     } 
   })
+
   $('#addBtn').on('click',()=>{
     console.log($('#addBtn').attr('state'));
     if($('#addBtn').attr('state')=='add'){
@@ -307,18 +312,22 @@ function hideResults(){
       updateCard(relatedId);
     }
   })
+
   $('#rand').on('click',getRandomCard);
   $('#cancel').on('click',cancelEdit);
   $(document).on('click',hideResults);
 
-
-  $('#carouselExampleControls').on('slide.bs.carousel', function () {
+  $('#carouselExampleControls').on('slide.bs.carousel', ()=> {
     $('.collapse').collapse('hide');
-      var editBtn  = document.getElementById('editCard');
+    var editBtn  = document.getElementById('editCard');
       if(editBtn){
         editBtn.setAttribute('class','btn btn-light');
         editBtn.innerHTML = '<i class="fas fa-pen"></i>';
         editBtn.setAttribute('state','pen');  
       }
-      
+      if($('#addBtn').attr('state')=='save'){
+          
+        cancelEdit();
+    }
   })
+  $('#toggleAdd').on('click',toggleAddView)
