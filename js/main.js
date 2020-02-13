@@ -197,6 +197,7 @@ function hideResults(){
     var activeCarouselItem = document.getElementsByClassName('active')[0]; //aktive karte auswählen
     //Karteninhalt in die Textfelder laden
     document.getElementById('thema').value= activeCarouselItem.getElementsByClassName('card-header')[0].innerText;
+    console.log(activeCarouselItem.getElementsByClassName('card-body')[0].getElementsByClassName('collapse')[0].getElementsByTagName('p')[0])
     var child = activeCarouselItem.getElementsByClassName('card-body')[0].getElementsByClassName('collapse')[0].getElementsByTagName('p')[0].nextSibling;
     console.log(activeCarouselItem.getElementsByClassName('card-body')[0].getElementsByClassName('collapse')[0].getElementsByTagName('p')[0])
     var temp = ""
@@ -204,6 +205,7 @@ function hideResults(){
       while(child != null){
         if(child.textContent == ""){
           console.log(child)
+          temp += "\n";
           child = child.nextSibling;
         }
         else{
@@ -212,7 +214,7 @@ function hideResults(){
         }
       }
     }
-    //- console.log(temp)
+    console.log(temp)
     document.getElementById('content').value = temp
     $('#content').focus();
   }
@@ -288,8 +290,9 @@ function hideResults(){
       editBtn.setAttribute('state','pen');
         
       var cardID = document.getElementById(cardNumber).parentNode.parentNode.getAttribute('id'); 
-           
-      $('.carousel').carousel(cardNumber);
+      console.log(content)
+      console.log(typeof(cardNumber))
+      // $('.carousel').carousel(String(cardNumber));
       
       fetch('/updateCard',{
         method: 'POST',
