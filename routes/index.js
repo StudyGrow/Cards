@@ -28,6 +28,17 @@ router.get('/',function(req,res){
     }); 
 });
 
+router.get('/liste',(req,res)=>{
+  Registration.find({vorlesung: 'BuK'},(err,cards)=>{
+    if(err){
+      console.log(err);
+    }else{
+      ////console.log(cards)
+      res.render('liste', {karten:cards})
+    }
+    });
+});
+
 router.get('/kategorien',function(req,res){
   // console.log(typeof(req.params.vl))
   Vorlesung.find((err,vls)=>{
