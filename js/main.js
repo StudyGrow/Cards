@@ -304,7 +304,21 @@ function hideResults(){
      var relatedId = getActiveCardIndex();
      $(`#${relatedId}`).collapse('toggle');
   });
-  
+  $(document).on('keydown',(e)=>{
+    var relatedId =getActiveCardIndex();
+    if($('input, textarea').is(':focus')==false){
+      if(e.originalEvent.key=='ArrowDown'){
+        $(`#${relatedId}`).collapse('toggle');
+      }else if(e.originalEvent.key=='ArrowLeft'){
+        $('#carouselExampleControls').carousel('prev');
+      }else if(e.originalEvent.key=='ArrowRight'){
+        $('#carouselExampleControls').carousel('next');
+      }
+      // else if(e.originalEvent.key=='ArrowUp'){
+      //   $('#rand').click();
+      // }
+    }
+  })
   $('#editCard').on('click',()=>{
     var relatedId =getActiveCardIndex();
     //console.log($('#editCard').attr('state'))
