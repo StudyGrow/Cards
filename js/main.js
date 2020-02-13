@@ -168,8 +168,15 @@ function hideResults(){
        $('.carousel').carousel(count);
     }  
   }
-
+  var addInitHidden;
   function enableEdit(cardNumber){
+    var x = document.getElementById("addCard");
+    if (x.getAttribute('style')=='display:none'){
+        toggleAddView();
+        addInitHidden=true;
+    }else{
+        addInitHidden=false;
+    }
     var h4 = document.getElementById('addCard').getElementsByTagName('H4')[0];
     h4.innerText = 'Bearbeiten'; //überschrift ändern
     //button ändern
@@ -211,6 +218,9 @@ function hideResults(){
     editBtn.setAttribute('class','btn btn-light');
     editBtn.innerHTML = '<i class="fas fa-pen"></i>';
     editBtn.setAttribute('state','pen');
+    if(addInitHidden){
+        toggleAddView();
+    }
   } 
   
 
@@ -270,7 +280,9 @@ function hideResults(){
       })
       .catch((err)=> console.log(err));
     }
-   
+    if(addInitHidden){
+        toggleAddView();
+    }
   }
 
   function toggleAddView(){
