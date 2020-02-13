@@ -28,6 +28,17 @@ router.get('/',function(req,res){
     }); 
 });
 
+router.get('/liste',(req,res)=>{
+  Registration.find({vorlesung: 'BuK'},(err,cards)=>{
+    if(err){
+      console.log(err);
+    }else{
+      ////console.log(cards)
+      res.render('liste', {karten:cards})
+    }
+    });
+});
+
 router.get('/kategorien',function(req,res){
   // console.log(typeof(req.params.vl))
   Vorlesung.find((err,vls)=>{
@@ -53,10 +64,15 @@ router.get('/test',function(req,res){
   });
 });
 
-router.get('/simple-sidebar.css',function(req,res){
+router.get('/main.js',function(req,res){
   // console.log(typeof(req.params.vl))
-  res.sendFile(path.join(__dirname+'/../simple-sidebar.css'));
+  res.sendFile(path.join(__dirname+'/../js/main.js'));
 });
+router.get('/main.css',function(req,res){
+  // console.log(typeof(req.params.vl))
+  res.sendFile(path.join(__dirname+'/../style/main.css'));
+});
+
 
 router.get('/:vl',function(req,res){
   // console.log(typeof(req.params.vl))

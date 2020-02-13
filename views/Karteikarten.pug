@@ -6,95 +6,16 @@ head
   // Bootstrap CSS
   link(rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css' integrity='sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh' crossorigin='anonymous')
   link(rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css' integrity='sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ' crossorigin='anonymous')
+  link(rel="stylesheet", href="/main.css")
   title Karteikarten
-  style.
+  
     
-    #mainContainer{
-      padding:15px;
-    }
-    .carousel-item{
-    min-height: 100px;
-    }
-    .card{
-    max-width: 80%;
-    margin: 2px;
-    margin-left: auto;
-    margin-right: auto;
     
-    }
-    i{
-    color:black;
-    }
-    form,.alert,#Headercontent{
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width:80%;
-    }
-    .carousel-control-prev{
-    width: 10%;
-    }
-    .carousel-control-next{
-    width: 10%;
-    }
-    h3{
-      text-align: center;
-    }
-    	#search{
-        max-width:150px;
-      }
-      @media (max-width: 992px){
-       .form-inline{
-         margin-left:0;
-       } 
-      }
-      @media (min-width: 992px){
-        .li{
-          position:absolute;
-          margin-left:5px;
-        }
-        
-      }
-      .form-inline{
-        margin-right:0;
-      }
-      nav{
-        position:relative;
-        padding:0;
-      }
-      #matches{
-        position:absolute;
-        top:40px;
-        z-index:1000;
-        right: 0;
-        max-width:300px;
-        padding:1px
-      }
-      .fa-times{
-        color:white;
-      }
-      #rndid{
-        position: relative;
-        margin-right:5px;
-        margin.top:10px;
-      }
-      #Headercontent{
-        position:relative;
-      }
-      #btnDiv{
-        position:absolute;
-        right:0;
-        top:0;
-      }
-      .row{
-        width:100%
-      }
 // Optional JavaScript
 // jQuery first, then Popper.js, then Bootstrap JS
 script(src='https://code.jquery.com/jquery-3.4.1.slim.min.js' integrity='sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n' crossorigin='anonymous')
 script(src='https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js' integrity='sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo' crossorigin='anonymous')
 script(src='https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js' integrity='sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6' crossorigin='anonymous')
-
 
 nav.navbar.navbar-expand-lg.navbar-light.bg-light(role='alert' style='padding-right:0')
   .row 
@@ -115,6 +36,7 @@ nav.navbar.navbar-expand-lg.navbar-light.bg-light(role='alert' style='padding-ri
 
 #mainContainer.container
 
+
   // Modal
   #staticBackdrop.modal.fade(data-backdrop='static' tabindex='-1' role='dialog' aria-labelledby='staticBackdropLabel' aria-hidden='true')
     .modal-dialog(role='document')
@@ -127,15 +49,19 @@ nav.navbar.navbar-expand-lg.navbar-light.bg-light(role='alert' style='padding-ri
           | Bist du sicher dass du das Bearbeiten dieser Karte abbrechen willst?
         .modal-footer
           button.btn.btn-secondary(type='button' data-dismiss='modal') Nein, zurück
-          button.btn.btn-danger(type='button' onclick="cancelEdit()") Ja
+          button.btn.btn-danger#cancel(type='button') Ja
   div#Headercontent
     h3#vorlesung
       |#{vorlesung}
-    div#btnDiv
-      button#rand.btn.btn-light(onclick='getRandomCard()') 
+   
+    div#btnDiv.btn-group(role='group')
+      button#rand.btn.btn-light 
         .fas.fa-random
+      button.btn.btn-light#editCard(type='button' state='pen')
+        .fas.fa-pen
+      button.btn.btn-light#toggleAdd(type='button')
+        .fas.fa-plus
   br
-
   #carouselExampleControls.carousel.slide(data-ride='carousel' data-interval='false')
     #carouselInner.carousel-inner
       if karten.length != 0
@@ -143,14 +69,11 @@ nav.navbar.navbar-expand-lg.navbar-light.bg-light(role='alert' style='padding-ri
           .card(id=karten[0]._id)
             .card-header#t0
               | #{karten[0].thema}
-              .float-right
-                button.btn.btn-light(id="edit"+0 type='button'  onclick="enableEdit(0)")
-                  .fas.fa-pen
             .card-body
-              button.btn.btn-light(type='button' data-toggle='collapse' onclick="showMore(0)" data-target=0 aria-expanded='false' aria-controls='collapseExample')
+              button.btn.btn-light.showMore(type='button' data-toggle='collapse' data-target=0 aria-expanded='false' aria-controls='collapseExample')
                 | Mehr dazu 
                 i.fas.fa-caret-down
-              #0.collapse
+              #0.collapse.showMe
                 br
                 p(lang="de")
                 //- zeige new lines beim den Karten
@@ -167,13 +90,11 @@ nav.navbar.navbar-expand-lg.navbar-light.bg-light(role='alert' style='padding-ri
             .card-header(id='t'+n)
               | #{karten[n].thema}
               .float-right
-                button.btn.btn-light(id="edit"+n type='button'  onclick="enableEdit("+n+")")
-                  .fas.fa-pen
             .card-body
-              button.btn.btn-light(type='button' data-toggle='collapse' onclick="showMore("+n+")" data-target=n aria-expanded='false' aria-controls='collapseExample')
+              button.btn.btn-light.showMore(type='button' data-toggle='collapse' data-target=n aria-expanded='false' aria-controls='collapseExample')
                 | Mehr dazu 
                 i.fas.fa-caret-down
-              .collapse(id=n)
+              .collapse(id=n).showMe
                 br
                 p
                 //- zeige new lines beim den Karten
@@ -191,346 +112,18 @@ nav.navbar.navbar-expand-lg.navbar-light.bg-light(role='alert' style='padding-ri
         i.fas.fa-chevron-right
   
   br
-  form#addCard
-    h4
-      | Karteikarte hinzuf&uuml;gen
-    .form-group
-      label(for='thema') Thema
-      input#thema.form-control(name='thema' type='text' placeholder='Thema')
-    .form-group
-      label(for='content') Informationen
-      textarea#content.form-control(name='content' rows='5')
-    input.btn.btn-primary.mb-2(id='addBtn' type='button' onclick='addCard()' value='Hinzufügen')
+  #addCard(style='display:none')
+    form
+      h4
+        | Karteikarte hinzuf&uuml;gen
+      .form-group
+        label(for='thema') Thema
+        input#thema.form-control(name='thema' type='text' placeholder='Thema')
+      .form-group
+        label(for='content') Informationen
+        textarea#content.form-control(name='content' rows='5')
+      input.btn.btn-primary.mb-2(id='addBtn' type='button' state='add' value='Hinzufügen')
+  script(src='/main.js')
 
-script.
-  
-
-  function hideResults(){
-    document.getElementById('matches').innerHTML='';
-    document.getElementById('search').value='';
-  }
-  document.getElementById('search').addEventListener('input',()=>{
-    findMatches();
-  });
-
-  function convertds(content){
-    content = content.replace(/\n?\r\n/g, '<br />' );
-    return content;
-    };
-  function findMatches(){
-    var sText = $('#search').val();
-    var cards = $('.card-header').map(function(){
-               return $.trim($(this).text());
-            }).get();
-    var matches = cards.filter(card =>{
-      const regex = new RegExp(`${sText}`, 'gi');
-      return card.match(regex);
-    });
-    if(sText.length<=2 ||matches.length==0){
-      matches=[];
-      document.getElementById('matches').innerHTML='';
-    }
-    outputHTML(matches.slice(0,5));// show max 5 results
-    
-  }
-  function getRelatedIndex(content){
-    var cards = document.getElementsByClassName('card-header');
-    
-    for(var i=0; i<cards.length;i++){
-      
-      if(cards[i].innerText.match(content)){
-       
-        return cards[i].nextSibling.lastChild.id;
-      }
-    }
-  }
 
   
-  function outputHTML(matches){
-    if(matches.length>0){
-      const html = matches.map(match=> `<li class="list-group-item">
-       <a class="nav-link" data-target="#carouselExampleControls" data-slide-to="${getRelatedIndex(match)}"  href="#">${match}</a> 
-      </li>`).join('');
-      document.getElementById('matches').innerHTML= '<ul class="list-group">' + html + '</ul>';
-    }
-  }
-
- 
-  var getRandomCard = function() {
-      randomShowCard();
-  }
-    
-  function showMore(count){
-    $(`#${count}`).collapse('toggle');
-  }
-  function randomShowCard(){
-
-    var activeCardIndex = document.getElementsByClassName('active')[0].getElementsByClassName('collapse')[0].id; //id of the card that is currently active
-
-    var i = document.getElementById('carouselInner').children.length; //count the current amount of cards
-    var rand = activeCardIndex;
-    while(rand == activeCardIndex) //calculate a new random index
-    {
-      rand = Math.floor(Math.random() *i); //random index
-    } 
-  
-    $('.carousel').carousel(rand); //use bootstrap method to go to a different slide
-  }
- 
-  function addCard(){  //Funktion um eine neue Karte hinzuzufügen
-  
-    //Lese Daten aus der Form aus
-    var thema = document.getElementById("thema").value;
-    var content = document.getElementById('content').value;
-    var vl= document.getElementById('vorlesung').textContent;
-    var img = document.getElementById('vorlesung').textContent;
-    // zeige new lines beim adden neuer Karten
-    content = content.replace(/\n/gi, "<br>");
-
-    var count =document.getElementById('carouselInner').children.length; //anzahl der bereits exisiterenden Karten
-    var ul = document.getElementById("navlist");
-    if(content.length==0||thema.lenght==0){
-       var msg = document.createElement("div");
-            msg.setAttribute('class','alert alert-warning alert-dismissible fade show');
-            msg.setAttribute('role','alert');
-            msg.innerHTML= 'Bitte fülle alle Felder<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
-            document.getElementById('mainContainer').prepend(msg);
-    }
-    else{
-      //- //karte in die liste setzen
-      //-  var newListEntry = document.createElement('LI');
-      //- newListEntry.setAttribute('class','nav-item');
-      //- newListEntry.innerHTML=`
-      //- <a class="nav-link" data-target="#carouselExampleControls" data-slide-to=${count} href="#">${thema}</a>
-      //- `;
-      //document.getElementById("navlist").appendChild(newListEntry); //neuen Link in die navbar setzen
-
-      // Neue Karte ins carousel einfügen
-      var newCarouselItem = document.createElement("div");
-      newCarouselItem.setAttribute('class','carousel-item');
-      if (count == 0){
-        newCarouselItem.setAttribute('class','active');
-      }else if(count==1){
-        var prev = document.createElement('a');
-        prev.setAttribute('class','carousel-control-prev');
-        prev.setAttribute('href','#carouselExampleControls');
-        prev.setAttribute('role','button');
-        prev.setAttribute('data-slide','prev');
-        prev.innerHTML = '<i class="fas fa-chevron-left"></i>';
-
-        var nxt = document.createElement('a');
-        nxt.setAttribute('class','carousel-control-next');
-        nxt.setAttribute('href','#carouselExampleControls');
-        nxt.setAttribute('role','button');
-        nxt.setAttribute('data-slide','next');
-        nxt.innerHTML = '<i class="fas fa-chevron-right"></i>';
-
-        document.getElementById('carouselExampleControls').appendChild(prev);
-        document.getElementById('carouselExampleControls').appendChild(nxt);
-      }
-    
-      newCarouselItem.innerHTML =`
-      <div class="card">
-      <div class="card-header" id=t${count}>
-      ${thema}
-      <div class="float-right"><button class="btn btn-light" type="button" data-toggle="collapse" onclick="enableEdit(${count})"><div class="fas fa-pen" id="edit${count}"></div></button></div>
-      </div>
-      <div class="card-body">
-      <button class="btn btn-light" type="button" data-toggle="collapse" onclick="showMore(${count})" data-target=${count} aria-expanded="false" aria-controls=${count}>
-      Mehr dazu <i class="fas fa-caret-down"></i>
-      </button>
-      <div class="collapse" id=${count}>
-      <br>
-      <p>
-      ${content}
-      </p>
-      </div>
-      </div>
-      </div>`;
-
-      document.getElementById('carouselInner').appendChild(newCarouselItem); //Karteikarte ins Carousel einfügen
-
-      //poste card an server
-      fetch('/addCard',{
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json, text/plain, */*',
-          'Content-type': 'application/json'
-        },
-        body:JSON.stringify({
-          vorlesung:vl,
-          thema:thema,
-          content: content,
-          img:img
-        })
-      })
-      .then((res)=>res.json())
-      .then((data)=>{
-        console.log(data);
-        //id die vom server erhalten wird als id für karte hinzufügen
-        var newCard = newCarouselItem.getElementsByClassName('card')[0];
-        console.log(newCard); 
-        newCard.setAttribute('id',data.id);  
-          console.log(newCard); 
-        console.log('success');   
-      })
-      .catch((err)=> console.log(err));
-      
-      //Leere form
-      document.getElementById("thema").value = "";
-      document.getElementById('content').value="";
-      //Success message
-      //zeige neue Karte an
-      
-       $('.carousel').carousel(count);
-      if(document.getElementsByClassName('alert').length==0){
-        var successMsg = document.createElement("div");
-        successMsg.setAttribute('class','alert alert-success alert-dismissible fade show');
-        successMsg.setAttribute('role','alert');
-        successMsg.setAttribute('style','width:80%');
-        successMsg.innerHTML= 'Karteikarte erfolgreich hinzufügt<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
-        document.getElementById('mainContainer').prepend(successMsg);
-      }
-    }  
-  }
-
-  var f;
-  var editBtnId;
-
-  function enableEdit(cardNumber, id){
-    var h4 = document.getElementById('addCard').getElementsByTagName('H4')[0];
-    h4.innerText = 'Bearbeiten'; //überschrift ändern
-    //button ändern
-    var btn =  document.getElementById('addBtn');
-    btn.setAttribute('class','btn btn-success mb-2')
-    btn.setAttribute('value', 'Sichern');
-    btn.setAttribute('onClick','updateCard('+cardNumber+')');
-
-    var editBtn  = document.getElementById('edit'+cardNumber);
-    editBtn.setAttribute('class','btn btn-danger');
-    editBtn.innerHTML = '<i class="fas fa-times"></i>';
-    f=editBtn.getAttribute('onClick');
-
-    editBtn.setAttribute('onClick',"openModal()");
-    editBtnId = "edit"+cardNumber;   
-    
-    var activeCarouselItem = document.getElementsByClassName('active')[0]; //aktive karte auswählen
-    //Karteninhalt in die Textfelder laden
-    document.getElementById('thema').value= activeCarouselItem.getElementsByClassName('card-header')[0].innerText;
-    document.getElementById('content').value = activeCarouselItem.getElementsByClassName('card-body')[0].getElementsByClassName('collapse')[0].getElementsByTagName('p')[0].innerText;
-    $('#content').focus();
-  }
-  
-  function openModal(){
-   $('#staticBackdrop').modal('show');
-  }
-  function cancelEdit(){
-    $('#staticBackdrop').modal('hide');
-    //leere Form
-    document.getElementById('thema').value= "";
-    document.getElementById('content').value = "";
-    
-    var h4 = document.getElementById('addCard').getElementsByTagName('H4')[0];
-    h4.innerText = 'Karteikarte hinzufügen'; //überschrift ändern
-    var btn =  document.getElementById('addBtn');//ändere Buttons
-    btn.setAttribute('class','btn btn-primary mb-2')
-    btn.setAttribute('value', 'Hinzufügen');
-    btn.setAttribute('onClick','addCard()');
-
-     
-    var editBtn  = document.getElementById(editBtnId);
-    editBtn.setAttribute('class','btn btn-light');
-    editBtn.innerHTML = '<i class="fas fa-pen"></i>';
-    editBtn.setAttribute('onClick',f); 
-    //console.log(f);
-    
-  } 
-  
-
-  function updateCard(cardNumber, id){
-    //console.log(id)
-    var oldTitle = document.getElementById('t'+cardNumber).innerText;
-    var newTitle = document.getElementById('thema').value;
-    
-    if(oldTitle!=newTitle){ //falls der Titel geändert wird, wird automatisch eine neue Karte erstellt
-      addCard(); 
-    }else{
-      var thema = document.getElementById("thema").value;
-      var content = document.getElementById('content').value;
-      var vl= document.getElementById('vorlesung').textContent;
-      var img = document.getElementById('vorlesung').textContent;
-      //var id = id;
-      //Poste card an server
-      var count =document.getElementById('carouselInner').children.length; //anzahl der bereits exisiterenden Karten
-      var ul = document.getElementById("navlist");
-      
-      var oldContent = document.getElementById(cardNumber).getElementsByTagName('P')[0].innerText
-      document.getElementById(cardNumber).getElementsByTagName('P')[0].innerText = content; //update Karteninhalt
-      
-      //Leere form
-      document.getElementById("thema").value = "";
-      document.getElementById('content').value="";
-       
-      //Success message
-      if(document.getElementsByClassName('alert').length==0){
-        var msg = document.createElement("div");
-        msg.setAttribute('class','alert alert-success alert-dismissible fade show');
-        msg.setAttribute('role','alert');
-        msg.setAttribute('style','width:80%');
-        msg.innerHTML= 'Karteikarte erfolgreich aktualisiert<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
-        document.getElementById('mainContainer').prepend(msg);
-      }
-      var h4 = document.getElementById('addCard').getElementsByTagName('H4')[0];
-      h4.innerText = 'Karteikarte hinzufügen'; //überschrift ändern
-      //button ändern
-      var btn =  document.getElementById('addBtn');
-      btn.setAttribute('class','btn btn-primary mb-2')
-      btn.setAttribute('value', 'Hnizufügen');
-      btn.setAttribute('onClick','addCard()'); 
-
-      var editBtn  = document.getElementById(editBtnId);
-      editBtn.setAttribute('class','btn btn-light');
-      editBtn.innerHTML = '<i class="fas fa-pen"></i>';
-      editBtn.setAttribute('onClick',f);  
-
-      var cardID = document.getElementById(cardNumber).parentNode.parentNode.getAttribute('id'); 
-           
-        $('.carousel').carousel(cardNumber);
-      fetch('/updateCard',{
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json, text/plain, */*',
-          'Content-type': 'application/json'
-        },
-        body:JSON.stringify({
-          vorlesung:vl,
-          thema:thema,
-          content:content,
-          img:img,
-          id:cardID
-        })
-      })
-      .catch((err)=> console.log(err));
-  
-    }
-   
-  }
-
-
-  $("form").submit(function(e){
-        e.preventDefault();
-  });
-
-  document.addEventListener('click',hideResults);
-  document.getElementById('addCard').addEventListener('submit',addCard);
-
-  $('#carouselExampleControls').on('slide.bs.carousel', function () {
-    $('.collapse').collapse('hide');
-      var editBtn  = document.getElementById(editBtnId);
-      if(editBtn){
-        editBtn.setAttribute('class','btn btn-light');
-        editBtn.innerHTML = '<i class="fas fa-pen"></i>';
-        editBtn.setAttribute('onClick',f);  
-      }
-      
-  })
