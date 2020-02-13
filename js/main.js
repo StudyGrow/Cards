@@ -195,7 +195,23 @@ function hideResults(){
     var activeCarouselItem = document.getElementsByClassName('active')[0]; //aktive karte auswählen
     //Karteninhalt in die Textfelder laden
     document.getElementById('thema').value= activeCarouselItem.getElementsByClassName('card-header')[0].innerText;
-    document.getElementById('content').value = activeCarouselItem.getElementsByClassName('card-body')[0].getElementsByClassName('collapse')[0].getElementsByTagName('p')[0].innerText;
+    var child = activeCarouselItem.getElementsByClassName('card-body')[0].getElementsByClassName('collapse')[0].getElementsByTagName('p')[0].nextSibling;
+    console.log(activeCarouselItem.getElementsByClassName('card-body')[0].getElementsByClassName('collapse')[0].getElementsByTagName('p')[0])
+    var temp = ""
+    if(child != null){
+      while(child != null){
+        if(child.textContent == ""){
+          console.log(child)
+          child = child.nextSibling;
+        }
+        else{
+          temp += child.textContent;
+          child = child.nextSibling;
+        }
+      }
+    }
+    //- console.log(temp)
+    document.getElementById('content').value = temp
     $('#content').focus();
   }
   
