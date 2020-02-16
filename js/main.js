@@ -27,8 +27,7 @@ function getRelatedIndex(content){
   
   for(var i=0; i<cards.length;i++){
     
-    if(cards[i].innerText.match(content)){
-      
+    if(cards[i].innerText==content){
       return cards[i].nextSibling.lastChild.id;
     }
   }
