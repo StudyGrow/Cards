@@ -107,11 +107,13 @@ router.post('/updateCard',[
     check('content').isLength({min:1, max:400})
   ],
   (req,res)=>{
+    
   const errors = validationResult(req);
   if(!errors.isEmpty()){
     res.status(422).json({errors: errors.array()});
   } 
   else{
+    
     Registration.updateOne(
       { _id : req.body.id },
       { $set: { content: req.body.content } }

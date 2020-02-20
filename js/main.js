@@ -222,7 +222,8 @@ function enableEdit(){
   //Karteninhalt in die Textfelder laden
   document.getElementById('thema').value= activeCarouselItem.getElementsByClassName('card-header')[0].innerText;
    
-  var child = activeCarouselItem.getElementsByClassName('card-body')[0].getElementsByClassName('collapse')[0].getElementsByTagName('p')[0].nextSibling;
+  var child = activeCarouselItem.getElementsByClassName('card-body')[0].getElementsByClassName('collapse')[0].getElementsByTagName('p')[0];
+ 
   var temp = "";
   if(child != null){
     while(child != null){

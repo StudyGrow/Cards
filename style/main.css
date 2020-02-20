@@ -1,25 +1,27 @@
 #mainContainer{
     padding:15px;
-  }
-  .carousel-item{
+}
+.carousel-item{
   min-height: 100px;
-  }
-  .card{
+}
+.card{
   max-width: 90%;
   margin: 2px;
   margin-left: auto;
   margin-right: auto;
-  
-  }
-  i{
+}
+i{
   color:black;
-  }
-  #btnDiv,form,.alert,#Headercontent{
+}
+p{
+  margin: 10px;
+}
+#btnDiv,form,.alert,#Headercontent{
   display: block;
   margin-left: auto;
   margin-right: auto;
   width:90%;
-  }
+}
   .carousel-control-prev{
   width: 5%;
   }
