@@ -197,7 +197,7 @@ function addCard(){  //Funktion um eine neue Karte hinzuzufügen
 
 
 
-function enableEdit(cardNumber){
+function enableEdit(){
   var x = document.getElementById("addCard");
   if (x.getAttribute('style')=='display:none'){
       toggleAddView();
@@ -221,7 +221,24 @@ function enableEdit(cardNumber){
   var activeCarouselItem = document.getElementsByClassName('active')[0]; //aktive karte auswählen
   //Karteninhalt in die Textfelder laden
   document.getElementById('thema').value= activeCarouselItem.getElementsByClassName('card-header')[0].innerText;
-  document.getElementById('content').value = activeCarouselItem.getElementsByClassName('card-body')[0].getElementsByClassName('collapse')[0].getElementsByTagName('p')[0].innerText;
+   
+  var child = activeCarouselItem.getElementsByClassName('card-body')[0].getElementsByClassName('collapse')[0].getElementsByTagName('p')[0].nextSibling;
+  var temp = "";
+  if(child != null){
+    while(child != null){
+      if(child.textContent == ""){
+        
+        temp += "\n";
+        child = child.nextSibling;
+      }
+      else{
+        temp += child.textContent;
+        child = child.nextSibling;
+      }
+    }
+  }
+
+  document.getElementById('content').value = temp
   $('#content').focus();
 }
 
@@ -255,7 +272,10 @@ function cancelEdit(){
 
 
 
-
+function contentParse(content){  
+  content = content.replace(/\n/gi, "\n<br>");
+   return content;
+ }
 
 
 function updateCard(cardNumber){//Karteikarte updaten
@@ -269,13 +289,8 @@ function updateCard(cardNumber){//Karteikarte updaten
     var content = document.getElementById('content').value;
     var vl= document.getElementById('vorlesung').textContent;
     var img = document.getElementById('vorlesung').textContent;
-        
-    var oldContent = document.getElementById(cardNumber).getElementsByTagName('P')[0].innerText
-    if(oldContent==content){
-        return;
-    }
-    document.getElementById(cardNumber).getElementsByTagName('P')[0].innerText = content; //update Karteninhalt
-    
+  
+    document.getElementsByClassName('active')[0].getElementsByClassName('collapse')[0].innerHTML = '<p lang="de">' + content.replace(/\n/gi, "<br>")+'</p>';
     //Leere form
     document.getElementById("thema").value ="";
     document.getElementById('content').value="";
@@ -294,8 +309,8 @@ function updateCard(cardNumber){//Karteikarte updaten
     editBtn.setAttribute('state','pen');
       
     var cardID = document.getElementById(cardNumber).parentNode.parentNode.getAttribute('id'); 
-          
-    $('.carousel').carousel(cardNumber); // zeige die geupdatete Karte an
+    
+    
     
     fetch('/updateCard',{ //sende das Update an den Server
       method: 'POST',
@@ -312,6 +327,7 @@ function updateCard(cardNumber){//Karteikarte updaten
       })
     })
     .catch((err)=> console.log(err)); 
+    
   }
   if(addInitHidden){//Falls das Karteikarten feld vorm dem Bearbeiten ausgeblendet war wird es jetz wieder ausgeblendet
       toggleAddView();
@@ -362,10 +378,9 @@ $(document).on('keydown',(e)=>{//Pfeiltasten Shortcuts
   }
 })
 $('#editCard').on('click',()=>{
-  var relatedId =getActiveCardIndex();
   //console.log($('#editCard').attr('state'))
   if($('#editCard').attr('state')=='pen'){
-    enableEdit(relatedId);
+    enableEdit();
   }else if($('#editCard').attr('state')=='cross'){
     $('#staticBackdrop').modal('show');
   } 
