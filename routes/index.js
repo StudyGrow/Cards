@@ -79,7 +79,7 @@ router.get('/main.css',function(req,res){
 
 router.post('/addCard',[
     check('thema').isLength({min:3, max:25}),
-    check('content').isLength({min:3, max:400})
+    check('content').isLength({min:1, max:400})
   ],
   (req,res)=>{
     const errors = validationResult(req);
@@ -104,7 +104,7 @@ router.post('/addCard',[
 
 router.post('/updateCard',[
     check('id').isLength({min:1,max:25}),
-    check('content').isLength({min:3, max:400})
+    check('content').isLength({min:1, max:400})
   ],
   (req,res)=>{
   const errors = validationResult(req);
@@ -150,7 +150,6 @@ router.get('/:vl',[check('vl').isLength({min:3, max:7})],(req,res)=>{
         console.log(err);
         res.status(404).send();
       }else{
-        console.log(vorlesung.abrv)
         Registration.find({vorlesung: vorlesung.abrv},(err,cards)=>{
           if(err){
             console.log(err);
