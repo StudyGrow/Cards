@@ -78,8 +78,10 @@ router.get('/main.css',function(req,res){
 });
 
 router.post('/addCard',[
-    check('thema').isLength({min:3, max:25}),
-    check('content').isLength({min:1, max:400})
+    check('thema').isLength({min:3}).withMessage('Thema muss wenigstens 3 Zeichen enthalten'),
+    check('thema').isLength({max:25}).withMessage('Thema darf nicht mehr als 25 Zeichen enthalten'),
+    check('content').isLength({min:1}).withMessage('Inhalt muss wenigstens 1 Zeichen enthalten'),
+    check('content').isLength({max:400}).withMessage('Inhalt darf nicht mehr als 400 Zeichen enthalten')
   ],
   (req,res)=>{
     const errors = validationResult(req);
@@ -104,7 +106,8 @@ router.post('/addCard',[
 
 router.post('/updateCard',[
     check('id').isLength({min:1,max:25}),
-    check('content').isLength({min:1, max:400})
+    check('content').isLength({min:1}).withMessage('Inhalt muss wenigstens 1 Zeichen enthalten'),
+    check('content').isLength({max:400}).withMessage('Inhalt darf nicht mehr als 400 Zeichen enthalten')
   ],
   (req,res)=>{
     

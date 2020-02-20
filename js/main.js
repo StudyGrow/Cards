@@ -23,7 +23,7 @@ function findMatches(){
     matches=[];
     document.getElementById('matches').innerHTML='';
   }
-  outputHTML(matches);// show max 5 results
+  outputHTML(matches);
 }
 
 
@@ -111,7 +111,6 @@ function addCard(){  //Funktion um eine neue Karte hinzuzufügen
     showAlert('warning','Bitte fülle alle Felder aus');
   }
   else{
-    
     var newCarouselItem = document.createElement("div");
     newCarouselItem.setAttribute('class','carousel-item');
     if (count == 0){
@@ -135,23 +134,24 @@ function addCard(){  //Funktion um eine neue Karte hinzuzufügen
       document.getElementById('carouselExampleControls').appendChild(nxt);
     }
   
-    newCarouselItem.innerHTML =`
+    newCarouselItem.innerHTML = `
     <div class="card">
-    <div class="card-header" id=t${count}>
-    ${thema}
-    <div class="float-right"><button class="btn btn-light" type="button" data-toggle="collapse" ><div class="fas fa-pen" id="edit${count}"></div></button></div>
-    </div>
-    <div class="card-body">
-    <button class="btn btn-light" type="button" data-toggle="collapse" data-target=${count} aria-expanded="false" aria-controls=${count}>
-    Mehr dazu <i class="fas fa-caret-down"></i>
-    </button>
-    <div class="collapse" id=${count}>
-    <br>
-    <p>
-    ${content}
-    </p>
-    </div>
-    </div>
+      <div class="card-header" id=t${count}>
+        ${thema}
+        <div class="float-right"> 
+          <button class="btn btn-light" type="button" data-toggle="collapse" ><div class="fas fa-pen" id="edit${count}"></div></button>
+        </div>
+      </div>
+      <div class="card-body">
+        <button class="btn btn-light" type="button" data-toggle="collapse" data-target=${count} aria-expanded="false" aria-controls=${count}>
+          Mehr dazu <i class="fas fa-caret-down"></i>
+        </button>
+        <div class="collapse" id=${count}>
+          <p>
+            ${content}
+          </p>
+        </div>
+      </div>
     </div>`;
 
     document.getElementById('carouselInner').appendChild(newCarouselItem); //Karteikarte ins Carousel einfügen
@@ -326,6 +326,12 @@ function updateCard(cardNumber){//Karteikarte updaten
         img:img,
         id:cardID
       })
+    })
+    .then((res)=>res.json())
+    .then((data)=>{
+      console.log(data);
+      //id die vom server erhalten wird als id für karte hinzufügen
+      
     })
     .catch((err)=> console.log(err)); 
     
