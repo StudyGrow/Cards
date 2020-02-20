@@ -57,7 +57,10 @@
       z-index:1000;
       right: 0;
       max-width:300px;
-      padding:1px
+      padding:1px;
+      max-height: 200px;
+      overflow: auto;
+      box-shadow:0 5px 10px rgba(46, 46, 46, 0.438);
     }
     .fa-times{
       color:white;

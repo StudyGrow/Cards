@@ -6,6 +6,10 @@ function hideResults(){
     document.getElementById('matches').innerHTML='';
     document.getElementById('search').value='';
 }
+
+
+
+
 function findMatches(){
   var sText = $('#search').val();
   var cards = $('.card-header').map(function(){
@@ -19,9 +23,11 @@ function findMatches(){
     matches=[];
     document.getElementById('matches').innerHTML='';
   }
-  outputHTML(matches.slice(0,5));// show max 5 results
-  
+  outputHTML(matches);// show max 5 results
 }
+
+
+
 function getRelatedIndex(content){
   var cards = document.getElementsByClassName('card-header');
   
@@ -32,6 +38,10 @@ function getRelatedIndex(content){
     }
   }
 }
+
+
+
+
 function outputHTML(matches){
   if(matches.length>0){
     const html = matches.map(match=> `<li class="list-group-item">
@@ -40,11 +50,12 @@ function outputHTML(matches){
     document.getElementById('matches').innerHTML= '<ul class="list-group">' + html + '</ul>';
   }
 } 
+
+
+
+
 var getRandomCard = function() {
     randomShowCard();
-}
-function getActiveCardIndex(){
-  return document.getElementsByClassName('active')[0].getElementsByClassName('showMe')[0].getAttribute('id');
 }
 function randomShowCard(){
 
@@ -59,6 +70,17 @@ function randomShowCard(){
 
   $('.carousel').carousel(rand); //use bootstrap method to go to a different slide
 }
+
+
+
+function getActiveCardIndex(){
+  return document.getElementsByClassName('active')[0].getElementsByClassName('showMe')[0].getAttribute('id');
+}
+
+
+
+
+
 function showAlert(type,content){
   var msg = document.createElement("div");
   msg.setAttribute('class',`alert alert-${type} alert-dismissible fade show`);
@@ -69,6 +91,12 @@ function showAlert(type,content){
                   </button>`;
   document.getElementById('mainContainer').prepend(msg);
 }
+
+
+
+
+
+
 function addCard(){  //Funktion um eine neue Karte hinzuzufügen
 
   //Lese Daten aus der Form aus
@@ -163,6 +191,12 @@ function addCard(){  //Funktion um eine neue Karte hinzuzufügen
       $('.carousel').carousel(count);
   }  
 }
+
+
+
+
+
+
 function enableEdit(cardNumber){
   var x = document.getElementById("addCard");
   if (x.getAttribute('style')=='display:none'){
@@ -183,15 +217,19 @@ function enableEdit(cardNumber){
   editBtn.setAttribute('class','btn btn-danger');
   editBtn.innerHTML = '<i class="fas fa-times"></i>';
   editBtn.setAttribute('state','cross');
-  
-  
-  
+
   var activeCarouselItem = document.getElementsByClassName('active')[0]; //aktive karte auswählen
   //Karteninhalt in die Textfelder laden
   document.getElementById('thema').value= activeCarouselItem.getElementsByClassName('card-header')[0].innerText;
   document.getElementById('content').value = activeCarouselItem.getElementsByClassName('card-body')[0].getElementsByClassName('collapse')[0].getElementsByTagName('p')[0].innerText;
   $('#content').focus();
 }
+
+
+
+
+
+
 function cancelEdit(){
   $('#staticBackdrop').modal('hide');
   //leere Form
@@ -214,6 +252,12 @@ function cancelEdit(){
       toggleAddView();
   }
 }
+
+
+
+
+
+
 function updateCard(cardNumber){//Karteikarte updaten
   var oldTitle = document.getElementById('t'+cardNumber).innerText;
   var newTitle = document.getElementById('thema').value;
@@ -273,6 +317,12 @@ function updateCard(cardNumber){//Karteikarte updaten
       toggleAddView();
   }
 }
+
+
+
+
+
+
 function toggleAddView(){//Zeige Karteikarte hinzufügen an oder blende es aus
   var x = document.getElementById("addCard");
   if (x.getAttribute('style')=='display:none') {
@@ -283,6 +333,9 @@ function toggleAddView(){//Zeige Karteikarte hinzufügen an oder blende es aus
       document.getElementById('toggleAdd').setAttribute('class','btn btn-light');
   }  
 }
+
+
+
 
 //Event Listeners
 $("form").submit(function(e){//verhindere dass eine POST request an den server geschickt wird, wenn im Suchfeld auf Enter gedrückt wird
