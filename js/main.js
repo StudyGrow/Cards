@@ -175,7 +175,10 @@ function addCard(){  //Funktion um eine neue Karte hinzuzufügen
       console.log(data);
       //id die vom server erhalten wird als id für karte hinzufügen
       var newCard = newCarouselItem.getElementsByClassName('card')[0];
-      newCard.setAttribute('id',data.id);     
+      console.log(newCard); 
+      newCard.setAttribute('id',data.id);  
+        console.log(newCard); 
+      console.log('success');   
     })
     .catch((err)=> console.log(err));
     
@@ -307,6 +310,8 @@ function updateCard(cardNumber){//Karteikarte updaten
     editBtn.setAttribute('state','pen');
       
     var cardID = document.getElementById(cardNumber).parentNode.parentNode.getAttribute('id'); 
+    
+    
     
     fetch('/updateCard',{ //sende das Update an den Server
       method: 'POST',
