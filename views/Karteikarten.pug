@@ -28,7 +28,7 @@ nav.navbar.navbar-expand-lg.navbar-light.bg-light(role='alert' style='padding-ri
           li.nav-item
             a.nav-link(href='/' tabindex="1") Kategorie w&auml;hlen
     .col-6(style='padding-right:0')
-      input.form-control#search.float-right(type='search' placeholder='Thema' tabindex="0")
+      input.form-control#search.float-right(type='search' placeholder='Thema suchen' tabindex="0")
   
       #matches
   
@@ -53,7 +53,6 @@ nav.navbar.navbar-expand-lg.navbar-light.bg-light(role='alert' style='padding-ri
   div#Headercontent
     h3#vorlesung
       |#{vorlesung}
-   
     div#btnDiv.btn-group(role='group')
       button#rand.btn.btn-light 
         .fas.fa-random
@@ -74,15 +73,15 @@ nav.navbar.navbar-expand-lg.navbar-light.bg-light(role='alert' style='padding-ri
                 | Mehr dazu 
                 i.fas.fa-caret-down
               #0.collapse.showMe
-                br
+                
                 p(lang="de")
-                //- zeige new lines beim den Karten
-                - var contentParse = function(content){  
-                -   content = content.replace(/\n/gi, "<br>");
-                -   return content;
-                - }
-                - var parsedContent = contentParse(karten[0].content)
-                  |!{parsedContent}
+                  //- zeige new lines beim den Karten
+                  - var contentParse = function(content){  
+                  -   content = content.replace(/\n/gi, "<br>");
+                  -   return content;
+                  - }
+                  - var parsedContent = contentParse(karten[0].content)
+                    |!{parsedContent}
       - var n = 1;
       while n < karten.length
         .carousel-item
@@ -95,15 +94,15 @@ nav.navbar.navbar-expand-lg.navbar-light.bg-light(role='alert' style='padding-ri
                 | Mehr dazu 
                 i.fas.fa-caret-down
               .collapse(id=n).showMe
-                br
-                p
-                //- zeige new lines beim den Karten
-                - var contentParse = function(content){  
-                -   content = content.replace(/\n/gi, "<br>");
-                -   return content;
-                - }
-                - var parsedContent = contentParse(karten[n].content)
-                  |!{parsedContent}
+                
+                p(lang="de")
+                  //- zeige new lines beim den Karten
+                  - var contentParse = function(content){  
+                  -   content = content.replace(/\n/gi, "<br>");
+                  -   return content;
+                  - }
+                  - var parsedContent = contentParse(karten[n].content)
+                    |!{parsedContent}
         -n++
     if karten.length != 0
       a.carousel-control-prev(href='#carouselExampleControls' role='button' data-slide='prev')
