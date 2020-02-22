@@ -48,15 +48,15 @@ mongoose.connection
     }, 1000)  });
   app.use(helmet()); 
 
-  httpsServer.listen(443, () => {
-    setTimeout(() => {
-      // console.log(`Express is running on port ${server.address().port}`);
+  // httpsServer.listen(443, () => {
+  //   setTimeout(() => {
+  //     // console.log(`Express is running on port ${server.address().port}`);
       
-      // Currently you can kill ports running on TCP or UDP protocols
-      kill(portSSL, 'tcp')
-        .then(console.log)
-        .catch(console.log)
-    }, 1000)  });
+  //     // Currently you can kill ports running on TCP or UDP protocols
+  //     kill(portSSL, 'tcp')
+  //       .then(console.log)
+  //       .catch(console.log)
+  //   }, 1000)  });
 // const server = app.listen(80, () => {
 //   setTimeout(() => {
 //     // console.log(`Express is running on port ${server.address().port}`);
