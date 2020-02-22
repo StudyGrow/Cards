@@ -9,6 +9,7 @@ const mongoose = require('mongoose');
 const helmet = require("helmet");
 const kill = require('kill-port')
 const port = 8080
+const portSSL = 443
 const privateKey = fs.readFileSync('/etc/letsencrypt/live/rwth-aachen.tk/privkey.pem', 'utf8');
 const certificate = fs.readFileSync('/etc/letsencrypt/live/rwth-aachen.tk/cert.pem', 'utf8');
 const ca = fs.readFileSync('/etc/letsencrypt/live/rwth-aachen.tk/chain.pem', 'utf8');
