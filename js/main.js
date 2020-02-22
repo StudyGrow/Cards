@@ -221,23 +221,23 @@ function enableEdit() {
   //Karteninhalt in die Textfelder laden
   document.getElementById('thema').value = activeCarouselItem.getElementsByClassName('card-header')[0].innerText;
 
-  var child = activeCarouselItem.getElementsByClassName('card-body')[0].getElementsByClassName('collapse')[0].getElementsByTagName('p')[0];
+  //var child = activeCarouselItem.getElementsByClassName('card-body')[0].getElementsByClassName('collapse')[0].getElementsByTagName('p')[0];
+  var paragraph = activeCarouselItem.getElementsByClassName('card-body')[0].getElementsByClassName('collapse')[0].getElementsByTagName('p')[0];
+  // var temp = "";
+  // if (child != null) {
+  //   while (child != null) {
+  //     if (child.textContent == "") {
 
-  var temp = "";
-  if (child != null) {
-    while (child != null) {
-      if (child.textContent == "") {
+  //       temp += "\n";
+  //       child = child.nextSibling;
+  //     } else {
+  //       temp += child.textContent;
+  //       child = child.nextSibling;
+  //     }
+  //   }
+  // }
 
-        temp += "\n";
-        child = child.nextSibling;
-      } else {
-        temp += child.textContent;
-        child = child.nextSibling;
-      }
-    }
-  }
-
-  document.getElementById('content').value = temp
+  document.getElementById('content').value = paragraph.innerHTML.replace(/<br>/gi, "\n");
   $('#content').focus();
 }
 
