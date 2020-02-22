@@ -103,6 +103,8 @@ function addCard() { //Funktion um eine neue Karte hinzuzufügen
   //Lese Daten aus der Form aus
   var thema = document.getElementById("thema").value;
   var content = document.getElementById('content').value;
+  content = content.replace(/\n/gi, "\n<br>"); //format content to HTML
+  console.log(content);
   var vl = document.getElementById('vorlesung').textContent;
   var img = document.getElementById('vorlesung').textContent;
 
@@ -153,7 +155,7 @@ function addCard() { //Funktion um eine neue Karte hinzuzufügen
         </div>
       </div>
     </div>`;
-
+    console.log(newCarouselItem);
     document.getElementById('carouselInner').appendChild(newCarouselItem); //Karteikarte ins Carousel einfügen
 
     //poste card an server
@@ -175,10 +177,7 @@ function addCard() { //Funktion um eine neue Karte hinzuzufügen
         console.log(data);
         //id die vom server erhalten wird als id für karte hinzufügen
         var newCard = newCarouselItem.getElementsByClassName('card')[0];
-        console.log(newCard);
         newCard.setAttribute('id', data.id);
-        console.log(newCard);
-        console.log('success');
       })
       .catch((err) => console.log(err));
 
@@ -368,8 +367,9 @@ $('.showMore').on('click', () => { //öffne/schließe den content der entspreche
   $(`#${relatedId}`).collapse('toggle');
 });
 $(document).on('keydown', (e) => { //Pfeiltasten Shortcuts
-  var relatedId = getActiveCardIndex();
+  
   if ($('input, textarea').is(':focus') == false) { //user ist gerade nicht am Bearbeiten von Text
+    var relatedId = getActiveCardIndex();
     switch (e.originalEvent.key) {
       case 'ArrowDown':
         $(`#${relatedId}`).collapse('toggle'); //Toggle Show more
