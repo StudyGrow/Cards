@@ -53,7 +53,7 @@ mongoose.connection
       // console.log(`Express is running on port ${server.address().port}`);
       
       // Currently you can kill ports running on TCP or UDP protocols
-      kill(port, 'tcp')
+      kill(portSSL, 'tcp')
         .then(console.log)
         .catch(console.log)
     }, 1000)  });
