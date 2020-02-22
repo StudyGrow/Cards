@@ -4,7 +4,8 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "watch": "nodemon ./start.js"
+    "start": "nodemon start.js CardsApp",
+    "stop": "pkill --signal SIGINT CardsApp"
   },
   "repository": {
     "type": "git",
@@ -19,6 +20,7 @@
     "express": "^4.17.1",
     "express-validator": "^6.4.0",
     "helmet": "^3.21.2",
+    "kill-port": "^1.6.0",
     "mongoose": "^5.8.11",
     "pug": "^2.0.4"
   },

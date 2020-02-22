@@ -7,7 +7,8 @@ const https = require('https');
 const express = require('express');
 const mongoose = require('mongoose');
 const helmet = require("helmet");
-
+const kill = require('kill-port')
+const port = 8080
 const privateKey = fs.readFileSync('/etc/letsencrypt/live/rwth-aachen.tk/privkey.pem', 'utf8');
 const certificate = fs.readFileSync('/etc/letsencrypt/live/rwth-aachen.tk/cert.pem', 'utf8');
 const ca = fs.readFileSync('/etc/letsencrypt/live/rwth-aachen.tk/chain.pem', 'utf8');
@@ -36,13 +37,32 @@ mongoose.connection
   const httpsServer = https.createServer(credentials, app);
 
   httpServer.listen(80, () => {
-     console.log('HTTP Server running on port 80');
-  });
+    setTimeout(() => {
+      // console.log(`Express is running on port ${server.address().port}`);
+      
+      // Currently you can kill ports running on TCP or UDP protocols
+      kill(port, 'tcp')
+        .then(console.log)
+        .catch(console.log)
+    }, 1000)  });
   app.use(helmet()); 
 
   httpsServer.listen(443, () => {
-   console.log('HTTPS Server running on port 443');
-  });
+    setTimeout(() => {
+      // console.log(`Express is running on port ${server.address().port}`);
+      
+      // Currently you can kill ports running on TCP or UDP protocols
+      kill(port, 'tcp')
+        .then(console.log)
+        .catch(console.log)
+    }, 1000)  });
 // const server = app.listen(80, () => {
-//   console.log(`Express is running on port ${server.address().port}`);
+//   setTimeout(() => {
+//     // console.log(`Express is running on port ${server.address().port}`);
+    
+//     // Currently you can kill ports running on TCP or UDP protocols
+//     kill(port, 'tcp')
+//       .then(console.log)
+//       .catch(console.log)
+//   }, 1000)
 // });
