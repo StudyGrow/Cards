@@ -1,0 +1,14 @@
+#Headercontent,#btnDiv{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width:90%;
+  
+}
+#vorlesung{
+    text-align: center;
+}
+#btnDiv{
+    text-align: right;
+    margin-right: 0;
+}

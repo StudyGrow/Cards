@@ -1,0 +1,22 @@
+.carousel-item{
+    min-height: 100px;
+  }
+  .card{
+    max-width: 90%;
+    margin: 2px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+.carousel-control-prev {
+  width: 5%;
+}
+i{
+    color:black;
+}
+.carousel-control-next {
+  width: 5%;
+}
+#carouselExampleControls{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
