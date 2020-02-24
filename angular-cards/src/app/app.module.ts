@@ -17,6 +17,7 @@ import { CarouselComponent } from './components/carousel/carousel.component';
 import { AddCardButtonComponent } from './components/add-card-button/add-card-button.component';
 import { UpdateCardButtonComponent } from './components/update-card-button/update-card-button.component';
 import { CardComponent } from './components/card/card.component';
+import { CarouselInnerComponent } from './components/carousel-inner/carousel-inner.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { CardComponent } from './components/card/card.component';
     CarouselComponent,
     AddCardButtonComponent,
     UpdateCardButtonComponent,
-    CardComponent
+    CardComponent,
+    CarouselInnerComponent
   ],
   imports: [
     BrowserModule,

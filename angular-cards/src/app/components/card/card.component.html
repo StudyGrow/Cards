@@ -1,13 +1,24 @@
-<div class="card">
-    <div class="card-header">
-        Thema
-    </div>
-    <div class="card-body">
-        <button class="btn btn-light" type="button" data-toggle="collapse">
-            Mehr dazu
-            <i class="fas fa-caret-down"></i>
-        </button>
-        <div class="collapse"></div>
-        <p lang="de"></p>
+<div *ngFor="let card of cards; index as i; first as isFirst">
+    <div class= "carousel-item" [ngClass]="{'active': isFirst}" >
+        <div class="card" id=`{{card.id}}`>
+            <div class="card-header">
+                {{card.thema}}
+            </div>
+            <div class="card-body">
+                <button class="btn btn-light" type="button" data-toggle="collapse">
+                    Mehr dazu
+                    <i class="fas fa-caret-down"></i>
+                </button>
+                <div class="collapse">
+                    <p lang="de">
+                        {{card.content}}
+                    </p>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+
+   
+
+
