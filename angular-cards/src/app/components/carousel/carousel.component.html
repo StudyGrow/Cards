@@ -1,6 +1,6 @@
-<div id="carouselExampleControls" class="carousel slide" data-ride="carousel"  >
-  <div class="carousel-inner" ngbSlide *ngFor="let card of cards; first as f">
-    <div [ngClass]="(f) ? 'carousel-item active' : 'carousel-item'">
+<div id="carouselExampleControls" class="carousel slide" data-ride="carousel" data-interval="false"  >
+  <div class="carousel-inner" ngbSlide >
+    <div *ngFor="let card of cards; first as f" [ngClass]="(f) ? 'carousel-item active' : 'carousel-item'">
       <app-card [card]="card"></app-card> 
     </div>
   </div>
