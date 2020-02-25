@@ -5,11 +5,11 @@
                 {{card.thema}}
             </div>
             <div class="card-body">
-                <button class="btn btn-light" type="button" data-toggle="collapse">
+                <button class="btn btn-light" type="button" attr.data-target="#c{{card.id}}" (click)="isCollapsed = !isCollapsed">
                     Mehr dazu
                     <i class="fas fa-caret-down"></i>
                 </button>
-                <div class="collapse">
+                <div class="collapse" [ngbCollapse]="isCollapsed">
                     <p lang="de">
                         {{card.content}}
                     </p>

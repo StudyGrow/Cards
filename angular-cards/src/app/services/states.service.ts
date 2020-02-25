@@ -1,3 +1,5 @@
+//This service is made to manage states across components
+
 import {
   Injectable
 } from '@angular/core';
@@ -12,17 +14,15 @@ import {
 })
 export class StatesService {
 
-  addComponentHidden:boolean;
-
-  subj:Subject<boolean>= new Subject();
+  addComponentHidden:Subject<boolean>= new Subject();
 
   constructor() {}
 
   getAddComponentHidden():Subject<boolean>{
-    return this.subj;
+    return this.addComponentHidden;
   }
 
   setAddComponentHidden(value:boolean):void{
-    this.subj.next(value);
+    this.addComponentHidden.next(value);
   }
 }

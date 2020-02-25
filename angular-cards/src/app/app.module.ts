@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import {HttpClientModule} from '@angular/common/http'
+import {HttpClientModule} from '@angular/common/http';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -22,7 +23,7 @@ import { CarouselInnerComponent } from './components/carousel-inner/carousel-inn
 
 import { StatesService } from './services/states.service';
 import { CardsService } from './services/cards.service';
-
+import {CarouselControlService} from './services/carousel-control.service';
 @NgModule({
   declarations: [
     AppComponent,
@@ -45,9 +46,10 @@ import { CardsService } from './services/cards.service';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule, 
+    NgbModule
   ],
-  providers: [StatesService,CardsService],
+  providers: [StatesService,CardsService,CarouselControlService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

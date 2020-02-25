@@ -9,6 +9,7 @@ import {
 import {
   Card
 } from '../../models/Card';
+import { $ } from 'protractor';
 @Component({
   selector: 'app-card',
   templateUrl: './card.component.html',
@@ -19,7 +20,7 @@ export class CardComponent implements OnInit {
   cards: Card[]; //array of all the cards
 
   constructor(private cardService: CardsService) {}
-
+  public isCollapsed = true;
   ngOnInit(): void {
     this.cards = [{
         id: "oneifn",
@@ -35,4 +36,5 @@ export class CardComponent implements OnInit {
     //this.cardService.getCards().subscribe(cards=>{this.cards=cards}); //load the specific cards from the server by subscribing to the observable that the card-service provides
   }
 
+  
 }

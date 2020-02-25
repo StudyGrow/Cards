@@ -18,4 +18,7 @@ export class ToggleAddViewButtonComponent implements OnInit {
   toggleAddView(): void{
     this.stateService.setAddComponentHidden(!this.addComponentHidden);
   }
+  setClass(){
+    return  this.addComponentHidden ? 'btn btn-light' : 'btn btn-success';
+  }
 }
