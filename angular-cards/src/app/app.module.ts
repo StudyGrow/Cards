@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import {HttpClientModule} from '@angular/common/http'
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -18,6 +19,9 @@ import { AddCardButtonComponent } from './components/add-card-button/add-card-bu
 import { UpdateCardButtonComponent } from './components/update-card-button/update-card-button.component';
 import { CardComponent } from './components/card/card.component';
 import { CarouselInnerComponent } from './components/carousel-inner/carousel-inner.component';
+
+import { StatesService } from './services/states.service';
+import { CardsService } from './services/cards.service';
 
 @NgModule({
   declarations: [
@@ -40,9 +44,10 @@ import { CarouselInnerComponent } from './components/carousel-inner/carousel-inn
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [StatesService,CardsService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

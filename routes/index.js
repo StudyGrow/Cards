@@ -140,6 +140,18 @@ router.post('/addVl',
   }
 );
 
+router.get('/cards',function(req,res){
+  // console.log(typeof(req.params.vl))
+  Registration.find({vorlesung: 'test'},(err,cards)=>{
+    if(err){
+      console.log(err);
+    }else{
+      ////console.log(cards)
+      res.json(cards);
+    }
+  });
+});
+
 router.get('/:vl',[check('vl').isLength({min:3, max:7})],(req,res)=>{
   const errors = validationResult(req);
   if(!errors.isEmpty()){

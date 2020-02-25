@@ -367,7 +367,7 @@ $('.showMore').on('click', () => { //öffne/schließe den content der entspreche
   $(`#${relatedId}`).collapse('toggle');
 });
 $(document).on('keydown', (e) => { //Pfeiltasten Shortcuts
-  
+
   if ($('input, textarea').is(':focus') == false) { //user ist gerade nicht am Bearbeiten von Text
     var relatedId = getActiveCardIndex();
     switch (e.originalEvent.key) {
