@@ -1,11 +1,15 @@
-<div class="carousel slide" id="carouselExampleControls" data-ride="carousel" data-interval="false">
-  <div class="carousel-inner"  id="carouselInner">
-    <app-card></app-card>
+<div id="carouselExampleControls" class="carousel slide" data-ride="carousel"  >
+  <div class="carousel-inner" ngbSlide *ngFor="let card of cards; first as f">
+    <div [ngClass]="(f) ? 'carousel-item active' : 'carousel-item'">
+      <app-card [card]="card"></app-card> 
+    </div>
   </div>
-  <a href="#carouselExampleControls" role="button" data-slide="prev"  class="carousel-control-prev" (click)="previousSlide()">
-    <i class="fas fa-chevron-left"></i>
+  <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+    <span class="fas fa-chevron-left" aria-hidden="true"></span>
+    <span class="sr-only">Previous</span>
   </a>
-  <a href="#carouselExampleControls" role="button" data-slide="next"  class="carousel-control-next" (click)="nextSlide()">
-    <i class="fas fa-chevron-right"></i>
+  <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+    <span class="fas fa-chevron-right" aria-hidden="true"></span>
+    <span class="sr-only">Next</span>
   </a>
 </div>

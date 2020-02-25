@@ -19,7 +19,6 @@ import { CarouselComponent } from './components/carousel/carousel.component';
 import { AddCardButtonComponent } from './components/add-card-button/add-card-button.component';
 import { UpdateCardButtonComponent } from './components/update-card-button/update-card-button.component';
 import { CardComponent } from './components/card/card.component';
-import { CarouselInnerComponent } from './components/carousel-inner/carousel-inner.component';
 
 import { StatesService } from './services/states.service';
 import { CardsService } from './services/cards.service';
@@ -40,8 +39,7 @@ import {CarouselControlService} from './services/carousel-control.service';
     CarouselComponent,
     AddCardButtonComponent,
     UpdateCardButtonComponent,
-    CardComponent,
-    CarouselInnerComponent
+    CardComponent
   ],
   imports: [
     BrowserModule,

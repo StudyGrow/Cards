@@ -1,23 +1,20 @@
-<div *ngFor="let card of cards; index as i; first as isFirst">
-    <div class= "carousel-item" [ngClass]="{'active': isFirst}" >
-        <div class="card" id=`{{card.id}}`>
-            <div class="card-header">
-                {{card.thema}}
-            </div>
-            <div class="card-body">
-                <button class="btn btn-light" type="button" attr.data-target="#c{{card.id}}" (click)="isCollapsed = !isCollapsed">
-                    Mehr dazu
-                    <i class="fas fa-caret-down"></i>
-                </button>
-                <div class="collapse" [ngbCollapse]="isCollapsed">
-                    <p lang="de">
-                        {{card.content}}
-                    </p>
-                </div>
-            </div>
+<div class="card" id=`{{card.id}}`>
+    <div class="card-header">
+        {{card.thema}}
+    </div>
+    <div class="card-body">
+        <button class="btn btn-light" type="button"  (click)="isCollapsed = !isCollapsed">
+            Mehr dazu
+            <i class="fas fa-caret-down"></i>
+        </button>
+        <div class="collapse" [ngbCollapse]="isCollapsed">
+            <p lang="de">
+                {{card.content}}
+            </p>
         </div>
     </div>
 </div>
+   
 
    
 
