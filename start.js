@@ -7,7 +7,7 @@ const https = require('https');
 const express = require('express');
 const mongoose = require('mongoose');
 const helmet = require("helmet");
-const kill = require('./node_modules/kill-port')
+const kill = require('./node_modules/kill-port');
 const port = 8080
 const portSSL = 443
 const privateKey = fs.readFileSync('/etc/letsencrypt/live/rwth-aachen.tk/privkey.pem', 'utf8');
@@ -37,7 +37,7 @@ mongoose.connection
   const httpServer = http.createServer(app);
   const httpsServer = https.createServer(credentials, app);
 
-  httpServer.listen(80, () => {
+  httpServer.listen(8080, () => {
     setTimeout(() => {
       // console.log(`Express is running on port ${server.address().port}`);
       
