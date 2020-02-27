@@ -16,9 +16,9 @@ router.get('*', function(req, res , next) {
    }
   })
 
-router.get('/favicon.ico',function(req,res){
-  res.sendFile(path.join(__dirname+'/../favicon.ico'));
-});
+// router.get('/favicon.ico',function(req,res){
+//   res.sendFile(path.join(__dirname+'/../favicon.ico'));
+// });
 
 router.get('/',function(req,res){
    // console.log(typeof(req.params.vl))
