@@ -13,19 +13,24 @@ export class CarouselControlService {
   activeSlide:Subject<number>= new Subject();
   numberOfCarouselItems:Subject<number>= new Subject();
 
-  constructor() {}
+  constructor() {
+  }
 
   getNumberOfCarouselItems():Subject<number>{
     return this.numberOfCarouselItems;
   }
-  setNumberOfCarouselItems(value:number){
+  setNumberOfCarouselItems(value:number):void{
     this.numberOfCarouselItems.next(value);
   }
+
   
+
   getActiveSlide(): Subject<number> {
     return this.activeSlide;
   }
-  setActiveSlide(value:number){
+  setActiveSlide(value:number):void{
     this.activeSlide.next(value);
   }
+
+  
 }

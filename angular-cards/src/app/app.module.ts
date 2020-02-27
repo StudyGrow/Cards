@@ -1,9 +1,10 @@
+//Modules
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import {HttpClientModule} from '@angular/common/http';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-
 import { AppRoutingModule } from './app-routing.module';
+//Components
 import { AppComponent } from './app.component';
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 import { SearchBarComponent } from './components/search-bar/search-bar.component';
@@ -19,7 +20,7 @@ import { CarouselComponent } from './components/carousel/carousel.component';
 import { AddCardButtonComponent } from './components/add-card-button/add-card-button.component';
 import { UpdateCardButtonComponent } from './components/update-card-button/update-card-button.component';
 import { CardComponent } from './components/card/card.component';
-
+//Services
 import { StatesService } from './services/states.service';
 import { CardsService } from './services/cards.service';
 import {CarouselControlService} from './services/carousel-control.service';

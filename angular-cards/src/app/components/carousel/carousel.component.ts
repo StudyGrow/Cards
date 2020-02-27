@@ -9,6 +9,8 @@ import {
 import {
   Card
 } from '../../models/Card';
+
+import * as $ from 'jquery';
 @Component({
   selector: 'app-carousel',
   templateUrl: './carousel.component.html',
@@ -21,7 +23,9 @@ export class CarouselComponent implements OnInit {
   constructor(private cs: CarouselControlService) {}
 
   ngOnInit(): void {
-    this.cs.getActiveSlide().subscribe((value => this.activeSlide = value));
+    this.cs.setActiveSlide(this.activeSlide); //Set active slide to the first slide
+    this.cs.getActiveSlide().subscribe((value => this.activeSlide = value)); //read activeSlide 
+
     this.cards = [{
         id: "oneifn",
         thema: "Karte 1",
@@ -34,11 +38,16 @@ export class CarouselComponent implements OnInit {
       }
     ]
     //this.cardService.getCards().subscribe(cards=>{this.cards=cards}); //load the specific cards from the server by subscribing to the observable that the card-service provides
+    this.cs.setNumberOfCarouselItems(this.cards.length);
+  }
+
+  goToSlide(index: number) {
+    ($('#carouselExampleControls') as any).carousel(index);
   }
   previousSlide() {
-    
+    ($('#carouselExampleControls') as any).carousel('prev');
   }
   nextSlide() {
-    
+    ($('#carouselExampleControls') as any).carousel('next');
   }
 }
