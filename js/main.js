@@ -8,7 +8,14 @@ function hideResults() {
 }
 
 
-
+function contentFormatHTMLTags(input){
+  //var res = input.replace(/<([abc]|[0-9])*>/gi, );
+  var res = input.replace(/</g,'&lt' );
+  console.log(res);
+  res = res.replace(/>/g,'&gt');
+  console.log(res);
+  return res 
+}
 
 function findMatches() {
   var sText = $('#search').val();
@@ -103,13 +110,12 @@ function addCard() { //Funktion um eine neue Karte hinzuzufügen
   //Lese Daten aus der Form aus
   var thema = document.getElementById("thema").value;
   var content = document.getElementById('content').value;
-  content = content.replace(/\n/gi, "\n<br>"); //format content to HTML
-  console.log(content);
+  content = contentFormatHTMLTags(content);
   var vl = document.getElementById('vorlesung').textContent;
   var img = document.getElementById('vorlesung').textContent;
 
   var count = document.getElementById('carouselInner').children.length; //anzahl der bereits exisiterenden Karten
-  var ul = document.getElementById("navlist");
+  
   if (content.length == 0 || thema.lenght == 0) {
     showAlert('warning', 'Bitte fülle alle Felder aus');
   } else {
@@ -149,13 +155,13 @@ function addCard() { //Funktion um eine neue Karte hinzuzufügen
           Mehr dazu <i class="fas fa-caret-down"></i>
         </button>
         <div class="collapse" id=${count}>
-          <p>
+          <pre>
             ${content}
-          </p>
+          </pre>
         </div>
       </div>
     </div>`;
-    console.log(newCarouselItem);
+   
     document.getElementById('carouselInner').appendChild(newCarouselItem); //Karteikarte ins Carousel einfügen
 
     //poste card an server
@@ -195,7 +201,6 @@ function addCard() { //Funktion um eine neue Karte hinzuzufügen
 
 
 
-
 function enableEdit() {
   var x = document.getElementById("addCard");
   if (x.getAttribute('style') == 'display:none') {
@@ -222,7 +227,7 @@ function enableEdit() {
   document.getElementById('thema').value = activeCarouselItem.getElementsByClassName('card-header')[0].innerText;
 
   //var child = activeCarouselItem.getElementsByClassName('card-body')[0].getElementsByClassName('collapse')[0].getElementsByTagName('p')[0];
-  var paragraph = activeCarouselItem.getElementsByClassName('card-body')[0].getElementsByClassName('collapse')[0].getElementsByTagName('p')[0];
+  var paragraph = activeCarouselItem.getElementsByClassName('card-body')[0].getElementsByClassName('collapse')[0].getElementsByTagName('pre')[0];
   // var temp = "";
   // if (child != null) {
   //   while (child != null) {
@@ -237,7 +242,7 @@ function enableEdit() {
   //   }
   // }
 
-  document.getElementById('content').value = paragraph.innerHTML.replace(/<br>/gi, "\n");
+  document.getElementById('content').value = paragraph.textContent;
   $('#content').focus();
 }
 
@@ -289,7 +294,9 @@ function updateCard(cardNumber) { //Karteikarte updaten
     var vl = document.getElementById('vorlesung').textContent;
     var img = document.getElementById('vorlesung').textContent;
 
-    document.getElementsByClassName('active')[0].getElementsByClassName('collapse')[0].innerHTML = '<p lang="de">' + content.replace(/\n/gi, "<br>") + '</p>';
+    content = contentFormatHTMLTags(content);
+
+    document.getElementsByClassName('active')[0].getElementsByClassName('collapse')[0].innerHTML = '<pre lang="de">' + content+ '</p>';
     //Leere form
     document.getElementById("thema").value = "";
     document.getElementById('content').value = "";

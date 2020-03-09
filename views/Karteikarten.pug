@@ -73,15 +73,8 @@ nav.navbar.navbar-expand-lg.navbar-light.bg-light(role='alert' style='padding-ri
                 | Mehr dazu 
                 i.fas.fa-caret-down
               #0.collapse.showMe
-                
-                p(lang="de")
-                  //- zeige new lines beim den Karten
-                  - var contentParse = function(content){  
-                  -   content = content.replace(/\n/gi, "<br>");
-                  -   return content;
-                  - }
-                  - var parsedContent = contentParse(karten[0].content)
-                    |!{parsedContent}
+                pre(lang="de")
+                  |!{karten[0].content}
       - var n = 1;
       while n < karten.length
         .carousel-item
@@ -95,14 +88,8 @@ nav.navbar.navbar-expand-lg.navbar-light.bg-light(role='alert' style='padding-ri
                 i.fas.fa-caret-down
               .collapse(id=n).showMe
                 
-                p(lang="de")
-                  //- zeige new lines beim den Karten
-                  - var contentParse = function(content){  
-                  -   content = content.replace(/\n/gi, "<br>");
-                  -   return content;
-                  - }
-                  - var parsedContent = contentParse(karten[n].content)
-                    |!{parsedContent}
+                pre(lang="de")
+                  |!{karten[n].content}
         -n++
     if karten.length != 0
       a.carousel-control-prev(href='#carouselExampleControls' role='button' data-slide='prev')
@@ -117,10 +104,10 @@ nav.navbar.navbar-expand-lg.navbar-light.bg-light(role='alert' style='padding-ri
         | Karteikarte hinzuf&uuml;gen
       .form-group
         label(for='thema') Thema
-        input#thema.form-control(name='thema' type='text' placeholder='Thema')
+        input#thema.form-control(name='thema' type='text' placeholder='Thema' lang="de")
       .form-group
         label(for='content') Informationen
-        textarea#content.form-control(name='content' rows='5')
+        textarea#content.form-control(name='content' rows='5' lang="de")
       input.btn.btn-primary.mb-2(id='addBtn' type='button' state='add' value='Hinzufügen')
   script(src='/main.js')
 
