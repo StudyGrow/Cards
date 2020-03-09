@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
 const Vorlesung = mongoose.model('Vorlesung');
 
-module.exports = class cardsService {
+module.exports = function cardsService() {
     
     //Gibt alle Vorlesungen zurück
-    getLectures(callback){
+    cardsService.getLectures = (callback)=>{
         Vorlesung.find((err,vls)=>{
             if(err){
                 throw(err);
@@ -16,7 +16,7 @@ module.exports = class cardsService {
     };
 
     //Gibt eine Vorlesung nach gegebenen Parametern zurück
-    getLectureByQuery(query,callback){
+    cardsService.getLectureByQuery=(query,callback)=>{
         Vorlesung.findOne(query,(err,vl)=>{
             if(err){
                 throw(err);
@@ -25,13 +25,14 @@ module.exports = class cardsService {
                 callback(vl);
             }
         });    
-    }
+    };
 
-    createLecture(name, abrv){
+    cardsService.createLecture=(name, abrv)=>{
         const vl = new Vorlesung();
         vl.name = name;
         vl.abrv = abrv;
         vl.save();
-    }
+    };
+    return cardsService;
 }
     

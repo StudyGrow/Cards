@@ -1,8 +1,9 @@
 const mongoose = require('mongoose');
 const Card = mongoose.model('Registration');
 
-module.exports = class cardsService {
-    getCardsFromQuery(query, callback){
+module.exports = function cardsService() {
+    
+    cardsService.getCardsFromQuery = (query, callback) => {
         Registration.find(query, (err, cards) => {
             if (err) {
                 console.log(err);
@@ -11,19 +12,19 @@ module.exports = class cardsService {
                 callback(cards);
             }
         });
-    }
-    addCard(abrv,title,content,img,callback){
-        const card = new Card(abrv,title,content,img);
+    };
+    cardsService.addCard = (abrv, title, content, img, callback) => {
+        const card = new Card(abrv, title, content, img);
         console.log(card);
         card.save((err, result) => {
             if (err) {
-                throw(err);
+                throw (err);
             } else {
-               callback(result._id);
+                callback(result._id);
             }
         });
-    }
-    updateCard(id,content){
+    };
+    cardsService.updateCard = (id, content) => {
         Registration.updateOne({
             _id: id
         }, {
@@ -33,5 +34,6 @@ module.exports = class cardsService {
         }).catch((err) => {
             console.log('Error on updateCard: ' + err);
         });
-    }
+    };
+    return cardsService;
 }
