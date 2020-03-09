@@ -2,7 +2,7 @@ import {
   Injectable
 } from '@angular/core';
 import {
-  Subject
+  Subject, Observable
 } from 'rxjs';
 
 @Injectable({
@@ -10,13 +10,13 @@ import {
 })
 export class CarouselControlService {
 
-  activeSlide:Subject<number>= new Subject();
-  numberOfCarouselItems:Subject<number>= new Subject();
+  activeSlide:Observable<number>= new Observable();
+  numberOfCarouselItems:Observable<number>= new Observable();
 
   constructor() {
   }
 
-  getNumberOfCarouselItems():Subject<number>{
+  getNumberOfCarouselItems():Observable<number>{
     return this.numberOfCarouselItems;
   }
   setNumberOfCarouselItems(value:number):void{
@@ -25,7 +25,7 @@ export class CarouselControlService {
 
   
 
-  getActiveSlide(): Subject<number> {
+  getActiveSlide(): Observable<number> {
     return this.activeSlide;
   }
   setActiveSlide(value:number):void{

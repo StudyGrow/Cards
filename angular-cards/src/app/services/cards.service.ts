@@ -8,13 +8,13 @@ import {Card} from '../models/Card';
   providedIn: 'root'
 })
 export class CardsService {
-  url:string = 'http://localhost/cards';
+  private url:string = 'http://localhost/cards/BuK';
 
   constructor(private http:HttpClient) { }
 
-  // getCards():Observable<Card[]>{
-  //   return this.http.get<Card[]>(this.url); 
-  // }
+  getCards():Observable<Card[]>{
+     return this.http.get<Card[]>(this.url); 
+  }
 
   
 }

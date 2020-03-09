@@ -74,14 +74,8 @@ nav.navbar.navbar-expand-lg.navbar-light.bg-light(role='alert' style='padding-ri
                 i.fas.fa-caret-down
               #0.collapse.showMe
                 
-                p(lang="de")
-                  //- zeige new lines beim den Karten
-                  - var contentParse = function(content){  
-                  -   content = content.replace(/\n/gi, "<br>");
-                  -   return content;
-                  - }
-                  - var parsedContent = contentParse(karten[0].content)
-                    |!{parsedContent}
+                pre(lang="de")
+                  |!{content}
       - var n = 1;
       while n < karten.length
         .carousel-item
@@ -95,14 +89,8 @@ nav.navbar.navbar-expand-lg.navbar-light.bg-light(role='alert' style='padding-ri
                 i.fas.fa-caret-down
               .collapse(id=n).showMe
                 
-                p(lang="de")
-                  //- zeige new lines beim den Karten
-                  - var contentParse = function(content){  
-                  -   content = content.replace(/\n/gi, "<br>");
-                  -   return content;
-                  - }
-                  - var parsedContent = contentParse(karten[n].content)
-                    |!{parsedContent}
+                pre(lang="de")
+                  |!{content}
         -n++
     if karten.length != 0
       a.carousel-control-prev(href='#carouselExampleControls' role='button' data-slide='prev')

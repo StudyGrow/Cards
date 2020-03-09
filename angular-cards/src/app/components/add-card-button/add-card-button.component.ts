@@ -11,5 +11,7 @@ export class AddCardButtonComponent implements OnInit {
 
   ngOnInit(): void {
   }
+  addCard():void{
 
+  }
 }

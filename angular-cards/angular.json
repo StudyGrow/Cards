@@ -95,9 +95,7 @@
             "styles": [
               "src/styles.css"
             ],
-            "scripts": [
-              
-            ]
+            "scripts": []
           }
         },
         "lint": {
@@ -130,6 +128,6 @@
   },
   "defaultProject": "angular-cards",
   "cli": {
-    "analytics": "cb28d2df-9e08-4919-916d-12a0ec65343f"
+    "analytics": "af23c165-cea7-45f2-9097-2ed149d9ccbf"
   }
 }

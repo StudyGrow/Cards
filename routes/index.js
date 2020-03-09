@@ -140,13 +140,15 @@ router.post('/addVl',
   }
 );
 
-router.get('/cards',function(req,res){
-  // console.log(typeof(req.params.vl))
-  Registration.find({vorlesung: 'test'},(err,cards)=>{
+router.get('/cards/:vl',function(req,res){
+   console.log(req.params.vl)
+  Registration.find({vorlesung: req.params.vl},(err,cards)=>{
     if(err){
       console.log(err);
     }else{
-      ////console.log(cards)
+        res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
+        res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+      console.log(cards)
       res.json(cards);
     }
   });

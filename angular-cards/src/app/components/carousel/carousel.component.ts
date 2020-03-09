@@ -5,7 +5,7 @@ import {
 import {
   CarouselControlService
 } from '../../services/carousel-control.service';
-
+import{CardsService} from '../../services/cards.service';
 import {
   Card
 } from '../../models/Card';
@@ -20,10 +20,10 @@ export class CarouselComponent implements OnInit {
 
   cards: Card[]; //array of all the cards
   activeSlide: number = 0;
-  constructor(private cs: CarouselControlService) {}
+  constructor(private cs: CarouselControlService, private cardService:CardsService) {}
 
   ngOnInit(): void {
-    this.cs.setActiveSlide(this.activeSlide); //Set active slide to the first slide
+    //this.cs.setActiveSlide(this.activeSlide).subscribe((res)=>console.log(res)); //Set active slide to the first slide
     this.cs.getActiveSlide().subscribe((value => this.activeSlide = value)); //read activeSlide 
 
     this.cards = [{
@@ -37,7 +37,7 @@ export class CarouselComponent implements OnInit {
         content: "Karteninhalt"
       }
     ]
-    //this.cardService.getCards().subscribe(cards=>{this.cards=cards}); //load the specific cards from the server by subscribing to the observable that the card-service provides
+    this.cardService.getCards().subscribe(cards=>{this.cards=cards}); //load the specific cards from the server by subscribing to the observable that the card-service provides
     this.cs.setNumberOfCarouselItems(this.cards.length);
   }
 
