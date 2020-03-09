@@ -44,30 +44,38 @@ router.post('/addCard', [
                 errors: errors.array()
             });
         } else {
-
-            Vorlesung.findOne({
+            req.services.lectures.getLectureByQuery({
                 name: req.body.vorlesung
-            }, (err, vl) => {
-                if (err) {
-                    console.log(err);
-                } else {
-                    const registration = new Registration();
-                    registration.vorlesung = vl.abrv; //Vorlesungen müssen unter ihrer Abkürzung gespeichert werden
-                    registration.thema = req.body.thema;
-                    registration.content = req.body.content;
-                    registration.img = req.body.img;
-                    registration.save((err, card) => {
-                        if (err) {
-                            console.log(err);
-                        } else {
-                            res.json({
-                                id: card._id
-                            }); //sende id an client zurück
-                        }
+            }, (vl) => {
+                req.services.cards.addCard(vl.abrv, req.body.thema, req.body.content, req.body.img, (id) => {
+                    res.json({
+                        id: card._id
+                    }); //sende id an client zurück
+                });
+            });
+            // Vorlesung.findOne({
+            //     name: req.body.vorlesung
+            // }, (err, vl) => {
+            //     if (err) {
+            //         console.log(err);
+            //     } else {
+            //         const registration = new Registration();
+            //         registration.vorlesung = vl.abrv; //Vorlesungen müssen unter ihrer Abkürzung gespeichert werden
+            //         registration.thema = req.body.thema;
+            //         registration.content = req.body.content;
+            //         registration.img = req.body.img;
+            //         registration.save((err, card) => {
+            //             if (err) {
+            //                 console.log(err);
+            //             } else {
+            //                 res.json({
+            //                     id: card._id
+            //                 }); //sende id an client zurück
+            //             }
 
-                    });
-                }
-            })
+            //         });
+            //     }
+            // })
         }
     });
 
@@ -91,16 +99,17 @@ router.post('/updateCard', [
                 errors: errors.array()
             });
         } else {
-
-            Registration.updateOne({
-                _id: req.body.id
-            }, {
-                $set: {
-                    content: req.body.content
-                }
-            }).catch((err) => {
-                console.log('Error: ' + err);
-            });
+            req.services.cards.updateCard({ _id: req.body.id});
+            res.status.send();
+            // Registration.updateOne({
+            //     _id: req.body.id
+            // }, {
+            //     $set: {
+            //         content: req.body.content
+            //     }
+            // }).catch((err) => {
+            //     console.log('Error: ' + err);
+            // });
         }
     });
 
@@ -116,28 +125,36 @@ router.get('/:vl', [check('vl').isLength({
             errors: errors.array()
         });
     } else {
-        Vorlesung.findOne({
-            abrv: req.params.vl
-        }, (err, vorlesung) => {
-            if (err) {
-                console.log(err);
-                res.status(404).send();
-            } else {
-                Registration.find({
-                    vorlesung: vorlesung.abrv
-                }, (err, cards) => {
-                    if (err) {
-                        console.log(err);
-                    } else {
-                        ////console.log(cards)
-                        res.render('Karteikarten', {
-                            karten: cards,
-                            vorlesung: vorlesung.name
-                        })
-                    }
-                });
-            }
+        req.services.lectures.getLectureByQuery({abrv:req.params.vl},(vl)=>{
+            req.services.cards.getCardsFromQuery({vorlesung: vl.abrv},(cards)=>{
+                res.render('Karteikarten', {
+                    karten: cards,
+                    vorlesung: vl.name
+                })
+            });
         });
+        // Vorlesung.findOne({
+        //     abrv: req.params.vl
+        // }, (err, vorlesung) => {
+        //     if (err) {
+        //         console.log(err);
+        //         res.status(404).send();
+        //     } else {
+        //         Registration.find({
+        //             vorlesung: vorlesung.abrv
+        //         }, (err, cards) => {
+        //             if (err) {
+        //                 console.log(err);
+        //             } else {
+        //                 ////console.log(cards)
+        //                 res.render('Karteikarten', {
+        //                     karten: cards,
+        //                     vorlesung: vorlesung.name
+        //                 })
+        //             }
+        //         });
+        //     }
+        // });
     }
 });
 

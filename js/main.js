@@ -11,9 +11,9 @@ function hideResults() {
 function contentFormatHTMLTags(input){
   //var res = input.replace(/<([abc]|[0-9])*>/gi, );
   var res = input.replace(/</g,'&lt' );
-  console.log(res);
+
   res = res.replace(/>/g,'&gt');
-  console.log(res);
+
   return res 
 }
 
@@ -165,7 +165,7 @@ function addCard() { //Funktion um eine neue Karte hinzuzufügen
     document.getElementById('carouselInner').appendChild(newCarouselItem); //Karteikarte ins Carousel einfügen
 
     //poste card an server
-    fetch('/addCard', {
+    fetch('/vorlesung/addCard', {
         method: 'POST',
         headers: {
           'Accept': 'application/json, text/plain, */*',
@@ -318,7 +318,7 @@ function updateCard(cardNumber) { //Karteikarte updaten
 
 
 
-    fetch('/updateCard', { //sende das Update an den Server
+    fetch('/vorlesung/updateCard', { //sende das Update an den Server
         method: 'POST',
         headers: {
           'Accept': 'application/json, text/plain, */*',

@@ -14,11 +14,15 @@ module.exports = function cardsService() {
         });
     };
     cardsService.addCard = (abrv, title, content, img, callback) => {
-        const card = new Card(abrv, title, content, img);
-        console.log(card);
+        const card = new Card();
+        Card.vorlesung = abrv;
+        Card.thema=title;
+        Card.content=content;
+        Card.img=img;
+        
         card.save((err, result) => {
             if (err) {
-                throw (err);
+                console.log(err);
             } else {
                 callback(result._id);
             }
