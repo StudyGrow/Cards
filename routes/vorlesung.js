@@ -49,7 +49,7 @@ router.post('/addCard', [
             }, (vl) => {
                 req.services.cards.addCard(vl.abrv, req.body.thema, req.body.content, req.body.img, (id) => {
                     res.json({
-                        id: card._id
+                        id: id
                     }); //sende id an client zurück
                 });
             });
@@ -99,7 +99,9 @@ router.post('/updateCard', [
                 errors: errors.array()
             });
         } else {
-            req.services.cards.updateCard({ _id: req.body.id});
+            req.services.cards.updateCard({
+                _id: req.body.id
+            });
             res.status.send();
             // Registration.updateOne({
             //     _id: req.body.id
@@ -125,8 +127,12 @@ router.get('/:vl', [check('vl').isLength({
             errors: errors.array()
         });
     } else {
-        req.services.lectures.getLectureByQuery({abrv:req.params.vl},(vl)=>{
-            req.services.cards.getCardsFromQuery({vorlesung: vl.abrv},(cards)=>{
+        req.services.lectures.getLectureByQuery({
+            abrv: req.params.vl
+        }, (vl) => {
+            req.services.cards.getCardsFromQuery({
+                vorlesung: vl.abrv
+            }, (cards) => {
                 res.render('Karteikarten', {
                     karten: cards,
                     vorlesung: vl.name

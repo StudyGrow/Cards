@@ -8,13 +8,13 @@ function hideResults() {
 }
 
 
-function contentFormatHTMLTags(input){
+function contentFormatHTMLTags(input) {
   //var res = input.replace(/<([abc]|[0-9])*>/gi, );
-  var res = input.replace(/</g,'&lt' );
+  var res = input.replace(/</g, '&lt');
 
-  res = res.replace(/>/g,'&gt');
+  res = res.replace(/>/g, '&gt');
 
-  return res 
+  return res
 }
 
 function findMatches() {
@@ -115,7 +115,7 @@ function addCard() { //Funktion um eine neue Karte hinzuzufügen
   var img = document.getElementById('vorlesung').textContent;
 
   var count = document.getElementById('carouselInner').children.length; //anzahl der bereits exisiterenden Karten
-  
+
   if (content.length == 0 || thema.lenght == 0) {
     showAlert('warning', 'Bitte fülle alle Felder aus');
   } else {
@@ -161,7 +161,7 @@ function addCard() { //Funktion um eine neue Karte hinzuzufügen
         </div>
       </div>
     </div>`;
-   
+
     document.getElementById('carouselInner').appendChild(newCarouselItem); //Karteikarte ins Carousel einfügen
 
     //poste card an server
@@ -184,6 +184,7 @@ function addCard() { //Funktion um eine neue Karte hinzuzufügen
         //id die vom server erhalten wird als id für karte hinzufügen
         var newCard = newCarouselItem.getElementsByClassName('card')[0];
         newCard.setAttribute('id', data.id);
+
       })
       .catch((err) => console.log(err));
 
@@ -194,6 +195,8 @@ function addCard() { //Funktion um eine neue Karte hinzuzufügen
     //zeige neue Karte an
 
     $('.carousel').carousel(count);
+    console.log('ready');
+    registerEventListeners();
   }
 }
 
@@ -296,7 +299,7 @@ function updateCard(cardNumber) { //Karteikarte updaten
 
     content = contentFormatHTMLTags(content);
 
-    document.getElementsByClassName('active')[0].getElementsByClassName('collapse')[0].innerHTML = '<pre lang="de">' + content+ '</p>';
+    document.getElementsByClassName('active')[0].getElementsByClassName('collapse')[0].innerHTML = '<pre lang="de">' + content + '</p>';
     //Leere form
     document.getElementById("thema").value = "";
     document.getElementById('content').value = "";
@@ -362,64 +365,66 @@ function toggleAddView() { //Zeige Karteikarte hinzufügen an oder blende es aus
   }
 }
 
-
-
-
 //Event Listeners
-$("form").submit(function (e) { //verhindere dass eine POST request an den server geschickt wird, wenn im Suchfeld auf Enter gedrückt wird
-  e.preventDefault();
-});
-$('.showMore').on('click', () => { //öffne/schließe den content der entsprechenden Karte
-  var relatedId = getActiveCardIndex();
-  $(`#${relatedId}`).collapse('toggle');
-});
-$(document).on('keydown', (e) => { //Pfeiltasten Shortcuts
-  
-  if ($('input, textarea').is(':focus') == false) { //user ist gerade nicht am Bearbeiten von Text
+$(document).ready(registerEventListeners);
+
+
+function registerEventListeners() {
+  $("form").submit(function (e) { //verhindere dass eine POST request an den server geschickt wird, wenn im Suchfeld auf Enter gedrückt wird
+    e.preventDefault();
+  });
+  $('.showMore').on('click', () => { //öffne/schließe den content der entsprechenden Karte
     var relatedId = getActiveCardIndex();
-    switch (e.originalEvent.key) {
-      case 'ArrowDown':
-        $(`#${relatedId}`).collapse('toggle'); //Toggle Show more
-        break;
-      case 'ArrowLeft':
-        $('#carouselExampleControls').carousel('prev'); //voherige Karte  
-        break;
-      case 'ArrowRight':
-        $('#carouselExampleControls').carousel('next'); //nächste Karte
-        break;
+    $(`#${relatedId}`).collapse('toggle');
+  });
+  $(document).on('keydown', (e) => { //Pfeiltasten Shortcuts
+
+    if ($('input, textarea').is(':focus') == false) { //user ist gerade nicht am Bearbeiten von Text
+      var relatedId = getActiveCardIndex();
+      switch (e.originalEvent.key) {
+        case 'ArrowDown':
+          $(`#${relatedId}`).collapse('toggle'); //Toggle Show more
+          break;
+        case 'ArrowLeft':
+          $('#carouselExampleControls').carousel('prev'); //voherige Karte  
+          break;
+        case 'ArrowRight':
+          $('#carouselExampleControls').carousel('next'); //nächste Karte
+          break;
+      }
     }
-  }
-})
-$('#editCard').on('click', () => {
-  //console.log($('#editCard').attr('state'))
-  if ($('#editCard').attr('state') == 'pen') {
-    enableEdit();
-  } else if ($('#editCard').attr('state') == 'cross') {
-    $('#staticBackdrop').modal('show');
-  }
-})
-$('#addBtn').on('click', () => {
-  if ($('#addBtn').attr('state') == 'add') { //Falls hinzufügen Button
-    addCard();
-  } else { //Falls Update Button
-    var relatedId = getActiveCardIndex();
-    updateCard(relatedId);
-  }
-})
-$('#rand').on('click', getRandomCard);
-$('#cancel').on('click', cancelEdit);
-$(document).on('click', hideResults);
-$('#carouselExampleControls').on('slide.bs.carousel', () => {
-  $('.collapse').collapse('hide');
-  var editBtn = document.getElementById('editCard');
-  if (editBtn) {
-    editBtn.setAttribute('class', 'btn btn-light');
-    editBtn.innerHTML = '<i class="fas fa-pen"></i>';
-    editBtn.setAttribute('state', 'pen');
-  }
-  if ($('#addBtn').attr('state') == 'save') {
-    cancelEdit();
-  }
-})
-$('#toggleAdd').on('click', toggleAddView);
-$('#search').on('input', findMatches);
+  })
+  $('#editCard').on('click', () => {
+    //console.log($('#editCard').attr('state'))
+    if ($('#editCard').attr('state') == 'pen') {
+      enableEdit();
+    } else if ($('#editCard').attr('state') == 'cross') {
+      $('#staticBackdrop').modal('show');
+    }
+  })
+  $('#addBtn').on('click', () => {
+    if ($('#addBtn').attr('state') == 'add') { //Falls hinzufügen Button
+      addCard();
+    } else { //Falls Update Button
+      var relatedId = getActiveCardIndex();
+      updateCard(relatedId);
+    }
+  })
+  $('#rand').on('click', getRandomCard);
+  $('#cancel').on('click', cancelEdit);
+  $(document).on('click', hideResults);
+  $('#carouselExampleControls').on('slide.bs.carousel', () => {
+    $('.collapse').collapse('hide');
+    var editBtn = document.getElementById('editCard');
+    if (editBtn) {
+      editBtn.setAttribute('class', 'btn btn-light');
+      editBtn.innerHTML = '<i class="fas fa-pen"></i>';
+      editBtn.setAttribute('state', 'pen');
+    }
+    if ($('#addBtn').attr('state') == 'save') {
+      cancelEdit();
+    }
+  })
+  $('#toggleAdd').on('click', toggleAddView);
+  $('#search').on('input', findMatches);
+}

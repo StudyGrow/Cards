@@ -33,7 +33,7 @@ router.get('/main.css', function (req, res) {
 
 router.get('/', function (req, res) {
   // console.log(typeof(req.params.vl))
-  req.services.lectures.getLectures((vls)=>{
+  req.services.lectures.getLectures((vls) => {
     res.render('kategorie', {
       vorlesungen: vls
     });

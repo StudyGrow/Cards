@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Card = mongoose.model('Registration');
 
 module.exports = function cardsService() {
-    
+
     cardsService.getCardsFromQuery = (query, callback) => {
         Card.find(query, (err, cards) => {
             if (err) {
@@ -15,13 +15,15 @@ module.exports = function cardsService() {
     };
     cardsService.addCard = (abrv, title, content, img, callback) => {
         const card = new Card();
-        Card.vorlesung = abrv;
-        Card.thema=title;
-        Card.content=content;
-        Card.img=img;
-        
+        console.log("content: " + content);
+        card.vorlesung = abrv;
+        card.thema = title;
+        card.content = content;
+        card.img = img;
+
         card.save((err, result) => {
             if (err) {
+
                 console.log(err);
             } else {
                 callback(result._id);
