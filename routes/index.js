@@ -33,16 +33,21 @@ router.get('/main.css', function (req, res) {
 
 router.get('/', function (req, res) {
   // console.log(typeof(req.params.vl))
-  Vorlesung.find((err, vls) => {
-    if (err) {
-      console.log(err);
-    } else {
-      //console.log(vls);
-      res.render('kategorie', {
-        vorlesungen: vls
-      });
-    }
-  });
+  req.services.lectures.getLectures((vls)=>{
+    res.render('kategorie', {
+      vorlesungen: vls
+    });
+  })
+  // Vorlesung.find((err, vls) => {
+  //   if (err) {
+  //     console.log(err);
+  //   } else {
+  //     //console.log(vls);
+  //     res.render('kategorie', {
+  //       vorlesungen: vls
+  //     });
+  //   }
+  // });
 });
 
 router.post('/addVl',
@@ -62,10 +67,11 @@ router.post('/addVl',
         errors: errors.array()
       });
     } else {
-      const vl = new Vorlesung();
-      vl.name = req.body.name;
-      vl.abrv = req.body.abrv;
-      vl.save();
+      req.services.lectures.addLecture(req.body.name, req.body.abrv);
+      // const vl = new Vorlesung();
+      // vl.name = req.body.name;
+      // vl.abrv = req.body.abrv;
+      // vl.save();
     }
   }
 );

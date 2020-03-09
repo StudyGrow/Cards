@@ -27,7 +27,7 @@ module.exports = function vlService() {
         });    
     };
 
-    vlService.createLecture=(name, abrv)=>{
+    vlService.addLecture=(name, abrv)=>{
         const vl = new Vorlesung();
         vl.name = name;
         vl.abrv = abrv;

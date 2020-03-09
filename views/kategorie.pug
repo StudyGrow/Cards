@@ -44,7 +44,7 @@ script.
   var abrv = document.getElementById('abrv');
   var li = document.createElement('LI');
   li.setAttribute('class','list-group-item');
-  li.innerHTML = `<a href="/${abrv.value}">${vorlesung.value}</a>`;
+  li.innerHTML = `<a href="/vorlesung/${abrv.value}">${vorlesung.value}</a>`;
   ul.appendChild(li);
       fetch('/addVl',{
   method: 'POST',
