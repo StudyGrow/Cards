@@ -11,33 +11,16 @@ const Registration = mongoose.model('Registration');
 const Vorlesung = mongoose.model('Vorlesung');
 
 router.get('/liste', (req, res) => {
-    Registration.find({
-        vorlesung: 'BuK'
-    }, (err, cards) => {
-        if (err) {
-            console.log(err);
-        } else {
-            ////console.log(cards)
+    req.services.cards.getCardsFromQuery({
+            vorlesung: 'BuK'
+        },
+        (cards) => {
             res.render('liste', {
                 karten: cards
             })
-        }
-    });
+        });
 });
 
-router.get('/kategorien', function (req, res) {
-    // console.log(typeof(req.params.vl))
-    Vorlesung.find((err, vls) => {
-        if (err) {
-            console.log(err);
-        } else {
-            //console.log(vls);
-            res.render('kategorie', {
-                vorlesungen: vls
-            });
-        }
-    });
-});
 
 router.post('/addCard', [
         check('thema').isLength({

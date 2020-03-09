@@ -4,7 +4,7 @@ const Card = mongoose.model('Registration');
 module.exports = function cardsService() {
     
     cardsService.getCardsFromQuery = (query, callback) => {
-        Registration.find(query, (err, cards) => {
+        Card.find(query, (err, cards) => {
             if (err) {
                 console.log(err);
             } else {
@@ -25,7 +25,7 @@ module.exports = function cardsService() {
         });
     };
     cardsService.updateCard = (id, content) => {
-        Registration.updateOne({
+        Card.updateOne({
             _id: id
         }, {
             $set: {
