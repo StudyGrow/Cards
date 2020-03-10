@@ -10,6 +10,8 @@
         type="text"
         placeholder="Thema"
         required
+        required
+        #thema="ngModel"
         ngModel
       />
     </div>
@@ -21,6 +23,7 @@
         name="content"
         rows="5"
         required
+        #content="ngModel"
         ngModel
       ></textarea>
     </div>
@@ -29,6 +32,7 @@
       id="addBtn"
       type="submit"
       value="Hinzufügen"
+      [disabled]="content.invalid || thema.invalid"
     />
   </form>
 </div>
