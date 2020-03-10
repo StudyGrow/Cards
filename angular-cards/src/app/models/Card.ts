@@ -1,5 +1,5 @@
 export class Card {
-  id?: string;
+  _id?: string;
   thema: string;
   content: string;
 

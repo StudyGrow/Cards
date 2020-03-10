@@ -24,10 +24,13 @@ import { UpdateCardButtonComponent } from "./components/update-card-button/updat
 import { CardComponent } from "./components/card/card.component";
 import { AddLectureFormComponent } from "./components/add-lecture-form/add-lecture-form.component";
 import { LecturesComponent } from "./components/lectures/lectures.component";
+import { HomePageComponent } from "./routes/home-page/home-page.component";
+import { CardsPageComponent } from "./routes/cards-page/cards-page.component";
 //Services
 import { StatesService } from "./services/states.service";
 import { CardsService } from "./services/cards.service";
 import { CarouselControlService } from "./services/carousel-control.service";
+import { HttpService } from "./services/http-service.service";
 
 @NgModule({
   declarations: [
@@ -47,7 +50,9 @@ import { CarouselControlService } from "./services/carousel-control.service";
     UpdateCardButtonComponent,
     CardComponent,
     AddLectureFormComponent,
-    LecturesComponent
+    LecturesComponent,
+    HomePageComponent,
+    CardsPageComponent
   ],
   imports: [
     BrowserModule,
@@ -56,7 +61,7 @@ import { CarouselControlService } from "./services/carousel-control.service";
     NgbModule,
     FormsModule
   ],
-  providers: [StatesService, CardsService, CarouselControlService],
+  providers: [StatesService, HttpService, CarouselControlService],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

@@ -201,28 +201,6 @@ router.get(
           );
         }
       );
-      // Vorlesung.findOne({
-      //     abrv: req.params.vl
-      // }, (err, vorlesung) => {
-      //     if (err) {
-      //         console.log(err);
-      //         res.status(404).send();
-      //     } else {
-      //         Registration.find({
-      //             vorlesung: vorlesung.abrv
-      //         }, (err, cards) => {
-      //             if (err) {
-      //                 console.log(err);
-      //             } else {
-      //                 ////console.log(cards)
-      //                 res.render('Karteikarten', {
-      //                     karten: cards,
-      //                     vorlesung: vorlesung.name
-      //                 })
-      //             }
-      //         });
-      //     }
-      // });
     }
   }
 );

@@ -3,8 +3,6 @@ const mongoose = require("mongoose");
 const path = require("path");
 const { check, validationResult } = require("express-validator");
 const router = express.Router();
-const Registration = mongoose.model("Registration");
-const Vorlesung = mongoose.model("Vorlesung");
 
 // router.get('*', function(req, res , next) {
 //    if(req.secure == false){
@@ -36,7 +34,7 @@ router.get("/", function(req, res) {
       });
     });
   } catch (error) {
-    res.status(404).send(error);
+    res.status(400).send(error);
   }
 
   // Vorlesung.find((err, vls) => {
@@ -78,6 +76,14 @@ router.post(
     }
   }
 );
+
+router.post("/addLecture", (req, res) => {
+  console.log(req.body);
+  req.services.lectures.addLecture(
+    req.body.lecture.name,
+    req.body.lecture.abrv
+  );
+});
 
 let vorlesung = require("../routes/vorlesung");
 

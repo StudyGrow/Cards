@@ -1,8 +1,9 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, Input } from "@angular/core";
 import { NgForm } from "@angular/forms";
 import { StatesService } from "../../services/states.service";
-import { CardsService } from "../../services/cards.service";
+import { HttpService } from "../../services/http-service.service";
 import { Card } from "../../models/Card";
+import { Vorlesung } from "src/app/models/Vorlesung";
 
 @Component({
   selector: "app-add-card-form",
@@ -10,12 +11,13 @@ import { Card } from "../../models/Card";
   styleUrls: ["./add-card-form.component.css"]
 })
 export class AddCardFormComponent implements OnInit {
+  @Input() lecture: Vorlesung;
   newCard: Card;
   hidden: boolean;
 
   constructor(
     private stateService: StatesService,
-    private cardService: CardsService
+    private httpService: HttpService
   ) {}
 
   ngOnInit(): void {
@@ -37,8 +39,8 @@ export class AddCardFormComponent implements OnInit {
     console.log(f.value.thema);
     console.log(f.value.content);
     this.newCard = new Card(f.value.thema, f.value.content);
-    this.cardService.addCard(this.newCard).subscribe(id => {
-      this.newCard.id = id;
+    this.httpService.addCard(this.newCard, this.lecture.abrv).subscribe(id => {
+      this.newCard._id = id;
     });
   }
 }

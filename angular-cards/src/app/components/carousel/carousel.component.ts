@@ -1,22 +1,24 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, Input } from "@angular/core";
 import { CarouselControlService } from "../../services/carousel-control.service";
-import { CardsService } from "../../services/cards.service";
+import { HttpService } from "../../services/http-service.service";
 import { StatesService } from "../../services/states.service";
 import { Card } from "../../models/Card";
 
 import * as $ from "jquery";
+import { Vorlesung } from "src/app/models/Vorlesung";
 @Component({
   selector: "app-carousel",
   templateUrl: "./carousel.component.html",
   styleUrls: ["./carousel.component.css"]
 })
 export class CarouselComponent implements OnInit {
+  @Input() lecture: Vorlesung;
   cards: Card[]; //array of all the cards
   activeSlide: number = 0;
   addComponentHidden: boolean;
   constructor(
     private cs: CarouselControlService,
-    private cardService: CardsService,
+    private httpService: HttpService,
     private stateService: StatesService
   ) {}
 
@@ -31,17 +33,17 @@ export class CarouselComponent implements OnInit {
 
     this.cards = [
       {
-        id: "oneifn",
+        _id: "oneifn",
         thema: "Karte 1",
         content: "Karteninhalt"
       },
       {
-        id: "fwfwwg",
+        _id: "fwfwwg",
         thema: "Karte 2",
         content: "Karteninhalt"
       }
     ];
-    this.cardService.getCards().subscribe(cards => {
+    this.httpService.getCardsFromLecture(this.lecture).subscribe(cards => {
       this.cards = cards;
     }); //load the specific cards from the server by subscribing to the observable that the card-service provides
     this.cs.setNumberOfCarouselItems(this.cards.length);
