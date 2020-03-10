@@ -1,14 +1,34 @@
 <div id="addCard" [ngStyle]="setStyle()">
-    <form novalidate>
-        <h4>Karteikarte hinzufügen</h4>
-        <div class="form-group">
-            <label for="thema">Thema</label>
-            <input [(ngModel)]="newCard.thema" class="form-control" id="thema" name="thema" type="text" placeholder="Thema" />
-        </div>
-        <div class="form-group">
-            <label for="content">Informationen</label>
-            <textarea [(ngModel)]="newCard.content" class="form-control" id="content" name="content" rows="5"></textarea>
-        </div>
-        <app-add-card-button></app-add-card-button>
-    </form>
+  <form #f="ngForm" (ngSubmit)="onSubmit(f)" novalidate>
+    <h4>Karteikarte hinzufügen</h4>
+    <div class="form-group">
+      <label for="thema">Thema</label>
+      <input
+        class="form-control"
+        id="thema"
+        name="thema"
+        type="text"
+        placeholder="Thema"
+        required
+        ngModel
+      />
+    </div>
+    <div class="form-group">
+      <label for="content">Informationen</label>
+      <textarea
+        class="form-control"
+        id="content"
+        name="content"
+        rows="5"
+        required
+        ngModel
+      ></textarea>
+    </div>
+    <input
+      class="btn btn-primary mb-2"
+      id="addBtn"
+      type="submit"
+      value="Hinzufügen"
+    />
+  </form>
 </div>

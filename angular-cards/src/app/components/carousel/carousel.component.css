@@ -1,25 +1,29 @@
-.carousel-item{
-    min-height: 100px;
-  }
-  .card{
-    max-width: 90%;
-    margin: 2px;
-    margin-left: auto;
-    margin-right: auto;
-  }
+.container {
+  padding: 0;
+}
+#btnDiv {
+  display: block;
+  width: 90%;
+  text-align: right;
+  margin: auto;
+  margin-bottom: 10px;
+}
+#carouselExampleControls {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.carousel-item {
+  min-height: 100px;
+}
+
 .carousel-control-prev {
   width: 5%;
 }
-i{
-    color:black;
-}
+
 .carousel-control-next {
   width: 5%;
 }
-#carouselExampleControls{
-    margin-top: 10px;
-    margin-bottom: 10px;
-}
-.fas{
-  color:black;
+.fa-chevron-left,
+.fa-chevron-right {
+  color: black;
 }

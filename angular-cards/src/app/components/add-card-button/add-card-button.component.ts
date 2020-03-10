@@ -1,17 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from "@angular/core";
 
 @Component({
-  selector: 'app-add-card-button',
-  templateUrl: './add-card-button.component.html',
-  styleUrls: ['./add-card-button.component.css']
+  selector: "app-add-card-button",
+  templateUrl: "./add-card-button.component.html",
+  styleUrls: ["./add-card-button.component.css"]
 })
 export class AddCardButtonComponent implements OnInit {
+  constructor() {}
 
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-  addCard():void{
-
-  }
+  ngOnInit(): void {}
+  addCard(): void {}
 }
