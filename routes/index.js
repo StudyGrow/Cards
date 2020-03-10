@@ -15,48 +15,8 @@ router.get('*', function(req, res , next) {
    }
   })
 
-<<<<<<< HEAD
-// router.get('/favicon.ico',function(req,res){
-//   res.sendFile(path.join(__dirname+'/../favicon.ico'));
-// });
-
-router.get('/',function(req,res){
-   // console.log(typeof(req.params.vl))
-  Vorlesung.find((err,vls)=>{
-    if(err){
-      console.log(err);
-    }else{
-      //console.log(vls);
-      res.render('kategorie', {vorlesungen:vls});
-    }
-  }); 
-});
-
-router.get('/liste',(req,res)=>{
-  Registration.find({vorlesung: 'BuK'},(err,cards)=>{
-    if(err){
-      console.log(err);
-    }else{
-      ////console.log(cards)
-      res.render('liste', {karten:cards})
-    }
-    });
-});
-
-router.get('/kategorien',function(req,res){
-  // console.log(typeof(req.params.vl))
-  Vorlesung.find((err,vls)=>{
-  if(err){
-    console.log(err);
-  }else{
-    //console.log(vls);
-    res.render('kategorie', {vorlesungen:vls});
-  }
-  }); 
-=======
 router.get("/favicon.ico", function(req, res) {
   res.sendFile(path.join(__dirname + "/../favicon.ico"));
->>>>>>> 5af23b41b46727703565e1d467ec721f2edc720e
 });
 router.get("/main.js", function(req, res) {
   // console.log(typeof(req.params.vl))
