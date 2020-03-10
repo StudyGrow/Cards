@@ -1,1 +1,37 @@
-<p>add-lecture-form works!</p>
+<div id="addLecture">
+  <form #f="ngForm" (ngSubmit)="onSubmit(f)" novalidate>
+    <h4>Vorlesung hinzufügen</h4>
+    <div class="form-group">
+      <label for="name">Vorlesungsname</label>
+      <input
+        class="form-control"
+        id="name"
+        name="name"
+        type="text"
+        placeholder="Name"
+        required
+        #name="ngModel"
+        ngModel
+      />
+    </div>
+    <div class="form-group">
+      <label for="abrv">Abkürzung</label>
+      <textarea
+        class="form-control"
+        id="abrv"
+        name="abrv"
+        rows="5"
+        required
+        #abrv="ngModel"
+        ngModel
+      ></textarea>
+    </div>
+    <input
+      class="btn btn-primary mb-2"
+      id="addBtn"
+      type="submit"
+      value="Hinzufügen"
+      [disabled]="abrv.invalid || name.invalid"
+    />
+  </form>
+</div>
