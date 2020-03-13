@@ -60,6 +60,23 @@ function outputHTML(matches) {
   }
 }
 
+function createCard(thema, content, count) {
+  return `
+  <div class="card" id>
+    <div class="card-header" id=t${count}>
+      ${thema}
+    </div>
+    <div class="card-body">
+      <button class="btn btn-light" type="button" data-toggle="collapse" data-target=${count} aria-expanded="false" aria-controls=${count} onClick="showMore()">
+        Mehr dazu <i class="fas fa-caret-down"></i>
+      </button>
+      <div class="collapse" id=${count}>
+        <pre>${content}</pre>
+      </div>
+    </div>
+  </div>`;
+}
+
 var getRandomCard = function() {
   randomShowCard();
 };
@@ -82,7 +99,7 @@ function randomShowCard() {
 function getActiveCardIndex() {
   return document
     .getElementsByClassName("active")[0]
-    .getElementsByClassName("showMe")[0]
+    .getElementsByClassName("collapse")[0]
     .getAttribute("id");
 }
 
@@ -108,88 +125,96 @@ function addCard() {
   var img = document.getElementById("vorlesung").textContent;
 
   var count = document.getElementById("carouselInner").children.length; //anzahl der bereits exisiterenden Karten
+  var response;
 
   if (content.length == 0 || thema.lenght == 0) {
     showAlert("warning", "Bitte fülle alle Felder aus");
-  } else {
-    var newCarouselItem = document.createElement("div");
-    newCarouselItem.setAttribute("class", "carousel-item");
-    if (count == 0) {
-      newCarouselItem.setAttribute("class", "active");
-    } else if (count == 1) {
-      var prev = document.createElement("a");
-      prev.setAttribute("class", "carousel-control-prev");
-      prev.setAttribute("href", "#carouselExampleControls");
-      prev.setAttribute("role", "button");
-      prev.setAttribute("data-slide", "prev");
-      prev.innerHTML = '<i class="fas fa-chevron-left"></i>';
+    return;
+  }
 
-      var nxt = document.createElement("a");
-      nxt.setAttribute("class", "carousel-control-next");
-      nxt.setAttribute("href", "#carouselExampleControls");
-      nxt.setAttribute("role", "button");
-      nxt.setAttribute("data-slide", "next");
-      nxt.innerHTML = '<i class="fas fa-chevron-right"></i>';
+  if (thema.length < 3 || thema.lenght > 25) {
+    showAlert("warning", "Thema muss zwischen 3 und 25 Zeichen enthalten");
+    return;
+  }
 
-      document.getElementById("carouselExampleControls").appendChild(prev);
-      document.getElementById("carouselExampleControls").appendChild(nxt);
-    }
-
-    newCarouselItem.innerHTML = `
-    <div class="card">
-      <div class="card-header" id=t${count}>
-        ${thema}
-        <div class="float-right"> 
-          <button class="btn btn-light" type="button" data-toggle="collapse" ><div class="fas fa-pen" id="edit${count}"></div></button>
-        </div>
-      </div>
-      <div class="card-body">
-        <button class="btn btn-light" type="button" data-toggle="collapse" data-target=${count} aria-expanded="false" aria-controls=${count}>
-          Mehr dazu <i class="fas fa-caret-down"></i>
-        </button>
-        <div class="collapse" id=${count}>
-          <pre>
-            ${content}
-          </pre>
-        </div>
-      </div>
-    </div>`;
-
-    document.getElementById("carouselInner").appendChild(newCarouselItem); //Karteikarte ins Carousel einfügen
-
-    //poste card an server
-    fetch("/vorlesung/addCard", {
-      method: "POST",
-      headers: {
-        Accept: "application/json, text/plain, */*",
-        "Content-type": "application/json"
-      },
-      body: JSON.stringify({
-        vorlesung: vl,
-        thema: thema,
-        content: content,
-        img: img
-      })
+  if (content.lenght > 400) {
+    showAlert("warning", "Inhalt darf nicht mehr als 400 Zeichen enthalten");
+    return;
+  }
+  //poste card an server
+  fetch("/vorlesung/addCard", {
+    method: "POST",
+    headers: {
+      Accept: "application/json, text/plain, */*",
+      "Content-type": "application/json"
+    },
+    body: JSON.stringify({
+      vorlesung: vl,
+      thema: thema,
+      content: content,
+      img: img
     })
-      .then(res => res.json())
-      .then(data => {
-        console.log(data);
+  })
+    .then(res => {
+      response = res;
+      return res.json();
+    })
+    .then(data => {
+      //console.log(data);
+      if (response.ok) {
+        var newCarouselItem = document.createElement("div");
+        newCarouselItem.setAttribute("class", "carousel-item");
+        if (count == 0) {
+          newCarouselItem.setAttribute("class", "active");
+        } else if (count == 1) {
+          var prev = document.createElement("a");
+          prev.setAttribute("class", "carousel-control-prev");
+          prev.setAttribute("href", "#carouselExampleControls");
+          prev.setAttribute("role", "button");
+          prev.setAttribute("data-slide", "prev");
+          prev.innerHTML = '<i class="fas fa-chevron-left"></i>';
+
+          var nxt = document.createElement("a");
+          nxt.setAttribute("class", "carousel-control-next");
+          nxt.setAttribute("href", "#carouselExampleControls");
+          nxt.setAttribute("role", "button");
+          nxt.setAttribute("data-slide", "next");
+          nxt.innerHTML = '<i class="fas fa-chevron-right"></i>';
+
+          document.getElementById("carouselExampleControls").appendChild(prev);
+          document.getElementById("carouselExampleControls").appendChild(nxt);
+        }
+
+        newCarouselItem.innerHTML = createCard(thema, content, count);
+
+        document.getElementById("carouselInner").appendChild(newCarouselItem); //Karteikarte ins Carousel einfügen
+
         //id die vom server erhalten wird als id für karte hinzufügen
+        //console.log(newCarouselItem);
+        //console.log(newCarouselItem.getElementsByClassName("card")[0]);
         var newCard = newCarouselItem.getElementsByClassName("card")[0];
         newCard.setAttribute("id", data.id);
-      })
-      .catch(err => console.log(err));
 
-    //Leere form
-    document.getElementById("thema").value = "";
-    document.getElementById("content").value = "";
-    //Success message
-    //zeige neue Karte an
-
-    $(".carousel").carousel(count);
-    console.log("ready");
-    registerEventListeners();
-  }
+        //Leere form
+        document.getElementById("thema").value = "";
+        document.getElementById("content").value = "";
+        //Success message
+        //zeige neue Karte an
+        $(".carousel").carousel(count);
+      } else {
+        showAlert(
+          "warning",
+          "Leider gab es einen Fehler beim Speichern deiner Karte. Versuche es später erneut."
+        );
+      }
+    })
+    .catch(errs => {
+      console.log(errs);
+      for (error in errs) {
+        console.log(error);
+        showAlert("warning", error.msg);
+      }
+    });
 }
 
 function enableEdit() {
@@ -226,19 +251,6 @@ function enableEdit() {
     .getElementsByClassName("card-body")[0]
     .getElementsByClassName("collapse")[0]
     .getElementsByTagName("pre")[0];
-  // var temp = "";
-  // if (child != null) {
-  //   while (child != null) {
-  //     if (child.textContent == "") {
-
-  //       temp += "\n";
-  //       child = child.nextSibling;
-  //     } else {
-  //       temp += child.textContent;
-  //       child = child.nextSibling;
-  //     }
-  //   }
-  // }
 
   document.getElementById("content").value = paragraph.textContent;
   $("#content").focus();
@@ -287,32 +299,9 @@ function updateCard(cardNumber) {
     var img = document.getElementById("vorlesung").textContent;
 
     content = contentFormatHTMLTags(content);
-
-    document
-      .getElementsByClassName("active")[0]
-      .getElementsByClassName("collapse")[0].innerHTML =
-      '<pre lang="de">' + content + "</p>";
-    //Leere form
-    document.getElementById("thema").value = "";
-    document.getElementById("content").value = "";
-    //überschrift ändern
-    var h4 = document.getElementById("addCard").getElementsByTagName("H4")[0];
-    h4.innerText = "Karteikarte hinzufügen";
-    //add button ändern
-    var btn = document.getElementById("addBtn");
-    btn.setAttribute("class", "btn btn-primary mb-2");
-    btn.setAttribute("value", "Hinzufügen");
-    btn.setAttribute("state", "add");
-    //edit button ändern
-    var editBtn = document.getElementById("editCard");
-    editBtn.setAttribute("class", "btn btn-light");
-    editBtn.innerHTML = '<i class="fas fa-pen"></i>';
-    editBtn.setAttribute("state", "pen");
-
     var cardID = document
       .getElementById(cardNumber)
       .parentNode.parentNode.getAttribute("id");
-
     fetch("/vorlesung/updateCard", {
       //sende das Update an den Server
       method: "POST",
@@ -328,16 +317,42 @@ function updateCard(cardNumber) {
         id: cardID
       })
     })
-      .then(res => res.json())
-      .then(data => {
-        console.log(data);
-        //id die vom server erhalten wird als id für karte hinzufügen
+      .then(() => {
+        document
+          .getElementsByClassName("active")[0]
+          .getElementsByClassName("collapse")[0].innerHTML =
+          '<pre lang="de">' + content + "</pre>";
+        //Leere form
+        document.getElementById("thema").value = "";
+        document.getElementById("content").value = "";
+        //überschrift ändern
+        var h4 = document
+          .getElementById("addCard")
+          .getElementsByTagName("H4")[0];
+        h4.innerText = "Karteikarte hinzufügen";
+        //add button ändern
+        var btn = document.getElementById("addBtn");
+        btn.setAttribute("class", "btn btn-primary mb-2");
+        btn.setAttribute("value", "Hinzufügen");
+        //edit button ändern
+        var editBtn = document.getElementById("editCard");
+        editBtn.setAttribute("class", "btn btn-light");
+        editBtn.innerHTML = '<i class="fas fa-pen"></i>';
+        editBtn.setAttribute("state", "pen");
+
+        if (addInitHidden) {
+          //Falls das Karteikarten feld vorm dem Bearbeiten ausgeblendet war wird es jetz wieder ausgeblendet
+          toggleAddView();
+        }
       })
-      .catch(err => console.log(err));
-  }
-  if (addInitHidden) {
-    //Falls das Karteikarten feld vorm dem Bearbeiten ausgeblendet war wird es jetz wieder ausgeblendet
-    toggleAddView();
+      .catch(errs => {
+        console.log(errs);
+
+        showAlert(
+          "warning",
+          "Es schein Probleme bei der Verbindung mit dem Server zu geben. Bitte versuche es später erneut."
+        );
+      });
   }
 }
 
@@ -357,7 +372,10 @@ function toggleAddView() {
 
 //Event Listeners
 $(document).ready(registerEventListeners);
-
+function showMore() {
+  var relatedId = getActiveCardIndex();
+  $(`#${relatedId}`).collapse("toggle");
+}
 function registerEventListeners() {
   $("form").submit(function(e) {
     //verhindere dass eine POST request an den server geschickt wird, wenn im Suchfeld auf Enter gedrückt wird
