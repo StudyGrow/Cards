@@ -1,7 +1,10 @@
 const express = require("express");
-
 const { check, validationResult } = require("express-validator");
 const router = express.Router();
+
+router.get("/", (req, res) => {
+  res.redirect("/");
+});
 
 router.get("/liste", (req, res) => {
   req.services.cards.getCardsFromQuery(
@@ -26,7 +29,7 @@ router.post(
       .withMessage("Thema muss wenigstens 3 Zeichen enthalten"),
     check("thema")
       .isLength({
-        max: 25
+        max: 60
       })
       .withMessage("Thema darf nicht mehr als 25 Zeichen enthalten"),
     check("content")
@@ -89,24 +92,15 @@ router.post(
   ],
   (req, res) => {
     const errors = validationResult(req);
+
     if (!errors.isEmpty()) {
+      console.log(errors.array());
       res.status(422).json({
         errors: errors.array()
       });
     } else {
-      req.services.cards.updateCard({
-        _id: req.body.id
-      });
-      res.status.send();
-      // Registration.updateOne({
-      //     _id: req.body.id
-      // }, {
-      //     $set: {
-      //         content: req.body.content
-      //     }
-      // }).catch((err) => {
-      //     console.log('Error: ' + err);
-      // });
+      req.services.cards.updateCard(req.body.id, req.body.content);
+      res.status(200).send();
     }
   }
 );
@@ -150,56 +144,62 @@ router.get(
       //   }catch(error){
       //     res.status(400).send(error);
       //   }
-      // const p1 = new Promise((resolve,reject)=>{
-      //   try {
-      //     req.services.lectures.getLectureByQuery({
-      //       abrv: abrv
-      //     },resolve(vl));
-      //   } catch (error) {
-      //     reject(error);
-      //   }
-      // });
+      const p1 = new Promise((resolve, reject) => {
+        try {
+          req.services.lectures.getLectureByQuery(
+            {
+              abrv: req.params.vl
+            },
+            vl => resolve(vl)
+          );
+        } catch (error) {
+          reject(error);
+        }
+      });
 
-      // const p2 = new Promise((resolve,reject)=>{
-      //   try {
-      //     var cards = req.services.cards.getCardsFromQuery({
-      //       vorlesung: abrv
-      //     },resolve(cards));
-      //   } catch (error) {
-      //     reject(error);
-      //   }
-      // });
-
-      // Promise.all([p1,p2])
-      // .then(values=>{
-      //   res.render("Karteikarten", {
-      //     karten: values[1],
-      //     vorlesung: values[0].name
-      //   })
-      // })
-      // .catch(error=>{
-      //   console.log(error);
-      //   res.status(400).send(error);
-      // })
-
-      req.services.lectures.getLectureByQuery(
-        {
-          abrv: req.params.vl
-        },
-        vl => {
+      const p2 = new Promise((resolve, reject) => {
+        try {
           req.services.cards.getCardsFromQuery(
             {
-              vorlesung: vl.abrv
+              vorlesung: req.params.vl
             },
-            cards => {
-              res.render("Karteikarten", {
-                karten: cards,
-                vorlesung: vl.name
-              });
-            }
+            cards => resolve(cards)
           );
+        } catch (error) {
+          reject(error);
         }
-      );
+      });
+
+      Promise.all([p1, p2])
+        .then(values => {
+          res.render("Karteikarten", {
+            karten: values[1],
+            vorlesung: values[0].name
+          });
+        })
+        .catch(error => {
+          console.log(error);
+          res.status(400).send(error);
+        });
+
+      // req.services.lectures.getLectureByQuery(
+      //   {
+      //     abrv: req.params.vl
+      //   },
+      //   vl => {
+      //     req.services.cards.getCardsFromQuery(
+      //       {
+      //         vorlesung: vl.abrv
+      //       },
+      //       cards => {
+      //         res.render("Karteikarten", {
+      //           karten: cards,
+      //           vorlesung: vl.name
+      //         });
+      //       }
+      //     );
+      //   }
+      // );
     }
   }
 );

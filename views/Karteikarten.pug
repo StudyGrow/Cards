@@ -70,9 +70,8 @@ nav.navbar.navbar-expand-lg.navbar-light.bg-light(role='alert' style='padding-ri
               button.btn.btn-light.showMore(type='button' data-toggle='collapse' data-target=0 aria-expanded='false' aria-controls='collapseExample')
                 | Mehr dazu 
                 i.fas.fa-caret-down
-              #0.collapse.showMe
-                pre(lang="de")
-                  |!{karten[0].content}
+              #0.collapse
+                pre(lang="de") !{karten[0].content}
       - var n = 1;
       while n < karten.length
         .carousel-item
@@ -84,10 +83,8 @@ nav.navbar.navbar-expand-lg.navbar-light.bg-light(role='alert' style='padding-ri
               button.btn.btn-light.showMore(type='button' data-toggle='collapse' data-target=n aria-expanded='false' aria-controls='collapseExample')
                 | Mehr dazu 
                 i.fas.fa-caret-down
-              .collapse(id=n).showMe
-                
-                pre(lang="de")
-                  |!{karten[n].content}
+              .collapse(id=n)
+                pre(lang="de") !{karten[n].content}
         -n++
     if karten.length != 0
       a.carousel-control-prev(href='#carouselExampleControls' role='button' data-slide='prev')
@@ -101,7 +98,7 @@ nav.navbar.navbar-expand-lg.navbar-light.bg-light(role='alert' style='padding-ri
       h4
         | Karteikarte hinzuf&uuml;gen
       .form-group
-        label(for='thema') Thema
+        label(for='thema') Überschrift
         input#thema.form-control(name='thema' type='text' placeholder='Thema' lang="de")
       .form-group
         label(for='content') Informationen
