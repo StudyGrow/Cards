@@ -83,10 +83,11 @@ router.post("/addLecture", (req, res) => {
     req.body.lecture.name,
     req.body.lecture.abrv
   );
+  res.status(200).send();
 });
-
+let api = require("../routes/api");
 let vorlesung = require("../routes/vorlesung");
-
+router.use("/api", api);
 router.use("/vorlesung", vorlesung);
 
 module.exports = router;
