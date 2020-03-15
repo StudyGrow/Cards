@@ -39,8 +39,10 @@ export class AddCardFormComponent implements OnInit {
     console.log(f.value.thema);
     console.log(f.value.content);
     this.newCard = new Card(f.value.thema, f.value.content);
-    this.httpService.addCard(this.newCard, this.lecture.abrv).subscribe(id => {
-      this.newCard._id = id;
-    });
+    this.httpService
+      .addCard(this.newCard, this.lecture.abrv)
+      .subscribe(resp => {
+        this.newCard._id = resp.body;
+      });
   }
 }

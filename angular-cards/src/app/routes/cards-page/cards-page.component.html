@@ -1,3 +1,7 @@
-<app-header-content [vlName]="lecture.name"></app-header-content>
-<app-carousel [lecture]="lecture"></app-carousel>
-<app-add-card-form [lecture]="lecture"></app-add-card-form>
+<app-nav-bar></app-nav-bar>
+<div class="container">
+  <mat-spinner></mat-spinner>
+  <app-header-content [vlName]="lecture.name"></app-header-content>
+  <app-carousel [lecture]="lecture"></app-carousel>
+  <app-add-card-form [lecture]="lecture"></app-add-card-form>
+</div>

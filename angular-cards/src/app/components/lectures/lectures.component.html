@@ -1,5 +1,5 @@
 <ul class="list list-group">
   <li class="list-group-item" *ngFor="let lecture of lectures">
-    <a [href]="setLink(lecture)">{{ lecture.name }}</a>
+    <a [routerLink]="setLink(lecture)">{{ lecture.name }}</a>
   </li>
 </ul>

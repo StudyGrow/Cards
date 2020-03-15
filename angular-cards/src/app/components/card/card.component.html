@@ -1,21 +1,18 @@
-<div class="card" id=`{{card.id}}`>
-    <div class="card-header">
-        {{card.thema}}
+<div class="card" id="`{{ card._id }}`">
+  <div class="card-header">
+    {{ card.thema }}
+  </div>
+  <div class="card-body">
+    <button
+      class="btn btn-light"
+      type="button"
+      (click)="isCollapsed = !isCollapsed"
+    >
+      Mehr dazu
+      <i class="fas fa-caret-down"></i>
+    </button>
+    <div class="collapse" [ngbCollapse]="isCollapsed">
+      <pre lang="de">{{ card.content }}</pre>
     </div>
-    <div class="card-body">
-        <button class="btn btn-light" type="button"  (click)="isCollapsed = !isCollapsed">
-            Mehr dazu
-            <i class="fas fa-caret-down"></i>
-        </button>
-        <div class="collapse" [ngbCollapse]="isCollapsed">
-            <p lang="de">
-                {{card.content}}
-            </p>
-        </div>
-    </div>
+  </div>
 </div>
-   
-
-   
-
-

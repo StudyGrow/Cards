@@ -28,23 +28,10 @@ export class CarouselComponent implements OnInit {
     this.stateService.getAddComponentHidden().subscribe(value => {
       this.addComponentHidden = value;
     });
-    //this.cs.setActiveSlide(this.activeSlide).subscribe((res)=>console.log(res)); //Set active slide to the first slide
-    this.cs.getActiveSlide().subscribe(value => (this.activeSlide = value)); //read activeSlide
-
-    this.cards = [
-      {
-        _id: "oneifn",
-        thema: "Karte 1",
-        content: "Karteninhalt"
-      },
-      {
-        _id: "fwfwwg",
-        thema: "Karte 2",
-        content: "Karteninhalt"
-      }
-    ];
-    this.httpService.getCardsFromLecture(this.lecture).subscribe(cards => {
-      this.cards = cards;
+    this.cards = [];
+    this.httpService.getCardsFromLecture(this.lecture).subscribe(resp => {
+      this.cards = resp.body;
+      console.log(this.cards);
     }); //load the specific cards from the server by subscribing to the observable that the card-service provides
     this.cs.setNumberOfCarouselItems(this.cards.length);
   }

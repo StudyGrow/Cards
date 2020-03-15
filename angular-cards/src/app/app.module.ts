@@ -5,7 +5,7 @@ import { HttpClientModule } from "@angular/common/http";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { AppRoutingModule } from "./app-routing.module";
 import { FormsModule } from "@angular/forms";
-
+import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 //Components
 import { AppComponent } from "./app.component";
 import { NavBarComponent } from "./components/nav-bar/nav-bar.component";
@@ -31,6 +31,7 @@ import { StatesService } from "./services/states.service";
 import { CardsService } from "./services/cards.service";
 import { CarouselControlService } from "./services/carousel-control.service";
 import { HttpService } from "./services/http-service.service";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 
 @NgModule({
   declarations: [
@@ -59,7 +60,9 @@ import { HttpService } from "./services/http-service.service";
     AppRoutingModule,
     HttpClientModule,
     NgbModule,
-    FormsModule
+    FormsModule,
+    BrowserAnimationsModule,
+    MatProgressSpinnerModule
   ],
   providers: [StatesService, HttpService, CarouselControlService],
   bootstrap: [AppComponent]

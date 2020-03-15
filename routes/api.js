@@ -1,13 +1,15 @@
 const express = require("express");
 
-const { check, validationResult } = require("express-validator");
+const { check, query, validationResult } = require("express-validator");
 const router = express.Router();
 
 //Lecture routes
 //Get all Lectures
-router.get("/getAllLetures", (req, res) => {
+router.get("/getAllLectures", (req, res) => {
   try {
-    req.services.cards.getLectures(lectures => res.status(200).send(lectures));
+    req.services.lectures.getLectures(lectures =>
+      res.status(200).send(lectures)
+    );
   } catch (error) {
     console.log(error);
     res.status(422).send(error);
@@ -16,7 +18,7 @@ router.get("/getAllLetures", (req, res) => {
 //Get one specific lecture
 //query should include the abreviation of the lecture
 router.get(
-  "/getLeture",
+  "/getLecture",
   [
     query("abrv")
       .isLength({ min: 3, max: 7 })
@@ -31,9 +33,9 @@ router.get(
       return;
     }
     try {
-      req.services.cards.getLectureFromQuery(
+      req.services.lectures.getLectureByQuery(
         {
-          abrv: abrv
+          abrv: req.query.abrv
         },
         lecture => res.status(200).send(lecture)
       );
@@ -76,7 +78,7 @@ router.get(
     try {
       req.services.cards.getCardsFromQuery(
         {
-          vorlesung: abrv
+          vorlesung: req.query.abrv
         },
         cards => res.status(200).send(cards)
       );
