@@ -15,6 +15,8 @@
     type="button"
     state="pen"
     placement="top"
+    [disabled]="formMode == 'edit'"
+    (click)="enableEdit()"
     ngbTooltip="Bearbeiten"
   >
     <div class="fas fa-pen"></div>

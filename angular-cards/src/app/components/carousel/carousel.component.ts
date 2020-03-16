@@ -66,6 +66,10 @@ export class CarouselComponent implements OnInit {
       }
     }
   }
+  enableEdit() {
+    this.stateService.setFormMode("edit");
+  }
+
   setClass() {
     return !this.formShow ? "btn btn-light" : "btn btn-success";
   }

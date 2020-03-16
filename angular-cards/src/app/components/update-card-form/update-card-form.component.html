@@ -1,6 +1,6 @@
 <div id="addCard">
   <form #f="ngForm" (ngSubmit)="onSubmit(f)" novalidate>
-    <h4>Karteikarte hinzufügen</h4>
+    <h4>Karteikarte bearbeiten</h4>
     <div class="form-group">
       <label for="thema">Überschrift</label>
       <input
@@ -46,20 +46,26 @@
         >{{ content.value.length }}/400
       </small>
     </div>
-
-    <input
-      class="btn btn-primary mb-2"
-      id="addBtn"
-      type="submit"
-      value="Hinzufügen"
-      [disabled]="
-        !content.value ||
-        !thema.value ||
-        content.value.length == 0 ||
-        content.value.length > 400 ||
-        (thema.value.length > 0 && thema.value.length < 3) ||
-        thema.value.length > 60
-      "
-    />
+    <div class="form-group">
+      <input
+        class="btn btn-success mb-2 mr-1"
+        type="submit"
+        value="Sichern"
+        [disabled]="
+          !content.value ||
+          !thema.value ||
+          content.value.length == 0 ||
+          content.value.length > 400 ||
+          (thema.value.length > 0 && thema.value.length < 3) ||
+          thema.value.length > 60
+        "
+      />
+      <input
+        class="btn btn-danger mb-2"
+        type="button"
+        value="Abbruch"
+        (click)="cancelEdit()"
+      />
+    </div>
   </form>
 </div>

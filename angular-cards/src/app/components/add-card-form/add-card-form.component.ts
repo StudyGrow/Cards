@@ -21,21 +21,8 @@ export class AddCardFormComponent implements OnInit {
     private httpService: HttpService
   ) {}
 
-  ngOnInit(): void {
-    this.stateService.getAddComponentHidden().subscribe(value => {
-      this.hidden = value;
-    }); //Subscribe to StateService to see if form should be displayed
-  }
-  setStyle() {
-    if (this.hidden === undefined) {
-      return {
-        display: "none"
-      };
-    }
-    return {
-      display: this.hidden ? "none" : "block"
-    };
-  }
+  ngOnInit(): void {}
+  setStyle() {}
   onSubmit(f: NgForm) {
     this.newCard = new Card(f.value.thema, f.value.content);
     this.httpService
