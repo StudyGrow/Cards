@@ -1,10 +1,11 @@
-import { Component, OnInit, Input } from "@angular/core";
+import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
 import { CarouselControlService } from "../../services/carousel-control.service";
 import { HttpService } from "../../services/http-service.service";
 import { StatesService } from "../../services/states.service";
 import { Card } from "../../models/Card";
 
 import * as $ from "jquery";
+import { Carousel } from "../../../../node_modules/bootstrap/js/dist";
 import { Vorlesung } from "src/app/models/Vorlesung";
 @Component({
   selector: "app-carousel",
@@ -13,9 +14,13 @@ import { Vorlesung } from "src/app/models/Vorlesung";
 })
 export class CarouselComponent implements OnInit {
   @Input() lecture: Vorlesung;
+  @Output() setLoading: EventEmitter<boolean> = new EventEmitter();
   cards: Card[]; //array of all the cards
   activeSlide: number = 0;
   addComponentHidden: boolean;
+  formShow: boolean;
+  formMode: string;
+
   constructor(
     private cs: CarouselControlService,
     private httpService: HttpService,
@@ -23,45 +28,50 @@ export class CarouselComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.addComponentHidden = true;
-    this.stateService.setAddComponentHidden(true);
-    this.stateService.getAddComponentHidden().subscribe(value => {
-      this.addComponentHidden = value;
-    });
     this.cards = [];
     this.httpService.getCardsFromLecture(this.lecture).subscribe(resp => {
       this.cards = resp.body;
-      console.log(this.cards);
+      this.setLoading.emit(false);
     }); //load the specific cards from the server by subscribing to the observable that the card-service provides
-    this.cs.setNumberOfCarouselItems(this.cards.length);
+    this.stateService.setFormMode("none");
+    this.stateService.getFormMode().subscribe(mode => {
+      this.formShow = mode == "add";
+      this.formMode = mode;
+    });
   }
 
+  completeLoading(): void {
+    this.setLoading.emit(false);
+  }
   toggleAddView(): void {
-    this.stateService.setAddComponentHidden(!this.addComponentHidden);
+    if (this.formMode != "edit") {
+      if (this.formMode == "add") {
+        this.stateService.setFormMode("none");
+      } else {
+        this.stateService.setFormMode("add");
+      }
+    }
   }
   setClass() {
-    return this.addComponentHidden ? "btn btn-light" : "btn btn-success";
+    return !this.formShow ? "btn btn-light" : "btn btn-success";
   }
   goToSlide(index: number) {
-    ($("#carouselExampleControls") as any).carousel(index);
+    $("#carouselExampleControls").carousel(index);
   }
   previousSlide() {
-    ($("#carouselExampleControls") as any).carousel("prev");
+    $("#carouselExampleControls").carousel("prev");
   }
   nextSlide() {
-    ($("#carouselExampleControls") as any).carousel("next");
+    $("#carouselExampleControls").carousel("next");
   }
   showRandomCard() {
     var rand: number = this.activeSlide;
-    console.log("active Slide:" + this.activeSlide);
-
-    console.log("count:" + this.activeSlide);
     var count = 0;
     while (count < 5 && rand == this.activeSlide) {
       //calculate a new random index
       count++;
-      rand = Math.floor(Math.random() * this.activeSlide); //random Cardindex
+      rand = Math.floor(Math.random() * this.cards.length); //random Cardindex
     }
-    console.log("rand:" + rand);
+    this.goToSlide(rand);
   }
 }

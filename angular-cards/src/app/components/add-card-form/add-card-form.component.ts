@@ -36,13 +36,12 @@ export class AddCardFormComponent implements OnInit {
     };
   }
   onSubmit(f: NgForm) {
-    console.log(f.value.thema);
-    console.log(f.value.content);
     this.newCard = new Card(f.value.thema, f.value.content);
     this.httpService
       .addCard(this.newCard, this.lecture.abrv)
       .subscribe(resp => {
         this.newCard._id = resp.body;
+        f.reset();
       });
   }
 }

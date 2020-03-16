@@ -27,6 +27,7 @@
     (click)="toggleAddView()"
     placement="top"
     ngbTooltip="Hinzufügen"
+    [disabled]="formMode == 'edit'"
   >
     <div class="fas fa-plus"></div>
   </button>
@@ -63,4 +64,5 @@
     <span class="fas fa-chevron-right" aria-hidden="true"></span>
     <span class="sr-only">Next</span>
   </a>
+  <div data-slide-to="4"></div>
 </div>

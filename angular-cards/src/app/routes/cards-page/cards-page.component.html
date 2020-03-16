@@ -1,7 +1,15 @@
 <app-nav-bar></app-nav-bar>
+<mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
+
 <div class="container">
-  <mat-spinner></mat-spinner>
-  <app-header-content [vlName]="lecture.name"></app-header-content>
-  <app-carousel [lecture]="lecture"></app-carousel>
-  <app-add-card-form [lecture]="lecture"></app-add-card-form>
+  <app-header-content [title]="lecture.name"></app-header-content>
+  <app-carousel
+    (setLoading)="setLoading($event)"
+    [lecture]="lecture"
+  ></app-carousel>
+
+  <app-add-card-form
+    *ngIf="formMode == 'add'"
+    [lecture]="lecture"
+  ></app-add-card-form>
 </div>
