@@ -25,7 +25,6 @@ export class CardsPageComponent implements OnInit {
     this.httpService.getLectureByAbrv(this.vlAbrv).subscribe(resp => {
       if (resp.status == 504) {
         console.log("Server offline");
-        this.lecture = { name: "Vorlesung", abrv: this.vlAbrv };
       } else {
         this.lecture = resp.body;
         this.loading = false;

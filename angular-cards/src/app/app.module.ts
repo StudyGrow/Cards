@@ -12,7 +12,6 @@ import { NavBarComponent } from "./components/nav-bar/nav-bar.component";
 import { SearchBarComponent } from "./components/search-bar/search-bar.component";
 import { SearchSuggestionsComponent } from "./components/search-suggestions/search-suggestions.component";
 import { ModalComponent } from "./components/modal/modal.component";
-import { HeaderContentComponent } from "./components/header-content/header-content.component";
 
 import { AddCardFormComponent } from "./components/add-card-form/add-card-form.component";
 import { CarouselComponent } from "./components/carousel/carousel.component";
@@ -24,8 +23,7 @@ import { HomePageComponent } from "./routes/home-page/home-page.component";
 import { CardsPageComponent } from "./routes/cards-page/cards-page.component";
 //Services
 import { StatesService } from "./services/states.service";
-import { CardsService } from "./services/cards.service";
-import { CarouselControlService } from "./services/carousel-control.service";
+
 import { HttpService } from "./services/http-service.service";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 
@@ -36,7 +34,7 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
     SearchBarComponent,
     SearchSuggestionsComponent,
     ModalComponent,
-    HeaderContentComponent,
+
     AddCardFormComponent,
     CarouselComponent,
     CardComponent,
@@ -54,7 +52,7 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
     BrowserAnimationsModule,
     MatProgressBarModule
   ],
-  providers: [StatesService, HttpService, CarouselControlService],
+  providers: [StatesService, HttpService],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

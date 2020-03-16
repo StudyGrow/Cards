@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from "@angular/core";
+import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
 import { NgForm } from "@angular/forms";
 import { StatesService } from "../../services/states.service";
 import { HttpService } from "../../services/http-service.service";
@@ -12,6 +12,7 @@ import { Vorlesung } from "src/app/models/Vorlesung";
 })
 export class AddCardFormComponent implements OnInit {
   @Input() lecture: Vorlesung;
+  @Output() returnCard: EventEmitter<Card> = new EventEmitter();
   newCard: Card;
   hidden: boolean;
 
@@ -41,6 +42,7 @@ export class AddCardFormComponent implements OnInit {
       .addCard(this.newCard, this.lecture.abrv)
       .subscribe(resp => {
         this.newCard._id = resp.body;
+        this.returnCard.emit(this.newCard);
         f.reset();
       });
   }

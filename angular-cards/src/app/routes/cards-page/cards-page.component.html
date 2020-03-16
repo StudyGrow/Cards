@@ -2,7 +2,6 @@
 <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
 
 <div class="container">
-  <app-header-content [title]="lecture.name"></app-header-content>
   <app-carousel
     (setLoading)="setLoading($event)"
     [lecture]="lecture"
@@ -13,3 +12,4 @@
     [lecture]="lecture"
   ></app-add-card-form>
 </div>
+<app-modal></app-modal>

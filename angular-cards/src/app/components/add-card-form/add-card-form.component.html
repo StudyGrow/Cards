@@ -18,7 +18,7 @@
         class="form-text float-right"
         [ngStyle]="{
           color:
-            (thema.value.length > 0 && thema.value.length < 3) ||
+            (thema.value && thema.value.length > 0 && thema.value.length < 3) ||
             thema.value.length > 60
               ? '#ff0000'
               : '#000000'
@@ -40,7 +40,8 @@
       <small
         class="form-text float-right"
         [ngStyle]="{
-          color: content.value.length > 400 ? '#ff0000' : '#000000'
+          color:
+            content.value && content.value.length > 400 ? '#ff0000' : '#000000'
         }"
         >{{ content.value.length }}/400
       </small>
@@ -52,6 +53,8 @@
       type="submit"
       value="Hinzufügen"
       [disabled]="
+        !content.value ||
+        !thema.value ||
         content.value.length == 0 ||
         content.value.length > 400 ||
         (thema.value.length > 0 && thema.value.length < 3) ||
