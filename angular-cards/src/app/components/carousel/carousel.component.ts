@@ -9,10 +9,8 @@ import {
 
 import { HttpService } from "../../services/http-service.service";
 import { StatesService } from "../../services/states.service";
-import { Card } from "../../models/Card";
 
-import * as $ from "jquery";
-import { Carousel } from "../../../../node_modules/bootstrap/js/dist";
+import { Card } from "../../models/Card";
 import { Vorlesung } from "src/app/models/Vorlesung";
 
 @Component({
@@ -73,15 +71,6 @@ export class CarouselComponent implements OnInit {
   setClass() {
     return !this.formShow ? "btn btn-light" : "btn btn-success";
   }
-  goToSlide(index: number) {
-    $("#carouselExampleControls").carousel(index);
-  }
-  previousSlide() {
-    $("#carouselExampleControls").carousel("prev");
-  }
-  nextSlide() {
-    $("#carouselExampleControls").carousel("next");
-  }
   showRandomCard() {
     var rand: number = this.activeSlide;
     var count = 0;
@@ -90,6 +79,6 @@ export class CarouselComponent implements OnInit {
       count++;
       rand = Math.floor(Math.random() * this.cards.length); //random Cardindex
     }
-    this.goToSlide(rand);
+    console.log(rand);
   }
 }
