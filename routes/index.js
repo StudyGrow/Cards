@@ -38,17 +38,6 @@ router.get("/", function(req, res) {
   } catch (error) {
     res.status(404).send(error);
   }
-
-  // Vorlesung.find((err, vls) => {
-  //   if (err) {
-  //     console.log(err);
-  //   } else {
-  //     //console.log(vls);
-  //     res.render('kategorie', {
-  //       vorlesungen: vls
-  //     });
-  //   }
-  // });
 });
 
 router.post(
@@ -71,16 +60,13 @@ router.post(
       });
     } else {
       req.services.lectures.addLecture(req.body.name, req.body.abrv);
-      // const vl = new Vorlesung();
-      // vl.name = req.body.name;
-      // vl.abrv = req.body.abrv;
-      // vl.save();
     }
   }
 );
 
 let vorlesung = require("../routes/vorlesung");
-
+let api = require("../routes/api");
+router.use("/api", api);
 router.use("/vorlesung", vorlesung);
 
 module.exports = router;

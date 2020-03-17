@@ -29,7 +29,7 @@ router.post(
       .withMessage("Thema muss wenigstens 3 Zeichen enthalten"),
     check("thema")
       .isLength({
-        max: 40
+        max: 60
       })
       .withMessage("Thema darf nicht mehr als 25 Zeichen enthalten"),
     check("content")
