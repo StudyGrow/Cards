@@ -30,10 +30,13 @@ export class CardsPageComponent implements OnInit {
         this.loading = false;
       }
     });
-
+    this.stateServie
+      .getLoadingState()
+      .subscribe(value => (this.loading = value));
     this.stateServie.getFormMode().subscribe(mode => (this.formMode = mode));
   }
   setLoading(loading: boolean): void {
     this.loading = loading;
+    this.stateServie.setLoadingState(loading);
   }
 }

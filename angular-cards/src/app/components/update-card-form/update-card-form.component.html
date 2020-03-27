@@ -16,14 +16,8 @@
       />
       <small
         class="form-text float-right"
-        [ngStyle]="{
-          color:
-            (thema.value && thema.value.length > 0 && thema.value.length < 3) ||
-            thema.value.length > 60
-              ? '#ff0000'
-              : '#000000'
-        }"
-        >{{ thema.value.length }}/60
+        [ngStyle]="setThemaCharIndicatorStyle(thema)"
+        >{{ getLength(thema) }}/60
       </small>
     </div>
     <div class="form-group">
@@ -39,11 +33,8 @@
       ></textarea>
       <small
         class="form-text float-right"
-        [ngStyle]="{
-          color:
-            content.value && content.value.length > 400 ? '#ff0000' : '#000000'
-        }"
-        >{{ content.value.length }}/400
+        [ngStyle]="setContentCharIndicatorStyle(content)"
+        >{{ getLength(content) }}/400
       </small>
     </div>
     <div class="form-group">
@@ -51,14 +42,7 @@
         class="btn btn-success mb-2 mr-1"
         type="submit"
         value="Sichern"
-        [disabled]="
-          !content.value ||
-          !thema.value ||
-          content.value.length == 0 ||
-          content.value.length > 400 ||
-          (thema.value.length > 0 && thema.value.length < 3) ||
-          thema.value.length > 60
-        "
+        [disabled]="isDisabled(content, thema)"
       />
       <input
         class="btn btn-danger mb-2"

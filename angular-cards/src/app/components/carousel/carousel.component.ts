@@ -9,7 +9,7 @@ import {
 
 import { HttpService } from "../../services/http-service.service";
 import { StatesService } from "../../services/states.service";
-
+import { CardsServiceService } from "../../services/cards-service.service";
 import { Card } from "../../models/Card";
 import { Vorlesung } from "src/app/models/Vorlesung";
 
@@ -30,7 +30,8 @@ export class CarouselComponent implements OnInit {
 
   constructor(
     private httpService: HttpService,
-    private stateService: StatesService
+    private stateService: StatesService,
+    private cardsService: CardsServiceService
   ) {}
 
   ngOnChanges() {
@@ -38,13 +39,12 @@ export class CarouselComponent implements OnInit {
       this.title = this.lecture.name;
       this.httpService.getCardsFromLecture(this.lecture).subscribe(resp => {
         this.cards = resp.body;
+        this.cardsService.initCards(this.cards);
         this.setLoading.emit(false);
       }); //load the specific cards from the server by subscribing to the observable that the card-service provides
     }
   }
   ngOnInit(): void {
-    this.cards = [];
-
     this.stateService.setFormMode("none");
     this.stateService.getFormMode().subscribe(mode => {
       this.formShow = mode == "add";

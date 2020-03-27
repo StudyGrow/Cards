@@ -38,6 +38,51 @@ export class UpdateCardFormComponent implements OnInit {
       console.log("The dialog was closed");
     });
   }
+
+  //Function to set style of small character indicator
+  setThemaCharIndicatorStyle(thema) {
+    if (thema.value) {
+      return {
+        color:
+          (thema.value && thema.value.length > 0 && thema.value.length < 3) ||
+          thema.value.length > 60
+            ? "#ff0000"
+            : "#000000"
+      };
+    } else {
+      return { color: "#000000" };
+    }
+  }
+  //Function to set style of small character indicator
+  setContentCharIndicatorStyle(content) {
+    if (content.value) {
+      return {
+        color:
+          content.value && content.value.length > 400 ? "#ff0000" : "#000000"
+      };
+    } else {
+      return { color: "#000000" };
+    }
+  }
+
+  getLength(elem) {
+    if (elem.value) {
+      return elem.value.length;
+    } else {
+      return 0;
+    }
+  }
+
+  isDisabled(content, thema) {
+    if (!content.value || !thema.value) {
+      return true;
+    }
+    return (
+      content.value.length > 400 ||
+      (thema.value.length > 0 && thema.value.length < 3) ||
+      thema.value.length > 60
+    );
+  }
 }
 @Component({
   selector: "dialog-overview-example-dialog",

@@ -1,28 +1,28 @@
 //This service is made to manage states across components
 
 import { Injectable } from "@angular/core";
-import { Subject, Observable } from "rxjs";
+import { Subject, BehaviorSubject, Observable } from "rxjs";
 
 @Injectable({
   providedIn: "root"
 })
 export class StatesService {
-  addComponentHidden: Subject<boolean> = new Subject();
-  formMode: Subject<string> = new Subject();
+  private formMode$: BehaviorSubject<string> = new BehaviorSubject("none");
+  private loading$: BehaviorSubject<boolean> = new BehaviorSubject(true);
 
   constructor() {}
 
-  getFormMode(): Subject<string> {
-    return this.formMode;
+  getFormMode(): Observable<string> {
+    return this.formMode$.asObservable();
   }
   setFormMode(mode: string): void {
-    this.formMode.next(mode);
-  }
-  getAddComponentHidden(): Subject<boolean> {
-    return this.addComponentHidden;
+    this.formMode$.next(mode);
   }
 
-  setAddComponentHidden(value: boolean): void {
-    this.addComponentHidden.next(value);
+  getLoadingState(): BehaviorSubject<boolean> {
+    return this.loading$;
+  }
+  setLoadingState(value: boolean) {
+    this.loading$.next(value);
   }
 }
