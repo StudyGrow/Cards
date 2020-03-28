@@ -86,6 +86,10 @@ export class CarouselComponent implements OnInit {
   setClass() {
     return !this.formShow ? "btn btn-light" : "btn btn-success";
   }
+
+  selectSlide(n: number) {
+    this.carousel.select(n.toString());
+  }
   showRandomCard() {
     var rand: number = this.activeSlide;
     var count = 0;
@@ -94,15 +98,15 @@ export class CarouselComponent implements OnInit {
       count++;
       rand = Math.floor(Math.random() * this.cards.length); //random Cardindex
     }
-    console.log(rand);
+    this.carousel.select(rand.toString());
   }
   goToPrev() {
-    console.log("prev");
     this.carousel.prev();
   }
   goToNext() {
-    console.log("nxt");
     this.carousel.next();
   }
-  onSlide(slideEvent: NgbSlideEvent) {}
+  onSlide(slideEvent: NgbSlideEvent) {
+    this.cardsService.setActiveCardIndex(this.activeSlide);
+  }
 }

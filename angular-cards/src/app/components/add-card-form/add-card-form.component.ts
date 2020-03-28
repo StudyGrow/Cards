@@ -4,7 +4,6 @@ import { StatesService } from "../../services/states.service";
 import { CardsService } from "../../services/cards.service";
 import { Card } from "../../models/Card";
 import { Vorlesung } from "src/app/models/Vorlesung";
-import { throwMatDialogContentAlreadyAttachedError } from "@angular/material/dialog";
 
 @Component({
   selector: "app-add-card-form",

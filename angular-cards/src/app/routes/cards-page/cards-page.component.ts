@@ -27,7 +27,6 @@ export class CardsPageComponent implements OnInit {
         console.log("Server offline");
       } else {
         this.lecture = resp.body;
-        this.loading = false;
       }
     });
     this.stateServie
@@ -35,6 +34,7 @@ export class CardsPageComponent implements OnInit {
       .subscribe(value => (this.loading = value));
     this.stateServie.getFormMode().subscribe(mode => (this.formMode = mode));
   }
+
   setLoading(loading: boolean): void {
     this.loading = loading;
     this.stateServie.setLoadingState(loading);

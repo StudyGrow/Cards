@@ -46,12 +46,13 @@
       *ngIf="cards"
       [showNavigationArrows]="false"
       [showNavigationIndicators]="false"
-    >
-      <ng-template ngbSlide *ngFor="let card of cards">
-        <div>
-          <app-card [card]="card"></app-card>
-        </div>
-      </ng-template>
+      ><ng-container *ngFor="let card of cards; index as i">
+        <ng-template ngbSlide [id]="i.toString()">
+          <div>
+            <app-card [card]="card"></app-card>
+          </div>
+        </ng-template>
+      </ng-container>
     </ngb-carousel>
   </div>
   <a (click)="goToNext()">
