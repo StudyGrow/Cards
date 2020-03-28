@@ -4,7 +4,8 @@ import {
   Input,
   Output,
   EventEmitter,
-  SimpleChanges
+  SimpleChanges,
+  ViewChild
 } from "@angular/core";
 
 import { HttpService } from "../../services/http.service";
@@ -12,6 +13,12 @@ import { StatesService } from "../../services/states.service";
 import { CardsService } from "../../services/cards.service";
 import { Card } from "../../models/Card";
 import { Vorlesung } from "src/app/models/Vorlesung";
+import {
+  NgbCarouselConfig,
+  NgbCarousel,
+  NgbSlideEvent,
+  NgbSlideEventSource
+} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: "app-carousel",
@@ -21,6 +28,8 @@ import { Vorlesung } from "src/app/models/Vorlesung";
 export class CarouselComponent implements OnInit {
   @Input() lecture: Vorlesung;
   @Output() setLoading: EventEmitter<boolean> = new EventEmitter();
+  @ViewChild("mycarousel", { static: false }) carousel: NgbCarousel;
+
   cards: Card[]; //array of all the cards
   activeSlide: number = 0;
   title: string;
@@ -29,10 +38,16 @@ export class CarouselComponent implements OnInit {
   formMode: string;
 
   constructor(
+    config: NgbCarouselConfig,
     private httpService: HttpService,
     private stateService: StatesService,
     private cardsService: CardsService
-  ) {}
+  ) {
+    config.interval = -1;
+    config.wrap = true;
+    config.keyboard = true;
+    config.pauseOnHover = false;
+  }
 
   ngOnChanges() {
     if (this.lecture) {
@@ -81,4 +96,13 @@ export class CarouselComponent implements OnInit {
     }
     console.log(rand);
   }
+  goToPrev() {
+    console.log("prev");
+    this.carousel.prev();
+  }
+  goToNext() {
+    console.log("nxt");
+    this.carousel.next();
+  }
+  onSlide(slideEvent: NgbSlideEvent) {}
 }

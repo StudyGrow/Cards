@@ -3,6 +3,7 @@
 }
 #vorlesung {
   text-align: center;
+  margin-top: 5px;
 }
 #btnDiv {
   display: block;
@@ -26,7 +27,20 @@
 .carousel-control-next {
   width: 5%;
 }
-.fa-chevron-left,
-.fa-chevron-right {
+a {
   color: black;
+  display: inline-flex;
+  align-items: center;
+  width: 5%;
+}
+span {
+  text-align: center;
+  width: 100%;
+}
+#carousel {
+  width: 90%;
+}
+.row {
+  max-width: 900px;
+  margin: 0;
 }

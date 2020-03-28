@@ -1,5 +1,6 @@
 .container {
   max-width: 900px;
+  padding: 0;
 }
 .row {
   width: 90%;
