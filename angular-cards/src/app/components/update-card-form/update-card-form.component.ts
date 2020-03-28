@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
 import { NgForm } from "@angular/forms";
 import { StatesService } from "../../services/states.service";
-import { HttpService } from "../../services/http-service.service";
+import { HttpService } from "../../services/http.service";
 import { Card } from "../../models/Card";
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 

@@ -1,6 +1,6 @@
 import { Component, OnInit, Output, EventEmitter } from "@angular/core";
 import { Vorlesung } from "../../models/Vorlesung";
-import { HttpService } from "../../services/http-service.service";
+import { HttpService } from "../../services/http.service";
 @Component({
   selector: "app-lectures",
   templateUrl: "./lectures.component.html",

@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { HttpService } from "./http-service.service";
+import { HttpService } from "./http.service";
 import { Subject, Observable, BehaviorSubject } from "rxjs";
 import { Card } from "../models/Card";
 import { Vorlesung } from "../models/Vorlesung";
@@ -7,7 +7,7 @@ import { StatesService } from "./states.service";
 @Injectable({
   providedIn: "root"
 })
-export class CardsServiceService {
+export class CardsService {
   private cards$: BehaviorSubject<Card[]>;
   private init: boolean = true;
   private cards: Card[];
@@ -15,7 +15,6 @@ export class CardsServiceService {
     private httpService: HttpService,
     private statesService: StatesService
   ) {}
-
   getCards(): Observable<Card[]> {
     return this.cards$.asObservable();
   }

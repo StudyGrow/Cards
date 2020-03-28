@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
-import { HttpService } from "../../services/http-service.service";
+import { HttpService } from "../../services/http.service";
 import { StatesService } from "../../services/states.service";
 import { Vorlesung } from "src/app/models/Vorlesung";
 

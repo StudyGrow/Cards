@@ -22,7 +22,9 @@ import { HomePageComponent } from "./routes/home-page/home-page.component";
 import { CardsPageComponent } from "./routes/cards-page/cards-page.component";
 //Services
 import { StatesService } from "./services/states.service";
-import { HttpService } from "./services/http-service.service";
+import { HttpService } from "./services/http.service";
+import { CardsService } from "./services/cards.service";
+
 //Material Modules
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { UpdateCardFormComponent } from "./components/update-card-form/update-card-form.component";
@@ -54,7 +56,7 @@ import { UpdateCardFormComponent } from "./components/update-card-form/update-ca
     MatProgressBarModule,
     MatDialogModule
   ],
-  providers: [StatesService, HttpService],
+  providers: [StatesService, HttpService, CardsService],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

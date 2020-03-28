@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
 import { NgForm } from "@angular/forms";
 import { StatesService } from "../../services/states.service";
-import { CardsServiceService } from "../../services/cards-service.service";
+import { CardsService } from "../../services/cards.service";
 import { Card } from "../../models/Card";
 import { Vorlesung } from "src/app/models/Vorlesung";
 import { throwMatDialogContentAlreadyAttachedError } from "@angular/material/dialog";
@@ -19,7 +19,7 @@ export class AddCardFormComponent implements OnInit {
   Contentlength: number;
   themaLength: number;
   constructor(
-    private cardsService: CardsServiceService,
+    private cardsService: CardsService,
     private stateService: StatesService
   ) {}
 

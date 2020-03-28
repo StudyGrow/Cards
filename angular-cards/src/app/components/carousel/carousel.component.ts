@@ -7,9 +7,9 @@ import {
   SimpleChanges
 } from "@angular/core";
 
-import { HttpService } from "../../services/http-service.service";
+import { HttpService } from "../../services/http.service";
 import { StatesService } from "../../services/states.service";
-import { CardsServiceService } from "../../services/cards-service.service";
+import { CardsService } from "../../services/cards.service";
 import { Card } from "../../models/Card";
 import { Vorlesung } from "src/app/models/Vorlesung";
 
@@ -31,7 +31,7 @@ export class CarouselComponent implements OnInit {
   constructor(
     private httpService: HttpService,
     private stateService: StatesService,
-    private cardsService: CardsServiceService
+    private cardsService: CardsService
   ) {}
 
   ngOnChanges() {
