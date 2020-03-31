@@ -12,8 +12,8 @@ export class CardsService {
   private activeCardIndex$: BehaviorSubject<number> = new BehaviorSubject<
     number
   >(0);
+  private activeIndex: number;
   private cards: Card[];
-  private activeCardIndex: number = 0;
 
   constructor(
     private httpService: HttpService,
@@ -30,6 +30,7 @@ export class CardsService {
 
   initCards(cards: Card[]) {
     this.cards$ = new BehaviorSubject<Card[]>(cards);
+    this.cards = cards;
   }
   updateCards(cards: Card[]) {
     this.cards$.next(cards);
@@ -51,10 +52,7 @@ export class CardsService {
     return this.activeCardIndex$.asObservable();
   }
   setActiveCardIndex(i: number) {
+    console.log(i);
     this.activeCardIndex$.next(i);
-    this.activeCardIndex = i;
-  }
-  getActiveCard(): Card {
-    return this.cards[this.activeCardIndex];
   }
 }

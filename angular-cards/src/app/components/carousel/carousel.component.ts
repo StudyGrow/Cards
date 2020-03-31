@@ -7,7 +7,14 @@ import {
   SimpleChanges,
   ViewChild
 } from "@angular/core";
-
+import {
+  trigger,
+  state,
+  style,
+  transition,
+  animate,
+  group
+} from "@angular/animations";
 import { HttpService } from "../../services/http.service";
 import { StatesService } from "../../services/states.service";
 import { CardsService } from "../../services/cards.service";
@@ -65,9 +72,14 @@ export class CarouselComponent implements OnInit {
       this.formShow = mode == "add";
       this.formMode = mode;
     });
-    this.cardsService
-      .getActiveCardIndex()
-      .subscribe(active => (this.activeSlide = active));
+
+    this.cardsService.getActiveCardIndex().subscribe(index => {
+      if (this.carousel && this.activeSlide != index) {
+        this.activeSlide = index;
+        console.log("sliding");
+        this.carousel.select(index.toString());
+      }
+    });
   }
 
   completeLoading(): void {
@@ -110,6 +122,6 @@ export class CarouselComponent implements OnInit {
     this.carousel.next();
   }
   onSlide(slideEvent: NgbSlideEvent) {
-    this.cardsService.setActiveCardIndex(parseInt(slideEvent.current));
+    //this.cardsService.setActiveCardIndex(parseInt(slideEvent.current));
   }
 }

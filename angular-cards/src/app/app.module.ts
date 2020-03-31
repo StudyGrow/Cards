@@ -11,7 +11,7 @@ import { MatDialogModule } from "@angular/material/dialog";
 import { AppComponent } from "./app.component";
 import { NavBarComponent } from "./components/nav-bar/nav-bar.component";
 import { SearchBarComponent } from "./components/search-bar/search-bar.component";
-import { SearchSuggestionsComponent } from "./components/search-suggestions/search-suggestions.component";
+
 import { ModalComponent } from "./components/modal/modal.component";
 import { AddCardFormComponent } from "./components/add-card-form/add-card-form.component";
 import { CarouselComponent } from "./components/carousel/carousel.component";
@@ -34,7 +34,7 @@ import { UpdateCardFormComponent } from "./components/update-card-form/update-ca
     AppComponent,
     NavBarComponent,
     SearchBarComponent,
-    SearchSuggestionsComponent,
+
     ModalComponent,
 
     AddCardFormComponent,

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from "@angular/core";
+import { Component, OnInit, HostListener } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { HttpService } from "../../services/http.service";
 import { StatesService } from "../../services/states.service";
@@ -12,10 +12,15 @@ import { Card } from "../../models/Card";
 })
 export class CardsPageComponent implements OnInit {
   public vlAbrv: string;
+  public ativeCard: number;
   public lecture: Vorlesung;
   public loading: boolean = true;
   public formMode: string = "none";
   public cards: Card[];
+  @HostListener("click", ["$event.target"])
+  onClick() {
+    this.stateServie.setHideSuggestions(true);
+  }
   constructor(
     private route: ActivatedRoute,
     private httpService: HttpService,
@@ -35,6 +40,9 @@ export class CardsPageComponent implements OnInit {
           this.cards = resp.body;
         });
       }
+    });
+    this.cardsService.getActiveCardIndex().subscribe(index => {
+      this.ativeCard = index;
     });
     this.stateServie
       .getLoadingState()
