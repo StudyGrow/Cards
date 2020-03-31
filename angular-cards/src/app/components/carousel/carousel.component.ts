@@ -31,7 +31,7 @@ export class CarouselComponent implements OnInit {
   @ViewChild("mycarousel", { static: false }) carousel: NgbCarousel;
 
   cards: Card[]; //array of all the cards
-  activeSlide: number = 0;
+  activeSlide: number;
   title: string;
   addComponentHidden: boolean;
   formShow: boolean;
@@ -65,6 +65,9 @@ export class CarouselComponent implements OnInit {
       this.formShow = mode == "add";
       this.formMode = mode;
     });
+    this.cardsService
+      .getActiveCardIndex()
+      .subscribe(active => (this.activeSlide = active));
   }
 
   completeLoading(): void {
@@ -107,6 +110,6 @@ export class CarouselComponent implements OnInit {
     this.carousel.next();
   }
   onSlide(slideEvent: NgbSlideEvent) {
-    this.cardsService.setActiveCardIndex(this.activeSlide);
+    this.cardsService.setActiveCardIndex(parseInt(slideEvent.current));
   }
 }

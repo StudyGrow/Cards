@@ -21,7 +21,11 @@ export class CardsService {
   ) {}
 
   getCards(): Observable<Card[]> {
-    return this.cards$.asObservable();
+    if (this.cards$) {
+      return this.cards$.asObservable();
+    } else {
+      return of([]);
+    }
   }
 
   initCards(cards: Card[]) {
