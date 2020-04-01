@@ -28,14 +28,14 @@ module.exports = function cardsService() {
       }
     });
   };
-  cardsService.updateCard = (id, content) => {
-    console.log(content);
+  cardsService.updateCard = (id, thema, content) => {
     Card.updateOne(
       {
         _id: id
       },
       {
         $set: {
+          thema: thema,
           content: content
         }
       }
