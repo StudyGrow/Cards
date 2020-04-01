@@ -134,7 +134,7 @@ router.post(
 router.put(
   "/updateCard",
   [
-    check("card._id")
+    check("card.abrv")
       .isLength({ min: 3, max: 7 })
       .withMessage("Lecture abreviation must be between 3 and 7 characters"),
     check("card.thema")
@@ -158,7 +158,7 @@ router.put(
       });
     } else {
       req.services.cards.updateCard({
-        _id: req.body.id,
+        _id: req.body.card._id,
         thema: req.body.card.thema,
         content: req.body.card.content
       });
