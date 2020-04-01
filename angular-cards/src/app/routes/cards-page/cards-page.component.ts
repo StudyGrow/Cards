@@ -41,7 +41,7 @@ export class CardsPageComponent implements OnInit {
         });
       }
     });
-    this.cardsService.getActiveCardIndex().subscribe(index => {
+    this.cardsService.getNewCardIndex().subscribe(index => {
       this.ativeCard = index;
     });
     this.stateServie

@@ -8,6 +8,7 @@ import { BehaviorSubject, Observable } from "rxjs";
 })
 export class StatesService {
   private formMode$: BehaviorSubject<string> = new BehaviorSubject("none");
+  private lastFormMode: string;
   private loading$: BehaviorSubject<boolean> = new BehaviorSubject(true);
   private hideSgtn$: BehaviorSubject<boolean> = new BehaviorSubject(true);
 
@@ -17,7 +18,16 @@ export class StatesService {
     return this.formMode$.asObservable();
   }
   setFormMode(mode: string): void {
-    this.formMode$.next(mode);
+    if (mode == "reset") {
+      if (!this.lastFormMode) {
+        //last form mode is undefined
+        this.lastFormMode = "none";
+      } // last Form mode defined
+      this.formMode$.next(this.lastFormMode);
+    } else {
+      this.formMode$.next(mode);
+      if (mode != "edit") this.lastFormMode = mode;
+    }
   }
 
   getLoadingState(): BehaviorSubject<boolean> {

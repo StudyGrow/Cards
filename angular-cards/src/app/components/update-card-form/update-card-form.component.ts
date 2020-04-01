@@ -2,7 +2,9 @@ import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
 import { NgForm } from "@angular/forms";
 import { StatesService } from "../../services/states.service";
 import { HttpService } from "../../services/http.service";
+import { CardsService } from "../../services/cards.service";
 import { Card } from "../../models/Card";
+import { Vorlesung } from "../../models/Vorlesung";
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 
 @Component({
@@ -11,31 +13,41 @@ import { MatDialog, MatDialogRef } from "@angular/material/dialog";
   styleUrls: ["./update-card-form.component.css"]
 })
 export class UpdateCardFormComponent implements OnInit {
-  @Input() card: Card;
+  @Input() lecture: Vorlesung;
   @Output() returnCard: EventEmitter<Card> = new EventEmitter();
+  public card: Card = { thema: "", content: "" };
+  private cards: Card[];
 
-  hidden: boolean;
+  private cardIndex: number;
+  private activeCardIndex: number;
   constructor(
-    private stateService: StatesService,
+    private cardsService: CardsService,
     private httpService: HttpService,
+    private statesService: StatesService,
     public dialog: MatDialog
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.cardsService.getCards().subscribe(cards => (this.cards = cards));
+    this.cardsService
+      .getActiveCardIndex()
+      .subscribe(index => (this.activeCardIndex = index));
+
+    this.card = { ...this.cards[this.activeCardIndex] };
+    this.cardIndex = this.activeCardIndex;
+  }
+
   onSubmit(f: NgForm) {
-    this.httpService.updateCard(this.card).subscribe(resp => {
-      this.card._id = resp.body;
-      this.returnCard.emit(this.card);
-      f.reset();
-    });
+    this.statesService.setLoadingState(true);
+    this.card.content = f.value.content;
+    this.card.thema = f.value.thema;
+    console.log(this.card);
+    this.cardsService.updateCard(this.card, this.lecture.abrv, this.cardIndex);
+    f.reset();
   }
   cancelEdit() {
     const dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
       width: "400px"
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log("The dialog was closed");
     });
   }
 
@@ -89,10 +101,14 @@ export class UpdateCardFormComponent implements OnInit {
   templateUrl: "dialog.html"
 })
 export class DialogOverviewExampleDialog {
-  constructor(public dialogRef: MatDialogRef<DialogOverviewExampleDialog>) {}
+  constructor(
+    public dialogRef: MatDialogRef<DialogOverviewExampleDialog>,
+    private service: StatesService
+  ) {}
 
   cancel() {
-    console.log("cancelled");
+    this.service.setFormMode("reset");
+
     this.dialogRef.close();
   }
   onNoClick(): void {

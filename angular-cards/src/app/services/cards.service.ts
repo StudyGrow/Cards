@@ -9,10 +9,12 @@ import { StatesService } from "./states.service";
 })
 export class CardsService {
   private cards$: BehaviorSubject<Card[]>;
+  private newCardIndex$: BehaviorSubject<number> = new BehaviorSubject<number>(
+    0
+  );
   private activeCardIndex$: BehaviorSubject<number> = new BehaviorSubject<
     number
   >(0);
-  private activeIndex: number;
   private cards: Card[];
 
   constructor(
@@ -24,6 +26,7 @@ export class CardsService {
     if (this.cards$) {
       return this.cards$.asObservable();
     } else {
+      console.log("requesting uninitialized cards array, returning []");
       return of([]);
     }
   }
@@ -35,7 +38,17 @@ export class CardsService {
   updateCards(cards: Card[]) {
     this.cards$.next(cards);
   }
-
+  updateCard(card: Card, vlAbrv: string, index: number) {
+    if (!card.abrv) {
+      card.abrv = vlAbrv;
+    }
+    this.httpService.updateCard(card).subscribe(resp => {
+      this.statesService.setLoadingState(false);
+      this.statesService.setFormMode("reset");
+      this.cards[index] = card;
+      this.updateCards(this.cards);
+    });
+  }
   addCard(card: Card, vlAbrv: string) {
     if (!this.cards) {
       this.cards$.subscribe(cards => (this.cards = cards));
@@ -45,14 +58,20 @@ export class CardsService {
       this.statesService.setLoadingState(false);
       card._id = response.body;
       this.cards.push(card);
-      this.cards$.next(this.cards);
+      this.updateCards(this.cards);
     });
+  }
+  getNewCardIndex(): Observable<number> {
+    return this.newCardIndex$.asObservable();
+  }
+  setNewCardIndex(i: number) {
+    console.log(i);
+    this.newCardIndex$.next(i);
+  }
+  setActiveCardIndex(i: number) {
+    this.activeCardIndex$.next(i);
   }
   getActiveCardIndex(): Observable<number> {
     return this.activeCardIndex$.asObservable();
-  }
-  setActiveCardIndex(i: number) {
-    console.log(i);
-    this.activeCardIndex$.next(i);
   }
 }

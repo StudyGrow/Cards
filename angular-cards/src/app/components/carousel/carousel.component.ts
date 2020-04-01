@@ -73,7 +73,7 @@ export class CarouselComponent implements OnInit {
       this.formMode = mode;
     });
 
-    this.cardsService.getActiveCardIndex().subscribe(index => {
+    this.cardsService.getNewCardIndex().subscribe(index => {
       if (this.carousel && this.activeSlide != index) {
         this.activeSlide = index;
         console.log("sliding");
@@ -99,7 +99,7 @@ export class CarouselComponent implements OnInit {
   }
 
   setClass() {
-    return !this.formShow ? "btn btn-light" : "btn btn-success";
+    return !this.formShow ? "btn btn-light" : "btn btn-info";
   }
 
   selectSlide(n: number) {
@@ -122,6 +122,6 @@ export class CarouselComponent implements OnInit {
     this.carousel.next();
   }
   onSlide(slideEvent: NgbSlideEvent) {
-    //this.cardsService.setActiveCardIndex(parseInt(slideEvent.current));
+    this.cardsService.setActiveCardIndex(parseInt(slideEvent.current));
   }
 }

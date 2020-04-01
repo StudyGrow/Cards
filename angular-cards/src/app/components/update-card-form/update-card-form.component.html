@@ -12,7 +12,7 @@
         minlength="3"
         required
         #thema="ngModel"
-        ngModel
+        [(ngModel)]="card.thema"
       />
       <small
         class="form-text float-right"
@@ -29,7 +29,7 @@
         rows="5"
         required
         #content="ngModel"
-        ngModel
+        [(ngModel)]="card.content"
       ></textarea>
       <small
         class="form-text float-right"

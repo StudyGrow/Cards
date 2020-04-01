@@ -50,6 +50,6 @@ export class SearchBarComponent implements OnInit {
   navigateTo(e: Event, index: number) {
     e.preventDefault();
     console.log("index: ", index);
-    this.cardsService.setActiveCardIndex(index);
+    this.cardsService.setNewCardIndex(index);
   }
 }

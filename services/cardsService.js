@@ -28,20 +28,23 @@ module.exports = function cardsService() {
       }
     });
   };
-  cardsService.updateCard = (id, content) => {
-    console.log(content);
+  cardsService.updateCard = (id, thema, content) => {
+    console.log(thema);
     Card.updateOne(
       {
         _id: id
       },
       {
         $set: {
+          thema: thema,
           content: content
         }
       }
-    ).catch(err => {
-      console.log("Error on updateCard: " + err);
-    });
+    )
+      .then(() => console.log("Card updated"))
+      .catch(err => {
+        console.log("Error on updateCard: " + err);
+      });
   };
   return cardsService;
 };

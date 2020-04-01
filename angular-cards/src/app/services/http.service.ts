@@ -33,10 +33,14 @@ export class HttpService {
     );
   }
   updateCard(card: Card): Observable<HttpResponse<any>> {
-    return this.http.put<any>(this.urlBase + "updateCard", card, {
-      headers: this.httpOptions.headers,
-      observe: "response"
-    });
+    return this.http.put<any>(
+      this.urlBase + "updateCard",
+      { card: card },
+      {
+        headers: this.httpOptions.headers,
+        observe: "response"
+      }
+    );
   }
 
   //Lectures

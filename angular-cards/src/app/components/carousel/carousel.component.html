@@ -6,6 +6,7 @@
     placement="top"
     ngbTooltip="Zufall"
     (click)="showRandomCard()"
+    [disabled]="formMode == 'edit'"
   >
     <div class="fas fa-random"></div>
   </button>
@@ -29,10 +30,10 @@
     data-toggle="button"
     (click)="toggleAddView()"
     placement="top"
-    ngbTooltip="Hinzufügen"
+    [ngbTooltip]="formMode == 'add' ? 'Verstecken' : 'Hinzufügen'"
     [disabled]="formMode == 'edit'"
   >
-    <div class="fas fa-plus"></div>
+    <div [class]="formMode == 'add' ? 'fas fa-minus' : 'fas fa-plus'"></div>
   </button>
 </div>
 <div class="row">

@@ -152,16 +152,17 @@ router.put(
   ],
   (req, res) => {
     const errors = validationResult(req);
+    console.log("card: ", req.body.card);
     if (!errors.isEmpty()) {
       res.status(422).json({
         errors: errors.array()
       });
     } else {
-      req.services.cards.updateCard({
-        _id: req.body.card._id,
-        thema: req.body.card.thema,
-        content: req.body.card.content
-      });
+      req.services.cards.updateCard(
+        req.body.card._id,
+        req.body.card.thema,
+        req.body.card.content
+      );
       res.status(200).send();
     }
   }

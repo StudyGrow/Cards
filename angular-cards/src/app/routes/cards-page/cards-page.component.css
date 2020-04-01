@@ -17,3 +17,10 @@ button {
 .col-10 {
   padding-left: 0;
 }
+#progress {
+  position: relative;
+}
+mat-progress-bar {
+  position: absolute;
+  top: 0;
+}
