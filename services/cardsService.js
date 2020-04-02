@@ -39,7 +39,8 @@ module.exports = function cardsService() {
           content: content
         }
       }
-    ).catch(err => {
+    )
+    .catch(err => {
       console.log("Error on updateCard: " + err);
     });
   };

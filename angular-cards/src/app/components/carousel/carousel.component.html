@@ -1,0 +1,62 @@
+<h3 id="vorlesung">{{ title }}</h3>
+<div class="btn-group" id="btnDiv" role="group">
+  <button
+    class="btn btn-light"
+    id="rand"
+    placement="top"
+    ngbTooltip="Zufall"
+    (click)="showRandomCard()"
+    [disabled]="formMode == 'edit'"
+  >
+    <div class="fas fa-random"></div>
+  </button>
+  <button
+    class="btn btn-light"
+    id="editCard"
+    type="button"
+    state="pen"
+    placement="top"
+    [disabled]="formMode == 'edit'"
+    (click)="enableEdit()"
+    ngbTooltip="Bearbeiten"
+  >
+    <div class="fas fa-pen"></div>
+  </button>
+
+  <button
+    [ngClass]="setClass()"
+    id="toggleAdd"
+    type="button"
+    data-toggle="button"
+    (click)="toggleAddView()"
+    placement="top"
+    [ngbTooltip]="formMode == 'add' ? 'Verstecken' : 'Hinzufügen'"
+    [disabled]="formMode == 'edit'"
+  >
+    <div [class]="formMode == 'add' ? 'fas fa-minus' : 'fas fa-plus'"></div>
+  </button>
+</div>
+<div class="row">
+  <a (click)="goToPrev()">
+    <span class="fas fa-chevron-left"></span>
+  </a>
+  <div id="carousel">
+    <ngb-carousel
+      #mycarousel
+      (slide)="onSlide($event)"
+      *ngIf="cards"
+      [showNavigationArrows]="false"
+      [showNavigationIndicators]="false"
+      ><ng-container *ngFor="let card of cards; index as i">
+        <ng-template ngbSlide [id]="i.toString()">
+          <div>
+            <app-card [card]="card"></app-card>
+          </div>
+        </ng-template>
+      </ng-container>
+    </ngb-carousel>
+  </div>
+  <a (click)="goToNext()">
+    <span class="fas fa-chevron-right"></span>
+  </a>
+</div>
