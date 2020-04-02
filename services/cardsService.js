@@ -7,14 +7,12 @@ module.exports = function cardsService() {
       if (err) {
         console.log(err);
       } else {
-        ////console.log(cards)
         callback(cards);
       }
     });
   };
   cardsService.addCard = (abrv, title, content, img, callback) => {
     const card = new Card();
-    console.log("content: " + content);
     card.vorlesung = abrv;
     card.thema = title;
     card.content = content;
@@ -39,8 +37,7 @@ module.exports = function cardsService() {
           content: content
         }
       }
-    )
-    .catch(err => {
+    ).catch(err => {
       console.log("Error on updateCard: " + err);
     });
   };
