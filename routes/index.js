@@ -22,7 +22,7 @@ router.use(
 //angular index.html file to always serve after client uses browser navigation
 router.get("*", (req, res) =>
   res.sendFile(
-    path.join(__dirname, "../angular-cards/index.html")
+    path.join(__dirname, "../angular-cards/src/index.html")
   )
 );
 
