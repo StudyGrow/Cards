@@ -152,7 +152,7 @@ router.put(
   ],
   (req, res) => {
     const errors = validationResult(req);
-    console.log("card: ", req.body.card);
+
     if (!errors.isEmpty()) {
       res.status(422).json({
         errors: errors.array()

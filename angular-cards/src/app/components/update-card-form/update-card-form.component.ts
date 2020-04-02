@@ -15,7 +15,7 @@ import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 export class UpdateCardFormComponent implements OnInit {
   @Input() lecture: Vorlesung;
   @Output() returnCard: EventEmitter<Card> = new EventEmitter();
-  public card: Card = { thema: "", content: "" };
+  public cardCopy: Card = { thema: "", content: "" };
   private cards: Card[];
 
   private cardIndex: number;
@@ -33,16 +33,22 @@ export class UpdateCardFormComponent implements OnInit {
       .getActiveCardIndex()
       .subscribe(index => (this.activeCardIndex = index));
 
-    this.card = { ...this.cards[this.activeCardIndex] };
+    this.cardCopy = { ...this.cards[this.activeCardIndex] };
     this.cardIndex = this.activeCardIndex;
   }
 
   onSubmit(f: NgForm) {
     this.statesService.setLoadingState(true);
-    this.card.content = f.value.content;
-    this.card.thema = f.value.thema;
-    console.log(this.card);
-    this.cardsService.updateCard(this.card, this.lecture.abrv, this.cardIndex);
+    this.cardCopy.content = f.value.content;
+    this.cardCopy.thema = f.value.thema;
+
+    this.cards[this.cardIndex] = { ...this.cardCopy };
+
+    this.cardsService.updateCard(
+      this.cards[this.cardIndex],
+      this.lecture.abrv,
+      this.cardIndex
+    );
     f.reset();
   }
   cancelEdit() {

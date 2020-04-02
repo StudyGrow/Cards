@@ -9,7 +9,7 @@ import { Vorlesung } from "../models/Vorlesung";
   providedIn: "root"
 })
 export class HttpService {
-  private urlBase: string = "http://localhost:4200/api/";
+  private urlBase: string = "api/";
   private httpOptions = {
     headers: new HttpHeaders({ "Content-Type": "application/json" })
   };

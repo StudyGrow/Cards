@@ -31,13 +31,22 @@ export class SearchBarComponent implements OnInit {
     if (this.cardsService.getCards()) {
       this.cardsService.getCards().subscribe(cards => {
         this.cards = cards;
+        cards.forEach(card => {
+          if (card.thema == null) {
+            card.thema = "";
+          }
+          if (card.content == null) {
+            card.content = "";
+          }
+        });
       });
     }
   }
 
   findMatches(e: Event) {
-    this.stateService.setHideSuggestions(false);
-    if (this.uInput.length > 2) {
+    this.stateService.setHideSuggestions(false); //show suggestions
+    if (this.uInput && this.uInput.length > 2) {
+      this.suggestions = [];
       const regex = new RegExp(`${this.uInput}`, "gi");
 
       for (let i = 0; i < this.cards.length; i++) {

@@ -1,11 +1,8 @@
-import { Component } from '@angular/core';
-declare var $: any;
-@Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
-})
-export class AppComponent  {
+import { Component } from "@angular/core";
 
-  title = 'Cards';
-}
+@Component({
+  selector: "app-root",
+  templateUrl: "./app.component.html",
+  styleUrls: ["./app.component.css"]
+})
+export class AppComponent {}
