@@ -1,10 +1,6 @@
 const express = require("express");
-const mongoose = require("mongoose");
 const path = require("path");
-const { check, validationResult } = require("express-validator");
 const router = express.Router();
-const Registration = mongoose.model("Registration");
-const Vorlesung = mongoose.model("Vorlesung");
 
 router.get('*', function(req, res , next) {
    if(req.secure == false){
@@ -15,58 +11,19 @@ router.get('*', function(req, res , next) {
    }
   })
 
-router.get("/favicon.ico", function(req, res) {
-  res.sendFile(path.join(__dirname + "/../favicon.ico"));
-});
-router.get("/main.js", function(req, res) {
-  // console.log(typeof(req.params.vl))
-  res.sendFile(path.join(__dirname + "/../js/main.js"));
-});
-router.get("/main.css", function(req, res) {
-  // console.log(typeof(req.params.vl))
-  res.sendFile(path.join(__dirname + "/../style/main.css"));
-});
+//api route
+router.use("/api", require("../routes/api"));
 
-router.get("/", function(req, res) {
-  // console.log(typeof(req.params.vl))
-  try {
-    req.services.lectures.getLectures(vls => {
-      res.render("kategorie", {
-        vorlesungen: vls
-      });
-    });
-  } catch (error) {
-    res.status(404).send(error);
-  }
-});
-
-router.post(
-  "/addVl",
-  [
-    check("name").isLength({
-      min: 3,
-      max: 30
-    }),
-    check("abrv").isLength({
-      min: 3,
-      max: 7
-    })
-  ],
-  (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      res.status(422).json({
-        errors: errors.array()
-      });
-    } else {
-      req.services.lectures.addLecture(req.body.name, req.body.abrv);
-    }
-  }
+//angular files
+router.use(
+  express.static(path.join(__dirname, "../angular-cards/dist/angular-cards/"))
 );
 
-let vorlesung = require("../routes/vorlesung");
-let api = require("../routes/api");
-router.use("/api", api);
-router.use("/vorlesung", vorlesung);
+//angular index.html file to always serve after client uses browser navigation
+router.get("*", (req, res) =>
+  res.sendFile(
+    path.join(__dirname, "../angular-cards/dist/angular-cards/index.html")
+  )
+);
 
 module.exports = router;
