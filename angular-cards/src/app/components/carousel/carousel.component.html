@@ -6,7 +6,7 @@
     placement="top"
     ngbTooltip="Zufall"
     (click)="showRandomCard()"
-    [disabled]="formMode == 'edit'"
+    [disabled]="formMode == 'edit' || !cards || cards.length == 0"
   >
     <div class="fas fa-random"></div>
   </button>
@@ -16,7 +16,7 @@
     type="button"
     state="pen"
     placement="top"
-    [disabled]="formMode == 'edit'"
+    [disabled]="formMode == 'edit' || !cards || cards.length == 0"
     (click)="enableEdit()"
     ngbTooltip="Bearbeiten"
   >
@@ -36,7 +36,7 @@
     <div [class]="formMode == 'add' ? 'fas fa-minus' : 'fas fa-plus'"></div>
   </button>
 </div>
-<div *ngIf="cards" class="row">
+<div *ngIf="cards && cards.length > 0" class="row">
   <a (click)="goToPrev()">
     <span class="fas fa-chevron-left"></span>
   </a>

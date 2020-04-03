@@ -46,18 +46,31 @@ router.get(
   }
 );
 //Add Lecture to the database
-router.post("/addLecture", (req, res) => {
-  if (
-    !req.body.lecture ||
-    req.body.lecture.name.length == 0 ||
-    req.body.lecture.abrv.length == 0
-  ) {
-    res.status(422).send("Some fields are empty");
-  } else {
-    req.services.lectures.addLecture(req.body.card.name, req.body.name.abrv);
+router.post(
+  "/addLecture",
+  [
+    check("lecture.abrv")
+      .isLength({ min: 3, max: 7 })
+      .withMessage(
+        "Please provide a valid lecture abreviation (must be between 3 and 7 characters)"
+      ),
+    check("lecture.name")
+      .isLength({ min: 1, max: 60 })
+      .withMessage("Lecture name must be between between 1 and 60 characters")
+  ],
+  (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      res.status(422).json({ errors: errors.array });
+      return;
+    }
+    req.services.lectures.addLecture(
+      req.body.lecture.name,
+      req.body.lecture.abrv
+    );
     res.status(200).send();
   }
-});
+);
 
 //Cards routes
 //Get Cards from a specific lecture

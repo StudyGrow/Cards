@@ -1,18 +1,31 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, Output, EventEmitter } from "@angular/core";
 import { NgForm } from "@angular/forms";
+import { Vorlesung } from "../../models/Vorlesung";
+import { HttpService } from "../../services/http.service";
+import { StatesService } from "../../services/states.service";
 @Component({
   selector: "app-add-lecture-form",
   templateUrl: "./add-lecture-form.component.html",
   styleUrls: ["./add-lecture-form.component.css"]
 })
 export class AddLectureFormComponent implements OnInit {
-  constructor() {}
-
+  constructor(
+    private http: HttpService,
+    private statesService: StatesService
+  ) {}
+  @Output() emitVl: EventEmitter<Vorlesung> = new EventEmitter();
   ngOnInit(): void {}
   onSubmit(f: NgForm) {
-    console.log(f.value.name);
-    console.log(f.value.abrv);
+    let newLecture = new Vorlesung(f.value.name, f.value.abrv);
+    this.statesService.setLoadingState(true);
+    this.http.addLecture(newLecture).subscribe(response => {
+      this.statesService.setLoadingState(false);
+      this.emitVl.emit(newLecture);
+    });
+
+    f.reset();
   }
+
   setCharIndicatorStyle(field, max: number) {
     if (field.value) {
       return {

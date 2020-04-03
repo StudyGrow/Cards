@@ -9,7 +9,7 @@ import { Vorlesung } from "../models/Vorlesung";
   providedIn: "root"
 })
 export class HttpService {
-  private urlBase: string = "api/";
+  private urlBase: string = "http://localhost:4200/api/";
   private httpOptions = {
     headers: new HttpHeaders({ "Content-Type": "application/json" })
   };
@@ -51,10 +51,14 @@ export class HttpService {
   }
 
   addLecture(lecture: Vorlesung): Observable<HttpResponse<any>> {
-    return this.http.post<any>(this.urlBase + "addLecture", lecture, {
-      headers: this.httpOptions.headers,
-      observe: "response"
-    });
+    return this.http.post<any>(
+      this.urlBase + "addLecture",
+      { lecture: lecture },
+      {
+        headers: this.httpOptions.headers,
+        observe: "response"
+      }
+    );
   }
 
   getLectureByAbrv(abrv: string): Observable<HttpResponse<Vorlesung>> {
