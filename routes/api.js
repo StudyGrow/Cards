@@ -7,9 +7,17 @@ const router = express.Router();
 //Get all Lectures
 router.get("/getAllLectures", (req, res) => {
   try {
-    req.services.lectures.getLectures(lectures =>
-      res.status(200).send(lectures)
-    );
+    req.services.lectures.getLectures(lectures => {
+      res.status(200).send(
+        lectures.sort((vl1, vl2) => {
+          if (vl1.name > vl2.name) {
+            return 1;
+          } else {
+            return -1;
+          }
+        })
+      );
+    });
   } catch (error) {
     console.log(error);
     res.status(422).send(error);
