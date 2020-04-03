@@ -44,3 +44,6 @@ span {
   max-width: 900px;
   margin: 0;
 }
+app-card {
+  width: 100%;
+}

@@ -4,7 +4,7 @@ import {
   Input,
   Output,
   EventEmitter,
-  SimpleChanges,
+  HostListener,
   ViewChild
 } from "@angular/core";
 import {
@@ -35,8 +35,14 @@ import {
 export class CarouselComponent implements OnInit {
   @Input() lecture: Vorlesung;
   @Output() setLoading: EventEmitter<boolean> = new EventEmitter();
-  @ViewChild("mycarousel", { static: false }) carousel: NgbCarousel;
+  @ViewChild("mycarousel", { static: false }) public carousel: any;
+  @HostListener("swipeleft", ["$event"]) public swipePrev(event: any) {
+    this.carousel.previousSlide();
+  }
 
+  @HostListener("swiperight", ["$event"]) public swipeNext(event: any) {
+    this.carousel.nextSlide();
+  }
   cards: Card[]; //array of all the cards
   activeSlide: number;
   title: string;
@@ -77,7 +83,7 @@ export class CarouselComponent implements OnInit {
       if (this.carousel && this.activeSlide != index) {
         this.activeSlide = index;
         console.log("sliding");
-        this.carousel.select(index.toString());
+        this.carousel.selectSlide(index);
       }
     });
   }
@@ -103,7 +109,7 @@ export class CarouselComponent implements OnInit {
   }
 
   selectSlide(n: number) {
-    this.carousel.select(n.toString());
+    this.carousel.selectSlide(n.toString());
   }
   showRandomCard() {
     var rand: number = this.activeSlide;
@@ -113,13 +119,13 @@ export class CarouselComponent implements OnInit {
       count++;
       rand = Math.floor(Math.random() * this.cards.length); //random Cardindex
     }
-    this.carousel.select(rand.toString());
+    this.carousel.selectSlide(rand.toString());
   }
   goToPrev() {
-    this.carousel.prev();
+    this.carousel.previousSlide();
   }
   goToNext() {
-    this.carousel.next();
+    this.carousel.nextSlide();
   }
   onSlide(slideEvent: NgbSlideEvent) {
     this.cardsService.setActiveCardIndex(parseInt(slideEvent.current));
