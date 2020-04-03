@@ -1,6 +1,7 @@
-import { Component, OnInit, Output, EventEmitter } from "@angular/core";
+import { Component, OnInit, Output, EventEmitter, Input } from "@angular/core";
 import { Vorlesung } from "../../models/Vorlesung";
 import { HttpService } from "../../services/http.service";
+import { Card } from "../../models/Card";
 @Component({
   selector: "app-lectures",
   templateUrl: "./lectures.component.html",
@@ -9,6 +10,7 @@ import { HttpService } from "../../services/http.service";
 export class LecturesComponent implements OnInit {
   lectures: Vorlesung[];
   @Output() lecturesLoaded: EventEmitter<boolean> = new EventEmitter();
+  @Input() newVl: Vorlesung;
 
   constructor(private httpService: HttpService) {}
 
@@ -22,6 +24,13 @@ export class LecturesComponent implements OnInit {
         this.lectures = resp.body;
       }
     });
+  }
+
+  ngOnChanges() {
+    if (this.newVl) {
+      console.log("got new vl: ", this.newVl);
+      this.lectures.push(this.newVl);
+    }
   }
   setLink(lecture: Vorlesung) {
     return "/vorlesung/" + lecture.abrv;

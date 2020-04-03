@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-
+import { Vorlesung } from "../../models/Vorlesung";
 @Component({
   selector: "app-home-page",
   templateUrl: "./home-page.component.html",
@@ -7,10 +7,15 @@ import { Component, OnInit } from "@angular/core";
 })
 export class HomePageComponent implements OnInit {
   public loaded: boolean = false;
+  public newVl: Vorlesung;
   constructor() {}
 
   ngOnInit(): void {}
-  lecturesLoaded(loaded: boolean): void {
+  setLoaded(loaded: boolean): void {
     this.loaded = loaded;
+  }
+  emitVl(lecture: Vorlesung) {
+    console.log("vl: ", lecture);
+    this.newVl = lecture;
   }
 }

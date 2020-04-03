@@ -1,6 +1,9 @@
 <mat-progress-bar *ngIf="!loaded" mode="indeterminate"></mat-progress-bar>
 <div class="container">
-  <app-lectures (lecturesLoaded)="lecturesLoaded($event)"></app-lectures>
+  <app-lectures
+    (lecturesLoaded)="setLoaded($event)"
+    [newVl]="newVl"
+  ></app-lectures>
   <br />
-  <app-add-lecture-form></app-add-lecture-form>
+  <app-add-lecture-form (emitVl)="emitVl($event)"></app-add-lecture-form>
 </div>

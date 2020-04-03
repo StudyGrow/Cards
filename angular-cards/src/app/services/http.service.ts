@@ -51,10 +51,14 @@ export class HttpService {
   }
 
   addLecture(lecture: Vorlesung): Observable<HttpResponse<any>> {
-    return this.http.post<any>(this.urlBase + "addLecture", lecture, {
-      headers: this.httpOptions.headers,
-      observe: "response"
-    });
+    return this.http.post<any>(
+      this.urlBase + "addLecture",
+      { lecture: lecture },
+      {
+        headers: this.httpOptions.headers,
+        observe: "response"
+      }
+    );
   }
 
   getLectureByAbrv(abrv: string): Observable<HttpResponse<Vorlesung>> {

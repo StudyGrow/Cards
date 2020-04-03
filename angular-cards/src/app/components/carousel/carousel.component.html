@@ -6,7 +6,7 @@
     placement="top"
     ngbTooltip="Zufall"
     (click)="showRandomCard()"
-    [disabled]="formMode == 'edit'"
+    [disabled]="formMode == 'edit' || !cards || cards.length == 0"
   >
     <div class="fas fa-random"></div>
   </button>
@@ -16,7 +16,7 @@
     type="button"
     state="pen"
     placement="top"
-    [disabled]="formMode == 'edit'"
+    [disabled]="formMode == 'edit' || !cards || cards.length == 0"
     (click)="enableEdit()"
     ngbTooltip="Bearbeiten"
   >
@@ -36,25 +36,24 @@
     <div [class]="formMode == 'add' ? 'fas fa-minus' : 'fas fa-plus'"></div>
   </button>
 </div>
-<div class="row">
+<div *ngIf="cards && cards.length > 0" class="row">
   <a (click)="goToPrev()">
     <span class="fas fa-chevron-left"></span>
   </a>
   <div id="carousel">
-    <ngb-carousel
+    <mdb-carousel
+      (activeSlideChange)="onSlide($event)"
       #mycarousel
-      (slide)="onSlide($event)"
-      *ngIf="cards"
-      [showNavigationArrows]="false"
-      [showNavigationIndicators]="false"
+      [animation]="'slide'"
+      [isControls]="false"
+      [allowSwipe]="true"
+      [interval]="'0'"
       ><ng-container *ngFor="let card of cards; index as i">
-        <ng-template ngbSlide [id]="i.toString()">
-          <div>
-            <app-card [card]="card"></app-card>
-          </div>
-        </ng-template>
+        <mdb-carousel-item [id]="i.toString()">
+          <app-card [card]="card"></app-card>
+        </mdb-carousel-item>
       </ng-container>
-    </ngb-carousel>
+    </mdb-carousel>
   </div>
   <a (click)="goToNext()">
     <span class="fas fa-chevron-right"></span>

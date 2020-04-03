@@ -7,6 +7,8 @@ import { AppRoutingModule } from "./app-routing.module";
 import { FormsModule } from "@angular/forms";
 import { MatProgressBarModule } from "@angular/material/progress-bar";
 import { MatDialogModule } from "@angular/material/dialog";
+// For MDB Angular Free
+import { CarouselModule, WavesModule } from "angular-bootstrap-md";
 //Components
 import { AppComponent } from "./app.component";
 import { NavBarComponent } from "./components/nav-bar/nav-bar.component";
@@ -28,6 +30,37 @@ import { CardsService } from "./services/cards.service";
 //Material Modules
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { UpdateCardFormComponent } from "./components/update-card-form/update-card-form.component";
+
+import {
+  HammerGestureConfig,
+  HAMMER_GESTURE_CONFIG
+} from "@angular/platform-browser";
+declare var Hammer: any;
+//Config to allow swipe gestures on carousel
+export class MyHammerConfig extends HammerGestureConfig {
+  overrides = <any>{
+    pan: { direction: Hammer.DIRECTION_All },
+    swipe: { direction: Hammer.DIRECTION_VERTICAL }
+  };
+
+  buildHammer(element: HTMLElement) {
+    const mc = new Hammer(element, {
+      touchAction: "auto",
+      inputClass: Hammer.SUPPORT_POINTER_EVENTS
+        ? Hammer.PointerEventInput
+        : Hammer.TouchInput,
+      recognizers: [
+        [
+          Hammer.Swipe,
+          {
+            direction: Hammer.DIRECTION_HORIZONTAL
+          }
+        ]
+      ]
+    });
+    return mc;
+  }
+}
 
 @NgModule({
   declarations: [
@@ -54,9 +87,19 @@ import { UpdateCardFormComponent } from "./components/update-card-form/update-ca
     FormsModule,
     BrowserAnimationsModule,
     MatProgressBarModule,
-    MatDialogModule
+    MatDialogModule,
+    CarouselModule,
+    WavesModule
   ],
-  providers: [StatesService, HttpService, CardsService],
+  providers: [
+    StatesService,
+    HttpService,
+    CardsService,
+    {
+      provide: HAMMER_GESTURE_CONFIG,
+      useClass: MyHammerConfig
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
