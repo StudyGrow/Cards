@@ -32,7 +32,7 @@ export class CarouselComponent implements OnInit {
     this.carousel.nextSlide();
   }
   cards: Card[]; //array of all the cards
-  activeSlide: number;
+  activeSlide: number = 0;
   title: string;
   addComponentHidden: boolean;
   formShow: boolean;
@@ -119,7 +119,7 @@ export class CarouselComponent implements OnInit {
       this.carousel.nextSlide();
     }
   }
-  onSlide(slideEvent: NgbSlideEvent) {
-    this.cardsService.setActiveCardIndex(parseInt(slideEvent.current));
+  onSlide(slideEvent) {
+    this.cardsService.setActiveCardIndex(parseInt(slideEvent.relatedTarget));
   }
 }

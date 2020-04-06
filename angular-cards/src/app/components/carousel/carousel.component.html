@@ -43,6 +43,7 @@
     <mdb-carousel
       (activeSlideChange)="onSlide($event)"
       #mycarousel
+      [(activeSlideIndex)]="activeSlide"
       [animation]="'slide'"
       [isControls]="false"
       [allowSwipe]="true"
