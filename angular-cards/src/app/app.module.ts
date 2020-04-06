@@ -30,17 +30,18 @@ import { CardsService } from "./services/cards.service";
 //Material Modules
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { UpdateCardFormComponent } from "./components/update-card-form/update-card-form.component";
-
+//Gestures
 import {
+  HammerModule,
   HammerGestureConfig,
-  HAMMER_GESTURE_CONFIG
+  HAMMER_GESTURE_CONFIG,
 } from "@angular/platform-browser";
 declare var Hammer: any;
 //Config to allow swipe gestures on carousel
 export class MyHammerConfig extends HammerGestureConfig {
   overrides = <any>{
     pan: { direction: Hammer.DIRECTION_All },
-    swipe: { direction: Hammer.DIRECTION_VERTICAL }
+    swipe: { direction: Hammer.DIRECTION_VERTICAL },
   };
 
   buildHammer(element: HTMLElement) {
@@ -53,10 +54,10 @@ export class MyHammerConfig extends HammerGestureConfig {
         [
           Hammer.Swipe,
           {
-            direction: Hammer.DIRECTION_HORIZONTAL
-          }
-        ]
-      ]
+            direction: Hammer.DIRECTION_HORIZONTAL,
+          },
+        ],
+      ],
     });
     return mc;
   }
@@ -77,7 +78,7 @@ export class MyHammerConfig extends HammerGestureConfig {
     LecturesComponent,
     HomePageComponent,
     CardsPageComponent,
-    UpdateCardFormComponent
+    UpdateCardFormComponent,
   ],
   imports: [
     BrowserModule,
@@ -89,7 +90,8 @@ export class MyHammerConfig extends HammerGestureConfig {
     MatProgressBarModule,
     MatDialogModule,
     CarouselModule,
-    WavesModule
+    WavesModule,
+    HammerModule,
   ],
   providers: [
     StatesService,
@@ -97,9 +99,9 @@ export class MyHammerConfig extends HammerGestureConfig {
     CardsService,
     {
       provide: HAMMER_GESTURE_CONFIG,
-      useClass: MyHammerConfig
-    }
+      useClass: MyHammerConfig,
+    },
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule {}

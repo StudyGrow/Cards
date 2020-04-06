@@ -40,7 +40,7 @@
   <a (click)="goToPrev()">
     <span class="fas fa-chevron-left"></span>
   </a>
-  <div id="carousel">
+  <div id="carousel" (swipeleft)="goToPrev()" (swiperight)="goToNext()">
     <mdb-carousel
       (activeSlideChange)="onSlide($event)"
       #mycarousel
