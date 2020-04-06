@@ -19,6 +19,9 @@ export class NavBarComponent implements OnInit {
       case "/login":
         currentTitle = "Login";
         break;
+      case "/signup":
+        currentTitle = "Sign Up";
+        break;
       case "/":
         currentTitle = "Home";
         break;

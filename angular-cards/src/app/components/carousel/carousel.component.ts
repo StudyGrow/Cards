@@ -110,10 +110,14 @@ export class CarouselComponent implements OnInit {
     this.carousel.selectSlide(rand.toString());
   }
   goToPrev() {
-    this.carousel.previousSlide();
+    if (this.formMode != "edit") {
+      this.carousel.previousSlide();
+    }
   }
   goToNext() {
-    this.carousel.nextSlide();
+    if (this.formMode != "edit") {
+      this.carousel.nextSlide();
+    }
   }
   onSlide(slideEvent: NgbSlideEvent) {
     this.cardsService.setActiveCardIndex(parseInt(slideEvent.current));

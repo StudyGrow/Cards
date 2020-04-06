@@ -19,12 +19,29 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav" id="navlist">
           <li class="{{ isActive('/') }} nav-item">
-            <a class="nav-link" routerLink="/" tabindex="1"
-              >Kategorie w&auml;hlen</a
+            <a
+              class="nav-link"
+              routerLink="/"
+              tabindex="1"
+              ngbTooltip="Start"
+              placement="bottom"
+              ><i class="fas fa-home"></i> Vorlesungen</a
             >
           </li>
+
           <li class="{{ isActive('/login') }} nav-item">
-            <a class="nav-link" routerLink="/login">Login</a>
+            <a
+              class="nav-link"
+              routerLink="/login"
+              ngbTooltip="Login"
+              placement="bottom"
+              ><i class="fas fa-user"></i> Login</a
+            >
+          </li>
+          <li class="{{ isActive('/signup') }} nav-item">
+            <a class="nav-link" routerLink="/signup"
+              ><i class="fas fa-plus"></i> Registrieren</a
+            >
           </li>
         </ul>
       </div>
