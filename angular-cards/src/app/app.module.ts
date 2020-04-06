@@ -7,14 +7,12 @@ import { AppRoutingModule } from "./app-routing.module";
 import { FormsModule } from "@angular/forms";
 import { MatProgressBarModule } from "@angular/material/progress-bar";
 import { MatDialogModule } from "@angular/material/dialog";
-// For MDB Angular Free
 import { CarouselModule, WavesModule } from "angular-bootstrap-md";
+
 //Components
 import { AppComponent } from "./app.component";
 import { NavBarComponent } from "./components/nav-bar/nav-bar.component";
 import { SearchBarComponent } from "./components/search-bar/search-bar.component";
-
-import { ModalComponent } from "./components/modal/modal.component";
 import { AddCardFormComponent } from "./components/add-card-form/add-card-form.component";
 import { CarouselComponent } from "./components/carousel/carousel.component";
 import { CardComponent } from "./components/card/card.component";
@@ -36,6 +34,7 @@ import {
   HammerGestureConfig,
   HAMMER_GESTURE_CONFIG,
 } from "@angular/platform-browser";
+import { LoginPageComponent } from "./routes/login-page/login-page.component";
 declare var Hammer: any;
 //Config to allow swipe gestures on carousel
 export class MyHammerConfig extends HammerGestureConfig {
@@ -68,9 +67,6 @@ export class MyHammerConfig extends HammerGestureConfig {
     AppComponent,
     NavBarComponent,
     SearchBarComponent,
-
-    ModalComponent,
-
     AddCardFormComponent,
     CarouselComponent,
     CardComponent,
@@ -79,6 +75,7 @@ export class MyHammerConfig extends HammerGestureConfig {
     HomePageComponent,
     CardsPageComponent,
     UpdateCardFormComponent,
+    LoginPageComponent,
   ],
   imports: [
     BrowserModule,
