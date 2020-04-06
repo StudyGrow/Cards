@@ -25,12 +25,20 @@
           </li>
 
           <li class="{{ isActive('/login') }} nav-item">
-            <a class="nav-link" routerLink="/login"
+            <a
+              class="nav-link disabled"
+              routerLink="/login"
+              placement="bottom"
+              ngbTooltip="im Aufbau"
               ><i class="fas fa-user"></i> Login</a
             >
           </li>
           <li class="{{ isActive('/signup') }} nav-item">
-            <a class="nav-link" routerLink="/signup"
+            <a
+              class="nav-link disabled"
+              routerLink="/signup"
+              placement="bottom"
+              ngbTooltip="im Aufbau"
               ><i class="fas fa-plus"></i> Registrieren</a
             >
           </li>
