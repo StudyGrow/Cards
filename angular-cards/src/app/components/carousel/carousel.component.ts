@@ -5,41 +5,29 @@ import {
   Output,
   EventEmitter,
   HostListener,
-  ViewChild
+  ViewChild,
 } from "@angular/core";
-import {
-  trigger,
-  state,
-  style,
-  transition,
-  animate,
-  group
-} from "@angular/animations";
+
 import { HttpService } from "../../services/http.service";
 import { StatesService } from "../../services/states.service";
 import { CardsService } from "../../services/cards.service";
 import { Card } from "../../models/Card";
 import { Vorlesung } from "src/app/models/Vorlesung";
-import {
-  NgbCarouselConfig,
-  NgbCarousel,
-  NgbSlideEvent,
-  NgbSlideEventSource
-} from "@ng-bootstrap/ng-bootstrap";
+import { NgbCarouselConfig, NgbSlideEvent } from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: "app-carousel",
   templateUrl: "./carousel.component.html",
-  styleUrls: ["./carousel.component.css"]
+  styleUrls: ["./carousel.component.css"],
 })
 export class CarouselComponent implements OnInit {
   @Input() lecture: Vorlesung;
   @Output() setLoading: EventEmitter<boolean> = new EventEmitter();
+
   @ViewChild("mycarousel", { static: false }) public carousel: any;
   @HostListener("swipeleft", ["$event"]) public swipePrev(event: any) {
     this.carousel.previousSlide();
   }
-
   @HostListener("swiperight", ["$event"]) public swipeNext(event: any) {
     this.carousel.nextSlide();
   }
@@ -65,7 +53,7 @@ export class CarouselComponent implements OnInit {
   ngOnChanges() {
     if (this.lecture) {
       this.title = this.lecture.name;
-      this.httpService.getCardsFromLecture(this.lecture).subscribe(resp => {
+      this.httpService.getCardsFromLecture(this.lecture).subscribe((resp) => {
         this.cards = resp.body;
         this.cardsService.initCards(this.cards);
         this.setLoading.emit(false);
@@ -74,12 +62,12 @@ export class CarouselComponent implements OnInit {
   }
   ngOnInit(): void {
     this.stateService.setFormMode("none");
-    this.stateService.getFormMode().subscribe(mode => {
+    this.stateService.getFormMode().subscribe((mode) => {
       this.formShow = mode == "add";
       this.formMode = mode;
     });
 
-    this.cardsService.getNewCardIndex().subscribe(index => {
+    this.cardsService.getNewCardIndex().subscribe((index) => {
       if (this.carousel && this.activeSlide != index) {
         this.activeSlide = index;
         console.log("sliding");
