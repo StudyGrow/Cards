@@ -88,4 +88,17 @@ export class HttpService {
     return this.user;
   }
   logout() {}
+
+  createAccount(form): Observable<HttpResponse<User>> {
+    let response = this.http.post<User>(this.urlBase + "createAccount", form, {
+      headers: this.httpOptions.headers,
+      observe: "response",
+    });
+    response.subscribe((response) => {
+      if (response.status == 200) {
+        this.user = response.body;
+      }
+    });
+    return response;
+  }
 }

@@ -22,4 +22,11 @@ export class LoginFormComponent implements OnInit {
         }
       });
   }
+
+  isDisabled(username, password) {
+    if (!(username.value && password.value)) {
+      return true;
+    }
+    return username.value.length < 5 || password.value.length < 7;
+  }
 }
