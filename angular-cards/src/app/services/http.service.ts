@@ -2,16 +2,19 @@ import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders, HttpResponse } from "@angular/common/http";
 import { Observable, BehaviorSubject } from "rxjs";
 
+//Models
+import { User } from "../models/User";
 import { Card } from "../models/Card";
 import { Vorlesung } from "../models/Vorlesung";
 
 @Injectable({
-  providedIn: "root"
+  providedIn: "root",
 })
 export class HttpService {
   private urlBase: string = "api/";
+  private user: User;
   private httpOptions = {
-    headers: new HttpHeaders({ "Content-Type": "application/json" })
+    headers: new HttpHeaders({ "Content-Type": "application/json" }),
   };
 
   constructor(private http: HttpClient) {}
@@ -38,7 +41,7 @@ export class HttpService {
       { card: card },
       {
         headers: this.httpOptions.headers,
-        observe: "response"
+        observe: "response",
       }
     );
   }
@@ -46,7 +49,7 @@ export class HttpService {
   //Lectures
   getAllLectures(): Observable<HttpResponse<Vorlesung[]>> {
     return this.http.get<Vorlesung[]>(this.urlBase + "getAllLectures", {
-      observe: "response"
+      observe: "response",
     });
   }
 
@@ -56,14 +59,33 @@ export class HttpService {
       { lecture: lecture },
       {
         headers: this.httpOptions.headers,
-        observe: "response"
+        observe: "response",
       }
     );
   }
 
   getLectureByAbrv(abrv: string): Observable<HttpResponse<Vorlesung>> {
     return this.http.get<Vorlesung>(this.urlBase + "getLecture?abrv=" + abrv, {
-      observe: "response"
+      observe: "response",
     });
   }
+
+  //User
+  login(
+    username: string,
+    password: string,
+    remember: boolean
+  ): Observable<User> {
+    let form = { username: username, password: password, remember: remember };
+    let response = this.http.put<User>(this.urlBase + "login", form);
+    response.subscribe((user) => {
+      this.user = user;
+    });
+    return response;
+  }
+
+  getUser(): User {
+    return this.user;
+  }
+  logout() {}
 }

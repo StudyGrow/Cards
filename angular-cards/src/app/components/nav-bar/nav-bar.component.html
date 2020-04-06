@@ -1,7 +1,7 @@
 <nav
   class="navbar navbar-expand-lg navbar-light bg-light"
   role="alert"
-  style="padding-right:0;"
+  style="padding-right: 0;"
 >
   <div class="row">
     <div class="col-8">
@@ -18,16 +18,27 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav" id="navlist">
-          <li class="nav-item">
+          <li class="{{ isActive('/') }} nav-item">
             <a class="nav-link" routerLink="/" tabindex="1"
-              >Kategorie w&auml;hlen</a
+              ><i class="fas fa-home"></i> Vorlesungen</a
+            >
+          </li>
+
+          <li class="{{ isActive('/login') }} nav-item">
+            <a class="nav-link" routerLink="/login"
+              ><i class="fas fa-user"></i> Login</a
+            >
+          </li>
+          <li class="{{ isActive('/signup') }} nav-item">
+            <a class="nav-link" routerLink="/signup"
+              ><i class="fas fa-plus"></i> Registrieren</a
             >
           </li>
         </ul>
       </div>
     </div>
 
-    <div class="col-4" style="padding-right:0;">
+    <div *ngIf="cards" class="col-4" style="padding-right: 0;">
       <app-search-bar [cards]="cards"></app-search-bar>
     </div>
   </div>

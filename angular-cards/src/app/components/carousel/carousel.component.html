@@ -14,7 +14,6 @@
     class="btn btn-light"
     id="editCard"
     type="button"
-    state="pen"
     placement="top"
     [disabled]="formMode == 'edit' || !cards || cards.length == 0"
     (click)="enableEdit()"
@@ -44,6 +43,7 @@
     <mdb-carousel
       (activeSlideChange)="onSlide($event)"
       #mycarousel
+      [(activeSlideIndex)]="activeSlide"
       [animation]="'slide'"
       [isControls]="false"
       [allowSwipe]="true"
