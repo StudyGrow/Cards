@@ -1,5 +1,4 @@
 const express = require("express");
-
 const { check, query, validationResult } = require("express-validator");
 const router = express.Router();
 
@@ -7,7 +6,7 @@ const router = express.Router();
 //Get all Lectures
 router.get("/getAllLectures", (req, res) => {
   try {
-    req.services.lectures.getLectures(lectures => {
+    req.services.lectures.getLectures((lectures) => {
       res.status(200).send(
         lectures.sort((vl1, vl2) => {
           if (vl1.name > vl2.name) {
@@ -32,7 +31,7 @@ router.get(
       .isLength({ min: 3, max: 7 })
       .withMessage(
         "Please provide a valid lecture abreviation (must be between 3 and 7 characters)"
-      )
+      ),
   ],
   (req, res) => {
     const errors = validationResult(req);
@@ -43,9 +42,9 @@ router.get(
     try {
       req.services.lectures.getLectureByQuery(
         {
-          abrv: req.query.abrv
+          abrv: req.query.abrv,
         },
-        lecture => res.status(200).send(lecture)
+        (lecture) => res.status(200).send(lecture)
       );
     } catch (error) {
       console.log(error);
@@ -64,7 +63,7 @@ router.post(
       ),
     check("lecture.name")
       .isLength({ min: 1, max: 60 })
-      .withMessage("Lecture name must be between between 1 and 60 characters")
+      .withMessage("Lecture name must be between between 1 and 60 characters"),
   ],
   (req, res) => {
     const errors = validationResult(req);
@@ -88,7 +87,7 @@ router.get(
   [
     query("abrv")
       .isLength({ min: 3, max: 7 })
-      .withMessage("Lecture abreviation must be between 3 and 7 characters")
+      .withMessage("Lecture abreviation must be between 3 and 7 characters"),
   ],
   (req, res) => {
     const errors = validationResult(req);
@@ -99,9 +98,9 @@ router.get(
     try {
       req.services.cards.getCardsFromQuery(
         {
-          vorlesung: req.query.abrv
+          vorlesung: req.query.abrv,
         },
-        cards => res.status(200).send(cards)
+        (cards) => res.status(200).send(cards)
       );
     } catch (error) {
       console.log(error);
@@ -119,21 +118,21 @@ router.post(
     check("card.thema")
       .isLength({
         min: 3,
-        max: 60
+        max: 60,
       })
       .withMessage("Thema muss zwischen 3 und 60 Zeichen enthalten"),
     check("card.content")
       .isLength({
         min: 1,
-        max: 400
+        max: 400,
       })
-      .withMessage("Inhalt darf nicht mehr als 400 Zeichen enthalten")
+      .withMessage("Inhalt darf nicht mehr als 400 Zeichen enthalten"),
   ],
   (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       res.status(422).json({
-        errors: errors.array()
+        errors: errors.array(),
       });
       return;
     }
@@ -143,9 +142,9 @@ router.post(
       req.body.card.thema,
       req.body.card.content,
       req.body.img,
-      id => {
+      (id) => {
         res.json({
-          id: id
+          id: id,
         }); //sende id an client zurück
       }
     );
@@ -161,21 +160,21 @@ router.put(
     check("card.thema")
       .isLength({
         min: 3,
-        max: 60
+        max: 60,
       })
       .withMessage("Thema muss zwischen 3 und 60 Zeichen enthalten"),
     check("card.content")
       .isLength({
         min: 1,
-        max: 400
+        max: 400,
       })
-      .withMessage("Inhalt darf nicht mehr als 400 Zeichen enthalten")
+      .withMessage("Inhalt darf nicht mehr als 400 Zeichen enthalten"),
   ],
   (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       res.status(422).json({
-        errors: errors.array()
+        errors: errors.array(),
       });
     } else {
       req.services.cards.updateCard(
@@ -187,5 +186,23 @@ router.put(
     }
   }
 );
-
+router.get("/createAccount", (req, res) => {
+  console.log(req);
+});
+router.post("/login", (req, res) => {
+  console.log(req);
+});
+router.put(
+  "/logout",
+  [
+    check("email").isEmail().withMessage("keine gültige email adress"),
+    check("username").isLength({
+      min: 1,
+      max: 400,
+    }),
+  ],
+  (req, res) => {
+    console.log(req);
+  }
+);
 module.exports = router;

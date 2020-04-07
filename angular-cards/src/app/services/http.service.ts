@@ -66,6 +66,7 @@ export class HttpService {
 
   getLectureByAbrv(abrv: string): Observable<HttpResponse<Vorlesung>> {
     return this.http.get<Vorlesung>(this.urlBase + "getLecture?abrv=" + abrv, {
+      headers: this.httpOptions.headers,
       observe: "response",
     });
   }
@@ -77,15 +78,20 @@ export class HttpService {
     remember: boolean
   ): Observable<User> {
     let form = { username: username, password: password, remember: remember };
-    let response = this.http.put<User>(this.urlBase + "login", form);
-    response.subscribe((user) => {
+    let response$ = this.http.put<User>(this.urlBase + "login", form, {
+      headers: this.httpOptions.headers,
+    });
+    response$.subscribe((user) => {
       this.user = user;
     });
-    return response;
+    return response$;
   }
 
   getUser(): User {
     return this.user;
   }
-  logout() {}
+  logout() {
+    this.http.put<boolean>(this.urlBase + "logout", this.user);
+    this.user = undefined;
+  }
 }
