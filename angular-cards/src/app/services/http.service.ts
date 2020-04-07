@@ -86,7 +86,9 @@ export class HttpService {
     return this.user;
   }
   logout() {
-    this.http.put<boolean>(this.urlBase + "logout", this.user);
+    this.http.get<any>(this.urlBase + "logout").subscribe((err) => {
+      if (err) console.log(err);
+    });
     this.user = undefined;
   }
 

@@ -1,6 +1,11 @@
 const express = require("express");
 const { check, query, validationResult } = require("express-validator");
 const router = express.Router();
+const passport = require("passport");
+
+require("../config/passport")(passport);
+app.use(passport.initialize());
+app.use(passport.session());
 
 //Lecture routes
 //Get all Lectures
@@ -186,23 +191,93 @@ router.put(
     }
   }
 );
-router.get("/createAccount", (req, res) => {
-  console.log(req);
-});
-router.post("/login", (req, res) => {
-  console.log(req);
-});
-router.put(
-  "/logout",
+
+//User
+router.get(
+  "/createAccount",
   [
-    check("email").isEmail().withMessage("keine gültige email adress"),
-    check("username").isLength({
-      min: 1,
-      max: 400,
-    }),
+    check("email").isEmail().withMessage("Keine gültige Email Adresse"),
+    check("username")
+      .isLength({
+        min: 5,
+        max: 20,
+      })
+      .withMessage("Benutzername muss zwischen 5 und 20 Zeichen enthalten"),
+    check("password")
+      .isLength({ min: 7 })
+      .withMessage("Passwort muss mindestens 7 Zeichen enthalten"),
+    check("password2")
+      .equals("password")
+      .withMessage("Passwort Wiederholung ungleich Passwort"),
   ],
   (req, res) => {
     console.log(req);
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      res.status(422).json({
+        errors: errors.array(),
+      });
+    } else {
+      req.services.user.createAccout(req.body, (err, user) => {
+        if (err) {
+          console.log(err);
+          res.status(400).send(err);
+        } else {
+          res.status(200).send(user);
+        }
+      });
+    }
   }
 );
+router.post(
+  "/login",
+  [
+    check("username")
+      .isLength({
+        min: 5,
+        max: 20,
+      })
+      .withMessage("Benutzername muss zwischen 5 und 20 Zeichen enthalten"),
+    check("password")
+      .isLength({ min: 7 })
+      .withMessage("Passwort muss mindestens 7 Zeichen enthalten"),
+  ],
+  (req, res) => {
+    console.log(req);
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      res.status(422).json({
+        errors: errors.array(),
+      });
+    } else {
+      passport.authenticate(
+        "local",
+        { session: req.body.remember },
+        (err, user, info) => {
+          if (err) {
+            console.log(err);
+            return res.status(400).send(err);
+          }
+          if (!user) {
+            return res.status(400).send(new Error("!user"));
+          }
+          req.logIn(user, function (err) {
+            if (err) {
+              return res.status(400).send(err);
+            }
+            return res.send(user);
+          })(req, res, next);
+        }
+      );
+    }
+  }
+);
+router.get("/logout", (req, res) => {
+  if (req.user) {
+    req.logout();
+    res.status(200).send();
+  } else {
+    res.send(400).send(new Error("no user logged in"));
+  }
+});
 module.exports = router;

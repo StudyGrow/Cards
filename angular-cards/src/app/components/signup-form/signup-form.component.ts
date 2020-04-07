@@ -42,13 +42,14 @@ export class SignupFormComponent implements OnInit {
       return { color: "#000000" };
     }
   }
-  isDisabled(username, email, password) {
+  isDisabled(username, email, password, password2) {
     if (!(username.value && email.value && password.value)) {
       return true;
     }
     return (
       username.value.length < 5 ||
       password.value.length < 7 ||
+      password.value != password2.value ||
       !this.checkEmail(email.value)
     );
   }

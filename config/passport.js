@@ -1,0 +1,38 @@
+const LocalStrategy = require("passport-local").Strategy;
+const bcrypt = require("bcryptjs");
+const User = require("../models/User");
+
+module.exports = function (passport) {
+  passport.use(
+    new LocalStrategy(function (username, password, done) {
+      User.findOne({ username: username }, (err, user) => {
+        if (err) throw err;
+        if (!user) {
+          return done(null, false, {
+            message: "Benutzername oder Passwort falsch",
+          });
+        }
+        bcrypt.compare(password, user.password, (err, matched) => {
+          if (err) throw err;
+          if (matched) {
+            return done(null, user);
+          } else {
+            return done(null, false, {
+              message: "Benutzername oder Passwort falsch",
+            });
+          }
+        });
+      });
+    })
+  );
+
+  passport.serializeUser(function (user, done) {
+    done(null, user.id);
+  });
+
+  passport.deserializeUser(function (id, done) {
+    User.findById(id, function (err, user) {
+      done(err, user);
+    });
+  });
+};
