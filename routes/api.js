@@ -4,8 +4,8 @@ const router = express.Router();
 const passport = require("passport");
 
 require("../config/passport")(passport);
-app.use(passport.initialize());
-app.use(passport.session());
+router.use(passport.initialize());
+router.use(passport.session());
 
 //Lecture routes
 //Get all Lectures

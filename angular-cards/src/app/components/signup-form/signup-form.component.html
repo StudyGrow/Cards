@@ -52,13 +52,7 @@
         #password2="ngModel"
         ngModel
         minlength="7"
-        (style)="
-          'border-color:'(
-            !password2.value || password2.value == password.value
-              ? '#000000'
-              : '#ff0000'
-          )
-        "
+        [style]="setStyle(password, password2)"
       />
       <small class="form-text"> </small>
     </div>

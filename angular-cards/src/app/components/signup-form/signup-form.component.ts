@@ -18,7 +18,16 @@ export class SignupFormComponent implements OnInit {
       }
     });
   }
-
+  setStyle(password, password2) {
+    if (
+      password2.value &&
+      password2.value.length > password.value.length &&
+      password2.value != password.value
+    ) {
+      return "box-shadow:0 0 3px #CC0000;";
+    }
+    return "";
+  }
   checkEmail(email) {
     if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
       return true;

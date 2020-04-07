@@ -30,6 +30,7 @@ export class NavBarComponent implements OnInit {
     }
     this.titleService.setTitle(currentTitle);
   }
+
   ngOnInit(): void {
     this.setPageTitle();
   }
