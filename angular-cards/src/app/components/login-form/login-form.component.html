@@ -38,7 +38,11 @@
       />
       <label class="form-check-label" for="remember">Eingeloggt bleiben</label>
     </div>
-    <button type="submit" class="btn btn-primary btn-lg btn-block">
+    <button
+      type="submit"
+      class="btn btn-primary btn-lg btn-block"
+      [disabled]="isDisabled(username, password)"
+    >
       Login
     </button>
   </form>
