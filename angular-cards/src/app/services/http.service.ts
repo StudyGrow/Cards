@@ -71,12 +71,8 @@ export class HttpService {
   }
 
   //User
-  login(
-    username: string,
-    password: string,
-    remember: boolean
-  ): Observable<User> {
-    let form = { username: username, password: password, remember: remember };
+  // form = { username, password, remember};
+  login(form): Observable<User> {
     let response = this.http.put<User>(this.urlBase + "login", form);
     response.subscribe((user) => {
       this.user = user;
@@ -88,4 +84,17 @@ export class HttpService {
     return this.user;
   }
   logout() {}
+  //form = {username,email,password}
+  createAccount(form): Observable<HttpResponse<User>> {
+    let response = this.http.post<User>(this.urlBase + "createAccount", form, {
+      headers: this.httpOptions.headers,
+      observe: "response",
+    });
+    response.subscribe((response) => {
+      if (response.status == 200) {
+        this.user = response.body;
+      }
+    });
+    return response;
+  }
 }

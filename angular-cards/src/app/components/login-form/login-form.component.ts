@@ -12,14 +12,19 @@ export class LoginFormComponent implements OnInit {
 
   ngOnInit(): void {}
   submit(form: NgForm) {
-    this.http
-      .login(form.value.username, form.value.password, form.value.remember)
-      .subscribe((user) => {
-        if (user) {
-          this.router.navigate(["/"]);
-        } else {
-          console.error("error");
-        }
-      });
+    this.http.login(form.value).subscribe((user) => {
+      if (user) {
+        this.router.navigate(["/"]);
+      } else {
+        console.error("error");
+      }
+    });
+  }
+
+  isDisabled(username, password) {
+    if (!(username.value && password.value)) {
+      return true;
+    }
+    return username.value.length < 5 || password.value.length < 7;
   }
 }
