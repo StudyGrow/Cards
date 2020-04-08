@@ -1,5 +1,10 @@
 import { Injectable } from "@angular/core";
-import { HttpClient, HttpHeaders, HttpResponse } from "@angular/common/http";
+import {
+  HttpClient,
+  HttpHeaders,
+  HttpResponse,
+  HttpErrorResponse,
+} from "@angular/common/http";
 import { Observable, BehaviorSubject } from "rxjs";
 
 //Models
@@ -73,15 +78,14 @@ export class HttpService {
 
   //User
   login(form): Observable<User> {
-    let response$ = this.http.put<User>(this.urlBase + "login", form, {
+    let response$ = this.http.post<User>(this.urlBase + "login", form, {
       headers: this.httpOptions.headers,
-    });
-    response$.subscribe((user) => {
-      this.user = user;
     });
     return response$;
   }
-
+  setUser(user: User) {
+    this.user = user;
+  }
   getUser(): User {
     return this.user;
   }
@@ -97,11 +101,6 @@ export class HttpService {
     let response = this.http.post<User>(this.urlBase + "createAccount", form, {
       headers: this.httpOptions.headers,
       observe: "response",
-    });
-    response.subscribe((response) => {
-      if (response.status == 200) {
-        this.user = response.body;
-      }
     });
     return response;
   }

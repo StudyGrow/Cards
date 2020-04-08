@@ -176,6 +176,7 @@ router.put(
       .withMessage("Inhalt darf nicht mehr als 400 Zeichen enthalten"),
   ],
   (req, res) => {
+    console.log(req.body);
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       res.status(422).json({
@@ -193,7 +194,7 @@ router.put(
 );
 
 //User
-router.get(
+router.post(
   "/createAccount",
   [
     check("email").isEmail().withMessage("Keine gültige Email Adresse"),
@@ -206,24 +207,38 @@ router.get(
     check("password")
       .isLength({ min: 7 })
       .withMessage("Passwort muss mindestens 7 Zeichen enthalten"),
-    check("password2")
-      .equals("password")
-      .withMessage("Passwort Wiederholung ungleich Passwort"),
   ],
   (req, res) => {
-    console.log(req);
     const errors = validationResult(req);
+    if (req.body.password !== req.body.password2) {
+      if (errors.isEmpty()) {
+        errors = [
+          {
+            value: "pontpierre19",
+            msg: "Passwort Wiederholung ungleich Passwort",
+            param: "password",
+            location: "body",
+          },
+        ];
+      } else {
+        errors.push({
+          value: "pontpierre19",
+          msg: "Passwort Wiederholung ungleich Passwort",
+          param: "password",
+          location: "body",
+        });
+      }
+    }
     if (!errors.isEmpty()) {
       res.status(422).json({
         errors: errors.array(),
       });
     } else {
-      req.services.user.createAccout(req.body, (err, user) => {
+      req.services.user.createUser(req.body, (err, user) => {
         if (err) {
-          console.log(err);
-          res.status(400).send(err);
+          res.status(422).json({ errors: [err.message] });
         } else {
-          res.status(200).send(user);
+          res.status(200).send({ username: user.username, email: user.email });
         }
       });
     }
@@ -243,7 +258,7 @@ router.post(
       .withMessage("Passwort muss mindestens 7 Zeichen enthalten"),
   ],
   (req, res) => {
-    console.log(req);
+    console.log(req.body);
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       res.status(422).json({
@@ -273,6 +288,7 @@ router.post(
   }
 );
 router.get("/logout", (req, res) => {
+  console.log(req.body);
   if (req.user) {
     req.logout();
     res.status(200).send();

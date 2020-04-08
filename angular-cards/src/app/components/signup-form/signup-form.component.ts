@@ -9,19 +9,29 @@ import { Router } from "@angular/router";
 })
 export class SignupFormComponent implements OnInit {
   constructor(private http: HttpService, private router: Router) {}
+  errors;
 
   ngOnInit(): void {}
   submit(form: NgForm) {
-    this.http.createAccount(form.value).subscribe((response) => {
-      if (response.status == 200) {
-        this.router.navigate(["/"]);
+    this.http.createAccount(form.value).subscribe(
+      (response) => {
+        if (response.status == 200) {
+          this.http.setUser(response.body);
+          this.router.navigate(["/"]);
+        }
+      },
+      (error) => {
+        if ((error.headers.status = 422)) {
+          console.log(error);
+          this.errors = error.error.errors;
+        }
       }
-    });
+    );
   }
   setStyle(password, password2) {
     if (
       password2.value &&
-      password2.value.length > password.value.length &&
+      password2.value.length > 5 &&
       password2.value != password.value
     ) {
       return "box-shadow:0 0 3px #CC0000;";

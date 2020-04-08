@@ -1,4 +1,6 @@
-<br />
+<div class="alert alert-warning" *ngFor="let error of errors">
+  {{ error }}
+</div>
 <div class="container">
   <form #form="ngForm" (ngSubmit)="submit(form)" novalidate>
     <div class="form-group">
