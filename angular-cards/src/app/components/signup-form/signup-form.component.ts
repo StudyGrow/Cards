@@ -16,8 +16,12 @@ export class SignupFormComponent implements OnInit {
     this.http.createAccount(form.value).subscribe(
       (response) => {
         if (response.status == 200) {
-          this.http.setUser(response.body);
-          this.router.navigate(["/"]);
+          this.http.login(response.body).subscribe((user) => {
+            if (user) {
+              this.http.setUser(response.body);
+              this.router.navigate(["/"]);
+            }
+          });
         }
       },
       (error) => {

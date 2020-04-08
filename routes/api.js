@@ -1,8 +1,19 @@
 const express = require("express");
 const { check, query, validationResult } = require("express-validator");
 const router = express.Router();
-const passport = require("passport");
+const User = require("../models/User");
 
+const session = require("express-session");
+router.use(
+  session({
+    secret: "passport-tutorial",
+    cookie: { maxAge: 60000 },
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+
+const passport = require("passport");
 require("../config/passport")(passport);
 router.use(passport.initialize());
 router.use(passport.session());
@@ -258,32 +269,38 @@ router.post(
       .withMessage("Passwort muss mindestens 7 Zeichen enthalten"),
   ],
   (req, res) => {
-    console.log(req.body);
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       res.status(422).json({
         errors: errors.array(),
       });
     } else {
-      passport.authenticate(
-        "local",
-        { session: req.body.remember },
-        (err, user, info) => {
-          if (err) {
-            console.log(err);
-            return res.status(400).send(err);
-          }
-          if (!user) {
-            return res.status(400).send(new Error("!user"));
-          }
-          req.logIn(user, function (err) {
-            if (err) {
-              return res.status(400).send(err);
-            }
-            return res.send(user);
-          })(req, res, next);
+      req.services.user.login(req.body, (err, user) => {
+        if (err) {
+          res.status(422).json({ errors: [err.message] });
+        } else {
+          res.status(200).send({ username: user.username, email: user.email });
         }
-      );
+      });
+      // passport.authenticate("local", (err, user, info) => {
+      //   console.log("passport checked");
+      //   if (err) {
+      //     return res.status(401).send(err);
+      //   }
+      //   if (!user) {
+      //     return res.status(401).send(new Error("!user"));
+      //   }
+      //   if (user) {
+      //     console.log("user: ", user);
+      //   }
+      //   req.logIn(user, function (err) {
+      //     if (err) {
+      //       return res.status(400).send(err);
+      //     }
+
+      //     return res.send(user);
+      //   })(req, res, next);
+      // });
     }
   }
 );

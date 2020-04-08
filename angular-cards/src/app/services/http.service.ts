@@ -77,9 +77,10 @@ export class HttpService {
   }
 
   //User
-  login(form): Observable<User> {
+  login(form): Observable<HttpResponse<User>> {
     let response$ = this.http.post<User>(this.urlBase + "login", form, {
       headers: this.httpOptions.headers,
+      observe: "response",
     });
     return response$;
   }

@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
-const User = mongoose.model("User");
+const User = require("../models/User");
 const bcrypt = require("bcryptjs");
-var co = require("co");
 
 module.exports = function userService() {
   function registerAccount(form, callback) {
@@ -44,6 +43,25 @@ module.exports = function userService() {
       registerAccount(form, callback);
     } catch (error) {
       callback(error, false);
+    }
+  };
+
+  userService.login = async (form, callback) => {
+    try {
+      let user = await User.findOne({ username: form.username });
+
+      if (!user) {
+        throw new Error("Benutzername oder Passwort falsch");
+      }
+      let validation = await bcrypt.compare(form.password, user.password);
+
+      if (validation) {
+        callback(null, user);
+      } else {
+        throw new Error("Benutzername oder Passwort falsch");
+      }
+    } catch (error) {
+      callback(error, null);
     }
   };
   return userService;
