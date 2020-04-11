@@ -41,6 +41,7 @@ export class NavBarComponent implements OnInit {
 logout(){
   this.http.logout();
   this.user=null
+  this.router.navigate(["/"]);
 }
   ngOnInit(): void {
     this.setPageTitle();

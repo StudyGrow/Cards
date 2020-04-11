@@ -84,7 +84,10 @@ export class HttpService {
       observe: "response",
     }).pipe(tap(res=>{
       this.user=res.body
-      localStorage.setItem('user',JSON.stringify(this.user))
+      if(form.remember){
+        localStorage.setItem('user',JSON.stringify(this.user))
+      }
+     
     }));
   }
   

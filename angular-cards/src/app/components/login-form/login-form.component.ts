@@ -10,7 +10,10 @@ import { Router } from "@angular/router";
 export class LoginFormComponent implements OnInit {
   constructor(private http: HttpService, private router: Router) {}
   public errors;
-  ngOnInit(): void {}
+
+  ngOnInit(): void {
+  
+  }
   submit(form: NgForm) {
     this.http.login(form.value).subscribe(
       (response) => {
