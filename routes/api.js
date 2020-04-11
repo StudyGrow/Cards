@@ -280,7 +280,9 @@ router.post(
           res.status(422).json({ errors: [err.message] });
         } else {
           req.user = user;
-          res.status(200).send({ username: user.username, email: user.email });
+          res
+            .status(200)
+            .send({ id: user._id, username: user.username, email: user.email });
         }
       });
       // passport.authenticate("local", (err, user, info) => {
