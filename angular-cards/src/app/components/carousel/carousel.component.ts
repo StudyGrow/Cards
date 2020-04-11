@@ -70,7 +70,6 @@ export class CarouselComponent implements OnInit {
     this.cardsService.getNewCardIndex().subscribe((index) => {
       if (this.carousel && this.activeSlide != index) {
         this.activeSlide = index;
-        console.log("sliding");
         this.carousel.selectSlide(index);
       }
     });

@@ -64,7 +64,6 @@ export class CardsService {
     return this.newCardIndex$.asObservable();
   }
   setNewCardIndex(i: number) {
-    console.log(i);
     this.newCardIndex$.next(i);
   }
   setActiveCardIndex(i: number) {
