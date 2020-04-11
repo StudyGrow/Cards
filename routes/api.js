@@ -279,6 +279,7 @@ router.post(
         if (err) {
           res.status(422).json({ errors: [err.message] });
         } else {
+          req.user = user;
           res.status(200).send({ username: user.username, email: user.email });
         }
       });
@@ -305,12 +306,13 @@ router.post(
   }
 );
 router.get("/logout", (req, res) => {
-  console.log(req.body);
   if (req.user) {
     req.logout();
     res.status(200).send();
-  } else {
-    res.send(400).send(new Error("no user logged in"));
+    req.user = null;
   }
+  // else {
+  //   res.status(422).send("no user logged in");
+  // }
 });
 module.exports = router;

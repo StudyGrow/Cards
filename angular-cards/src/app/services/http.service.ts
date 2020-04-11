@@ -3,9 +3,10 @@ import {
   HttpClient,
   HttpHeaders,
   HttpResponse,
-  HttpErrorResponse,
+  
 } from "@angular/common/http";
 import { Observable, BehaviorSubject } from "rxjs";
+import {tap} from "rxjs/operators"
 
 //Models
 import { User } from "../models/User";
@@ -78,11 +79,12 @@ export class HttpService {
 
   //User
   login(form): Observable<HttpResponse<User>> {
-    let response$ = this.http.post<User>(this.urlBase + "login", form, {
+    return this.http.post<User>(this.urlBase + "login", form, {
       headers: this.httpOptions.headers,
       observe: "response",
-    });
-    return response$;
+    }).pipe(tap(res=>{
+      this.user=res.body
+    }));
   }
   setUser(user: User) {
     this.user = user;
@@ -99,10 +101,10 @@ export class HttpService {
 
   //form = {username,email,password}
   createAccount(form): Observable<HttpResponse<User>> {
-    let response = this.http.post<User>(this.urlBase + "createAccount", form, {
+    return this.http.post<User>(this.urlBase + "createAccount", form, {
       headers: this.httpOptions.headers,
       observe: "response",
-    });
-    return response;
+    }).pipe(tap(res=>this.user=res.body))
+    
   }
 }

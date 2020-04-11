@@ -38,7 +38,10 @@ export class NavBarComponent implements OnInit {
     }
     this.titleService.setTitle(currentTitle);
   }
-
+logout(){
+  this.http.logout();
+  this.user=null
+}
   ngOnInit(): void {
     this.setPageTitle();
     this.user = this.http.getUser();

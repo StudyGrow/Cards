@@ -39,13 +39,30 @@
             >
           </li>
           <li *ngIf="user" class="{{ isActive('/profile') }} nav-item">
-            <a
-              class="nav-link"
-              routerLink="/"
-              placement="bottom"
-              ngbTooltip="im Aufbau"
-              ><i class="fas fa-user-circle"></i> Account</a
-            >
+            <div class="dropdown">
+              <a
+                class="nav-link"
+                type="button"
+                id="dropdownMenuButton"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+                <i class="fas fa-user-circle"></i> Account
+              </a>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a
+                  class="dropdown-item disabled"
+                  href="#"
+                  placement="bottom"
+                  ngbTooltip="im Aufbau"
+                  >Account management</a
+                >
+                <a class="dropdown-item" (click)="logout()">
+                  Logout
+                </a>
+              </div>
+            </div>
           </li>
         </ul>
       </div>

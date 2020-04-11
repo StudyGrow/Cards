@@ -15,7 +15,6 @@ export class LoginFormComponent implements OnInit {
     this.http.login(form.value).subscribe(
       (response) => {
         if (response.status == 200) {
-          this.http.setUser(response.body);
           this.router.navigate(["/"]);
         }
       },

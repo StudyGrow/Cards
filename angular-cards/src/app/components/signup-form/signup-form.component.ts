@@ -15,13 +15,8 @@ export class SignupFormComponent implements OnInit {
   submit(form: NgForm) {
     this.http.createAccount(form.value).subscribe(
       (response) => {
-        if (response.status == 200) {
-          this.http.login(response.body).subscribe((user) => {
-            if (user) {
-              this.http.setUser(response.body);
+        if (response) {
               this.router.navigate(["/"]);
-            }
-          });
         }
       },
       (error) => {
