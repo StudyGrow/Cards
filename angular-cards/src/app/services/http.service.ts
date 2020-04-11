@@ -84,19 +84,22 @@ export class HttpService {
       observe: "response",
     }).pipe(tap(res=>{
       this.user=res.body
+      localStorage.setItem('user',JSON.stringify(this.user))
     }));
   }
-  setUser(user: User) {
-    this.user = user;
-  }
+  
   getUser(): User {
+    if(!this.user){
+      this.user=JSON.parse(localStorage.getItem("user"))
+    }
     return this.user;
   }
   logout() {
     this.http.get<any>(this.urlBase + "logout").subscribe((err) => {
       if (err) console.log(err);
     });
-    this.user = undefined;
+    localStorage.removeItem("user")
+    this.user = null;
   }
 
   //form = {username,email,password}
