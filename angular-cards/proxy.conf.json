@@ -1,6 +1,6 @@
 {
   "/api": {
-    "target": "https://rwth-aachen.tk",
+    "target": "http://localhost",
     "secure": false
   }
 }

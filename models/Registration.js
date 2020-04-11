@@ -1,22 +1,25 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const registrationSchema = new mongoose.Schema({
   vorlesung: {
     type: String,
-    trim : true,
-    required: true
+    trim: true,
+    required: true,
   },
   thema: {
     type: String,
-    required: true
+    required: true,
   },
   content: {
     type: String,
-    required: true
+    required: true,
   },
   img: {
-    type: Buffer
-  }
+    type: Buffer,
+  },
 });
 
-module.exports = mongoose.model('Registration', registrationSchema);
+const Registration = (module.exports = mongoose.model(
+  "Registration",
+  registrationSchema
+));

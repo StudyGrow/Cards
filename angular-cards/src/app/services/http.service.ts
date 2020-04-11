@@ -1,6 +1,12 @@
 import { Injectable } from "@angular/core";
-import { HttpClient, HttpHeaders, HttpResponse } from "@angular/common/http";
+import {
+  HttpClient,
+  HttpHeaders,
+  HttpResponse,
+  
+} from "@angular/common/http";
 import { Observable, BehaviorSubject } from "rxjs";
+import {tap} from "rxjs/operators"
 
 //Models
 import { User } from "../models/User";
@@ -66,35 +72,45 @@ export class HttpService {
 
   getLectureByAbrv(abrv: string): Observable<HttpResponse<Vorlesung>> {
     return this.http.get<Vorlesung>(this.urlBase + "getLecture?abrv=" + abrv, {
+      headers: this.httpOptions.headers,
       observe: "response",
     });
   }
 
   //User
-  // form = { username, password, remember};
-  login(form): Observable<User> {
-    let response = this.http.put<User>(this.urlBase + "login", form);
-    response.subscribe((user) => {
-      this.user = user;
-    });
-    return response;
-  }
-
-  getUser(): User {
-    return this.user;
-  }
-  logout() {}
-  //form = {username,email,password}
-  createAccount(form): Observable<HttpResponse<User>> {
-    let response = this.http.post<User>(this.urlBase + "createAccount", form, {
+  login(form): Observable<HttpResponse<User>> {
+    return this.http.post<User>(this.urlBase + "login", form, {
       headers: this.httpOptions.headers,
       observe: "response",
-    });
-    response.subscribe((response) => {
-      if (response.status == 200) {
-        this.user = response.body;
+    }).pipe(tap(res=>{
+      this.user=res.body
+      if(form.remember){
+        localStorage.setItem('user',JSON.stringify(this.user))
       }
+     
+    }));
+  }
+  
+  getUser(): User {
+    if(!this.user){
+      this.user=JSON.parse(localStorage.getItem("user"))
+    }
+    return this.user;
+  }
+  logout() {
+    this.http.get<any>(this.urlBase + "logout").subscribe((err) => {
+      if (err) console.log(err);
     });
-    return response;
+    localStorage.removeItem("user")
+    this.user = null;
+  }
+
+  //form = {username,email,password}
+  createAccount(form): Observable<HttpResponse<User>> {
+    return this.http.post<User>(this.urlBase + "createAccount", form, {
+      headers: this.httpOptions.headers,
+      observe: "response",
+    }).pipe(tap(res=>this.user=res.body))
+    
   }
 }

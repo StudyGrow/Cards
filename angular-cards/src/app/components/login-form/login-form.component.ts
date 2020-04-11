@@ -9,16 +9,24 @@ import { Router } from "@angular/router";
 })
 export class LoginFormComponent implements OnInit {
   constructor(private http: HttpService, private router: Router) {}
+  public errors;
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  
+  }
   submit(form: NgForm) {
-    this.http.login(form.value).subscribe((user) => {
-      if (user) {
-        this.router.navigate(["/"]);
-      } else {
-        console.error("error");
+    this.http.login(form.value).subscribe(
+      (response) => {
+        if (response.status == 200) {
+          this.router.navigate(["/"]);
+        }
+      },
+      (error) => {
+        if ((error.headers.status = 422)) {
+          this.errors = error.error.errors;
+        }
       }
-    });
+    );
   }
 
   isDisabled(username, password) {
