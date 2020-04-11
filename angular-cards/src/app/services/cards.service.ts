@@ -26,7 +26,6 @@ export class CardsService {
     if (this.cards$) {
       return this.cards$.asObservable();
     } else {
-      console.log("requesting uninitialized cards array, returning []");
       return of([]);
     }
   }
