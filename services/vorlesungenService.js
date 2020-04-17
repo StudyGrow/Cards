@@ -3,7 +3,7 @@ const Vorlesung = mongoose.model("Vorlesung");
 
 module.exports = function vlService() {
   //Gibt alle Vorlesungen zurück
-  vlService.getLectures = callback => {
+  vlService.getLectures = (callback) => {
     Vorlesung.find((err, vls) => {
       if (err) {
         console.log(err);
@@ -26,10 +26,10 @@ module.exports = function vlService() {
     });
   };
 
-  vlService.addLecture = (name, abrv) => {
+  vlService.addLecture = (lecture) => {
     const vl = new Vorlesung();
-    vl.name = name;
-    vl.abrv = abrv;
+    vl.name = lecture.name;
+    vl.abrv = lecture.abrv;
     vl.save();
   };
   return vlService;

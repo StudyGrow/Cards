@@ -87,10 +87,7 @@ router.post(
       res.status(422).json({ errors: errors.array });
       return;
     }
-    req.services.lectures.addLecture(
-      req.body.lecture.name,
-      req.body.lecture.abrv
-    );
+    req.services.lectures.addLecture(req.body.lecture);
     res.status(200).send();
   }
 );
@@ -223,17 +220,10 @@ router.post(
     const errors = validationResult(req);
     if (req.body.password !== req.body.password2) {
       if (errors.isEmpty()) {
-        errors = [
-          {
-            value: "pontpierre19",
-            msg: "Passwort Wiederholung ungleich Passwort",
-            param: "password",
-            location: "body",
-          },
-        ];
+        errors = [];
       } else {
         errors.push({
-          value: "pontpierre19",
+          value: req.body.password2,
           msg: "Passwort Wiederholung ungleich Passwort",
           param: "password",
           location: "body",
