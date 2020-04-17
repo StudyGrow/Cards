@@ -10,14 +10,18 @@ module.exports = function cardsService() {
       callback(error, null);
     }
   };
-  cardsService.addCard = async (abrv, c, callback) => {
+  cardsService.addCard = async (abrv, c, user,callback) => {
     try {
       const card = new Card();
       card.vorlesung = abrv;
       card.thema = c.title;
       card.content = c.content;
       card.img = c.img;
-
+      if (user) {
+        card.author = user.username;
+      } else {
+        card.author = "";
+      }
       await card.save((err, result) => {
         if (err) {
           throw err;

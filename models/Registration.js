@@ -17,6 +17,7 @@ const registrationSchema = new mongoose.Schema({
   img: {
     type: Buffer,
   },
+  author: String,
 });
 
 const Registration = (module.exports = mongoose.model(
