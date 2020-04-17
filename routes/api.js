@@ -21,8 +21,11 @@ router.use(passport.session());
 //Lecture routes
 //Get all Lectures
 router.get("/getAllLectures", (req, res) => {
-  try {
-    req.services.lectures.getLectures((lectures) => {
+  req.services.lectures.getLectures((err, lectures) => {
+    if (err) {
+      console.log(err);
+      res.status(422).send(err);
+    } else {
       res.status(200).send(
         lectures.sort((vl1, vl2) => {
           if (vl1.name > vl2.name) {
@@ -32,11 +35,8 @@ router.get("/getAllLectures", (req, res) => {
           }
         })
       );
-    });
-  } catch (error) {
-    console.log(error);
-    res.status(422).send(error);
-  }
+    }
+  });
 });
 //Get one specific lecture
 //query should include the abreviation of the lecture
@@ -55,17 +55,22 @@ router.get(
       res.status(422).json({ errors: errors.array });
       return;
     }
-    try {
-      req.services.lectures.getLectureByQuery(
-        {
-          abrv: req.query.abrv,
-        },
-        (lecture) => res.status(200).send(lecture)
-      );
-    } catch (error) {
-      console.log(error);
-      res.status(422).send(error);
-    }
+
+    req.services.lectures.getLectureByQuery(
+      {
+        abrv: req.query.abrv,
+      },
+      (err, lecture) => {
+        if (err) {
+          console.log(error);
+          res.status(422).send(error.message);
+        } else if (lecture) {
+          res.status(200).send(lecture);
+        } else {
+          res.status(422).send("No lecture found");
+        }
+      }
+    );
   }
 );
 //Add Lecture to the database
@@ -87,11 +92,13 @@ router.post(
       res.status(422).json({ errors: errors.array });
       return;
     }
-    req.services.lectures.addLecture(
-      req.body.lecture.name,
-      req.body.lecture.abrv
-    );
-    res.status(200).send();
+    req.services.lectures.addLecture(req.body.lecture, (err) => {
+      if (err) {
+        res.status(422).send(err.message);
+      } else {
+        res.status(200).send();
+      }
+    });
   }
 );
 
@@ -111,17 +118,20 @@ router.get(
       res.status(422).json({ errors: errors.array() });
       return;
     }
-    try {
-      req.services.cards.getCardsFromQuery(
-        {
-          vorlesung: req.query.abrv,
-        },
-        (cards) => res.status(200).send(cards)
-      );
-    } catch (error) {
-      console.log(error);
-      res.status(422).send(error);
-    }
+
+    req.services.cards.getCardsFromQuery(
+      {
+        vorlesung: req.query.abrv,
+      },
+      (err, cards) => {
+        if (err) {
+          console.log(err);
+          res.status(422).send(err);
+        } else {
+          res.status(200).send(cards);
+        }
+      }
+    );
   }
 );
 //Add card to the database
@@ -155,13 +165,15 @@ router.post(
 
     req.services.cards.addCard(
       req.body.abrv, //Cards need to be saved as a
-      req.body.card.thema,
-      req.body.card.content,
-      req.body.img,
-      (id) => {
-        res.json({
-          id: id,
-        }); //sende id an client zurück
+      req.body.card,
+      (err, id) => {
+        if (err) {
+          res.status(422).send(err.message);
+        } else {
+          res.json({
+            id: id,
+          }); //sende id an client zurück
+        }
       }
     );
   }
@@ -187,19 +199,19 @@ router.put(
       .withMessage("Inhalt darf nicht mehr als 400 Zeichen enthalten"),
   ],
   (req, res) => {
-    console.log(req.body);
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       res.status(422).json({
         errors: errors.array(),
       });
     } else {
-      req.services.cards.updateCard(
-        req.body.card._id,
-        req.body.card.thema,
-        req.body.card.content
-      );
-      res.status(200).send();
+      req.services.cards.updateCard(req.body.card, (err) => {
+        if (err) {
+          res.status(422).send(err.message);
+        } else {
+          res.status(200).send();
+        }
+      });
     }
   }
 );
@@ -223,17 +235,10 @@ router.post(
     const errors = validationResult(req);
     if (req.body.password !== req.body.password2) {
       if (errors.isEmpty()) {
-        errors = [
-          {
-            value: "pontpierre19",
-            msg: "Passwort Wiederholung ungleich Passwort",
-            param: "password",
-            location: "body",
-          },
-        ];
+        errors = [];
       } else {
         errors.push({
-          value: "pontpierre19",
+          value: req.body.password2,
           msg: "Passwort Wiederholung ungleich Passwort",
           param: "password",
           location: "body",
@@ -247,7 +252,7 @@ router.post(
     } else {
       req.services.user.createUser(req.body, (err, user) => {
         if (err) {
-          res.status(422).json({ errors: [err.message] });
+          res.status(422).send(err.message);
         } else {
           res.status(200).send({ username: user.username, email: user.email });
         }

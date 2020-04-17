@@ -2,44 +2,52 @@ const mongoose = require("mongoose");
 const Card = mongoose.model("Registration");
 
 module.exports = function cardsService() {
-  cardsService.getCardsFromQuery = (query, callback) => {
-    Card.find(query, (err, cards) => {
-      if (err) {
-        console.log(err);
-      } else {
-        callback(cards);
-      }
-    });
+  cardsService.getCardsFromQuery = async (query, callback) => {
+    try {
+      let cards = await Card.find(query);
+      callback(null, cards);
+    } catch (error) {
+      callback(error, null);
+    }
   };
-  cardsService.addCard = (abrv, title, content, img, callback) => {
-    const card = new Card();
-    card.vorlesung = abrv;
-    card.thema = title;
-    card.content = content;
-    card.img = img;
+  cardsService.addCard = async (abrv, c, callback) => {
+    try {
+      const card = new Card();
+      card.vorlesung = abrv;
+      card.thema = c.title;
+      card.content = c.content;
+      card.img = c.img;
 
-    card.save((err, result) => {
-      if (err) {
-        console.log(err);
-      } else {
-        callback(result._id);
-      }
-    });
-  };
-  cardsService.updateCard = (id, thema, content) => {
-    Card.updateOne(
-      {
-        _id: id
-      },
-      {
-        $set: {
-          thema: thema,
-          content: content
+      await card.save((err, result) => {
+        if (err) {
+          throw err;
+        } else {
+          callback(null, result._id);
         }
-      }
-    ).catch(err => {
-      console.log("Error on updateCard: " + err);
-    });
+      });
+    } catch (error) {
+      callback(error, null);
+    }
+  };
+  cardsService.updateCard = (card) => {
+    try {
+      await Card.updateOne(
+        {
+          _id: card.id,
+        },
+        {
+          $set: {
+            thema: card.thema,
+            content: card.content,
+          },
+        }
+      )
+      callback(null)
+    } catch (error) {
+      callback(error)
+    }
+    
+
   };
   return cardsService;
 };
