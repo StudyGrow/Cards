@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const Card = mongoose.model("Registration");
+const Card = mongoose.model("Card");
 
 module.exports = function cardsService() {
   cardsService.getCardsFromQuery = async (query, callback) => {
@@ -10,7 +10,7 @@ module.exports = function cardsService() {
       callback(error, null);
     }
   };
-  cardsService.addCard = async (abrv, c, user,callback) => {
+  cardsService.addCard = async (abrv, c, user, callback) => {
     try {
       const card = new Card();
       card.vorlesung = abrv;
@@ -33,7 +33,7 @@ module.exports = function cardsService() {
       callback(error, null);
     }
   };
-  cardsService.updateCard = (card) => {
+  cardsService.updateCard = async (card) => {
     try {
       await Card.updateOne(
         {
@@ -45,13 +45,11 @@ module.exports = function cardsService() {
             content: card.content,
           },
         }
-      )
-      callback(null)
+      );
+      callback(null);
     } catch (error) {
-      callback(error)
+      callback(error);
     }
-    
-
   };
   return cardsService;
 };
