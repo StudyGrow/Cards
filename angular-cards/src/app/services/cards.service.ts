@@ -4,8 +4,9 @@ import { Subject, Observable, BehaviorSubject, of } from "rxjs";
 import { Card } from "../models/Card";
 import { Vorlesung } from "../models/Vorlesung";
 import { StatesService } from "./states.service";
+import { tap, map } from "rxjs/operators";
 @Injectable({
-  providedIn: "root"
+  providedIn: "root",
 })
 export class CardsService {
   private cards$: BehaviorSubject<Card[]>;
@@ -22,17 +23,30 @@ export class CardsService {
     private statesService: StatesService
   ) {}
 
-  getCards(): Observable<Card[]> {
+  getCards(lecture?): Observable<Card[]> {
+    let vl = JSON.parse(localStorage.getItem("lecture"));
     if (this.cards$) {
+      //cards were already loaded
       return this.cards$.asObservable();
     } else {
-      return of([]);
+      if (!vl) {
+        vl = lecture;
+      }
+      //returns an observable of the cards from http service while also initializing the cards internally for reuse
+      return this.httpService.getCardsFromLecture(vl).pipe(
+        tap((res) => {
+          this.cards$ = new BehaviorSubject<Card[]>(res.body);
+          this.cards = res.body;
+        }),
+        map((res) => res.body)
+      );
     }
   }
 
   initCards(cards: Card[]) {
-    this.cards$ = new BehaviorSubject<Card[]>(cards);
-    this.cards = cards;
+    //this fucntion is obsolete, its features are implemented in getCards
+    // this.cards$ = new BehaviorSubject<Card[]>(cards);
+    // this.cards = cards;
   }
   updateCards(cards: Card[]) {
     this.cards$.next(cards);
@@ -41,7 +55,7 @@ export class CardsService {
     if (!card.abrv) {
       card.abrv = vlAbrv;
     }
-    this.httpService.updateCard(card).subscribe(resp => {
+    this.httpService.updateCard(card).subscribe((resp) => {
       this.statesService.setLoadingState(false);
       this.statesService.setFormMode("reset");
       this.cards[index] = card;
@@ -50,10 +64,10 @@ export class CardsService {
   }
   addCard(card: Card, vlAbrv: string) {
     if (!this.cards) {
-      this.cards$.subscribe(cards => (this.cards = cards));
+      this.cards$.subscribe((cards) => (this.cards = cards));
     }
 
-    this.httpService.addCard(card, vlAbrv).subscribe(response => {
+    this.httpService.addCard(card, vlAbrv).subscribe((response) => {
       this.statesService.setLoadingState(false);
       card._id = response.body;
       this.cards.push(card);

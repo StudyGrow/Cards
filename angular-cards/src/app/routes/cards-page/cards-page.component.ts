@@ -41,6 +41,10 @@ export class CardsPageComponent implements OnInit {
         this.httpService.getCardsFromLecture(this.lecture).subscribe((resp) => {
           this.cardsService.initCards(resp.body);
           this.cards = resp.body;
+
+          if (this.cards.length == 0) {
+            this.stateServie.setFormMode("add");
+          }
         });
       }
     });

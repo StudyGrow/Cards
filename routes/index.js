@@ -10,20 +10,19 @@ const router = express.Router();
 //      next()
 //    }
 //   })
-
+router.get("*", (req, res, next) => {
+  console.log(req.url);
+  next();
+});
 //api route
 router.use("/api", require("../routes/api"));
 
 //angular files
-router.use(
-  express.static(path.join(__dirname, "../angular-cards/dist/angular-cards/"))
-);
+router.use(express.static(path.join(__dirname, "../angular-cards/dist/angular-cards/")));
 
 //angular index.html file to always serve after client uses browser navigation
 router.get("*", (req, res) =>
-  res.sendFile(
-    path.join(__dirname, "../angular-cards/dist/angular-cards/index.html")
-  )
+  res.sendFile(path.join(__dirname, "../angular-cards/dist/angular-cards/index.html"))
 );
 
 module.exports = router;
