@@ -64,5 +64,13 @@ module.exports = function userService() {
       callback(error, null);
     }
   };
+  userService.findUser = async (query, callback) => {
+    try {
+      let user = await User.findOne(query);
+      callback(null, user);
+    } catch (error) {
+      callback(error, null);
+    }
+  };
   return userService;
 };

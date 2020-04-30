@@ -1,21 +1,21 @@
 const mongoose = require("mongoose");
-const Vorlesung = mongoose.model("Vorlesung");
+const Lecture = mongoose.model("Lecture");
 
 module.exports = function vlService() {
   //Gibt alle Vorlesungen zurück
   vlService.getLectures = async (callback) => {
     try {
-      let lectures = await Vorlesung.find();
+      let lectures = await Lecture.find();
       callback(null, lectures);
     } catch (error) {
       callback(error, null);
     }
   };
 
-  //Gibt eine Vorlesung nach gegebenen Parametern zurück
+  //Gibt eine Lecture nach gegebenen Parametern zurück
   vlService.getLectureByQuery = async (query, callback) => {
     try {
-      let lecture = await Vorlesung.findOne(query);
+      let lecture = await Lecture.findOne(query);
       callback(null, lecture);
     } catch (error) {
       callback(error, null);
@@ -24,7 +24,7 @@ module.exports = function vlService() {
 
   vlService.addLecture = async (lecture, callback) => {
     try {
-      const vl = new Vorlesung();
+      const vl = new Lecture();
       vl.name = lecture.name;
       vl.abrv = lecture.abrv;
       await vl.save();

@@ -1,11 +1,10 @@
+require("dotenv").config();
 
-require('dotenv').config();
-
-const fs = require('fs');
-const http = require('http');
-const https = require('https');
-const express = require('express');
-const mongoose = require('mongoose');
+const fs = require("fs");
+const http = require("http");
+const https = require("https");
+const express = require("express");
+const mongoose = require("mongoose");
 const helmet = require("helmet");
 
 // const privateKey = fs.readFileSync('/etc/letsencrypt/live/rwth-aachen.tk/privkey.pem', 'utf8');
@@ -18,31 +17,36 @@ const helmet = require("helmet");
 // 	ca: ca
 // };
 
-mongoose.connect(process.env.DATABASE, { useNewUrlParser: true,useUnifiedTopology: true });
-mongoose.Promise = global.Promise;
-mongoose.connection
-  .on('connected', () => {
-    console.log(`Mongoose connection open on admin database`);
-  })
-  .on('error', (err) => {
-    console.log(`Connection error: ${err.message}`);
+const databaseConfig = require("./config/database");
+
+mongoose
+  .connect(databaseConfig.database, { useNewUrlParser: true, useUnifiedTopology: true })
+  .catch((reason) => {
+    console.log("Connection to Database failed, reason: ", reason);
   });
 
-  require('./models/Registration');
-  require('./models/Vorlesung');
-  const app = require('./app');
-  app.use(helmet()); 
-  const httpServer = http.createServer(app);
-  // const httpsServer = https.createServer(credentials, app);
+mongoose.connection.on("connected", () => {
+  console.log(`Mongoose connection open on admin database`);
+});
 
-  // httpServer.listen(80, () => {
-  //    console.log('HTTP Server running on port 80');
-  // });
-  // app.use(helmet()); 
+mongoose.Promise = global.Promise;
 
-  // httpsServer.listen(443, () => {
-  //  console.log('HTTPS Server running on port 443');
-  // });
+require("./models/Card");
+require("./models/Lecture");
+require("./models/User");
+const app = require("./app");
+app.use(helmet());
+const httpServer = http.createServer(app);
+// const httpsServer = https.createServer(credentials, app);
+
+// httpServer.listen(80, () => {
+//    console.log('HTTP Server running on port 80');
+// });
+// app.use(helmet());
+
+// httpsServer.listen(443, () => {
+//  console.log('HTTPS Server running on port 443');
+// });
 const server = app.listen(80, () => {
   console.log(`Express is running on port ${server.address().port}`);
 });

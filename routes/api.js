@@ -162,19 +162,34 @@ router.post(
       });
       return;
     }
-
-    req.services.cards.addCard(
-      req.body.abrv, //Cards need to be saved as a
-      req.body.card,
-      (err, id) => {
-        if (err) {
-          res.status(422).send(err.message);
-        } else {
-          res.json({
-            id: id,
-          }); //sende id an client zurück
-        }
+    var user;
+    let p = new Promise((resolve, reject) => {
+      if (req.body.userId) {
+        req.services.user.getUser({ _id: req.body.userId }, (err, result) => {
+          if (result) {
+            user = result;
+            resolve();
+          }
+        });
+      } else {
+        resolve();
       }
+    });
+    p.then(
+      req.services.cards.addCard(
+        req.body.abrv, //Cards need to be saved as a
+        req.body.card,
+        user,
+        (err, id) => {
+          if (err) {
+            res.status(422).send(err.message);
+          } else {
+            res.json({
+              id: id,
+            }); //sende id an client zurück
+          }
+        }
+      )
     );
   }
 );
