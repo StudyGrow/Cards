@@ -22,23 +22,22 @@ export class HttpService {
 
   //Cards
   getCardsFromLecture(lecture: Vorlesung): Observable<HttpResponse<Card[]>> {
-    return this.http.get<Card[]>(
-      this.urlBase + "getCards/?abrv=" + lecture.abrv,
-      { observe: "response" }
-    );
+    return this.http.get<Card[]>(this.urlBase + "cards/?abrv=" + lecture.abrv, {
+      observe: "response",
+    });
   }
 
   addCard(card: Card, vlAbrv: string): Observable<HttpResponse<any>> {
     //Cards müssen richtig im Frontend definiert werden
     return this.http.post<any>(
-      this.urlBase + "addCard",
+      this.urlBase + "cards/new",
       { card: card, abrv: vlAbrv },
       this.httpOptions
     );
   }
   updateCard(card: Card): Observable<HttpResponse<any>> {
     return this.http.put<any>(
-      this.urlBase + "updateCard",
+      this.urlBase + "cards/update",
       { card: card },
       {
         headers: this.httpOptions.headers,
@@ -49,14 +48,14 @@ export class HttpService {
 
   //Lectures
   getAllLectures(): Observable<HttpResponse<Vorlesung[]>> {
-    return this.http.get<Vorlesung[]>(this.urlBase + "getAllLectures", {
+    return this.http.get<Vorlesung[]>(this.urlBase + "lectures", {
       observe: "response",
     });
   }
 
   addLecture(lecture: Vorlesung): Observable<HttpResponse<any>> {
     return this.http.post<any>(
-      this.urlBase + "addLecture",
+      this.urlBase + "lectures/new",
       { lecture: lecture },
       {
         headers: this.httpOptions.headers,
@@ -67,7 +66,7 @@ export class HttpService {
 
   getLectureByAbrv(abrv: string): Observable<HttpResponse<Vorlesung>> {
     return this.http
-      .get<Vorlesung>(this.urlBase + "getLecture?abrv=" + abrv, {
+      .get<Vorlesung>(this.urlBase + "lectures/find?abrv=" + abrv, {
         headers: this.httpOptions.headers,
         observe: "response",
       })
@@ -81,7 +80,7 @@ export class HttpService {
   //User
   login(form): Observable<HttpResponse<User>> {
     return this.http
-      .post<User>(this.urlBase + "login", form, {
+      .post<User>(this.urlBase + "user/login", form, {
         headers: this.httpOptions.headers,
         observe: "response",
       })
@@ -102,7 +101,7 @@ export class HttpService {
     return this.user;
   }
   logout() {
-    this.http.get<any>(this.urlBase + "logout").subscribe((err) => {
+    this.http.get<any>(this.urlBase + "user/logout").subscribe((err) => {
       if (err) console.log(err);
     });
     localStorage.removeItem("user");
@@ -112,7 +111,7 @@ export class HttpService {
   //form = {username,email,password}
   createAccount(form): Observable<HttpResponse<User>> {
     return this.http
-      .post<User>(this.urlBase + "createAccount", form, {
+      .post<User>(this.urlBase + "user/new", form, {
         headers: this.httpOptions.headers,
         observe: "response",
       })

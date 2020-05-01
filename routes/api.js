@@ -1,7 +1,6 @@
 const express = require("express");
 const { check, query, validationResult } = require("express-validator");
 const router = express.Router();
-const User = require("../models/User");
 
 const session = require("express-session");
 router.use(
@@ -19,6 +18,13 @@ router.use(passport.initialize());
 router.use(passport.session());
 
 //Lecture routes
+router.use("/lectures", require("./Lectures"));
+//Card routes
+router.use("/cards", require("./Cards"));
+//User routes
+router.use("/user", require("./User"));
+
+//obsolete
 //Get all Lectures
 router.get("/getAllLectures", (req, res) => {
   req.services.lectures.getLectures((err, lectures) => {
@@ -300,9 +306,7 @@ router.post(
           res.status(422).json({ errors: [err.message] });
         } else {
           req.user = user;
-          res
-            .status(200)
-            .send({ id: user._id, username: user.username, email: user.email });
+          res.status(200).send({ id: user._id, username: user.username, email: user.email });
         }
       });
       // passport.authenticate("local", (err, user, info) => {

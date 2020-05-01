@@ -3623,6 +3623,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                 _this11.cardsService.initCards(resp.body);
 
                 _this11.cards = resp.body;
+
+                if (_this11.cards.length == 0) {
+                  _this11.stateServie.setFormMode("add");
+                }
               });
             }
           });
@@ -3824,7 +3828,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
       _createClass(HomePageComponent, [{
         key: "ngOnInit",
-        value: function ngOnInit() {}
+        value: function ngOnInit() {
+          localStorage.removeItem("lecture");
+        }
       }, {
         key: "setLoaded",
         value: function setLoaded(loaded) {
@@ -4135,13 +4141,19 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     /* harmony import */
 
 
-    var _http_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(
+    var rxjs_operators__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(
+    /*! rxjs/operators */
+    "./node_modules/rxjs/_esm2015/operators/index.js");
+    /* harmony import */
+
+
+    var _http_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(
     /*! ./http.service */
     "./src/app/services/http.service.ts");
     /* harmony import */
 
 
-    var _states_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(
+    var _states_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(
     /*! ./states.service */
     "./src/app/services/states.service.ts");
 
@@ -4159,18 +4171,33 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
       _createClass(CardsService, [{
         key: "getCards",
-        value: function getCards() {
+        value: function getCards(lecture) {
+          var _this12 = this;
+
+          var vl = JSON.parse(localStorage.getItem("lecture"));
+
           if (this.cards$) {
+            //cards were already loaded
             return this.cards$.asObservable();
           } else {
-            return Object(rxjs__WEBPACK_IMPORTED_MODULE_1__["of"])([]);
+            if (!vl) {
+              vl = lecture;
+            } //returns an observable of the cards from http service while also initializing the cards internally for reuse
+
+
+            return this.httpService.getCardsFromLecture(vl).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["tap"])(function (res) {
+              _this12.cards$ = new rxjs__WEBPACK_IMPORTED_MODULE_1__["BehaviorSubject"](res.body);
+              _this12.cards = res.body;
+            }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["map"])(function (res) {
+              return res.body;
+            }));
           }
         }
       }, {
         key: "initCards",
-        value: function initCards(cards) {
-          this.cards$ = new rxjs__WEBPACK_IMPORTED_MODULE_1__["BehaviorSubject"](cards);
-          this.cards = cards;
+        value: function initCards(cards) {//this fucntion is obsolete, its features are implemented in getCards
+          // this.cards$ = new BehaviorSubject<Card[]>(cards);
+          // this.cards = cards;
         }
       }, {
         key: "updateCards",
@@ -4180,41 +4207,41 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: "updateCard",
         value: function updateCard(card, vlAbrv, index) {
-          var _this12 = this;
+          var _this13 = this;
 
           if (!card.abrv) {
             card.abrv = vlAbrv;
           }
 
           this.httpService.updateCard(card).subscribe(function (resp) {
-            _this12.statesService.setLoadingState(false);
+            _this13.statesService.setLoadingState(false);
 
-            _this12.statesService.setFormMode("reset");
+            _this13.statesService.setFormMode("reset");
 
-            _this12.cards[index] = card;
+            _this13.cards[index] = card;
 
-            _this12.updateCards(_this12.cards);
+            _this13.updateCards(_this13.cards);
           });
         }
       }, {
         key: "addCard",
         value: function addCard(card, vlAbrv) {
-          var _this13 = this;
+          var _this14 = this;
 
           if (!this.cards) {
             this.cards$.subscribe(function (cards) {
-              return _this13.cards = cards;
+              return _this14.cards = cards;
             });
           }
 
           this.httpService.addCard(card, vlAbrv).subscribe(function (response) {
-            _this13.statesService.setLoadingState(false);
+            _this14.statesService.setLoadingState(false);
 
             card._id = response.body;
 
-            _this13.cards.push(card);
+            _this14.cards.push(card);
 
-            _this13.updateCards(_this13.cards);
+            _this14.updateCards(_this14.cards);
           });
         }
       }, {
@@ -4243,7 +4270,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     }();
 
     CardsService.ɵfac = function CardsService_Factory(t) {
-      return new (t || CardsService)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_http_service__WEBPACK_IMPORTED_MODULE_2__["HttpService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_states_service__WEBPACK_IMPORTED_MODULE_3__["StatesService"]));
+      return new (t || CardsService)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_http_service__WEBPACK_IMPORTED_MODULE_3__["HttpService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_states_service__WEBPACK_IMPORTED_MODULE_4__["StatesService"]));
     };
 
     CardsService.ɵprov = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjectable"]({
@@ -4261,9 +4288,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         }]
       }], function () {
         return [{
-          type: _http_service__WEBPACK_IMPORTED_MODULE_2__["HttpService"]
+          type: _http_service__WEBPACK_IMPORTED_MODULE_3__["HttpService"]
         }, {
-          type: _states_service__WEBPACK_IMPORTED_MODULE_3__["StatesService"]
+          type: _states_service__WEBPACK_IMPORTED_MODULE_4__["StatesService"]
         }];
       }, null);
     })();
@@ -4328,7 +4355,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       _createClass(HttpService, [{
         key: "getCardsFromLecture",
         value: function getCardsFromLecture(lecture) {
-          return this.http.get(this.urlBase + "getCards/?abrv=" + lecture.abrv, {
+          return this.http.get(this.urlBase + "cards/?abrv=" + lecture.abrv, {
             observe: "response"
           });
         }
@@ -4336,7 +4363,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         key: "addCard",
         value: function addCard(card, vlAbrv) {
           //Cards müssen richtig im Frontend definiert werden
-          return this.http.post(this.urlBase + "addCard", {
+          return this.http.post(this.urlBase + "cards/new", {
             card: card,
             abrv: vlAbrv
           }, this.httpOptions);
@@ -4344,7 +4371,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: "updateCard",
         value: function updateCard(card) {
-          return this.http.put(this.urlBase + "updateCard", {
+          return this.http.put(this.urlBase + "cards/update", {
             card: card
           }, {
             headers: this.httpOptions.headers,
@@ -4355,14 +4382,14 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: "getAllLectures",
         value: function getAllLectures() {
-          return this.http.get(this.urlBase + "getAllLectures", {
+          return this.http.get(this.urlBase + "lectures", {
             observe: "response"
           });
         }
       }, {
         key: "addLecture",
         value: function addLecture(lecture) {
-          return this.http.post(this.urlBase + "addLecture", {
+          return this.http.post(this.urlBase + "lectures/new", {
             lecture: lecture
           }, {
             headers: this.httpOptions.headers,
@@ -4372,25 +4399,27 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: "getLectureByAbrv",
         value: function getLectureByAbrv(abrv) {
-          return this.http.get(this.urlBase + "getLecture?abrv=" + abrv, {
+          return this.http.get(this.urlBase + "lectures/find?abrv=" + abrv, {
             headers: this.httpOptions.headers,
             observe: "response"
-          });
+          }).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["tap"])(function (res) {
+            localStorage.setItem("lecture", JSON.stringify(res.body));
+          }));
         } //User
 
       }, {
         key: "login",
         value: function login(form) {
-          var _this14 = this;
+          var _this15 = this;
 
-          return this.http.post(this.urlBase + "login", form, {
+          return this.http.post(this.urlBase + "user/login", form, {
             headers: this.httpOptions.headers,
             observe: "response"
           }).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["tap"])(function (res) {
-            _this14.user = res.body;
+            _this15.user = res.body;
 
             if (form.remember) {
-              localStorage.setItem('user', JSON.stringify(_this14.user));
+              localStorage.setItem("user", JSON.stringify(_this15.user));
             }
           }));
         }
@@ -4406,7 +4435,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: "logout",
         value: function logout() {
-          this.http.get(this.urlBase + "logout").subscribe(function (err) {
+          this.http.get(this.urlBase + "user/logout").subscribe(function (err) {
             if (err) console.log(err);
           });
           localStorage.removeItem("user");
@@ -4416,13 +4445,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: "createAccount",
         value: function createAccount(form) {
-          var _this15 = this;
+          var _this16 = this;
 
-          return this.http.post(this.urlBase + "createAccount", form, {
+          return this.http.post(this.urlBase + "user/new", form, {
             headers: this.httpOptions.headers,
             observe: "response"
           }).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["tap"])(function (res) {
-            return _this15.user = res.body;
+            return _this16.user = res.body;
           }));
         }
       }]);
