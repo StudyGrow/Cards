@@ -59,9 +59,13 @@ export class HttpService {
 
   addCard(card: Card): Observable<HttpResponse<any>> {
     //Cards müssen richtig im Frontend definiert werden
+    let id: string;
+    if (this.user) {
+      id = this.user.id;
+    }
     return this.http.post<any>(
       this.urlBase + "cards/new",
-      { card: card },
+      { card: card, userId: id },
       this.httpOptions
     );
   }

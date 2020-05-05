@@ -62,30 +62,23 @@ router.post(
       });
       return;
     }
-    var user;
-    let p = new Promise((resolve, reject) => {
-      if (req.body.userId) {
-        req.services.user.getUser({ _id: req.body.userId }, (err, result) => {
-          if (result) {
-            user = result;
-            resolve();
+
+    req.services.user.findUser({ _id: req.body.userId }, (err, user) => {
+      if (err) {
+        console.log(err);
+        res.status(422).send(err.message);
+      } else {
+        req.services.cards.addCard(req.body.card, user, (err, id) => {
+          if (err) {
+            res.status(422).send(err.message);
+          } else {
+            res.json({
+              id: id,
+            }); //sende id an client zurück
           }
         });
-      } else {
-        resolve();
       }
     });
-    p.then(
-      req.services.cards.addCard(req.body.card, user, (err, id) => {
-        if (err) {
-          res.status(422).send(err.message);
-        } else {
-          res.json({
-            id: id,
-          }); //sende id an client zurück
-        }
-      })
-    );
   }
 );
 //Update Card in the database
