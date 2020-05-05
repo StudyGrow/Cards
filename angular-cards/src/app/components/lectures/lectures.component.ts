@@ -5,7 +5,7 @@ import { Card } from "../../models/Card";
 @Component({
   selector: "app-lectures",
   templateUrl: "./lectures.component.html",
-  styleUrls: ["./lectures.component.css"]
+  styleUrls: ["./lectures.component.css"],
 })
 export class LecturesComponent implements OnInit {
   lectures: Vorlesung[];
@@ -15,14 +15,8 @@ export class LecturesComponent implements OnInit {
   constructor(private httpService: HttpService) {}
 
   ngOnInit(): void {
-    this.httpService.getAllLectures().subscribe(resp => {
-      if (resp.status == 504) {
-        console.log("Server down");
-        this.lectures = [];
-      } else {
-        this.lecturesLoaded.emit(true);
-        this.lectures = resp.body;
-      }
+    this.httpService.getAllLectures().subscribe((lectures) => {
+      this.lectures = lectures;
     });
   }
 

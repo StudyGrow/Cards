@@ -33,21 +33,15 @@ export class CardsPageComponent implements OnInit {
   ngOnInit(): void {
     this.title.setTitle("Cards");
     this.vlAbrv = this.route.snapshot.paramMap.get("abrv");
-    this.httpService.getLectureByAbrv(this.vlAbrv).subscribe((resp) => {
-      if (resp.status == 504) {
-        console.log("Server offline");
-      } else {
-        this.lecture = resp.body;
-        this.httpService.getCardsFromLecture(this.lecture).subscribe((resp) => {
-          this.cardsService.initCards(resp.body);
-          this.cards = resp.body;
+    this.lecture = this.httpService.getLectureByAbrv(this.vlAbrv);
+    this.cardsService.getCards(this.lecture).subscribe((cards) => {
+      this.cards = cards;
 
-          if (this.cards.length == 0) {
-            this.stateServie.setFormMode("add");
-          }
-        });
+      if (this.cards.length == 0) {
+        this.stateServie.setFormMode("add");
       }
     });
+
     this.cardsService.getNewCardIndex().subscribe((index) => {
       this.ativeCard = index;
     });

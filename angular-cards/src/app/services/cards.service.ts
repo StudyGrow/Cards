@@ -10,6 +10,7 @@ import { tap, map } from "rxjs/operators";
 })
 export class CardsService {
   private cards$: BehaviorSubject<Card[]>;
+  private lecture: Vorlesung;
   private newCardIndex$: BehaviorSubject<number> = new BehaviorSubject<number>(
     0
   );
@@ -23,56 +24,51 @@ export class CardsService {
     private statesService: StatesService
   ) {}
 
-  getCards(lecture?): Observable<Card[]> {
-    let vl = JSON.parse(localStorage.getItem("lecture"));
-    if (this.cards$) {
-      //cards were already loaded
+  getCards(lecture: Vorlesung): Observable<Card[]> {
+    if (this.cards$ && this.lecture == lecture) {
+      //cards were already loaded for this lecture
       return this.cards$.asObservable();
     } else {
-      if (!vl) {
-        vl = lecture;
-      }
       //returns an observable of the cards from http service while also initializing the cards internally for reuse
-      return this.httpService.getCardsFromLecture(vl).pipe(
+      return this.httpService.getCardsFromLecture(lecture).pipe(
         tap((res) => {
           this.cards$ = new BehaviorSubject<Card[]>(res.body);
-          this.cards = res.body;
         }),
         map((res) => res.body)
       );
     }
   }
 
-  initCards(cards: Card[]) {
-    //this fucntion is obsolete, its features are implemented in getCards
-    // this.cards$ = new BehaviorSubject<Card[]>(cards);
-    // this.cards = cards;
-  }
-  updateCards(cards: Card[]) {
-    this.cards$.next(cards);
-  }
-  updateCard(card: Card, vlAbrv: string, index: number) {
-    if (!card.abrv) {
-      card.abrv = vlAbrv;
-    }
+  // initCards(cards: Card[]) {
+  //   //this fucntion is obsolete, its features are implemented in getCards
+  //   // this.cards$ = new BehaviorSubject<Card[]>(cards);
+  //   // this.cards = cards;
+  // }
+  // updateCards(cards: Card[]) {
+  //   this.cards$.next(cards);
+  // }
+
+  updateCard(card: Card, index: number) {
+    this.statesService.setLoadingState(true);
     this.httpService.updateCard(card).subscribe((resp) => {
       this.statesService.setLoadingState(false);
       this.statesService.setFormMode("reset");
-      this.cards[index] = card;
-      this.updateCards(this.cards);
+      let cards = this.cards$.getValue();
+      cards[index] = card;
+      this.cards$.next(cards);
     });
   }
-  addCard(card: Card, vlAbrv: string) {
-    if (!this.cards) {
-      this.cards$.subscribe((cards) => (this.cards = cards));
-    }
-
-    this.httpService.addCard(card, vlAbrv).subscribe((response) => {
-      this.statesService.setLoadingState(false);
-      card._id = response.body;
-      this.cards.push(card);
-      this.updateCards(this.cards);
-    });
+  addCard(card: Card, vlAbrv?: string): Observable<any> {
+    this.statesService.setLoadingState(true);
+    return this.httpService.addCard(card).pipe(
+      tap((response) => {
+        this.statesService.setLoadingState(false);
+        card._id = response.body;
+        let cards = this.cards$.getValue();
+        cards.push(card);
+        this.cards$.next(cards);
+      })
+    );
   }
   getNewCardIndex(): Observable<number> {
     return this.newCardIndex$.asObservable();

@@ -35,10 +35,10 @@ import {
   HAMMER_GESTURE_CONFIG,
 } from "@angular/platform-browser";
 import { LoginPageComponent } from "./routes/login-page/login-page.component";
-import { LoginFormComponent } from './components/login-form/login-form.component';
-import { SignupPageComponent } from './routes/signup-page/signup-page.component';
-import { SignupFormComponent } from './components/signup-form/signup-form.component';
-import { StoreModule } from '@ngrx/store';
+import { LoginFormComponent } from "./components/login-form/login-form.component";
+import { SignupPageComponent } from "./routes/signup-page/signup-page.component";
+import { SignupFormComponent } from "./components/signup-form/signup-form.component";
+import { StoreModule } from "@ngrx/store";
 declare var Hammer: any;
 //Config to allow swipe gestures on carousel
 export class MyHammerConfig extends HammerGestureConfig {
@@ -101,7 +101,7 @@ export class MyHammerConfig extends HammerGestureConfig {
   providers: [
     StatesService,
     HttpService,
-    CardsService,
+
     {
       provide: HAMMER_GESTURE_CONFIG,
       useClass: MyHammerConfig,

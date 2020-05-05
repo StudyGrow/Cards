@@ -1,8 +1,14 @@
-.row{
-    width: 100%;
+.row {
+  width: 100%;
 }
 nav {
   position: relative;
 }
 
-
+#progress {
+  position: relative;
+}
+mat-progress-bar {
+  position: absolute;
+  top: 0;
+}

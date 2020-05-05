@@ -1,10 +1,10 @@
-<app-nav-bar [cards]="undefined"></app-nav-bar>
-<mat-progress-bar *ngIf="!loaded" mode="indeterminate"></mat-progress-bar>
+<app-nav-bar></app-nav-bar>
+
 <div class="container">
   <app-lectures
     (lecturesLoaded)="setLoaded($event)"
     [newVl]="newVl"
   ></app-lectures>
   <br />
-  <app-add-lecture-form (emitVl)="emitVl($event)"></app-add-lecture-form>
+  <app-add-lecture-form></app-add-lecture-form>
 </div>

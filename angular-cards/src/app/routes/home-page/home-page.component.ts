@@ -1,21 +1,23 @@
 import { Component, OnInit } from "@angular/core";
 import { Vorlesung } from "../../models/Vorlesung";
+import { StatesService } from "../../services/states.service";
+import { from } from "rxjs";
 @Component({
   selector: "app-home-page",
   templateUrl: "./home-page.component.html",
   styleUrls: ["./home-page.component.css"],
 })
 export class HomePageComponent implements OnInit {
-  public loaded: boolean = false;
+  public loading: boolean = false;
   public newVl: Vorlesung;
-  constructor() {}
+  constructor(private statesService: StatesService) {}
 
   ngOnInit(): void {
-    localStorage.removeItem("lecture");
+    this.statesService.getLoadingState().subscribe((val) => {
+      this.loading = val;
+    });
   }
-  setLoaded(loaded: boolean): void {
-    this.loaded = loaded;
-  }
+
   emitVl(lecture: Vorlesung) {
     console.log("vl: ", lecture);
     this.newVl = lecture;
