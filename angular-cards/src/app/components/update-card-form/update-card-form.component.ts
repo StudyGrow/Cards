@@ -10,14 +10,12 @@ import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 @Component({
   selector: "app-update-card-form",
   templateUrl: "./update-card-form.component.html",
-  styleUrls: ["./update-card-form.component.css"]
+  styleUrls: ["./update-card-form.component.css"],
 })
 export class UpdateCardFormComponent implements OnInit {
-  @Input() lecture: Vorlesung;
-  @Output() returnCard: EventEmitter<Card> = new EventEmitter();
-  public cardCopy: Card = { thema: "", content: "" };
+  public cardCopy: Card;
   private cards: Card[];
-
+  public lecture: Vorlesung;
   private cardIndex: number;
   private activeCardIndex: number;
   constructor(
@@ -28,32 +26,28 @@ export class UpdateCardFormComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.cardsService.getCards().subscribe(cards => (this.cards = cards));
-    this.cardsService
-      .getActiveCardIndex()
-      .subscribe(index => (this.activeCardIndex = index));
-
-    this.cardCopy = { ...this.cards[this.activeCardIndex] };
-    this.cardIndex = this.activeCardIndex;
+    this.httpService.getCurrentLecture().subscribe((vl) => {
+      this.lecture = vl;
+      this.cardsService.getCards(this.lecture).subscribe((cards) => {
+        this.cards = cards;
+        this.cardsService.getActiveCardIndex().subscribe((index) => {
+          this.activeCardIndex = index;
+          this.cardCopy = { ...this.cards[this.activeCardIndex] };
+          this.cardIndex = this.activeCardIndex;
+        });
+      });
+    });
   }
 
   onSubmit(f: NgForm) {
-    this.statesService.setLoadingState(true);
     this.cardCopy.content = f.value.content;
     this.cardCopy.thema = f.value.thema;
-
-    this.cards[this.cardIndex] = { ...this.cardCopy };
-
-    this.cardsService.updateCard(
-      this.cards[this.cardIndex],
-      this.lecture.abrv,
-      this.cardIndex
-    );
+    this.cardsService.updateCard({ ...this.cardCopy }, this.cardIndex);
     f.reset();
   }
   cancelEdit() {
     const dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
-      width: "400px"
+      width: "400px",
     });
   }
 
@@ -65,7 +59,7 @@ export class UpdateCardFormComponent implements OnInit {
           (thema.value && thema.value.length > 0 && thema.value.length < 3) ||
           thema.value.length > 60
             ? "#ff0000"
-            : "#000000"
+            : "#000000",
       };
     } else {
       return { color: "#000000" };
@@ -76,7 +70,7 @@ export class UpdateCardFormComponent implements OnInit {
     if (content.value) {
       return {
         color:
-          content.value && content.value.length > 400 ? "#ff0000" : "#000000"
+          content.value && content.value.length > 400 ? "#ff0000" : "#000000",
       };
     } else {
       return { color: "#000000" };
@@ -104,7 +98,7 @@ export class UpdateCardFormComponent implements OnInit {
 }
 @Component({
   selector: "dialog-overview-example-dialog",
-  templateUrl: "dialog.html"
+  templateUrl: "dialog.html",
 })
 export class DialogOverviewExampleDialog {
   constructor(

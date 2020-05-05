@@ -1,13 +1,9 @@
 import { Injectable } from "@angular/core";
-import {
-  HttpClient,
-  HttpHeaders,
-  HttpResponse,
-  
-} from "@angular/common/http";
-import { Observable, BehaviorSubject } from "rxjs";
-import {tap} from "rxjs/operators"
-
+import { HttpClient, HttpHeaders, HttpResponse } from "@angular/common/http";
+import { Observable, BehaviorSubject, of } from "rxjs";
+import { tap, map } from "rxjs/operators";
+import { StatesService } from "./states.service";
+import { Router } from "@angular/router";
 //Models
 import { User } from "../models/User";
 import { Card } from "../models/Card";
@@ -19,31 +15,63 @@ import { Vorlesung } from "../models/Vorlesung";
 export class HttpService {
   private urlBase: string = "api/";
   private user: User;
+  private lecture$: BehaviorSubject<Vorlesung>; //holds the current lecture
+  private lectures$: BehaviorSubject<Vorlesung[]>; //holds all lectures
   private httpOptions = {
     headers: new HttpHeaders({ "Content-Type": "application/json" }),
   };
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private statesService: StatesService,
+    private router: Router
+  ) {}
 
   //Cards
-  getCardsFromLecture(lecture: Vorlesung): Observable<HttpResponse<Card[]>> {
-    return this.http.get<Card[]>(
-      this.urlBase + "getCards/?abrv=" + lecture.abrv,
-      { observe: "response" }
-    );
+  getCardsFromLecture(lecture: Vorlesung): Observable<HttpResponse<any[]>> {
+    this.statesService.setLoadingState(true);
+    if (this.lecture$) {
+      return this.http
+        .get<Card[]>(
+          this.urlBase + "cards/?abrv=" + this.lecture$.getValue().abrv,
+          {
+            observe: "response",
+          }
+        )
+        .pipe(
+          tap((res) => {
+            this.statesService.setLoadingState(false);
+          })
+        );
+    } else {
+      let abrv = this.router.url.split(/vorlesung\//)[1];
+      return this.http
+        .get<Card[]>(this.urlBase + "cards/?abrv=" + abrv, {
+          observe: "response",
+        })
+        .pipe(
+          tap((res) => {
+            this.statesService.setLoadingState(false);
+          })
+        );
+    }
   }
 
-  addCard(card: Card, vlAbrv: string): Observable<HttpResponse<any>> {
+  addCard(card: Card): Observable<HttpResponse<any>> {
     //Cards müssen richtig im Frontend definiert werden
+    let id: string;
+    if (this.user) {
+      id = this.user.id;
+    }
     return this.http.post<any>(
-      this.urlBase + "addCard",
-      { card: card, abrv: vlAbrv },
+      this.urlBase + "cards/new",
+      { card: card, userId: id },
       this.httpOptions
     );
   }
   updateCard(card: Card): Observable<HttpResponse<any>> {
     return this.http.put<any>(
-      this.urlBase + "updateCard",
+      this.urlBase + "cards/update",
       { card: card },
       {
         headers: this.httpOptions.headers,
@@ -53,64 +81,138 @@ export class HttpService {
   }
 
   //Lectures
-  getAllLectures(): Observable<HttpResponse<Vorlesung[]>> {
-    return this.http.get<Vorlesung[]>(this.urlBase + "getAllLectures", {
-      observe: "response",
-    });
+  getAllLectures(): Observable<Vorlesung[]> {
+    this.statesService.setLoadingState(true);
+    if (this.lectures$) {
+      this.statesService.setLoadingState(false);
+      return this.lectures$.asObservable();
+    } else {
+      return this.http
+        .get<Vorlesung[]>(this.urlBase + "lectures", {
+          observe: "response",
+        })
+        .pipe(
+          tap((res) => {
+            this.statesService.setLoadingState(false);
+            this.lectures$ = new BehaviorSubject<Vorlesung[]>(res.body);
+          }),
+          map((res) => res.body)
+        );
+    }
+  }
+  setCurrentLecture(lecture: Vorlesung) {
+    if (this.lecture$) {
+      this.lecture$.next(lecture);
+    } else {
+      this.lecture$ = new BehaviorSubject<Vorlesung>(lecture);
+    }
+  }
+  getCurrentLecture(): Observable<Vorlesung> {
+    if (this.lecture$) {
+      return this.lecture$.asObservable();
+    } else {
+      let abrv = this.router.url.split(/vorlesung\//)[1];
+      return this.http
+        .get<Vorlesung>(this.urlBase + "lectures/find?abrv=" + abrv, {
+          observe: "response",
+        })
+        .pipe(
+          tap((res) => {
+            this.lecture$ = new BehaviorSubject<Vorlesung>(res.body);
+          }),
+          map((res) => res.body)
+        );
+    }
   }
 
   addLecture(lecture: Vorlesung): Observable<HttpResponse<any>> {
-    return this.http.post<any>(
-      this.urlBase + "addLecture",
-      { lecture: lecture },
-      {
-        headers: this.httpOptions.headers,
-        observe: "response",
-      }
-    );
+    this.statesService.setLoadingState(true);
+    return this.http
+      .post<any>(
+        this.urlBase + "lectures/new",
+        { lecture: lecture },
+        {
+          headers: this.httpOptions.headers,
+          observe: "response",
+        }
+      )
+      .pipe(
+        tap((res) => {
+          //add the new lecture to the lectures subject
+          this.statesService.setLoadingState(false);
+          let lectures = this.lectures$.getValue();
+          lectures.push(lecture);
+          this.lectures$.next(lectures);
+        })
+      );
   }
 
-  getLectureByAbrv(abrv: string): Observable<HttpResponse<Vorlesung>> {
-    return this.http.get<Vorlesung>(this.urlBase + "getLecture?abrv=" + abrv, {
-      headers: this.httpOptions.headers,
-      observe: "response",
-    });
+  getLectureByAbrv(abrv: string): Vorlesung {
+    if (this.lectures$) {
+      let lectures = this.lectures$.getValue();
+      for (const lecture of lectures) {
+        if (lecture.abrv == abrv) {
+          if (this.lecture$) {
+            this.lecture$.next(lecture);
+          } else {
+            this.lecture$ = new BehaviorSubject<Vorlesung>(lecture);
+          }
+
+          return lecture;
+        }
+      }
+    } else {
+    }
   }
 
   //User
   login(form): Observable<HttpResponse<User>> {
-    return this.http.post<User>(this.urlBase + "login", form, {
-      headers: this.httpOptions.headers,
-      observe: "response",
-    }).pipe(tap(res=>{
-      this.user=res.body
-      if(form.remember){
-        localStorage.setItem('user',JSON.stringify(this.user))
-      }
-     
-    }));
+    this.statesService.setLoadingState(true);
+    return this.http
+      .post<User>(this.urlBase + "user/login", form, {
+        headers: this.httpOptions.headers,
+        observe: "response",
+      })
+      .pipe(
+        tap((res) => {
+          this.statesService.setLoadingState(false);
+          this.user = res.body;
+          if (form.remember) {
+            localStorage.setItem("user", JSON.stringify(this.user));
+          }
+        })
+      );
   }
-  
+
   getUser(): User {
-    if(!this.user){
-      this.user=JSON.parse(localStorage.getItem("user"))
+    if (!this.user) {
+      this.user = JSON.parse(localStorage.getItem("user"));
     }
     return this.user;
   }
   logout() {
-    this.http.get<any>(this.urlBase + "logout").subscribe((err) => {
+    this.statesService.setLoadingState(true);
+    this.http.get<any>(this.urlBase + "user/logout").subscribe((err) => {
+      this.statesService.setLoadingState(false);
       if (err) console.log(err);
     });
-    localStorage.removeItem("user")
+    localStorage.removeItem("user");
     this.user = null;
   }
 
   //form = {username,email,password}
   createAccount(form): Observable<HttpResponse<User>> {
-    return this.http.post<User>(this.urlBase + "createAccount", form, {
-      headers: this.httpOptions.headers,
-      observe: "response",
-    }).pipe(tap(res=>this.user=res.body))
-    
+    this.statesService.setLoadingState(true);
+    return this.http
+      .post<User>(this.urlBase + "user/new", form, {
+        headers: this.httpOptions.headers,
+        observe: "response",
+      })
+      .pipe(
+        tap((res) => {
+          this.user = res.body;
+          this.statesService.setLoadingState(false);
+        })
+      );
   }
 }

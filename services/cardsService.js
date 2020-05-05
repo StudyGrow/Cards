@@ -10,13 +10,10 @@ module.exports = function cardsService() {
       callback(error, null);
     }
   };
-  cardsService.addCard = async (abrv, c, user, callback) => {
+  cardsService.addCard = async (form, user, callback) => {
     try {
-      const card = new Card();
-      card.vorlesung = abrv;
-      card.thema = c.title;
-      card.content = c.content;
-      card.img = c.img;
+      const card = new Card(form);
+      card.vorlesung = form.abrv;
       if (user) {
         card.author = user.username;
       } else {
@@ -33,19 +30,12 @@ module.exports = function cardsService() {
       callback(error, null);
     }
   };
-  cardsService.updateCard = async (card) => {
+  cardsService.updateCard = async (card, callback) => {
     try {
-      await Card.updateOne(
-        {
-          _id: card.id,
-        },
-        {
-          $set: {
-            thema: card.thema,
-            content: card.content,
-          },
-        }
-      );
+      await Card.findByIdAndUpdate(card._id, {
+        thema: card.thema,
+        content: card.content,
+      });
       callback(null);
     } catch (error) {
       callback(error);

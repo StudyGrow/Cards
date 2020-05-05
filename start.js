@@ -20,7 +20,11 @@ const helmet = require("helmet");
 const databaseConfig = require("./config/database");
 
 mongoose
-  .connect(databaseConfig.database, { useNewUrlParser: true, useUnifiedTopology: true })
+  .connect(databaseConfig.database, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false,
+  })
   .catch((reason) => {
     console.log("Connection to Database failed, reason: ", reason);
   });

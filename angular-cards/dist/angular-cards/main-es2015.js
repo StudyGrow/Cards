@@ -1821,6 +1821,9 @@ class CardsPageComponent {
                 this.httpService.getCardsFromLecture(this.lecture).subscribe((resp) => {
                     this.cardsService.initCards(resp.body);
                     this.cards = resp.body;
+                    if (this.cards.length == 0) {
+                        this.stateServie.setFormMode("add");
+                    }
                 });
             }
         });
@@ -1910,7 +1913,9 @@ class HomePageComponent {
     constructor() {
         this.loaded = false;
     }
-    ngOnInit() { }
+    ngOnInit() {
+        localStorage.removeItem("lecture");
+    }
     setLoaded(loaded) {
         this.loaded = loaded;
     }
@@ -1944,7 +1949,7 @@ HomePageComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefine
         args: [{
                 selector: "app-home-page",
                 templateUrl: "./home-page.component.html",
-                styleUrls: ["./home-page.component.css"]
+                styleUrls: ["./home-page.component.css"],
             }]
     }], function () { return []; }, null); })();
 
@@ -2047,8 +2052,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CardsService", function() { return CardsService; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
 /* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm2015/index.js");
-/* harmony import */ var _http_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./http.service */ "./src/app/services/http.service.ts");
-/* harmony import */ var _states_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./states.service */ "./src/app/services/states.service.ts");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm2015/operators/index.js");
+/* harmony import */ var _http_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./http.service */ "./src/app/services/http.service.ts");
+/* harmony import */ var _states_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./states.service */ "./src/app/services/states.service.ts");
+
 
 
 
@@ -2061,17 +2068,27 @@ class CardsService {
         this.newCardIndex$ = new rxjs__WEBPACK_IMPORTED_MODULE_1__["BehaviorSubject"](0);
         this.activeCardIndex$ = new rxjs__WEBPACK_IMPORTED_MODULE_1__["BehaviorSubject"](0);
     }
-    getCards() {
+    getCards(lecture) {
+        let vl = JSON.parse(localStorage.getItem("lecture"));
         if (this.cards$) {
+            //cards were already loaded
             return this.cards$.asObservable();
         }
         else {
-            return Object(rxjs__WEBPACK_IMPORTED_MODULE_1__["of"])([]);
+            if (!vl) {
+                vl = lecture;
+            }
+            //returns an observable of the cards from http service while also initializing the cards internally for reuse
+            return this.httpService.getCardsFromLecture(vl).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["tap"])((res) => {
+                this.cards$ = new rxjs__WEBPACK_IMPORTED_MODULE_1__["BehaviorSubject"](res.body);
+                this.cards = res.body;
+            }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["map"])((res) => res.body));
         }
     }
     initCards(cards) {
-        this.cards$ = new rxjs__WEBPACK_IMPORTED_MODULE_1__["BehaviorSubject"](cards);
-        this.cards = cards;
+        //this fucntion is obsolete, its features are implemented in getCards
+        // this.cards$ = new BehaviorSubject<Card[]>(cards);
+        // this.cards = cards;
     }
     updateCards(cards) {
         this.cards$.next(cards);
@@ -2080,7 +2097,7 @@ class CardsService {
         if (!card.abrv) {
             card.abrv = vlAbrv;
         }
-        this.httpService.updateCard(card).subscribe(resp => {
+        this.httpService.updateCard(card).subscribe((resp) => {
             this.statesService.setLoadingState(false);
             this.statesService.setFormMode("reset");
             this.cards[index] = card;
@@ -2089,9 +2106,9 @@ class CardsService {
     }
     addCard(card, vlAbrv) {
         if (!this.cards) {
-            this.cards$.subscribe(cards => (this.cards = cards));
+            this.cards$.subscribe((cards) => (this.cards = cards));
         }
-        this.httpService.addCard(card, vlAbrv).subscribe(response => {
+        this.httpService.addCard(card, vlAbrv).subscribe((response) => {
             this.statesService.setLoadingState(false);
             card._id = response.body;
             this.cards.push(card);
@@ -2111,14 +2128,14 @@ class CardsService {
         return this.activeCardIndex$.asObservable();
     }
 }
-CardsService.ɵfac = function CardsService_Factory(t) { return new (t || CardsService)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_http_service__WEBPACK_IMPORTED_MODULE_2__["HttpService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_states_service__WEBPACK_IMPORTED_MODULE_3__["StatesService"])); };
+CardsService.ɵfac = function CardsService_Factory(t) { return new (t || CardsService)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_http_service__WEBPACK_IMPORTED_MODULE_3__["HttpService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_states_service__WEBPACK_IMPORTED_MODULE_4__["StatesService"])); };
 CardsService.ɵprov = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjectable"]({ token: CardsService, factory: CardsService.ɵfac, providedIn: "root" });
 /*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](CardsService, [{
         type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"],
         args: [{
-                providedIn: "root"
+                providedIn: "root",
             }]
-    }], function () { return [{ type: _http_service__WEBPACK_IMPORTED_MODULE_2__["HttpService"] }, { type: _states_service__WEBPACK_IMPORTED_MODULE_3__["StatesService"] }]; }, null); })();
+    }], function () { return [{ type: _http_service__WEBPACK_IMPORTED_MODULE_3__["HttpService"] }, { type: _states_service__WEBPACK_IMPORTED_MODULE_4__["StatesService"] }]; }, null); })();
 
 
 /***/ }),
@@ -2151,45 +2168,53 @@ class HttpService {
     }
     //Cards
     getCardsFromLecture(lecture) {
-        return this.http.get(this.urlBase + "getCards/?abrv=" + lecture.abrv, { observe: "response" });
+        return this.http.get(this.urlBase + "cards/?abrv=" + lecture.abrv, {
+            observe: "response",
+        });
     }
     addCard(card, vlAbrv) {
         //Cards müssen richtig im Frontend definiert werden
-        return this.http.post(this.urlBase + "addCard", { card: card, abrv: vlAbrv }, this.httpOptions);
+        return this.http.post(this.urlBase + "cards/new", { card: card, abrv: vlAbrv }, this.httpOptions);
     }
     updateCard(card) {
-        return this.http.put(this.urlBase + "updateCard", { card: card }, {
+        return this.http.put(this.urlBase + "cards/update", { card: card }, {
             headers: this.httpOptions.headers,
             observe: "response",
         });
     }
     //Lectures
     getAllLectures() {
-        return this.http.get(this.urlBase + "getAllLectures", {
+        return this.http.get(this.urlBase + "lectures", {
             observe: "response",
         });
     }
     addLecture(lecture) {
-        return this.http.post(this.urlBase + "addLecture", { lecture: lecture }, {
+        return this.http.post(this.urlBase + "lectures/new", { lecture: lecture }, {
             headers: this.httpOptions.headers,
             observe: "response",
         });
     }
     getLectureByAbrv(abrv) {
-        return this.http.get(this.urlBase + "getLecture?abrv=" + abrv, {
+        return this.http
+            .get(this.urlBase + "lectures/find?abrv=" + abrv, {
             headers: this.httpOptions.headers,
             observe: "response",
-        });
+        })
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["tap"])((res) => {
+            localStorage.setItem("lecture", JSON.stringify(res.body));
+        }));
     }
     //User
     login(form) {
-        return this.http.post(this.urlBase + "login", form, {
+        return this.http
+            .post(this.urlBase + "user/login", form, {
             headers: this.httpOptions.headers,
             observe: "response",
-        }).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["tap"])(res => {
+        })
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["tap"])((res) => {
             this.user = res.body;
             if (form.remember) {
-                localStorage.setItem('user', JSON.stringify(this.user));
+                localStorage.setItem("user", JSON.stringify(this.user));
             }
         }));
     }
@@ -2200,7 +2225,7 @@ class HttpService {
         return this.user;
     }
     logout() {
-        this.http.get(this.urlBase + "logout").subscribe((err) => {
+        this.http.get(this.urlBase + "user/logout").subscribe((err) => {
             if (err)
                 console.log(err);
         });
@@ -2209,10 +2234,12 @@ class HttpService {
     }
     //form = {username,email,password}
     createAccount(form) {
-        return this.http.post(this.urlBase + "createAccount", form, {
+        return this.http
+            .post(this.urlBase + "user/new", form, {
             headers: this.httpOptions.headers,
             observe: "response",
-        }).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["tap"])(res => this.user = res.body));
+        })
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["tap"])((res) => (this.user = res.body)));
     }
 }
 HttpService.ɵfac = function HttpService_Factory(t) { return new (t || HttpService)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpClient"])); };
