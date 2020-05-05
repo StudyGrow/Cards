@@ -28,7 +28,7 @@ export class HttpService {
   ) {}
 
   //Cards
-  getCardsFromLecture(lecture: Vorlesung): Observable<HttpResponse<Card[]>> {
+  getCardsFromLecture(lecture: Vorlesung): Observable<HttpResponse<any[]>> {
     this.statesService.setLoadingState(true);
     if (this.lecture$) {
       return this.http

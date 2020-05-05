@@ -10,7 +10,7 @@ import { tap, map } from "rxjs/operators";
 })
 export class CardsService {
   private cards$: BehaviorSubject<Card[]>;
-  private lecture: Vorlesung;
+  private abrv: string;
   private newCardIndex$: BehaviorSubject<number> = new BehaviorSubject<number>(
     0
   );
@@ -25,7 +25,7 @@ export class CardsService {
   ) {}
 
   getCards(lecture: Vorlesung): Observable<Card[]> {
-    if (this.cards$ && this.lecture == lecture) {
+    if (this.abrv == lecture.abrv) {
       //cards were already loaded for this lecture
       return this.cards$.asObservable();
     } else {
@@ -33,6 +33,7 @@ export class CardsService {
       return this.httpService.getCardsFromLecture(lecture).pipe(
         tap((res) => {
           this.cards$ = new BehaviorSubject<Card[]>(res.body);
+          this.abrv = res.body[0].vorlesung;
         }),
         map((res) => res.body)
       );
@@ -58,7 +59,7 @@ export class CardsService {
       this.cards$.next(cards);
     });
   }
-  addCard(card: Card, vlAbrv?: string): Observable<any> {
+  addCard(card: Card): Observable<any> {
     this.statesService.setLoadingState(true);
     return this.httpService.addCard(card).pipe(
       tap((response) => {

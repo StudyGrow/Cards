@@ -13,7 +13,7 @@ import { MatDialog, MatDialogRef } from "@angular/material/dialog";
   styleUrls: ["./update-card-form.component.css"],
 })
 export class UpdateCardFormComponent implements OnInit {
-  public cardCopy: Card = { thema: "", content: "", abrv: "" };
+  public cardCopy: Card;
   private cards: Card[];
   public lecture: Vorlesung;
   private cardIndex: number;
@@ -28,22 +28,20 @@ export class UpdateCardFormComponent implements OnInit {
   ngOnInit(): void {
     this.httpService.getCurrentLecture().subscribe((vl) => {
       this.lecture = vl;
-      this.cardsService
-        .getCards(this.lecture)
-        .subscribe((cards) => (this.cards = cards));
-      this.cardsService
-        .getActiveCardIndex()
-        .subscribe((index) => (this.activeCardIndex = index));
-
-      this.cardCopy = { ...this.cards[this.activeCardIndex] };
-      this.cardIndex = this.activeCardIndex;
+      this.cardsService.getCards(this.lecture).subscribe((cards) => {
+        this.cards = cards;
+        this.cardsService.getActiveCardIndex().subscribe((index) => {
+          this.activeCardIndex = index;
+          this.cardCopy = { ...this.cards[this.activeCardIndex] };
+          this.cardIndex = this.activeCardIndex;
+        });
+      });
     });
   }
 
   onSubmit(f: NgForm) {
     this.cardCopy.content = f.value.content;
     this.cardCopy.thema = f.value.thema;
-
     this.cardsService.updateCard({ ...this.cardCopy }, this.cardIndex);
     f.reset();
   }

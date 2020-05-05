@@ -93,7 +93,7 @@ router.post(
 router.put(
   "/update",
   [
-    check("card.abrv")
+    check("card.vorlesung")
       .isLength({ min: 3, max: 7 })
       .withMessage("Lecture abreviation must be between 3 and 7 characters"),
     check("card.thema")

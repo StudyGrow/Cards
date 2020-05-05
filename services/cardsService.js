@@ -32,17 +32,10 @@ module.exports = function cardsService() {
   };
   cardsService.updateCard = async (card, callback) => {
     try {
-      await Card.updateOne(
-        {
-          _id: card.id,
-        },
-        {
-          $set: {
-            thema: card.thema,
-            content: card.content,
-          },
-        }
-      );
+      await Card.findByIdAndUpdate(card._id, {
+        thema: card.thema,
+        content: card.content,
+      });
       callback(null);
     } catch (error) {
       callback(error);
