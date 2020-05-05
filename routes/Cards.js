@@ -38,6 +38,9 @@ router.get(
 router.post(
   "/new",
   [
+    check("card.abrv")
+      .isLength({ min: 3, max: 7 })
+      .withMessage("Vorlesung Abkürzung ugültig (muss zwischen 3 und 7 Zeichen enthalten)"),
     check("card.thema")
       .isLength({
         min: 3,
@@ -73,20 +76,15 @@ router.post(
       }
     });
     p.then(
-      req.services.cards.addCard(
-        req.body.abrv, //Cards need to be saved as a
-        req.body.card,
-        user,
-        (err, id) => {
-          if (err) {
-            res.status(422).send(err.message);
-          } else {
-            res.json({
-              id: id,
-            }); //sende id an client zurück
-          }
+      req.services.cards.addCard(req.body.card, user, (err, id) => {
+        if (err) {
+          res.status(422).send(err.message);
+        } else {
+          res.json({
+            id: id,
+          }); //sende id an client zurück
         }
-      )
+      })
     );
   }
 );

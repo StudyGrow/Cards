@@ -47,7 +47,13 @@ app.use(passport.session());
 //      next()
 //    }
 //   })
+passport.serializeUser(function (user, done) {
+  if (user) done(null, user);
+});
 
+passport.deserializeUser(function (id, done) {
+  done(null, id);
+});
 //Logs each request
 app.get("*", (req, res, next) => {
   console.log(req.url);
@@ -61,13 +67,6 @@ app.post("/api/user/login", (req, res, next) => {
       res.status(200).send({ id: user._id, username: user.username, email: user.email });
     });
   })(req, res, next);
-});
-passport.serializeUser(function (user, done) {
-  if (user) done(null, user);
-});
-
-passport.deserializeUser(function (id, done) {
-  done(null, id);
 });
 
 //api route
