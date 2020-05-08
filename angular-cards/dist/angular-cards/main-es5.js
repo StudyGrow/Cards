@@ -4437,7 +4437,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           var _this21 = this;
 
           this.statesService.setLoadingState(true);
-          return this.http.post(this.urlBase + "user/login", form, {
+          return this.http.post(this.urlBase + "login", form, {
             headers: this.httpOptions.headers,
             observe: "response"
           }).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["tap"])(function (res) {

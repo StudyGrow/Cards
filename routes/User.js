@@ -45,42 +45,9 @@ router.post(
     }
   }
 );
-router.post(
-  "/login",
-  [
-    check("username")
-      .isLength({
-        min: 5,
-        max: 20,
-      })
-      .withMessage("Benutzername muss zwischen 5 und 20 Zeichen enthalten"),
-    check("password")
-      .isLength({ min: 7 })
-      .withMessage("Passwort muss mindestens 7 Zeichen enthalten"),
-  ],
-  (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      res.status(422).json({
-        errors: errors.array(),
-      });
-    } else {
-      req.services.user.login(req.body, (err, user) => {
-        if (err) {
-          res.status(422).json({ errors: [err.message] });
-        } else {
-          req.user = user;
-          res.status(200).send({ id: user._id, username: user.username, email: user.email });
-        }
-      });
-    }
-  }
-);
+
 router.get("/logout", (req, res) => {
-  if (req.user) {
-    req.logout();
-    res.status(200).send();
-    req.user = null;
-  }
+  req.logout();
+  res.status(200).send();
 });
 module.exports = router;

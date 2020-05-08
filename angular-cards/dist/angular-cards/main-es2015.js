@@ -2249,7 +2249,7 @@ class HttpService {
     login(form) {
         this.statesService.setLoadingState(true);
         return this.http
-            .post(this.urlBase + "user/login", form, {
+            .post(this.urlBase + "login", form, {
             headers: this.httpOptions.headers,
             observe: "response",
         })

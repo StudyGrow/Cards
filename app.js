@@ -5,6 +5,7 @@ const path = require("path");
 const mongoose = require("mongoose");
 const User = require("./models/User");
 const bcrypt = require("bcryptjs");
+const session = require("express-session");
 const app = express();
 app.use(helmet());
 
@@ -12,31 +13,20 @@ app.use(require("./middleware/serviceMiddleware")());
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(
+  session({
+    secret: "wibgewe13f13", //random string
+    resave: false,
+    saveUninitialized: false,
+    cookie: { secure: false },
+  })
+);
 
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 
-passport.use(
-  new LocalStrategy(async function (username, password, done) {
-    try {
-      let user = await User.findOne({ username: username });
+require("./config/passport")(passport);
 
-      if (!user) {
-        throw new Error("Benutzername oder Passwort falsch");
-      }
-      let validation = await bcrypt.compare(password, user.password);
-
-      if (validation) {
-        return done(null, user);
-      } else {
-        throw new Error("Benutzername oder Passwort falsch");
-      }
-    } catch (error) {
-      console.log(error);
-      return done(error.message, false);
-    }
-  })
-);
 app.use(passport.initialize());
 app.use(passport.session());
 // router.get('*', function(req, res , next) {
@@ -47,26 +37,17 @@ app.use(passport.session());
 //      next()
 //    }
 //   })
-passport.serializeUser(function (user, done) {
-  if (user) done(null, user);
-});
 
-passport.deserializeUser(function (id, done) {
-  done(null, id);
-});
 //Logs each request
 app.get("*", (req, res, next) => {
   console.log(req.url);
+  if (req.user) {
+    console.log("user:", req.user.username);
+  }
   next();
 });
-app.post("/api/user/login", (req, res, next) => {
-  passport.authenticate("local", (error, user, info) => {
-    if (error) res.status(400).json({ statusCode: 200, message: error });
-    req.login(user, function (error) {
-      if (error) return next(error);
-      res.status(200).send({ id: user._id, username: user.username, email: user.email });
-    });
-  })(req, res, next);
+app.post("/api/login", (req, res, next) => {
+  req.services.user.login(passport, req, res, next);
 });
 
 //api route

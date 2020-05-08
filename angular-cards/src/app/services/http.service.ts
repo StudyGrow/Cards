@@ -169,7 +169,7 @@ export class HttpService {
   login(form): Observable<HttpResponse<User>> {
     this.statesService.setLoadingState(true);
     return this.http
-      .post<User>(this.urlBase + "user/login", form, {
+      .post<User>(this.urlBase + "login", form, {
         headers: this.httpOptions.headers,
         observe: "response",
       })
