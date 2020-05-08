@@ -43,16 +43,16 @@ require("./models/User");
 const app = require("./app");
 app.use(helmet());
 const httpServer = http.createServer(app);
-// const httpsServer = https.createServer(credentials, app);
+const httpsServer = https.createServer(credentials, app);
 
-// httpServer.listen(80, () => {
-//    console.log('HTTP Server running on port 80');
-// });
-// app.use(helmet());
-
-// httpsServer.listen(443, () => {
-//  console.log('HTTPS Server running on port 443');
-// });
-const server = app.listen(80, () => {
-  console.log(`Express is running on port ${server.address().port}`);
+httpServer.listen(80, () => {
+   console.log('HTTP Server running on port 80');
 });
+app.use(helmet());
+
+httpsServer.listen(443, () => {
+ console.log('HTTPS Server running on port 443');
+});
+// const server = app.listen(80, () => {
+//   console.log(`Express is running on port ${server.address().port}`);
+// });
