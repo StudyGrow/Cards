@@ -21,8 +21,7 @@ import { NgbCarouselConfig, NgbSlideEvent } from "@ng-bootstrap/ng-bootstrap";
   styleUrls: ["./carousel.component.css"],
 })
 export class CarouselComponent implements OnInit {
-  @Input() lecture: Vorlesung;
-  @Output() setLoading: EventEmitter<boolean> = new EventEmitter();
+  lecture: Vorlesung;
 
   @ViewChild("mycarousel", { static: false }) public carousel: any;
   @HostListener("swipeleft", ["$event"]) public swipePrev(event: any) {
@@ -50,17 +49,14 @@ export class CarouselComponent implements OnInit {
     config.pauseOnHover = false;
   }
 
-  ngOnChanges() {
-    if (this.lecture) {
-      this.title = this.lecture.name;
-      this.httpService.getCardsFromLecture(this.lecture).subscribe((resp) => {
-        this.cards = resp.body;
-        this.cardsService.initCards(this.cards);
-        this.setLoading.emit(false);
-      }); //load the specific cards from the server by subscribing to the observable that the card-service provides
-    }
-  }
   ngOnInit(): void {
+    this.httpService.getCurrentLecture().subscribe((lecture) => {
+      this.lecture = lecture;
+      this.title = this.lecture.name;
+      this.cardsService.getCards(lecture).subscribe((cards) => {
+        this.cards = cards;
+      }); //load the specific cards from the server by subscribing to the observable that the card-service provides
+    });
     this.stateService.setFormMode("none");
     this.stateService.getFormMode().subscribe((mode) => {
       this.formShow = mode == "add";
@@ -75,9 +71,6 @@ export class CarouselComponent implements OnInit {
     });
   }
 
-  completeLoading(): void {
-    this.setLoading.emit(false);
-  }
   toggleAddView(): void {
     if (this.formMode != "edit") {
       if (this.formMode == "add") {

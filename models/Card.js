@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const registrationSchema = new mongoose.Schema({
+const schema = new mongoose.Schema({
   vorlesung: {
     type: String,
     trim: true,
@@ -17,9 +17,7 @@ const registrationSchema = new mongoose.Schema({
   img: {
     type: Buffer,
   },
+  author: String,
 });
 
-const Registration = (module.exports = mongoose.model(
-  "Registration",
-  registrationSchema
-));
+const Card = (module.exports = mongoose.model("Card", schema));

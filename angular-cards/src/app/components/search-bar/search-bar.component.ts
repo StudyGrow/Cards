@@ -2,25 +2,29 @@ import { Component, OnInit, Input } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { CardsService } from "../../services/cards.service";
 import { StatesService } from "../../services/states.service";
+import { HttpService } from "../../services/http.service";
 import { Card } from "../../models/Card";
 import { SearchSuggestion } from "../../models/SearchSuggestion";
+import { Vorlesung } from "src/app/models/Vorlesung";
 
 @Component({
   selector: "app-search-bar",
   templateUrl: "./search-bar.component.html",
-  styleUrls: ["./search-bar.component.css"]
+  styleUrls: ["./search-bar.component.css"],
 })
 export class SearchBarComponent implements OnInit {
   constructor(
     private cardsService: CardsService,
-    private stateService: StatesService
+    private stateService: StatesService,
+    private http: HttpService
   ) {}
-  @Input() cards: Card[];
+  cards: Card[];
   suggestions: SearchSuggestion[];
   uInput: string;
   clearSuggestions: boolean;
+  lecture: Vorlesung;
   ngOnInit(): void {
-    this.stateService.getHideSuggestions().subscribe(value => {
+    this.stateService.getHideSuggestions().subscribe((value) => {
       this.clearSuggestions = value;
       if (value) {
         this.suggestions = [];
@@ -28,10 +32,14 @@ export class SearchBarComponent implements OnInit {
     });
   }
   ngOnChanges(): void {
-    if (this.cardsService.getCards()) {
-      this.cardsService.getCards().subscribe(cards => {
+    //put these into ngOnInit
+    if (this.http.getCurrentLecture()) {
+      this.http.getCurrentLecture().subscribe((vl) => (this.lecture = vl));
+    }
+    if (this.cardsService.getCards(this.lecture)) {
+      this.cardsService.getCards(this.lecture).subscribe((cards) => {
         this.cards = cards;
-        cards.forEach(card => {
+        cards.forEach((card) => {
           if (card.thema == null) {
             card.thema = "";
           }

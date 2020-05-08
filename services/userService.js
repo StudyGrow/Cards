@@ -46,20 +46,19 @@ module.exports = function userService() {
     }
   };
 
-  userService.login = async (form, callback) => {
+  userService.login = async (passport, req, res, next) => {
+    passport.authenticate("local", (error, user, info) => {
+      if (error) res.status(400).json({ statusCode: 200, message: error });
+      req.login(user._id, function (error) {
+        if (error) return next(error);
+        res.status(200).send({ id: user._id, username: user.username, email: user.email });
+      });
+    })(req, res, next);
+  };
+  userService.findUser = async (query, callback) => {
     try {
-      let user = await User.findOne({ username: form.username });
-
-      if (!user) {
-        throw new Error("Benutzername oder Passwort falsch");
-      }
-      let validation = await bcrypt.compare(form.password, user.password);
-
-      if (validation) {
-        callback(null, user);
-      } else {
-        throw new Error("Benutzername oder Passwort falsch");
-      }
+      let user = await User.findOne(query);
+      callback(null, user);
     } catch (error) {
       callback(error, null);
     }

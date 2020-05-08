@@ -390,49 +390,43 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     /* harmony import */
 
 
-    var _services_cards_service__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(
-    /*! ./services/cards.service */
-    "./src/app/services/cards.service.ts");
-    /* harmony import */
-
-
-    var _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(
+    var _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(
     /*! @angular/platform-browser/animations */
     "./node_modules/@angular/platform-browser/__ivy_ngcc__/fesm2015/animations.js");
     /* harmony import */
 
 
-    var _components_update_card_form_update_card_form_component__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(
+    var _components_update_card_form_update_card_form_component__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(
     /*! ./components/update-card-form/update-card-form.component */
     "./src/app/components/update-card-form/update-card-form.component.ts");
     /* harmony import */
 
 
-    var _routes_login_page_login_page_component__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(
+    var _routes_login_page_login_page_component__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(
     /*! ./routes/login-page/login-page.component */
     "./src/app/routes/login-page/login-page.component.ts");
     /* harmony import */
 
 
-    var _components_login_form_login_form_component__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(
+    var _components_login_form_login_form_component__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(
     /*! ./components/login-form/login-form.component */
     "./src/app/components/login-form/login-form.component.ts");
     /* harmony import */
 
 
-    var _routes_signup_page_signup_page_component__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(
+    var _routes_signup_page_signup_page_component__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(
     /*! ./routes/signup-page/signup-page.component */
     "./src/app/routes/signup-page/signup-page.component.ts");
     /* harmony import */
 
 
-    var _components_signup_form_signup_form_component__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(
+    var _components_signup_form_signup_form_component__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(
     /*! ./components/signup-form/signup-form.component */
     "./src/app/components/signup-form/signup-form.component.ts");
     /* harmony import */
 
 
-    var _ngrx_store__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(
+    var _ngrx_store__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(
     /*! @ngrx/store */
     "./node_modules/@ngrx/store/__ivy_ngcc__/fesm2015/store.js"); //Modules
     //Components
@@ -493,17 +487,17 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       factory: function AppModule_Factory(t) {
         return new (t || AppModule)();
       },
-      providers: [_services_states_service__WEBPACK_IMPORTED_MODULE_19__["StatesService"], _services_http_service__WEBPACK_IMPORTED_MODULE_20__["HttpService"], _services_cards_service__WEBPACK_IMPORTED_MODULE_21__["CardsService"], {
+      providers: [_services_states_service__WEBPACK_IMPORTED_MODULE_19__["StatesService"], _services_http_service__WEBPACK_IMPORTED_MODULE_20__["HttpService"], {
         provide: _angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["HAMMER_GESTURE_CONFIG"],
         useClass: MyHammerConfig
       }],
-      imports: [[_angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["BrowserModule"], _app_routing_module__WEBPACK_IMPORTED_MODULE_4__["AppRoutingModule"], _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClientModule"], _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_3__["NgbModule"], _angular_forms__WEBPACK_IMPORTED_MODULE_5__["FormsModule"], _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_22__["BrowserAnimationsModule"], _angular_material_progress_bar__WEBPACK_IMPORTED_MODULE_6__["MatProgressBarModule"], _angular_material_dialog__WEBPACK_IMPORTED_MODULE_7__["MatDialogModule"], angular_bootstrap_md__WEBPACK_IMPORTED_MODULE_8__["CarouselModule"], angular_bootstrap_md__WEBPACK_IMPORTED_MODULE_8__["WavesModule"], _angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["HammerModule"], _ngrx_store__WEBPACK_IMPORTED_MODULE_28__["StoreModule"].forRoot({}, {})]]
+      imports: [[_angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["BrowserModule"], _app_routing_module__WEBPACK_IMPORTED_MODULE_4__["AppRoutingModule"], _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClientModule"], _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_3__["NgbModule"], _angular_forms__WEBPACK_IMPORTED_MODULE_5__["FormsModule"], _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_21__["BrowserAnimationsModule"], _angular_material_progress_bar__WEBPACK_IMPORTED_MODULE_6__["MatProgressBarModule"], _angular_material_dialog__WEBPACK_IMPORTED_MODULE_7__["MatDialogModule"], angular_bootstrap_md__WEBPACK_IMPORTED_MODULE_8__["CarouselModule"], angular_bootstrap_md__WEBPACK_IMPORTED_MODULE_8__["WavesModule"], _angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["HammerModule"], _ngrx_store__WEBPACK_IMPORTED_MODULE_27__["StoreModule"].forRoot({}, {})]]
     });
 
     (function () {
       (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵsetNgModuleScope"](AppModule, {
-        declarations: [_app_component__WEBPACK_IMPORTED_MODULE_9__["AppComponent"], _components_nav_bar_nav_bar_component__WEBPACK_IMPORTED_MODULE_10__["NavBarComponent"], _components_search_bar_search_bar_component__WEBPACK_IMPORTED_MODULE_11__["SearchBarComponent"], _components_add_card_form_add_card_form_component__WEBPACK_IMPORTED_MODULE_12__["AddCardFormComponent"], _components_carousel_carousel_component__WEBPACK_IMPORTED_MODULE_13__["CarouselComponent"], _components_card_card_component__WEBPACK_IMPORTED_MODULE_14__["CardComponent"], _components_add_lecture_form_add_lecture_form_component__WEBPACK_IMPORTED_MODULE_15__["AddLectureFormComponent"], _components_lectures_lectures_component__WEBPACK_IMPORTED_MODULE_16__["LecturesComponent"], _routes_home_page_home_page_component__WEBPACK_IMPORTED_MODULE_17__["HomePageComponent"], _routes_cards_page_cards_page_component__WEBPACK_IMPORTED_MODULE_18__["CardsPageComponent"], _components_update_card_form_update_card_form_component__WEBPACK_IMPORTED_MODULE_23__["UpdateCardFormComponent"], _routes_login_page_login_page_component__WEBPACK_IMPORTED_MODULE_24__["LoginPageComponent"], _components_login_form_login_form_component__WEBPACK_IMPORTED_MODULE_25__["LoginFormComponent"], _routes_signup_page_signup_page_component__WEBPACK_IMPORTED_MODULE_26__["SignupPageComponent"], _components_signup_form_signup_form_component__WEBPACK_IMPORTED_MODULE_27__["SignupFormComponent"]],
-        imports: [_angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["BrowserModule"], _app_routing_module__WEBPACK_IMPORTED_MODULE_4__["AppRoutingModule"], _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClientModule"], _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_3__["NgbModule"], _angular_forms__WEBPACK_IMPORTED_MODULE_5__["FormsModule"], _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_22__["BrowserAnimationsModule"], _angular_material_progress_bar__WEBPACK_IMPORTED_MODULE_6__["MatProgressBarModule"], _angular_material_dialog__WEBPACK_IMPORTED_MODULE_7__["MatDialogModule"], angular_bootstrap_md__WEBPACK_IMPORTED_MODULE_8__["CarouselModule"], angular_bootstrap_md__WEBPACK_IMPORTED_MODULE_8__["WavesModule"], _angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["HammerModule"], _ngrx_store__WEBPACK_IMPORTED_MODULE_28__["StoreRootModule"]]
+        declarations: [_app_component__WEBPACK_IMPORTED_MODULE_9__["AppComponent"], _components_nav_bar_nav_bar_component__WEBPACK_IMPORTED_MODULE_10__["NavBarComponent"], _components_search_bar_search_bar_component__WEBPACK_IMPORTED_MODULE_11__["SearchBarComponent"], _components_add_card_form_add_card_form_component__WEBPACK_IMPORTED_MODULE_12__["AddCardFormComponent"], _components_carousel_carousel_component__WEBPACK_IMPORTED_MODULE_13__["CarouselComponent"], _components_card_card_component__WEBPACK_IMPORTED_MODULE_14__["CardComponent"], _components_add_lecture_form_add_lecture_form_component__WEBPACK_IMPORTED_MODULE_15__["AddLectureFormComponent"], _components_lectures_lectures_component__WEBPACK_IMPORTED_MODULE_16__["LecturesComponent"], _routes_home_page_home_page_component__WEBPACK_IMPORTED_MODULE_17__["HomePageComponent"], _routes_cards_page_cards_page_component__WEBPACK_IMPORTED_MODULE_18__["CardsPageComponent"], _components_update_card_form_update_card_form_component__WEBPACK_IMPORTED_MODULE_22__["UpdateCardFormComponent"], _routes_login_page_login_page_component__WEBPACK_IMPORTED_MODULE_23__["LoginPageComponent"], _components_login_form_login_form_component__WEBPACK_IMPORTED_MODULE_24__["LoginFormComponent"], _routes_signup_page_signup_page_component__WEBPACK_IMPORTED_MODULE_25__["SignupPageComponent"], _components_signup_form_signup_form_component__WEBPACK_IMPORTED_MODULE_26__["SignupFormComponent"]],
+        imports: [_angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["BrowserModule"], _app_routing_module__WEBPACK_IMPORTED_MODULE_4__["AppRoutingModule"], _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClientModule"], _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_3__["NgbModule"], _angular_forms__WEBPACK_IMPORTED_MODULE_5__["FormsModule"], _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_21__["BrowserAnimationsModule"], _angular_material_progress_bar__WEBPACK_IMPORTED_MODULE_6__["MatProgressBarModule"], _angular_material_dialog__WEBPACK_IMPORTED_MODULE_7__["MatDialogModule"], angular_bootstrap_md__WEBPACK_IMPORTED_MODULE_8__["CarouselModule"], angular_bootstrap_md__WEBPACK_IMPORTED_MODULE_8__["WavesModule"], _angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["HammerModule"], _ngrx_store__WEBPACK_IMPORTED_MODULE_27__["StoreRootModule"]]
       });
     })();
     /*@__PURE__*/
@@ -513,9 +507,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵsetClassMetadata"](AppModule, [{
         type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["NgModule"],
         args: [{
-          declarations: [_app_component__WEBPACK_IMPORTED_MODULE_9__["AppComponent"], _components_nav_bar_nav_bar_component__WEBPACK_IMPORTED_MODULE_10__["NavBarComponent"], _components_search_bar_search_bar_component__WEBPACK_IMPORTED_MODULE_11__["SearchBarComponent"], _components_add_card_form_add_card_form_component__WEBPACK_IMPORTED_MODULE_12__["AddCardFormComponent"], _components_carousel_carousel_component__WEBPACK_IMPORTED_MODULE_13__["CarouselComponent"], _components_card_card_component__WEBPACK_IMPORTED_MODULE_14__["CardComponent"], _components_add_lecture_form_add_lecture_form_component__WEBPACK_IMPORTED_MODULE_15__["AddLectureFormComponent"], _components_lectures_lectures_component__WEBPACK_IMPORTED_MODULE_16__["LecturesComponent"], _routes_home_page_home_page_component__WEBPACK_IMPORTED_MODULE_17__["HomePageComponent"], _routes_cards_page_cards_page_component__WEBPACK_IMPORTED_MODULE_18__["CardsPageComponent"], _components_update_card_form_update_card_form_component__WEBPACK_IMPORTED_MODULE_23__["UpdateCardFormComponent"], _routes_login_page_login_page_component__WEBPACK_IMPORTED_MODULE_24__["LoginPageComponent"], _components_login_form_login_form_component__WEBPACK_IMPORTED_MODULE_25__["LoginFormComponent"], _routes_signup_page_signup_page_component__WEBPACK_IMPORTED_MODULE_26__["SignupPageComponent"], _components_signup_form_signup_form_component__WEBPACK_IMPORTED_MODULE_27__["SignupFormComponent"]],
-          imports: [_angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["BrowserModule"], _app_routing_module__WEBPACK_IMPORTED_MODULE_4__["AppRoutingModule"], _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClientModule"], _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_3__["NgbModule"], _angular_forms__WEBPACK_IMPORTED_MODULE_5__["FormsModule"], _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_22__["BrowserAnimationsModule"], _angular_material_progress_bar__WEBPACK_IMPORTED_MODULE_6__["MatProgressBarModule"], _angular_material_dialog__WEBPACK_IMPORTED_MODULE_7__["MatDialogModule"], angular_bootstrap_md__WEBPACK_IMPORTED_MODULE_8__["CarouselModule"], angular_bootstrap_md__WEBPACK_IMPORTED_MODULE_8__["WavesModule"], _angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["HammerModule"], _ngrx_store__WEBPACK_IMPORTED_MODULE_28__["StoreModule"].forRoot({}, {})],
-          providers: [_services_states_service__WEBPACK_IMPORTED_MODULE_19__["StatesService"], _services_http_service__WEBPACK_IMPORTED_MODULE_20__["HttpService"], _services_cards_service__WEBPACK_IMPORTED_MODULE_21__["CardsService"], {
+          declarations: [_app_component__WEBPACK_IMPORTED_MODULE_9__["AppComponent"], _components_nav_bar_nav_bar_component__WEBPACK_IMPORTED_MODULE_10__["NavBarComponent"], _components_search_bar_search_bar_component__WEBPACK_IMPORTED_MODULE_11__["SearchBarComponent"], _components_add_card_form_add_card_form_component__WEBPACK_IMPORTED_MODULE_12__["AddCardFormComponent"], _components_carousel_carousel_component__WEBPACK_IMPORTED_MODULE_13__["CarouselComponent"], _components_card_card_component__WEBPACK_IMPORTED_MODULE_14__["CardComponent"], _components_add_lecture_form_add_lecture_form_component__WEBPACK_IMPORTED_MODULE_15__["AddLectureFormComponent"], _components_lectures_lectures_component__WEBPACK_IMPORTED_MODULE_16__["LecturesComponent"], _routes_home_page_home_page_component__WEBPACK_IMPORTED_MODULE_17__["HomePageComponent"], _routes_cards_page_cards_page_component__WEBPACK_IMPORTED_MODULE_18__["CardsPageComponent"], _components_update_card_form_update_card_form_component__WEBPACK_IMPORTED_MODULE_22__["UpdateCardFormComponent"], _routes_login_page_login_page_component__WEBPACK_IMPORTED_MODULE_23__["LoginPageComponent"], _components_login_form_login_form_component__WEBPACK_IMPORTED_MODULE_24__["LoginFormComponent"], _routes_signup_page_signup_page_component__WEBPACK_IMPORTED_MODULE_25__["SignupPageComponent"], _components_signup_form_signup_form_component__WEBPACK_IMPORTED_MODULE_26__["SignupFormComponent"]],
+          imports: [_angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["BrowserModule"], _app_routing_module__WEBPACK_IMPORTED_MODULE_4__["AppRoutingModule"], _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClientModule"], _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_3__["NgbModule"], _angular_forms__WEBPACK_IMPORTED_MODULE_5__["FormsModule"], _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_21__["BrowserAnimationsModule"], _angular_material_progress_bar__WEBPACK_IMPORTED_MODULE_6__["MatProgressBarModule"], _angular_material_dialog__WEBPACK_IMPORTED_MODULE_7__["MatDialogModule"], angular_bootstrap_md__WEBPACK_IMPORTED_MODULE_8__["CarouselModule"], angular_bootstrap_md__WEBPACK_IMPORTED_MODULE_8__["WavesModule"], _angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["HammerModule"], _ngrx_store__WEBPACK_IMPORTED_MODULE_27__["StoreModule"].forRoot({}, {})],
+          providers: [_services_states_service__WEBPACK_IMPORTED_MODULE_19__["StatesService"], _services_http_service__WEBPACK_IMPORTED_MODULE_20__["HttpService"], {
             provide: _angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["HAMMER_GESTURE_CONFIG"],
             useClass: MyHammerConfig
           }],
@@ -573,40 +567,52 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     /* harmony import */
 
 
-    var _angular_forms__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(
+    var _services_http_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(
+    /*! ../../services/http.service */
+    "./src/app/services/http.service.ts");
+    /* harmony import */
+
+
+    var _angular_forms__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(
     /*! @angular/forms */
     "./node_modules/@angular/forms/__ivy_ngcc__/fesm2015/forms.js");
     /* harmony import */
 
 
-    var _angular_common__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(
+    var _angular_common__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(
     /*! @angular/common */
     "./node_modules/@angular/common/__ivy_ngcc__/fesm2015/common.js");
 
     var AddCardFormComponent =
     /*#__PURE__*/
     function () {
-      function AddCardFormComponent(cardsService, stateService) {
+      function AddCardFormComponent(cardsService, stateService, http) {
         _classCallCheck(this, AddCardFormComponent);
 
         this.cardsService = cardsService;
         this.stateService = stateService;
-        this.returnCard = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this.http = http;
       }
 
       _createClass(AddCardFormComponent, [{
         key: "ngOnInit",
-        value: function ngOnInit() {}
+        value: function ngOnInit() {
+          var _this2 = this;
+
+          this.http.getCurrentLecture().subscribe(function (lecture) {
+            return _this2.lecture = lecture;
+          });
+        }
       }, {
         key: "setStyle",
         value: function setStyle() {}
       }, {
         key: "onSubmit",
         value: function onSubmit(f) {
-          this.newCard = new _models_Card__WEBPACK_IMPORTED_MODULE_1__["Card"](f.value.thema, f.value.content);
-          this.cardsService.addCard(this.newCard, this.lecture.abrv);
-          this.stateService.setLoadingState(true);
-          f.reset();
+          this.newCard = new _models_Card__WEBPACK_IMPORTED_MODULE_1__["Card"](f.value.thema, f.value.content, this.lecture.abrv);
+          this.cardsService.addCard(this.newCard).subscribe(function (res) {
+            f.reset();
+          });
         } //Function to set style of small character indicator
 
       }, {
@@ -660,35 +666,29 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     }();
 
     AddCardFormComponent.ɵfac = function AddCardFormComponent_Factory(t) {
-      return new (t || AddCardFormComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_services_cards_service__WEBPACK_IMPORTED_MODULE_2__["CardsService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_services_states_service__WEBPACK_IMPORTED_MODULE_3__["StatesService"]));
+      return new (t || AddCardFormComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_services_cards_service__WEBPACK_IMPORTED_MODULE_2__["CardsService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_services_states_service__WEBPACK_IMPORTED_MODULE_3__["StatesService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_services_http_service__WEBPACK_IMPORTED_MODULE_4__["HttpService"]));
     };
 
     AddCardFormComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({
       type: AddCardFormComponent,
       selectors: [["app-add-card-form"]],
-      inputs: {
-        lecture: "lecture"
-      },
-      outputs: {
-        returnCard: "returnCard"
-      },
       decls: 20,
       vars: 5,
       consts: [["id", "addCard"], ["novalidate", "", 3, "ngSubmit"], ["f", "ngForm"], [1, "form-group"], ["for", "thema"], ["id", "thema", "name", "thema", "type", "text", "placeholder", "Thema", "minlength", "3", "required", "", "ngModel", "", 1, "form-control"], ["thema", "ngModel"], [1, "form-text", "float-right", 3, "ngStyle"], ["for", "content"], ["id", "content", "name", "content", "rows", "5", "required", "", "ngModel", "", 1, "form-control"], ["content", "ngModel"], ["id", "addBtn", "type", "submit", "value", "Hinzuf\xFCgen", 1, "btn", "btn-primary", "mb-2", 3, "disabled"]],
       template: function AddCardFormComponent_Template(rf, ctx) {
         if (rf & 1) {
-          var _r18 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵgetCurrentView"]();
+          var _r17 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵgetCurrentView"]();
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "div", 0);
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "form", 1, 2);
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("ngSubmit", function AddCardFormComponent_Template_form_ngSubmit_1_listener() {
-            _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r18);
+            _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r17);
 
-            var _r15 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵreference"](2);
+            var _r14 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵreference"](2);
 
-            return ctx.onSubmit(_r15);
+            return ctx.onSubmit(_r14);
           });
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](3, "h4");
@@ -741,32 +741,32 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         }
 
         if (rf & 2) {
-          var _r16 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵreference"](9);
+          var _r15 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵreference"](9);
 
-          var _r17 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵreference"](16);
+          var _r16 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵreference"](16);
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](10);
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngStyle", ctx.setThemaCharIndicatorStyle(_r16));
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngStyle", ctx.setThemaCharIndicatorStyle(_r15));
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate1"]("", ctx.getLength(_r16), "/60 ");
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate1"]("", ctx.getLength(_r15), "/60 ");
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](6);
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngStyle", ctx.setContentCharIndicatorStyle(_r17));
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngStyle", ctx.setContentCharIndicatorStyle(_r16));
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate1"]("", ctx.getLength(_r17), "/400 ");
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate1"]("", ctx.getLength(_r16), "/400 ");
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("disabled", ctx.isDisabled(_r17, _r16));
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("disabled", ctx.isDisabled(_r16, _r15));
         }
       },
-      directives: [_angular_forms__WEBPACK_IMPORTED_MODULE_4__["ɵangular_packages_forms_forms_y"], _angular_forms__WEBPACK_IMPORTED_MODULE_4__["NgControlStatusGroup"], _angular_forms__WEBPACK_IMPORTED_MODULE_4__["NgForm"], _angular_forms__WEBPACK_IMPORTED_MODULE_4__["DefaultValueAccessor"], _angular_forms__WEBPACK_IMPORTED_MODULE_4__["MinLengthValidator"], _angular_forms__WEBPACK_IMPORTED_MODULE_4__["RequiredValidator"], _angular_forms__WEBPACK_IMPORTED_MODULE_4__["NgControlStatus"], _angular_forms__WEBPACK_IMPORTED_MODULE_4__["NgModel"], _angular_common__WEBPACK_IMPORTED_MODULE_5__["NgStyle"]],
+      directives: [_angular_forms__WEBPACK_IMPORTED_MODULE_5__["ɵangular_packages_forms_forms_y"], _angular_forms__WEBPACK_IMPORTED_MODULE_5__["NgControlStatusGroup"], _angular_forms__WEBPACK_IMPORTED_MODULE_5__["NgForm"], _angular_forms__WEBPACK_IMPORTED_MODULE_5__["DefaultValueAccessor"], _angular_forms__WEBPACK_IMPORTED_MODULE_5__["MinLengthValidator"], _angular_forms__WEBPACK_IMPORTED_MODULE_5__["RequiredValidator"], _angular_forms__WEBPACK_IMPORTED_MODULE_5__["NgControlStatus"], _angular_forms__WEBPACK_IMPORTED_MODULE_5__["NgModel"], _angular_common__WEBPACK_IMPORTED_MODULE_6__["NgStyle"]],
       styles: ["form[_ngcontent-%COMP%]{\r\n    display: block;\r\n    margin-left: auto;\r\n    margin-right: auto;\r\n    width:90%;\r\n  }\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvY29tcG9uZW50cy9hZGQtY2FyZC1mb3JtL2FkZC1jYXJkLWZvcm0uY29tcG9uZW50LmNzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtJQUNJLGNBQWM7SUFDZCxpQkFBaUI7SUFDakIsa0JBQWtCO0lBQ2xCLFNBQVM7RUFDWCIsImZpbGUiOiJzcmMvYXBwL2NvbXBvbmVudHMvYWRkLWNhcmQtZm9ybS9hZGQtY2FyZC1mb3JtLmNvbXBvbmVudC5jc3MiLCJzb3VyY2VzQ29udGVudCI6WyJmb3Jte1xyXG4gICAgZGlzcGxheTogYmxvY2s7XHJcbiAgICBtYXJnaW4tbGVmdDogYXV0bztcclxuICAgIG1hcmdpbi1yaWdodDogYXV0bztcclxuICAgIHdpZHRoOjkwJTtcclxuICB9Il19 */"]
     });
     /*@__PURE__*/
@@ -784,15 +784,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           type: _services_cards_service__WEBPACK_IMPORTED_MODULE_2__["CardsService"]
         }, {
           type: _services_states_service__WEBPACK_IMPORTED_MODULE_3__["StatesService"]
+        }, {
+          type: _services_http_service__WEBPACK_IMPORTED_MODULE_4__["HttpService"]
         }];
-      }, {
-        lecture: [{
-          type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"]
-        }],
-        returnCard: [{
-          type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"]
-        }]
-      });
+      }, null);
     })();
     /***/
 
@@ -871,14 +866,14 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: "onSubmit",
         value: function onSubmit(f) {
-          var _this2 = this;
+          var _this3 = this;
 
           var newLecture = new _models_Vorlesung__WEBPACK_IMPORTED_MODULE_1__["Vorlesung"](f.value.name, f.value.abrv);
           this.statesService.setLoadingState(true);
           this.http.addLecture(newLecture).subscribe(function (response) {
-            _this2.statesService.setLoadingState(false);
+            _this3.statesService.setLoadingState(false);
 
-            _this2.emitVl.emit(newLecture);
+            _this3.emitVl.emit(newLecture);
           });
           f.reset();
         }
@@ -933,18 +928,18 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       consts: [["id", "addLecture"], ["novalidate", "", 3, "ngSubmit"], ["f", "ngForm"], [1, "form-group"], ["for", "name"], ["id", "name", "name", "name", "type", "text", "placeholder", "Datenstrukturen und Algorithmen", "minlength", "3", "required", "", "ngModel", "", 1, "form-control"], ["name", "ngModel"], [1, "form-text", "float-right", 3, "ngStyle"], ["for", "abrv"], ["id", "abrv", "name", "abrv", "required", "", "ngModel", "", "placeholder", "Dsal", 1, "form-control"], ["abrv", "ngModel"], ["id", "addBtn", "type", "submit", "value", "Hinzuf\xFCgen", 1, "btn", "btn-primary", "mb-2", 3, "disabled"]],
       template: function AddLectureFormComponent_Template(rf, ctx) {
         if (rf & 1) {
-          var _r34 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵgetCurrentView"]();
+          var _r33 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵgetCurrentView"]();
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "div", 0);
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "form", 1, 2);
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("ngSubmit", function AddLectureFormComponent_Template_form_ngSubmit_1_listener() {
-            _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r34);
+            _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r33);
 
-            var _r31 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵreference"](2);
+            var _r30 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵreference"](2);
 
-            return ctx.onSubmit(_r31);
+            return ctx.onSubmit(_r30);
           });
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](3, "h4");
@@ -997,29 +992,29 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         }
 
         if (rf & 2) {
-          var _r32 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵreference"](9);
+          var _r31 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵreference"](9);
 
-          var _r33 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵreference"](16);
+          var _r32 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵreference"](16);
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](10);
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngStyle", ctx.setCharIndicatorStyle(_r32, 60));
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngStyle", ctx.setCharIndicatorStyle(_r31, 60));
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate1"]("", ctx.getLength(_r32), "/60 ");
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate1"]("", ctx.getLength(_r31), "/60 ");
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](6);
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngStyle", ctx.setCharIndicatorStyle(_r33, 7));
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngStyle", ctx.setCharIndicatorStyle(_r32, 7));
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate1"]("", ctx.getLength(_r33), "/7 ");
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate1"]("", ctx.getLength(_r32), "/7 ");
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("disabled", ctx.isDisabled(_r32, _r33));
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("disabled", ctx.isDisabled(_r31, _r32));
         }
       },
       directives: [_angular_forms__WEBPACK_IMPORTED_MODULE_4__["ɵangular_packages_forms_forms_y"], _angular_forms__WEBPACK_IMPORTED_MODULE_4__["NgControlStatusGroup"], _angular_forms__WEBPACK_IMPORTED_MODULE_4__["NgForm"], _angular_forms__WEBPACK_IMPORTED_MODULE_4__["DefaultValueAccessor"], _angular_forms__WEBPACK_IMPORTED_MODULE_4__["MinLengthValidator"], _angular_forms__WEBPACK_IMPORTED_MODULE_4__["RequiredValidator"], _angular_forms__WEBPACK_IMPORTED_MODULE_4__["NgControlStatus"], _angular_forms__WEBPACK_IMPORTED_MODULE_4__["NgModel"], _angular_common__WEBPACK_IMPORTED_MODULE_5__["NgStyle"]],
@@ -1277,33 +1272,33 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }
 
       if (rf & 2) {
-        var card_r22 = ctx.$implicit;
-        var i_r23 = ctx.index;
+        var card_r21 = ctx.$implicit;
+        var i_r22 = ctx.index;
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
 
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("id", i_r23.toString());
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("id", i_r22.toString());
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
 
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("card", card_r22);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("card", card_r21);
       }
     }
 
     function CarouselComponent_div_9_Template(rf, ctx) {
       if (rf & 1) {
-        var _r25 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵgetCurrentView"]();
+        var _r24 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵgetCurrentView"]();
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "div", 8);
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "a", 9);
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("click", function CarouselComponent_div_9_Template_a_click_1_listener() {
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r25);
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r24);
 
-          var ctx_r24 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]();
+          var ctx_r23 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]();
 
-          return ctx_r24.goToPrev();
+          return ctx_r23.goToPrev();
         });
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](2, "span", 10);
@@ -1313,33 +1308,33 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](3, "div", 11);
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("swipeleft", function CarouselComponent_div_9_Template_div_swipeleft_3_listener() {
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r25);
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r24);
+
+          var ctx_r25 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]();
+
+          return ctx_r25.goToPrev();
+        })("swiperight", function CarouselComponent_div_9_Template_div_swiperight_3_listener() {
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r24);
 
           var ctx_r26 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]();
 
-          return ctx_r26.goToPrev();
-        })("swiperight", function CarouselComponent_div_9_Template_div_swiperight_3_listener() {
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r25);
-
-          var ctx_r27 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]();
-
-          return ctx_r27.goToNext();
+          return ctx_r26.goToNext();
         });
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](4, "mdb-carousel", 12, 13);
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("activeSlideChange", function CarouselComponent_div_9_Template_mdb_carousel_activeSlideChange_4_listener($event) {
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r25);
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r24);
+
+          var ctx_r27 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]();
+
+          return ctx_r27.onSlide($event);
+        })("activeSlideIndexChange", function CarouselComponent_div_9_Template_mdb_carousel_activeSlideIndexChange_4_listener($event) {
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r24);
 
           var ctx_r28 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]();
 
-          return ctx_r28.onSlide($event);
-        })("activeSlideIndexChange", function CarouselComponent_div_9_Template_mdb_carousel_activeSlideIndexChange_4_listener($event) {
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r25);
-
-          var ctx_r29 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]();
-
-          return ctx_r29.activeSlide = $event;
+          return ctx_r28.activeSlide = $event;
         });
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](6, CarouselComponent_div_9_ng_container_6_Template, 3, 2, "ng-container", 14);
@@ -1351,11 +1346,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](7, "a", 9);
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("click", function CarouselComponent_div_9_Template_a_click_7_listener() {
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r25);
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r24);
 
-          var ctx_r30 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]();
+          var ctx_r29 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]();
 
-          return ctx_r30.goToNext();
+          return ctx_r29.goToNext();
         });
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](8, "span", 15);
@@ -1366,15 +1361,15 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }
 
       if (rf & 2) {
-        var ctx_r19 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]();
+        var ctx_r18 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]();
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](4);
 
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("activeSlideIndex", ctx_r19.activeSlide)("animation", "slide")("isControls", false)("allowSwipe", true)("interval", "0");
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("activeSlideIndex", ctx_r18.activeSlide)("animation", "slide")("isControls", false)("allowSwipe", true)("interval", "0");
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](2);
 
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngForOf", ctx_r19.cards);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngForOf", ctx_r18.cards);
       }
     }
 
@@ -1387,7 +1382,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         this.httpService = httpService;
         this.stateService = stateService;
         this.cardsService = cardsService;
-        this.setLoading = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
         this.activeSlide = 0;
         config.interval = -1;
         config.wrap = true;
@@ -1406,26 +1400,19 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           this.carousel.nextSlide();
         }
       }, {
-        key: "ngOnChanges",
-        value: function ngOnChanges() {
-          var _this3 = this;
-
-          if (this.lecture) {
-            this.title = this.lecture.name;
-            this.httpService.getCardsFromLecture(this.lecture).subscribe(function (resp) {
-              _this3.cards = resp.body;
-
-              _this3.cardsService.initCards(_this3.cards);
-
-              _this3.setLoading.emit(false);
-            }); //load the specific cards from the server by subscribing to the observable that the card-service provides
-          }
-        }
-      }, {
         key: "ngOnInit",
         value: function ngOnInit() {
           var _this4 = this;
 
+          this.httpService.getCurrentLecture().subscribe(function (lecture) {
+            _this4.lecture = lecture;
+            _this4.title = _this4.lecture.name;
+
+            _this4.cardsService.getCards(lecture).subscribe(function (cards) {
+              _this4.cards = cards;
+            }); //load the specific cards from the server by subscribing to the observable that the card-service provides
+
+          });
           this.stateService.setFormMode("none");
           this.stateService.getFormMode().subscribe(function (mode) {
             _this4.formShow = mode == "add";
@@ -1438,11 +1425,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
               _this4.carousel.selectSlide(index);
             }
           });
-        }
-      }, {
-        key: "completeLoading",
-        value: function completeLoading() {
-          this.setLoading.emit(false);
         }
       }, {
         key: "toggleAddView",
@@ -1535,13 +1517,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           });
         }
       },
-      inputs: {
-        lecture: "lecture"
-      },
-      outputs: {
-        setLoading: "setLoading"
-      },
-      features: [_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵNgOnChangesFeature"]()],
       decls: 10,
       vars: 9,
       consts: [["id", "vorlesung"], ["id", "btnDiv", "role", "group", 1, "btn-group"], ["id", "rand", "placement", "top", "ngbTooltip", "Zufall", 1, "btn", "btn-light", 3, "disabled", "click"], [1, "fas", "fa-random"], ["id", "editCard", "type", "button", "placement", "top", "ngbTooltip", "Bearbeiten", 1, "btn", "btn-light", 3, "disabled", "click"], [1, "fas", "fa-pen"], ["id", "toggleAdd", "type", "button", "data-toggle", "button", "placement", "top", 3, "ngClass", "ngbTooltip", "disabled", "click"], ["class", "row", 4, "ngIf"], [1, "row"], [3, "click"], [1, "fas", "fa-chevron-left"], ["id", "carousel", 3, "swipeleft", "swiperight"], [3, "activeSlideIndex", "animation", "isControls", "allowSwipe", "interval", "activeSlideChange", "activeSlideIndexChange"], ["mycarousel", ""], [4, "ngFor", "ngForOf"], [1, "fas", "fa-chevron-right"], [3, "id"], [3, "card"]],
@@ -1640,12 +1615,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           type: _services_cards_service__WEBPACK_IMPORTED_MODULE_4__["CardsService"]
         }];
       }, {
-        lecture: [{
-          type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"]
-        }],
-        setLoading: [{
-          type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"]
-        }],
         carousel: [{
           type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewChild"],
           args: ["mycarousel", {
@@ -1724,17 +1693,17 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }
 
       if (rf & 2) {
-        var lecture_r36 = ctx.$implicit;
+        var lecture_r35 = ctx.$implicit;
 
-        var ctx_r35 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]();
-
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
-
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("routerLink", ctx_r35.setLink(lecture_r36));
+        var ctx_r34 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]();
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
 
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate"](lecture_r36.name);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("routerLink", ctx_r34.setLink(lecture_r35));
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate"](lecture_r35.name);
       }
     }
 
@@ -1753,15 +1722,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         value: function ngOnInit() {
           var _this5 = this;
 
-          this.httpService.getAllLectures().subscribe(function (resp) {
-            if (resp.status == 504) {
-              console.log("Server down");
-              _this5.lectures = [];
-            } else {
-              _this5.lecturesLoaded.emit(true);
-
-              _this5.lectures = resp.body;
-            }
+          this.httpService.getAllLectures().subscribe(function (lectures) {
+            _this5.lectures = lectures;
           });
         }
       }, {
@@ -1904,11 +1866,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }
 
       if (rf & 2) {
-        var error_r46 = ctx.$implicit;
+        var error_r45 = ctx.$implicit;
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
 
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate1"](" ", error_r46, "\n");
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate1"](" ", error_r45, "\n");
       }
     }
 
@@ -1966,7 +1928,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       consts: [["class", "alert alert-warning", 4, "ngFor", "ngForOf"], [1, "container"], ["novalidate", "", 3, "ngSubmit"], ["form", "ngForm"], [1, "form-group"], ["for", "name"], ["type", "text", "id", "name", "name", "username", "required", "", "aria-describedby", "nameHelp", "ngModel", "", 1, "form-control"], ["username", "ngModel"], ["for", "password"], ["type", "password", "name", "password", "id", "password", "ngModel", "", 1, "form-control"], ["password", "ngModel"], [1, "form-group", "form-check"], ["required", "", "type", "checkbox", "id", "remember", "name", "remember", "ngModel", "", 1, "form-check-input", 3, "checked"], ["remember", "ngModel"], ["for", "remember", 1, "form-check-label"], ["type", "submit", 1, "btn", "btn-primary", "btn-lg", "btn-block", 3, "disabled"], [1, "alert", "alert-warning"]],
       template: function LoginFormComponent_Template(rf, ctx) {
         if (rf & 1) {
-          var _r47 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵgetCurrentView"]();
+          var _r46 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵgetCurrentView"]();
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](0, LoginFormComponent_div_0_Template, 2, 1, "div", 0);
 
@@ -1975,11 +1937,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](2, "form", 2, 3);
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("ngSubmit", function LoginFormComponent_Template_form_ngSubmit_2_listener() {
-            _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r47);
+            _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r46);
 
-            var _r42 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵreference"](3);
+            var _r41 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵreference"](3);
 
-            return ctx.submit(_r42);
+            return ctx.submit(_r41);
           });
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](4, "div", 4);
@@ -2030,9 +1992,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         }
 
         if (rf & 2) {
-          var _r43 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵreference"](8);
+          var _r42 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵreference"](8);
 
-          var _r44 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵreference"](13);
+          var _r43 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵreference"](13);
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngForOf", ctx.errors);
 
@@ -2042,7 +2004,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](4);
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("disabled", ctx.isDisabled(_r43, _r44));
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("disabled", ctx.isDisabled(_r42, _r43));
         }
       },
       directives: [_angular_common__WEBPACK_IMPORTED_MODULE_3__["NgForOf"], _angular_forms__WEBPACK_IMPORTED_MODULE_4__["ɵangular_packages_forms_forms_y"], _angular_forms__WEBPACK_IMPORTED_MODULE_4__["NgControlStatusGroup"], _angular_forms__WEBPACK_IMPORTED_MODULE_4__["NgForm"], _angular_forms__WEBPACK_IMPORTED_MODULE_4__["DefaultValueAccessor"], _angular_forms__WEBPACK_IMPORTED_MODULE_4__["RequiredValidator"], _angular_forms__WEBPACK_IMPORTED_MODULE_4__["NgControlStatus"], _angular_forms__WEBPACK_IMPORTED_MODULE_4__["NgModel"], _angular_forms__WEBPACK_IMPORTED_MODULE_4__["CheckboxRequiredValidator"], _angular_forms__WEBPACK_IMPORTED_MODULE_4__["CheckboxControlValueAccessor"]],
@@ -2116,29 +2078,47 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     /* harmony import */
 
 
-    var _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(
+    var src_app_services_cards_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(
+    /*! src/app/services/cards.service */
+    "./src/app/services/cards.service.ts");
+    /* harmony import */
+
+
+    var src_app_services_states_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(
+    /*! src/app/services/states.service */
+    "./src/app/services/states.service.ts");
+    /* harmony import */
+
+
+    var _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(
     /*! @ng-bootstrap/ng-bootstrap */
     "./node_modules/@ng-bootstrap/ng-bootstrap/__ivy_ngcc__/fesm2015/ng-bootstrap.js");
     /* harmony import */
 
 
-    var _angular_common__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(
+    var _angular_common__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(
     /*! @angular/common */
     "./node_modules/@angular/common/__ivy_ngcc__/fesm2015/common.js");
     /* harmony import */
 
 
-    var _search_bar_search_bar_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(
+    var _search_bar_search_bar_component__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(
     /*! ../search-bar/search-bar.component */
     "./src/app/components/search-bar/search-bar.component.ts");
+    /* harmony import */
+
+
+    var _angular_material_progress_bar__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(
+    /*! @angular/material/progress-bar */
+    "./node_modules/@angular/material/__ivy_ngcc__/fesm2015/progress-bar.js");
 
     function NavBarComponent_li_11_Template(rf, ctx) {
       if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "li");
 
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "a", 11);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "a", 13);
 
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](2, "i", 12);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](2, "i", 14);
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](3, " Login");
 
@@ -2148,9 +2128,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }
 
       if (rf & 2) {
-        var ctx_r4 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]();
+        var ctx_r2 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]();
 
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵclassMapInterpolate1"]("", ctx_r4.isActive("/login"), " nav-item");
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵclassMapInterpolate1"]("", ctx_r2.isActive("/login"), " nav-item");
       }
     }
 
@@ -2158,9 +2138,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "li");
 
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "a", 13);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "a", 15);
 
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](2, "i", 14);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](2, "i", 16);
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](3, " Registrieren");
 
@@ -2170,44 +2150,44 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }
 
       if (rf & 2) {
-        var ctx_r5 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]();
+        var ctx_r3 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]();
 
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵclassMapInterpolate1"]("", ctx_r5.isActive("/signup"), " nav-item");
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵclassMapInterpolate1"]("", ctx_r3.isActive("/signup"), " nav-item");
       }
     }
 
     function NavBarComponent_li_13_Template(rf, ctx) {
       if (rf & 1) {
-        var _r9 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵgetCurrentView"]();
+        var _r8 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵgetCurrentView"]();
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "li");
 
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "div", 15);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "div", 17);
 
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](2, "a", 16);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](2, "a", 18);
 
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](3, "i", 17);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](3, "i", 19);
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](4, " Account ");
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
 
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](5, "div", 18);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](5, "div", 20);
 
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](6, "a", 19);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](6, "a", 21);
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](7, "Account management");
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
 
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](8, "a", 20);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](8, "a", 22);
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("click", function NavBarComponent_li_13_Template_a_click_8_listener() {
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r9);
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r8);
 
-          var ctx_r8 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]();
+          var ctx_r7 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]();
 
-          return ctx_r8.logout();
+          return ctx_r7.logout();
         });
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](9, " Logout ");
@@ -2222,42 +2202,61 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }
 
       if (rf & 2) {
-        var ctx_r6 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]();
+        var ctx_r4 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]();
 
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵclassMapInterpolate1"]("", ctx_r6.isActive("/profile"), " nav-item");
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵclassMapInterpolate1"]("", ctx_r4.isActive("/profile"), " nav-item");
       }
     }
 
     function NavBarComponent_div_14_Template(rf, ctx) {
       if (rf & 1) {
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "div", 21);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "div", 23);
 
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](1, "app-search-bar", 22);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](1, "app-search-bar");
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
       }
+    }
 
-      if (rf & 2) {
-        var ctx_r7 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]();
-
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
-
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("cards", ctx_r7.cards);
+    function NavBarComponent_mat_progress_bar_16_Template(rf, ctx) {
+      if (rf & 1) {
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](0, "mat-progress-bar", 24);
       }
     }
 
     var NavBarComponent =
     /*#__PURE__*/
     function () {
-      function NavBarComponent(router, titleService, http) {
+      function NavBarComponent(router, titleService, http, cardsService, statesService) {
         _classCallCheck(this, NavBarComponent);
 
         this.router = router;
         this.titleService = titleService;
         this.http = http;
+        this.cardsService = cardsService;
+        this.statesService = statesService;
+        this.loading = false;
       }
 
       _createClass(NavBarComponent, [{
+        key: "ngOnInit",
+        value: function ngOnInit() {
+          var _this7 = this;
+
+          this.setPageTitle();
+          this.user = this.http.getUser();
+          this.statesService.getLoadingState().subscribe(function (val) {
+            _this7.loading = val;
+          });
+          if (this.router.url != "/" && this.router.url != "/login" && this.router.url != "/signup") this.http.getCurrentLecture().subscribe(function (lect) {
+            _this7.lecture = lect;
+
+            _this7.cardsService.getCards(lect).subscribe(function (cards) {
+              _this7.cards = cards;
+            });
+          });
+        }
+      }, {
         key: "isActive",
         value: function isActive(path) {
           return path === this.router.url ? "active" : "";
@@ -2293,30 +2292,21 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           this.user = null;
           this.router.navigate(["/"]);
         }
-      }, {
-        key: "ngOnInit",
-        value: function ngOnInit() {
-          this.setPageTitle();
-          this.user = this.http.getUser();
-        }
       }]);
 
       return NavBarComponent;
     }();
 
     NavBarComponent.ɵfac = function NavBarComponent_Factory(t) {
-      return new (t || NavBarComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_1__["Router"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_platform_browser__WEBPACK_IMPORTED_MODULE_2__["Title"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](src_app_services_http_service__WEBPACK_IMPORTED_MODULE_3__["HttpService"]));
+      return new (t || NavBarComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_1__["Router"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_platform_browser__WEBPACK_IMPORTED_MODULE_2__["Title"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](src_app_services_http_service__WEBPACK_IMPORTED_MODULE_3__["HttpService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](src_app_services_cards_service__WEBPACK_IMPORTED_MODULE_4__["CardsService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](src_app_services_states_service__WEBPACK_IMPORTED_MODULE_5__["StatesService"]));
     };
 
     NavBarComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({
       type: NavBarComponent,
       selectors: [["app-nav-bar"]],
-      inputs: {
-        cards: "cards"
-      },
-      decls: 15,
-      vars: 7,
-      consts: [["role", "alert", 1, "navbar", "navbar-expand-lg", "navbar-light", "bg-light", 2, "padding-right", "0"], [1, "row"], [1, "col-8"], ["type", "button", "data-toggle", "collapse", "data-target", "#navbarNav", "aria-controls", "navbarNav", "aria-expanded", "false", "aria-label", "Toggle navigation", 1, "navbar-toggler"], [1, "navbar-toggler-icon"], ["id", "navbarNav", 1, "collapse", "navbar-collapse"], ["id", "navlist", 1, "navbar-nav"], ["routerLink", "/", "tabindex", "1", 1, "nav-link"], [1, "fas", "fa-home"], [3, "class", 4, "ngIf"], ["class", "col-4", "style", "padding-right: 0;", 4, "ngIf"], ["routerLink", "/login", 1, "nav-link"], [1, "fas", "fa-user"], ["routerLink", "/signup", 1, "nav-link"], [1, "fas", "fa-plus"], [1, "dropdown"], ["type", "button", "id", "dropdownMenuButton", "data-toggle", "dropdown", "aria-haspopup", "true", "aria-expanded", "false", 1, "nav-link"], [1, "fas", "fa-user-circle"], ["aria-labelledby", "dropdownMenuButton", 1, "dropdown-menu"], ["href", "#", "placement", "bottom", "ngbTooltip", "im Aufbau", 1, "dropdown-item", "disabled"], [1, "dropdown-item", 3, "click"], [1, "col-4", 2, "padding-right", "0"], [3, "cards"]],
+      decls: 17,
+      vars: 8,
+      consts: [["role", "alert", 1, "navbar", "navbar-expand-lg", "navbar-light", "bg-light", 2, "padding-right", "0"], [1, "row"], [1, "col-8"], ["type", "button", "data-toggle", "collapse", "data-target", "#navbarNav", "aria-controls", "navbarNav", "aria-expanded", "false", "aria-label", "Toggle navigation", 1, "navbar-toggler"], [1, "navbar-toggler-icon"], ["id", "navbarNav", 1, "collapse", "navbar-collapse"], ["id", "navlist", 1, "navbar-nav"], ["routerLink", "/", "tabindex", "1", 1, "nav-link"], [1, "fas", "fa-home"], [3, "class", 4, "ngIf"], ["class", "col-4", "style", "padding-right: 0;", 4, "ngIf"], ["id", "progress"], ["mode", "indeterminate", 4, "ngIf"], ["routerLink", "/login", 1, "nav-link"], [1, "fas", "fa-user"], ["routerLink", "/signup", 1, "nav-link"], [1, "fas", "fa-plus"], [1, "dropdown"], ["type", "button", "id", "dropdownMenuButton", "data-toggle", "dropdown", "aria-haspopup", "true", "aria-expanded", "false", 1, "nav-link"], [1, "fas", "fa-user-circle"], ["aria-labelledby", "dropdownMenuButton", 1, "dropdown-menu"], ["href", "#", "placement", "bottom", "ngbTooltip", "im Aufbau", 1, "dropdown-item", "disabled"], [1, "dropdown-item", 3, "click"], [1, "col-4", 2, "padding-right", "0"], ["mode", "indeterminate"]],
       template: function NavBarComponent_Template(rf, ctx) {
         if (rf & 1) {
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "nav", 0);
@@ -2359,9 +2349,15 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](14, NavBarComponent_div_14_Template, 2, 1, "div", 10);
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](14, NavBarComponent_div_14_Template, 2, 0, "div", 10);
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](15, "div", 11);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](16, NavBarComponent_mat_progress_bar_16_Template, 1, 0, "mat-progress-bar", 12);
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
         }
@@ -2386,10 +2382,14 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngIf", ctx.cards);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](2);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngIf", ctx.loading);
         }
       },
-      directives: [_ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_4__["NgbNavbar"], _angular_router__WEBPACK_IMPORTED_MODULE_1__["RouterLinkWithHref"], _angular_common__WEBPACK_IMPORTED_MODULE_5__["NgIf"], _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_4__["NgbTooltip"], _search_bar_search_bar_component__WEBPACK_IMPORTED_MODULE_6__["SearchBarComponent"]],
-      styles: [".row[_ngcontent-%COMP%]{\r\n    width: 100%;\r\n}\r\nnav[_ngcontent-%COMP%] {\r\n  position: relative;\r\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvY29tcG9uZW50cy9uYXYtYmFyL25hdi1iYXIuY29tcG9uZW50LmNzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtJQUNJLFdBQVc7QUFDZjtBQUNBO0VBQ0Usa0JBQWtCO0FBQ3BCIiwiZmlsZSI6InNyYy9hcHAvY29tcG9uZW50cy9uYXYtYmFyL25hdi1iYXIuY29tcG9uZW50LmNzcyIsInNvdXJjZXNDb250ZW50IjpbIi5yb3d7XHJcbiAgICB3aWR0aDogMTAwJTtcclxufVxyXG5uYXYge1xyXG4gIHBvc2l0aW9uOiByZWxhdGl2ZTtcclxufVxyXG5cclxuXHJcbiJdfQ== */"]
+      directives: [_ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_6__["NgbNavbar"], _angular_router__WEBPACK_IMPORTED_MODULE_1__["RouterLinkWithHref"], _angular_common__WEBPACK_IMPORTED_MODULE_7__["NgIf"], _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_6__["NgbTooltip"], _search_bar_search_bar_component__WEBPACK_IMPORTED_MODULE_8__["SearchBarComponent"], _angular_material_progress_bar__WEBPACK_IMPORTED_MODULE_9__["MatProgressBar"]],
+      styles: [".row[_ngcontent-%COMP%] {\r\n  width: 100%;\r\n}\r\nnav[_ngcontent-%COMP%] {\r\n  position: relative;\r\n}\r\n#progress[_ngcontent-%COMP%] {\r\n  position: relative;\r\n}\r\nmat-progress-bar[_ngcontent-%COMP%] {\r\n  position: absolute;\r\n  top: 0;\r\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvY29tcG9uZW50cy9uYXYtYmFyL25hdi1iYXIuY29tcG9uZW50LmNzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNFLFdBQVc7QUFDYjtBQUNBO0VBQ0Usa0JBQWtCO0FBQ3BCO0FBRUE7RUFDRSxrQkFBa0I7QUFDcEI7QUFDQTtFQUNFLGtCQUFrQjtFQUNsQixNQUFNO0FBQ1IiLCJmaWxlIjoic3JjL2FwcC9jb21wb25lbnRzL25hdi1iYXIvbmF2LWJhci5jb21wb25lbnQuY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLnJvdyB7XHJcbiAgd2lkdGg6IDEwMCU7XHJcbn1cclxubmF2IHtcclxuICBwb3NpdGlvbjogcmVsYXRpdmU7XHJcbn1cclxuXHJcbiNwcm9ncmVzcyB7XHJcbiAgcG9zaXRpb246IHJlbGF0aXZlO1xyXG59XHJcbm1hdC1wcm9ncmVzcy1iYXIge1xyXG4gIHBvc2l0aW9uOiBhYnNvbHV0ZTtcclxuICB0b3A6IDA7XHJcbn1cclxuIl19 */"]
     });
     /*@__PURE__*/
 
@@ -2408,12 +2408,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           type: _angular_platform_browser__WEBPACK_IMPORTED_MODULE_2__["Title"]
         }, {
           type: src_app_services_http_service__WEBPACK_IMPORTED_MODULE_3__["HttpService"]
+        }, {
+          type: src_app_services_cards_service__WEBPACK_IMPORTED_MODULE_4__["CardsService"]
+        }, {
+          type: src_app_services_states_service__WEBPACK_IMPORTED_MODULE_5__["StatesService"]
         }];
-      }, {
-        cards: [{
-          type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"]
-        }]
-      });
+      }, null);
     })();
     /***/
 
@@ -2459,32 +2459,38 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     /* harmony import */
 
 
-    var _angular_forms__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(
+    var _services_http_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(
+    /*! ../../services/http.service */
+    "./src/app/services/http.service.ts");
+    /* harmony import */
+
+
+    var _angular_forms__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(
     /*! @angular/forms */
     "./node_modules/@angular/forms/__ivy_ngcc__/fesm2015/forms.js");
     /* harmony import */
 
 
-    var _angular_common__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(
+    var _angular_common__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(
     /*! @angular/common */
     "./node_modules/@angular/common/__ivy_ngcc__/fesm2015/common.js");
 
     function SearchBarComponent_div_1_li_2_Template(rf, ctx) {
       if (rf & 1) {
-        var _r14 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵgetCurrentView"]();
+        var _r13 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵgetCurrentView"]();
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "li", 5);
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "a", 6);
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("click", function SearchBarComponent_div_1_li_2_Template_a_click_1_listener($event) {
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r14);
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r13);
 
-          var suggestion_r12 = ctx.$implicit;
+          var suggestion_r11 = ctx.$implicit;
 
-          var ctx_r13 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](2);
+          var ctx_r12 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](2);
 
-          return ctx_r13.navigateTo($event, suggestion_r12.index);
+          return ctx_r12.navigateTo($event, suggestion_r11.index);
         });
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](2);
@@ -2495,11 +2501,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }
 
       if (rf & 2) {
-        var suggestion_r12 = ctx.$implicit;
+        var suggestion_r11 = ctx.$implicit;
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](2);
 
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate"](suggestion_r12.title);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate"](suggestion_r11.title);
       }
     }
 
@@ -2517,45 +2523,53 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }
 
       if (rf & 2) {
-        var ctx_r10 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]();
+        var ctx_r9 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]();
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](2);
 
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngForOf", ctx_r10.suggestions);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngForOf", ctx_r9.suggestions);
       }
     }
 
     var SearchBarComponent =
     /*#__PURE__*/
     function () {
-      function SearchBarComponent(cardsService, stateService) {
+      function SearchBarComponent(cardsService, stateService, http) {
         _classCallCheck(this, SearchBarComponent);
 
         this.cardsService = cardsService;
         this.stateService = stateService;
+        this.http = http;
       }
 
       _createClass(SearchBarComponent, [{
         key: "ngOnInit",
         value: function ngOnInit() {
-          var _this7 = this;
+          var _this8 = this;
 
           this.stateService.getHideSuggestions().subscribe(function (value) {
-            _this7.clearSuggestions = value;
+            _this8.clearSuggestions = value;
 
             if (value) {
-              _this7.suggestions = [];
+              _this8.suggestions = [];
             }
           });
         }
       }, {
         key: "ngOnChanges",
         value: function ngOnChanges() {
-          var _this8 = this;
+          var _this9 = this;
 
-          if (this.cardsService.getCards()) {
-            this.cardsService.getCards().subscribe(function (cards) {
-              _this8.cards = cards;
+          //put these into ngOnInit
+          if (this.http.getCurrentLecture()) {
+            this.http.getCurrentLecture().subscribe(function (vl) {
+              return _this9.lecture = vl;
+            });
+          }
+
+          if (this.cardsService.getCards(this.lecture)) {
+            this.cardsService.getCards(this.lecture).subscribe(function (cards) {
+              _this9.cards = cards;
               cards.forEach(function (card) {
                 if (card.thema == null) {
                   card.thema = "";
@@ -2599,15 +2613,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     }();
 
     SearchBarComponent.ɵfac = function SearchBarComponent_Factory(t) {
-      return new (t || SearchBarComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_services_cards_service__WEBPACK_IMPORTED_MODULE_1__["CardsService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_services_states_service__WEBPACK_IMPORTED_MODULE_2__["StatesService"]));
+      return new (t || SearchBarComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_services_cards_service__WEBPACK_IMPORTED_MODULE_1__["CardsService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_services_states_service__WEBPACK_IMPORTED_MODULE_2__["StatesService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_services_http_service__WEBPACK_IMPORTED_MODULE_3__["HttpService"]));
     };
 
     SearchBarComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({
       type: SearchBarComponent,
       selectors: [["app-search-bar"]],
-      inputs: {
-        cards: "cards"
-      },
       features: [_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵNgOnChangesFeature"]()],
       decls: 2,
       vars: 2,
@@ -2635,7 +2646,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngIf", ctx.suggestions);
         }
       },
-      directives: [_angular_forms__WEBPACK_IMPORTED_MODULE_3__["DefaultValueAccessor"], _angular_forms__WEBPACK_IMPORTED_MODULE_3__["NgControlStatus"], _angular_forms__WEBPACK_IMPORTED_MODULE_3__["NgModel"], _angular_common__WEBPACK_IMPORTED_MODULE_4__["NgIf"], _angular_common__WEBPACK_IMPORTED_MODULE_4__["NgForOf"]],
+      directives: [_angular_forms__WEBPACK_IMPORTED_MODULE_4__["DefaultValueAccessor"], _angular_forms__WEBPACK_IMPORTED_MODULE_4__["NgControlStatus"], _angular_forms__WEBPACK_IMPORTED_MODULE_4__["NgModel"], _angular_common__WEBPACK_IMPORTED_MODULE_5__["NgIf"], _angular_common__WEBPACK_IMPORTED_MODULE_5__["NgForOf"]],
       styles: ["#matches[_ngcontent-%COMP%] {\r\n    position: absolute;\r\n    top: 40px;\r\n    z-index: 1000;\r\n    right: 0;\r\n    max-width: 300px;\r\n    padding: 1px;\r\n    max-height: 200px;\r\n    overflow: auto;\r\n    box-shadow: 0 5px 10px rgba(46, 46, 46, 0.438);\r\n  }\r\n  #search[_ngcontent-%COMP%] {\r\n    max-width: 150px;\r\n  }\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvY29tcG9uZW50cy9zZWFyY2gtYmFyL3NlYXJjaC1iYXIuY29tcG9uZW50LmNzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtJQUNJLGtCQUFrQjtJQUNsQixTQUFTO0lBQ1QsYUFBYTtJQUNiLFFBQVE7SUFDUixnQkFBZ0I7SUFDaEIsWUFBWTtJQUNaLGlCQUFpQjtJQUNqQixjQUFjO0lBQ2QsOENBQThDO0VBQ2hEO0VBQ0E7SUFDRSxnQkFBZ0I7RUFDbEIiLCJmaWxlIjoic3JjL2FwcC9jb21wb25lbnRzL3NlYXJjaC1iYXIvc2VhcmNoLWJhci5jb21wb25lbnQuY3NzIiwic291cmNlc0NvbnRlbnQiOlsiI21hdGNoZXMge1xyXG4gICAgcG9zaXRpb246IGFic29sdXRlO1xyXG4gICAgdG9wOiA0MHB4O1xyXG4gICAgei1pbmRleDogMTAwMDtcclxuICAgIHJpZ2h0OiAwO1xyXG4gICAgbWF4LXdpZHRoOiAzMDBweDtcclxuICAgIHBhZGRpbmc6IDFweDtcclxuICAgIG1heC1oZWlnaHQ6IDIwMHB4O1xyXG4gICAgb3ZlcmZsb3c6IGF1dG87XHJcbiAgICBib3gtc2hhZG93OiAwIDVweCAxMHB4IHJnYmEoNDYsIDQ2LCA0NiwgMC40MzgpO1xyXG4gIH1cclxuICAjc2VhcmNoIHtcclxuICAgIG1heC13aWR0aDogMTUwcHg7XHJcbiAgfSJdfQ== */"]
     });
     /*@__PURE__*/
@@ -2653,12 +2664,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           type: _services_cards_service__WEBPACK_IMPORTED_MODULE_1__["CardsService"]
         }, {
           type: _services_states_service__WEBPACK_IMPORTED_MODULE_2__["StatesService"]
+        }, {
+          type: _services_http_service__WEBPACK_IMPORTED_MODULE_3__["HttpService"]
         }];
-      }, {
-        cards: [{
-          type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"]
-        }]
-      });
+      }, null);
     })();
     /***/
 
@@ -2724,11 +2733,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }
 
       if (rf & 2) {
-        var error_r54 = ctx.$implicit;
+        var error_r53 = ctx.$implicit;
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
 
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate1"](" ", error_r54, "\n");
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate1"](" ", error_r53, "\n");
       }
     }
 
@@ -2748,16 +2757,16 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: "submit",
         value: function submit(form) {
-          var _this9 = this;
+          var _this10 = this;
 
           this.http.createAccount(form.value).subscribe(function (response) {
             if (response) {
-              _this9.router.navigate(["/"]);
+              _this10.router.navigate(["/"]);
             }
           }, function (error) {
             if (error.headers.status = 422) {
               console.log(error);
-              _this9.errors = error.error.errors;
+              _this10.errors = error.error.errors;
             }
           });
         }
@@ -2827,7 +2836,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       consts: [["class", "alert alert-warning", 4, "ngFor", "ngForOf"], [1, "container"], ["novalidate", "", 3, "ngSubmit"], ["form", "ngForm"], [1, "form-group"], ["for", "name"], ["type", "text", "id", "username", "name", "username", "required", "", "maxlength", "20", "aria-describedby", "nameHelp", "ngModel", "", 1, "form-control"], ["username", "ngModel"], [1, "form-text"], ["for", "email"], ["type", "email", "name", "email", "id", "email", "aria-describedby", "emailHelp", "required", "", "ngModel", "", 1, "form-control"], ["email", "ngModel"], ["for", "password"], ["type", "password", "name", "password", "id", "password", "ngModel", "", "minlength", "7", 1, "form-control"], ["password", "ngModel"], ["type", "password", "name", "password2", "id", "password2", "ngModel", "", "minlength", "7", 1, "form-control"], ["password2", "ngModel"], ["type", "submit", 1, "btn", "btn-primary", "btn-lg", "btn-block", 3, "disabled"], [1, "alert", "alert-warning"]],
       template: function SignupFormComponent_Template(rf, ctx) {
         if (rf & 1) {
-          var _r55 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵgetCurrentView"]();
+          var _r54 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵgetCurrentView"]();
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](0, SignupFormComponent_div_0_Template, 2, 1, "div", 0);
 
@@ -2836,11 +2845,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](2, "form", 2, 3);
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("ngSubmit", function SignupFormComponent_Template_form_ngSubmit_2_listener() {
-            _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r55);
+            _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r54);
 
-            var _r49 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵreference"](3);
+            var _r48 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵreference"](3);
 
-            return ctx.submit(_r49);
+            return ctx.submit(_r48);
           });
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](4, "div", 4);
@@ -2917,23 +2926,23 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         }
 
         if (rf & 2) {
-          var _r50 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵreference"](8);
+          var _r49 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵreference"](8);
 
-          var _r51 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵreference"](15);
+          var _r50 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵreference"](15);
 
-          var _r52 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵreference"](20);
+          var _r51 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵreference"](20);
 
-          var _r53 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵreference"](27);
+          var _r52 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵreference"](27);
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngForOf", ctx.errors);
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](26);
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵstyleMap"](ctx.setStyle(_r52, _r53));
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵstyleMap"](ctx.setStyle(_r51, _r52));
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](3);
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("disabled", ctx.isDisabled(_r50, _r51, _r52, _r53));
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("disabled", ctx.isDisabled(_r49, _r50, _r51, _r52));
         }
       },
       directives: [_angular_common__WEBPACK_IMPORTED_MODULE_3__["NgForOf"], _angular_forms__WEBPACK_IMPORTED_MODULE_4__["ɵangular_packages_forms_forms_y"], _angular_forms__WEBPACK_IMPORTED_MODULE_4__["NgControlStatusGroup"], _angular_forms__WEBPACK_IMPORTED_MODULE_4__["NgForm"], _angular_forms__WEBPACK_IMPORTED_MODULE_4__["DefaultValueAccessor"], _angular_forms__WEBPACK_IMPORTED_MODULE_4__["RequiredValidator"], _angular_forms__WEBPACK_IMPORTED_MODULE_4__["MaxLengthValidator"], _angular_forms__WEBPACK_IMPORTED_MODULE_4__["NgControlStatus"], _angular_forms__WEBPACK_IMPORTED_MODULE_4__["NgModel"], _angular_forms__WEBPACK_IMPORTED_MODULE_4__["MinLengthValidator"]],
@@ -3039,35 +3048,33 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         this.httpService = httpService;
         this.statesService = statesService;
         this.dialog = dialog;
-        this.returnCard = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
-        this.cardCopy = {
-          thema: "",
-          content: ""
-        };
       }
 
       _createClass(UpdateCardFormComponent, [{
         key: "ngOnInit",
         value: function ngOnInit() {
-          var _this10 = this;
+          var _this11 = this;
 
-          this.cardsService.getCards().subscribe(function (cards) {
-            return _this10.cards = cards;
+          this.httpService.getCurrentLecture().subscribe(function (vl) {
+            _this11.lecture = vl;
+
+            _this11.cardsService.getCards(_this11.lecture).subscribe(function (cards) {
+              _this11.cards = cards;
+
+              _this11.cardsService.getActiveCardIndex().subscribe(function (index) {
+                _this11.activeCardIndex = index;
+                _this11.cardCopy = Object.assign({}, _this11.cards[_this11.activeCardIndex]);
+                _this11.cardIndex = _this11.activeCardIndex;
+              });
+            });
           });
-          this.cardsService.getActiveCardIndex().subscribe(function (index) {
-            return _this10.activeCardIndex = index;
-          });
-          this.cardCopy = Object.assign({}, this.cards[this.activeCardIndex]);
-          this.cardIndex = this.activeCardIndex;
         }
       }, {
         key: "onSubmit",
         value: function onSubmit(f) {
-          this.statesService.setLoadingState(true);
           this.cardCopy.content = f.value.content;
           this.cardCopy.thema = f.value.thema;
-          this.cards[this.cardIndex] = Object.assign({}, this.cardCopy);
-          this.cardsService.updateCard(this.cards[this.cardIndex], this.lecture.abrv, this.cardIndex);
+          this.cardsService.updateCard(Object.assign({}, this.cardCopy), this.cardIndex);
           f.reset();
         }
       }, {
@@ -3135,29 +3142,23 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     UpdateCardFormComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({
       type: UpdateCardFormComponent,
       selectors: [["app-update-card-form"]],
-      inputs: {
-        lecture: "lecture"
-      },
-      outputs: {
-        returnCard: "returnCard"
-      },
       decls: 22,
       vars: 7,
       consts: [["id", "addCard"], ["novalidate", "", 3, "ngSubmit"], ["f", "ngForm"], [1, "form-group"], ["for", "thema"], ["id", "thema", "name", "thema", "type", "text", "placeholder", "Thema", "minlength", "3", "required", "", 1, "form-control", 3, "ngModel", "ngModelChange"], ["thema", "ngModel"], [1, "form-text", "float-right", 3, "ngStyle"], ["for", "content"], ["id", "content", "name", "content", "rows", "5", "required", "", 1, "form-control", 3, "ngModel", "ngModelChange"], ["content", "ngModel"], ["type", "submit", "value", "Sichern", 1, "btn", "btn-success", "mb-2", "mr-1", 3, "disabled"], ["type", "button", "value", "Abbruch", 1, "btn", "btn-danger", "mb-2", 3, "click"]],
       template: function UpdateCardFormComponent_Template(rf, ctx) {
         if (rf & 1) {
-          var _r40 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵgetCurrentView"]();
+          var _r39 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵgetCurrentView"]();
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "div", 0);
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "form", 1, 2);
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("ngSubmit", function UpdateCardFormComponent_Template_form_ngSubmit_1_listener() {
-            _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r40);
+            _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r39);
 
-            var _r37 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵreference"](2);
+            var _r36 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵreference"](2);
 
-            return ctx.onSubmit(_r37);
+            return ctx.onSubmit(_r36);
           });
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](3, "h4");
@@ -3234,9 +3235,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         }
 
         if (rf & 2) {
-          var _r38 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵreference"](9);
+          var _r37 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵreference"](9);
 
-          var _r39 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵreference"](16);
+          var _r38 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵreference"](16);
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](8);
 
@@ -3244,11 +3245,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](2);
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngStyle", ctx.setThemaCharIndicatorStyle(_r38));
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngStyle", ctx.setThemaCharIndicatorStyle(_r37));
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate1"]("", ctx.getLength(_r38), "/60 ");
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate1"]("", ctx.getLength(_r37), "/60 ");
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](4);
 
@@ -3256,15 +3257,15 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](2);
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngStyle", ctx.setContentCharIndicatorStyle(_r39));
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngStyle", ctx.setContentCharIndicatorStyle(_r38));
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate1"]("", ctx.getLength(_r39), "/400 ");
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate1"]("", ctx.getLength(_r38), "/400 ");
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](2);
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("disabled", ctx.isDisabled(_r39, _r38));
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("disabled", ctx.isDisabled(_r38, _r37));
         }
       },
       directives: [_angular_forms__WEBPACK_IMPORTED_MODULE_5__["ɵangular_packages_forms_forms_y"], _angular_forms__WEBPACK_IMPORTED_MODULE_5__["NgControlStatusGroup"], _angular_forms__WEBPACK_IMPORTED_MODULE_5__["NgForm"], _angular_forms__WEBPACK_IMPORTED_MODULE_5__["DefaultValueAccessor"], _angular_forms__WEBPACK_IMPORTED_MODULE_5__["MinLengthValidator"], _angular_forms__WEBPACK_IMPORTED_MODULE_5__["RequiredValidator"], _angular_forms__WEBPACK_IMPORTED_MODULE_5__["NgControlStatus"], _angular_forms__WEBPACK_IMPORTED_MODULE_5__["NgModel"], _angular_common__WEBPACK_IMPORTED_MODULE_6__["NgStyle"]],
@@ -3290,14 +3291,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         }, {
           type: _angular_material_dialog__WEBPACK_IMPORTED_MODULE_4__["MatDialog"]
         }];
-      }, {
-        lecture: [{
-          type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"]
-        }],
-        returnCard: [{
-          type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"]
-        }]
-      });
+      }, null);
     })();
 
     var DialogOverviewExampleDialog =
@@ -3424,11 +3418,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       return Card;
     });
 
-    var Card = function Card(thema, content) {
+    var Card = function Card(thema, content, abrv) {
       _classCallCheck(this, Card);
 
       this.thema = thema;
       this.content = content;
+      this.abrv = abrv;
     };
     /***/
 
@@ -3528,61 +3523,37 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     /* harmony import */
 
 
-    var _angular_common__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(
-    /*! @angular/common */
-    "./node_modules/@angular/common/__ivy_ngcc__/fesm2015/common.js");
-    /* harmony import */
-
-
-    var _components_carousel_carousel_component__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(
+    var _components_carousel_carousel_component__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(
     /*! ../../components/carousel/carousel.component */
     "./src/app/components/carousel/carousel.component.ts");
     /* harmony import */
 
 
-    var _angular_material_progress_bar__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(
-    /*! @angular/material/progress-bar */
-    "./node_modules/@angular/material/__ivy_ngcc__/fesm2015/progress-bar.js");
+    var _angular_common__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(
+    /*! @angular/common */
+    "./node_modules/@angular/common/__ivy_ngcc__/fesm2015/common.js");
     /* harmony import */
 
 
-    var _components_add_card_form_add_card_form_component__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(
+    var _components_add_card_form_add_card_form_component__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(
     /*! ../../components/add-card-form/add-card-form.component */
     "./src/app/components/add-card-form/add-card-form.component.ts");
     /* harmony import */
 
 
-    var _components_update_card_form_update_card_form_component__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(
+    var _components_update_card_form_update_card_form_component__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(
     /*! ../../components/update-card-form/update-card-form.component */
     "./src/app/components/update-card-form/update-card-form.component.ts");
 
-    function CardsPageComponent_mat_progress_bar_2_Template(rf, ctx) {
+    function CardsPageComponent_app_add_card_form_5_Template(rf, ctx) {
       if (rf & 1) {
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](0, "mat-progress-bar", 6);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](0, "app-add-card-form");
       }
     }
 
-    function CardsPageComponent_app_add_card_form_7_Template(rf, ctx) {
+    function CardsPageComponent_app_update_card_form_6_Template(rf, ctx) {
       if (rf & 1) {
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](0, "app-add-card-form", 7);
-      }
-
-      if (rf & 2) {
-        var ctx_r2 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]();
-
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("lecture", ctx_r2.lecture);
-      }
-    }
-
-    function CardsPageComponent_app_update_card_form_8_Template(rf, ctx) {
-      if (rf & 1) {
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](0, "app-update-card-form", 7);
-      }
-
-      if (rf & 2) {
-        var ctx_r3 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]();
-
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("lecture", ctx_r3.lecture);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](0, "app-update-card-form");
       }
     }
 
@@ -3609,31 +3580,29 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: "ngOnInit",
         value: function ngOnInit() {
-          var _this11 = this;
+          var _this12 = this;
 
           this.title.setTitle("Cards");
           this.vlAbrv = this.route.snapshot.paramMap.get("abrv");
-          this.httpService.getLectureByAbrv(this.vlAbrv).subscribe(function (resp) {
-            if (resp.status == 504) {
-              console.log("Server offline");
-            } else {
-              _this11.lecture = resp.body;
+          this.httpService.getCurrentLecture().subscribe(function (vl) {
+            _this12.lecture = vl;
 
-              _this11.httpService.getCardsFromLecture(_this11.lecture).subscribe(function (resp) {
-                _this11.cardsService.initCards(resp.body);
+            _this12.cardsService.getCards(_this12.lecture).subscribe(function (cards) {
+              _this12.cards = cards;
 
-                _this11.cards = resp.body;
-              });
-            }
+              if (_this12.cards.length == 0) {
+                _this12.stateServie.setFormMode("add");
+              }
+            });
           });
           this.cardsService.getNewCardIndex().subscribe(function (index) {
-            _this11.ativeCard = index;
+            _this12.ativeCard = index;
           });
           this.stateServie.getLoadingState().subscribe(function (value) {
-            return _this11.loading = value;
+            return _this12.loading = value;
           });
           this.stateServie.getFormMode().subscribe(function (mode) {
-            return _this11.formMode = mode;
+            return _this12.formMode = mode;
           });
         }
       }, {
@@ -3661,52 +3630,30 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           });
         }
       },
-      decls: 9,
-      vars: 5,
-      consts: [[3, "cards"], ["id", "progress"], ["mode", "indeterminate", 4, "ngIf"], [1, "container"], [3, "lecture", "setLoading"], [3, "lecture", 4, "ngIf"], ["mode", "indeterminate"], [3, "lecture"]],
+      decls: 7,
+      vars: 2,
+      consts: [[1, "container"], [4, "ngIf"]],
       template: function CardsPageComponent_Template(rf, ctx) {
         if (rf & 1) {
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](0, "app-nav-bar", 0);
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](0, "app-nav-bar");
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "div", 1);
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](1, "br");
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](2, CardsPageComponent_mat_progress_bar_2_Template, 1, 0, "mat-progress-bar", 2);
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](2, "div", 0);
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](3, "app-carousel");
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](3, "br");
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](4, "br");
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](4, "div", 3);
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](5, CardsPageComponent_app_add_card_form_5_Template, 1, 0, "app-add-card-form", 1);
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](5, "app-carousel", 4);
-
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("setLoading", function CardsPageComponent_Template_app_carousel_setLoading_5_listener($event) {
-            return ctx.setLoading($event);
-          });
-
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](6, "br");
-
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](7, CardsPageComponent_app_add_card_form_7_Template, 1, 1, "app-add-card-form", 5);
-
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](8, CardsPageComponent_app_update_card_form_8_Template, 1, 1, "app-update-card-form", 5);
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](6, CardsPageComponent_app_update_card_form_6_Template, 1, 0, "app-update-card-form", 1);
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
         }
 
         if (rf & 2) {
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("cards", ctx.cards);
-
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](2);
-
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngIf", ctx.loading);
-
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](3);
-
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("lecture", ctx.lecture);
-
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](2);
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](5);
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngIf", ctx.formMode == "add");
 
@@ -3715,7 +3662,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngIf", ctx.formMode == "edit");
         }
       },
-      directives: [_components_nav_bar_nav_bar_component__WEBPACK_IMPORTED_MODULE_6__["NavBarComponent"], _angular_common__WEBPACK_IMPORTED_MODULE_7__["NgIf"], _components_carousel_carousel_component__WEBPACK_IMPORTED_MODULE_8__["CarouselComponent"], _angular_material_progress_bar__WEBPACK_IMPORTED_MODULE_9__["MatProgressBar"], _components_add_card_form_add_card_form_component__WEBPACK_IMPORTED_MODULE_10__["AddCardFormComponent"], _components_update_card_form_update_card_form_component__WEBPACK_IMPORTED_MODULE_11__["UpdateCardFormComponent"]],
+      directives: [_components_nav_bar_nav_bar_component__WEBPACK_IMPORTED_MODULE_6__["NavBarComponent"], _components_carousel_carousel_component__WEBPACK_IMPORTED_MODULE_7__["CarouselComponent"], _angular_common__WEBPACK_IMPORTED_MODULE_8__["NgIf"], _components_add_card_form_add_card_form_component__WEBPACK_IMPORTED_MODULE_9__["AddCardFormComponent"], _components_update_card_form_update_card_form_component__WEBPACK_IMPORTED_MODULE_10__["UpdateCardFormComponent"]],
       styles: [".container[_ngcontent-%COMP%] {\r\n  max-width: 900px;\r\n  padding: 0;\r\n}\r\n.row[_ngcontent-%COMP%] {\r\n  width: 90%;\r\n\r\n  margin: auto;\r\n  margin-bottom: 10px;\r\n}\r\nbutton[_ngcontent-%COMP%] {\r\n  margin-right: 0;\r\n}\r\n.col-2[_ngcontent-%COMP%] {\r\n  padding-right: 0;\r\n}\r\n.col-10[_ngcontent-%COMP%] {\r\n  padding-left: 0;\r\n}\r\n#progress[_ngcontent-%COMP%] {\r\n  position: relative;\r\n}\r\nmat-progress-bar[_ngcontent-%COMP%] {\r\n  position: absolute;\r\n  top: 0;\r\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvcm91dGVzL2NhcmRzLXBhZ2UvY2FyZHMtcGFnZS5jb21wb25lbnQuY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0VBQ0UsZ0JBQWdCO0VBQ2hCLFVBQVU7QUFDWjtBQUNBO0VBQ0UsVUFBVTs7RUFFVixZQUFZO0VBQ1osbUJBQW1CO0FBQ3JCO0FBQ0E7RUFDRSxlQUFlO0FBQ2pCO0FBQ0E7RUFDRSxnQkFBZ0I7QUFDbEI7QUFDQTtFQUNFLGVBQWU7QUFDakI7QUFDQTtFQUNFLGtCQUFrQjtBQUNwQjtBQUNBO0VBQ0Usa0JBQWtCO0VBQ2xCLE1BQU07QUFDUiIsImZpbGUiOiJzcmMvYXBwL3JvdXRlcy9jYXJkcy1wYWdlL2NhcmRzLXBhZ2UuY29tcG9uZW50LmNzcyIsInNvdXJjZXNDb250ZW50IjpbIi5jb250YWluZXIge1xyXG4gIG1heC13aWR0aDogOTAwcHg7XHJcbiAgcGFkZGluZzogMDtcclxufVxyXG4ucm93IHtcclxuICB3aWR0aDogOTAlO1xyXG5cclxuICBtYXJnaW46IGF1dG87XHJcbiAgbWFyZ2luLWJvdHRvbTogMTBweDtcclxufVxyXG5idXR0b24ge1xyXG4gIG1hcmdpbi1yaWdodDogMDtcclxufVxyXG4uY29sLTIge1xyXG4gIHBhZGRpbmctcmlnaHQ6IDA7XHJcbn1cclxuLmNvbC0xMCB7XHJcbiAgcGFkZGluZy1sZWZ0OiAwO1xyXG59XHJcbiNwcm9ncmVzcyB7XHJcbiAgcG9zaXRpb246IHJlbGF0aXZlO1xyXG59XHJcbm1hdC1wcm9ncmVzcy1iYXIge1xyXG4gIHBvc2l0aW9uOiBhYnNvbHV0ZTtcclxuICB0b3A6IDA7XHJcbn1cclxuIl19 */"]
     });
     /*@__PURE__*/
@@ -3779,15 +3726,15 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     /* harmony import */
 
 
-    var _components_nav_bar_nav_bar_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(
-    /*! ../../components/nav-bar/nav-bar.component */
-    "./src/app/components/nav-bar/nav-bar.component.ts");
+    var _services_states_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(
+    /*! ../../services/states.service */
+    "./src/app/services/states.service.ts");
     /* harmony import */
 
 
-    var _angular_common__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(
-    /*! @angular/common */
-    "./node_modules/@angular/common/__ivy_ngcc__/fesm2015/common.js");
+    var _components_nav_bar_nav_bar_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(
+    /*! ../../components/nav-bar/nav-bar.component */
+    "./src/app/components/nav-bar/nav-bar.component.ts");
     /* harmony import */
 
 
@@ -3800,35 +3747,25 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     var _components_add_lecture_form_add_lecture_form_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(
     /*! ../../components/add-lecture-form/add-lecture-form.component */
     "./src/app/components/add-lecture-form/add-lecture-form.component.ts");
-    /* harmony import */
-
-
-    var _angular_material_progress_bar__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(
-    /*! @angular/material/progress-bar */
-    "./node_modules/@angular/material/__ivy_ngcc__/fesm2015/progress-bar.js");
-
-    function HomePageComponent_mat_progress_bar_1_Template(rf, ctx) {
-      if (rf & 1) {
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](0, "mat-progress-bar", 5);
-      }
-    }
 
     var HomePageComponent =
     /*#__PURE__*/
     function () {
-      function HomePageComponent() {
+      function HomePageComponent(statesService) {
         _classCallCheck(this, HomePageComponent);
 
-        this.loaded = false;
+        this.statesService = statesService;
+        this.loading = false;
       }
 
       _createClass(HomePageComponent, [{
         key: "ngOnInit",
-        value: function ngOnInit() {}
-      }, {
-        key: "setLoaded",
-        value: function setLoaded(loaded) {
-          this.loaded = loaded;
+        value: function ngOnInit() {
+          var _this13 = this;
+
+          this.statesService.getLoadingState().subscribe(function (val) {
+            _this13.loading = val;
+          });
         }
       }, {
         key: "emitVl",
@@ -3842,57 +3779,37 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     }();
 
     HomePageComponent.ɵfac = function HomePageComponent_Factory(t) {
-      return new (t || HomePageComponent)();
+      return new (t || HomePageComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_services_states_service__WEBPACK_IMPORTED_MODULE_1__["StatesService"]));
     };
 
     HomePageComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({
       type: HomePageComponent,
       selectors: [["app-home-page"]],
-      decls: 6,
-      vars: 3,
-      consts: [[3, "cards"], ["mode", "indeterminate", 4, "ngIf"], [1, "container"], [3, "newVl", "lecturesLoaded"], [3, "emitVl"], ["mode", "indeterminate"]],
+      decls: 5,
+      vars: 1,
+      consts: [[1, "container"], [3, "newVl"]],
       template: function HomePageComponent_Template(rf, ctx) {
         if (rf & 1) {
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](0, "app-nav-bar", 0);
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](0, "app-nav-bar");
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](1, HomePageComponent_mat_progress_bar_1_Template, 1, 0, "mat-progress-bar", 1);
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "div", 0);
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](2, "div", 2);
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](2, "app-lectures", 1);
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](3, "app-lectures", 3);
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](3, "br");
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("lecturesLoaded", function HomePageComponent_Template_app_lectures_lecturesLoaded_3_listener($event) {
-            return ctx.setLoaded($event);
-          });
-
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](4, "br");
-
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](5, "app-add-lecture-form", 4);
-
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("emitVl", function HomePageComponent_Template_app_add_lecture_form_emitVl_5_listener($event) {
-            return ctx.emitVl($event);
-          });
-
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](4, "app-add-lecture-form");
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
         }
 
         if (rf & 2) {
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("cards", undefined);
-
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
-
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngIf", !ctx.loaded);
-
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](2);
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("newVl", ctx.newVl);
         }
       },
-      directives: [_components_nav_bar_nav_bar_component__WEBPACK_IMPORTED_MODULE_1__["NavBarComponent"], _angular_common__WEBPACK_IMPORTED_MODULE_2__["NgIf"], _components_lectures_lectures_component__WEBPACK_IMPORTED_MODULE_3__["LecturesComponent"], _components_add_lecture_form_add_lecture_form_component__WEBPACK_IMPORTED_MODULE_4__["AddLectureFormComponent"], _angular_material_progress_bar__WEBPACK_IMPORTED_MODULE_5__["MatProgressBar"]],
+      directives: [_components_nav_bar_nav_bar_component__WEBPACK_IMPORTED_MODULE_2__["NavBarComponent"], _components_lectures_lectures_component__WEBPACK_IMPORTED_MODULE_3__["LecturesComponent"], _components_add_lecture_form_add_lecture_form_component__WEBPACK_IMPORTED_MODULE_4__["AddLectureFormComponent"]],
       styles: [".container[_ngcontent-%COMP%] {\r\n  padding: 15px;\r\n  max-width: 900px;\r\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvcm91dGVzL2hvbWUtcGFnZS9ob21lLXBhZ2UuY29tcG9uZW50LmNzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNFLGFBQWE7RUFDYixnQkFBZ0I7QUFDbEIiLCJmaWxlIjoic3JjL2FwcC9yb3V0ZXMvaG9tZS1wYWdlL2hvbWUtcGFnZS5jb21wb25lbnQuY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLmNvbnRhaW5lciB7XHJcbiAgcGFkZGluZzogMTVweDtcclxuICBtYXgtd2lkdGg6IDkwMHB4O1xyXG59XHJcbiJdfQ== */"]
     });
     /*@__PURE__*/
@@ -3906,7 +3823,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           styleUrls: ["./home-page.component.css"]
         }]
       }], function () {
-        return [];
+        return [{
+          type: _services_states_service__WEBPACK_IMPORTED_MODULE_1__["StatesService"]
+        }];
       }, null);
     })();
     /***/
@@ -4135,13 +4054,19 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     /* harmony import */
 
 
-    var _http_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(
+    var rxjs_operators__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(
+    /*! rxjs/operators */
+    "./node_modules/rxjs/_esm2015/operators/index.js");
+    /* harmony import */
+
+
+    var _http_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(
     /*! ./http.service */
     "./src/app/services/http.service.ts");
     /* harmony import */
 
 
-    var _states_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(
+    var _states_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(
     /*! ./states.service */
     "./src/app/services/states.service.ts");
 
@@ -4159,63 +4084,65 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
       _createClass(CardsService, [{
         key: "getCards",
-        value: function getCards() {
-          if (this.cards$) {
+        value: function getCards(lecture) {
+          var _this14 = this;
+
+          if (this.abrv == lecture.abrv) {
+            //cards were already loaded for this lecture
             return this.cards$.asObservable();
           } else {
-            return Object(rxjs__WEBPACK_IMPORTED_MODULE_1__["of"])([]);
+            //returns an observable of the cards from http service while also initializing the cards internally for reuse
+            return this.httpService.getCardsFromLecture(lecture).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["tap"])(function (res) {
+              _this14.cards$ = new rxjs__WEBPACK_IMPORTED_MODULE_1__["BehaviorSubject"](res.body);
+              _this14.abrv = res.body[0].vorlesung;
+            }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["map"])(function (res) {
+              return res.body;
+            }));
           }
-        }
-      }, {
-        key: "initCards",
-        value: function initCards(cards) {
-          this.cards$ = new rxjs__WEBPACK_IMPORTED_MODULE_1__["BehaviorSubject"](cards);
-          this.cards = cards;
-        }
-      }, {
-        key: "updateCards",
-        value: function updateCards(cards) {
-          this.cards$.next(cards);
-        }
+        } // initCards(cards: Card[]) {
+        //   //this fucntion is obsolete, its features are implemented in getCards
+        //   // this.cards$ = new BehaviorSubject<Card[]>(cards);
+        //   // this.cards = cards;
+        // }
+        // updateCards(cards: Card[]) {
+        //   this.cards$.next(cards);
+        // }
+
       }, {
         key: "updateCard",
-        value: function updateCard(card, vlAbrv, index) {
-          var _this12 = this;
+        value: function updateCard(card, index) {
+          var _this15 = this;
 
-          if (!card.abrv) {
-            card.abrv = vlAbrv;
-          }
-
+          this.statesService.setLoadingState(true);
           this.httpService.updateCard(card).subscribe(function (resp) {
-            _this12.statesService.setLoadingState(false);
+            _this15.statesService.setLoadingState(false);
 
-            _this12.statesService.setFormMode("reset");
+            _this15.statesService.setFormMode("reset");
 
-            _this12.cards[index] = card;
+            var cards = _this15.cards$.getValue();
 
-            _this12.updateCards(_this12.cards);
+            cards[index] = card;
+
+            _this15.cards$.next(cards);
           });
         }
       }, {
         key: "addCard",
-        value: function addCard(card, vlAbrv) {
-          var _this13 = this;
+        value: function addCard(card) {
+          var _this16 = this;
 
-          if (!this.cards) {
-            this.cards$.subscribe(function (cards) {
-              return _this13.cards = cards;
-            });
-          }
-
-          this.httpService.addCard(card, vlAbrv).subscribe(function (response) {
-            _this13.statesService.setLoadingState(false);
+          this.statesService.setLoadingState(true);
+          return this.httpService.addCard(card).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["tap"])(function (response) {
+            _this16.statesService.setLoadingState(false);
 
             card._id = response.body;
 
-            _this13.cards.push(card);
+            var cards = _this16.cards$.getValue();
 
-            _this13.updateCards(_this13.cards);
-          });
+            cards.push(card);
+
+            _this16.cards$.next(cards);
+          }));
         }
       }, {
         key: "getNewCardIndex",
@@ -4243,7 +4170,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     }();
 
     CardsService.ɵfac = function CardsService_Factory(t) {
-      return new (t || CardsService)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_http_service__WEBPACK_IMPORTED_MODULE_2__["HttpService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_states_service__WEBPACK_IMPORTED_MODULE_3__["StatesService"]));
+      return new (t || CardsService)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_http_service__WEBPACK_IMPORTED_MODULE_3__["HttpService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_states_service__WEBPACK_IMPORTED_MODULE_4__["StatesService"]));
     };
 
     CardsService.ɵprov = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjectable"]({
@@ -4261,9 +4188,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         }]
       }], function () {
         return [{
-          type: _http_service__WEBPACK_IMPORTED_MODULE_2__["HttpService"]
+          type: _http_service__WEBPACK_IMPORTED_MODULE_3__["HttpService"]
         }, {
-          type: _states_service__WEBPACK_IMPORTED_MODULE_3__["StatesService"]
+          type: _states_service__WEBPACK_IMPORTED_MODULE_4__["StatesService"]
         }];
       }, null);
     })();
@@ -4305,17 +4232,37 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     /* harmony import */
 
 
-    var rxjs_operators__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(
+    var rxjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(
+    /*! rxjs */
+    "./node_modules/rxjs/_esm2015/index.js");
+    /* harmony import */
+
+
+    var rxjs_operators__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(
     /*! rxjs/operators */
     "./node_modules/rxjs/_esm2015/operators/index.js");
+    /* harmony import */
+
+
+    var _states_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(
+    /*! ./states.service */
+    "./src/app/services/states.service.ts");
+    /* harmony import */
+
+
+    var _angular_router__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(
+    /*! @angular/router */
+    "./node_modules/@angular/router/__ivy_ngcc__/fesm2015/router.js");
 
     var HttpService =
     /*#__PURE__*/
     function () {
-      function HttpService(http) {
+      function HttpService(http, statesService, router) {
         _classCallCheck(this, HttpService);
 
         this.http = http;
+        this.statesService = statesService;
+        this.router = router;
         this.urlBase = "api/";
         this.httpOptions = {
           headers: new _angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpHeaders"]({
@@ -4328,23 +4275,44 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       _createClass(HttpService, [{
         key: "getCardsFromLecture",
         value: function getCardsFromLecture(lecture) {
-          return this.http.get(this.urlBase + "getCards/?abrv=" + lecture.abrv, {
-            observe: "response"
-          });
+          var _this17 = this;
+
+          this.statesService.setLoadingState(true);
+
+          if (this.lecture$) {
+            return this.http.get(this.urlBase + "cards/?abrv=" + this.lecture$.getValue().abrv, {
+              observe: "response"
+            }).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["tap"])(function (res) {
+              _this17.statesService.setLoadingState(false);
+            }));
+          } else {
+            var abrv = this.router.url.split(/vorlesung\//)[1];
+            return this.http.get(this.urlBase + "cards/?abrv=" + abrv, {
+              observe: "response"
+            }).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["tap"])(function (res) {
+              _this17.statesService.setLoadingState(false);
+            }));
+          }
         }
       }, {
         key: "addCard",
-        value: function addCard(card, vlAbrv) {
+        value: function addCard(card) {
           //Cards müssen richtig im Frontend definiert werden
-          return this.http.post(this.urlBase + "addCard", {
+          var id;
+
+          if (this.user) {
+            id = this.user.id;
+          }
+
+          return this.http.post(this.urlBase + "cards/new", {
             card: card,
-            abrv: vlAbrv
+            userId: id
           }, this.httpOptions);
         }
       }, {
         key: "updateCard",
         value: function updateCard(card) {
-          return this.http.put(this.urlBase + "updateCard", {
+          return this.http.put(this.urlBase + "cards/update", {
             card: card
           }, {
             headers: this.httpOptions.headers,
@@ -4355,42 +4323,130 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: "getAllLectures",
         value: function getAllLectures() {
-          return this.http.get(this.urlBase + "getAllLectures", {
-            observe: "response"
-          });
+          var _this18 = this;
+
+          this.statesService.setLoadingState(true);
+
+          if (this.lectures$) {
+            this.statesService.setLoadingState(false);
+            return this.lectures$.asObservable();
+          } else {
+            return this.http.get(this.urlBase + "lectures", {
+              observe: "response"
+            }).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["tap"])(function (res) {
+              _this18.statesService.setLoadingState(false);
+
+              _this18.lectures$ = new rxjs__WEBPACK_IMPORTED_MODULE_2__["BehaviorSubject"](res.body);
+            }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])(function (res) {
+              return res.body;
+            }));
+          }
+        }
+      }, {
+        key: "setCurrentLecture",
+        value: function setCurrentLecture(lecture) {
+          if (this.lecture$) {
+            this.lecture$.next(lecture);
+          } else {
+            this.lecture$ = new rxjs__WEBPACK_IMPORTED_MODULE_2__["BehaviorSubject"](lecture);
+          }
+        }
+      }, {
+        key: "getCurrentLecture",
+        value: function getCurrentLecture() {
+          var _this19 = this;
+
+          if (this.lecture$) {
+            return this.lecture$.asObservable();
+          } else {
+            var abrv = this.router.url.split(/vorlesung\//)[1];
+            return this.http.get(this.urlBase + "lectures/find?abrv=" + abrv, {
+              observe: "response"
+            }).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["tap"])(function (res) {
+              _this19.lecture$ = new rxjs__WEBPACK_IMPORTED_MODULE_2__["BehaviorSubject"](res.body);
+            }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])(function (res) {
+              return res.body;
+            }));
+          }
         }
       }, {
         key: "addLecture",
         value: function addLecture(lecture) {
-          return this.http.post(this.urlBase + "addLecture", {
+          var _this20 = this;
+
+          this.statesService.setLoadingState(true);
+          return this.http.post(this.urlBase + "lectures/new", {
             lecture: lecture
           }, {
             headers: this.httpOptions.headers,
             observe: "response"
-          });
+          }).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["tap"])(function (res) {
+            //add the new lecture to the lectures subject
+            _this20.statesService.setLoadingState(false);
+
+            var lectures = _this20.lectures$.getValue();
+
+            lectures.push(lecture);
+
+            _this20.lectures$.next(lectures);
+          }));
         }
       }, {
         key: "getLectureByAbrv",
         value: function getLectureByAbrv(abrv) {
-          return this.http.get(this.urlBase + "getLecture?abrv=" + abrv, {
-            headers: this.httpOptions.headers,
-            observe: "response"
-          });
+          if (this.lectures$) {
+            var lectures = this.lectures$.getValue();
+            var _iteratorNormalCompletion = true;
+            var _didIteratorError = false;
+            var _iteratorError = undefined;
+
+            try {
+              for (var _iterator = lectures[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                var lecture = _step.value;
+
+                if (lecture.abrv == abrv) {
+                  if (this.lecture$) {
+                    this.lecture$.next(lecture);
+                  } else {
+                    this.lecture$ = new rxjs__WEBPACK_IMPORTED_MODULE_2__["BehaviorSubject"](lecture);
+                  }
+
+                  return lecture;
+                }
+              }
+            } catch (err) {
+              _didIteratorError = true;
+              _iteratorError = err;
+            } finally {
+              try {
+                if (!_iteratorNormalCompletion && _iterator.return != null) {
+                  _iterator.return();
+                }
+              } finally {
+                if (_didIteratorError) {
+                  throw _iteratorError;
+                }
+              }
+            }
+          } else {}
         } //User
 
       }, {
         key: "login",
         value: function login(form) {
-          var _this14 = this;
+          var _this21 = this;
 
+          this.statesService.setLoadingState(true);
           return this.http.post(this.urlBase + "login", form, {
             headers: this.httpOptions.headers,
             observe: "response"
-          }).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["tap"])(function (res) {
-            _this14.user = res.body;
+          }).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["tap"])(function (res) {
+            _this21.statesService.setLoadingState(false);
+
+            _this21.user = res.body;
 
             if (form.remember) {
-              localStorage.setItem('user', JSON.stringify(_this14.user));
+              localStorage.setItem("user", JSON.stringify(_this21.user));
             }
           }));
         }
@@ -4406,7 +4462,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: "logout",
         value: function logout() {
-          this.http.get(this.urlBase + "logout").subscribe(function (err) {
+          var _this22 = this;
+
+          this.statesService.setLoadingState(true);
+          this.http.get(this.urlBase + "user/logout").subscribe(function (err) {
+            _this22.statesService.setLoadingState(false);
+
             if (err) console.log(err);
           });
           localStorage.removeItem("user");
@@ -4416,13 +4477,16 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: "createAccount",
         value: function createAccount(form) {
-          var _this15 = this;
+          var _this23 = this;
 
-          return this.http.post(this.urlBase + "createAccount", form, {
+          this.statesService.setLoadingState(true);
+          return this.http.post(this.urlBase + "user/new", form, {
             headers: this.httpOptions.headers,
             observe: "response"
-          }).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["tap"])(function (res) {
-            return _this15.user = res.body;
+          }).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["tap"])(function (res) {
+            _this23.user = res.body;
+
+            _this23.statesService.setLoadingState(false);
           }));
         }
       }]);
@@ -4431,7 +4495,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     }();
 
     HttpService.ɵfac = function HttpService_Factory(t) {
-      return new (t || HttpService)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpClient"]));
+      return new (t || HttpService)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpClient"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_states_service__WEBPACK_IMPORTED_MODULE_4__["StatesService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_angular_router__WEBPACK_IMPORTED_MODULE_5__["Router"]));
     };
 
     HttpService.ɵprov = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjectable"]({
@@ -4450,6 +4514,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }], function () {
         return [{
           type: _angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpClient"]
+        }, {
+          type: _states_service__WEBPACK_IMPORTED_MODULE_4__["StatesService"]
+        }, {
+          type: _angular_router__WEBPACK_IMPORTED_MODULE_5__["Router"]
         }];
       }, null);
     })();

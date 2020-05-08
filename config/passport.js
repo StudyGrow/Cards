@@ -1,39 +1,32 @@
 const LocalStrategy = require("passport-local").Strategy;
-const passport = require("passport");
 const bcrypt = require("bcryptjs");
 const User = require("../models/User");
-const config = require("./database");
 
 module.exports = function (passport) {
   passport.use(
-    new LocalStrategy(
-      { usernameField: "username", passwordField: "password" },
-      function (username, password, done) {
-        console.log("HI");
-        User.findOne({ username: username }, (err, user) => {
-          if (err) throw err;
-          if (!user) {
-            return done(null, false, {
-              message: "Benutzername oder Passwort falsch",
-            });
-          }
-          bcrypt.compare(password, user.password, (err, matched) => {
-            if (err) throw err;
-            if (matched) {
-              return done(null, user);
-            } else {
-              return done(null, false, {
-                message: "Benutzername oder Passwort falsch",
-              });
-            }
-          });
-        });
+    new LocalStrategy(async function (username, password, done) {
+      try {
+        let user = await User.findOne({ username: username });
+
+        if (!user) {
+          throw new Error("Benutzername oder Passwort falsch");
+        }
+        let validation = await bcrypt.compare(password, user.password);
+
+        if (validation) {
+          return done(null, user);
+        } else {
+          throw new Error("Benutzername oder Passwort falsch");
+        }
+      } catch (error) {
+        console.log(error);
+        return done(null, false, { message: error.message });
       }
-    )
+    })
   );
 
   passport.serializeUser(function (user, done) {
-    done(null, user.id);
+    done(null, user._id);
   });
 
   passport.deserializeUser(function (id, done) {
