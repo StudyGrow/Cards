@@ -1,0 +1,71 @@
+<nav
+  class="navbar navbar-expand-lg navbar-light bg-light"
+  role="alert"
+  style="padding-right: 0;"
+>
+  <div class="row">
+    <div class="col-8">
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav" id="navlist">
+          <li class="{{ isActive('/') }} nav-item">
+            <a class="nav-link" routerLink="/" tabindex="1"
+              ><i class="fas fa-home"></i> Vorlesungen</a
+            >
+          </li>
+
+          <li *ngIf="!user" class="{{ isActive('/login') }} nav-item">
+            <a class="nav-link" routerLink="/login"
+              ><i class="fas fa-user"></i> Login</a
+            >
+          </li>
+          <li *ngIf="!user" class="{{ isActive('/signup') }} nav-item">
+            <a class="nav-link" routerLink="/signup"
+              ><i class="fas fa-plus"></i> Registrieren</a
+            >
+          </li>
+          <li *ngIf="user" class="{{ isActive('/profile') }} nav-item">
+            <div class="dropdown">
+              <a
+                class="nav-link"
+                type="button"
+                id="dropdownMenuButton"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+                <i class="fas fa-user-circle"></i> Account
+              </a>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a
+                  class="dropdown-item disabled"
+                  href="#"
+                  placement="bottom"
+                  ngbTooltip="im Aufbau"
+                  >Account management</a
+                >
+                <a class="dropdown-item" (click)="logout()">
+                  Logout
+                </a>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div *ngIf="cards" class="col-4" style="padding-right: 0;">
+      <app-search-bar [cards]="cards"></app-search-bar>
+    </div>
+  </div>
+</nav>

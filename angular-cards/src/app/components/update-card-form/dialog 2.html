@@ -1,0 +1,11 @@
+<h1 mat-dialog-title>Abbruch</h1>
+<div mat-dialog-content>
+  <p>Bist du sicher, dass du das Bearbeiten dieser Karte abbrechen möchtest?</p>
+</div>
+<hr />
+<div mat-dialog-actions style="text-align: right;">
+  <button class="btn btn-secondary mr-2" mat-button (click)="onNoClick()">
+    Nein,zurück
+  </button>
+  <button class="btn btn-danger" mat-button (click)="cancel()">Ja</button>
+</div>
