@@ -7,6 +7,7 @@ module.exports = function cardsService() {
       let cards = await Card.find(query);
       callback(null, cards);
     } catch (error) {
+      console.error(error);
       callback(error, null);
     }
   };
@@ -15,9 +16,7 @@ module.exports = function cardsService() {
       const card = new Card(form);
       card.vorlesung = form.abrv;
       if (user) {
-        card.author = user.username;
-      } else {
-        card.author = "";
+        card.author = user._id;
       }
       await card.save((err, result) => {
         if (err) {
@@ -27,17 +26,23 @@ module.exports = function cardsService() {
         }
       });
     } catch (error) {
+      console.error(error);
       callback(error, null);
     }
   };
-  cardsService.updateCard = async (card, callback) => {
+  cardsService.updateCard = async (card, user, callback) => {
     try {
+      let tmp = await Card.findById(card.id);
+      if (tmp.author && tmp.author !== "" && tmp.author !== user._id) {
+        throw new Error("User is not the author of this card");
+      }
       await Card.findByIdAndUpdate(card._id, {
         thema: card.thema,
         content: card.content,
       });
       callback(null);
     } catch (error) {
+      console.error(error);
       callback(error);
     }
   };

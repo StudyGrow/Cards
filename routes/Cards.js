@@ -63,20 +63,13 @@ router.post(
       return;
     }
 
-    req.services.user.findUser({ _id: req.body.userId }, (err, user) => {
+    req.services.cards.addCard(req.body.card, req.user, (err, id) => {
       if (err) {
-        console.log(err);
         res.status(422).send(err.message);
       } else {
-        req.services.cards.addCard(req.body.card, user, (err, id) => {
-          if (err) {
-            res.status(422).send(err.message);
-          } else {
-            res.json({
-              id: id,
-            }); //sende id an client zurück
-          }
-        });
+        res.json({
+          id: id,
+        }); //sende id an client zurück
       }
     });
   }
@@ -109,7 +102,7 @@ router.put(
         errors: errors.array(),
       });
     } else {
-      req.services.cards.updateCard(req.body.card, (err) => {
+      req.services.cards.updateCard(req.body.card, req.user, (err) => {
         if (err) {
           res.status(422).send(err.message);
         } else {
