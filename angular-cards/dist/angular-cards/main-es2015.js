@@ -498,9 +498,9 @@ class AddLectureFormComponent {
     }
     ngOnInit() { }
     onSubmit(f) {
-        let newLecture = new _models_Vorlesung__WEBPACK_IMPORTED_MODULE_1__["Vorlesung"](f.value.name, f.value.abrv);
+        let newLecture = new _models_Vorlesung__WEBPACK_IMPORTED_MODULE_1__["Vorlesung"](f.value.name, f.value.abrv.toLowerCase());
         this.statesService.setLoadingState(true);
-        this.http.addLecture(newLecture).subscribe(response => {
+        this.http.addLecture(newLecture).subscribe((response) => {
             this.statesService.setLoadingState(false);
             this.emitVl.emit(newLecture);
         });
@@ -509,7 +509,7 @@ class AddLectureFormComponent {
     setCharIndicatorStyle(field, max) {
         if (field.value) {
             return {
-                color: field.value.length > max ? "#ff0000" : "#000000"
+                color: field.value.length > max ? "#ff0000" : "#000000",
             };
         }
         else {
@@ -586,7 +586,7 @@ AddLectureFormComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵ
         args: [{
                 selector: "app-add-lecture-form",
                 templateUrl: "./add-lecture-form.component.html",
-                styleUrls: ["./add-lecture-form.component.css"]
+                styleUrls: ["./add-lecture-form.component.css"],
             }]
     }], function () { return [{ type: _services_http_service__WEBPACK_IMPORTED_MODULE_2__["HttpService"] }, { type: _services_states_service__WEBPACK_IMPORTED_MODULE_3__["StatesService"] }]; }, { emitVl: [{
             type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"]

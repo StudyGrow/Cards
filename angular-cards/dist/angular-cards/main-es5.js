@@ -893,7 +893,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         value: function onSubmit(f) {
           var _this3 = this;
 
-          var newLecture = new _models_Vorlesung__WEBPACK_IMPORTED_MODULE_1__["Vorlesung"](f.value.name, f.value.abrv);
+          var newLecture = new _models_Vorlesung__WEBPACK_IMPORTED_MODULE_1__["Vorlesung"](f.value.name, f.value.abrv.toLowerCase());
           this.statesService.setLoadingState(true);
           this.http.addLecture(newLecture).subscribe(function (response) {
             _this3.statesService.setLoadingState(false);
