@@ -18,6 +18,7 @@ export class CardsPageComponent implements OnInit {
   public loading: boolean = true;
   public formMode: string = "none";
   public cards: Card[];
+
   @HostListener("click", ["$event.target"])
   onClick() {
     this.stateServie.setHideSuggestions(true);
@@ -33,15 +34,10 @@ export class CardsPageComponent implements OnInit {
   ngOnInit(): void {
     this.title.setTitle("Cards");
     this.vlAbrv = this.route.snapshot.paramMap.get("abrv");
-    this.httpService.getCurrentLecture().subscribe((vl) => {
-      this.lecture = vl;
-      this.cardsService.getCards(this.lecture).subscribe((cards) => {
-        this.cards = cards;
-
-        if (this.cards.length == 0) {
-          this.stateServie.setFormMode("add");
-        }
-      });
+    this.cardsService.getCards().subscribe((cards) => {
+      if (cards.length == 0) {
+        this.stateServie.setFormMode("add");
+      }
     });
 
     this.cardsService.getNewCardIndex().subscribe((index) => {

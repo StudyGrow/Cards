@@ -745,10 +745,10 @@ class CarouselComponent {
         this.httpService.getCurrentLecture().subscribe((lecture) => {
             this.lecture = lecture;
             this.title = this.lecture.name;
-            this.cardsService.getCards(lecture).subscribe((cards) => {
-                this.cards = cards;
-            }); //load the specific cards from the server by subscribing to the observable that the card-service provides
         });
+        this.cardsService.getCards().subscribe((cards) => {
+            this.cards = cards;
+        }); //load the specific cards from the server by subscribing to the observable that the card-service provides
         this.stateService.setFormMode("none");
         this.stateService.getFormMode().subscribe((mode) => {
             this.formShow = mode == "add";
@@ -1152,11 +1152,8 @@ class NavBarComponent {
         if (this.router.url != "/" &&
             this.router.url != "/login" &&
             this.router.url != "/signup")
-            this.http.getCurrentLecture().subscribe((lect) => {
-                this.lecture = lect;
-                this.cardsService.getCards(lect).subscribe((cards) => {
-                    this.cards = cards;
-                });
+            this.cardsService.getCards().subscribe((cards) => {
+                this.cards = cards;
             });
     }
     isActive(path) {
@@ -1299,25 +1296,17 @@ class SearchBarComponent {
                 this.suggestions = [];
             }
         });
-    }
-    ngOnChanges() {
-        //put these into ngOnInit
-        if (this.http.getCurrentLecture()) {
-            this.http.getCurrentLecture().subscribe((vl) => (this.lecture = vl));
-        }
-        if (this.cardsService.getCards(this.lecture)) {
-            this.cardsService.getCards(this.lecture).subscribe((cards) => {
-                this.cards = cards;
-                cards.forEach((card) => {
-                    if (card.thema == null) {
-                        card.thema = "";
-                    }
-                    if (card.content == null) {
-                        card.content = "";
-                    }
-                });
+        this.cardsService.getCards().subscribe((cards) => {
+            this.cards = cards;
+            cards.forEach((card) => {
+                if (card.thema == null) {
+                    card.thema = "";
+                }
+                if (card.content == null) {
+                    card.content = "";
+                }
             });
-        }
+        });
     }
     findMatches(e) {
         this.stateService.setHideSuggestions(false); //show suggestions
@@ -1337,7 +1326,7 @@ class SearchBarComponent {
     }
 }
 SearchBarComponent.ɵfac = function SearchBarComponent_Factory(t) { return new (t || SearchBarComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_services_cards_service__WEBPACK_IMPORTED_MODULE_1__["CardsService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_services_states_service__WEBPACK_IMPORTED_MODULE_2__["StatesService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_services_http_service__WEBPACK_IMPORTED_MODULE_3__["HttpService"])); };
-SearchBarComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({ type: SearchBarComponent, selectors: [["app-search-bar"]], features: [_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵNgOnChangesFeature"]()], decls: 2, vars: 2, consts: [["id", "search", "type", "search", "placeholder", "Thema suchen", 1, "form-control", "float-right", 3, "ngModel", "ngModelChange", "input"], ["id", "matches", 4, "ngIf"], ["id", "matches"], [1, "list-group"], ["class", "list-group-item", 4, "ngFor", "ngForOf"], [1, "list-group-item"], ["href", "#", 3, "click"]], template: function SearchBarComponent_Template(rf, ctx) { if (rf & 1) {
+SearchBarComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({ type: SearchBarComponent, selectors: [["app-search-bar"]], decls: 2, vars: 2, consts: [["id", "search", "type", "search", "placeholder", "Thema suchen", 1, "form-control", "float-right", 3, "ngModel", "ngModelChange", "input"], ["id", "matches", 4, "ngIf"], ["id", "matches"], [1, "list-group"], ["class", "list-group-item", 4, "ngFor", "ngForOf"], [1, "list-group-item"], ["href", "#", 3, "click"]], template: function SearchBarComponent_Template(rf, ctx) { if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "input", 0);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("ngModelChange", function SearchBarComponent_Template_input_ngModelChange_0_listener($event) { return ctx.uInput = $event; })("input", function SearchBarComponent_Template_input_input_0_listener($event) { return ctx.findMatches($event); });
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
@@ -1549,16 +1538,15 @@ class UpdateCardFormComponent {
         this.dialog = dialog;
     }
     ngOnInit() {
-        this.httpService.getCurrentLecture().subscribe((vl) => {
-            this.lecture = vl;
-            this.cardsService.getCards(this.lecture).subscribe((cards) => {
-                this.cards = cards;
-                this.cardsService.getActiveCardIndex().subscribe((index) => {
-                    this.activeCardIndex = index;
-                    this.cardCopy = Object.assign({}, this.cards[this.activeCardIndex]);
-                    this.cardIndex = this.activeCardIndex;
-                });
-            });
+        this.cardsService.getCards().subscribe((cards) => {
+            this.cards = cards;
+        });
+        this.cardsService.getActiveCardIndex().subscribe((index) => {
+            this.activeCardIndex = index;
+            if (this.cards) {
+                this.cardCopy = Object.assign({}, this.cards[this.activeCardIndex]);
+            }
+            this.cardIndex = this.activeCardIndex;
         });
     }
     onSubmit(f) {
@@ -1821,14 +1809,10 @@ class CardsPageComponent {
     ngOnInit() {
         this.title.setTitle("Cards");
         this.vlAbrv = this.route.snapshot.paramMap.get("abrv");
-        this.httpService.getCurrentLecture().subscribe((vl) => {
-            this.lecture = vl;
-            this.cardsService.getCards(this.lecture).subscribe((cards) => {
-                this.cards = cards;
-                if (this.cards.length == 0) {
-                    this.stateServie.setFormMode("add");
-                }
-            });
+        this.cardsService.getCards().subscribe((cards) => {
+            if (cards.length == 0) {
+                this.stateServie.setFormMode("add");
+            }
         });
         this.cardsService.getNewCardIndex().subscribe((index) => {
             this.ativeCard = index;
@@ -2035,6 +2019,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm2015/operators/index.js");
 /* harmony import */ var _http_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./http.service */ "./src/app/services/http.service.ts");
 /* harmony import */ var _states_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./states.service */ "./src/app/services/states.service.ts");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/__ivy_ngcc__/fesm2015/router.js");
+
 
 
 
@@ -2042,22 +2028,29 @@ __webpack_require__.r(__webpack_exports__);
 
 
 class CardsService {
-    constructor(httpService, statesService) {
+    constructor(httpService, statesService, router) {
         this.httpService = httpService;
         this.statesService = statesService;
+        this.router = router;
         this.newCardIndex$ = new rxjs__WEBPACK_IMPORTED_MODULE_1__["BehaviorSubject"](0);
         this.activeCardIndex$ = new rxjs__WEBPACK_IMPORTED_MODULE_1__["BehaviorSubject"](0);
     }
-    getCards(lecture) {
-        if (this.abrv == lecture.abrv) {
+    getCards() {
+        let abrv = this.router.url.split(/vorlesung\//)[1];
+        if (this.cards$ && this.abrv == abrv) {
             //cards were already loaded for this lecture
             return this.cards$.asObservable();
         }
         else {
+            this.abrv = abrv;
             //returns an observable of the cards from http service while also initializing the cards internally for reuse
-            return this.httpService.getCardsFromLecture(lecture).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["tap"])((res) => {
-                this.cards$ = new rxjs__WEBPACK_IMPORTED_MODULE_1__["BehaviorSubject"](res.body);
-                this.abrv = res.body[0].vorlesung;
+            return this.httpService.getCardsFromLectureAbrv(abrv).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["tap"])((res) => {
+                if (this.cards$) {
+                    this.cards$.next(res.body);
+                }
+                else {
+                    this.cards$ = new rxjs__WEBPACK_IMPORTED_MODULE_1__["BehaviorSubject"](res.body);
+                }
             }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["map"])((res) => res.body));
         }
     }
@@ -2102,14 +2095,14 @@ class CardsService {
         return this.activeCardIndex$.asObservable();
     }
 }
-CardsService.ɵfac = function CardsService_Factory(t) { return new (t || CardsService)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_http_service__WEBPACK_IMPORTED_MODULE_3__["HttpService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_states_service__WEBPACK_IMPORTED_MODULE_4__["StatesService"])); };
+CardsService.ɵfac = function CardsService_Factory(t) { return new (t || CardsService)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_http_service__WEBPACK_IMPORTED_MODULE_3__["HttpService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_states_service__WEBPACK_IMPORTED_MODULE_4__["StatesService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_angular_router__WEBPACK_IMPORTED_MODULE_5__["Router"])); };
 CardsService.ɵprov = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjectable"]({ token: CardsService, factory: CardsService.ɵfac, providedIn: "root" });
 /*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](CardsService, [{
         type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"],
         args: [{
                 providedIn: "root",
             }]
-    }], function () { return [{ type: _http_service__WEBPACK_IMPORTED_MODULE_3__["HttpService"] }, { type: _states_service__WEBPACK_IMPORTED_MODULE_4__["StatesService"] }]; }, null); })();
+    }], function () { return [{ type: _http_service__WEBPACK_IMPORTED_MODULE_3__["HttpService"] }, { type: _states_service__WEBPACK_IMPORTED_MODULE_4__["StatesService"] }, { type: _angular_router__WEBPACK_IMPORTED_MODULE_5__["Router"] }]; }, null); })();
 
 
 /***/ }),
@@ -2149,19 +2142,9 @@ class HttpService {
         };
     }
     //Cards
-    getCardsFromLecture(lecture) {
+    getCardsFromLectureAbrv(abrv) {
         this.statesService.setLoadingState(true);
-        if (this.lecture$) {
-            return this.http
-                .get(this.urlBase + "cards/?abrv=" + this.lecture$.getValue().abrv, {
-                observe: "response",
-            })
-                .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["tap"])((res) => {
-                this.statesService.setLoadingState(false);
-            }));
-        }
-        else {
-            let abrv = this.router.url.split(/vorlesung\//)[1];
+        {
             return this.http
                 .get(this.urlBase + "cards/?abrv=" + abrv, {
                 observe: "response",
@@ -2212,17 +2195,22 @@ class HttpService {
         }
     }
     getCurrentLecture() {
-        if (this.lecture$) {
+        let abrv = this.router.url.split(/vorlesung\//)[1];
+        if (this.lecture$ && this.lecture$.getValue().abrv == abrv) {
             return this.lecture$.asObservable();
         }
         else {
-            let abrv = this.router.url.split(/vorlesung\//)[1];
             return this.http
                 .get(this.urlBase + "lectures/find?abrv=" + abrv, {
                 observe: "response",
             })
                 .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["tap"])((res) => {
-                this.lecture$ = new rxjs__WEBPACK_IMPORTED_MODULE_2__["BehaviorSubject"](res.body);
+                if (this.lecture$) {
+                    this.lecture$.next(res.body);
+                }
+                else {
+                    this.lecture$ = new rxjs__WEBPACK_IMPORTED_MODULE_2__["BehaviorSubject"](res.body);
+                }
             }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])((res) => res.body));
         }
     }

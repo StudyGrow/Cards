@@ -22,7 +22,7 @@ export class SearchBarComponent implements OnInit {
   suggestions: SearchSuggestion[];
   uInput: string;
   clearSuggestions: boolean;
-  lecture: Vorlesung;
+
   ngOnInit(): void {
     this.stateService.getHideSuggestions().subscribe((value) => {
       this.clearSuggestions = value;
@@ -30,25 +30,17 @@ export class SearchBarComponent implements OnInit {
         this.suggestions = [];
       }
     });
-  }
-  ngOnChanges(): void {
-    //put these into ngOnInit
-    if (this.http.getCurrentLecture()) {
-      this.http.getCurrentLecture().subscribe((vl) => (this.lecture = vl));
-    }
-    if (this.cardsService.getCards(this.lecture)) {
-      this.cardsService.getCards(this.lecture).subscribe((cards) => {
-        this.cards = cards;
-        cards.forEach((card) => {
-          if (card.thema == null) {
-            card.thema = "";
-          }
-          if (card.content == null) {
-            card.content = "";
-          }
-        });
+    this.cardsService.getCards().subscribe((cards) => {
+      this.cards = cards;
+      cards.forEach((card) => {
+        if (card.thema == null) {
+          card.thema = "";
+        }
+        if (card.content == null) {
+          card.content = "";
+        }
       });
-    }
+    });
   }
 
   findMatches(e: Event) {
