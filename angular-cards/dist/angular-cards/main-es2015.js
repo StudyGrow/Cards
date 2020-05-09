@@ -243,6 +243,7 @@ AppModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineInjector
             angular_bootstrap_md__WEBPACK_IMPORTED_MODULE_8__["WavesModule"],
             _angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["HammerModule"],
             angular_bootstrap_md__WEBPACK_IMPORTED_MODULE_8__["CollapseModule"],
+            angular_bootstrap_md__WEBPACK_IMPORTED_MODULE_8__["TooltipModule"],
             _ngrx_store__WEBPACK_IMPORTED_MODULE_28__["StoreModule"].forRoot({}, {}),
             ng_katex__WEBPACK_IMPORTED_MODULE_9__["KatexModule"],
         ]] });
@@ -271,7 +272,8 @@ AppModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineInjector
         angular_bootstrap_md__WEBPACK_IMPORTED_MODULE_8__["CarouselModule"],
         angular_bootstrap_md__WEBPACK_IMPORTED_MODULE_8__["WavesModule"],
         _angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["HammerModule"],
-        angular_bootstrap_md__WEBPACK_IMPORTED_MODULE_8__["CollapseModule"], _ngrx_store__WEBPACK_IMPORTED_MODULE_28__["StoreRootModule"], ng_katex__WEBPACK_IMPORTED_MODULE_9__["KatexModule"]] }); })();
+        angular_bootstrap_md__WEBPACK_IMPORTED_MODULE_8__["CollapseModule"],
+        angular_bootstrap_md__WEBPACK_IMPORTED_MODULE_8__["TooltipModule"], _ngrx_store__WEBPACK_IMPORTED_MODULE_28__["StoreRootModule"], ng_katex__WEBPACK_IMPORTED_MODULE_9__["KatexModule"]] }); })();
 /*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵsetClassMetadata"](AppModule, [{
         type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["NgModule"],
         args: [{
@@ -305,6 +307,7 @@ AppModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineInjector
                     angular_bootstrap_md__WEBPACK_IMPORTED_MODULE_8__["WavesModule"],
                     _angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["HammerModule"],
                     angular_bootstrap_md__WEBPACK_IMPORTED_MODULE_8__["CollapseModule"],
+                    angular_bootstrap_md__WEBPACK_IMPORTED_MODULE_8__["TooltipModule"],
                     _ngrx_store__WEBPACK_IMPORTED_MODULE_28__["StoreModule"].forRoot({}, {}),
                     ng_katex__WEBPACK_IMPORTED_MODULE_9__["KatexModule"],
                 ],
@@ -2142,6 +2145,11 @@ class CardsService {
             let cards = this.cards$.getValue();
             cards.push(card);
             this.cards$.next(cards);
+            setTimeout(() => {
+                //show new card timeout needed because the carousel needs time to refresh
+                //its view
+                this.setNewCardIndex(cards.length - 1);
+            }, 20);
         }));
     }
     getNewCardIndex() {

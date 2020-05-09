@@ -11,6 +11,7 @@ import {
   CarouselModule,
   WavesModule,
   CollapseModule,
+  TooltipModule,
 } from "angular-bootstrap-md";
 import { KatexModule } from "ng-katex";
 
@@ -102,6 +103,7 @@ export class MyHammerConfig extends HammerGestureConfig {
     WavesModule,
     HammerModule,
     CollapseModule,
+    TooltipModule,
     StoreModule.forRoot({}, {}),
     KatexModule,
   ],

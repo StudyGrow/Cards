@@ -87,6 +87,11 @@ export class CardsService {
         let cards = this.cards$.getValue();
         cards.push(card);
         this.cards$.next(cards);
+        setTimeout(() => {
+          //show new card timeout needed because the carousel needs time to refresh
+          //its view
+          this.setNewCardIndex(cards.length - 1);
+        }, 20);
       })
     );
   }
