@@ -32,9 +32,12 @@ module.exports = function cardsService() {
   };
   cardsService.updateCard = async (card, user, callback) => {
     try {
-      let tmp = await Card.findById(card.id);
-      if (tmp.author && tmp.author !== "" && tmp.author !== user._id) {
-        throw new Error("User is not the author of this card");
+      let tmp = await Card.findById(card._id);
+      if (tmp.author && tmp.author != "" && !user) {
+        throw new Error("Du bist nicht der Author dieser Karte");
+      }
+      if (tmp.author && tmp.author != "" && tmp.author != user._id) {
+        throw new Error("Du bist nicht der Author dieser Karte");
       }
       await Card.findByIdAndUpdate(card._id, {
         thema: card.thema,
