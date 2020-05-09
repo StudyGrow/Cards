@@ -15,9 +15,8 @@ import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 export class UpdateCardFormComponent implements OnInit {
   public cardCopy: Card;
   private cards: Card[];
-  public lecture: Vorlesung;
-  private cardIndex: number;
-  private activeCardIndex: number;
+  private cardIndex: number; //saves the cardindex which the user is currently updating
+  private activeCardIndex: number; //saves the active cardindex
   constructor(
     private cardsService: CardsService,
     private httpService: HttpService,
@@ -26,16 +25,15 @@ export class UpdateCardFormComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.httpService.getCurrentLecture().subscribe((vl) => {
-      this.lecture = vl;
-      this.cardsService.getCards(this.lecture).subscribe((cards) => {
-        this.cards = cards;
-        this.cardsService.getActiveCardIndex().subscribe((index) => {
-          this.activeCardIndex = index;
-          this.cardCopy = { ...this.cards[this.activeCardIndex] };
-          this.cardIndex = this.activeCardIndex;
-        });
-      });
+    this.cardsService.getCards().subscribe((cards) => {
+      this.cards = cards;
+    });
+    this.cardsService.getActiveCardIndex().subscribe((index) => {
+      this.activeCardIndex = index;
+      if (this.cards) {
+        this.cardCopy = { ...this.cards[this.activeCardIndex] };
+      }
+      this.cardIndex = this.activeCardIndex;
     });
   }
 

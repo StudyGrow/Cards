@@ -53,10 +53,10 @@ export class CarouselComponent implements OnInit {
     this.httpService.getCurrentLecture().subscribe((lecture) => {
       this.lecture = lecture;
       this.title = this.lecture.name;
-      this.cardsService.getCards(lecture).subscribe((cards) => {
-        this.cards = cards;
-      }); //load the specific cards from the server by subscribing to the observable that the card-service provides
     });
+    this.cardsService.getCards().subscribe((cards) => {
+      this.cards = cards;
+    }); //load the specific cards from the server by subscribing to the observable that the card-service provides
     this.stateService.setFormMode("none");
     this.stateService.getFormMode().subscribe((mode) => {
       this.formShow = mode == "add";
