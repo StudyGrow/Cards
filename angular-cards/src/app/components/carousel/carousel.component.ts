@@ -1,12 +1,4 @@
-import {
-  Component,
-  OnInit,
-  Input,
-  Output,
-  EventEmitter,
-  HostListener,
-  ViewChild,
-} from "@angular/core";
+import { Component, OnInit, HostListener, ViewChild } from "@angular/core";
 
 import { HttpService } from "../../services/http.service";
 import { StatesService } from "../../services/states.service";
