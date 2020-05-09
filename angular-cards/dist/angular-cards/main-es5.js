@@ -4292,7 +4292,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
               //show new card timeout needed because the carousel needs time to refresh
               //its view
               _this16.setNewCardIndex(cards.length - 1);
-            }, 20);
+            }, 100);
           }));
         }
       }, {

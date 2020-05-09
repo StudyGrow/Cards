@@ -11,14 +11,15 @@ module.exports = function cardsService() {
       callback(error, null);
     }
   };
-  cardsService.addCard = async (form, user, callback) => {
+
+  cardsService.addCard = (form, user, callback) => {
     try {
       const card = new Card(form);
       card.vorlesung = form.abrv;
       if (user) {
-        card.author = user._id;
+        card.author = user.username;
       }
-      await card.save((err, result) => {
+      card.save((err, result) => {
         if (err) {
           throw err;
         } else {
@@ -29,13 +30,14 @@ module.exports = function cardsService() {
       callback(error, null);
     }
   };
+
   cardsService.updateCard = async (card, user, callback) => {
     try {
       let tmp = await Card.findById(card._id);
-      if (tmp.author && tmp.author != "" && !user) {
+      if (tmp && tmp.author && tmp.author != "" && !user) {
         throw new Error("Fehler: Du bist nicht der Author dieser Karte");
       }
-      if (tmp.author && tmp.author != "" && tmp.author != user._id) {
+      if (tmp.author && tmp.author != "" && tmp.author != user.username) {
         throw new Error("Fehler: Du bist nicht der Author dieser Karte");
       }
       await Card.findByIdAndUpdate(card._id, {

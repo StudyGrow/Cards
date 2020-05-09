@@ -91,7 +91,7 @@ export class CardsService {
           //show new card timeout needed because the carousel needs time to refresh
           //its view
           this.setNewCardIndex(cards.length - 1);
-        }, 20);
+        }, 100);
       })
     );
   }
