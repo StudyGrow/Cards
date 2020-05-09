@@ -1,6 +1,23 @@
 <app-nav-bar></app-nav-bar>
 <br />
 <div class="container">
+  <div
+    #alert
+    class="alert alert-warning alert-dismissible fade show"
+    role="alert"
+    *ngFor="let error of errors; index as i"
+  >
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="closeAlert(i)"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+    {{ error }}
+  </div>
+
   <app-carousel></app-carousel>
   <br />
   <app-add-card-form *ngIf="formMode == 'add'"></app-add-card-form>

@@ -1,4 +1,10 @@
-import { Component, OnInit, HostListener } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  HostListener,
+  ViewChild,
+  ElementRef,
+} from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { HttpService } from "../../services/http.service";
 import { StatesService } from "../../services/states.service";
@@ -18,6 +24,8 @@ export class CardsPageComponent implements OnInit {
   public loading: boolean = true;
   public formMode: string = "none";
   public cards: Card[];
+  public errors: string[];
+  @ViewChild("alert", { static: false }) alert: ElementRef;
 
   @HostListener("click", ["$event.target"])
   onClick() {
@@ -47,8 +55,11 @@ export class CardsPageComponent implements OnInit {
       .getLoadingState()
       .subscribe((value) => (this.loading = value));
     this.stateServie.getFormMode().subscribe((mode) => (this.formMode = mode));
+    this.cardsService.getErrors().subscribe((errors) => (this.errors = errors));
   }
-
+  closeAlert(i: number) {
+    this.cardsService.removeError(i);
+  }
   setLoading(loading: boolean): void {
     this.loading = loading;
     this.stateServie.setLoadingState(loading);

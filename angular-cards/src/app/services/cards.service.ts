@@ -12,6 +12,9 @@ import { Router } from "@angular/router";
 export class CardsService {
   private cards$: BehaviorSubject<Card[]>;
   private abrv: string;
+  private errors$: BehaviorSubject<string[]> = new BehaviorSubject<string[]>(
+    []
+  );
   private newCardIndex$: BehaviorSubject<number> = new BehaviorSubject<number>(
     0
   );
@@ -47,24 +50,33 @@ export class CardsService {
     }
   }
 
-  // initCards(cards: Card[]) {
-  //   //this fucntion is obsolete, its features are implemented in getCards
-  //   // this.cards$ = new BehaviorSubject<Card[]>(cards);
-  //   // this.cards = cards;
-  // }
-  // updateCards(cards: Card[]) {
-  //   this.cards$.next(cards);
-  // }
-
-  updateCard(card: Card, index: number) {
+  getErrors() {
+    return this.errors$.asObservable();
+  }
+  removeError(index: number) {
+    let errors = this.errors$.getValue();
+    errors.splice(index, 1);
+    this.errors$.next(errors);
+  }
+  updateCard(card: Card, index: number): Observable<any> {
     this.statesService.setLoadingState(true);
-    this.httpService.updateCard(card).subscribe((resp) => {
-      this.statesService.setLoadingState(false);
-      this.statesService.setFormMode("reset");
-      let cards = this.cards$.getValue();
-      cards[index] = card;
-      this.cards$.next(cards);
-    });
+    return this.httpService.updateCard(card).pipe(
+      tap(
+        (resp) => {
+          this.statesService.setLoadingState(false);
+          this.statesService.setFormMode("reset");
+          let cards = this.cards$.getValue();
+          cards[index] = card;
+          this.cards$.next(cards);
+        },
+        (error) => {
+          let errors = this.errors$.getValue();
+          errors.push(error.error);
+          this.errors$.next(errors);
+          this.statesService.setLoadingState(false);
+        }
+      )
+    );
   }
   addCard(card: Card): Observable<any> {
     this.statesService.setLoadingState(true);

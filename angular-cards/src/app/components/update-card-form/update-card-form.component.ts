@@ -40,8 +40,11 @@ export class UpdateCardFormComponent implements OnInit {
   onSubmit(f: NgForm) {
     this.cardCopy.content = f.value.content;
     this.cardCopy.thema = f.value.thema;
-    this.cardsService.updateCard({ ...this.cardCopy }, this.cardIndex);
-    f.reset();
+    this.cardsService
+      .updateCard({ ...this.cardCopy }, this.cardIndex)
+      .subscribe((resp) => {
+        f.reset();
+      });
   }
   cancelEdit() {
     const dialogRef = this.dialog.open(DialogOverviewExampleDialog, {

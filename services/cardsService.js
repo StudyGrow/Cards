@@ -26,7 +26,6 @@ module.exports = function cardsService() {
         }
       });
     } catch (error) {
-      console.error(error);
       callback(error, null);
     }
   };
@@ -34,10 +33,10 @@ module.exports = function cardsService() {
     try {
       let tmp = await Card.findById(card._id);
       if (tmp.author && tmp.author != "" && !user) {
-        throw new Error("Du bist nicht der Author dieser Karte");
+        throw new Error("Fehler: Du bist nicht der Author dieser Karte");
       }
       if (tmp.author && tmp.author != "" && tmp.author != user._id) {
-        throw new Error("Du bist nicht der Author dieser Karte");
+        throw new Error("Fehler: Du bist nicht der Author dieser Karte");
       }
       await Card.findByIdAndUpdate(card._id, {
         thema: card.thema,
@@ -45,7 +44,6 @@ module.exports = function cardsService() {
       });
       callback(null);
     } catch (error) {
-      console.error(error);
       callback(error);
     }
   };
