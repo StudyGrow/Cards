@@ -15,7 +15,7 @@ import { StatesService } from "src/app/services/states.service";
 export class NavBarComponent implements OnInit {
   public user: User;
   public cards: Card[];
-  private lecture: Vorlesung;
+
   public loading: boolean = false;
   public constructor(
     private router: Router,
@@ -36,11 +36,8 @@ export class NavBarComponent implements OnInit {
       this.router.url != "/login" &&
       this.router.url != "/signup"
     )
-      this.http.getCurrentLecture().subscribe((lect) => {
-        this.lecture = lect;
-        this.cardsService.getCards(lect).subscribe((cards) => {
-          this.cards = cards;
-        });
+      this.cardsService.getCards().subscribe((cards) => {
+        this.cards = cards;
       });
   }
 

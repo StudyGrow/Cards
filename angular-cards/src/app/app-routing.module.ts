@@ -4,6 +4,7 @@ import { HomePageComponent } from "./routes/home-page/home-page.component";
 import { CardsPageComponent } from "./routes/cards-page/cards-page.component";
 import { LoginPageComponent } from "./routes/login-page/login-page.component";
 import { SignupPageComponent } from "./routes/signup-page/signup-page.component";
+
 const routes: Routes = [
   { path: "", component: HomePageComponent },
   { path: "vorlesung/:abrv", component: CardsPageComponent },

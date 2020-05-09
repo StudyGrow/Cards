@@ -318,115 +318,121 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     /* harmony import */
 
 
-    var _app_component__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(
+    var ng_katex__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(
+    /*! ng-katex */
+    "./node_modules/ng-katex/__ivy_ngcc__/fesm2015/ng-katex.js");
+    /* harmony import */
+
+
+    var _app_component__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(
     /*! ./app.component */
     "./src/app/app.component.ts");
     /* harmony import */
 
 
-    var _components_nav_bar_nav_bar_component__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(
+    var _components_nav_bar_nav_bar_component__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(
     /*! ./components/nav-bar/nav-bar.component */
     "./src/app/components/nav-bar/nav-bar.component.ts");
     /* harmony import */
 
 
-    var _components_search_bar_search_bar_component__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(
+    var _components_search_bar_search_bar_component__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(
     /*! ./components/search-bar/search-bar.component */
     "./src/app/components/search-bar/search-bar.component.ts");
     /* harmony import */
 
 
-    var _components_add_card_form_add_card_form_component__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(
+    var _components_add_card_form_add_card_form_component__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(
     /*! ./components/add-card-form/add-card-form.component */
     "./src/app/components/add-card-form/add-card-form.component.ts");
     /* harmony import */
 
 
-    var _components_carousel_carousel_component__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(
+    var _components_carousel_carousel_component__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(
     /*! ./components/carousel/carousel.component */
     "./src/app/components/carousel/carousel.component.ts");
     /* harmony import */
 
 
-    var _components_card_card_component__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(
+    var _components_card_card_component__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(
     /*! ./components/card/card.component */
     "./src/app/components/card/card.component.ts");
     /* harmony import */
 
 
-    var _components_add_lecture_form_add_lecture_form_component__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(
+    var _components_add_lecture_form_add_lecture_form_component__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(
     /*! ./components/add-lecture-form/add-lecture-form.component */
     "./src/app/components/add-lecture-form/add-lecture-form.component.ts");
     /* harmony import */
 
 
-    var _components_lectures_lectures_component__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(
+    var _components_lectures_lectures_component__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(
     /*! ./components/lectures/lectures.component */
     "./src/app/components/lectures/lectures.component.ts");
     /* harmony import */
 
 
-    var _routes_home_page_home_page_component__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(
+    var _routes_home_page_home_page_component__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(
     /*! ./routes/home-page/home-page.component */
     "./src/app/routes/home-page/home-page.component.ts");
     /* harmony import */
 
 
-    var _routes_cards_page_cards_page_component__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(
+    var _routes_cards_page_cards_page_component__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(
     /*! ./routes/cards-page/cards-page.component */
     "./src/app/routes/cards-page/cards-page.component.ts");
     /* harmony import */
 
 
-    var _services_states_service__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(
+    var _services_states_service__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(
     /*! ./services/states.service */
     "./src/app/services/states.service.ts");
     /* harmony import */
 
 
-    var _services_http_service__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(
+    var _services_http_service__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(
     /*! ./services/http.service */
     "./src/app/services/http.service.ts");
     /* harmony import */
 
 
-    var _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(
+    var _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(
     /*! @angular/platform-browser/animations */
     "./node_modules/@angular/platform-browser/__ivy_ngcc__/fesm2015/animations.js");
     /* harmony import */
 
 
-    var _components_update_card_form_update_card_form_component__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(
+    var _components_update_card_form_update_card_form_component__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(
     /*! ./components/update-card-form/update-card-form.component */
     "./src/app/components/update-card-form/update-card-form.component.ts");
     /* harmony import */
 
 
-    var _routes_login_page_login_page_component__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(
+    var _routes_login_page_login_page_component__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(
     /*! ./routes/login-page/login-page.component */
     "./src/app/routes/login-page/login-page.component.ts");
     /* harmony import */
 
 
-    var _components_login_form_login_form_component__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(
+    var _components_login_form_login_form_component__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(
     /*! ./components/login-form/login-form.component */
     "./src/app/components/login-form/login-form.component.ts");
     /* harmony import */
 
 
-    var _routes_signup_page_signup_page_component__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(
+    var _routes_signup_page_signup_page_component__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(
     /*! ./routes/signup-page/signup-page.component */
     "./src/app/routes/signup-page/signup-page.component.ts");
     /* harmony import */
 
 
-    var _components_signup_form_signup_form_component__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(
+    var _components_signup_form_signup_form_component__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(
     /*! ./components/signup-form/signup-form.component */
     "./src/app/components/signup-form/signup-form.component.ts");
     /* harmony import */
 
 
-    var _ngrx_store__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(
+    var _ngrx_store__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(
     /*! @ngrx/store */
     "./node_modules/@ngrx/store/__ivy_ngcc__/fesm2015/store.js"); //Modules
     //Components
@@ -481,23 +487,23 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
     AppModule.ɵmod = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineNgModule"]({
       type: AppModule,
-      bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_9__["AppComponent"]]
+      bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_10__["AppComponent"]]
     });
     AppModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineInjector"]({
       factory: function AppModule_Factory(t) {
         return new (t || AppModule)();
       },
-      providers: [_services_states_service__WEBPACK_IMPORTED_MODULE_19__["StatesService"], _services_http_service__WEBPACK_IMPORTED_MODULE_20__["HttpService"], {
+      providers: [_services_states_service__WEBPACK_IMPORTED_MODULE_20__["StatesService"], _services_http_service__WEBPACK_IMPORTED_MODULE_21__["HttpService"], {
         provide: _angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["HAMMER_GESTURE_CONFIG"],
         useClass: MyHammerConfig
       }],
-      imports: [[_angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["BrowserModule"], _app_routing_module__WEBPACK_IMPORTED_MODULE_4__["AppRoutingModule"], _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClientModule"], _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_3__["NgbModule"], _angular_forms__WEBPACK_IMPORTED_MODULE_5__["FormsModule"], _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_21__["BrowserAnimationsModule"], _angular_material_progress_bar__WEBPACK_IMPORTED_MODULE_6__["MatProgressBarModule"], _angular_material_dialog__WEBPACK_IMPORTED_MODULE_7__["MatDialogModule"], angular_bootstrap_md__WEBPACK_IMPORTED_MODULE_8__["CarouselModule"], angular_bootstrap_md__WEBPACK_IMPORTED_MODULE_8__["WavesModule"], _angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["HammerModule"], _ngrx_store__WEBPACK_IMPORTED_MODULE_27__["StoreModule"].forRoot({}, {})]]
+      imports: [[_angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["BrowserModule"], _app_routing_module__WEBPACK_IMPORTED_MODULE_4__["AppRoutingModule"], _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClientModule"], _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_3__["NgbModule"], _angular_forms__WEBPACK_IMPORTED_MODULE_5__["FormsModule"], _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_22__["BrowserAnimationsModule"], _angular_material_progress_bar__WEBPACK_IMPORTED_MODULE_6__["MatProgressBarModule"], _angular_material_dialog__WEBPACK_IMPORTED_MODULE_7__["MatDialogModule"], angular_bootstrap_md__WEBPACK_IMPORTED_MODULE_8__["CarouselModule"], angular_bootstrap_md__WEBPACK_IMPORTED_MODULE_8__["WavesModule"], _angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["HammerModule"], _ngrx_store__WEBPACK_IMPORTED_MODULE_28__["StoreModule"].forRoot({}, {}), ng_katex__WEBPACK_IMPORTED_MODULE_9__["KatexModule"]]]
     });
 
     (function () {
       (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵsetNgModuleScope"](AppModule, {
-        declarations: [_app_component__WEBPACK_IMPORTED_MODULE_9__["AppComponent"], _components_nav_bar_nav_bar_component__WEBPACK_IMPORTED_MODULE_10__["NavBarComponent"], _components_search_bar_search_bar_component__WEBPACK_IMPORTED_MODULE_11__["SearchBarComponent"], _components_add_card_form_add_card_form_component__WEBPACK_IMPORTED_MODULE_12__["AddCardFormComponent"], _components_carousel_carousel_component__WEBPACK_IMPORTED_MODULE_13__["CarouselComponent"], _components_card_card_component__WEBPACK_IMPORTED_MODULE_14__["CardComponent"], _components_add_lecture_form_add_lecture_form_component__WEBPACK_IMPORTED_MODULE_15__["AddLectureFormComponent"], _components_lectures_lectures_component__WEBPACK_IMPORTED_MODULE_16__["LecturesComponent"], _routes_home_page_home_page_component__WEBPACK_IMPORTED_MODULE_17__["HomePageComponent"], _routes_cards_page_cards_page_component__WEBPACK_IMPORTED_MODULE_18__["CardsPageComponent"], _components_update_card_form_update_card_form_component__WEBPACK_IMPORTED_MODULE_22__["UpdateCardFormComponent"], _routes_login_page_login_page_component__WEBPACK_IMPORTED_MODULE_23__["LoginPageComponent"], _components_login_form_login_form_component__WEBPACK_IMPORTED_MODULE_24__["LoginFormComponent"], _routes_signup_page_signup_page_component__WEBPACK_IMPORTED_MODULE_25__["SignupPageComponent"], _components_signup_form_signup_form_component__WEBPACK_IMPORTED_MODULE_26__["SignupFormComponent"]],
-        imports: [_angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["BrowserModule"], _app_routing_module__WEBPACK_IMPORTED_MODULE_4__["AppRoutingModule"], _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClientModule"], _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_3__["NgbModule"], _angular_forms__WEBPACK_IMPORTED_MODULE_5__["FormsModule"], _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_21__["BrowserAnimationsModule"], _angular_material_progress_bar__WEBPACK_IMPORTED_MODULE_6__["MatProgressBarModule"], _angular_material_dialog__WEBPACK_IMPORTED_MODULE_7__["MatDialogModule"], angular_bootstrap_md__WEBPACK_IMPORTED_MODULE_8__["CarouselModule"], angular_bootstrap_md__WEBPACK_IMPORTED_MODULE_8__["WavesModule"], _angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["HammerModule"], _ngrx_store__WEBPACK_IMPORTED_MODULE_27__["StoreRootModule"]]
+        declarations: [_app_component__WEBPACK_IMPORTED_MODULE_10__["AppComponent"], _components_nav_bar_nav_bar_component__WEBPACK_IMPORTED_MODULE_11__["NavBarComponent"], _components_search_bar_search_bar_component__WEBPACK_IMPORTED_MODULE_12__["SearchBarComponent"], _components_add_card_form_add_card_form_component__WEBPACK_IMPORTED_MODULE_13__["AddCardFormComponent"], _components_carousel_carousel_component__WEBPACK_IMPORTED_MODULE_14__["CarouselComponent"], _components_card_card_component__WEBPACK_IMPORTED_MODULE_15__["CardComponent"], _components_add_lecture_form_add_lecture_form_component__WEBPACK_IMPORTED_MODULE_16__["AddLectureFormComponent"], _components_lectures_lectures_component__WEBPACK_IMPORTED_MODULE_17__["LecturesComponent"], _routes_home_page_home_page_component__WEBPACK_IMPORTED_MODULE_18__["HomePageComponent"], _routes_cards_page_cards_page_component__WEBPACK_IMPORTED_MODULE_19__["CardsPageComponent"], _components_update_card_form_update_card_form_component__WEBPACK_IMPORTED_MODULE_23__["UpdateCardFormComponent"], _routes_login_page_login_page_component__WEBPACK_IMPORTED_MODULE_24__["LoginPageComponent"], _components_login_form_login_form_component__WEBPACK_IMPORTED_MODULE_25__["LoginFormComponent"], _routes_signup_page_signup_page_component__WEBPACK_IMPORTED_MODULE_26__["SignupPageComponent"], _components_signup_form_signup_form_component__WEBPACK_IMPORTED_MODULE_27__["SignupFormComponent"]],
+        imports: [_angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["BrowserModule"], _app_routing_module__WEBPACK_IMPORTED_MODULE_4__["AppRoutingModule"], _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClientModule"], _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_3__["NgbModule"], _angular_forms__WEBPACK_IMPORTED_MODULE_5__["FormsModule"], _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_22__["BrowserAnimationsModule"], _angular_material_progress_bar__WEBPACK_IMPORTED_MODULE_6__["MatProgressBarModule"], _angular_material_dialog__WEBPACK_IMPORTED_MODULE_7__["MatDialogModule"], angular_bootstrap_md__WEBPACK_IMPORTED_MODULE_8__["CarouselModule"], angular_bootstrap_md__WEBPACK_IMPORTED_MODULE_8__["WavesModule"], _angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["HammerModule"], _ngrx_store__WEBPACK_IMPORTED_MODULE_28__["StoreRootModule"], ng_katex__WEBPACK_IMPORTED_MODULE_9__["KatexModule"]]
       });
     })();
     /*@__PURE__*/
@@ -507,13 +513,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵsetClassMetadata"](AppModule, [{
         type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["NgModule"],
         args: [{
-          declarations: [_app_component__WEBPACK_IMPORTED_MODULE_9__["AppComponent"], _components_nav_bar_nav_bar_component__WEBPACK_IMPORTED_MODULE_10__["NavBarComponent"], _components_search_bar_search_bar_component__WEBPACK_IMPORTED_MODULE_11__["SearchBarComponent"], _components_add_card_form_add_card_form_component__WEBPACK_IMPORTED_MODULE_12__["AddCardFormComponent"], _components_carousel_carousel_component__WEBPACK_IMPORTED_MODULE_13__["CarouselComponent"], _components_card_card_component__WEBPACK_IMPORTED_MODULE_14__["CardComponent"], _components_add_lecture_form_add_lecture_form_component__WEBPACK_IMPORTED_MODULE_15__["AddLectureFormComponent"], _components_lectures_lectures_component__WEBPACK_IMPORTED_MODULE_16__["LecturesComponent"], _routes_home_page_home_page_component__WEBPACK_IMPORTED_MODULE_17__["HomePageComponent"], _routes_cards_page_cards_page_component__WEBPACK_IMPORTED_MODULE_18__["CardsPageComponent"], _components_update_card_form_update_card_form_component__WEBPACK_IMPORTED_MODULE_22__["UpdateCardFormComponent"], _routes_login_page_login_page_component__WEBPACK_IMPORTED_MODULE_23__["LoginPageComponent"], _components_login_form_login_form_component__WEBPACK_IMPORTED_MODULE_24__["LoginFormComponent"], _routes_signup_page_signup_page_component__WEBPACK_IMPORTED_MODULE_25__["SignupPageComponent"], _components_signup_form_signup_form_component__WEBPACK_IMPORTED_MODULE_26__["SignupFormComponent"]],
-          imports: [_angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["BrowserModule"], _app_routing_module__WEBPACK_IMPORTED_MODULE_4__["AppRoutingModule"], _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClientModule"], _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_3__["NgbModule"], _angular_forms__WEBPACK_IMPORTED_MODULE_5__["FormsModule"], _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_21__["BrowserAnimationsModule"], _angular_material_progress_bar__WEBPACK_IMPORTED_MODULE_6__["MatProgressBarModule"], _angular_material_dialog__WEBPACK_IMPORTED_MODULE_7__["MatDialogModule"], angular_bootstrap_md__WEBPACK_IMPORTED_MODULE_8__["CarouselModule"], angular_bootstrap_md__WEBPACK_IMPORTED_MODULE_8__["WavesModule"], _angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["HammerModule"], _ngrx_store__WEBPACK_IMPORTED_MODULE_27__["StoreModule"].forRoot({}, {})],
-          providers: [_services_states_service__WEBPACK_IMPORTED_MODULE_19__["StatesService"], _services_http_service__WEBPACK_IMPORTED_MODULE_20__["HttpService"], {
+          declarations: [_app_component__WEBPACK_IMPORTED_MODULE_10__["AppComponent"], _components_nav_bar_nav_bar_component__WEBPACK_IMPORTED_MODULE_11__["NavBarComponent"], _components_search_bar_search_bar_component__WEBPACK_IMPORTED_MODULE_12__["SearchBarComponent"], _components_add_card_form_add_card_form_component__WEBPACK_IMPORTED_MODULE_13__["AddCardFormComponent"], _components_carousel_carousel_component__WEBPACK_IMPORTED_MODULE_14__["CarouselComponent"], _components_card_card_component__WEBPACK_IMPORTED_MODULE_15__["CardComponent"], _components_add_lecture_form_add_lecture_form_component__WEBPACK_IMPORTED_MODULE_16__["AddLectureFormComponent"], _components_lectures_lectures_component__WEBPACK_IMPORTED_MODULE_17__["LecturesComponent"], _routes_home_page_home_page_component__WEBPACK_IMPORTED_MODULE_18__["HomePageComponent"], _routes_cards_page_cards_page_component__WEBPACK_IMPORTED_MODULE_19__["CardsPageComponent"], _components_update_card_form_update_card_form_component__WEBPACK_IMPORTED_MODULE_23__["UpdateCardFormComponent"], _routes_login_page_login_page_component__WEBPACK_IMPORTED_MODULE_24__["LoginPageComponent"], _components_login_form_login_form_component__WEBPACK_IMPORTED_MODULE_25__["LoginFormComponent"], _routes_signup_page_signup_page_component__WEBPACK_IMPORTED_MODULE_26__["SignupPageComponent"], _components_signup_form_signup_form_component__WEBPACK_IMPORTED_MODULE_27__["SignupFormComponent"]],
+          imports: [_angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["BrowserModule"], _app_routing_module__WEBPACK_IMPORTED_MODULE_4__["AppRoutingModule"], _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClientModule"], _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_3__["NgbModule"], _angular_forms__WEBPACK_IMPORTED_MODULE_5__["FormsModule"], _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_22__["BrowserAnimationsModule"], _angular_material_progress_bar__WEBPACK_IMPORTED_MODULE_6__["MatProgressBarModule"], _angular_material_dialog__WEBPACK_IMPORTED_MODULE_7__["MatDialogModule"], angular_bootstrap_md__WEBPACK_IMPORTED_MODULE_8__["CarouselModule"], angular_bootstrap_md__WEBPACK_IMPORTED_MODULE_8__["WavesModule"], _angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["HammerModule"], _ngrx_store__WEBPACK_IMPORTED_MODULE_28__["StoreModule"].forRoot({}, {}), ng_katex__WEBPACK_IMPORTED_MODULE_9__["KatexModule"]],
+          providers: [_services_states_service__WEBPACK_IMPORTED_MODULE_20__["StatesService"], _services_http_service__WEBPACK_IMPORTED_MODULE_21__["HttpService"], {
             provide: _angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["HAMMER_GESTURE_CONFIG"],
             useClass: MyHammerConfig
           }],
-          bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_9__["AppComponent"]]
+          bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_10__["AppComponent"]]
         }]
       }], null, null);
     })();
@@ -1077,6 +1083,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     var _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(
     /*! @ng-bootstrap/ng-bootstrap */
     "./node_modules/@ng-bootstrap/ng-bootstrap/__ivy_ngcc__/fesm2015/ng-bootstrap.js");
+    /* harmony import */
+
+
+    var ng_katex__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(
+    /*! ng-katex */
+    "./node_modules/ng-katex/__ivy_ngcc__/fesm2015/ng-katex.js");
 
     var CardComponent =
     /*#__PURE__*/
@@ -1084,6 +1096,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       function CardComponent() {
         _classCallCheck(this, CardComponent);
 
+        this.paragraph = "\n  You can write text, that contains expressions like this: $x ^ 2 + 5$ inside them. As you probably know.\n  You also can write expressions in display mode as follows: $$\\sum_{i=1}^n(x_i^2 - \\overline{x}^2)$$.\n  In first case you will need to use \\$expression\\$ and in the second one \\$\\$expression\\$\\$.\n  To scape the \\$ symbol it's mandatory to write as follows: \\\\$\n";
         this.isCollapsed = true;
       }
 
@@ -1105,9 +1118,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       inputs: {
         card: "card"
       },
-      decls: 10,
+      decls: 12,
       vars: 4,
-      consts: [[1, "card", 3, "id"], [1, "card-header"], [1, "card-body"], ["type", "button", 1, "btn", "btn-light", 3, "click"], [1, "fas", "fa-caret-down"], [1, "collapse", 3, "ngbCollapse"], ["lang", "de"]],
+      consts: [[1, "card", 3, "id"], [1, "card-header"], [1, "card-body"], ["type", "button", 1, "btn", "btn-light", 3, "click"], [1, "fas", "fa-caret-down"], [1, "collapse", 3, "ngbCollapse"], ["lang", "de"], [3, "paragraph"]],
       template: function CardComponent_Template(rf, ctx) {
         if (rf & 1) {
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "div", 0);
@@ -1136,7 +1149,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](8, "pre", 6);
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](9);
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](9, "        ");
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](10, "ng-katex-paragraph", 7);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](11, "\n      ");
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
 
@@ -1158,12 +1175,16 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngbCollapse", ctx.isCollapsed);
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](2);
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](3);
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate"](ctx.card.content);
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵpropertyInterpolate"]("paragraph", ctx.card.content);
         }
       },
+<<<<<<< HEAD
       directives: [_ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_1__["NgbCollapse"]],
+=======
+      directives: [_ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_1__["NgbCollapse"], ng_katex__WEBPACK_IMPORTED_MODULE_2__["KatexParagraphComponent"]],
+>>>>>>> noHttps
       styles: ["pre[_ngcontent-%COMP%] {\n  padding: 5px;\n  margin-bottom: 0;\n  overflow-x: auto;\n  white-space: pre-wrap;\n  white-space: -moz-pre-wrap;\n  white-space: -pre-wrap;\n  white-space: -o-pre-wrap;\n  word-wrap: break-word;\n}\npre[_ngcontent-%COMP%] {\n  margin: 0;\n  font-family: -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto,\n    \"Helvetica Neue\", Arial, \"Noto Sans\", sans-serif, \"Apple Color Emoji\",\n    \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\";\n\n  font-weight: 400;\n  line-height: 1.5;\n  color: #212529;\n\n  background-color: #fff;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvY29tcG9uZW50cy9jYXJkL2NhcmQuY29tcG9uZW50LmNzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNFLFlBQVk7RUFDWixnQkFBZ0I7RUFDaEIsZ0JBQWdCO0VBQ2hCLHFCQUFxQjtFQUNyQiwwQkFBMEI7RUFDMUIsc0JBQXNCO0VBQ3RCLHdCQUF3QjtFQUN4QixxQkFBcUI7QUFDdkI7QUFDQTtFQUNFLFNBQVM7RUFDVDs7MkRBRXlEOztFQUV6RCxnQkFBZ0I7RUFDaEIsZ0JBQWdCO0VBQ2hCLGNBQWM7O0VBRWQsc0JBQXNCO0FBQ3hCIiwiZmlsZSI6InNyYy9hcHAvY29tcG9uZW50cy9jYXJkL2NhcmQuY29tcG9uZW50LmNzcyIsInNvdXJjZXNDb250ZW50IjpbInByZSB7XG4gIHBhZGRpbmc6IDVweDtcbiAgbWFyZ2luLWJvdHRvbTogMDtcbiAgb3ZlcmZsb3cteDogYXV0bztcbiAgd2hpdGUtc3BhY2U6IHByZS13cmFwO1xuICB3aGl0ZS1zcGFjZTogLW1vei1wcmUtd3JhcDtcbiAgd2hpdGUtc3BhY2U6IC1wcmUtd3JhcDtcbiAgd2hpdGUtc3BhY2U6IC1vLXByZS13cmFwO1xuICB3b3JkLXdyYXA6IGJyZWFrLXdvcmQ7XG59XG5wcmUge1xuICBtYXJnaW46IDA7XG4gIGZvbnQtZmFtaWx5OiAtYXBwbGUtc3lzdGVtLCBCbGlua01hY1N5c3RlbUZvbnQsIFwiU2Vnb2UgVUlcIiwgUm9ib3RvLFxuICAgIFwiSGVsdmV0aWNhIE5ldWVcIiwgQXJpYWwsIFwiTm90byBTYW5zXCIsIHNhbnMtc2VyaWYsIFwiQXBwbGUgQ29sb3IgRW1vamlcIixcbiAgICBcIlNlZ29lIFVJIEVtb2ppXCIsIFwiU2Vnb2UgVUkgU3ltYm9sXCIsIFwiTm90byBDb2xvciBFbW9qaVwiO1xuXG4gIGZvbnQtd2VpZ2h0OiA0MDA7XG4gIGxpbmUtaGVpZ2h0OiAxLjU7XG4gIGNvbG9yOiAjMjEyNTI5O1xuXG4gIGJhY2tncm91bmQtY29sb3I6ICNmZmY7XG59XG4iXX0= */"]
     });
     /*@__PURE__*/
@@ -1407,12 +1428,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           this.httpService.getCurrentLecture().subscribe(function (lecture) {
             _this4.lecture = lecture;
             _this4.title = _this4.lecture.name;
-
-            _this4.cardsService.getCards(lecture).subscribe(function (cards) {
-              _this4.cards = cards;
-            }); //load the specific cards from the server by subscribing to the observable that the card-service provides
-
           });
+          this.cardsService.getCards().subscribe(function (cards) {
+            _this4.cards = cards;
+          }); //load the specific cards from the server by subscribing to the observable that the card-service provides
+
           this.stateService.setFormMode("none");
           this.stateService.getFormMode().subscribe(function (mode) {
             _this4.formShow = mode == "add";
@@ -2248,12 +2268,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           this.statesService.getLoadingState().subscribe(function (val) {
             _this7.loading = val;
           });
-          if (this.router.url != "/" && this.router.url != "/login" && this.router.url != "/signup") this.http.getCurrentLecture().subscribe(function (lect) {
-            _this7.lecture = lect;
-
-            _this7.cardsService.getCards(lect).subscribe(function (cards) {
-              _this7.cards = cards;
-            });
+          if (this.router.url != "/" && this.router.url != "/login" && this.router.url != "/signup") this.cardsService.getCards().subscribe(function (cards) {
+            _this7.cards = cards;
           });
         }
       }, {
@@ -2554,33 +2570,18 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
               _this8.suggestions = [];
             }
           });
-        }
-      }, {
-        key: "ngOnChanges",
-        value: function ngOnChanges() {
-          var _this9 = this;
+          this.cardsService.getCards().subscribe(function (cards) {
+            _this8.cards = cards;
+            cards.forEach(function (card) {
+              if (card.thema == null) {
+                card.thema = "";
+              }
 
-          //put these into ngOnInit
-          if (this.http.getCurrentLecture()) {
-            this.http.getCurrentLecture().subscribe(function (vl) {
-              return _this9.lecture = vl;
+              if (card.content == null) {
+                card.content = "";
+              }
             });
-          }
-
-          if (this.cardsService.getCards(this.lecture)) {
-            this.cardsService.getCards(this.lecture).subscribe(function (cards) {
-              _this9.cards = cards;
-              cards.forEach(function (card) {
-                if (card.thema == null) {
-                  card.thema = "";
-                }
-
-                if (card.content == null) {
-                  card.content = "";
-                }
-              });
-            });
-          }
+          });
         }
       }, {
         key: "findMatches",
@@ -2619,7 +2620,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     SearchBarComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({
       type: SearchBarComponent,
       selectors: [["app-search-bar"]],
-      features: [_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵNgOnChangesFeature"]()],
       decls: 2,
       vars: 2,
       consts: [["id", "search", "type", "search", "placeholder", "Thema suchen", 1, "form-control", "float-right", 3, "ngModel", "ngModelChange", "input"], ["id", "matches", 4, "ngIf"], ["id", "matches"], [1, "list-group"], ["class", "list-group-item", 4, "ngFor", "ngForOf"], [1, "list-group-item"], ["href", "#", 3, "click"]],
@@ -2757,16 +2757,16 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: "submit",
         value: function submit(form) {
-          var _this10 = this;
+          var _this9 = this;
 
           this.http.createAccount(form.value).subscribe(function (response) {
             if (response) {
-              _this10.router.navigate(["/"]);
+              _this9.router.navigate(["/"]);
             }
           }, function (error) {
             if (error.headers.status = 422) {
               console.log(error);
-              _this10.errors = error.error.errors;
+              _this9.errors = error.error.errors;
             }
           });
         }
@@ -3053,20 +3053,19 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       _createClass(UpdateCardFormComponent, [{
         key: "ngOnInit",
         value: function ngOnInit() {
-          var _this11 = this;
+          var _this10 = this;
 
-          this.httpService.getCurrentLecture().subscribe(function (vl) {
-            _this11.lecture = vl;
+          this.cardsService.getCards().subscribe(function (cards) {
+            _this10.cards = cards;
+          });
+          this.cardsService.getActiveCardIndex().subscribe(function (index) {
+            _this10.activeCardIndex = index;
 
-            _this11.cardsService.getCards(_this11.lecture).subscribe(function (cards) {
-              _this11.cards = cards;
+            if (_this10.cards) {
+              _this10.cardCopy = Object.assign({}, _this10.cards[_this10.activeCardIndex]);
+            }
 
-              _this11.cardsService.getActiveCardIndex().subscribe(function (index) {
-                _this11.activeCardIndex = index;
-                _this11.cardCopy = Object.assign({}, _this11.cards[_this11.activeCardIndex]);
-                _this11.cardIndex = _this11.activeCardIndex;
-              });
-            });
+            _this10.cardIndex = _this10.activeCardIndex;
           });
         }
       }, {
@@ -3580,29 +3579,23 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: "ngOnInit",
         value: function ngOnInit() {
-          var _this12 = this;
+          var _this11 = this;
 
           this.title.setTitle("Cards");
           this.vlAbrv = this.route.snapshot.paramMap.get("abrv");
-          this.httpService.getCurrentLecture().subscribe(function (vl) {
-            _this12.lecture = vl;
-
-            _this12.cardsService.getCards(_this12.lecture).subscribe(function (cards) {
-              _this12.cards = cards;
-
-              if (_this12.cards.length == 0) {
-                _this12.stateServie.setFormMode("add");
-              }
-            });
+          this.cardsService.getCards().subscribe(function (cards) {
+            if (cards.length == 0) {
+              _this11.stateServie.setFormMode("add");
+            }
           });
           this.cardsService.getNewCardIndex().subscribe(function (index) {
-            _this12.ativeCard = index;
+            _this11.ativeCard = index;
           });
           this.stateServie.getLoadingState().subscribe(function (value) {
-            return _this12.loading = value;
+            return _this11.loading = value;
           });
           this.stateServie.getFormMode().subscribe(function (mode) {
-            return _this12.formMode = mode;
+            return _this11.formMode = mode;
           });
         }
       }, {
@@ -3761,10 +3754,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       _createClass(HomePageComponent, [{
         key: "ngOnInit",
         value: function ngOnInit() {
-          var _this13 = this;
+          var _this12 = this;
 
           this.statesService.getLoadingState().subscribe(function (val) {
-            _this13.loading = val;
+            _this12.loading = val;
           });
         }
       }, {
@@ -4069,32 +4062,45 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     var _states_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(
     /*! ./states.service */
     "./src/app/services/states.service.ts");
+    /* harmony import */
+
+
+    var _angular_router__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(
+    /*! @angular/router */
+    "./node_modules/@angular/router/__ivy_ngcc__/fesm2015/router.js");
 
     var CardsService =
     /*#__PURE__*/
     function () {
-      function CardsService(httpService, statesService) {
+      function CardsService(httpService, statesService, router) {
         _classCallCheck(this, CardsService);
 
         this.httpService = httpService;
         this.statesService = statesService;
+        this.router = router;
         this.newCardIndex$ = new rxjs__WEBPACK_IMPORTED_MODULE_1__["BehaviorSubject"](0);
         this.activeCardIndex$ = new rxjs__WEBPACK_IMPORTED_MODULE_1__["BehaviorSubject"](0);
       }
 
       _createClass(CardsService, [{
         key: "getCards",
-        value: function getCards(lecture) {
-          var _this14 = this;
+        value: function getCards() {
+          var _this13 = this;
 
-          if (this.abrv == lecture.abrv) {
+          var abrv = this.router.url.split(/vorlesung\//)[1];
+
+          if (this.cards$ && this.abrv == abrv) {
             //cards were already loaded for this lecture
             return this.cards$.asObservable();
           } else {
-            //returns an observable of the cards from http service while also initializing the cards internally for reuse
-            return this.httpService.getCardsFromLecture(lecture).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["tap"])(function (res) {
-              _this14.cards$ = new rxjs__WEBPACK_IMPORTED_MODULE_1__["BehaviorSubject"](res.body);
-              _this14.abrv = res.body[0].vorlesung;
+            this.abrv = abrv; //returns an observable of the cards from http service while also initializing the cards internally for reuse
+
+            return this.httpService.getCardsFromLectureAbrv(abrv).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["tap"])(function (res) {
+              if (_this13.cards$) {
+                _this13.cards$.next(res.body);
+              } else {
+                _this13.cards$ = new rxjs__WEBPACK_IMPORTED_MODULE_1__["BehaviorSubject"](res.body);
+              }
             }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["map"])(function (res) {
               return res.body;
             }));
@@ -4111,37 +4117,37 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: "updateCard",
         value: function updateCard(card, index) {
-          var _this15 = this;
+          var _this14 = this;
 
           this.statesService.setLoadingState(true);
           this.httpService.updateCard(card).subscribe(function (resp) {
-            _this15.statesService.setLoadingState(false);
+            _this14.statesService.setLoadingState(false);
 
-            _this15.statesService.setFormMode("reset");
+            _this14.statesService.setFormMode("reset");
 
-            var cards = _this15.cards$.getValue();
+            var cards = _this14.cards$.getValue();
 
             cards[index] = card;
 
-            _this15.cards$.next(cards);
+            _this14.cards$.next(cards);
           });
         }
       }, {
         key: "addCard",
         value: function addCard(card) {
-          var _this16 = this;
+          var _this15 = this;
 
           this.statesService.setLoadingState(true);
           return this.httpService.addCard(card).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["tap"])(function (response) {
-            _this16.statesService.setLoadingState(false);
+            _this15.statesService.setLoadingState(false);
 
             card._id = response.body;
 
-            var cards = _this16.cards$.getValue();
+            var cards = _this15.cards$.getValue();
 
             cards.push(card);
 
-            _this16.cards$.next(cards);
+            _this15.cards$.next(cards);
           }));
         }
       }, {
@@ -4170,7 +4176,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     }();
 
     CardsService.ɵfac = function CardsService_Factory(t) {
-      return new (t || CardsService)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_http_service__WEBPACK_IMPORTED_MODULE_3__["HttpService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_states_service__WEBPACK_IMPORTED_MODULE_4__["StatesService"]));
+      return new (t || CardsService)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_http_service__WEBPACK_IMPORTED_MODULE_3__["HttpService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_states_service__WEBPACK_IMPORTED_MODULE_4__["StatesService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_angular_router__WEBPACK_IMPORTED_MODULE_5__["Router"]));
     };
 
     CardsService.ɵprov = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjectable"]({
@@ -4191,6 +4197,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           type: _http_service__WEBPACK_IMPORTED_MODULE_3__["HttpService"]
         }, {
           type: _states_service__WEBPACK_IMPORTED_MODULE_4__["StatesService"]
+        }, {
+          type: _angular_router__WEBPACK_IMPORTED_MODULE_5__["Router"]
         }];
       }, null);
     })();
@@ -4273,24 +4281,16 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 
       _createClass(HttpService, [{
-        key: "getCardsFromLecture",
-        value: function getCardsFromLecture(lecture) {
-          var _this17 = this;
+        key: "getCardsFromLectureAbrv",
+        value: function getCardsFromLectureAbrv(abrv) {
+          var _this16 = this;
 
           this.statesService.setLoadingState(true);
-
-          if (this.lecture$) {
-            return this.http.get(this.urlBase + "cards/?abrv=" + this.lecture$.getValue().abrv, {
-              observe: "response"
-            }).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["tap"])(function (res) {
-              _this17.statesService.setLoadingState(false);
-            }));
-          } else {
-            var abrv = this.router.url.split(/vorlesung\//)[1];
+          {
             return this.http.get(this.urlBase + "cards/?abrv=" + abrv, {
               observe: "response"
             }).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["tap"])(function (res) {
-              _this17.statesService.setLoadingState(false);
+              _this16.statesService.setLoadingState(false);
             }));
           }
         }
@@ -4323,7 +4323,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: "getAllLectures",
         value: function getAllLectures() {
-          var _this18 = this;
+          var _this17 = this;
 
           this.statesService.setLoadingState(true);
 
@@ -4334,9 +4334,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             return this.http.get(this.urlBase + "lectures", {
               observe: "response"
             }).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["tap"])(function (res) {
-              _this18.statesService.setLoadingState(false);
+              _this17.statesService.setLoadingState(false);
 
-              _this18.lectures$ = new rxjs__WEBPACK_IMPORTED_MODULE_2__["BehaviorSubject"](res.body);
+              _this17.lectures$ = new rxjs__WEBPACK_IMPORTED_MODULE_2__["BehaviorSubject"](res.body);
             }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])(function (res) {
               return res.body;
             }));
@@ -4354,16 +4354,21 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: "getCurrentLecture",
         value: function getCurrentLecture() {
-          var _this19 = this;
+          var _this18 = this;
 
-          if (this.lecture$) {
+          var abrv = this.router.url.split(/vorlesung\//)[1];
+
+          if (this.lecture$ && this.lecture$.getValue().abrv == abrv) {
             return this.lecture$.asObservable();
           } else {
-            var abrv = this.router.url.split(/vorlesung\//)[1];
             return this.http.get(this.urlBase + "lectures/find?abrv=" + abrv, {
               observe: "response"
             }).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["tap"])(function (res) {
-              _this19.lecture$ = new rxjs__WEBPACK_IMPORTED_MODULE_2__["BehaviorSubject"](res.body);
+              if (_this18.lecture$) {
+                _this18.lecture$.next(res.body);
+              } else {
+                _this18.lecture$ = new rxjs__WEBPACK_IMPORTED_MODULE_2__["BehaviorSubject"](res.body);
+              }
             }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])(function (res) {
               return res.body;
             }));
@@ -4372,7 +4377,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: "addLecture",
         value: function addLecture(lecture) {
-          var _this20 = this;
+          var _this19 = this;
 
           this.statesService.setLoadingState(true);
           return this.http.post(this.urlBase + "lectures/new", {
@@ -4382,13 +4387,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             observe: "response"
           }).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["tap"])(function (res) {
             //add the new lecture to the lectures subject
-            _this20.statesService.setLoadingState(false);
+            _this19.statesService.setLoadingState(false);
 
-            var lectures = _this20.lectures$.getValue();
+            var lectures = _this19.lectures$.getValue();
 
             lectures.push(lecture);
 
-            _this20.lectures$.next(lectures);
+            _this19.lectures$.next(lectures);
           }));
         }
       }, {
@@ -4434,19 +4439,19 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: "login",
         value: function login(form) {
-          var _this21 = this;
+          var _this20 = this;
 
           this.statesService.setLoadingState(true);
           return this.http.post(this.urlBase + "login", form, {
             headers: this.httpOptions.headers,
             observe: "response"
           }).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["tap"])(function (res) {
-            _this21.statesService.setLoadingState(false);
+            _this20.statesService.setLoadingState(false);
 
-            _this21.user = res.body;
+            _this20.user = res.body;
 
             if (form.remember) {
-              localStorage.setItem("user", JSON.stringify(_this21.user));
+              localStorage.setItem("user", JSON.stringify(_this20.user));
             }
           }));
         }
@@ -4462,11 +4467,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: "logout",
         value: function logout() {
-          var _this22 = this;
+          var _this21 = this;
 
           this.statesService.setLoadingState(true);
           this.http.get(this.urlBase + "user/logout").subscribe(function (err) {
-            _this22.statesService.setLoadingState(false);
+            _this21.statesService.setLoadingState(false);
 
             if (err) console.log(err);
           });
@@ -4477,16 +4482,16 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: "createAccount",
         value: function createAccount(form) {
-          var _this23 = this;
+          var _this22 = this;
 
           this.statesService.setLoadingState(true);
           return this.http.post(this.urlBase + "user/new", form, {
             headers: this.httpOptions.headers,
             observe: "response"
           }).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["tap"])(function (res) {
-            _this23.user = res.body;
+            _this22.user = res.body;
 
-            _this23.statesService.setLoadingState(false);
+            _this22.statesService.setLoadingState(false);
           }));
         }
       }]);

@@ -1,10 +1,11 @@
 import { Injectable } from "@angular/core";
 import { HttpService } from "./http.service";
-import { Subject, Observable, BehaviorSubject, of } from "rxjs";
+import { Subject, Observable, BehaviorSubject, of, from } from "rxjs";
 import { Card } from "../models/Card";
 import { Vorlesung } from "../models/Vorlesung";
 import { StatesService } from "./states.service";
 import { tap, map } from "rxjs/operators";
+import { Router } from "@angular/router";
 @Injectable({
   providedIn: "root",
 })
@@ -21,19 +22,25 @@ export class CardsService {
 
   constructor(
     private httpService: HttpService,
-    private statesService: StatesService
+    private statesService: StatesService,
+    private router: Router
   ) {}
 
-  getCards(lecture: Vorlesung): Observable<Card[]> {
-    if (this.abrv == lecture.abrv) {
+  getCards(): Observable<Card[]> {
+    let abrv = this.router.url.split(/vorlesung\//)[1];
+    if (this.cards$ && this.abrv == abrv) {
       //cards were already loaded for this lecture
       return this.cards$.asObservable();
     } else {
+      this.abrv = abrv;
       //returns an observable of the cards from http service while also initializing the cards internally for reuse
-      return this.httpService.getCardsFromLecture(lecture).pipe(
+      return this.httpService.getCardsFromLectureAbrv(abrv).pipe(
         tap((res) => {
-          this.cards$ = new BehaviorSubject<Card[]>(res.body);
-          this.abrv = res.body[0].vorlesung;
+          if (this.cards$) {
+            this.cards$.next(res.body);
+          } else {
+            this.cards$ = new BehaviorSubject<Card[]>(res.body);
+          }
         }),
         map((res) => res.body)
       );

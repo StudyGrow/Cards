@@ -28,23 +28,9 @@ export class HttpService {
   ) {}
 
   //Cards
-  getCardsFromLecture(lecture: Vorlesung): Observable<HttpResponse<any[]>> {
+  getCardsFromLectureAbrv(abrv: string): Observable<HttpResponse<any[]>> {
     this.statesService.setLoadingState(true);
-    if (this.lecture$) {
-      return this.http
-        .get<Card[]>(
-          this.urlBase + "cards/?abrv=" + this.lecture$.getValue().abrv,
-          {
-            observe: "response",
-          }
-        )
-        .pipe(
-          tap((res) => {
-            this.statesService.setLoadingState(false);
-          })
-        );
-    } else {
-      let abrv = this.router.url.split(/vorlesung\//)[1];
+    {
       return this.http
         .get<Card[]>(this.urlBase + "cards/?abrv=" + abrv, {
           observe: "response",
@@ -108,17 +94,21 @@ export class HttpService {
     }
   }
   getCurrentLecture(): Observable<Vorlesung> {
-    if (this.lecture$) {
+    let abrv = this.router.url.split(/vorlesung\//)[1];
+    if (this.lecture$ && this.lecture$.getValue().abrv == abrv) {
       return this.lecture$.asObservable();
     } else {
-      let abrv = this.router.url.split(/vorlesung\//)[1];
       return this.http
         .get<Vorlesung>(this.urlBase + "lectures/find?abrv=" + abrv, {
           observe: "response",
         })
         .pipe(
           tap((res) => {
-            this.lecture$ = new BehaviorSubject<Vorlesung>(res.body);
+            if (this.lecture$) {
+              this.lecture$.next(res.body);
+            } else {
+              this.lecture$ = new BehaviorSubject<Vorlesung>(res.body);
+            }
           }),
           map((res) => res.body)
         );
