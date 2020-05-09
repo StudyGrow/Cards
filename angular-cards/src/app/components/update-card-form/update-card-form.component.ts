@@ -106,7 +106,7 @@ export class DialogOverviewExampleDialog {
 
   cancel() {
     this.service.setFormMode("reset");
-
+    this.service.setLoadingState(false);
     this.dialogRef.close();
   }
   onNoClick(): void {
