@@ -7,7 +7,11 @@ import { AppRoutingModule } from "./app-routing.module";
 import { FormsModule } from "@angular/forms";
 import { MatProgressBarModule } from "@angular/material/progress-bar";
 import { MatDialogModule } from "@angular/material/dialog";
-import { CarouselModule, WavesModule } from "angular-bootstrap-md";
+import {
+  CarouselModule,
+  WavesModule,
+  CollapseModule,
+} from "angular-bootstrap-md";
 import { KatexModule } from "ng-katex";
 
 //Components
@@ -97,6 +101,7 @@ export class MyHammerConfig extends HammerGestureConfig {
     CarouselModule,
     WavesModule,
     HammerModule,
+    CollapseModule,
     StoreModule.forRoot({}, {}),
     KatexModule,
   ],
