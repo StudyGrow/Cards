@@ -12,7 +12,9 @@
       <i class="fas fa-caret-down"></i>
     </button>
     <div class="collapse" [ngbCollapse]="isCollapsed">
-      <pre lang="de">{{ card.content }}</pre>
+      <pre lang="de">
+        <ng-katex-paragraph paragraph={{card.content}}></ng-katex-paragraph>
+      </pre>
     </div>
   </div>
 </div>

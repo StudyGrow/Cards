@@ -8,6 +8,7 @@ import { FormsModule } from "@angular/forms";
 import { MatProgressBarModule } from "@angular/material/progress-bar";
 import { MatDialogModule } from "@angular/material/dialog";
 import { CarouselModule, WavesModule } from "angular-bootstrap-md";
+import { KatexModule } from 'ng-katex';
 
 //Components
 import { AppComponent } from "./app.component";
@@ -82,7 +83,7 @@ export class MyHammerConfig extends HammerGestureConfig {
     LoginPageComponent,
     LoginFormComponent,
     SignupPageComponent,
-    SignupFormComponent,
+    SignupFormComponent
   ],
   imports: [
     BrowserModule,
@@ -97,6 +98,7 @@ export class MyHammerConfig extends HammerGestureConfig {
     WavesModule,
     HammerModule,
     StoreModule.forRoot({}, {}),
+    KatexModule
   ],
   providers: [
     StatesService,
