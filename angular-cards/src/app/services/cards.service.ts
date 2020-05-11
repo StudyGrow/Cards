@@ -1,8 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpService } from "./http.service";
-import { Subject, Observable, BehaviorSubject, of, from } from "rxjs";
+import { Observable, BehaviorSubject } from "rxjs";
 import { Card } from "../models/Card";
-import { Vorlesung } from "../models/Vorlesung";
 import { StatesService } from "./states.service";
 import { tap, map } from "rxjs/operators";
 import { Router } from "@angular/router";
