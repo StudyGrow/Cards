@@ -39,13 +39,13 @@ app.use(passport.session());
 //   })
 
 //Logs each request
-app.get("*", (req, res, next) => {
-  console.log(req.url);
-  if (req.user) {
-    console.log("user:", req.user.username);
-  }
-  next();
-});
+// app.get("*", (req, res, next) => {
+//   console.log(req.url);
+//   if (req.user) {
+//     console.log("user:", req.user.username);
+//   }
+//   next();
+// });
 app.post("/api/login", (req, res, next) => {
   req.services.user.login(passport, req, res, next);
 });
