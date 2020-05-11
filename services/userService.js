@@ -51,7 +51,7 @@ module.exports = function userService() {
       if (error) res.status(400).json({ statusCode: 200, message: error });
       req.login(user._id, function (error) {
         if (error) return next(error);
-        res.status(200).send({ id: user._id, username: user.username, email: user.email });
+        res.status(200).send({ username: user.username, email: user.email });
       });
     })(req, res, next);
   };

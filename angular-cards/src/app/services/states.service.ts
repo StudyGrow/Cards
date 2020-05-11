@@ -4,14 +4,14 @@ import { Injectable } from "@angular/core";
 import { BehaviorSubject, Observable } from "rxjs";
 
 @Injectable({
-  providedIn: "root"
+  providedIn: "root",
 })
 export class StatesService {
   private formMode$: BehaviorSubject<string> = new BehaviorSubject("none");
   private lastFormMode: string;
   private loading$: BehaviorSubject<boolean> = new BehaviorSubject(true);
   private hideSgtn$: BehaviorSubject<boolean> = new BehaviorSubject(true);
-
+  private typing$: BehaviorSubject<boolean> = new BehaviorSubject(false);
   constructor() {}
 
   getFormMode(): Observable<string> {
@@ -29,7 +29,12 @@ export class StatesService {
       if (mode != "edit") this.lastFormMode = mode;
     }
   }
-
+  setTyping(val: boolean) {
+    this.typing$.next(val);
+  }
+  getTyping(): Observable<boolean> {
+    return this.typing$.asObservable();
+  }
   getLoadingState(): BehaviorSubject<boolean> {
     return this.loading$;
   }

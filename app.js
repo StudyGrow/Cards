@@ -2,9 +2,6 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const helmet = require("helmet");
 const path = require("path");
-const mongoose = require("mongoose");
-const User = require("./models/User");
-const bcrypt = require("bcryptjs");
 const session = require("express-session");
 const app = express();
 app.use(helmet());
@@ -23,7 +20,6 @@ app.use(
 );
 
 const passport = require("passport");
-const LocalStrategy = require("passport-local").Strategy;
 
 require("./config/passport")(passport);
 

@@ -19,7 +19,6 @@ export class UpdateCardFormComponent implements OnInit {
   private activeCardIndex: number; //saves the active cardindex
   constructor(
     private cardsService: CardsService,
-    private httpService: HttpService,
     private statesService: StatesService,
     public dialog: MatDialog
   ) {}
@@ -36,7 +35,12 @@ export class UpdateCardFormComponent implements OnInit {
       this.cardIndex = this.activeCardIndex;
     });
   }
-
+  inField() {
+    this.statesService.setTyping(true);
+  }
+  resetNav() {
+    this.statesService.setTyping(false);
+  }
   onSubmit(f: NgForm) {
     this.cardCopy.content = f.value.content;
     this.cardCopy.thema = f.value.thema;

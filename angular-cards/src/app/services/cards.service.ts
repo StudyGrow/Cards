@@ -95,6 +95,22 @@ export class CardsService {
       })
     );
   }
+  goNext() {
+    let index = this.newCardIndex$.getValue();
+    index++;
+    if (index >= this.cards$.getValue().length) {
+      index = 0;
+    }
+    this.newCardIndex$.next(index);
+  }
+  goPrev() {
+    let index = this.newCardIndex$.getValue();
+    index--;
+    if (index < 0) {
+      index = this.cards$.getValue().length - 1;
+    }
+    this.newCardIndex$.next(index);
+  }
   getNewCardIndex(): Observable<number> {
     return this.newCardIndex$.asObservable();
   }
