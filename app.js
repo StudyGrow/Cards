@@ -18,7 +18,7 @@ app.use(
     secret: "wibgewe13f13", //random string
     resave: false,
     saveUninitialized: false,
-    cookie: { secure: false },
+    cookie: { secure: false }, //secure needs to be set to true here
   })
 );
 
