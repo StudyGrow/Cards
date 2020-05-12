@@ -25,6 +25,8 @@ require("./config/passport")(passport);
 
 app.use(passport.initialize());
 app.use(passport.session());
+
+// server specific route which redirects users to https
 // router.get('*', function(req, res , next) {
 //    if(req.secure == false){
 //      res.redirect('https://' + req.headers.host + req.url);
@@ -34,7 +36,7 @@ app.use(passport.session());
 //    }
 //   })
 
-//Logs each request
+//Logs each request for debuggin purposes
 app.get("*", (req, res, next) => {
   console.log(req.url);
   if (req.user) {
@@ -42,6 +44,8 @@ app.get("*", (req, res, next) => {
   }
   next();
 });
+
+//This route needs access to the passport object and can therefore not be moved to a different file
 app.post("/api/login", (req, res, next) => {
   req.services.user.login(passport, req, res, next);
 });
@@ -49,7 +53,7 @@ app.post("/api/login", (req, res, next) => {
 //api route
 app.use("/api", require("./routes/api"));
 
-//angular files
+//built angular files
 app.use(express.static(path.join(__dirname, "./angular-cards/dist/angular-cards/")));
 
 //angular index.html file to always serve after client uses browser navigation
