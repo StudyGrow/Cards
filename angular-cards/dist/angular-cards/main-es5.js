@@ -2001,10 +2001,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             if (response.status == 200) {
               _this7.router.navigate(["/"]);
             }
-          }, function (error) {
-            if (error.headers.status = 422) {
-              _this7.errors = error.error.errors;
-            }
           });
         }
       }, {

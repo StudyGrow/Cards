@@ -1012,16 +1012,11 @@ class LoginFormComponent {
         this.http = http;
         this.router = router;
     }
-    ngOnInit() {
-    }
+    ngOnInit() { }
     submit(form) {
         this.http.login(form.value).subscribe((response) => {
             if (response.status == 200) {
                 this.router.navigate(["/"]);
-            }
-        }, (error) => {
-            if ((error.headers.status = 422)) {
-                this.errors = error.error.errors;
             }
         });
     }

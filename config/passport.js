@@ -19,14 +19,14 @@ module.exports = function (passport) {
           throw new Error("Benutzername oder Passwort falsch");
         }
       } catch (error) {
-        console.log(error);
-        return done(null, false, { message: error.message });
+        return done(error);
       }
     })
   );
 
   passport.serializeUser(function (user, done) {
-    done(null, user._id);
+    if (user) done(null, user._id);
+    else console.log("errrr");
   });
 
   passport.deserializeUser(function (id, done) {
