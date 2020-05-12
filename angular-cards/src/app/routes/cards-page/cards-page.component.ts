@@ -23,7 +23,7 @@ export class CardsPageComponent implements OnInit {
   public loading: boolean = true;
   public formMode: string = "none";
   public cards: Card[];
-  public errors: string[];
+
   private inTypingField: boolean;
   @ViewChild("alert", { static: false }) alert: ElementRef;
 
@@ -45,6 +45,7 @@ export class CardsPageComponent implements OnInit {
     private route: ActivatedRoute,
     private stateServie: StatesService,
     private cardsService: CardsService,
+    private http: HttpService,
     private title: Title
   ) {}
 
@@ -61,12 +62,8 @@ export class CardsPageComponent implements OnInit {
       .getLoadingState()
       .subscribe((value) => (this.loading = value));
     this.stateServie.getFormMode().subscribe((mode) => (this.formMode = mode));
-    this.cardsService.getErrors().subscribe((errors) => (this.errors = errors));
   }
 
-  closeAlert(i: number) {
-    this.cardsService.removeError(i);
-  }
   setLoading(loading: boolean): void {
     this.loading = loading;
     this.stateServie.setLoadingState(loading);

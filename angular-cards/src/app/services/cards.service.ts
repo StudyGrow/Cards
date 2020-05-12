@@ -14,10 +14,6 @@ export class CardsService {
   //loads cards once from the server and whenever lecture changes
   //and provides them as an Observable
   private cards$: BehaviorSubject<Card[]>;
-  //contains all http errors this Subject should be provided in the http service not here
-  private errors$: BehaviorSubject<string[]> = new BehaviorSubject<string[]>(
-    []
-  );
   //provides a Subject to set a new index on which card the carousel should show
   private newCardIndex$: BehaviorSubject<number> = new BehaviorSubject<number>(
     0
@@ -41,6 +37,12 @@ export class CardsService {
       return this.cards$.asObservable();
     } else {
       this.abrv = abrv;
+      if (this.cards$) {
+        //remove the old cards before fetching the new ones
+        this.cards$.next([]);
+      } else {
+        this.cards$ = new BehaviorSubject<Card[]>([]);
+      }
       //returns an observable of the cards from http service while also initializing the cards internally for reuse
       return this.httpService.getCardsFromLectureAbrv(abrv).pipe(
         tap((res) => {
@@ -55,37 +57,18 @@ export class CardsService {
     }
   }
 
-  getErrors(): Observable<string[]> {
-    return this.errors$.asObservable();
-  }
-
-  //removes a specific error from the error array
-  removeError(index: number) {
-    let errors = this.errors$.getValue();
-    errors.splice(index, 1); //remove error at position index
-    this.errors$.next(errors);
-  }
-
   updateCard(card: Card, index: number): Observable<any> {
     this.statesService.setLoadingState(true);
     //send update to server using http service
     return this.httpService.updateCard(card).pipe(
-      tap(
-        (resp) => {
-          this.statesService.setLoadingState(false);
-          this.statesService.setFormMode("reset"); //reset form to its previous state
-          //update subject
-          let cards = this.cards$.getValue();
-          cards[index] = card;
-          this.cards$.next(cards);
-        },
-        (error) => {
-          let errors = this.errors$.getValue();
-          errors.push(error.error);
-          this.errors$.next(errors);
-          this.statesService.setLoadingState(false);
-        }
-      )
+      tap((resp) => {
+        this.statesService.setLoadingState(false);
+        this.statesService.setFormMode("reset"); //reset form to its previous state
+        //update subject
+        let cards = this.cards$.getValue();
+        cards[index] = card;
+        this.cards$.next(cards);
+      })
     );
   }
 
@@ -93,28 +76,20 @@ export class CardsService {
     this.statesService.setLoadingState(true);
     //send new card to server using http service
     return this.httpService.addCard(card).pipe(
-      tap(
-        (response) => {
-          this.statesService.setLoadingState(false);
-          card._id = response.body; //set id received from server response
-          //upate subject
-          let cards = this.cards$.getValue();
-          cards.push(card);
-          this.cards$.next(cards);
+      tap((response) => {
+        this.statesService.setLoadingState(false);
+        card._id = response.body; //set id received from server response
+        //upate subject
+        let cards = this.cards$.getValue();
+        cards.push(card);
+        this.cards$.next(cards);
 
-          setTimeout(() => {
-            //show new card timeout needed because the carousel needs time to refresh
-            //its view
-            this.setNewCardIndex(cards.length - 1);
-          }, 100);
-        },
-        (error) => {
-          let errors = this.errors$.getValue();
-          errors.push(error.error);
-          this.errors$.next(errors);
-          this.statesService.setLoadingState(false);
-        }
-      )
+        setTimeout(() => {
+          //show new card timeout needed because the carousel needs time to refresh
+          //its view
+          this.setNewCardIndex(cards.length - 1);
+        }, 100);
+      })
     );
   }
   goNext() {

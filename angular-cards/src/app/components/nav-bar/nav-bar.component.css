@@ -12,3 +12,8 @@ mat-progress-bar {
   position: absolute;
   top: 0;
 }
+.alert {
+  width: 90%;
+  margin: auto;
+  margin-bottom: 5px;
+}

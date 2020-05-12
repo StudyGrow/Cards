@@ -34,11 +34,11 @@ module.exports = function userService() {
       let user;
       user = await User.findOne({ email: form.email });
       if (user) {
-        throw new Error("Email ist bereits registriert");
+        throw new Error("Diese Email adresse ist bereits registriert");
       }
       user = await User.findOne({ username: form.username });
       if (user) {
-        throw new Error("Benutzername existiert bereits");
+        throw new Error("Der Benutzername existiert bereits");
       }
       registerAccount(form, callback);
     } catch (error) {

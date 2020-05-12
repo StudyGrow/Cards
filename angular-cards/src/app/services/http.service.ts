@@ -14,10 +14,12 @@ import { Vorlesung } from "../models/Vorlesung";
 })
 export class HttpService {
   private urlBase: string = "api/"; //url  base on which to adress the server with
-  private user: User; //stores the user
+  private user$: BehaviorSubject<User> = new BehaviorSubject<User>(null); //stores the user
   private lecture$: BehaviorSubject<Vorlesung>; //holds the current lecture
   private lectures$: BehaviorSubject<Vorlesung[]>; //holds all lectures
-
+  private errors$: BehaviorSubject<string[]> = new BehaviorSubject<string[]>(
+    []
+  );
   private httpOptions = {
     headers: new HttpHeaders({ "Content-Type": "application/json" }),
   };
@@ -38,32 +40,65 @@ export class HttpService {
           observe: "response",
         })
         .pipe(
-          tap((res) => {
-            this.statesService.setLoadingState(false);
-          })
+          tap(
+            (res) => {
+              this.statesService.setLoadingState(false);
+            },
+            (error) => {
+              this.addErrors(error);
+              this.statesService.setLoadingState(false);
+            }
+          )
         );
     }
   }
 
   //add card to the database on server
   addCard(card: Card): Observable<HttpResponse<any>> {
-    return this.http.post<any>(
-      this.urlBase + "cards/new",
-      { card: card },
-      this.httpOptions
-    );
+    return this.http
+      .post<any>(
+        this.urlBase + "cards/new",
+        { card: card },
+        {
+          headers: this.httpOptions.headers,
+          observe: "response",
+        }
+      )
+      .pipe(
+        tap(
+          (res) => {
+            this.statesService.setLoadingState(false);
+          },
+          (error) => {
+            this.addErrors(error);
+            this.statesService.setLoadingState(false);
+          }
+        )
+      );
   }
 
   //update card on server
   updateCard(card: Card): Observable<HttpResponse<any>> {
-    return this.http.put<any>(
-      this.urlBase + "cards/update",
-      { card: card },
-      {
-        headers: this.httpOptions.headers,
-        observe: "response",
-      }
-    );
+    return this.http
+      .put<any>(
+        this.urlBase + "cards/update",
+        { card: card },
+        {
+          headers: this.httpOptions.headers,
+          observe: "response",
+        }
+      )
+      .pipe(
+        tap(
+          (res) => {
+            this.statesService.setLoadingState(false);
+          },
+          (error) => {
+            this.addErrors(error);
+            this.statesService.setLoadingState(false);
+          }
+        )
+      );
   }
 
   //get an array of all lectures
@@ -80,10 +115,16 @@ export class HttpService {
           observe: "response",
         })
         .pipe(
-          tap((res) => {
-            this.statesService.setLoadingState(false);
-            this.lectures$ = new BehaviorSubject<Vorlesung[]>(res.body); //set the lectures subject
-          }),
+          tap(
+            (res) => {
+              this.statesService.setLoadingState(false);
+              this.lectures$ = new BehaviorSubject<Vorlesung[]>(res.body); //set the lectures subject
+            },
+            (error) => {
+              this.addErrors(error);
+              this.statesService.setLoadingState(false);
+            }
+          ),
           map((res) => res.body)
         );
     }
@@ -102,14 +143,20 @@ export class HttpService {
           observe: "response",
         })
         .pipe(
-          tap((res) => {
-            //update or initialize the subject
-            if (this.lecture$) {
-              this.lecture$.next(res.body);
-            } else {
-              this.lecture$ = new BehaviorSubject<Vorlesung>(res.body);
+          tap(
+            (res) => {
+              //update or initialize the subject
+              if (this.lecture$) {
+                this.lecture$.next(res.body);
+              } else {
+                this.lecture$ = new BehaviorSubject<Vorlesung>(res.body);
+              }
+            },
+            (error) => {
+              this.addErrors(error);
+              this.statesService.setLoadingState(false);
             }
-          }),
+          ),
           map((res) => res.body)
         );
     }
@@ -128,13 +175,19 @@ export class HttpService {
         }
       )
       .pipe(
-        tap((res) => {
-          //add the new lecture to the lectures subject
-          this.statesService.setLoadingState(false);
-          let lectures = this.lectures$.getValue();
-          lectures.push(lecture);
-          this.lectures$.next(lectures);
-        })
+        tap(
+          (res) => {
+            //add the new lecture to the lectures subject
+            this.statesService.setLoadingState(false);
+            let lectures = this.lectures$.getValue();
+            lectures.push(lecture);
+            this.lectures$.next(lectures);
+          },
+          (error) => {
+            this.addErrors(error);
+            this.statesService.setLoadingState(false);
+          }
+        )
       );
   }
 
@@ -147,32 +200,41 @@ export class HttpService {
         observe: "response",
       })
       .pipe(
-        tap((res) => {
-          this.statesService.setLoadingState(false);
-          this.user = res.body; //set the user
-          if (form.remember) {
-            localStorage.setItem("user", JSON.stringify(this.user)); //store the user locally to keep the session
+        tap(
+          (res) => {
+            this.statesService.setLoadingState(false);
+            this.user$.next(res.body); //set the user
+            if (form.remember) {
+              localStorage.setItem(
+                "user",
+                JSON.stringify(this.user$.getValue())
+              ); //store the user locally to keep the session
+            }
+          },
+          (error) => {
+            this.addErrors(error);
+            this.statesService.setLoadingState(false);
           }
-        })
+        )
       );
   }
 
-  getUser(): User {
-    if (!this.user) {
-      this.user = JSON.parse(localStorage.getItem("user")); //load the user from the local storage
+  getUser(): Observable<User> {
+    if (this.user$.getValue() == null) {
+      let user = JSON.parse(localStorage.getItem("user")); //load the user from the local storage
+      this.user$.next(user);
     }
-    return this.user;
+    return this.user$.asObservable();
   }
 
   //logout the user in front- and backend
   logout() {
     this.statesService.setLoadingState(true);
-    this.http.get<any>(this.urlBase + "user/logout").subscribe((err) => {
+    this.http.get<any>(this.urlBase + "user/logout").subscribe((res) => {
       this.statesService.setLoadingState(false);
-      if (err) console.log(err);
     });
     localStorage.removeItem("user"); //remove the user data from localstorage
-    this.user = null;
+    this.user$.next(null);
   }
 
   //form = {username,email,password}
@@ -184,10 +246,51 @@ export class HttpService {
         observe: "response",
       })
       .pipe(
-        tap((res) => {
-          this.user = res.body; //login the user (on success)
-          this.statesService.setLoadingState(false);
-        })
+        tap(
+          (res) => {
+            this.user$.next(res.body); //login the user (on success)
+            this.statesService.setLoadingState(false);
+          },
+          (error) => {
+            console.log(error.headers);
+            this.addErrors(error);
+            this.statesService.setLoadingState(false);
+          }
+        )
       );
+  }
+  addErrors(error) {
+    let err = error.error;
+    let errors = this.errors$.getValue();
+    console.log(error.status);
+    if (error.status == 422) {
+      if (typeof err == "string") {
+        errors.push(err);
+      } else {
+        console.log(typeof err);
+        errors.push(...err);
+      }
+    } else if (error.status >= 500) {
+      errors.push(
+        "Der Server scheint offline zu sein. Versuche es später erneut."
+      );
+    } else {
+      errors.push(
+        "Ein unbekannter Fehler ist aufgetreten. Versuche es später erneut."
+      );
+      console.log(error);
+    }
+    this.errors$.next(errors);
+  }
+
+  //removes a specific error from the error array
+  removeError(index: number) {
+    let errors = this.errors$.getValue();
+    errors.splice(index, 1); //remove error at position index
+    this.errors$.next(errors);
+  }
+
+  getErrors(): Observable<string[]> {
+    return this.errors$.asObservable();
   }
 }
