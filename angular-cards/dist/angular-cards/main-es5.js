@@ -1322,27 +1322,27 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     /* harmony import */
 
 
-    var _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(
-    /*! @ng-bootstrap/ng-bootstrap */
-    "./node_modules/@ng-bootstrap/ng-bootstrap/__ivy_ngcc__/fesm2015/ng-bootstrap.js");
-    /* harmony import */
-
-
-    var _services_http_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(
+    var _services_http_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(
     /*! ../../services/http.service */
     "./src/app/services/http.service.ts");
     /* harmony import */
 
 
-    var _services_states_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(
+    var _services_states_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(
     /*! ../../services/states.service */
     "./src/app/services/states.service.ts");
     /* harmony import */
 
 
-    var _services_cards_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(
+    var _services_cards_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(
     /*! ../../services/cards.service */
     "./src/app/services/cards.service.ts");
+    /* harmony import */
+
+
+    var _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(
+    /*! @ng-bootstrap/ng-bootstrap */
+    "./node_modules/@ng-bootstrap/ng-bootstrap/__ivy_ngcc__/fesm2015/ng-bootstrap.js");
     /* harmony import */
 
 
@@ -1482,17 +1482,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     var CarouselComponent =
     /*#__PURE__*/
     function () {
-      function CarouselComponent(config, httpService, stateService, cardsService) {
+      function CarouselComponent(httpService, stateService, cardsService) {
         _classCallCheck(this, CarouselComponent);
 
         this.httpService = httpService;
         this.stateService = stateService;
         this.cardsService = cardsService;
         this.activeSlide = 0;
-        config.interval = -1;
-        config.wrap = true;
-        config.keyboard = true;
-        config.pauseOnHover = false;
       }
 
       _createClass(CarouselComponent, [{
@@ -1596,7 +1592,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     }();
 
     CarouselComponent.ɵfac = function CarouselComponent_Factory(t) {
-      return new (t || CarouselComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_1__["NgbCarouselConfig"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_services_http_service__WEBPACK_IMPORTED_MODULE_2__["HttpService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_services_states_service__WEBPACK_IMPORTED_MODULE_3__["StatesService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_services_cards_service__WEBPACK_IMPORTED_MODULE_4__["CardsService"]));
+      return new (t || CarouselComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_services_http_service__WEBPACK_IMPORTED_MODULE_1__["HttpService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_services_states_service__WEBPACK_IMPORTED_MODULE_2__["StatesService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_services_cards_service__WEBPACK_IMPORTED_MODULE_3__["CardsService"]));
     };
 
     CarouselComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({
@@ -1696,7 +1692,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngIf", ctx.cards && ctx.cards.length > 0);
         }
       },
-      directives: [_ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_1__["NgbTooltip"], _angular_common__WEBPACK_IMPORTED_MODULE_5__["NgClass"], _angular_common__WEBPACK_IMPORTED_MODULE_5__["NgIf"], angular_bootstrap_md__WEBPACK_IMPORTED_MODULE_6__["CarouselComponent"], _angular_common__WEBPACK_IMPORTED_MODULE_5__["NgForOf"], angular_bootstrap_md__WEBPACK_IMPORTED_MODULE_6__["SlideComponent"], _card_card_component__WEBPACK_IMPORTED_MODULE_7__["CardComponent"]],
+      directives: [_ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_4__["NgbTooltip"], _angular_common__WEBPACK_IMPORTED_MODULE_5__["NgClass"], _angular_common__WEBPACK_IMPORTED_MODULE_5__["NgIf"], angular_bootstrap_md__WEBPACK_IMPORTED_MODULE_6__["CarouselComponent"], _angular_common__WEBPACK_IMPORTED_MODULE_5__["NgForOf"], angular_bootstrap_md__WEBPACK_IMPORTED_MODULE_6__["SlideComponent"], _card_card_component__WEBPACK_IMPORTED_MODULE_7__["CardComponent"]],
       styles: [".container[_ngcontent-%COMP%] {\r\n  padding: 0;\r\n}\r\n#vorlesung[_ngcontent-%COMP%] {\r\n  text-align: center;\r\n  margin-top: 5px;\r\n}\r\n#btnDiv[_ngcontent-%COMP%] {\r\n  display: block;\r\n  width: 90%;\r\n  text-align: right;\r\n  margin: auto;\r\n  margin-bottom: 10px;\r\n}\r\n#carouselExampleControls[_ngcontent-%COMP%] {\r\n  margin-top: 10px;\r\n  margin-bottom: 10px;\r\n}\r\n.carousel-item[_ngcontent-%COMP%] {\r\n  min-height: 100px;\r\n}\r\n.carousel-control-prev[_ngcontent-%COMP%] {\r\n  width: 5%;\r\n}\r\n.carousel-control-next[_ngcontent-%COMP%] {\r\n  width: 5%;\r\n}\r\na[_ngcontent-%COMP%] {\r\n  color: black;\r\n  display: -webkit-inline-box;\r\n  display: inline-flex;\r\n  -webkit-box-align: center;\r\n          align-items: center;\r\n  width: 5%;\r\n}\r\nspan[_ngcontent-%COMP%] {\r\n  text-align: center;\r\n  width: 100%;\r\n}\r\n#carousel[_ngcontent-%COMP%] {\r\n  width: 90%;\r\n}\r\n.row[_ngcontent-%COMP%] {\r\n  max-width: 900px;\r\n  margin: 0;\r\n}\r\napp-card[_ngcontent-%COMP%] {\r\n  width: 100%;\r\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvY29tcG9uZW50cy9jYXJvdXNlbC9jYXJvdXNlbC5jb21wb25lbnQuY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0VBQ0UsVUFBVTtBQUNaO0FBQ0E7RUFDRSxrQkFBa0I7RUFDbEIsZUFBZTtBQUNqQjtBQUNBO0VBQ0UsY0FBYztFQUNkLFVBQVU7RUFDVixpQkFBaUI7RUFDakIsWUFBWTtFQUNaLG1CQUFtQjtBQUNyQjtBQUNBO0VBQ0UsZ0JBQWdCO0VBQ2hCLG1CQUFtQjtBQUNyQjtBQUNBO0VBQ0UsaUJBQWlCO0FBQ25CO0FBRUE7RUFDRSxTQUFTO0FBQ1g7QUFFQTtFQUNFLFNBQVM7QUFDWDtBQUNBO0VBQ0UsWUFBWTtFQUNaLDJCQUFvQjtFQUFwQixvQkFBb0I7RUFDcEIseUJBQW1CO1VBQW5CLG1CQUFtQjtFQUNuQixTQUFTO0FBQ1g7QUFDQTtFQUNFLGtCQUFrQjtFQUNsQixXQUFXO0FBQ2I7QUFDQTtFQUNFLFVBQVU7QUFDWjtBQUNBO0VBQ0UsZ0JBQWdCO0VBQ2hCLFNBQVM7QUFDWDtBQUNBO0VBQ0UsV0FBVztBQUNiIiwiZmlsZSI6InNyYy9hcHAvY29tcG9uZW50cy9jYXJvdXNlbC9jYXJvdXNlbC5jb21wb25lbnQuY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLmNvbnRhaW5lciB7XHJcbiAgcGFkZGluZzogMDtcclxufVxyXG4jdm9ybGVzdW5nIHtcclxuICB0ZXh0LWFsaWduOiBjZW50ZXI7XHJcbiAgbWFyZ2luLXRvcDogNXB4O1xyXG59XHJcbiNidG5EaXYge1xyXG4gIGRpc3BsYXk6IGJsb2NrO1xyXG4gIHdpZHRoOiA5MCU7XHJcbiAgdGV4dC1hbGlnbjogcmlnaHQ7XHJcbiAgbWFyZ2luOiBhdXRvO1xyXG4gIG1hcmdpbi1ib3R0b206IDEwcHg7XHJcbn1cclxuI2Nhcm91c2VsRXhhbXBsZUNvbnRyb2xzIHtcclxuICBtYXJnaW4tdG9wOiAxMHB4O1xyXG4gIG1hcmdpbi1ib3R0b206IDEwcHg7XHJcbn1cclxuLmNhcm91c2VsLWl0ZW0ge1xyXG4gIG1pbi1oZWlnaHQ6IDEwMHB4O1xyXG59XHJcblxyXG4uY2Fyb3VzZWwtY29udHJvbC1wcmV2IHtcclxuICB3aWR0aDogNSU7XHJcbn1cclxuXHJcbi5jYXJvdXNlbC1jb250cm9sLW5leHQge1xyXG4gIHdpZHRoOiA1JTtcclxufVxyXG5hIHtcclxuICBjb2xvcjogYmxhY2s7XHJcbiAgZGlzcGxheTogaW5saW5lLWZsZXg7XHJcbiAgYWxpZ24taXRlbXM6IGNlbnRlcjtcclxuICB3aWR0aDogNSU7XHJcbn1cclxuc3BhbiB7XHJcbiAgdGV4dC1hbGlnbjogY2VudGVyO1xyXG4gIHdpZHRoOiAxMDAlO1xyXG59XHJcbiNjYXJvdXNlbCB7XHJcbiAgd2lkdGg6IDkwJTtcclxufVxyXG4ucm93IHtcclxuICBtYXgtd2lkdGg6IDkwMHB4O1xyXG4gIG1hcmdpbjogMDtcclxufVxyXG5hcHAtY2FyZCB7XHJcbiAgd2lkdGg6IDEwMCU7XHJcbn1cclxuIl19 */"]
     });
     /*@__PURE__*/
@@ -1711,13 +1707,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         }]
       }], function () {
         return [{
-          type: _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_1__["NgbCarouselConfig"]
+          type: _services_http_service__WEBPACK_IMPORTED_MODULE_1__["HttpService"]
         }, {
-          type: _services_http_service__WEBPACK_IMPORTED_MODULE_2__["HttpService"]
+          type: _services_states_service__WEBPACK_IMPORTED_MODULE_2__["StatesService"]
         }, {
-          type: _services_states_service__WEBPACK_IMPORTED_MODULE_3__["StatesService"]
-        }, {
-          type: _services_cards_service__WEBPACK_IMPORTED_MODULE_4__["CardsService"]
+          type: _services_cards_service__WEBPACK_IMPORTED_MODULE_3__["CardsService"]
         }];
       }, {
         carousel: [{
@@ -4272,7 +4266,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
         this.httpService = httpService;
         this.statesService = statesService;
-        this.router = router; //provides a Subject to set a new index on which card the carousel should show
+        this.router = router; //loads cards once from the server and whenever lecture changes
+        //and provides them as an Observable
+
+        this.cards$ = new rxjs__WEBPACK_IMPORTED_MODULE_1__["BehaviorSubject"]([]); //provides a Subject to set a new index on which card the carousel should show
 
         this.newCardIndex$ = new rxjs__WEBPACK_IMPORTED_MODULE_1__["BehaviorSubject"](0); //provides a Subject of the index of the card that is currently shown
         //only the carousel shoul set nex values for this subject
@@ -4287,29 +4284,18 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
           var abrv = this.router.url.split(/vorlesung\//)[1]; //get the lecture abreviation from the route
 
-          if (this.cards$ && this.abrv == abrv) {
+          if (this.abrv === abrv) {
             //cards were already loaded for this lecture
             return this.cards$.asObservable();
           } else {
-            this.abrv = abrv;
+            this.abrv = abrv; //remove the old cards before fetching the new ones
 
-            if (this.cards$) {
-              //remove the old cards before fetching the new ones
-              this.cards$.next([]);
-            } else {
-              this.cards$ = new rxjs__WEBPACK_IMPORTED_MODULE_1__["BehaviorSubject"]([]);
-            } //returns an observable of the cards from http service while also initializing the cards internally for reuse
+            this.cards$.next([]); //make server request
 
-
-            return this.httpService.getCardsFromLectureAbrv(abrv).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["tap"])(function (res) {
-              if (_this14.cards$) {
-                _this14.cards$.next(res.body);
-              } else {
-                _this14.cards$ = new rxjs__WEBPACK_IMPORTED_MODULE_1__["BehaviorSubject"](res.body);
-              }
-            }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["map"])(function (res) {
-              return res.body;
-            }));
+            this.httpService.getCardsFromLectureAbrv(abrv).subscribe(function (cards) {
+              _this14.cards$.next(cards);
+            });
+            return this.cards$.asObservable();
           }
         }
       }, {
@@ -4491,13 +4477,19 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     /* harmony import */
 
 
-    var _states_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(
+    var _models_Vorlesung__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(
+    /*! ../models/Vorlesung */
+    "./src/app/models/Vorlesung.ts");
+    /* harmony import */
+
+
+    var _states_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(
     /*! ./states.service */
     "./src/app/services/states.service.ts");
     /* harmony import */
 
 
-    var _angular_router__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(
+    var _angular_router__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(
     /*! @angular/router */
     "./node_modules/@angular/router/__ivy_ngcc__/fesm2015/router.js");
 
@@ -4516,6 +4508,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         this.urlBase = "api/"; //url  base on which to adress the server with
 
         this.user$ = new rxjs__WEBPACK_IMPORTED_MODULE_2__["BehaviorSubject"](null); //stores the user
+
+        this.lecture$ = new rxjs__WEBPACK_IMPORTED_MODULE_2__["BehaviorSubject"](new _models_Vorlesung__WEBPACK_IMPORTED_MODULE_4__["Vorlesung"]("", "")); //holds the current lecture
 
         this.errors$ = new rxjs__WEBPACK_IMPORTED_MODULE_2__["BehaviorSubject"]([]);
         this.httpOptions = {
@@ -4542,6 +4536,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
               _this17.addErrors(error);
 
               _this17.statesService.setLoadingState(false);
+            }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])(function (res) {
+              return res.body;
             }));
           }
         } //add card to the database on server
@@ -4620,27 +4616,21 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
           var abrv = this.router.url.split(/vorlesung\//)[1]; //get the abreviation of the lecture from the url
 
-          if (this.lecture$ && this.lecture$.getValue().abrv == abrv) {
+          if (this.lecture$.getValue().abrv == abrv) {
             //the lecture was already loaded
             return this.lecture$.asObservable();
           } else {
             //fetch the lecture from the server
-            return this.http.get(this.urlBase + "lectures/find?abrv=" + abrv, {
+            this.http.get(this.urlBase + "lectures/find?abrv=" + abrv, {
               observe: "response"
-            }).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["tap"])(function (res) {
-              //update or initialize the subject
-              if (_this21.lecture$) {
-                _this21.lecture$.next(res.body);
-              } else {
-                _this21.lecture$ = new rxjs__WEBPACK_IMPORTED_MODULE_2__["BehaviorSubject"](res.body);
-              }
+            }).subscribe(function (res) {
+              _this21.lecture$.next(res.body);
             }, function (error) {
               _this21.addErrors(error);
 
               _this21.statesService.setLoadingState(false);
-            }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])(function (res) {
-              return res.body;
-            }));
+            });
+            return this.lecture$.asObservable();
           }
         } //add a lecture to the database on the server
 
@@ -4786,7 +4776,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     }();
 
     HttpService.ɵfac = function HttpService_Factory(t) {
-      return new (t || HttpService)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpClient"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_states_service__WEBPACK_IMPORTED_MODULE_4__["StatesService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_angular_router__WEBPACK_IMPORTED_MODULE_5__["Router"]));
+      return new (t || HttpService)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpClient"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_states_service__WEBPACK_IMPORTED_MODULE_5__["StatesService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_angular_router__WEBPACK_IMPORTED_MODULE_6__["Router"]));
     };
 
     HttpService.ɵprov = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjectable"]({
@@ -4806,9 +4796,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         return [{
           type: _angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpClient"]
         }, {
-          type: _states_service__WEBPACK_IMPORTED_MODULE_4__["StatesService"]
+          type: _states_service__WEBPACK_IMPORTED_MODULE_5__["StatesService"]
         }, {
-          type: _angular_router__WEBPACK_IMPORTED_MODULE_5__["Router"]
+          type: _angular_router__WEBPACK_IMPORTED_MODULE_6__["Router"]
         }];
       }, null);
     })();
