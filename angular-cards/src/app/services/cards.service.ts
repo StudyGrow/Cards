@@ -13,7 +13,7 @@ export class CardsService {
   private abrv: string;
   //loads cards once from the server and whenever lecture changes
   //and provides them as an Observable
-  private cards$: BehaviorSubject<Card[]>;
+  private cards$: BehaviorSubject<Card[]> = new BehaviorSubject<Card[]>([]);
   //provides a Subject to set a new index on which card the carousel should show
   private newCardIndex$: BehaviorSubject<number> = new BehaviorSubject<number>(
     0
@@ -32,28 +32,18 @@ export class CardsService {
 
   getCards(): Observable<Card[]> {
     let abrv = this.router.url.split(/vorlesung\//)[1]; //get the lecture abreviation from the route
-    if (this.cards$ && this.abrv == abrv) {
+    if (this.abrv === abrv) {
       //cards were already loaded for this lecture
       return this.cards$.asObservable();
     } else {
       this.abrv = abrv;
-      if (this.cards$) {
-        //remove the old cards before fetching the new ones
-        this.cards$.next([]);
-      } else {
-        this.cards$ = new BehaviorSubject<Card[]>([]);
-      }
-      //returns an observable of the cards from http service while also initializing the cards internally for reuse
-      return this.httpService.getCardsFromLectureAbrv(abrv).pipe(
-        tap((res) => {
-          if (this.cards$) {
-            this.cards$.next(res.body);
-          } else {
-            this.cards$ = new BehaviorSubject<Card[]>(res.body);
-          }
-        }),
-        map((res) => res.body)
-      );
+      //remove the old cards before fetching the new ones
+      this.cards$.next([]);
+      //make server request
+      this.httpService.getCardsFromLectureAbrv(abrv).subscribe((cards) => {
+        this.cards$.next(cards);
+      });
+      return this.cards$.asObservable();
     }
   }
 

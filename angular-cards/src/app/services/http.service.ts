@@ -15,7 +15,9 @@ import { Vorlesung } from "../models/Vorlesung";
 export class HttpService {
   private urlBase: string = "api/"; //url  base on which to adress the server with
   private user$: BehaviorSubject<User> = new BehaviorSubject<User>(null); //stores the user
-  private lecture$: BehaviorSubject<Vorlesung>; //holds the current lecture
+  private lecture$: BehaviorSubject<Vorlesung> = new BehaviorSubject<Vorlesung>(
+    new Vorlesung("", "")
+  ); //holds the current lecture
   private lectures$: BehaviorSubject<Vorlesung[]>; //holds all lectures
   private errors$: BehaviorSubject<string[]> = new BehaviorSubject<string[]>(
     []
@@ -32,7 +34,7 @@ export class HttpService {
 
   //get Cards for a specific lecture from server
   //This function shoul only be called by the cardsservice to initially load cards from server
-  getCardsFromLectureAbrv(abrv: string): Observable<HttpResponse<any[]>> {
+  getCardsFromLectureAbrv(abrv: string): Observable<Card[]> {
     this.statesService.setLoadingState(true);
     {
       return this.http
@@ -48,7 +50,8 @@ export class HttpService {
               this.addErrors(error);
               this.statesService.setLoadingState(false);
             }
-          )
+          ),
+          map((res) => res.body)
         );
     }
   }
@@ -133,32 +136,25 @@ export class HttpService {
   //get the Current lecture
   getCurrentLecture(): Observable<Vorlesung> {
     let abrv = this.router.url.split(/vorlesung\//)[1]; //get the abreviation of the lecture from the url
-    if (this.lecture$ && this.lecture$.getValue().abrv == abrv) {
+    if (this.lecture$.getValue().abrv == abrv) {
       //the lecture was already loaded
       return this.lecture$.asObservable();
     } else {
       //fetch the lecture from the server
-      return this.http
+      this.http
         .get<Vorlesung>(this.urlBase + "lectures/find?abrv=" + abrv, {
           observe: "response",
         })
-        .pipe(
-          tap(
-            (res) => {
-              //update or initialize the subject
-              if (this.lecture$) {
-                this.lecture$.next(res.body);
-              } else {
-                this.lecture$ = new BehaviorSubject<Vorlesung>(res.body);
-              }
-            },
-            (error) => {
-              this.addErrors(error);
-              this.statesService.setLoadingState(false);
-            }
-          ),
-          map((res) => res.body)
+        .subscribe(
+          (res) => {
+            this.lecture$.next(res.body);
+          },
+          (error) => {
+            this.addErrors(error);
+            this.statesService.setLoadingState(false);
+          }
         );
+      return this.lecture$.asObservable();
     }
   }
 

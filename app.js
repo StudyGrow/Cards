@@ -4,8 +4,8 @@ const helmet = require("helmet");
 const path = require("path");
 const session = require("express-session");
 const app = express();
-app.use(helmet());
 
+app.use(helmet());
 app.use(require("./middleware/serviceMiddleware")());
 
 app.use(bodyParser.urlencoded({ extended: false }));
