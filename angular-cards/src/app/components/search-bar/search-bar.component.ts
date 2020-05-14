@@ -62,7 +62,7 @@ export class SearchBarComponent implements OnInit {
   }
   navigateTo(e: Event, index: number) {
     e.preventDefault();
-
+    this.uInput = "";
     this.cardsService.setNewCardIndex(index);
   }
 }
