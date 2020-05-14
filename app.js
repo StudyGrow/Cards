@@ -36,7 +36,6 @@ app.use(passport.session());
 //    }
 //   })
 
-<<<<<<< HEAD
 //Logs each request
 // app.get("*", (req, res, next) => {
 //   console.log(req.url);
@@ -45,18 +44,6 @@ app.use(passport.session());
 //   }
 //   next();
 // });
-=======
-//Logs each request for debuggin purposes
-app.get("*", (req, res, next) => {
-  console.log(req.url);
-  if (req.user) {
-    console.log("user:", req.user.username);
-  }
-  next();
-});
-
-//This route needs access to the passport object and can therefore not be moved to a different file
->>>>>>> noHttps
 app.post("/api/login", (req, res, next) => {
   req.services.user.login(passport, req, res, next);
 });
