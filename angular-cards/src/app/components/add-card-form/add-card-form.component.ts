@@ -35,6 +35,12 @@ export class AddCardFormComponent implements OnInit {
       f.reset();
     });
   }
+  inField() {
+    this.stateService.setTyping(true);
+  }
+  resetNav() {
+    this.stateService.setTyping(false);
+  }
   //Function to set style of small character indicator
   setThemaCharIndicatorStyle(thema) {
     if (thema.value) {

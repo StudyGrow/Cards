@@ -2,13 +2,10 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const helmet = require("helmet");
 const path = require("path");
-const mongoose = require("mongoose");
-const User = require("./models/User");
-const bcrypt = require("bcryptjs");
 const session = require("express-session");
 const app = express();
-app.use(helmet());
 
+app.use(helmet());
 app.use(require("./middleware/serviceMiddleware")());
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -23,12 +20,13 @@ app.use(
 );
 
 const passport = require("passport");
-const LocalStrategy = require("passport-local").Strategy;
 
 require("./config/passport")(passport);
 
 app.use(passport.initialize());
 app.use(passport.session());
+
+// server specific route which redirects users to https
 // router.get('*', function(req, res , next) {
 //    if(req.secure == false){
 //      res.redirect('https://' + req.headers.host + req.url);
@@ -38,6 +36,7 @@ app.use(passport.session());
 //    }
 //   })
 
+<<<<<<< HEAD
 //Logs each request
 // app.get("*", (req, res, next) => {
 //   console.log(req.url);
@@ -46,6 +45,18 @@ app.use(passport.session());
 //   }
 //   next();
 // });
+=======
+//Logs each request for debuggin purposes
+app.get("*", (req, res, next) => {
+  console.log(req.url);
+  if (req.user) {
+    console.log("user:", req.user.username);
+  }
+  next();
+});
+
+//This route needs access to the passport object and can therefore not be moved to a different file
+>>>>>>> noHttps
 app.post("/api/login", (req, res, next) => {
   req.services.user.login(passport, req, res, next);
 });
@@ -53,7 +64,7 @@ app.post("/api/login", (req, res, next) => {
 //api route
 app.use("/api", require("./routes/api"));
 
-//angular files
+//built angular files
 app.use(express.static(path.join(__dirname, "./angular-cards/dist/angular-cards/")));
 
 //angular index.html file to always serve after client uses browser navigation

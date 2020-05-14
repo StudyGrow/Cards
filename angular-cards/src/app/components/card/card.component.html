@@ -4,14 +4,17 @@
   </div>
   <div class="card-body">
     <button
+      mdbBtn
+      color="primary"
       class="btn btn-light"
       type="button"
-      (click)="isCollapsed = !isCollapsed"
+      (click)="test.toggle()"
+      mdbWavesEffect
     >
       Mehr dazu
       <i class="fas fa-caret-down"></i>
     </button>
-    <div class="collapse" [ngbCollapse]="isCollapsed">
+    <div class="" mdbCollapse #test>
       <pre lang="de">
         <ng-katex-paragraph paragraph={{card.content}}></ng-katex-paragraph>
       </pre>

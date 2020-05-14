@@ -15,6 +15,7 @@ import { StatesService } from "src/app/services/states.service";
 export class NavBarComponent implements OnInit {
   public user: User;
   public cards: Card[];
+  public errors: string[];
 
   public loading: boolean = false;
   public constructor(
@@ -27,20 +28,24 @@ export class NavBarComponent implements OnInit {
 
   ngOnInit(): void {
     this.setPageTitle();
-    this.user = this.http.getUser();
+    this.http.getUser().subscribe((user) => (this.user = user));
     this.statesService.getLoadingState().subscribe((val) => {
       this.loading = val;
     });
+    this.http.getErrors().subscribe((errors) => (this.errors = errors));
     if (
       this.router.url != "/" &&
       this.router.url != "/login" &&
       this.router.url != "/signup"
-    )
+    ) {
       this.cardsService.getCards().subscribe((cards) => {
         this.cards = cards;
       });
+    }
   }
-
+  closeAlert(i: number) {
+    this.http.removeError(i);
+  }
   isActive(path: string): string {
     return path === this.router.url ? "active" : "";
   }

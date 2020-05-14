@@ -3239,7 +3239,7 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /Users/erdzan/Library/Mobile Documents/com~apple~CloudDocs/Documents/Visual Studio/Card/Cards/angular-cards/src/polyfills.ts */"./src/polyfills.ts");
+module.exports = __webpack_require__(/*! D:\GitLab\cards\angular-cards\src\polyfills.ts */"./src/polyfills.ts");
 
 
 /***/ })

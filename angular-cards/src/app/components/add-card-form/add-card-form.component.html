@@ -13,6 +13,8 @@
         required
         #thema="ngModel"
         ngModel
+        (focus)="inField()"
+        (blur)="resetNav()"
       />
       <small
         class="form-text float-right"
@@ -30,6 +32,8 @@
         required
         #content="ngModel"
         ngModel
+        (focus)="inField()"
+        (blur)="resetNav()"
       ></textarea>
       <small
         class="form-text float-right"

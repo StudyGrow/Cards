@@ -15,8 +15,7 @@ import { Vorlesung } from "src/app/models/Vorlesung";
 export class SearchBarComponent implements OnInit {
   constructor(
     private cardsService: CardsService,
-    private stateService: StatesService,
-    private http: HttpService
+    private stateService: StatesService
   ) {}
   cards: Card[];
   suggestions: SearchSuggestion[];
@@ -42,7 +41,12 @@ export class SearchBarComponent implements OnInit {
       });
     });
   }
-
+  inField() {
+    this.stateService.setTyping(true);
+  }
+  resetNav() {
+    this.stateService.setTyping(false);
+  }
   findMatches(e: Event) {
     this.stateService.setHideSuggestions(false); //show suggestions
     if (this.uInput && this.uInput.length > 2) {
@@ -58,7 +62,7 @@ export class SearchBarComponent implements OnInit {
   }
   navigateTo(e: Event, index: number) {
     e.preventDefault();
-
+    this.uInput = "";
     this.cardsService.setNewCardIndex(index);
   }
 }

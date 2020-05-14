@@ -6,7 +6,7 @@ import { StatesService } from "../../services/states.service";
 @Component({
   selector: "app-add-lecture-form",
   templateUrl: "./add-lecture-form.component.html",
-  styleUrls: ["./add-lecture-form.component.css"]
+  styleUrls: ["./add-lecture-form.component.css"],
 })
 export class AddLectureFormComponent implements OnInit {
   constructor(
@@ -16,9 +16,9 @@ export class AddLectureFormComponent implements OnInit {
   @Output() emitVl: EventEmitter<Vorlesung> = new EventEmitter();
   ngOnInit(): void {}
   onSubmit(f: NgForm) {
-    let newLecture = new Vorlesung(f.value.name, f.value.abrv);
+    let newLecture = new Vorlesung(f.value.name, f.value.abrv.toLowerCase());
     this.statesService.setLoadingState(true);
-    this.http.addLecture(newLecture).subscribe(response => {
+    this.http.addLecture(newLecture).subscribe((response) => {
       this.statesService.setLoadingState(false);
       this.emitVl.emit(newLecture);
     });
@@ -29,7 +29,7 @@ export class AddLectureFormComponent implements OnInit {
   setCharIndicatorStyle(field, max: number) {
     if (field.value) {
       return {
-        color: field.value.length > max ? "#ff0000" : "#000000"
+        color: field.value.length > max ? "#ff0000" : "#000000",
       };
     } else {
       return { color: "#000000" };
