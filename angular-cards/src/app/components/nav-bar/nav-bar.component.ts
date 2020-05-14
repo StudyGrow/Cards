@@ -33,11 +33,7 @@ export class NavBarComponent implements OnInit {
       this.loading = val;
     });
     this.http.getErrors().subscribe((errors) => (this.errors = errors));
-    if (
-      this.router.url != "/" &&
-      this.router.url != "/login" &&
-      this.router.url != "/signup"
-    ) {
+    if (this.router.url.match(/vorlesung/)) {
       this.cardsService.getCards().subscribe((cards) => {
         this.cards = cards;
       });
