@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { Vorlesung } from "../../models/Vorlesung";
 import { StatesService } from "../../services/states.service";
-import { from } from "rxjs";
+
 @Component({
   selector: "app-home-page",
   templateUrl: "./home-page.component.html",
@@ -19,7 +19,6 @@ export class HomePageComponent implements OnInit {
   }
 
   emitVl(lecture: Vorlesung) {
-    console.log("vl: ", lecture);
     this.newVl = lecture;
   }
 }

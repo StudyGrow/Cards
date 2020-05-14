@@ -9,7 +9,7 @@ import { Card } from "../../models/Card";
 })
 export class LecturesComponent implements OnInit {
   lectures: Vorlesung[];
-  @Output() lecturesLoaded: EventEmitter<boolean> = new EventEmitter();
+
   @Input() newVl: Vorlesung;
 
   constructor(private httpService: HttpService) {}

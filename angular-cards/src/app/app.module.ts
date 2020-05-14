@@ -44,6 +44,9 @@ import { LoginFormComponent } from "./components/login-form/login-form.component
 import { SignupPageComponent } from "./routes/signup-page/signup-page.component";
 import { SignupFormComponent } from "./components/signup-form/signup-form.component";
 import { StoreModule } from "@ngrx/store";
+import { FooterComponent } from './components/footer/footer.component';
+import { AboutComponent } from './routes/about/about.component';
+
 declare var Hammer: any;
 //Config to allow swipe gestures on carousel
 @Injectable()
@@ -89,6 +92,8 @@ export class MyHammerConfig extends HammerGestureConfig {
     LoginFormComponent,
     SignupPageComponent,
     SignupFormComponent,
+    FooterComponent,
+    AboutComponent,
   ],
   imports: [
     BrowserModule,
