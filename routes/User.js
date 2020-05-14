@@ -1,7 +1,9 @@
+//This route handles user specific requests
 const express = require("express");
-const { check, query, validationResult } = require("express-validator");
+const { check, validationResult } = require("express-validator"); //checks the request
 const router = express.Router();
 
+//create a new user account
 router.post(
   "/new",
   [
@@ -21,14 +23,13 @@ router.post(
     if (req.body.password !== req.body.password2) {
       if (errors.isEmpty()) {
         errors = [];
-      } else {
-        errors.push({
-          value: req.body.password2,
-          msg: "Passwort Wiederholung ungleich Passwort",
-          param: "password",
-          location: "body",
-        });
       }
+      errors.push({
+        value: req.body.password2,
+        msg: "Passwort Wiederholung ungleich Passwort",
+        param: "password",
+        location: "body",
+      });
     }
     if (!errors.isEmpty()) {
       res.status(422).json({
@@ -46,8 +47,10 @@ router.post(
   }
 );
 
+//logout the user
 router.get("/logout", (req, res) => {
   req.logout();
   res.status(200).send();
 });
+
 module.exports = router;

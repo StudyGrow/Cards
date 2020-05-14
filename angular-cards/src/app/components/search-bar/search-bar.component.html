@@ -5,6 +5,8 @@
   id="search"
   type="search"
   placeholder="Thema suchen"
+  (focus)="inField()"
+  (blur)="resetNav()"
 />
 <div *ngIf="suggestions" id="matches">
   <ul class="list-group">

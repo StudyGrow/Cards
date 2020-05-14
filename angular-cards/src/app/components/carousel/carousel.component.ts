@@ -1,19 +1,9 @@
-import {
-  Component,
-  OnInit,
-  Input,
-  Output,
-  EventEmitter,
-  HostListener,
-  ViewChild,
-} from "@angular/core";
-
+import { Component, OnInit, HostListener, ViewChild } from "@angular/core";
 import { HttpService } from "../../services/http.service";
 import { StatesService } from "../../services/states.service";
 import { CardsService } from "../../services/cards.service";
 import { Card } from "../../models/Card";
 import { Vorlesung } from "src/app/models/Vorlesung";
-import { NgbCarouselConfig, NgbSlideEvent } from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: "app-carousel",
@@ -38,22 +28,17 @@ export class CarouselComponent implements OnInit {
   formMode: string;
 
   constructor(
-    config: NgbCarouselConfig,
     private httpService: HttpService,
     private stateService: StatesService,
     private cardsService: CardsService
-  ) {
-    config.interval = -1;
-    config.wrap = true;
-    config.keyboard = true;
-    config.pauseOnHover = false;
-  }
+  ) {}
 
   ngOnInit(): void {
     this.httpService.getCurrentLecture().subscribe((lecture) => {
       this.lecture = lecture;
       this.title = this.lecture.name;
     });
+
     this.cardsService.getCards().subscribe((cards) => {
       this.cards = cards;
     }); //load the specific cards from the server by subscribing to the observable that the card-service provides

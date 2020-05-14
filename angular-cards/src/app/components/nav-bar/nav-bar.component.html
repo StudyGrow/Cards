@@ -72,3 +72,20 @@
 <div id="progress">
   <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
 </div>
+
+<div
+  #alert
+  class="alert alert-warning alert-dismissible fade show"
+  role="alert"
+  *ngFor="let error of errors; index as i"
+>
+  <button
+    type="button"
+    class="close"
+    aria-label="Close"
+    (click)="closeAlert(i)"
+  >
+    <span aria-hidden="true">&times;</span>
+  </button>
+  {{ error }}
+</div>

@@ -1,14 +1,19 @@
 //Modules
 import { BrowserModule } from "@angular/platform-browser";
-import { NgModule } from "@angular/core";
+import { NgModule, Injectable } from "@angular/core";
 import { HttpClientModule } from "@angular/common/http";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { AppRoutingModule } from "./app-routing.module";
 import { FormsModule } from "@angular/forms";
 import { MatProgressBarModule } from "@angular/material/progress-bar";
 import { MatDialogModule } from "@angular/material/dialog";
-import { CarouselModule, WavesModule } from "angular-bootstrap-md";
-import { KatexModule } from 'ng-katex';
+import {
+  CarouselModule,
+  WavesModule,
+  CollapseModule,
+  TooltipModule,
+} from "angular-bootstrap-md";
+import { KatexModule } from "ng-katex";
 
 //Components
 import { AppComponent } from "./app.component";
@@ -24,7 +29,6 @@ import { CardsPageComponent } from "./routes/cards-page/cards-page.component";
 //Services
 import { StatesService } from "./services/states.service";
 import { HttpService } from "./services/http.service";
-import { CardsService } from "./services/cards.service";
 
 //Material Modules
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
@@ -42,6 +46,7 @@ import { SignupFormComponent } from "./components/signup-form/signup-form.compon
 import { StoreModule } from "@ngrx/store";
 declare var Hammer: any;
 //Config to allow swipe gestures on carousel
+@Injectable()
 export class MyHammerConfig extends HammerGestureConfig {
   overrides = <any>{
     pan: { direction: Hammer.DIRECTION_All },
@@ -83,7 +88,7 @@ export class MyHammerConfig extends HammerGestureConfig {
     LoginPageComponent,
     LoginFormComponent,
     SignupPageComponent,
-    SignupFormComponent
+    SignupFormComponent,
   ],
   imports: [
     BrowserModule,
@@ -97,8 +102,10 @@ export class MyHammerConfig extends HammerGestureConfig {
     CarouselModule,
     WavesModule,
     HammerModule,
+    CollapseModule,
+    TooltipModule,
     StoreModule.forRoot({}, {}),
-    KatexModule
+    KatexModule,
   ],
   providers: [
     StatesService,
