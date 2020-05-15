@@ -18,6 +18,7 @@ const schema = new mongoose.Schema({
     type: Buffer,
   },
   author: String,
+  date: Date,
 });
 
 const Card = (module.exports = mongoose.model("Card", schema));
