@@ -285,6 +285,9 @@ export class HttpService {
     errors.splice(index, 1); //remove error at position index
     this.errors$.next(errors);
   }
+  clearErrors() {
+    this.errors$.next([]);
+  }
 
   getErrors(): Observable<string[]> {
     return this.errors$.asObservable();

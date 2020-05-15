@@ -32,6 +32,10 @@ export class NavBarComponent implements OnInit {
     this.statesService.getLoadingState().subscribe((val) => {
       this.loading = val;
     });
+    this.router.events.subscribe((e) => {
+      //clear error messages on route change
+      this.http.clearErrors();
+    });
     this.http.getErrors().subscribe((errors) => (this.errors = errors));
     if (this.router.url.match(/vorlesung/)) {
       this.cardsService.getCards().subscribe((cards) => {
