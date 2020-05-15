@@ -222,6 +222,24 @@ export class HttpService {
     }
     return this.user$.asObservable();
   }
+  getUserInfo(): Observable<any> {
+    this.statesService.setLoadingState(true);
+    return this.http
+      .get<any>(this.urlBase + "user/info", {
+        observe: "response",
+      })
+      .pipe(
+        tap(
+          (res) => {
+            this.statesService.setLoadingState(false);
+          },
+          (error) => {
+            this.addErrors(error);
+          }
+        ),
+        map((res) => res.body)
+      );
+  }
 
   //logout the user in front- and backend
   logout() {

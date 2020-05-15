@@ -5,6 +5,7 @@ import { CardsPageComponent } from "./routes/cards-page/cards-page.component";
 import { LoginPageComponent } from "./routes/login-page/login-page.component";
 import { SignupPageComponent } from "./routes/signup-page/signup-page.component";
 import { AboutComponent } from "./routes/about/about.component";
+import { AccountPageComponent } from "./routes/account-page/account-page.component";
 
 const routes: Routes = [
   { path: "", component: HomePageComponent },
@@ -12,6 +13,7 @@ const routes: Routes = [
   { path: "login", component: LoginPageComponent },
   { path: "signup", component: SignupPageComponent },
   { path: "about", component: AboutComponent },
+  { path: "account", component: AccountPageComponent },
 ];
 
 @NgModule({

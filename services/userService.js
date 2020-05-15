@@ -39,7 +39,7 @@ module.exports = function userService() {
   userService.getAccountInfo = async (user, callback) => {
     try {
       if (!user) {
-        throw new Error("No user provided");
+        throw new Error("Bitte logge dich erst ein");
       }
       let info;
       let cards = await Card.find({ author: user.username });
