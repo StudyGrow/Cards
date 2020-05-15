@@ -47,6 +47,16 @@ router.post(
   }
 );
 
+router.get("/info", (req, res) => {
+  req.services.user.getAccountInfo(req.user, (err, info) => {
+    if (err) {
+      res.status(422).send(err.message);
+    } else {
+      res.status(200).send(info);
+    }
+  });
+});
+
 //logout the user
 router.get("/logout", (req, res) => {
   req.logout();

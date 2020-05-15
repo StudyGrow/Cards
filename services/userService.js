@@ -1,5 +1,6 @@
 //Service that provides functions associated with users
 const User = require("../models/User");
+const Card = require("../models/Card");
 const bcrypt = require("bcryptjs"); //used to encrypt and decrypt passwords
 
 module.exports = function userService() {
@@ -34,15 +35,21 @@ module.exports = function userService() {
     })(req, res, next);
   };
 
-  //find a user, which matches the query only the first match will be returned
-  userService.findUser = async (query, callback) => {
+  //get account info for a user, for now only cards
+  userService.getAccountInfo = async (user, callback) => {
     try {
-      let user = await User.findOne(query);
-      callback(null, user);
+      if (!user) {
+        throw new Error("No user provided");
+      }
+      let info;
+      let cards = await Card.find({ author: user.username });
+      info.cards = cards;
+      callback(null, info);
     } catch (error) {
       callback(error, null);
     }
   };
+
   return userService;
 };
 
