@@ -53,10 +53,10 @@ module.exports = function userService() {
     });
   };
 
-  userService.updateAccount = async (user, email, username) => {
+  userService.updateAccount = async (user, form) => {
     try {
-      await checkUnique(email, username);
-      await User.findByIdAndUpdate(user._id, { username: username, email: email });
+      await checkUnique(form.email, form.username);
+      await User.findByIdAndUpdate(user._id, { username: form.username, email: form.email });
       callback(null);
     } catch (error) {
       callback(error);
