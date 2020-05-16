@@ -22,6 +22,10 @@ export class HttpService {
   private errors$: BehaviorSubject<string[]> = new BehaviorSubject<string[]>(
     []
   );
+  private profileInfo$: BehaviorSubject<any> = new BehaviorSubject<any>({
+    username: "steve",
+    email: "bla@hotmail.com",
+  });
   private httpOptions = {
     headers: new HttpHeaders({ "Content-Type": "application/json" }),
   };
@@ -224,7 +228,7 @@ export class HttpService {
   }
   getUserInfo(): Observable<any> {
     this.statesService.setLoadingState(true);
-    return this.http
+    this.http
       .get<any>(this.urlBase + "user/info", {
         observe: "response",
       })
@@ -239,6 +243,8 @@ export class HttpService {
         ),
         map((res) => res.body)
       );
+    this.statesService.setLoadingState(false);
+    return this.profileInfo$.asObservable();
   }
 
   //logout the user in front- and backend

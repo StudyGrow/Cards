@@ -1,0 +1,71 @@
+<h2>Accountdaten ändern</h2>
+<form #form="ngForm" (ngSubmit)="changeAccount(form)" novalidate>
+  <div class="form-group">
+    <label for="username">Benutzername</label>
+    <input
+      type="text"
+      class="form-control"
+      id="username"
+      name="username"
+      required
+      maxlength="20"
+      aria-describedby="nameHelp"
+      #username="ngModel"
+      [(ngModel)]="userInfo.username"
+    />
+    <small class="form-text">Wenigstens 5 Zeichen </small>
+  </div>
+  <div class="form-group">
+    <label for="email">Email Adresse</label>
+    <input
+      type="email"
+      class="form-control"
+      name="email"
+      id="email"
+      aria-describedby="emailHelp"
+      required
+      #email="ngModel"
+      [(ngModel)]="userInfo.email"
+    />
+  </div>
+  <button type="submit" class="btn btn-primary" [disabled]="!validate(form)">
+    Sichern
+  </button>
+</form>
+<hr />
+<h2>Passwort ändern</h2>
+<form #pwform="ngForm" (ngSubmit)="changePassword(pwform)" novalidate>
+  <div class="form-group">
+    <label for="password">Neues Passwort</label>
+    <input
+      type="password"
+      class="form-control"
+      name="password"
+      id="password"
+      #password="ngModel"
+      ngModel
+      minlength="7"
+    />
+    <small class="form-text">Wenigstens 7 Zeichen </small>
+  </div>
+  <div class="form-group">
+    <label for="password2">Neues Passwort wiederholen</label>
+    <input
+      type="password"
+      class="form-control"
+      name="password2"
+      id="password2"
+      #password2="ngModel"
+      ngModel
+      minlength="7"
+      [style]="setStyle(password, password2)"
+    />
+  </div>
+  <button
+    type="submit"
+    class="btn btn-primary"
+    [disabled]="!match(password.value, password2.value)"
+  >
+    Ändern
+  </button>
+</form>
