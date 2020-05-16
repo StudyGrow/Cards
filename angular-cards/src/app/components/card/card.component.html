@@ -16,7 +16,7 @@
     </button>
     <div class="" mdbCollapse #test>
       <pre lang="de">
-        <ng-katex-paragraph paragraph={{card.content}}></ng-katex-paragraph>
+          <div  [innerHtml]="parsed[0] | safeHtml"></div>
       </pre>
     </div>
   </div>

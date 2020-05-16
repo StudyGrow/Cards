@@ -4,9 +4,11 @@ export class Card {
   author?: string;
   content: string;
   abrv: string;
-  constructor(thema, content, abrv) {
+  latex: number;
+  constructor(thema, content, abrv, latex) {
     this.thema = thema;
     this.content = content;
     this.abrv = abrv;
+    latex = latex
   }
 }

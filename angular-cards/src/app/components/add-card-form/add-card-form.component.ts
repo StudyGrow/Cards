@@ -30,7 +30,7 @@ export class AddCardFormComponent implements OnInit {
   }
   setStyle() {}
   onSubmit(f: NgForm) {
-    this.newCard = new Card(f.value.thema, f.value.content, this.lecture.abrv);
+    this.newCard = new Card(f.value.thema, f.value.content, this.lecture.abrv, 0);
     this.cardsService.addCard(this.newCard).subscribe((res) => {
       f.reset();
     });

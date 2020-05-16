@@ -47,6 +47,9 @@ import { StoreModule } from "@ngrx/store";
 import { FooterComponent } from './components/footer/footer.component';
 import { AboutComponent } from './routes/about/about.component';
 import { AccountPageComponent } from './routes/account-page/account-page.component';
+//Pipes
+import { SafeHtmlPipe } from './components/card/card.component';
+
 
 declare var Hammer: any;
 //Config to allow swipe gestures on carousel
@@ -96,6 +99,7 @@ export class MyHammerConfig extends HammerGestureConfig {
     FooterComponent,
     AboutComponent,
     AccountPageComponent,
+    SafeHtmlPipe,
   ],
   imports: [
     BrowserModule,
@@ -124,5 +128,6 @@ export class MyHammerConfig extends HammerGestureConfig {
     },
   ],
   bootstrap: [AppComponent],
+
 })
 export class AppModule {}
