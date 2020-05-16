@@ -57,6 +57,63 @@ router.get("/info", (req, res) => {
   });
 });
 
+router.put(
+  "/updatePassword",
+  [
+    check("password")
+      .isLength({ min: 7 })
+      .withMessage("Passwort muss mindestens 7 Zeichen enthalten"),
+  ],
+  (req, res) => {
+    if (!errors.isEmpty()) {
+      res.status(422).json({
+        errors: errors.array(),
+      });
+    } else {
+      req.services.user.updatePassword(req.user, req.body.password, (err) => {
+        if (err) {
+          res.status(422).send(err.message);
+        } else {
+          res.status(200).send();
+        }
+      });
+    }
+  }
+);
+
+router.put(
+  "/updateAccount",
+  [
+    check("email").isEmail().withMessage("Keine gültige Email Adresse"),
+    check("username")
+      .isLength({
+        min: 5,
+        max: 20,
+      })
+      .withMessage("Benutzername muss zwischen 5 und 20 Zeichen enthalten"),
+  ],
+  (req, res) => {
+    if (!errors.isEmpty()) {
+      res.status(422).json({
+        errors: errors.array(),
+      });
+    } else {
+      let oldusername = req.user.username;
+      req.services.user.updateAccount(req.user, req.body, (err) => {
+        if (err) {
+          res.status(422).send(err.message);
+        } else {
+          if (oldusername === req.user.username) {
+            console.log("no change in username");
+          } else {
+            req.services.cards.updateUsername(oldusername, req.username);
+          }
+          res.status(200).send();
+        }
+      });
+    }
+  }
+);
 //logout the user
 router.get("/logout", (req, res) => {
   req.logout();
