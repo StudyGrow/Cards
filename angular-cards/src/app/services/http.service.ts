@@ -6,6 +6,7 @@ import { StatesService } from "./states.service";
 import { Router } from "@angular/router";
 //Models
 import { User } from "../models/User";
+import { UserInfo } from "../models/userInfo";
 import { Card } from "../models/Card";
 import { Vorlesung } from "../models/Vorlesung";
 
@@ -22,10 +23,9 @@ export class HttpService {
   private errors$: BehaviorSubject<string[]> = new BehaviorSubject<string[]>(
     []
   );
-  private profileInfo$: BehaviorSubject<any> = new BehaviorSubject<any>({
-    username: "steve",
-    email: "bla@hotmail.com",
-  });
+  private profileInfo$: BehaviorSubject<UserInfo> = new BehaviorSubject<
+    UserInfo
+  >(null);
   private httpOptions = {
     headers: new HttpHeaders({ "Content-Type": "application/json" }),
   };
@@ -227,24 +227,27 @@ export class HttpService {
     return this.user$.asObservable();
   }
   getUserInfo(): Observable<any> {
-    this.statesService.setLoadingState(true);
-    this.http
-      .get<any>(this.urlBase + "user/info", {
-        observe: "response",
-      })
-      .pipe(
-        tap(
+    if (this.profileInfo$.getValue() != null) {
+      return this.profileInfo$.asObservable();
+    } else {
+      this.profileInfo$ = new BehaviorSubject<any>(this.user$.getValue());
+      this.statesService.setLoadingState(true);
+      this.http
+        .get<any>(this.urlBase + "user/info", {
+          observe: "response",
+        })
+        .subscribe(
           (res) => {
             this.statesService.setLoadingState(false);
+            this.profileInfo$.next(res.body);
           },
           (error) => {
+            this.statesService.setLoadingState(false);
             this.addErrors(error);
           }
-        ),
-        map((res) => res.body)
-      );
-    this.statesService.setLoadingState(false);
-    return this.profileInfo$.asObservable();
+        );
+      return this.profileInfo$.asObservable();
+    }
   }
 
   //logout the user in front- and backend
@@ -272,20 +275,65 @@ export class HttpService {
             this.statesService.setLoadingState(false);
           },
           (error) => {
-            console.log(error.headers);
             this.addErrors(error);
             this.statesService.setLoadingState(false);
           }
         )
       );
   }
+
+  updatePassword(form) {
+    this.statesService.setLoadingState(true);
+    return this.http
+      .put<any>(this.urlBase + "user/updatePassword", form, {
+        headers: this.httpOptions.headers,
+        observe: "response",
+      })
+      .pipe(
+        tap(
+          (res) => {
+            this.statesService.setLoadingState(false);
+          },
+          (error) => {
+            this.addErrors(error);
+            this.statesService.setLoadingState(false);
+          }
+        )
+      );
+  }
+  updateAccount(form) {
+    this.statesService.setLoadingState(true);
+    this.http
+      .put<any>(this.urlBase + "user/updateAccount", form, {
+        headers: this.httpOptions.headers,
+        observe: "response",
+      })
+      .subscribe(
+        (res) => {
+          this.statesService.setLoadingState(false);
+          this.user$.next(form);
+          let info = this.profileInfo$.getValue();
+          info.user = form;
+          this.profileInfo$.next(info);
+        },
+        (error) => {
+          this.addErrors(error);
+          this.statesService.setLoadingState(false);
+        }
+      );
+  }
   addErrors(error) {
     let err = error.error;
     let errors = this.errors$.getValue();
-    console.log(error.status);
-    if (error.status == 422) {
+    console.log(error);
+    if (error.status == 400) {
+      errors.push("Bitte logge dich erst ein");
+      this.router.navigateByUrl("/login");
+    } else if (error.status == 422) {
       if (typeof err == "string") {
         errors.push(err);
+      } else if (typeof err == "object") {
+        console.log(err);
       } else {
         console.log(typeof err);
         errors.push(...err);
@@ -298,7 +346,6 @@ export class HttpService {
       errors.push(
         "Ein unbekannter Fehler ist aufgetreten. Versuche es später erneut."
       );
-      console.log(error);
     }
     this.errors$.next(errors);
   }

@@ -20,17 +20,6 @@ router.post(
   ],
   (req, res) => {
     const errors = validationResult(req);
-    if (req.body.password !== req.body.password2) {
-      if (errors.isEmpty()) {
-        errors = [];
-      }
-      errors.push({
-        value: req.body.password2,
-        msg: "Passwort Wiederholung ungleich Passwort",
-        param: "password",
-        location: "body",
-      });
-    }
     if (!errors.isEmpty()) {
       res.status(422).json({
         errors: errors.array(),
@@ -46,12 +35,20 @@ router.post(
     }
   }
 );
-
-router.get("/info", (req, res) => {
+function auth(req, res, next) {
+  if (req.user) {
+    next();
+  } else {
+    res.status(400).send();
+  }
+}
+router.get("/info", auth, (req, res) => {
   req.services.user.getAccountInfo(req.user, (err, info) => {
     if (err) {
       res.status(422).send(err.message);
     } else {
+      let user = { username: req.user.username, email: req.user.email };
+      info.user = user;
       res.status(200).send(info);
     }
   });
@@ -65,6 +62,7 @@ router.put(
       .withMessage("Passwort muss mindestens 7 Zeichen enthalten"),
   ],
   (req, res) => {
+    const errors = validationResult(req);
     if (!errors.isEmpty()) {
       res.status(422).json({
         errors: errors.array(),
@@ -93,21 +91,17 @@ router.put(
       .withMessage("Benutzername muss zwischen 5 und 20 Zeichen enthalten"),
   ],
   (req, res) => {
+    const errors = validationResult(req);
     if (!errors.isEmpty()) {
       res.status(422).json({
         errors: errors.array(),
       });
     } else {
-      let oldusername = req.user.username;
       req.services.user.updateAccount(req.user, req.body, (err) => {
         if (err) {
+          console.log(err);
           res.status(422).send(err.message);
         } else {
-          if (oldusername === req.user.username) {
-            console.log("no change in username");
-          } else {
-            req.services.cards.updateUsername(oldusername, req.username);
-          }
           res.status(200).send();
         }
       });

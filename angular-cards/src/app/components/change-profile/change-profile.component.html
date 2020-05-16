@@ -11,7 +11,7 @@
       maxlength="20"
       aria-describedby="nameHelp"
       #username="ngModel"
-      [(ngModel)]="userInfo.username"
+      [(ngModel)]="user.username"
     />
     <small class="form-text">Wenigstens 5 Zeichen </small>
   </div>
@@ -25,11 +25,11 @@
       aria-describedby="emailHelp"
       required
       #email="ngModel"
-      [(ngModel)]="userInfo.email"
+      [(ngModel)]="user.email"
     />
   </div>
   <button type="submit" class="btn btn-primary" [disabled]="!validate(form)">
-    Sichern
+    Aktualisieren
   </button>
 </form>
 <hr />

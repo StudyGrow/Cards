@@ -33,7 +33,7 @@ module.exports = function userService() {
       if (!user) {
         throw new Error("Bitte logge dich erst ein");
       }
-      let info;
+      let info = new Object();
       let cards = await Card.find({ author: user.username });
       info.cards = cards;
       callback(null, info);
@@ -53,9 +53,18 @@ module.exports = function userService() {
     });
   };
 
-  userService.updateAccount = async (user, form) => {
+  userService.updateAccount = async (user, form, callback) => {
     try {
-      await checkUnique(form.email, form.username);
+      if (user.username == form.username && user.email == form.email) {
+        callback(null);
+        return;
+      } else if (user.email == form.email && user.username != form.username) {
+        await checkUnique(null, form.username);
+      } else if (user.email != form.email && user.username == form.username) {
+        await checkUnique(form.email, null);
+      } else {
+        await checkUnique(form.email, form.username);
+      }
       await User.findByIdAndUpdate(user._id, { username: form.username, email: form.email });
       callback(null);
     } catch (error) {
@@ -68,11 +77,16 @@ module.exports = function userService() {
 //check if username and email provided are unique in the database
 async function checkUnique(email, username) {
   let user;
-  user = await User.findOne({ email: email }); //check if email is already registered
+  if (email) {
+    user = await User.findOne({ email: email }); //check if email is already registered
+  }
   if (user) {
     throw new Error("Diese Email adresse ist bereits registriert");
   }
-  user = await User.findOne({ username: username }); //check if username is already taken
+  if (username) {
+    user = await User.findOne({ username: username }); //check if username is already taken
+  }
+
   if (user) {
     throw new Error("Der Benutzername existiert bereits");
   }

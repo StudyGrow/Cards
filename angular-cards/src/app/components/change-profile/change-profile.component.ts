@@ -8,17 +8,25 @@ import { NgForm } from "@angular/forms";
 })
 export class ChangeProfileComponent implements OnInit {
   public userInfo;
+  public user = { username: "", email: "" };
   constructor(private http: HttpService) {}
 
   ngOnInit(): void {
-    this.http.getUserInfo().subscribe((info) => (this.userInfo = info));
+    this.http.getUserInfo().subscribe((info) => {
+      this.userInfo = info;
+      if (info && info.user) {
+        this.user = info.user;
+      }
+    });
   }
 
   changeAccount(form: NgForm) {
-    console.log(form.value);
+    this.http.updateAccount(form.value);
   }
   changePassword(form: NgForm) {
-    console.log(form.value);
+    this.http.updatePassword(form.value).subscribe((res) => {
+      form.reset();
+    });
   }
   setStyle(password, password2) {
     if (
