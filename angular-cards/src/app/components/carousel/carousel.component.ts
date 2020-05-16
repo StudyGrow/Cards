@@ -112,7 +112,7 @@ export class CarouselComponent implements OnInit {
       if (!currCard.author || currCard.author.length == 0) {
         return false;
       }
-      if (!this.user || currCard.author !== this.user.username) {
+      if (!this.user || currCard.author !== this.user._id) {
         //there is an author an it is not the user
         return true;
       } else {

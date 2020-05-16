@@ -40,7 +40,7 @@ router.post(
         if (err) {
           res.status(422).send(err.message);
         } else {
-          res.status(200).send({ username: user.username, email: user.email });
+          res.status(200).send({ _id: user._id, username: user.username, email: user.email });
         }
       });
     }

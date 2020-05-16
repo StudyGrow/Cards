@@ -1818,7 +1818,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
               return false;
             }
 
-            if (!this.user || currCard.author !== this.user.username) {
+            if (!this.user || currCard.author !== this.user._id) {
               //there is an author an it is not the user
               return true;
             } else {

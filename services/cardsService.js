@@ -37,7 +37,7 @@ module.exports = function cardsService() {
         //There is an author, but there is no user logged in
         throw new Error("Fehler: Du bist nicht der Author dieser Karte. Bitte logge dich ein.");
       }
-      if (tmp.author && tmp.author != "" && tmp.author != user.username) {
+      if (tmp.author && tmp.author != "" && tmp.author != user._id) {
         //The user is not the author of the card
         throw new Error("Fehler: Du bist nicht der Author dieser Karte.");
       }
