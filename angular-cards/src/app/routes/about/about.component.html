@@ -1,52 +1,57 @@
 <app-nav-bar></app-nav-bar>
 <div class="container">
-  <h3>Cards</h3>
+  <div class="media">
+    <img src="assets/c.png" class="align-self-center mr-1" alt="Logo" />
+    <div class="media-body">
+      <h3>Cards</h3>
+    </div>
+  </div>
   <p>
     Cards ist eine Webseite, die dir dabei helfen soll dich auf deine Klausuren
     und Prüfungen vorzubereiten. Das Konzept von Cards beruht auf den
     klassischen Karteikarten. Anders als die klassischen Karteikarten brauchst
-    du jedoch nicht deinen Stapel überall mitzuschleppen. Unsere Webseite
-    richtet sich vor allem an Studenten. Sie eignet sich vor allem auch für
-    Smartphones, somit kannst du dir deine Karteikarten auch unterwegs
-    anschauen.
+    du jedoch nicht deinen Stapel an Karten überall mitzuschleppen. Unsere
+    Webseite eignet sich vor allem auch für Smartphones, somit kannst du dir
+    deine Karteikarten auch unterwegs anschauen. Sie richtet sich vor allem an
+    Studenten.
   </p>
   <p *ngIf="!loggedIn">
     <a routerLink="/signup">Erstelle einen Account</a>, um alle Vorteile unserer
     Webseite zu nutzen.
   </p>
+  <h4>Sharing is Caring</h4>
+  <p>
+    Karteikarten, die du auf unserer Webseite hinzufügst, sind automatisch für
+    alle anderen Nutzer sichtbar. Andererseits kannst du dir auch Karten von
+    anderen Nutzern anschauen.Dies sorgt dafür, dass du optimal auf deine
+    Klausur vorbereitet bist. <br />
+    Wenn du mit einer Karte nicht zufrieden bist, oder du glaubst ihr Inhalt
+    wäre falsch oder unvollständig, kannst du sie bearbeiten. Karten, welche von
+    registrierten Nutzern erstellt worden sind, kannst du leider nicht
+    bearbeiten. In einer späteren Version wird es möglich sein für diese Karte
+    einen Verberungsvorschlag an den Ertseller der Karte zu senden.
+  </p>
   <h4>Wir freuen uns über Feedback</h4>
   <p>
     Wir bemühen uns, die Seite fehlerfrei zu gestalten. Trotzdem kann es sein,
     dass sich der ein oder andere Fehler eingeschlichen hat. Diesen kannst du
-    uns gerne melden indem du auf
+    uns gerne melden indem du
     <a
       href="https://git.rwth-aachen.de/jungerjunge2/cards/-/issues"
       target="_blank"
-      >GitLab</a
+      >hier</a
     >
     ein Issue erstellst. Wir versuchen den Fehler, dann so schnell wie möglich
     zu beheben. Du kannst uns dort auch gerne Feedback hinterlassen
   </p>
-  <h4>Sharing is Caring</h4>
-  <p>
-    Karteikarten, die du auf unserer Webseite hinzufügst, sind automatisch auch
-    für alle anderen Nutzer sichtbar. Andererseits kannst du dir jedoch auch
-    alle anderen Karten anschauen. <br />
-    Dies sorgt dafür, dass du optimal auf deine Klausur vorbereitet bist. Wenn
-    du mit einer Karte nicht zufrieden bist, oder du glaubst ihr Inhalt wäre
-    falsch oder unvollständig, kannst du sie selbst bearbeiten. Karten, welche
-    jedoch von registrierten Nutzern erstellt worden sind kannst du leider nicht
-    bearbeiten. In einer späteren Version wird es möglich sein für diese Karte
-    einen Verberungsvorschlag an den Ertseller der Karte zu senden.
-  </p>
 
-  <h3>FAQ</h3>
+  <h3 id="FAQ">FAQ</h3>
   <h4>Wo finde ich die Karteikarten zu meiner Vorlesung?</h4>
   <p>
     Auf unserer <a routerLink="/">Startseite</a> findest du eine Liste aller
-    Vorlesungen, für die bisher Karten hinzugefügt wurden. Wähle deine
-    Vorlesung. Falls du die Vorlesung nich in der Liste findest, dann kannst du
-    sie hinzufügen indem du das Formular ausfüllst und auf "Hinzufügen" drückst.
+    Vorlesungen, für die bisher Karten hinzugefügt wurden. Wähle deine Vorlesung
+    aus. Falls du die Vorlesung nich in der Liste findest, dann kannst du sie
+    hinzufügen indem du das Formular ausfüllst und auf "Hinzufügen" drückst.
     <br />
     Nachdem du auf die Vorlesung gedrückt hast kommst du auf eine neue Seite,
     auf der du dir alle Karteikarten, die zu der Vorlesung bereits hinzugefügt
@@ -65,20 +70,24 @@
     Nachdem du auf die Seite der Vorlesung navigiert bist kannst du eine neue
     Karte hinzufügen indem du auf das <i class="fas fa-plus"></i> Symbol unter
     der Überschrift drückst. Nun kannst du deine Karteikarte hinzufügen indem du
-    das Formular ausfüllst und auf hinzufügen drückst.
+    das Formular ausfüllst und auf "Hinzufügen" drückst.
     <span *ngIf="!loggedIn">
       Erstelle am Besten einen
       <a routerLink="/signup"> Account</a>, oder
       <a routerLink="/login">logge dich ein</a>, damit du Ertseller dieser Karte
-      wirst und nur du diese bearbeiten kannst
+      wirst und nur du diese bearbeiten kannst.
     </span>
+    Pro-Tip: du kannst auch mathematische Symbole schreiben indem du Latex
+    Befehle verwendest und diese mit $ Zeichen umhüllst. Mehr zu den Latex
+    Befehlen findest du
+    <a href="https://en.wikibooks.org/wiki/LaTeX/Mathematics">hier</a>.
   </p>
 
   <h4>Wie bearbeite ich eine Karte?</h4>
   <p>
     Wähle zuerst die Karteikarte aus die du bearbeiten möchtest. Drücke auf das
     <i class="fas fa-pen"></i> Symbol unter der Überschrift. Bearbeite deine
-    Karte im Formular und drücke auf sichern. Bitte beachte, dass du nur
+    Karte im Formular und drücke auf "Sichern". Bitte beachte, dass du nur
     öffentliche und deine eigenen Karten bearbeiten kannst. Karten, die von
     anderen registrierten Nutzern erstellt worden sind kannst du leider nicht
     bearbeit. In einer späteren Version wird es möglich sein für diese Karte

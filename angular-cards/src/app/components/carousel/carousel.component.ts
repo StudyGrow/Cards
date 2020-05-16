@@ -4,6 +4,7 @@ import { StatesService } from "../../services/states.service";
 import { CardsService } from "../../services/cards.service";
 import { Card } from "../../models/Card";
 import { Vorlesung } from "src/app/models/Vorlesung";
+import { User } from "src/app/models/User";
 
 @Component({
   selector: "app-carousel",
@@ -26,6 +27,7 @@ export class CarouselComponent implements OnInit {
   addComponentHidden: boolean;
   formShow: boolean;
   formMode: string;
+  private user: User;
 
   constructor(
     private httpService: HttpService,
@@ -34,6 +36,7 @@ export class CarouselComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.httpService.getUser().subscribe((user) => (this.user = user));
     this.httpService.getCurrentLecture().subscribe((lecture) => {
       this.lecture = lecture;
       this.title = this.lecture.name;
@@ -97,6 +100,24 @@ export class CarouselComponent implements OnInit {
     }
   }
   onSlide(slideEvent) {
+    this.activeSlide = parseInt(slideEvent.relatedTarget);
     this.cardsService.setActiveCardIndex(parseInt(slideEvent.relatedTarget));
+  }
+  isDisabled() {
+    if (this.formMode == "edit" || !this.cards || this.cards.length == 0) {
+      return true;
+    } else {
+      let currCard = this.cards[this.activeSlide]; //get the card that is currently showing
+
+      if (!currCard.author || currCard.author.length == 0) {
+        return false;
+      }
+      if (!this.user || currCard.author !== this.user.username) {
+        //there is an author an it is not the user
+        return true;
+      } else {
+        return false;
+      }
+    }
   }
 }

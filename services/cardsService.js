@@ -17,6 +17,7 @@ module.exports = function cardsService() {
   cardsService.addCard = async (form, user, callback) => {
     try {
       const card = new Card(form);
+      card.date = new Date();
       card.vorlesung = form.abrv;
       if (user) {
         card.author = user.username; //add user as author of card
