@@ -20,7 +20,7 @@ module.exports = function cardsService() {
       card.date = new Date();
       card.vorlesung = form.abrv;
       if (user) {
-        card.author = user.username; //add user as author of card
+        card.author = user._id; //add user as author of card
       }
       await card.save();
       callback(null, card._id);
@@ -50,5 +50,6 @@ module.exports = function cardsService() {
       callback(error);
     }
   };
+
   return cardsService;
 };
