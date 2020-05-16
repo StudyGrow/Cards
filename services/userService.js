@@ -65,7 +65,12 @@ module.exports = function userService() {
       } else {
         await checkUnique(form.email, form.username);
       }
-      await User.findByIdAndUpdate(user._id, { username: form.username, email: form.email });
+      await User.findByIdAndUpdate(user._id, {
+        username: form.username,
+        email: form.email,
+        name: form.name,
+        surname: form.surname,
+      });
       callback(null);
     } catch (error) {
       callback(error);

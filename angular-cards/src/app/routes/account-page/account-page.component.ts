@@ -10,7 +10,7 @@ export class AccountPageComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {
-    this.page = "management";
+    this.page = "overview";
   }
 
   changePage(e: Event, s: string) {

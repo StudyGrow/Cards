@@ -1,6 +1,30 @@
 <h2>Accountdaten ändern</h2>
 <form #form="ngForm" (ngSubmit)="changeAccount(form)" novalidate>
   <div class="form-group">
+    <label for="name">Vorname</label>
+    <input
+      type="text"
+      class="form-control"
+      name="name"
+      id="name"
+      aria-describedby="nameHelp"
+      #name="ngModel"
+      [(ngModel)]="user.name"
+    />
+  </div>
+  <div class="form-group">
+    <label for="surname">Nachname</label>
+    <input
+      type="text"
+      class="form-control"
+      name="surname"
+      id="surname"
+      aria-describedby="surnameHelp"
+      #surname="ngModel"
+      [(ngModel)]="user.surname"
+    />
+  </div>
+  <div class="form-group">
     <label for="username">Benutzername</label>
     <input
       type="text"
@@ -32,6 +56,7 @@
     Aktualisieren
   </button>
 </form>
+
 <hr />
 <h2>Passwort ändern</h2>
 <form #pwform="ngForm" (ngSubmit)="changePassword(pwform)" novalidate>

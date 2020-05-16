@@ -47,7 +47,8 @@ router.get("/info", auth, (req, res) => {
     if (err) {
       res.status(422).send(err.message);
     } else {
-      let user = { username: req.user.username, email: req.user.email };
+      let user = req.user;
+      user.password = null;
       info.user = user;
       res.status(200).send(info);
     }

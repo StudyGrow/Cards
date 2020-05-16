@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { HttpService } from "../../services/http.service";
 import { NgForm } from "@angular/forms";
+import { User } from "src/app/models/User";
 @Component({
   selector: "app-change-profile",
   templateUrl: "./change-profile.component.html",
@@ -8,10 +9,12 @@ import { NgForm } from "@angular/forms";
 })
 export class ChangeProfileComponent implements OnInit {
   public userInfo;
-  public user = { username: "", email: "" };
+  public user = new User("", "");
   constructor(private http: HttpService) {}
 
   ngOnInit(): void {
+    this.user.name = "";
+    this.user.surname = "";
     this.http.getUserInfo().subscribe((info) => {
       this.userInfo = info;
       if (info && info.user) {

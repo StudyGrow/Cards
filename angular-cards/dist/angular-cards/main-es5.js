@@ -2002,13 +2002,19 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     /* harmony import */
 
 
-    var _services_http_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(
+    var src_app_models_User__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(
+    /*! src/app/models/User */
+    "./src/app/models/User.ts");
+    /* harmony import */
+
+
+    var _services_http_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(
     /*! ../../services/http.service */
     "./src/app/services/http.service.ts");
     /* harmony import */
 
 
-    var _angular_forms__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(
+    var _angular_forms__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(
     /*! @angular/forms */
     "./node_modules/@angular/forms/__ivy_ngcc__/fesm2015/forms.js");
 
@@ -2019,6 +2025,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         _classCallCheck(this, ChangeProfileComponent);
 
         this.http = http;
+        this.user = new src_app_models_User__WEBPACK_IMPORTED_MODULE_1__["User"]("", "");
       }
 
       _createClass(ChangeProfileComponent, [{
@@ -2026,19 +2033,27 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         value: function ngOnInit() {
           var _this6 = this;
 
+          this.user.name = "";
+          this.user.surname = "";
           this.http.getUserInfo().subscribe(function (info) {
-            return _this6.userInfo = info;
+            _this6.userInfo = info;
+
+            if (info && info.user) {
+              _this6.user = info.user;
+            }
           });
         }
       }, {
         key: "changeAccount",
         value: function changeAccount(form) {
-          console.log(form.value);
+          this.http.updateAccount(form.value);
         }
       }, {
         key: "changePassword",
         value: function changePassword(form) {
-          console.log(form.value);
+          this.http.updatePassword(form.value).subscribe(function (res) {
+            form.reset();
+          });
         }
       }, {
         key: "setStyle",
@@ -2078,18 +2093,18 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     }();
 
     ChangeProfileComponent.ɵfac = function ChangeProfileComponent_Factory(t) {
-      return new (t || ChangeProfileComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_services_http_service__WEBPACK_IMPORTED_MODULE_1__["HttpService"]));
+      return new (t || ChangeProfileComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_services_http_service__WEBPACK_IMPORTED_MODULE_2__["HttpService"]));
     };
 
     ChangeProfileComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({
       type: ChangeProfileComponent,
       selectors: [["app-change-profile"]],
-      decls: 37,
-      vars: 6,
-      consts: [["novalidate", "", 3, "ngSubmit"], ["form", "ngForm"], [1, "form-group"], ["for", "username"], ["type", "text", "id", "username", "name", "username", "required", "", "maxlength", "20", "aria-describedby", "nameHelp", 1, "form-control", 3, "ngModel", "ngModelChange"], ["username", "ngModel"], [1, "form-text"], ["for", "email"], ["type", "email", "name", "email", "id", "email", "aria-describedby", "emailHelp", "required", "", 1, "form-control", 3, "ngModel", "ngModelChange"], ["email", "ngModel"], ["type", "submit", 1, "btn", "btn-primary", 3, "disabled"], ["pwform", "ngForm"], ["for", "password"], ["type", "password", "name", "password", "id", "password", "ngModel", "", "minlength", "7", 1, "form-control"], ["password", "ngModel"], ["for", "password2"], ["type", "password", "name", "password2", "id", "password2", "ngModel", "", "minlength", "7", 1, "form-control"], ["password2", "ngModel"]],
+      decls: 47,
+      vars: 8,
+      consts: [["novalidate", "", 3, "ngSubmit"], ["form", "ngForm"], [1, "form-group"], ["for", "name"], ["type", "text", "name", "name", "id", "name", "aria-describedby", "nameHelp", 1, "form-control", 3, "ngModel", "ngModelChange"], ["name", "ngModel"], ["for", "surname"], ["type", "text", "name", "surname", "id", "surname", "aria-describedby", "surnameHelp", 1, "form-control", 3, "ngModel", "ngModelChange"], ["surname", "ngModel"], ["for", "username"], ["type", "text", "id", "username", "name", "username", "required", "", "maxlength", "20", "aria-describedby", "nameHelp", 1, "form-control", 3, "ngModel", "ngModelChange"], ["username", "ngModel"], [1, "form-text"], ["for", "email"], ["type", "email", "name", "email", "id", "email", "aria-describedby", "emailHelp", "required", "", 1, "form-control", 3, "ngModel", "ngModelChange"], ["email", "ngModel"], ["type", "submit", 1, "btn", "btn-primary", 3, "disabled"], ["pwform", "ngForm"], ["for", "password"], ["type", "password", "name", "password", "id", "password", "ngModel", "", "minlength", "7", 1, "form-control"], ["password", "ngModel"], ["for", "password2"], ["type", "password", "name", "password2", "id", "password2", "ngModel", "", "minlength", "7", 1, "form-control"], ["password2", "ngModel"]],
       template: function ChangeProfileComponent_Template(rf, ctx) {
         if (rf & 1) {
-          var _r75 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵgetCurrentView"]();
+          var _r77 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵgetCurrentView"]();
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "h2");
 
@@ -2100,7 +2115,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](2, "form", 0, 1);
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("ngSubmit", function ChangeProfileComponent_Template_form_ngSubmit_2_listener() {
-            _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r75);
+            _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r77);
 
             var _r69 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵreference"](3);
 
@@ -2111,103 +2126,139 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](5, "label", 3);
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](6, "Benutzername");
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](6, "Vorname");
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](7, "input", 4, 5);
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("ngModelChange", function ChangeProfileComponent_Template_input_ngModelChange_7_listener($event) {
-            return ctx.userInfo.username = $event;
-          });
-
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](9, "small", 6);
-
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](10, "Wenigstens 5 Zeichen ");
-
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](11, "div", 2);
-
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](12, "label", 7);
-
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](13, "Email Adresse");
-
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](14, "input", 8, 9);
-
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("ngModelChange", function ChangeProfileComponent_Template_input_ngModelChange_14_listener($event) {
-            return ctx.userInfo.email = $event;
+            return ctx.user.name = $event;
           });
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](16, "button", 10);
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](9, "div", 2);
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](17, " Sichern ");
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](10, "label", 6);
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](18, "hr");
-
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](19, "h2");
-
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](20, "Passwort \xE4ndern");
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](11, "Nachname");
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](21, "form", 0, 11);
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](12, "input", 7, 8);
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("ngSubmit", function ChangeProfileComponent_Template_form_ngSubmit_21_listener() {
-            _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r75);
-
-            var _r72 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵreference"](22);
-
-            return ctx.changePassword(_r72);
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("ngModelChange", function ChangeProfileComponent_Template_input_ngModelChange_12_listener($event) {
+            return ctx.user.surname = $event;
           });
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](23, "div", 2);
-
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](24, "label", 12);
-
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](25, "Neues Passwort");
-
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](26, "input", 13, 14);
-
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](28, "small", 6);
-
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](29, "Wenigstens 7 Zeichen ");
-
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](30, "div", 2);
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](14, "div", 2);
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](31, "label", 15);
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](15, "label", 9);
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](32, "Neues Passwort wiederholen");
-
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](33, "input", 16, 17);
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](16, "Benutzername");
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](35, "button", 10);
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](17, "input", 10, 11);
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](36, " \xC4ndern ");
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("ngModelChange", function ChangeProfileComponent_Template_input_ngModelChange_17_listener($event) {
+            return ctx.user.username = $event;
+          });
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](19, "small", 12);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](20, "Wenigstens 5 Zeichen ");
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](21, "div", 2);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](22, "label", 13);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](23, "Email Adresse");
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](24, "input", 14, 15);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("ngModelChange", function ChangeProfileComponent_Template_input_ngModelChange_24_listener($event) {
+            return ctx.user.email = $event;
+          });
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](26, "button", 16);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](27, " Aktualisieren ");
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](28, "hr");
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](29, "h2");
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](30, "Passwort \xE4ndern");
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](31, "form", 0, 17);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("ngSubmit", function ChangeProfileComponent_Template_form_ngSubmit_31_listener() {
+            _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r77);
+
+            var _r74 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵreference"](32);
+
+            return ctx.changePassword(_r74);
+          });
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](33, "div", 2);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](34, "label", 18);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](35, "Neues Passwort");
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](36, "input", 19, 20);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](38, "small", 12);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](39, "Wenigstens 7 Zeichen ");
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](40, "div", 2);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](41, "label", 21);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](42, "Neues Passwort wiederholen");
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](43, "input", 22, 23);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](45, "button", 16);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](46, " \xC4ndern ");
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
 
@@ -2217,17 +2268,25 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         if (rf & 2) {
           var _r69 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵreference"](3);
 
-          var _r73 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵreference"](27);
+          var _r75 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵreference"](37);
 
-          var _r74 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵreference"](34);
-
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](7);
-
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngModel", ctx.userInfo.username);
+          var _r76 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵreference"](44);
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](7);
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngModel", ctx.userInfo.email);
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngModel", ctx.user.name);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](5);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngModel", ctx.user.surname);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](5);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngModel", ctx.user.username);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](7);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngModel", ctx.user.email);
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](2);
 
@@ -2235,14 +2294,14 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](17);
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵstyleMap"](ctx.setStyle(_r73, _r74));
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵstyleMap"](ctx.setStyle(_r75, _r76));
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](2);
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("disabled", !ctx.match(_r73.value, _r74.value));
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("disabled", !ctx.match(_r75.value, _r76.value));
         }
       },
-      directives: [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["ɵangular_packages_forms_forms_y"], _angular_forms__WEBPACK_IMPORTED_MODULE_2__["NgControlStatusGroup"], _angular_forms__WEBPACK_IMPORTED_MODULE_2__["NgForm"], _angular_forms__WEBPACK_IMPORTED_MODULE_2__["DefaultValueAccessor"], _angular_forms__WEBPACK_IMPORTED_MODULE_2__["RequiredValidator"], _angular_forms__WEBPACK_IMPORTED_MODULE_2__["MaxLengthValidator"], _angular_forms__WEBPACK_IMPORTED_MODULE_2__["NgControlStatus"], _angular_forms__WEBPACK_IMPORTED_MODULE_2__["NgModel"], _angular_forms__WEBPACK_IMPORTED_MODULE_2__["MinLengthValidator"]],
+      directives: [_angular_forms__WEBPACK_IMPORTED_MODULE_3__["ɵangular_packages_forms_forms_y"], _angular_forms__WEBPACK_IMPORTED_MODULE_3__["NgControlStatusGroup"], _angular_forms__WEBPACK_IMPORTED_MODULE_3__["NgForm"], _angular_forms__WEBPACK_IMPORTED_MODULE_3__["DefaultValueAccessor"], _angular_forms__WEBPACK_IMPORTED_MODULE_3__["NgControlStatus"], _angular_forms__WEBPACK_IMPORTED_MODULE_3__["NgModel"], _angular_forms__WEBPACK_IMPORTED_MODULE_3__["RequiredValidator"], _angular_forms__WEBPACK_IMPORTED_MODULE_3__["MaxLengthValidator"], _angular_forms__WEBPACK_IMPORTED_MODULE_3__["MinLengthValidator"]],
       styles: ["\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL2NvbXBvbmVudHMvY2hhbmdlLXByb2ZpbGUvY2hhbmdlLXByb2ZpbGUuY29tcG9uZW50LmNzcyJ9 */"]
     });
     /*@__PURE__*/
@@ -2257,7 +2316,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         }]
       }], function () {
         return [{
-          type: _services_http_service__WEBPACK_IMPORTED_MODULE_1__["HttpService"]
+          type: _services_http_service__WEBPACK_IMPORTED_MODULE_2__["HttpService"]
         }];
       }, null);
     })();
@@ -3330,47 +3389,132 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(
     /*! @angular/core */
     "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
+    /* harmony import */
+
+
+    var src_app_models_User__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(
+    /*! src/app/models/User */
+    "./src/app/models/User.ts");
+    /* harmony import */
+
+
+    var src_app_services_http_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(
+    /*! src/app/services/http.service */
+    "./src/app/services/http.service.ts");
 
     var OverviewComponent =
     /*#__PURE__*/
     function () {
-      function OverviewComponent() {
+      function OverviewComponent(http) {
         _classCallCheck(this, OverviewComponent);
+
+        this.http = http;
+        this.user = new src_app_models_User__WEBPACK_IMPORTED_MODULE_1__["User"]("", "");
       }
 
       _createClass(OverviewComponent, [{
         key: "ngOnInit",
-        value: function ngOnInit() {}
+        value: function ngOnInit() {
+          var _this10 = this;
+
+          this.http.getUserInfo().subscribe(function (info) {
+            _this10.userInfo = info;
+
+            if (info && info.user) {
+              _this10.user = info.user;
+            }
+          });
+        }
       }]);
 
       return OverviewComponent;
     }();
 
     OverviewComponent.ɵfac = function OverviewComponent_Factory(t) {
-      return new (t || OverviewComponent)();
+      return new (t || OverviewComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](src_app_services_http_service__WEBPACK_IMPORTED_MODULE_2__["HttpService"]));
     };
 
     OverviewComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({
       type: OverviewComponent,
       selectors: [["app-overview"]],
-      decls: 6,
-      vars: 0,
-      consts: [[1, "card"], [1, "card-header"], [1, "card-body"], [1, "card-text"]],
+      decls: 24,
+      vars: 4,
+      consts: [[1, "card"], [1, "card-body"], [1, "card-title"], ["src", "assets/profile.svg", "alt", "Profile picture"], [1, "list-group", "list-group-flush"], [1, "list-group-item"], [1, "row"], [1, "col-6"], [1, "col-6", "text-right"]],
       template: function OverviewComponent_Template(rf, ctx) {
         if (rf & 1) {
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "div", 0);
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "div", 1);
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](2, " Here username and profile pic ");
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](2, "h2", 2);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](3, "img", 3);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](4);
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](3, "div", 2);
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](4, "p", 3);
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](5, "ul", 4);
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](5, " info linke full name, email, account regestry date, number of cards added,... ");
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](6, "li", 5);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](7, "div", 6);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](8, "div", 7);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](9, " Email ");
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](10, "div", 8);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](11);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](12, "li", 5);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](13, "div", 6);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](14, "div", 7);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](15, " Vorname ");
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](16, "div", 8);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](17);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](18, "li", 5);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](19, "div", 6);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](20, "div", 7);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](21, " Nachname ");
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](22, "div", 8);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](23);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
 
@@ -3378,8 +3522,26 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
         }
+
+        if (rf & 2) {
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](4);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate1"](" ", ctx.user.username, " ");
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](7);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate1"](" ", ctx.user.email, " ");
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](6);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate1"](" ", ctx.user.name, " ");
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](6);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate1"](" ", ctx.user.surname, " ");
+        }
       },
-      styles: ["\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL2NvbXBvbmVudHMvb3ZlcnZpZXcvb3ZlcnZpZXcuY29tcG9uZW50LmNzcyJ9 */"]
+      styles: ["img[_ngcontent-%COMP%] {\r\n  height: 50px;\r\n  width: 50px;\r\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvY29tcG9uZW50cy9vdmVydmlldy9vdmVydmlldy5jb21wb25lbnQuY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0VBQ0UsWUFBWTtFQUNaLFdBQVc7QUFDYiIsImZpbGUiOiJzcmMvYXBwL2NvbXBvbmVudHMvb3ZlcnZpZXcvb3ZlcnZpZXcuY29tcG9uZW50LmNzcyIsInNvdXJjZXNDb250ZW50IjpbImltZyB7XHJcbiAgaGVpZ2h0OiA1MHB4O1xyXG4gIHdpZHRoOiA1MHB4O1xyXG59XHJcbiJdfQ== */"]
     });
     /*@__PURE__*/
 
@@ -3387,12 +3549,14 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](OverviewComponent, [{
         type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"],
         args: [{
-          selector: 'app-overview',
-          templateUrl: './overview.component.html',
-          styleUrls: ['./overview.component.css']
+          selector: "app-overview",
+          templateUrl: "./overview.component.html",
+          styleUrls: ["./overview.component.css"]
         }]
       }], function () {
-        return [];
+        return [{
+          type: src_app_services_http_service__WEBPACK_IMPORTED_MODULE_2__["HttpService"]
+        }];
       }, null);
     })();
     /***/
@@ -3518,17 +3682,17 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       _createClass(SearchBarComponent, [{
         key: "ngOnInit",
         value: function ngOnInit() {
-          var _this10 = this;
+          var _this11 = this;
 
           this.stateService.getHideSuggestions().subscribe(function (value) {
-            _this10.clearSuggestions = value;
+            _this11.clearSuggestions = value;
 
             if (value) {
-              _this10.suggestions = [];
+              _this11.suggestions = [];
             }
           });
           this.cardsService.getCards().subscribe(function (cards) {
-            _this10.cards = cards;
+            _this11.cards = cards;
             cards.forEach(function (card) {
               if (card.thema == null) {
                 card.thema = "";
@@ -3727,16 +3891,16 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: "submit",
         value: function submit(form) {
-          var _this11 = this;
+          var _this12 = this;
 
           this.http.createAccount(form.value).subscribe(function (response) {
             if (response) {
-              _this11.router.navigate(["/"]);
+              _this12.router.navigate(["/"]);
             }
           }, function (error) {
             if (error.headers.status = 422) {
               console.log(error);
-              _this11.errors = error.error.errors;
+              _this12.errors = error.error.errors;
             }
           });
         }
@@ -4016,19 +4180,19 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       _createClass(UpdateCardFormComponent, [{
         key: "ngOnInit",
         value: function ngOnInit() {
-          var _this12 = this;
+          var _this13 = this;
 
           this.cardsService.getCards().subscribe(function (cards) {
-            _this12.cards = cards;
+            _this13.cards = cards;
           });
           this.cardsService.getActiveCardIndex().subscribe(function (index) {
-            _this12.activeCardIndex = index;
+            _this13.activeCardIndex = index;
 
-            if (_this12.cards) {
-              _this12.cardCopy = Object.assign({}, _this12.cards[_this12.activeCardIndex]);
+            if (_this13.cards) {
+              _this13.cardCopy = Object.assign({}, _this13.cards[_this13.activeCardIndex]);
             }
 
-            _this12.cardIndex = _this12.activeCardIndex;
+            _this13.cardIndex = _this13.activeCardIndex;
           });
         }
       }, {
@@ -4410,6 +4574,36 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
   },
 
   /***/
+  "./src/app/models/User.ts":
+  /*!********************************!*\
+    !*** ./src/app/models/User.ts ***!
+    \********************************/
+
+  /*! exports provided: User */
+
+  /***/
+  function srcAppModelsUserTs(module, __webpack_exports__, __webpack_require__) {
+    "use strict";
+
+    __webpack_require__.r(__webpack_exports__);
+    /* harmony export (binding) */
+
+
+    __webpack_require__.d(__webpack_exports__, "User", function () {
+      return User;
+    });
+
+    var User = function User(name, email) {
+      _classCallCheck(this, User);
+
+      this.username = name;
+      this.email = email;
+    };
+    /***/
+
+  },
+
+  /***/
   "./src/app/models/Vorlesung.ts":
   /*!*************************************!*\
     !*** ./src/app/models/Vorlesung.ts ***!
@@ -4549,13 +4743,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       _createClass(AboutComponent, [{
         key: "ngOnInit",
         value: function ngOnInit() {
-          var _this13 = this;
+          var _this14 = this;
 
           this.http.getUser().subscribe(function (user) {
             if (user) {
-              _this13.loggedIn = true;
+              _this14.loggedIn = true;
             } else {
-              _this13.loggedIn = false;
+              _this14.loggedIn = false;
             }
           });
         }
@@ -4870,7 +5064,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       _createClass(AccountPageComponent, [{
         key: "ngOnInit",
         value: function ngOnInit() {
-          this.page = "management";
+          this.page = "overview";
         }
       }, {
         key: "changePage",
@@ -5022,7 +5216,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         }
       },
       directives: [_components_nav_bar_nav_bar_component__WEBPACK_IMPORTED_MODULE_1__["NavBarComponent"], _angular_common__WEBPACK_IMPORTED_MODULE_2__["NgSwitch"], _angular_common__WEBPACK_IMPORTED_MODULE_2__["NgSwitchCase"], _components_footer_footer_component__WEBPACK_IMPORTED_MODULE_3__["FooterComponent"], _components_overview_overview_component__WEBPACK_IMPORTED_MODULE_4__["OverviewComponent"], _components_change_profile_change_profile_component__WEBPACK_IMPORTED_MODULE_5__["ChangeProfileComponent"], _components_cards_overview_cards_overview_component__WEBPACK_IMPORTED_MODULE_6__["CardsOverviewComponent"], _components_notifications_notifications_component__WEBPACK_IMPORTED_MODULE_7__["NotificationsComponent"]],
-      styles: [".container[_ngcontent-%COMP%] {\r\n  margin-top: 15px;\r\n}\r\n.col-xs-12[_ngcontent-%COMP%] {\r\n  margin-top: 10px;\r\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvcm91dGVzL2FjY291bnQtcGFnZS9hY2NvdW50LXBhZ2UuY29tcG9uZW50LmNzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNFLGdCQUFnQjtBQUNsQjtBQUNBO0VBQ0UsZ0JBQWdCO0FBQ2xCIiwiZmlsZSI6InNyYy9hcHAvcm91dGVzL2FjY291bnQtcGFnZS9hY2NvdW50LXBhZ2UuY29tcG9uZW50LmNzcyIsInNvdXJjZXNDb250ZW50IjpbIi5jb250YWluZXIge1xyXG4gIG1hcmdpbi10b3A6IDE1cHg7XHJcbn1cclxuLmNvbC14cy0xMiB7XHJcbiAgbWFyZ2luLXRvcDogMTBweDtcclxufVxyXG4iXX0= */"]
+      styles: [".container[_ngcontent-%COMP%] {\r\n  margin-top: 15px;\r\n  margin-bottom: 50px;\r\n}\r\n.col-xs-12[_ngcontent-%COMP%] {\r\n  margin-top: 10px;\r\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvcm91dGVzL2FjY291bnQtcGFnZS9hY2NvdW50LXBhZ2UuY29tcG9uZW50LmNzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNFLGdCQUFnQjtFQUNoQixtQkFBbUI7QUFDckI7QUFDQTtFQUNFLGdCQUFnQjtBQUNsQiIsImZpbGUiOiJzcmMvYXBwL3JvdXRlcy9hY2NvdW50LXBhZ2UvYWNjb3VudC1wYWdlLmNvbXBvbmVudC5jc3MiLCJzb3VyY2VzQ29udGVudCI6WyIuY29udGFpbmVyIHtcclxuICBtYXJnaW4tdG9wOiAxNXB4O1xyXG4gIG1hcmdpbi1ib3R0b206IDUwcHg7XHJcbn1cclxuLmNvbC14cy0xMiB7XHJcbiAgbWFyZ2luLXRvcDogMTBweDtcclxufVxyXG4iXX0= */"]
     });
     /*@__PURE__*/
 
@@ -5182,23 +5376,23 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: "ngOnInit",
         value: function ngOnInit() {
-          var _this14 = this;
+          var _this15 = this;
 
           this.title.setTitle("Cards");
           this.vlAbrv = this.route.snapshot.paramMap.get("abrv");
           this.cardsService.getCards().subscribe(function (cards) {
             if (cards.length == 0) {
-              _this14.stateServie.setFormMode("add");
+              _this15.stateServie.setFormMode("add");
             }
           });
           this.stateServie.getTyping().subscribe(function (val) {
-            return _this14.inTypingField = val;
+            return _this15.inTypingField = val;
           });
           this.stateServie.getLoadingState().subscribe(function (value) {
-            return _this14.loading = value;
+            return _this15.loading = value;
           });
           this.stateServie.getFormMode().subscribe(function (mode) {
-            return _this14.formMode = mode;
+            return _this15.formMode = mode;
           });
         }
       }, {
@@ -5388,10 +5582,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       _createClass(HomePageComponent, [{
         key: "ngOnInit",
         value: function ngOnInit() {
-          var _this15 = this;
+          var _this16 = this;
 
           this.statesService.getLoadingState().subscribe(function (val) {
-            _this15.loading = val;
+            _this16.loading = val;
           });
         }
       }, {
@@ -5729,7 +5923,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       _createClass(CardsService, [{
         key: "getCards",
         value: function getCards() {
-          var _this16 = this;
+          var _this17 = this;
 
           var abrv = this.router.url.split(/vorlesung\//)[1]; //get the lecture abreviation from the route
 
@@ -5742,7 +5936,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             this.cards$.next([]); //make server request
 
             this.httpService.getCardsFromLectureAbrv(abrv).subscribe(function (cards) {
-              _this16.cards$.next(cards);
+              _this17.cards$.next(cards);
             });
             return this.cards$.asObservable();
           }
@@ -5750,47 +5944,47 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: "updateCard",
         value: function updateCard(card, index) {
-          var _this17 = this;
+          var _this18 = this;
 
           this.statesService.setLoadingState(true); //send update to server using http service
 
           return this.httpService.updateCard(card).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["tap"])(function (resp) {
-            _this17.statesService.setLoadingState(false);
+            _this18.statesService.setLoadingState(false);
 
-            _this17.statesService.setFormMode("reset"); //reset form to its previous state
+            _this18.statesService.setFormMode("reset"); //reset form to its previous state
             //update subject
 
 
-            var cards = _this17.cards$.getValue();
+            var cards = _this18.cards$.getValue();
 
             cards[index] = card;
 
-            _this17.cards$.next(cards);
+            _this18.cards$.next(cards);
           }));
         }
       }, {
         key: "addCard",
         value: function addCard(card) {
-          var _this18 = this;
+          var _this19 = this;
 
           this.statesService.setLoadingState(true); //send new card to server using http service
 
           return this.httpService.addCard(card).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["tap"])(function (response) {
-            _this18.statesService.setLoadingState(false);
+            _this19.statesService.setLoadingState(false);
 
             card._id = response.body; //set id received from server response
             //upate subject
 
-            var cards = _this18.cards$.getValue();
+            var cards = _this19.cards$.getValue();
 
             cards.push(card);
 
-            _this18.cards$.next(cards);
+            _this19.cards$.next(cards);
 
             setTimeout(function () {
               //show new card timeout needed because the carousel needs time to refresh
               //its view
-              _this18.setNewCardIndex(cards.length - 1);
+              _this19.setNewCardIndex(cards.length - 1);
             }, 100);
           }));
         }
@@ -5961,10 +6155,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         this.lecture$ = new rxjs__WEBPACK_IMPORTED_MODULE_2__["BehaviorSubject"](new _models_Vorlesung__WEBPACK_IMPORTED_MODULE_4__["Vorlesung"]("", "")); //holds the current lecture
 
         this.errors$ = new rxjs__WEBPACK_IMPORTED_MODULE_2__["BehaviorSubject"]([]);
-        this.profileInfo$ = new rxjs__WEBPACK_IMPORTED_MODULE_2__["BehaviorSubject"]({
-          username: "steve",
-          email: "bla@hotmail.com"
-        });
+        this.profileInfo$ = new rxjs__WEBPACK_IMPORTED_MODULE_2__["BehaviorSubject"](null);
         this.httpOptions = {
           headers: new _angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpHeaders"]({
             "Content-Type": "application/json"
@@ -5977,18 +6168,18 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       _createClass(HttpService, [{
         key: "getCardsFromLectureAbrv",
         value: function getCardsFromLectureAbrv(abrv) {
-          var _this19 = this;
+          var _this20 = this;
 
           this.statesService.setLoadingState(true);
           {
             return this.http.get(this.urlBase + "cards/?abrv=" + abrv, {
               observe: "response"
             }).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["tap"])(function (res) {
-              _this19.statesService.setLoadingState(false);
+              _this20.statesService.setLoadingState(false);
             }, function (error) {
-              _this19.addErrors(error);
+              _this20.addErrors(error);
 
-              _this19.statesService.setLoadingState(false);
+              _this20.statesService.setLoadingState(false);
             }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])(function (res) {
               return res.body;
             }));
@@ -5998,28 +6189,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: "addCard",
         value: function addCard(card) {
-          var _this20 = this;
-
-          return this.http.post(this.urlBase + "cards/new", {
-            card: card
-          }, {
-            headers: this.httpOptions.headers,
-            observe: "response"
-          }).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["tap"])(function (res) {
-            _this20.statesService.setLoadingState(false);
-          }, function (error) {
-            _this20.addErrors(error);
-
-            _this20.statesService.setLoadingState(false);
-          }));
-        } //update card on server
-
-      }, {
-        key: "updateCard",
-        value: function updateCard(card) {
           var _this21 = this;
 
-          return this.http.put(this.urlBase + "cards/update", {
+          return this.http.post(this.urlBase + "cards/new", {
             card: card
           }, {
             headers: this.httpOptions.headers,
@@ -6031,12 +6203,31 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
             _this21.statesService.setLoadingState(false);
           }));
+        } //update card on server
+
+      }, {
+        key: "updateCard",
+        value: function updateCard(card) {
+          var _this22 = this;
+
+          return this.http.put(this.urlBase + "cards/update", {
+            card: card
+          }, {
+            headers: this.httpOptions.headers,
+            observe: "response"
+          }).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["tap"])(function (res) {
+            _this22.statesService.setLoadingState(false);
+          }, function (error) {
+            _this22.addErrors(error);
+
+            _this22.statesService.setLoadingState(false);
+          }));
         } //get an array of all lectures
 
       }, {
         key: "getAllLectures",
         value: function getAllLectures() {
-          var _this22 = this;
+          var _this23 = this;
 
           this.statesService.setLoadingState(true);
 
@@ -6049,13 +6240,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             return this.http.get(this.urlBase + "lectures", {
               observe: "response"
             }).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["tap"])(function (res) {
-              _this22.statesService.setLoadingState(false);
+              _this23.statesService.setLoadingState(false);
 
-              _this22.lectures$ = new rxjs__WEBPACK_IMPORTED_MODULE_2__["BehaviorSubject"](res.body); //set the lectures subject
+              _this23.lectures$ = new rxjs__WEBPACK_IMPORTED_MODULE_2__["BehaviorSubject"](res.body); //set the lectures subject
             }, function (error) {
-              _this22.addErrors(error);
+              _this23.addErrors(error);
 
-              _this22.statesService.setLoadingState(false);
+              _this23.statesService.setLoadingState(false);
             }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])(function (res) {
               return res.body;
             }));
@@ -6065,7 +6256,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: "getCurrentLecture",
         value: function getCurrentLecture() {
-          var _this23 = this;
+          var _this24 = this;
 
           var abrv = this.router.url.split(/vorlesung\//)[1]; //get the abreviation of the lecture from the url
 
@@ -6077,11 +6268,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             this.http.get(this.urlBase + "lectures/find?abrv=" + abrv, {
               observe: "response"
             }).subscribe(function (res) {
-              _this23.lecture$.next(res.body);
+              _this24.lecture$.next(res.body);
             }, function (error) {
-              _this23.addErrors(error);
+              _this24.addErrors(error);
 
-              _this23.statesService.setLoadingState(false);
+              _this24.statesService.setLoadingState(false);
             });
             return this.lecture$.asObservable();
           }
@@ -6090,7 +6281,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: "addLecture",
         value: function addLecture(lecture) {
-          var _this24 = this;
+          var _this25 = this;
 
           this.statesService.setLoadingState(true);
           return this.http.post(this.urlBase + "lectures/new", {
@@ -6100,42 +6291,42 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             observe: "response"
           }).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["tap"])(function (res) {
             //add the new lecture to the lectures subject
-            _this24.statesService.setLoadingState(false);
+            _this25.statesService.setLoadingState(false);
 
-            var lectures = _this24.lectures$.getValue();
+            var lectures = _this25.lectures$.getValue();
 
             lectures.push(lecture);
 
-            _this24.lectures$.next(lectures);
+            _this25.lectures$.next(lectures);
           }, function (error) {
-            _this24.addErrors(error);
+            _this25.addErrors(error);
 
-            _this24.statesService.setLoadingState(false);
+            _this25.statesService.setLoadingState(false);
           }));
         } //login the user on the server
 
       }, {
         key: "login",
         value: function login(form) {
-          var _this25 = this;
+          var _this26 = this;
 
           this.statesService.setLoadingState(true);
           return this.http.post(this.urlBase + "login", form, {
             headers: this.httpOptions.headers,
             observe: "response"
           }).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["tap"])(function (res) {
-            _this25.statesService.setLoadingState(false);
+            _this26.statesService.setLoadingState(false);
 
-            _this25.user$.next(res.body); //set the user
+            _this26.user$.next(res.body); //set the user
 
 
             if (form.remember) {
-              localStorage.setItem("user", JSON.stringify(_this25.user$.getValue())); //store the user locally to keep the session
+              localStorage.setItem("user", JSON.stringify(_this26.user$.getValue())); //store the user locally to keep the session
             }
           }, function (error) {
-            _this25.addErrors(error);
+            _this26.addErrors(error);
 
-            _this25.statesService.setLoadingState(false);
+            _this26.statesService.setLoadingState(false);
           }));
         }
       }, {
@@ -6152,30 +6343,36 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: "getUserInfo",
         value: function getUserInfo() {
-          var _this26 = this;
+          var _this27 = this;
 
-          this.statesService.setLoadingState(true);
-          this.http.get(this.urlBase + "user/info", {
-            observe: "response"
-          }).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["tap"])(function (res) {
-            _this26.statesService.setLoadingState(false);
-          }, function (error) {
-            _this26.addErrors(error);
-          }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])(function (res) {
-            return res.body;
-          }));
-          this.statesService.setLoadingState(false);
-          return this.profileInfo$.asObservable();
+          if (this.profileInfo$.getValue() != null) {
+            return this.profileInfo$.asObservable();
+          } else {
+            this.profileInfo$ = new rxjs__WEBPACK_IMPORTED_MODULE_2__["BehaviorSubject"](this.user$.getValue());
+            this.statesService.setLoadingState(true);
+            this.http.get(this.urlBase + "user/info", {
+              observe: "response"
+            }).subscribe(function (res) {
+              _this27.statesService.setLoadingState(false);
+
+              _this27.profileInfo$.next(res.body);
+            }, function (error) {
+              _this27.statesService.setLoadingState(false);
+
+              _this27.addErrors(error);
+            });
+            return this.profileInfo$.asObservable();
+          }
         } //logout the user in front- and backend
 
       }, {
         key: "logout",
         value: function logout() {
-          var _this27 = this;
+          var _this28 = this;
 
           this.statesService.setLoadingState(true);
           this.http.get(this.urlBase + "user/logout").subscribe(function (res) {
-            _this27.statesService.setLoadingState(false);
+            _this28.statesService.setLoadingState(false);
           });
           localStorage.removeItem("user"); //remove the user data from localstorage
 
@@ -6185,35 +6382,80 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: "createAccount",
         value: function createAccount(form) {
-          var _this28 = this;
+          var _this29 = this;
 
           this.statesService.setLoadingState(true);
           return this.http.post(this.urlBase + "user/new", form, {
             headers: this.httpOptions.headers,
             observe: "response"
           }).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["tap"])(function (res) {
-            _this28.user$.next(res.body); //login the user (on success)
+            _this29.user$.next(res.body); //login the user (on success)
 
 
-            _this28.statesService.setLoadingState(false);
+            _this29.statesService.setLoadingState(false);
           }, function (error) {
-            console.log(error.headers);
+            _this29.addErrors(error);
 
-            _this28.addErrors(error);
-
-            _this28.statesService.setLoadingState(false);
+            _this29.statesService.setLoadingState(false);
           }));
+        }
+      }, {
+        key: "updatePassword",
+        value: function updatePassword(form) {
+          var _this30 = this;
+
+          this.statesService.setLoadingState(true);
+          return this.http.put(this.urlBase + "user/updatePassword", form, {
+            headers: this.httpOptions.headers,
+            observe: "response"
+          }).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["tap"])(function (res) {
+            _this30.statesService.setLoadingState(false);
+          }, function (error) {
+            _this30.addErrors(error);
+
+            _this30.statesService.setLoadingState(false);
+          }));
+        }
+      }, {
+        key: "updateAccount",
+        value: function updateAccount(form) {
+          var _this31 = this;
+
+          this.statesService.setLoadingState(true);
+          this.http.put(this.urlBase + "user/updateAccount", form, {
+            headers: this.httpOptions.headers,
+            observe: "response"
+          }).subscribe(function (res) {
+            _this31.statesService.setLoadingState(false);
+
+            _this31.user$.next(form);
+
+            var info = _this31.profileInfo$.getValue();
+
+            info.user = form;
+
+            _this31.profileInfo$.next(info);
+          }, function (error) {
+            _this31.addErrors(error);
+
+            _this31.statesService.setLoadingState(false);
+          });
         }
       }, {
         key: "addErrors",
         value: function addErrors(error) {
           var err = error.error;
           var errors = this.errors$.getValue();
-          console.log(error.status);
+          console.log(error);
 
-          if (error.status == 422) {
+          if (error.status == 400) {
+            errors.push("Bitte logge dich erst ein");
+            this.router.navigateByUrl("/login");
+          } else if (error.status == 422) {
             if (typeof err == "string") {
               errors.push(err);
+            } else if (typeof err == "object") {
+              console.log(err);
             } else {
               console.log(typeof err);
               errors.push.apply(errors, _toConsumableArray(err));
@@ -6222,7 +6464,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             errors.push("Der Server scheint offline zu sein. Versuche es später erneut.");
           } else {
             errors.push("Ein unbekannter Fehler ist aufgetreten. Versuche es später erneut.");
-            console.log(error);
           }
 
           this.errors$.next(errors);
