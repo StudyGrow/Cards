@@ -47,6 +47,7 @@ module.exports = function cardsService() {
       });
       callback(null);
     } catch (error) {
+      console.error(error);
       callback(error);
     }
   };

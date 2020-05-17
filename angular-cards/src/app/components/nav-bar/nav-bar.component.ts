@@ -7,6 +7,7 @@ import { HttpService } from "src/app/services/http.service";
 import { CardsService } from "src/app/services/cards.service";
 import { Vorlesung } from "src/app/models/Vorlesung";
 import { StatesService } from "src/app/services/states.service";
+import { Notification } from "../../models/Notification";
 @Component({
   selector: "app-nav-bar",
   templateUrl: "./nav-bar.component.html",
@@ -15,7 +16,7 @@ import { StatesService } from "src/app/services/states.service";
 export class NavBarComponent implements OnInit {
   public user: User;
   public cards: Card[];
-  public errors: string[];
+  public notifications: Notification[];
 
   public loading: boolean = false;
   public constructor(
@@ -33,10 +34,12 @@ export class NavBarComponent implements OnInit {
       this.loading = val;
     });
     this.router.events.subscribe((e) => {
-      //clear error messages on route change
-      this.http.clearErrors();
+      //clear messages on route change
+      this.http.clearNotifications();
     });
-    this.http.getErrors().subscribe((errors) => (this.errors = errors));
+    this.http
+      .getNotifications()
+      .subscribe((notifs) => (this.notifications = notifs));
     if (this.router.url.match(/vorlesung/)) {
       this.cardsService.getCards().subscribe((cards) => {
         this.cards = cards;
@@ -44,10 +47,13 @@ export class NavBarComponent implements OnInit {
     }
   }
   closeAlert(i: number) {
-    this.http.removeError(i);
+    this.http.removeNotification(i);
   }
   isActive(path: string): string {
     return path === this.router.url ? "active" : "";
+  }
+  setAlertClass(notif: Notification) {
+    return `alert alert-${notif.type} alert-dismissible fade show`;
   }
   setPageTitle(): void {
     let currentTitle: string;

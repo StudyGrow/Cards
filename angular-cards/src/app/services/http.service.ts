@@ -9,7 +9,11 @@ import { User } from "../models/User";
 import { UserInfo } from "../models/userInfo";
 import { Card } from "../models/Card";
 import { Vorlesung } from "../models/Vorlesung";
-
+import {
+  HttpError,
+  SuccessMessage,
+  Notification,
+} from "../models/Notification";
 @Injectable({
   providedIn: "root",
 })
@@ -20,9 +24,7 @@ export class HttpService {
     new Vorlesung("", "")
   ); //holds the current lecture
   private lectures$: BehaviorSubject<Vorlesung[]>; //holds all lectures
-  private errors$: BehaviorSubject<string[]> = new BehaviorSubject<string[]>(
-    []
-  );
+  private notifications$ = new BehaviorSubject<Notification[]>([]);
   private profileInfo$: BehaviorSubject<UserInfo> = new BehaviorSubject<
     UserInfo
   >(null);
@@ -293,6 +295,9 @@ export class HttpService {
         tap(
           (res) => {
             this.statesService.setLoadingState(false);
+            this.addNotification(
+              new SuccessMessage("Dein Passwort wurde erfolgreich aktualisiert")
+            );
           },
           (error) => {
             this.addErrors(error);
@@ -315,6 +320,11 @@ export class HttpService {
           let info = this.profileInfo$.getValue();
           info.user = form;
           this.profileInfo$.next(info);
+          this.addNotification(
+            new SuccessMessage(
+              "Deine Informationen wurden erfolgreich aktualisiert"
+            )
+          );
         },
         (error) => {
           this.addErrors(error);
@@ -324,43 +334,63 @@ export class HttpService {
   }
   addErrors(error) {
     let err = error.error;
-    let errors = this.errors$.getValue();
+    let notifications = this.notifications$.getValue();
     console.log(error);
     if (error.status == 400) {
-      errors.push("Bitte logge dich erst ein");
+      notifications.push(
+        new HttpError("Bitte logge dich erst ein.", error.status)
+      );
       this.router.navigateByUrl("/login");
     } else if (error.status == 422) {
       if (typeof err == "string") {
-        errors.push(err);
+        notifications.push(new HttpError(err, error.status));
       } else if (typeof err == "object") {
+        notifications.push(
+          new HttpError(
+            "Ein unbekannter Fehler ist aufgetreten. Versuche es später erneut.",
+            error.status
+          )
+        );
         console.log(err);
       } else {
-        console.log(typeof err);
-        errors.push(...err);
+        for (const e of err) {
+          notifications.push(new HttpError(e, error.status));
+        }
       }
     } else if (error.status >= 500) {
-      errors.push(
-        "Der Server scheint offline zu sein. Versuche es später erneut."
+      notifications.push(
+        new HttpError(
+          "Der Server scheint offline zu sein. Versuche es später erneut.",
+          error.status
+        )
       );
     } else {
-      errors.push(
-        "Ein unbekannter Fehler ist aufgetreten. Versuche es später erneut."
+      notifications.push(
+        new HttpError(
+          "Ein unbekannter Fehler ist aufgetreten. Versuche es später erneut.",
+          error.status
+        )
       );
     }
-    this.errors$.next(errors);
+    this.notifications$.next(notifications);
+  }
+
+  addNotification(n: Notification) {
+    let notifications = this.notifications$.getValue();
+    notifications.push(n);
   }
 
   //removes a specific error from the error array
-  removeError(index: number) {
-    let errors = this.errors$.getValue();
-    errors.splice(index, 1); //remove error at position index
-    this.errors$.next(errors);
+  removeNotification(index: number) {
+    let notifications = this.notifications$.getValue();
+    notifications.splice(index, 1); //remove error at position index
+    this.notifications$.next(notifications);
   }
-  clearErrors() {
-    this.errors$.next([]);
+  clearNotifications() {
+    this.notifications$.next([]);
   }
 
-  getErrors(): Observable<string[]> {
-    return this.errors$.asObservable();
+  getNotifications(): Observable<Notification[]> {
+    return this.notifications$.asObservable();
   }
 }

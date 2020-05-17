@@ -78,6 +78,12 @@ router.post(
 router.put(
   "/update",
   [
+    check("card._id")
+      .isLength({
+        min: 1,
+        max: 200,
+      })
+      .withMessage("_id der Karte muss angegeben werden"),
     check("card.thema")
       .isLength({
         min: 3,

@@ -74,9 +74,9 @@
 
 <div
   #alert
-  class="alert alert-warning alert-dismissible fade show"
+  *ngFor="let notif of notifications; index as i"
+  [class]="setAlertClass(notif)"
   role="alert"
-  *ngFor="let error of errors; index as i"
 >
   <button
     type="button"
@@ -86,5 +86,5 @@
   >
     <span aria-hidden="true">&times;</span>
   </button>
-  {{ error }}
+  {{ notif.message }}
 </div>
