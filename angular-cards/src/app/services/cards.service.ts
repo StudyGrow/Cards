@@ -68,7 +68,8 @@ export class CardsService {
     return this.httpService.addCard(card).pipe(
       tap((response) => {
         this.statesService.setLoadingState(false);
-        card._id = response.body; //set id received from server response
+
+        card._id = response.body.id; //set id received from server response
         //upate subject
         let cards = this.cards$.getValue();
         cards.push(card);
