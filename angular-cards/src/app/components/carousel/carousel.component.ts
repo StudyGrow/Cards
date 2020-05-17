@@ -5,7 +5,7 @@ import { CardsService } from "../../services/cards.service";
 import { Card } from "../../models/Card";
 import { Vorlesung } from "src/app/models/Vorlesung";
 import { User } from "src/app/models/User";
-
+import { UserService } from "../../services/user.service";
 @Component({
   selector: "app-carousel",
   templateUrl: "./carousel.component.html",
@@ -27,16 +27,17 @@ export class CarouselComponent implements OnInit {
   addComponentHidden: boolean;
   formShow: boolean;
   formMode: string;
-  private user: User;
+  private userId: string;
 
   constructor(
     private httpService: HttpService,
     private stateService: StatesService,
-    private cardsService: CardsService
+    private cardsService: CardsService,
+    private userService: UserService
   ) {}
 
   ngOnInit(): void {
-    this.httpService.getUser().subscribe((user) => (this.user = user));
+    this.userService.getUserId().subscribe((userId) => (this.userId = userId));
     this.httpService.getCurrentLecture().subscribe((lecture) => {
       this.lecture = lecture;
       this.title = this.lecture.name;
@@ -112,7 +113,7 @@ export class CarouselComponent implements OnInit {
       if (!currCard.author || currCard.author.length == 0) {
         return false;
       }
-      if (!this.user || currCard.author !== this.user._id) {
+      if (!this.userId || currCard.author !== this.userId) {
         //there is an author an it is not the user
         return true;
       } else {

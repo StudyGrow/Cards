@@ -3,28 +3,25 @@ import { HttpClient, HttpHeaders, HttpResponse } from "@angular/common/http";
 import { Observable, BehaviorSubject } from "rxjs";
 import { tap, map } from "rxjs/operators";
 import { StatesService } from "./states.service";
+import { NotificationsService } from "./notifications.service";
 import { Router } from "@angular/router";
 //Models
 import { User } from "../models/User";
 import { UserInfo } from "../models/userInfo";
 import { Card } from "../models/Card";
 import { Vorlesung } from "../models/Vorlesung";
-import {
-  HttpError,
-  SuccessMessage,
-  Notification,
-} from "../models/Notification";
+import { HttpError, SuccessMessage } from "../models/Notification";
 @Injectable({
   providedIn: "root",
 })
 export class HttpService {
   private urlBase: string = "api/"; //url  base on which to adress the server with
-  private user$: BehaviorSubject<User> = new BehaviorSubject<User>(null); //stores the user
+
   private lecture$: BehaviorSubject<Vorlesung> = new BehaviorSubject<Vorlesung>(
     new Vorlesung("", "")
   ); //holds the current lecture
   private lectures$: BehaviorSubject<Vorlesung[]>; //holds all lectures
-  private notifications$ = new BehaviorSubject<Notification[]>([]);
+
   private profileInfo$: BehaviorSubject<UserInfo> = new BehaviorSubject<
     UserInfo
   >(null);
@@ -33,6 +30,7 @@ export class HttpService {
   };
 
   constructor(
+    private notifications: NotificationsService,
     private http: HttpClient, //for sending http requests
     private statesService: StatesService, //set the loading state
     private router: Router //to get info in the current url
@@ -194,7 +192,7 @@ export class HttpService {
   }
 
   //login the user on the server
-  login(form): Observable<HttpResponse<User>> {
+  login(form): Observable<User> {
     this.statesService.setLoadingState(true);
     return this.http
       .post<User>(this.urlBase + "login", form, {
@@ -205,51 +203,37 @@ export class HttpService {
         tap(
           (res) => {
             this.statesService.setLoadingState(false);
-            this.user$.next(res.body); //set the user
-            if (form.remember) {
-              localStorage.setItem(
-                "user",
-                JSON.stringify(this.user$.getValue())
-              ); //store the user locally to keep the session
-            }
+            this.notifications.addNotification(
+              new SuccessMessage("Willkommen " + res.body.username)
+            );
           },
           (error) => {
             this.addErrors(error);
             this.statesService.setLoadingState(false);
           }
-        )
+        ),
+        map((res) => res.body)
       );
   }
 
-  getUser(): Observable<User> {
-    if (this.user$.getValue() == null) {
-      let user = JSON.parse(localStorage.getItem("user")); //load the user from the local storage
-      this.user$.next(user);
-    }
-    return this.user$.asObservable();
-  }
-  getUserInfo(): Observable<any> {
-    if (this.profileInfo$.getValue() != null) {
-      return this.profileInfo$.asObservable();
-    } else {
-      this.profileInfo$ = new BehaviorSubject<any>(this.user$.getValue());
-      this.statesService.setLoadingState(true);
-      this.http
-        .get<any>(this.urlBase + "user/info", {
-          observe: "response",
-        })
-        .subscribe(
+  getUserInfo(): Observable<UserInfo> {
+    this.statesService.setLoadingState(true);
+    return this.http
+      .get<UserInfo>(this.urlBase + "user/info", {
+        observe: "response",
+      })
+      .pipe(
+        tap(
           (res) => {
             this.statesService.setLoadingState(false);
-            this.profileInfo$.next(res.body);
           },
           (error) => {
             this.statesService.setLoadingState(false);
             this.addErrors(error);
           }
-        );
-      return this.profileInfo$.asObservable();
-    }
+        ),
+        map((res) => res.body)
+      );
   }
 
   //logout the user in front- and backend
@@ -258,12 +242,10 @@ export class HttpService {
     this.http.get<any>(this.urlBase + "user/logout").subscribe((res) => {
       this.statesService.setLoadingState(false);
     });
-    localStorage.removeItem("user"); //remove the user data from localstorage
-    this.user$.next(null);
   }
 
   //form = {username,email,password}
-  createAccount(form): Observable<HttpResponse<User>> {
+  createAccount(form): Observable<User> {
     this.statesService.setLoadingState(true);
     return this.http
       .post<User>(this.urlBase + "user/new", form, {
@@ -273,14 +255,14 @@ export class HttpService {
       .pipe(
         tap(
           (res) => {
-            this.user$.next(res.body); //login the user (on success)
             this.statesService.setLoadingState(false);
           },
           (error) => {
             this.addErrors(error);
             this.statesService.setLoadingState(false);
           }
-        )
+        ),
+        map((res) => res.body)
       );
   }
 
@@ -295,7 +277,7 @@ export class HttpService {
         tap(
           (res) => {
             this.statesService.setLoadingState(false);
-            this.addNotification(
+            this.notifications.addNotification(
               new SuccessMessage("Dein Passwort wurde erfolgreich aktualisiert")
             );
           },
@@ -316,11 +298,11 @@ export class HttpService {
       .subscribe(
         (res) => {
           this.statesService.setLoadingState(false);
-          this.user$.next(form);
+
           let info = this.profileInfo$.getValue();
           info.user = form;
           this.profileInfo$.next(info);
-          this.addNotification(
+          this.notifications.addNotification(
             new SuccessMessage(
               "Deine Informationen wurden erfolgreich aktualisiert"
             )
@@ -332,20 +314,21 @@ export class HttpService {
         }
       );
   }
+
+  //because errors suck and we dont have a unified error handling system in the backend
   addErrors(error) {
     let err = error.error;
-    let notifications = this.notifications$.getValue();
     console.log(error);
     if (error.status == 400) {
-      notifications.push(
+      this.notifications.addNotification(
         new HttpError("Bitte logge dich erst ein.", error.status)
       );
       this.router.navigateByUrl("/login");
     } else if (error.status == 422) {
       if (typeof err == "string") {
-        notifications.push(new HttpError(err, error.status));
+        this.notifications.addNotification(new HttpError(err, error.status));
       } else if (typeof err == "object") {
-        notifications.push(
+        this.notifications.addNotification(
           new HttpError(
             "Ein unbekannter Fehler ist aufgetreten. Versuche es später erneut.",
             error.status
@@ -354,43 +337,23 @@ export class HttpService {
         console.log(err);
       } else {
         for (const e of err) {
-          notifications.push(new HttpError(e, error.status));
+          this.notifications.addNotification(new HttpError(e, error.status));
         }
       }
     } else if (error.status >= 500) {
-      notifications.push(
+      this.notifications.addNotification(
         new HttpError(
           "Der Server scheint offline zu sein. Versuche es später erneut.",
           error.status
         )
       );
     } else {
-      notifications.push(
+      this.notifications.addNotification(
         new HttpError(
           "Ein unbekannter Fehler ist aufgetreten. Versuche es später erneut.",
           error.status
         )
       );
     }
-    this.notifications$.next(notifications);
-  }
-
-  addNotification(n: Notification) {
-    let notifications = this.notifications$.getValue();
-    notifications.push(n);
-  }
-
-  //removes a specific error from the error array
-  removeNotification(index: number) {
-    let notifications = this.notifications$.getValue();
-    notifications.splice(index, 1); //remove error at position index
-    this.notifications$.next(notifications);
-  }
-  clearNotifications() {
-    this.notifications$.next([]);
-  }
-
-  getNotifications(): Observable<Notification[]> {
-    return this.notifications$.asObservable();
   }
 }

@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { HttpService } from "../../services/http.service";
 import { from } from "rxjs";
+import { UserService } from "src/app/services/user.service";
 
 @Component({
   selector: "app-about",
@@ -9,15 +10,11 @@ import { from } from "rxjs";
 })
 export class AboutComponent implements OnInit {
   public loggedIn: boolean;
-  constructor(private http: HttpService) {}
+  constructor(private user: UserService) {}
 
   ngOnInit(): void {
-    this.http.getUser().subscribe((user) => {
-      if (user) {
-        this.loggedIn = true;
-      } else {
-        this.loggedIn = false;
-      }
+    this.user.authentication().subscribe((val) => {
+      this.loggedIn = val;
     });
   }
 }

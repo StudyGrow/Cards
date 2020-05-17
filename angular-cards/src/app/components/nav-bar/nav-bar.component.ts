@@ -5,16 +5,18 @@ import { Title } from "@angular/platform-browser";
 import { User } from "src/app/models/User";
 import { HttpService } from "src/app/services/http.service";
 import { CardsService } from "src/app/services/cards.service";
+import { NotificationsService } from "../../services/notifications.service";
 import { Vorlesung } from "src/app/models/Vorlesung";
 import { StatesService } from "src/app/services/states.service";
 import { Notification } from "../../models/Notification";
+import { UserService } from "../../services/user.service";
 @Component({
   selector: "app-nav-bar",
   templateUrl: "./nav-bar.component.html",
   styleUrls: ["./nav-bar.component.css"],
 })
 export class NavBarComponent implements OnInit {
-  public user: User;
+  public loggedIn: boolean;
   public cards: Card[];
   public notifications: Notification[];
 
@@ -22,22 +24,24 @@ export class NavBarComponent implements OnInit {
   public constructor(
     private router: Router,
     private titleService: Title,
-    private http: HttpService,
+
     private cardsService: CardsService,
-    private statesService: StatesService
+    private statesService: StatesService,
+    private notification: NotificationsService,
+    private userService: UserService
   ) {}
 
   ngOnInit(): void {
     this.setPageTitle();
-    this.http.getUser().subscribe((user) => (this.user = user));
+    this.userService.authentication().subscribe((val) => (this.loggedIn = val));
     this.statesService.getLoadingState().subscribe((val) => {
       this.loading = val;
     });
     this.router.events.subscribe((e) => {
       //clear messages on route change
-      this.http.clearNotifications();
+      //this.notification.clearNotifications();
     });
-    this.http
+    this.notification
       .getNotifications()
       .subscribe((notifs) => (this.notifications = notifs));
     if (this.router.url.match(/vorlesung/)) {
@@ -47,7 +51,7 @@ export class NavBarComponent implements OnInit {
     }
   }
   closeAlert(i: number) {
-    this.http.removeNotification(i);
+    this.notification.removeNotification(i);
   }
   isActive(path: string): string {
     return path === this.router.url ? "active" : "";
@@ -73,8 +77,8 @@ export class NavBarComponent implements OnInit {
     this.titleService.setTitle(currentTitle);
   }
   logout() {
-    this.http.logout();
-    this.user = null;
+    this.userService.logout();
+
     this.router.navigate(["/"]);
   }
 }

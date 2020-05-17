@@ -16,6 +16,11 @@ export class HttpError extends Notification {
   }
 }
 
+export class InfoMessage extends Notification {
+  constructor(m: string) {
+    super("info", m);
+  }
+}
 export class SuccessMessage extends Notification {
   constructor(m: string) {
     super("success", m);
