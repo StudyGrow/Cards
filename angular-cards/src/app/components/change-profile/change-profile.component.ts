@@ -26,10 +26,10 @@ export class ChangeProfileComponent implements OnInit {
   }
 
   changeAccount(form: NgForm) {
-    this.http.updateAccount(form.value);
+    this.userService.updateAccount(form.value);
   }
   changePassword(form: NgForm) {
-    this.http.updatePassword(form.value).subscribe((res) => {
+    this.userService.updatePassword(form.value).subscribe((res) => {
       form.reset();
     });
   }
