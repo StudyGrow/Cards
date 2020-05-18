@@ -44,7 +44,6 @@ export class NotificationsService {
       this.addNotification(
         new InfoMessage("Du musst dich einloggen, um diese Seite zu besuchen")
       );
-      this.router.navigateByUrl("/login");
     } else if (error.status == 422) {
       if (typeof err == "string") {
         this.addNotification(new HttpError(err, error.status));
