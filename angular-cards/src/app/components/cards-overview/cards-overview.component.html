@@ -1,32 +1,11 @@
 <div class="list-group">
-  <a class="list-group-item list-group-item-action">
+  <a *ngFor="let card of cards" class="list-group-item list-group-item-action">
     <div class="d-flex w-100 justify-content-between">
-      <h5 class="mb-1">Karte 1</h5>
-      <small>Datum</small>
+      <h5 class="mb-1">{{ card.thema }}</h5>
+      <small>{{ card.date | date: "longDate":"de" }}</small>
     </div>
     <p class="mb-1">
-      Inhalt der Karte, auf eine bestimmte Länge gekürzt. Später soll es möglich
-      sein durch klicken sofort auf die Karte zu gelangen
-    </p>
-  </a>
-  <a class="list-group-item list-group-item-action">
-    <div class="d-flex w-100 justify-content-between">
-      <h5 class="mb-1">Karte 2</h5>
-      <small>Datum</small>
-    </div>
-    <p class="mb-1">
-      Inhalt der Karte, auf eine bestimmte Länge gekürzt. Später soll es möglich
-      sein durch klicken sofort auf die Karte zu gelangen
-    </p>
-  </a>
-  <a class="list-group-item list-group-item-action">
-    <div class="d-flex w-100 justify-content-between">
-      <h5 class="mb-1">Karte 3</h5>
-      <small class="text-muted">Datum</small>
-    </div>
-    <p class="mb-1">
-      Inhalt der Karte, auf eine bestimmte Länge gekürzt. Später soll es möglich
-      sein durch klicken sofort auf die Karte zu gelangen
+      {{ card.content }}
     </p>
   </a>
 </div>

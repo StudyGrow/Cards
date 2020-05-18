@@ -6,11 +6,9 @@ import { StatesService } from "./states.service";
 import { NotificationsService } from "./notifications.service";
 import { Router } from "@angular/router";
 //Models
-import { User } from "../models/User";
-import { UserInfo } from "../models/userInfo";
 import { Card } from "../models/Card";
 import { Vorlesung } from "../models/Vorlesung";
-import { HttpError, SuccessMessage } from "../models/Notification";
+import { HttpError } from "../models/Notification";
 @Injectable({
   providedIn: "root",
 })
@@ -22,9 +20,6 @@ export class HttpService {
   ); //holds the current lecture
   private lectures$: BehaviorSubject<Vorlesung[]>; //holds all lectures
 
-  private profileInfo$: BehaviorSubject<UserInfo> = new BehaviorSubject<
-    UserInfo
-  >(null);
   private httpOptions = {
     headers: new HttpHeaders({ "Content-Type": "application/json" }),
   };
@@ -192,6 +187,7 @@ export class HttpService {
   }
 
   //because errors suck and we dont have a unified error handling system in the backend
+
   addErrors(error) {
     let err = error.error;
     console.log(error);

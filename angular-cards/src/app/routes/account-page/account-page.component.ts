@@ -1,4 +1,5 @@
 import { Component, OnInit } from "@angular/core";
+import { UserService } from "src/app/services/user.service";
 
 @Component({
   selector: "app-account-page",
@@ -7,10 +8,18 @@ import { Component, OnInit } from "@angular/core";
 })
 export class AccountPageComponent implements OnInit {
   public page: string;
-  constructor() {}
+  public cardCount = 0;
+  constructor(private userService: UserService) {}
 
   ngOnInit(): void {
     this.page = "overview";
+    this.userService.getUserInfo().subscribe((info) => {
+      if (info && info.cards) {
+        this.cardCount = info.cards.length;
+      } else {
+        this.cardCount = 0;
+      }
+    });
   }
 
   changePage(e: Event, s: string) {

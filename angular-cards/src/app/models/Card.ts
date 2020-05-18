@@ -4,7 +4,7 @@ export class Card {
   author?: string;
   content: string;
   abrv: string;
-  creationDate?: Date;
+  date?: Date;
   constructor(thema, content, abrv) {
     this.thema = thema;
     this.content = content;

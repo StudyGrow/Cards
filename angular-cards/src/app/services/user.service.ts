@@ -137,7 +137,10 @@ export class UserService implements CanActivate {
         })
         .subscribe(
           (res) => {
-            console.log(res.body);
+            for (const card of res.body.cards) {
+              card.date = new Date(card.date);
+            }
+
             this.accountInfo$.next(res.body);
           },
           (error) => {

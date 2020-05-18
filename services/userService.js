@@ -34,7 +34,7 @@ module.exports = function userService() {
         throw new Error("Bitte logge dich erst ein");
       }
       let info = new Object();
-      let cards = await Card.find({ author: user.username });
+      let cards = await Card.find({ author: user._id });
       info.cards = cards;
       callback(null, info);
     } catch (error) {

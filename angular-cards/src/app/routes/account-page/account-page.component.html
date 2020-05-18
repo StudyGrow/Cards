@@ -16,19 +16,11 @@
           Profildaten ändern
         </button>
         <button
+          *ngIf="cardCount > 0"
           [class]="setClass('cards')"
           (click)="changePage($event, 'cards')"
         >
           Karteikarten
-        </button>
-        <button
-          [class]="setClass('notifications')"
-          (click)="changePage($event, 'notifications')"
-        >
-          Benachrichtigungen<span
-            class="badge badge-danger badge-pill float-right"
-            >3</span
-          >
         </button>
       </div>
     </div>
@@ -37,7 +29,6 @@
       <app-overview *ngSwitchCase="'overview'"></app-overview>
       <app-change-profile *ngSwitchCase="'management'"></app-change-profile>
       <app-cards-overview *ngSwitchCase="'cards'"></app-cards-overview>
-      <app-notifications *ngSwitchCase="'notifications'"></app-notifications>
     </div>
   </div>
 </div>

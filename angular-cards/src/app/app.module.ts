@@ -1,6 +1,6 @@
 //Modules
 import { BrowserModule } from "@angular/platform-browser";
-import { NgModule, Injectable } from "@angular/core";
+import { NgModule, Injectable, LOCALE_ID } from "@angular/core";
 import { HttpClientModule } from "@angular/common/http";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { AppRoutingModule } from "./app-routing.module";
@@ -44,13 +44,20 @@ import { LoginFormComponent } from "./components/login-form/login-form.component
 import { SignupPageComponent } from "./routes/signup-page/signup-page.component";
 import { SignupFormComponent } from "./components/signup-form/signup-form.component";
 import { StoreModule } from "@ngrx/store";
-import { FooterComponent } from './components/footer/footer.component';
-import { AboutComponent } from './routes/about/about.component';
-import { AccountPageComponent } from './routes/account-page/account-page.component';
-import { OverviewComponent } from './components/overview/overview.component';
-import { ChangeProfileComponent } from './components/change-profile/change-profile.component';
-import { CardsOverviewComponent } from './components/cards-overview/cards-overview.component';
-import { NotificationsComponent } from './components/notifications/notifications.component';
+import { FooterComponent } from "./components/footer/footer.component";
+import { AboutComponent } from "./routes/about/about.component";
+import { AccountPageComponent } from "./routes/account-page/account-page.component";
+import { OverviewComponent } from "./components/overview/overview.component";
+import { ChangeProfileComponent } from "./components/change-profile/change-profile.component";
+import { CardsOverviewComponent } from "./components/cards-overview/cards-overview.component";
+import { NotificationsComponent } from "./components/notifications/notifications.component";
+
+//Localization
+import { registerLocaleData } from "@angular/common";
+import de from "@angular/common/locales/de";
+
+// the second parameter 'fr-FR' is optional
+registerLocaleData(de);
 
 declare var Hammer: any;
 //Config to allow swipe gestures on carousel
@@ -125,6 +132,7 @@ export class MyHammerConfig extends HammerGestureConfig {
   providers: [
     StatesService,
     HttpService,
+    { provide: LOCALE_ID, useValue: "de" },
 
     {
       provide: HAMMER_GESTURE_CONFIG,
