@@ -42,7 +42,7 @@ export class NotificationsService {
     console.log(error);
     if (error.status == 400) {
       this.addNotification(
-        new HttpError("Bitte logge dich erst ein.", error.status)
+        new InfoMessage("Du musst dich einloggen, um diese Seite zu besuchen")
       );
       this.router.navigateByUrl("/login");
     } else if (error.status == 422) {

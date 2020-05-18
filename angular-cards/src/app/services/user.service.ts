@@ -33,12 +33,14 @@ export class UserService implements CanActivate {
         this.notifications.addNotification(
           new InfoMessage("Du musst dich einloggen, um diese Seite zu besuchen")
         );
+        this.setUser(null);
         this.router.navigate(["login"]);
         return false;
       }
     } else if (this.auth$.getValue()) {
       return true;
     } else {
+      this.setUser(null);
       return false;
     }
   }
@@ -62,6 +64,7 @@ export class UserService implements CanActivate {
           },
           (error) => {
             this.notifications.handleErrors(error);
+            this.setUser(null);
             this.statesService.setLoadingState(false);
           }
         )

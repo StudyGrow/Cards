@@ -6,7 +6,6 @@ import { StatesService } from "./states.service";
 import { NotificationsService } from "./notifications.service";
 import { Router } from "@angular/router";
 //Models
-import { Card } from "../models/Card";
 import { Vorlesung } from "../models/Vorlesung";
 import { HttpError } from "../models/Notification";
 @Injectable({

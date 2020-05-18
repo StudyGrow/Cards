@@ -45,7 +45,7 @@ function auth(req, res, next) {
 router.get("/info", auth, (req, res) => {
   req.services.user.getAccountInfo(req.user, (err, info) => {
     if (err) {
-      res.status(422).send(err.message);
+      res.status(400).send(err.message);
     } else {
       let user = req.user;
       user.password = null;
