@@ -14,7 +14,7 @@ import { User } from "../models/User";
   providedIn: "root",
 })
 export class UserService implements CanActivate {
-  private auth$: BehaviorSubject<boolean>; //subject which is true if user is authenticated
+  private auth$ = new BehaviorSubject<boolean>(false); //subject which is true if user is authenticated
   private userId$ = new BehaviorSubject<string>(null);
   private accountInfo$: BehaviorSubject<UserInfo>; //stores account info of the user used
   private config = new HttpConfig();
@@ -26,8 +26,12 @@ export class UserService implements CanActivate {
   ) {}
 
   canActivate(): boolean {
-    if (!this.auth$) {
-      if (localStorage.getItem("userId")) {
+    if (this.auth$.getValue()) {
+      return true;
+    } else {
+      let id = localStorage.getItem("userId");
+      if (id) {
+        this.setUser(id);
         return true;
       } else {
         this.notifications.addNotification(
@@ -37,11 +41,6 @@ export class UserService implements CanActivate {
         this.router.navigate(["login"]);
         return false;
       }
-    } else if (this.auth$.getValue()) {
-      return true;
-    } else {
-      this.setUser(null);
-      return false;
     }
   }
   //used to login the user
