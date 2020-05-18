@@ -22,7 +22,7 @@ export class CarouselComponent implements OnInit {
     this.carousel.nextSlide();
   }
   cards: Card[]; //array of all the cards
-  activeSlide: number = 0;
+  activeSlide: number;
   title: string;
   addComponentHidden: boolean;
   formShow: boolean;
@@ -37,6 +37,7 @@ export class CarouselComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.activeSlide = 0;
     this.userService.getUserId().subscribe((userId) => (this.userId = userId));
     this.httpService.getCurrentLecture().subscribe((lecture) => {
       this.lecture = lecture;
@@ -53,7 +54,7 @@ export class CarouselComponent implements OnInit {
     });
 
     this.cardsService.getNewCardIndex().subscribe((index) => {
-      if (this.carousel && this.activeSlide != index) {
+      if (this.carousel) {
         this.activeSlide = index;
         this.carousel.selectSlide(index);
       }
