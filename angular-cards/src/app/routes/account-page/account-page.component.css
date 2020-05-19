@@ -2,6 +2,9 @@
   margin-top: 15px;
   margin-bottom: 50px;
 }
-.col-xs-12 {
+#sub {
   margin-top: 10px;
+
+  background: white;
+  overflow-y: auto;
 }

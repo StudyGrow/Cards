@@ -25,7 +25,7 @@
       </div>
     </div>
 
-    <div class="col-md-8 col-xs-12" [ngSwitch]="page">
+    <div class="col-md-8 col-xs-12" id="sub" [ngSwitch]="page">
       <app-overview *ngSwitchCase="'overview'"></app-overview>
       <app-change-profile *ngSwitchCase="'management'"></app-change-profile>
       <app-cards-overview *ngSwitchCase="'cards'"></app-cards-overview>
