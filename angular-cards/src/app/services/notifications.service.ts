@@ -20,8 +20,17 @@ export class NotificationsService {
     notifications.splice(index, 1); //remove error at position index
     this.notifications$.next(notifications);
   }
-  clearNotifications() {
-    this.notifications$.next([]);
+  clearNotifications(...types: string[]) {
+    let notifs = this.notifications$.getValue();
+    types.forEach((type) => {
+      for (let i = 0; i < notifs.length; i++) {
+        if (notifs[i].type === type) {
+          this.removeNotification(i);
+        }
+      }
+    });
+
+    this.notifications$.next(notifs);
   }
   removeLoginInfo() {
     let notifs = this.notifications$.getValue();
