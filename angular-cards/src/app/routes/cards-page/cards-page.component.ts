@@ -12,6 +12,7 @@ import { Vorlesung } from "src/app/models/Vorlesung";
 import { CardsService } from "src/app/services/cards.service";
 import { Card } from "../../models/Card";
 import { Title } from "@angular/platform-browser";
+
 @Component({
   selector: "app-cards-page",
   templateUrl: "./cards-page.component.html",

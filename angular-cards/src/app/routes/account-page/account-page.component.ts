@@ -9,7 +9,6 @@ import {
   selector: "app-account-page",
   templateUrl: "./account-page.component.html",
   styleUrls: ["./account-page.component.css"],
-  animations: [fadeInOnEnterAnimation(), fadeOutOnLeaveAnimation()],
 })
 export class AccountPageComponent implements OnInit {
   public page: string;

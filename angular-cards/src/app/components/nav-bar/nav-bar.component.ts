@@ -9,12 +9,18 @@ import { NotificationsService } from "../../services/notifications.service";
 import { StatesService } from "src/app/services/states.service";
 import { Notification } from "../../models/Notification";
 import { UserService } from "../../services/user.service";
-import { pulseOnEnterAnimation } from "angular-animations";
+import {
+  pulseOnEnterAnimation,
+  fadeOutOnLeaveAnimation,
+} from "angular-animations";
 @Component({
   selector: "app-nav-bar",
   templateUrl: "./nav-bar.component.html",
   styleUrls: ["./nav-bar.component.css"],
-  animations: [pulseOnEnterAnimation({ scale: 1.05, duration: 500 })],
+  animations: [
+    pulseOnEnterAnimation({ scale: 1.05, duration: 500 }),
+    fadeOutOnLeaveAnimation({ duration: 200 }),
+  ],
 })
 export class NavBarComponent implements OnInit {
   public loggedIn: boolean;
