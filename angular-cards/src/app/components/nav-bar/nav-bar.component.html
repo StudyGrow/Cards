@@ -75,6 +75,7 @@
 <div
   #alert
   *ngFor="let notif of notifications; index as i"
+  [@pulseOnEnter]
   [class]="setAlertClass(notif)"
   role="alert"
 >

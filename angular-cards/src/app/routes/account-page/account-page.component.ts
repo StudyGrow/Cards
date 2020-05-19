@@ -1,10 +1,15 @@
 import { Component, OnInit } from "@angular/core";
 import { UserService } from "src/app/services/user.service";
+import {
+  fadeInOnEnterAnimation,
+  fadeOutOnLeaveAnimation,
+} from "angular-animations";
 
 @Component({
   selector: "app-account-page",
   templateUrl: "./account-page.component.html",
   styleUrls: ["./account-page.component.css"],
+  animations: [fadeInOnEnterAnimation(), fadeOutOnLeaveAnimation()],
 })
 export class AccountPageComponent implements OnInit {
   public page: string;

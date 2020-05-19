@@ -132,6 +132,7 @@ export class UserService implements CanActivate {
     if (this.accountInfo$) {
       return this.accountInfo$.asObservable();
     } else {
+      this.statesService.setLoadingState(true);
       this.accountInfo$ = new BehaviorSubject<UserInfo>(null);
       this.http
         .get<UserInfo>(this.config.urlBase + "user/info", {
@@ -139,6 +140,7 @@ export class UserService implements CanActivate {
         })
         .subscribe(
           (res) => {
+            this.statesService.setLoadingState(false);
             for (const card of res.body.cards) {
               card.date = new Date(card.date);
             }

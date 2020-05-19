@@ -1,19 +1,20 @@
-import { Component, OnInit, Input } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { Card } from "../../models/Card";
-import { Router } from "@angular/router";
+import { Router, NavigationEnd } from "@angular/router";
 import { Title } from "@angular/platform-browser";
-import { User } from "src/app/models/User";
-import { HttpService } from "src/app/services/http.service";
+
 import { CardsService } from "src/app/services/cards.service";
 import { NotificationsService } from "../../services/notifications.service";
-import { Vorlesung } from "src/app/models/Vorlesung";
+
 import { StatesService } from "src/app/services/states.service";
 import { Notification } from "../../models/Notification";
 import { UserService } from "../../services/user.service";
+import { pulseOnEnterAnimation } from "angular-animations";
 @Component({
   selector: "app-nav-bar",
   templateUrl: "./nav-bar.component.html",
   styleUrls: ["./nav-bar.component.css"],
+  animations: [pulseOnEnterAnimation({ scale: 1.05, duration: 500 })],
 })
 export class NavBarComponent implements OnInit {
   public loggedIn: boolean;
@@ -39,7 +40,14 @@ export class NavBarComponent implements OnInit {
     });
     this.router.events.subscribe((e) => {
       //clear messages on route change
-      //this.notification.clearNotifications();
+
+      if (e instanceof NavigationEnd) {
+        if (this.router.url == "/") {
+          this.notification.clearNotifications("alert"); //prevent successfull login message from being removed on home
+        } else {
+          this.notification.clearNotifications("alert", "success");
+        }
+      }
     });
     this.notification
       .getNotifications()
