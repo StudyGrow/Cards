@@ -24,7 +24,7 @@ router.get(
       },
       (err, cards) => {
         if (err) {
-          res.status(422).send(err.message);
+          res.status(501).send(err.message);
         } else {
           res.status(200).send(cards);
         }
@@ -64,7 +64,7 @@ router.post(
 
     req.services.cards.addCard(req.body.card, req.user, (err, id) => {
       if (err) {
-        res.status(422).send(err.message);
+        res.status(501).send(err.message);
       } else {
         res.json({
           id: id, //send id of the card to the client
@@ -78,6 +78,12 @@ router.post(
 router.put(
   "/update",
   [
+    check("card._id")
+      .isLength({
+        min: 1,
+        max: 200,
+      })
+      .withMessage("_id der Karte muss angegeben werden"),
     check("card.thema")
       .isLength({
         min: 3,
@@ -100,7 +106,7 @@ router.put(
     } else {
       req.services.cards.updateCard(req.body.card, req.user, (err) => {
         if (err) {
-          res.status(422).send(err.message);
+          res.status(501).send(err.message);
         } else {
           res.status(200).send();
         }

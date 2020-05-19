@@ -1,22 +1,24 @@
-import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { NgForm } from "@angular/forms";
 import { StatesService } from "../../services/states.service";
-import { HttpService } from "../../services/http.service";
+
 import { CardsService } from "../../services/cards.service";
 import { Card } from "../../models/Card";
-import { Vorlesung } from "../../models/Vorlesung";
+
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
+import { Subscription } from "rxjs";
 
 @Component({
   selector: "app-update-card-form",
   templateUrl: "./update-card-form.component.html",
   styleUrls: ["./update-card-form.component.css"],
 })
-export class UpdateCardFormComponent implements OnInit {
+export class UpdateCardFormComponent implements OnInit, OnDestroy {
   public cardCopy: Card;
   private cards: Card[];
   private cardIndex: number; //saves the cardindex which the user is currently updating
   private activeCardIndex: number; //saves the active cardindex
+  subscriptions$: Subscription[] = [];
   constructor(
     private cardsService: CardsService,
     private statesService: StatesService,
@@ -24,15 +26,22 @@ export class UpdateCardFormComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.cardsService.getCards().subscribe((cards) => {
+    let sub = this.cardsService.getCards().subscribe((cards) => {
       this.cards = cards;
     });
-    this.cardsService.getActiveCardIndex().subscribe((index) => {
+    this.subscriptions$.push(sub);
+    sub = this.cardsService.getActiveCardIndex().subscribe((index) => {
       this.activeCardIndex = index;
       if (this.cards) {
         this.cardCopy = { ...this.cards[this.activeCardIndex] };
       }
       this.cardIndex = this.activeCardIndex;
+    });
+    this.subscriptions$.push(sub);
+  }
+  ngOnDestroy() {
+    this.subscriptions$.forEach((sub) => {
+      sub.unsubscribe();
     });
   }
   inField() {
@@ -44,10 +53,11 @@ export class UpdateCardFormComponent implements OnInit {
   onSubmit(f: NgForm) {
     this.cardCopy.content = f.value.content;
     this.cardCopy.thema = f.value.thema;
-    this.cardsService
+    let sub = this.cardsService
       .updateCard({ ...this.cardCopy }, this.cardIndex)
       .subscribe((resp) => {
         f.reset();
+        sub.unsubscribe();
       });
   }
   cancelEdit() {

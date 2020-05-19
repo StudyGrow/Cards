@@ -24,17 +24,17 @@
             >
           </li>
 
-          <li *ngIf="!user" class="{{ isActive('/login') }} nav-item">
+          <li *ngIf="!loggedIn" class="{{ isActive('/login') }} nav-item">
             <a class="nav-link" routerLink="/login"
               ><i class="fas fa-user"></i> Login</a
             >
           </li>
-          <li *ngIf="!user" class="{{ isActive('/signup') }} nav-item">
+          <li *ngIf="!loggedIn" class="{{ isActive('/signup') }} nav-item">
             <a class="nav-link" routerLink="/signup"
               ><i class="fas fa-plus"></i> Registrieren</a
             >
           </li>
-          <li *ngIf="user" class="{{ isActive('/profile') }} nav-item">
+          <li *ngIf="loggedIn" class="{{ isActive('/profile') }} nav-item">
             <div class="dropdown">
               <a
                 class="nav-link"
@@ -51,7 +51,6 @@
                   class="dropdown-item disabled"
                   routerLink="/account"
                   placement="bottom"
-                  ngbTooltip="im Aufbau"
                   >Account management</a
                 >
                 <a class="dropdown-item" (click)="logout()">
@@ -75,9 +74,11 @@
 
 <div
   #alert
-  class="alert alert-warning alert-dismissible fade show"
+  *ngFor="let notif of notifications; index as i"
+  [@pulseOnEnter]
+  [@fadeOutOnLeave]
+  [class]="setAlertClass(notif)"
   role="alert"
-  *ngFor="let error of errors; index as i"
 >
   <button
     type="button"
@@ -87,5 +88,5 @@
   >
     <span aria-hidden="true">&times;</span>
   </button>
-  {{ error }}
+  {{ notif.message }}
 </div>

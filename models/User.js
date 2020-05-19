@@ -13,6 +13,9 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  creationDate: Date,
+  name: String,
+  surname: String,
 });
 
 const User = (module.exports = mongoose.model("User", userSchema));

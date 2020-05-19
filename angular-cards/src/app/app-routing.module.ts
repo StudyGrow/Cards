@@ -6,14 +6,18 @@ import { LoginPageComponent } from "./routes/login-page/login-page.component";
 import { SignupPageComponent } from "./routes/signup-page/signup-page.component";
 import { AboutComponent } from "./routes/about/about.component";
 import { AccountPageComponent } from "./routes/account-page/account-page.component";
-
+import { UserService as AuthGuard } from "./services/user.service";
 const routes: Routes = [
   { path: "", component: HomePageComponent },
   { path: "vorlesung/:abrv", component: CardsPageComponent },
   { path: "login", component: LoginPageComponent },
   { path: "signup", component: SignupPageComponent },
   { path: "about", component: AboutComponent },
-  { path: "account", component: AccountPageComponent },
+  {
+    path: "account",
+    component: AccountPageComponent,
+    canActivate: [AuthGuard],
+  },
 ];
 
 @NgModule({

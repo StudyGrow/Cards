@@ -1,17 +1,23 @@
-import { Component, OnInit, HostListener, ViewChild } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  HostListener,
+  ViewChild,
+  OnDestroy,
+} from "@angular/core";
 import { HttpService } from "../../services/http.service";
 import { StatesService } from "../../services/states.service";
 import { CardsService } from "../../services/cards.service";
 import { Card } from "../../models/Card";
 import { Vorlesung } from "src/app/models/Vorlesung";
-import { User } from "src/app/models/User";
-
+import { UserService } from "../../services/user.service";
+import { Subscription } from "rxjs";
 @Component({
   selector: "app-carousel",
   templateUrl: "./carousel.component.html",
   styleUrls: ["./carousel.component.css"],
 })
-export class CarouselComponent implements OnInit {
+export class CarouselComponent implements OnInit, OnDestroy {
   lecture: Vorlesung;
 
   @ViewChild("mycarousel", { static: false }) public carousel: any;
@@ -22,40 +28,53 @@ export class CarouselComponent implements OnInit {
     this.carousel.nextSlide();
   }
   cards: Card[]; //array of all the cards
-  activeSlide: number = 0;
+  activeSlide: number;
   title: string;
   addComponentHidden: boolean;
   formShow: boolean;
   formMode: string;
-  private user: User;
-
+  private userId: string;
+  subscriptions$: Subscription[] = [];
   constructor(
     private httpService: HttpService,
     private stateService: StatesService,
-    private cardsService: CardsService
+    private cardsService: CardsService,
+    private userService: UserService
   ) {}
 
   ngOnInit(): void {
-    this.httpService.getUser().subscribe((user) => (this.user = user));
-    this.httpService.getCurrentLecture().subscribe((lecture) => {
+    this.activeSlide = 0;
+    let sub = this.userService
+      .getUserId()
+      .subscribe((userId) => (this.userId = userId));
+    this.subscriptions$.push(sub);
+    sub = this.httpService.getCurrentLecture().subscribe((lecture) => {
       this.lecture = lecture;
       this.title = this.lecture.name;
     });
-
-    this.cardsService.getCards().subscribe((cards) => {
+    this.subscriptions$.push(sub);
+    sub = this.cardsService.getCards().subscribe((cards) => {
       this.cards = cards;
     }); //load the specific cards from the server by subscribing to the observable that the card-service provides
+    this.subscriptions$.push(sub);
     this.stateService.setFormMode("none");
-    this.stateService.getFormMode().subscribe((mode) => {
+    sub = this.stateService.getFormMode().subscribe((mode) => {
       this.formShow = mode == "add";
       this.formMode = mode;
     });
+    this.subscriptions$.push(sub);
 
-    this.cardsService.getNewCardIndex().subscribe((index) => {
-      if (this.carousel && this.activeSlide != index) {
+    sub = this.cardsService.getNewCardIndex().subscribe((index) => {
+      if (this.carousel) {
         this.activeSlide = index;
         this.carousel.selectSlide(index);
       }
+    });
+    this.subscriptions$.push(sub);
+  }
+  ngOnDestroy() {
+    this.subscriptions$.forEach((sub) => {
+      sub.unsubscribe();
     });
   }
 
@@ -112,7 +131,7 @@ export class CarouselComponent implements OnInit {
       if (!currCard.author || currCard.author.length == 0) {
         return false;
       }
-      if (!this.user || currCard.author !== this.user.username) {
+      if (!this.userId || currCard.author !== this.userId) {
         //there is an author an it is not the user
         return true;
       } else {

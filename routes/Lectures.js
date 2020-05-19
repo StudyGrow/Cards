@@ -8,7 +8,7 @@ router.get("/", (req, res) => {
   req.services.lectures.getLectures((err, lectures) => {
     if (err) {
       console.log(err);
-      res.status(422).send(err);
+      res.status(501).send(err);
     } else {
       res.status(200).send(lectures);
     }
@@ -39,7 +39,7 @@ router.get(
       },
       (err, lecture) => {
         if (err) {
-          res.status(422).send(error.message);
+          res.status(501).send(error.message);
         } else if (lecture) {
           res.send(lecture);
         } else {
@@ -71,7 +71,7 @@ router.post(
     }
     req.services.lectures.addLecture(req.body.lecture, (err) => {
       if (err) {
-        res.status(422).send(err.message);
+        res.status(501).send(err.message);
       } else {
         res.status(200).send();
       }

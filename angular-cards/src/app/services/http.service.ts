@@ -3,106 +3,32 @@ import { HttpClient, HttpHeaders, HttpResponse } from "@angular/common/http";
 import { Observable, BehaviorSubject } from "rxjs";
 import { tap, map } from "rxjs/operators";
 import { StatesService } from "./states.service";
+import { NotificationsService } from "./notifications.service";
 import { Router } from "@angular/router";
 //Models
-import { User } from "../models/User";
-import { Card } from "../models/Card";
 import { Vorlesung } from "../models/Vorlesung";
-
+import { HttpError } from "../models/Notification";
 @Injectable({
   providedIn: "root",
 })
 export class HttpService {
   private urlBase: string = "api/"; //url  base on which to adress the server with
-  private user$: BehaviorSubject<User> = new BehaviorSubject<User>(null); //stores the user
+
   private lecture$: BehaviorSubject<Vorlesung> = new BehaviorSubject<Vorlesung>(
     new Vorlesung("", "")
   ); //holds the current lecture
   private lectures$: BehaviorSubject<Vorlesung[]>; //holds all lectures
-  private errors$: BehaviorSubject<string[]> = new BehaviorSubject<string[]>(
-    []
-  );
+
   private httpOptions = {
     headers: new HttpHeaders({ "Content-Type": "application/json" }),
   };
 
   constructor(
+    private notifications: NotificationsService,
     private http: HttpClient, //for sending http requests
     private statesService: StatesService, //set the loading state
     private router: Router //to get info in the current url
   ) {}
-
-  //get Cards for a specific lecture from server
-  //This function shoul only be called by the cardsservice to initially load cards from server
-  getCardsFromLectureAbrv(abrv: string): Observable<Card[]> {
-    this.statesService.setLoadingState(true);
-    {
-      return this.http
-        .get<Card[]>(this.urlBase + "cards/?abrv=" + abrv, {
-          observe: "response",
-        })
-        .pipe(
-          tap(
-            (res) => {
-              this.statesService.setLoadingState(false);
-            },
-            (error) => {
-              this.addErrors(error);
-              this.statesService.setLoadingState(false);
-            }
-          ),
-          map((res) => res.body)
-        );
-    }
-  }
-
-  //add card to the database on server
-  addCard(card: Card): Observable<HttpResponse<any>> {
-    return this.http
-      .post<any>(
-        this.urlBase + "cards/new",
-        { card: card },
-        {
-          headers: this.httpOptions.headers,
-          observe: "response",
-        }
-      )
-      .pipe(
-        tap(
-          (res) => {
-            this.statesService.setLoadingState(false);
-          },
-          (error) => {
-            this.addErrors(error);
-            this.statesService.setLoadingState(false);
-          }
-        )
-      );
-  }
-
-  //update card on server
-  updateCard(card: Card): Observable<HttpResponse<any>> {
-    return this.http
-      .put<any>(
-        this.urlBase + "cards/update",
-        { card: card },
-        {
-          headers: this.httpOptions.headers,
-          observe: "response",
-        }
-      )
-      .pipe(
-        tap(
-          (res) => {
-            this.statesService.setLoadingState(false);
-          },
-          (error) => {
-            this.addErrors(error);
-            this.statesService.setLoadingState(false);
-          }
-        )
-      );
-  }
 
   //get an array of all lectures
   getAllLectures(): Observable<Vorlesung[]> {
@@ -187,127 +113,46 @@ export class HttpService {
       );
   }
 
-  //login the user on the server
-  login(form): Observable<HttpResponse<User>> {
-    this.statesService.setLoadingState(true);
-    return this.http
-      .post<User>(this.urlBase + "login", form, {
-        headers: this.httpOptions.headers,
-        observe: "response",
-      })
-      .pipe(
-        tap(
-          (res) => {
-            this.statesService.setLoadingState(false);
-            this.user$.next(res.body); //set the user
-            if (form.remember) {
-              localStorage.setItem(
-                "user",
-                JSON.stringify(this.user$.getValue())
-              ); //store the user locally to keep the session
-            }
-          },
-          (error) => {
-            this.addErrors(error);
-            this.statesService.setLoadingState(false);
-          }
-        )
-      );
-  }
+  //because errors suck and we dont have a unified error handling system in the backend
 
-  getUser(): Observable<User> {
-    if (this.user$.getValue() == null) {
-      let user = JSON.parse(localStorage.getItem("user")); //load the user from the local storage
-      this.user$.next(user);
-    }
-    return this.user$.asObservable();
-  }
-  getUserInfo(): Observable<any> {
-    this.statesService.setLoadingState(true);
-    return this.http
-      .get<any>(this.urlBase + "user/info", {
-        observe: "response",
-      })
-      .pipe(
-        tap(
-          (res) => {
-            this.statesService.setLoadingState(false);
-          },
-          (error) => {
-            this.addErrors(error);
-          }
-        ),
-        map((res) => res.body)
-      );
-  }
-
-  //logout the user in front- and backend
-  logout() {
-    this.statesService.setLoadingState(true);
-    this.http.get<any>(this.urlBase + "user/logout").subscribe((res) => {
-      this.statesService.setLoadingState(false);
-    });
-    localStorage.removeItem("user"); //remove the user data from localstorage
-    this.user$.next(null);
-  }
-
-  //form = {username,email,password}
-  createAccount(form): Observable<HttpResponse<User>> {
-    this.statesService.setLoadingState(true);
-    return this.http
-      .post<User>(this.urlBase + "user/new", form, {
-        headers: this.httpOptions.headers,
-        observe: "response",
-      })
-      .pipe(
-        tap(
-          (res) => {
-            this.user$.next(res.body); //login the user (on success)
-            this.statesService.setLoadingState(false);
-          },
-          (error) => {
-            console.log(error.headers);
-            this.addErrors(error);
-            this.statesService.setLoadingState(false);
-          }
-        )
-      );
-  }
   addErrors(error) {
     let err = error.error;
-    let errors = this.errors$.getValue();
-    console.log(error.status);
-    if (error.status == 422) {
+    console.log(error);
+    if (error.status == 400) {
+      this.notifications.addNotification(
+        new HttpError("Bitte logge dich erst ein.", error.status)
+      );
+      this.router.navigateByUrl("/login");
+    } else if (error.status == 422) {
       if (typeof err == "string") {
-        errors.push(err);
+        this.notifications.addNotification(new HttpError(err, error.status));
+      } else if (typeof err == "object") {
+        this.notifications.addNotification(
+          new HttpError(
+            "Ein unbekannter Fehler ist aufgetreten. Versuche es später erneut.",
+            error.status
+          )
+        );
+        console.log(err);
       } else {
-        console.log(typeof err);
-        errors.push(...err);
+        for (const e of err) {
+          this.notifications.addNotification(new HttpError(e, error.status));
+        }
       }
     } else if (error.status >= 500) {
-      errors.push(
-        "Der Server scheint offline zu sein. Versuche es später erneut."
+      this.notifications.addNotification(
+        new HttpError(
+          "Der Server scheint offline zu sein. Versuche es später erneut.",
+          error.status
+        )
       );
     } else {
-      errors.push(
-        "Ein unbekannter Fehler ist aufgetreten. Versuche es später erneut."
+      this.notifications.addNotification(
+        new HttpError(
+          "Ein unbekannter Fehler ist aufgetreten. Versuche es später erneut.",
+          error.status
+        )
       );
-      console.log(error);
     }
-    this.errors$.next(errors);
-  }
-
-  //removes a specific error from the error array
-  removeError(index: number) {
-    let errors = this.errors$.getValue();
-    errors.splice(index, 1); //remove error at position index
-    this.errors$.next(errors);
-  }
-  clearErrors() {
-    this.errors$.next([]);
-  }
-
-  getErrors(): Observable<string[]> {
-    return this.errors$.asObservable();
   }
 }

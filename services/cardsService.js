@@ -20,7 +20,7 @@ module.exports = function cardsService() {
       card.date = new Date();
       card.vorlesung = form.abrv;
       if (user) {
-        card.author = user.username; //add user as author of card
+        card.author = user._id; //add user as author of card
       }
       await card.save();
       callback(null, card._id);
@@ -37,7 +37,7 @@ module.exports = function cardsService() {
         //There is an author, but there is no user logged in
         throw new Error("Fehler: Du bist nicht der Author dieser Karte. Bitte logge dich ein.");
       }
-      if (tmp.author && tmp.author != "" && tmp.author != user.username) {
+      if (tmp.author && tmp.author != "" && tmp.author != user._id) {
         //The user is not the author of the card
         throw new Error("Fehler: Du bist nicht der Author dieser Karte.");
       }
@@ -47,8 +47,10 @@ module.exports = function cardsService() {
       });
       callback(null);
     } catch (error) {
+      console.error(error);
       callback(error);
     }
   };
+
   return cardsService;
 };

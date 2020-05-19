@@ -1,10 +1,13 @@
 import { Injectable } from "@angular/core";
-import { HttpService } from "./http.service";
+
 import { Observable, BehaviorSubject } from "rxjs";
 import { Card } from "../models/Card";
 import { StatesService } from "./states.service";
 import { tap, map } from "rxjs/operators";
 import { Router } from "@angular/router";
+import { HttpConfig } from "./config";
+import { HttpClient } from "@angular/common/http";
+import { NotificationsService } from "./notifications.service";
 @Injectable({
   providedIn: "root",
 })
@@ -24,25 +27,40 @@ export class CardsService {
     number
   >(0);
 
+  private config = new HttpConfig();
   constructor(
-    private httpService: HttpService, //to make calls to the server
+    private notifications: NotificationsService,
+    private http: HttpClient, //to make calls to the server
     private statesService: StatesService, //for setting the loading state
     private router: Router //used to get the lecture abreviation from the route
   ) {}
 
   getCards(): Observable<Card[]> {
+    this.statesService.setLoadingState(true);
     let abrv = this.router.url.split(/vorlesung\//)[1]; //get the lecture abreviation from the route
     if (this.abrv === abrv) {
       //cards were already loaded for this lecture
+      this.statesService.setLoadingState(false);
       return this.cards$.asObservable();
     } else {
       this.abrv = abrv;
       //remove the old cards before fetching the new ones
       this.cards$.next([]);
       //make server request
-      this.httpService.getCardsFromLectureAbrv(abrv).subscribe((cards) => {
-        this.cards$.next(cards);
-      });
+      this.http
+        .get<Card[]>(this.config.urlBase + "cards/?abrv=" + abrv, {
+          observe: "response",
+        })
+        .subscribe(
+          (response) => {
+            this.statesService.setLoadingState(false);
+            this.cards$.next(response.body);
+          },
+          (error) => {
+            this.notifications.handleErrors(error);
+            this.statesService.setLoadingState(false);
+          }
+        );
       return this.cards$.asObservable();
     }
   }
@@ -50,37 +68,73 @@ export class CardsService {
   updateCard(card: Card, index: number): Observable<any> {
     this.statesService.setLoadingState(true);
     //send update to server using http service
-    return this.httpService.updateCard(card).pipe(
-      tap((resp) => {
-        this.statesService.setLoadingState(false);
-        this.statesService.setFormMode("reset"); //reset form to its previous state
-        //update subject
-        let cards = this.cards$.getValue();
-        cards[index] = card;
-        this.cards$.next(cards);
-      })
-    );
+    return this.http
+      .put<any>(
+        this.config.urlBase + "cards/update",
+        { card: card },
+        {
+          headers: this.config.headers,
+          observe: "response",
+        }
+      )
+      .pipe(
+        tap(
+          (resp) => {
+            this.statesService.setLoadingState(false);
+            this.statesService.setFormMode("reset"); //reset form to its previous state
+            //update subject
+            let cards = this.cards$.getValue();
+            cards[index] = card;
+            this.cards$.next(cards);
+            setTimeout(() => {
+              //show new card timeout needed because the carousel needs time to refresh
+              //its view
+              this.setNewCardIndex(index);
+            }, 100);
+          },
+          (error) => {
+            this.notifications.handleErrors(error);
+            this.statesService.setLoadingState(false);
+          }
+        )
+      );
   }
 
   addCard(card: Card): Observable<any> {
     this.statesService.setLoadingState(true);
     //send new card to server using http service
-    return this.httpService.addCard(card).pipe(
-      tap((response) => {
-        this.statesService.setLoadingState(false);
-        card._id = response.body; //set id received from server response
-        //upate subject
-        let cards = this.cards$.getValue();
-        cards.push(card);
-        this.cards$.next(cards);
+    return this.http
+      .post<any>(
+        this.config.urlBase + "cards/new",
+        { card: card },
+        {
+          headers: this.config.headers,
+          observe: "response",
+        }
+      )
+      .pipe(
+        tap(
+          (response) => {
+            this.statesService.setLoadingState(false);
+            card._id = response.body.id; //set id received from server response
+            //upate subject
+            let cards = this.cards$.getValue();
+            cards.push(card);
+            this.cards$.next(cards);
 
-        setTimeout(() => {
-          //show new card timeout needed because the carousel needs time to refresh
-          //its view
-          this.setNewCardIndex(cards.length - 1);
-        }, 100);
-      })
-    );
+            setTimeout(() => {
+              //show new card timeout needed because the carousel needs time to refresh
+              //its view
+              this.setNewCardIndex(cards.length - 1);
+            }, 100);
+          },
+          (error) => {
+            this.notifications.handleErrors(error);
+            this.statesService.setLoadingState(false);
+          }
+        ),
+        map((res) => res.body)
+      );
   }
   goNext() {
     //show the next slide index
