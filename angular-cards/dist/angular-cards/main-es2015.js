@@ -406,17 +406,25 @@ class AddCardFormComponent {
         this.cardsService = cardsService;
         this.stateService = stateService;
         this.http = http;
+        this.subscriptions$ = [];
     }
     ngOnInit() {
-        this.http
+        let sub = this.http
             .getCurrentLecture()
             .subscribe((lecture) => (this.lecture = lecture));
+        this.subscriptions$.push(sub);
+    }
+    ngOnDestroy() {
+        this.subscriptions$.forEach((sub) => {
+            sub.unsubscribe();
+        });
     }
     setStyle() { }
     onSubmit(f) {
         this.newCard = new _models_Card__WEBPACK_IMPORTED_MODULE_1__["Card"](f.value.thema, f.value.content, this.lecture.abrv);
-        this.cardsService.addCard(this.newCard).subscribe((res) => {
+        let sub = this.cardsService.addCard(this.newCard).subscribe((res) => {
             f.reset();
+            sub.unsubscribe();
         });
     }
     inField() {
@@ -554,15 +562,22 @@ class AddLectureFormComponent {
     constructor(http, statesService) {
         this.http = http;
         this.statesService = statesService;
+        this.subscriptions$ = [];
         this.emitVl = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
     }
     ngOnInit() { }
+    ngOnDestroy() {
+        this.subscriptions$.forEach((sub) => {
+            sub.unsubscribe();
+        });
+    }
     onSubmit(f) {
         let newLecture = new _models_Vorlesung__WEBPACK_IMPORTED_MODULE_1__["Vorlesung"](f.value.name, f.value.abrv.toLowerCase());
         this.statesService.setLoadingState(true);
-        this.http.addLecture(newLecture).subscribe((response) => {
+        let sub = this.http.addLecture(newLecture).subscribe((response) => {
             this.statesService.setLoadingState(false);
             this.emitVl.emit(newLecture);
+            sub.unsubscribe();
         });
         f.reset();
     }
@@ -679,12 +694,19 @@ const _c0 = ["test"];
 class CardComponent {
     constructor(cs) {
         this.cs = cs;
+        this.subscriptions$ = [];
         this.isCollapsed = true;
     }
     ngOnInit() {
-        this.cs.getActiveCardIndex().subscribe((change) => {
+        let sub = this.cs.getActiveCardIndex().subscribe((change) => {
             //hides te card content when carousel slides
             this.content.hide();
+        });
+        this.subscriptions$.push(sub);
+    }
+    ngOnDestroy() {
+        this.subscriptions$.forEach((sub) => {
+            sub.unsubscribe();
         });
     }
 }
@@ -783,10 +805,17 @@ function CardsOverviewComponent_a_1_Template(rf, ctx) { if (rf & 1) {
 class CardsOverviewComponent {
     constructor(userService) {
         this.userService = userService;
+        this.subscriptions$ = [];
     }
     ngOnInit() {
-        this.userService.getUserInfo().subscribe((info) => {
+        let sub = this.userService.getUserInfo().subscribe((info) => {
             this.cards = info.cards;
+        });
+        this.subscriptions$.push(sub);
+    }
+    ngOnDestroy() {
+        this.subscriptions$.forEach((sub) => {
+            sub.unsubscribe();
         });
     }
 }
@@ -899,6 +928,7 @@ class CarouselComponent {
         this.stateService = stateService;
         this.cardsService = cardsService;
         this.userService = userService;
+        this.subscriptions$ = [];
     }
     swipePrev(event) {
         this.carousel.previousSlide();
@@ -908,24 +938,36 @@ class CarouselComponent {
     }
     ngOnInit() {
         this.activeSlide = 0;
-        this.userService.getUserId().subscribe((userId) => (this.userId = userId));
-        this.httpService.getCurrentLecture().subscribe((lecture) => {
+        let sub = this.userService
+            .getUserId()
+            .subscribe((userId) => (this.userId = userId));
+        this.subscriptions$.push(sub);
+        sub = this.httpService.getCurrentLecture().subscribe((lecture) => {
             this.lecture = lecture;
             this.title = this.lecture.name;
         });
-        this.cardsService.getCards().subscribe((cards) => {
+        this.subscriptions$.push(sub);
+        sub = this.cardsService.getCards().subscribe((cards) => {
             this.cards = cards;
         }); //load the specific cards from the server by subscribing to the observable that the card-service provides
+        this.subscriptions$.push(sub);
         this.stateService.setFormMode("none");
-        this.stateService.getFormMode().subscribe((mode) => {
+        sub = this.stateService.getFormMode().subscribe((mode) => {
             this.formShow = mode == "add";
             this.formMode = mode;
         });
-        this.cardsService.getNewCardIndex().subscribe((index) => {
+        this.subscriptions$.push(sub);
+        sub = this.cardsService.getNewCardIndex().subscribe((index) => {
             if (this.carousel) {
                 this.activeSlide = index;
                 this.carousel.selectSlide(index);
             }
+        });
+        this.subscriptions$.push(sub);
+    }
+    ngOnDestroy() {
+        this.subscriptions$.forEach((sub) => {
+            sub.unsubscribe();
         });
     }
     toggleAddView() {
@@ -1077,24 +1119,32 @@ class ChangeProfileComponent {
     constructor(http, userService) {
         this.http = http;
         this.userService = userService;
+        this.subscriptions$ = [];
         this.user = new src_app_models_User__WEBPACK_IMPORTED_MODULE_1__["User"]("", "");
     }
     ngOnInit() {
         this.user.name = "";
         this.user.surname = "";
-        this.userService.getUserInfo().subscribe((info) => {
+        let sub = this.userService.getUserInfo().subscribe((info) => {
             this.userInfo = info;
             if (info && info.user) {
                 this.user = info.user;
             }
+        });
+        this.subscriptions$.push(sub);
+    }
+    ngOnDestroy() {
+        this.subscriptions$.forEach((sub) => {
+            sub.unsubscribe();
         });
     }
     changeAccount(form) {
         this.userService.updateAccount(form.value);
     }
     changePassword(form) {
-        this.userService.updatePassword(form.value).subscribe((res) => {
+        let sub = this.userService.updatePassword(form.value).subscribe((res) => {
             form.reset();
+            sub.unsubscribe();
         });
     }
     setStyle(password, password2) {
@@ -1319,10 +1369,17 @@ function LecturesComponent_li_1_Template(rf, ctx) { if (rf & 1) {
 class LecturesComponent {
     constructor(httpService) {
         this.httpService = httpService;
+        this.subscriptions$ = [];
     }
     ngOnInit() {
-        this.httpService.getAllLectures().subscribe((lectures) => {
+        let sub = this.httpService.getAllLectures().subscribe((lectures) => {
             this.lectures = lectures;
+        });
+        this.subscriptions$.push(sub);
+    }
+    ngOnDestroy() {
+        this.subscriptions$.forEach((sub) => {
+            sub.unsubscribe();
         });
     }
     ngOnChanges() {
@@ -1395,9 +1452,7 @@ class LoginFormComponent {
     }
     ngOnInit() { }
     submit(form) {
-        this.user.login(form.value).subscribe(() => {
-            this.router.navigate(["/"]);
-        });
+        this.user.login(form.value);
     }
     isDisabled(username, password) {
         if (!(username.value && password.value)) {
@@ -1469,15 +1524,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NavBarComponent", function() { return NavBarComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/__ivy_ngcc__/fesm2015/router.js");
-/* harmony import */ var _angular_platform_browser__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/platform-browser */ "./node_modules/@angular/platform-browser/__ivy_ngcc__/fesm2015/platform-browser.js");
-/* harmony import */ var src_app_services_cards_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! src/app/services/cards.service */ "./src/app/services/cards.service.ts");
-/* harmony import */ var src_app_services_states_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! src/app/services/states.service */ "./src/app/services/states.service.ts");
-/* harmony import */ var _services_notifications_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../services/notifications.service */ "./src/app/services/notifications.service.ts");
-/* harmony import */ var _services_user_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../services/user.service */ "./src/app/services/user.service.ts");
-/* harmony import */ var _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @ng-bootstrap/ng-bootstrap */ "./node_modules/@ng-bootstrap/ng-bootstrap/__ivy_ngcc__/fesm2015/ng-bootstrap.js");
-/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/__ivy_ngcc__/fesm2015/common.js");
-/* harmony import */ var _search_bar_search_bar_component__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../search-bar/search-bar.component */ "./src/app/components/search-bar/search-bar.component.ts");
-/* harmony import */ var _angular_material_progress_bar__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @angular/material/progress-bar */ "./node_modules/@angular/material/__ivy_ngcc__/fesm2015/progress-bar.js");
+/* harmony import */ var angular_animations__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! angular-animations */ "./node_modules/angular-animations/__ivy_ngcc__/fesm2015/angular-animations.js");
+/* harmony import */ var _angular_platform_browser__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/platform-browser */ "./node_modules/@angular/platform-browser/__ivy_ngcc__/fesm2015/platform-browser.js");
+/* harmony import */ var src_app_services_cards_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! src/app/services/cards.service */ "./src/app/services/cards.service.ts");
+/* harmony import */ var src_app_services_states_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! src/app/services/states.service */ "./src/app/services/states.service.ts");
+/* harmony import */ var _services_notifications_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../services/notifications.service */ "./src/app/services/notifications.service.ts");
+/* harmony import */ var _services_user_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../services/user.service */ "./src/app/services/user.service.ts");
+/* harmony import */ var _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @ng-bootstrap/ng-bootstrap */ "./node_modules/@ng-bootstrap/ng-bootstrap/__ivy_ngcc__/fesm2015/ng-bootstrap.js");
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/__ivy_ngcc__/fesm2015/common.js");
+/* harmony import */ var _search_bar_search_bar_component__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../search-bar/search-bar.component */ "./src/app/components/search-bar/search-bar.component.ts");
+/* harmony import */ var _angular_material_progress_bar__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @angular/material/progress-bar */ "./node_modules/@angular/material/__ivy_ngcc__/fesm2015/progress-bar.js");
+
+
 
 
 
@@ -1558,6 +1616,7 @@ function NavBarComponent_div_17_Template(rf, ctx) { if (rf & 1) {
     const notif_r18 = ctx.$implicit;
     const ctx_r15 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵclassMap"](ctx_r15.setAlertClass(notif_r18));
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("@pulseOnEnter", undefined)("@fadeOutOnLeave", undefined);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](5);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate1"](" ", notif_r18.message, "\n");
 } }
@@ -1569,26 +1628,46 @@ class NavBarComponent {
         this.statesService = statesService;
         this.notification = notification;
         this.userService = userService;
+        this.subscriptions$ = [];
         this.loading = false;
     }
     ngOnInit() {
         this.setPageTitle();
-        this.userService.authentication().subscribe((val) => (this.loggedIn = val));
-        this.statesService.getLoadingState().subscribe((val) => {
+        let sub = this.userService
+            .authentication()
+            .subscribe((val) => (this.loggedIn = val));
+        this.subscriptions$.push(sub);
+        sub = this.statesService.getLoadingState().subscribe((val) => {
             this.loading = val;
         });
+        this.subscriptions$.push(sub);
         this.router.events.subscribe((e) => {
             //clear messages on route change
-            //this.notification.clearNotifications();
+            if (e instanceof _angular_router__WEBPACK_IMPORTED_MODULE_1__["NavigationEnd"]) {
+                if (this.router.url == "/") {
+                    this.notification.clearNotifications("alert"); //prevent successfull login message from being removed on home
+                }
+                else {
+                    this.notification.clearNotifications("alert", "success");
+                }
+            }
         });
-        this.notification
+        this.subscriptions$.push(sub);
+        sub = this.notification
             .getNotifications()
             .subscribe((notifs) => (this.notifications = notifs));
+        this.subscriptions$.push(sub);
         if (this.router.url.match(/vorlesung/)) {
-            this.cardsService.getCards().subscribe((cards) => {
+            sub = this.cardsService.getCards().subscribe((cards) => {
                 this.cards = cards;
             });
+            this.subscriptions$.push(sub);
         }
+    }
+    ngOnDestroy() {
+        this.subscriptions$.forEach((sub) => {
+            sub.unsubscribe();
+        });
     }
     closeAlert(i) {
         this.notification.removeNotification(i);
@@ -1618,10 +1697,9 @@ class NavBarComponent {
     }
     logout() {
         this.userService.logout();
-        this.router.navigate(["/"]);
     }
 }
-NavBarComponent.ɵfac = function NavBarComponent_Factory(t) { return new (t || NavBarComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_1__["Router"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_platform_browser__WEBPACK_IMPORTED_MODULE_2__["Title"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](src_app_services_cards_service__WEBPACK_IMPORTED_MODULE_3__["CardsService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](src_app_services_states_service__WEBPACK_IMPORTED_MODULE_4__["StatesService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_services_notifications_service__WEBPACK_IMPORTED_MODULE_5__["NotificationsService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_services_user_service__WEBPACK_IMPORTED_MODULE_6__["UserService"])); };
+NavBarComponent.ɵfac = function NavBarComponent_Factory(t) { return new (t || NavBarComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_1__["Router"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_platform_browser__WEBPACK_IMPORTED_MODULE_3__["Title"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](src_app_services_cards_service__WEBPACK_IMPORTED_MODULE_4__["CardsService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](src_app_services_states_service__WEBPACK_IMPORTED_MODULE_5__["StatesService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_services_notifications_service__WEBPACK_IMPORTED_MODULE_6__["NotificationsService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_services_user_service__WEBPACK_IMPORTED_MODULE_7__["UserService"])); };
 NavBarComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({ type: NavBarComponent, selectors: [["app-nav-bar"]], decls: 18, vars: 9, consts: [["role", "alert", 1, "navbar", "navbar-expand-lg", "navbar-light", "bg-light", 2, "padding-right", "0"], [1, "row"], [1, "col-8"], ["type", "button", "data-toggle", "collapse", "data-target", "#navbarNav", "aria-controls", "navbarNav", "aria-expanded", "false", "aria-label", "Toggle navigation", 1, "navbar-toggler"], [1, "navbar-toggler-icon"], ["id", "navbarNav", 1, "collapse", "navbar-collapse"], ["id", "navlist", 1, "navbar-nav"], ["routerLink", "/", "tabindex", "1", 1, "nav-link"], [1, "fas", "fa-home"], [3, "class", 4, "ngIf"], ["class", "col-4", "style", "padding-right: 0;", 4, "ngIf"], ["id", "progress"], ["mode", "indeterminate", 4, "ngIf"], ["role", "alert", 3, "class", 4, "ngFor", "ngForOf"], ["routerLink", "/login", 1, "nav-link"], [1, "fas", "fa-user"], ["routerLink", "/signup", 1, "nav-link"], [1, "fas", "fa-plus"], [1, "dropdown"], ["type", "button", "id", "dropdownMenuButton", "data-toggle", "dropdown", "aria-haspopup", "true", "aria-expanded", "false", 1, "nav-link"], [1, "fas", "fa-user-circle"], ["aria-labelledby", "dropdownMenuButton", 1, "dropdown-menu"], ["routerLink", "/account", "placement", "bottom", 1, "dropdown-item"], [1, "dropdown-item", 3, "click"], [1, "col-4", 2, "padding-right", "0"], ["mode", "indeterminate"], ["role", "alert"], ["alert", ""], ["type", "button", "aria-label", "Close", 1, "close", 3, "click"], ["aria-hidden", "true"]], template: function NavBarComponent_Template(rf, ctx) { if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "nav", 0);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "div", 1);
@@ -1649,7 +1727,7 @@ NavBarComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineCo
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](15, "div", 11);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](16, NavBarComponent_mat_progress_bar_16_Template, 1, 0, "mat-progress-bar", 12);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](17, NavBarComponent_div_17_Template, 6, 3, "div", 13);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](17, NavBarComponent_div_17_Template, 6, 5, "div", 13);
     } if (rf & 2) {
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](7);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵclassMapInterpolate1"]("", ctx.isActive("/"), " nav-item");
@@ -1665,15 +1743,22 @@ NavBarComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineCo
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngIf", ctx.loading);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngForOf", ctx.notifications);
-    } }, directives: [_ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_7__["NgbNavbar"], _angular_router__WEBPACK_IMPORTED_MODULE_1__["RouterLinkWithHref"], _angular_common__WEBPACK_IMPORTED_MODULE_8__["NgIf"], _angular_common__WEBPACK_IMPORTED_MODULE_8__["NgForOf"], _search_bar_search_bar_component__WEBPACK_IMPORTED_MODULE_9__["SearchBarComponent"], _angular_material_progress_bar__WEBPACK_IMPORTED_MODULE_10__["MatProgressBar"]], styles: [".row[_ngcontent-%COMP%] {\r\n  width: 100%;\r\n}\r\nnav[_ngcontent-%COMP%] {\r\n  position: relative;\r\n}\r\n#progress[_ngcontent-%COMP%] {\r\n  position: relative;\r\n}\r\nmat-progress-bar[_ngcontent-%COMP%] {\r\n  position: absolute;\r\n  top: 0;\r\n}\r\n.alert[_ngcontent-%COMP%] {\r\n  width: 90%;\r\n  margin: auto;\r\n  margin-top: 5px;\r\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvY29tcG9uZW50cy9uYXYtYmFyL25hdi1iYXIuY29tcG9uZW50LmNzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNFLFdBQVc7QUFDYjtBQUNBO0VBQ0Usa0JBQWtCO0FBQ3BCO0FBRUE7RUFDRSxrQkFBa0I7QUFDcEI7QUFDQTtFQUNFLGtCQUFrQjtFQUNsQixNQUFNO0FBQ1I7QUFDQTtFQUNFLFVBQVU7RUFDVixZQUFZO0VBQ1osZUFBZTtBQUNqQiIsImZpbGUiOiJzcmMvYXBwL2NvbXBvbmVudHMvbmF2LWJhci9uYXYtYmFyLmNvbXBvbmVudC5jc3MiLCJzb3VyY2VzQ29udGVudCI6WyIucm93IHtcclxuICB3aWR0aDogMTAwJTtcclxufVxyXG5uYXYge1xyXG4gIHBvc2l0aW9uOiByZWxhdGl2ZTtcclxufVxyXG5cclxuI3Byb2dyZXNzIHtcclxuICBwb3NpdGlvbjogcmVsYXRpdmU7XHJcbn1cclxubWF0LXByb2dyZXNzLWJhciB7XHJcbiAgcG9zaXRpb246IGFic29sdXRlO1xyXG4gIHRvcDogMDtcclxufVxyXG4uYWxlcnQge1xyXG4gIHdpZHRoOiA5MCU7XHJcbiAgbWFyZ2luOiBhdXRvO1xyXG4gIG1hcmdpbi10b3A6IDVweDtcclxufVxyXG4iXX0= */"] });
+    } }, directives: [_ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_8__["NgbNavbar"], _angular_router__WEBPACK_IMPORTED_MODULE_1__["RouterLinkWithHref"], _angular_common__WEBPACK_IMPORTED_MODULE_9__["NgIf"], _angular_common__WEBPACK_IMPORTED_MODULE_9__["NgForOf"], _search_bar_search_bar_component__WEBPACK_IMPORTED_MODULE_10__["SearchBarComponent"], _angular_material_progress_bar__WEBPACK_IMPORTED_MODULE_11__["MatProgressBar"]], styles: [".row[_ngcontent-%COMP%] {\r\n  width: 100%;\r\n}\r\nnav[_ngcontent-%COMP%] {\r\n  position: relative;\r\n}\r\n#progress[_ngcontent-%COMP%] {\r\n  position: relative;\r\n}\r\nmat-progress-bar[_ngcontent-%COMP%] {\r\n  position: absolute;\r\n  top: 0;\r\n}\r\n.alert[_ngcontent-%COMP%] {\r\n  width: 90%;\r\n  margin: auto;\r\n  margin-top: 5px;\r\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvY29tcG9uZW50cy9uYXYtYmFyL25hdi1iYXIuY29tcG9uZW50LmNzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNFLFdBQVc7QUFDYjtBQUNBO0VBQ0Usa0JBQWtCO0FBQ3BCO0FBRUE7RUFDRSxrQkFBa0I7QUFDcEI7QUFDQTtFQUNFLGtCQUFrQjtFQUNsQixNQUFNO0FBQ1I7QUFDQTtFQUNFLFVBQVU7RUFDVixZQUFZO0VBQ1osZUFBZTtBQUNqQiIsImZpbGUiOiJzcmMvYXBwL2NvbXBvbmVudHMvbmF2LWJhci9uYXYtYmFyLmNvbXBvbmVudC5jc3MiLCJzb3VyY2VzQ29udGVudCI6WyIucm93IHtcclxuICB3aWR0aDogMTAwJTtcclxufVxyXG5uYXYge1xyXG4gIHBvc2l0aW9uOiByZWxhdGl2ZTtcclxufVxyXG5cclxuI3Byb2dyZXNzIHtcclxuICBwb3NpdGlvbjogcmVsYXRpdmU7XHJcbn1cclxubWF0LXByb2dyZXNzLWJhciB7XHJcbiAgcG9zaXRpb246IGFic29sdXRlO1xyXG4gIHRvcDogMDtcclxufVxyXG4uYWxlcnQge1xyXG4gIHdpZHRoOiA5MCU7XHJcbiAgbWFyZ2luOiBhdXRvO1xyXG4gIG1hcmdpbi10b3A6IDVweDtcclxufVxyXG4iXX0= */"], data: { animation: [
+            Object(angular_animations__WEBPACK_IMPORTED_MODULE_2__["pulseOnEnterAnimation"])({ scale: 1.05, duration: 500 }),
+            Object(angular_animations__WEBPACK_IMPORTED_MODULE_2__["fadeOutOnLeaveAnimation"])({ duration: 200 }),
+        ] } });
 /*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](NavBarComponent, [{
         type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"],
         args: [{
                 selector: "app-nav-bar",
                 templateUrl: "./nav-bar.component.html",
                 styleUrls: ["./nav-bar.component.css"],
+                animations: [
+                    Object(angular_animations__WEBPACK_IMPORTED_MODULE_2__["pulseOnEnterAnimation"])({ scale: 1.05, duration: 500 }),
+                    Object(angular_animations__WEBPACK_IMPORTED_MODULE_2__["fadeOutOnLeaveAnimation"])({ duration: 200 }),
+                ],
             }]
-    }], function () { return [{ type: _angular_router__WEBPACK_IMPORTED_MODULE_1__["Router"] }, { type: _angular_platform_browser__WEBPACK_IMPORTED_MODULE_2__["Title"] }, { type: src_app_services_cards_service__WEBPACK_IMPORTED_MODULE_3__["CardsService"] }, { type: src_app_services_states_service__WEBPACK_IMPORTED_MODULE_4__["StatesService"] }, { type: _services_notifications_service__WEBPACK_IMPORTED_MODULE_5__["NotificationsService"] }, { type: _services_user_service__WEBPACK_IMPORTED_MODULE_6__["UserService"] }]; }, null); })();
+    }], function () { return [{ type: _angular_router__WEBPACK_IMPORTED_MODULE_1__["Router"] }, { type: _angular_platform_browser__WEBPACK_IMPORTED_MODULE_3__["Title"] }, { type: src_app_services_cards_service__WEBPACK_IMPORTED_MODULE_4__["CardsService"] }, { type: src_app_services_states_service__WEBPACK_IMPORTED_MODULE_5__["StatesService"] }, { type: _services_notifications_service__WEBPACK_IMPORTED_MODULE_6__["NotificationsService"] }, { type: _services_user_service__WEBPACK_IMPORTED_MODULE_7__["UserService"] }]; }, null); })();
 
 
 /***/ }),
@@ -1693,9 +1778,9 @@ __webpack_require__.r(__webpack_exports__);
 
 class NotificationsComponent {
     constructor() {
+        this.subscriptions$ = [];
     }
-    ngOnInit() {
-    }
+    ngOnInit() { }
 }
 NotificationsComponent.ɵfac = function NotificationsComponent_Factory(t) { return new (t || NotificationsComponent)(); };
 NotificationsComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({ type: NotificationsComponent, selectors: [["app-notifications"]], decls: 2, vars: 0, template: function NotificationsComponent_Template(rf, ctx) { if (rf & 1) {
@@ -1706,9 +1791,9 @@ NotificationsComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵd
 /*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](NotificationsComponent, [{
         type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"],
         args: [{
-                selector: 'app-notifications',
-                templateUrl: './notifications.component.html',
-                styleUrls: ['./notifications.component.css']
+                selector: "app-notifications",
+                templateUrl: "./notifications.component.html",
+                styleUrls: ["./notifications.component.css"],
             }]
     }], function () { return []; }, null); })();
 
@@ -1727,29 +1812,33 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OverviewComponent", function() { return OverviewComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
 /* harmony import */ var src_app_models_User__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! src/app/models/User */ "./src/app/models/User.ts");
-/* harmony import */ var src_app_services_http_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! src/app/services/http.service */ "./src/app/services/http.service.ts");
-/* harmony import */ var src_app_services_user_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! src/app/services/user.service */ "./src/app/services/user.service.ts");
-
+/* harmony import */ var src_app_services_user_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! src/app/services/user.service */ "./src/app/services/user.service.ts");
 
 
 
 
 class OverviewComponent {
-    constructor(http, userService) {
-        this.http = http;
+    constructor(userService) {
         this.userService = userService;
         this.user = new src_app_models_User__WEBPACK_IMPORTED_MODULE_1__["User"]("", "");
+        this.subscriptions$ = [];
     }
     ngOnInit() {
-        this.userService.getUserInfo().subscribe((info) => {
+        let sub = this.userService.getUserInfo().subscribe((info) => {
             this.userInfo = info;
             if (info && info.user) {
                 this.user = info.user;
             }
         });
+        this.subscriptions$.push(sub);
+    }
+    ngOnDestroy() {
+        this.subscriptions$.forEach((sub) => {
+            sub.unsubscribe();
+        });
     }
 }
-OverviewComponent.ɵfac = function OverviewComponent_Factory(t) { return new (t || OverviewComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](src_app_services_http_service__WEBPACK_IMPORTED_MODULE_2__["HttpService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](src_app_services_user_service__WEBPACK_IMPORTED_MODULE_3__["UserService"])); };
+OverviewComponent.ɵfac = function OverviewComponent_Factory(t) { return new (t || OverviewComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](src_app_services_user_service__WEBPACK_IMPORTED_MODULE_2__["UserService"])); };
 OverviewComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({ type: OverviewComponent, selectors: [["app-overview"]], decls: 24, vars: 4, consts: [[1, "card"], [1, "card-body"], [1, "card-title"], ["src", "assets/profile.svg", "alt", "Profile picture"], [1, "list-group", "list-group-flush"], [1, "list-group-item"], [1, "row"], [1, "col-6"], [1, "col-6", "text-right"]], template: function OverviewComponent_Template(rf, ctx) { if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "div", 0);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "div", 1);
@@ -1808,7 +1897,7 @@ OverviewComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefine
                 templateUrl: "./overview.component.html",
                 styleUrls: ["./overview.component.css"],
             }]
-    }], function () { return [{ type: src_app_services_http_service__WEBPACK_IMPORTED_MODULE_2__["HttpService"] }, { type: src_app_services_user_service__WEBPACK_IMPORTED_MODULE_3__["UserService"] }]; }, null); })();
+    }], function () { return [{ type: src_app_services_user_service__WEBPACK_IMPORTED_MODULE_2__["UserService"] }]; }, null); })();
 
 
 /***/ }),
@@ -1862,15 +1951,17 @@ class SearchBarComponent {
     constructor(cardsService, stateService) {
         this.cardsService = cardsService;
         this.stateService = stateService;
+        this.subscriptions$ = [];
     }
     ngOnInit() {
-        this.stateService.getHideSuggestions().subscribe((value) => {
+        let sub = this.stateService.getHideSuggestions().subscribe((value) => {
             this.clearSuggestions = value;
             if (value) {
                 this.suggestions = [];
             }
         });
-        this.cardsService.getCards().subscribe((cards) => {
+        this.subscriptions$.push(sub);
+        sub = this.cardsService.getCards().subscribe((cards) => {
             this.cards = cards;
             cards.forEach((card) => {
                 if (card.thema == null) {
@@ -1880,6 +1971,12 @@ class SearchBarComponent {
                     card.content = "";
                 }
             });
+        });
+        this.subscriptions$.push(sub);
+    }
+    ngOnDestroy() {
+        this.subscriptions$.forEach((sub) => {
+            sub.unsubscribe();
         });
     }
     inField() {
@@ -1966,16 +2063,7 @@ class SignupFormComponent {
     }
     ngOnInit() { }
     submit(form) {
-        this.userService.createAccount(form.value).subscribe((response) => {
-            if (response) {
-                this.router.navigate(["/"]);
-            }
-        }, (error) => {
-            if ((error.headers.status = 422)) {
-                console.log(error);
-                this.errors = error.error.errors;
-            }
-        });
+        this.userService.createAccount(form.value);
     }
     setStyle(password, password2) {
         if (password2.value &&
@@ -2114,17 +2202,25 @@ class UpdateCardFormComponent {
         this.cardsService = cardsService;
         this.statesService = statesService;
         this.dialog = dialog;
+        this.subscriptions$ = [];
     }
     ngOnInit() {
-        this.cardsService.getCards().subscribe((cards) => {
+        let sub = this.cardsService.getCards().subscribe((cards) => {
             this.cards = cards;
         });
-        this.cardsService.getActiveCardIndex().subscribe((index) => {
+        this.subscriptions$.push(sub);
+        sub = this.cardsService.getActiveCardIndex().subscribe((index) => {
             this.activeCardIndex = index;
             if (this.cards) {
                 this.cardCopy = Object.assign({}, this.cards[this.activeCardIndex]);
             }
             this.cardIndex = this.activeCardIndex;
+        });
+        this.subscriptions$.push(sub);
+    }
+    ngOnDestroy() {
+        this.subscriptions$.forEach((sub) => {
+            sub.unsubscribe();
         });
     }
     inField() {
@@ -2136,10 +2232,11 @@ class UpdateCardFormComponent {
     onSubmit(f) {
         this.cardCopy.content = f.value.content;
         this.cardCopy.thema = f.value.thema;
-        this.cardsService
+        let sub = this.cardsService
             .updateCard(Object.assign({}, this.cardCopy), this.cardIndex)
             .subscribe((resp) => {
             f.reset();
+            sub.unsubscribe();
         });
     }
     cancelEdit() {
@@ -2630,7 +2727,7 @@ class AccountPageComponent {
     }
 }
 AccountPageComponent.ɵfac = function AccountPageComponent_Factory(t) { return new (t || AccountPageComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](src_app_services_user_service__WEBPACK_IMPORTED_MODULE_1__["UserService"])); };
-AccountPageComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({ type: AccountPageComponent, selectors: [["app-account-page"]], decls: 15, vars: 9, consts: [[1, "container"], [1, "row"], [1, "col-md-4", "col-xs-12"], [1, "list-group"], [3, "click"], [3, "class", "click", 4, "ngIf"], [1, "col-md-8", "col-xs-12", 3, "ngSwitch"], [4, "ngSwitchCase"]], template: function AccountPageComponent_Template(rf, ctx) { if (rf & 1) {
+AccountPageComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({ type: AccountPageComponent, selectors: [["app-account-page"]], decls: 15, vars: 9, consts: [[1, "container"], [1, "row"], [1, "col-md-4", "col-xs-12"], [1, "list-group"], [3, "click"], [3, "class", "click", 4, "ngIf"], ["id", "sub", 1, "col-md-8", "col-xs-12", 3, "ngSwitch"], [4, "ngSwitchCase"]], template: function AccountPageComponent_Template(rf, ctx) { if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](0, "app-nav-bar");
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "div", 0);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](2, "div", 1);
@@ -2670,7 +2767,7 @@ AccountPageComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdef
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngSwitchCase", "management");
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngSwitchCase", "cards");
-    } }, directives: [_components_nav_bar_nav_bar_component__WEBPACK_IMPORTED_MODULE_2__["NavBarComponent"], _angular_common__WEBPACK_IMPORTED_MODULE_3__["NgIf"], _angular_common__WEBPACK_IMPORTED_MODULE_3__["NgSwitch"], _angular_common__WEBPACK_IMPORTED_MODULE_3__["NgSwitchCase"], _components_footer_footer_component__WEBPACK_IMPORTED_MODULE_4__["FooterComponent"], _components_overview_overview_component__WEBPACK_IMPORTED_MODULE_5__["OverviewComponent"], _components_change_profile_change_profile_component__WEBPACK_IMPORTED_MODULE_6__["ChangeProfileComponent"], _components_cards_overview_cards_overview_component__WEBPACK_IMPORTED_MODULE_7__["CardsOverviewComponent"]], styles: [".container[_ngcontent-%COMP%] {\r\n  margin-top: 15px;\r\n  margin-bottom: 50px;\r\n}\r\n.col-xs-12[_ngcontent-%COMP%] {\r\n  margin-top: 10px;\r\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvcm91dGVzL2FjY291bnQtcGFnZS9hY2NvdW50LXBhZ2UuY29tcG9uZW50LmNzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNFLGdCQUFnQjtFQUNoQixtQkFBbUI7QUFDckI7QUFDQTtFQUNFLGdCQUFnQjtBQUNsQiIsImZpbGUiOiJzcmMvYXBwL3JvdXRlcy9hY2NvdW50LXBhZ2UvYWNjb3VudC1wYWdlLmNvbXBvbmVudC5jc3MiLCJzb3VyY2VzQ29udGVudCI6WyIuY29udGFpbmVyIHtcclxuICBtYXJnaW4tdG9wOiAxNXB4O1xyXG4gIG1hcmdpbi1ib3R0b206IDUwcHg7XHJcbn1cclxuLmNvbC14cy0xMiB7XHJcbiAgbWFyZ2luLXRvcDogMTBweDtcclxufVxyXG4iXX0= */"] });
+    } }, directives: [_components_nav_bar_nav_bar_component__WEBPACK_IMPORTED_MODULE_2__["NavBarComponent"], _angular_common__WEBPACK_IMPORTED_MODULE_3__["NgIf"], _angular_common__WEBPACK_IMPORTED_MODULE_3__["NgSwitch"], _angular_common__WEBPACK_IMPORTED_MODULE_3__["NgSwitchCase"], _components_footer_footer_component__WEBPACK_IMPORTED_MODULE_4__["FooterComponent"], _components_overview_overview_component__WEBPACK_IMPORTED_MODULE_5__["OverviewComponent"], _components_change_profile_change_profile_component__WEBPACK_IMPORTED_MODULE_6__["ChangeProfileComponent"], _components_cards_overview_cards_overview_component__WEBPACK_IMPORTED_MODULE_7__["CardsOverviewComponent"]], styles: [".container[_ngcontent-%COMP%] {\r\n  margin-top: 15px;\r\n  margin-bottom: 50px;\r\n}\r\n#sub[_ngcontent-%COMP%] {\r\n  margin-top: 10px;\r\n\r\n  background: white;\r\n  overflow-y: auto;\r\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvcm91dGVzL2FjY291bnQtcGFnZS9hY2NvdW50LXBhZ2UuY29tcG9uZW50LmNzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNFLGdCQUFnQjtFQUNoQixtQkFBbUI7QUFDckI7QUFDQTtFQUNFLGdCQUFnQjs7RUFFaEIsaUJBQWlCO0VBQ2pCLGdCQUFnQjtBQUNsQiIsImZpbGUiOiJzcmMvYXBwL3JvdXRlcy9hY2NvdW50LXBhZ2UvYWNjb3VudC1wYWdlLmNvbXBvbmVudC5jc3MiLCJzb3VyY2VzQ29udGVudCI6WyIuY29udGFpbmVyIHtcclxuICBtYXJnaW4tdG9wOiAxNXB4O1xyXG4gIG1hcmdpbi1ib3R0b206IDUwcHg7XHJcbn1cclxuI3N1YiB7XHJcbiAgbWFyZ2luLXRvcDogMTBweDtcclxuXHJcbiAgYmFja2dyb3VuZDogd2hpdGU7XHJcbiAgb3ZlcmZsb3cteTogYXV0bztcclxufVxyXG4iXX0= */"] });
 /*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](AccountPageComponent, [{
         type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"],
         args: [{
@@ -3336,8 +3433,16 @@ class NotificationsService {
         notifications.splice(index, 1); //remove error at position index
         this.notifications$.next(notifications);
     }
-    clearNotifications() {
-        this.notifications$.next([]);
+    clearNotifications(...types) {
+        let notifs = this.notifications$.getValue();
+        types.forEach((type) => {
+            for (let i = 0; i < notifs.length; i++) {
+                if (notifs[i].type === type) {
+                    this.removeNotification(i);
+                }
+            }
+        });
+        this.notifications$.next(notifs);
     }
     removeLoginInfo() {
         let notifs = this.notifications$.getValue();
@@ -3499,12 +3604,18 @@ class UserService {
         this.statesService = statesService;
         this.router = router;
         this.notifications = notifications;
+        this.auth$ = new rxjs__WEBPACK_IMPORTED_MODULE_1__["BehaviorSubject"](false); //subject which is true if user is authenticated
         this.userId$ = new rxjs__WEBPACK_IMPORTED_MODULE_1__["BehaviorSubject"](null);
         this.config = new _config__WEBPACK_IMPORTED_MODULE_4__["HttpConfig"]();
     }
     canActivate() {
-        if (!this.auth$) {
-            if (localStorage.getItem("userId")) {
+        if (this.auth$.getValue()) {
+            return true;
+        }
+        else {
+            let id = localStorage.getItem("userId");
+            if (id) {
+                this.setUser(id);
                 return true;
             }
             else {
@@ -3514,32 +3625,26 @@ class UserService {
                 return false;
             }
         }
-        else if (this.auth$.getValue()) {
-            return true;
-        }
-        else {
-            this.setUser(null);
-            return false;
-        }
     }
     //used to login the user
     login(form) {
         this.statesService.setLoadingState(true);
-        return this.http
+        this.http
             .post(this.config.urlBase + "login", form, {
             headers: this.config.headers,
             observe: "response",
         })
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["tap"])((res) => {
+            .subscribe((res) => {
             this.statesService.setLoadingState(false);
             this.setUser(res.body._id, form.remember);
             this.notifications.removeLoginInfo();
             this.notifications.addNotification(new _models_Notification__WEBPACK_IMPORTED_MODULE_3__["SuccessMessage"](`Herzlich willkommen ${res.body.username}`));
+            this.router.navigateByUrl("/");
         }, (error) => {
             this.notifications.handleErrors(error);
             this.setUser(null);
             this.statesService.setLoadingState(false);
-        }));
+        });
     }
     createAccount(form) {
         return this.http
@@ -3550,6 +3655,7 @@ class UserService {
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["tap"])((res) => {
             this.setUser(res.body._id);
             this.statesService.setLoadingState(false);
+            this.router.navigate(["/"]);
         }, (error) => {
             this.notifications.handleErrors(error);
             this.statesService.setLoadingState(false);
@@ -3566,6 +3672,7 @@ class UserService {
             this.statesService.setLoadingState(false);
             this.setUser(null);
             this.notifications.addNotification(new _models_Notification__WEBPACK_IMPORTED_MODULE_3__["SuccessMessage"]("Erfolgreich abgemeldet"));
+            this.router.navigate(["/"]);
         }, (error) => {
             this.notifications.handleErrors(error);
             this.statesService.setLoadingState(false);
@@ -3592,17 +3699,20 @@ class UserService {
             return this.accountInfo$.asObservable();
         }
         else {
+            this.statesService.setLoadingState(true);
             this.accountInfo$ = new rxjs__WEBPACK_IMPORTED_MODULE_1__["BehaviorSubject"](null);
             this.http
                 .get(this.config.urlBase + "user/info", {
                 observe: "response",
             })
                 .subscribe((res) => {
+                this.statesService.setLoadingState(false);
                 for (const card of res.body.cards) {
                     card.date = new Date(card.date);
                 }
                 this.accountInfo$.next(res.body);
             }, (error) => {
+                this.router.navigateByUrl("/login");
                 this.statesService.setLoadingState(false);
                 this.notifications.handleErrors(error);
             });

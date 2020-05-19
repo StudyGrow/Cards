@@ -711,6 +711,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         this.cardsService = cardsService;
         this.stateService = stateService;
         this.http = http;
+        this.subscriptions$ = [];
       }
 
       _createClass(AddCardFormComponent, [{
@@ -718,8 +719,16 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         value: function ngOnInit() {
           var _this2 = this;
 
-          this.http.getCurrentLecture().subscribe(function (lecture) {
+          var sub = this.http.getCurrentLecture().subscribe(function (lecture) {
             return _this2.lecture = lecture;
+          });
+          this.subscriptions$.push(sub);
+        }
+      }, {
+        key: "ngOnDestroy",
+        value: function ngOnDestroy() {
+          this.subscriptions$.forEach(function (sub) {
+            sub.unsubscribe();
           });
         }
       }, {
@@ -729,8 +738,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         key: "onSubmit",
         value: function onSubmit(f) {
           this.newCard = new _models_Card__WEBPACK_IMPORTED_MODULE_1__["Card"](f.value.thema, f.value.content, this.lecture.abrv);
-          this.cardsService.addCard(this.newCard).subscribe(function (res) {
+          var sub = this.cardsService.addCard(this.newCard).subscribe(function (res) {
             f.reset();
+            sub.unsubscribe();
           });
         }
       }, {
@@ -1002,6 +1012,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
         this.http = http;
         this.statesService = statesService;
+        this.subscriptions$ = [];
         this.emitVl = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
       }
 
@@ -1009,16 +1020,25 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         key: "ngOnInit",
         value: function ngOnInit() {}
       }, {
+        key: "ngOnDestroy",
+        value: function ngOnDestroy() {
+          this.subscriptions$.forEach(function (sub) {
+            sub.unsubscribe();
+          });
+        }
+      }, {
         key: "onSubmit",
         value: function onSubmit(f) {
           var _this3 = this;
 
           var newLecture = new _models_Vorlesung__WEBPACK_IMPORTED_MODULE_1__["Vorlesung"](f.value.name, f.value.abrv.toLowerCase());
           this.statesService.setLoadingState(true);
-          this.http.addLecture(newLecture).subscribe(function (response) {
+          var sub = this.http.addLecture(newLecture).subscribe(function (response) {
             _this3.statesService.setLoadingState(false);
 
             _this3.emitVl.emit(newLecture);
+
+            sub.unsubscribe();
           });
           f.reset();
         }
@@ -1244,6 +1264,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         _classCallCheck(this, CardComponent);
 
         this.cs = cs;
+        this.subscriptions$ = [];
         this.isCollapsed = true;
       }
 
@@ -1252,9 +1273,17 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         value: function ngOnInit() {
           var _this4 = this;
 
-          this.cs.getActiveCardIndex().subscribe(function (change) {
+          var sub = this.cs.getActiveCardIndex().subscribe(function (change) {
             //hides te card content when carousel slides
             _this4.content.hide();
+          });
+          this.subscriptions$.push(sub);
+        }
+      }, {
+        key: "ngOnDestroy",
+        value: function ngOnDestroy() {
+          this.subscriptions$.forEach(function (sub) {
+            sub.unsubscribe();
           });
         }
       }]);
@@ -1473,6 +1502,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         _classCallCheck(this, CardsOverviewComponent);
 
         this.userService = userService;
+        this.subscriptions$ = [];
       }
 
       _createClass(CardsOverviewComponent, [{
@@ -1480,8 +1510,16 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         value: function ngOnInit() {
           var _this5 = this;
 
-          this.userService.getUserInfo().subscribe(function (info) {
+          var sub = this.userService.getUserInfo().subscribe(function (info) {
             _this5.cards = info.cards;
+          });
+          this.subscriptions$.push(sub);
+        }
+      }, {
+        key: "ngOnDestroy",
+        value: function ngOnDestroy() {
+          this.subscriptions$.forEach(function (sub) {
+            sub.unsubscribe();
           });
         }
       }]);
@@ -1763,6 +1801,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         this.stateService = stateService;
         this.cardsService = cardsService;
         this.userService = userService;
+        this.subscriptions$ = [];
       }
 
       _createClass(CarouselComponent, [{
@@ -1781,28 +1820,40 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           var _this6 = this;
 
           this.activeSlide = 0;
-          this.userService.getUserId().subscribe(function (userId) {
+          var sub = this.userService.getUserId().subscribe(function (userId) {
             return _this6.userId = userId;
           });
-          this.httpService.getCurrentLecture().subscribe(function (lecture) {
+          this.subscriptions$.push(sub);
+          sub = this.httpService.getCurrentLecture().subscribe(function (lecture) {
             _this6.lecture = lecture;
             _this6.title = _this6.lecture.name;
           });
-          this.cardsService.getCards().subscribe(function (cards) {
+          this.subscriptions$.push(sub);
+          sub = this.cardsService.getCards().subscribe(function (cards) {
             _this6.cards = cards;
           }); //load the specific cards from the server by subscribing to the observable that the card-service provides
 
+          this.subscriptions$.push(sub);
           this.stateService.setFormMode("none");
-          this.stateService.getFormMode().subscribe(function (mode) {
+          sub = this.stateService.getFormMode().subscribe(function (mode) {
             _this6.formShow = mode == "add";
             _this6.formMode = mode;
           });
-          this.cardsService.getNewCardIndex().subscribe(function (index) {
+          this.subscriptions$.push(sub);
+          sub = this.cardsService.getNewCardIndex().subscribe(function (index) {
             if (_this6.carousel) {
               _this6.activeSlide = index;
 
               _this6.carousel.selectSlide(index);
             }
+          });
+          this.subscriptions$.push(sub);
+        }
+      }, {
+        key: "ngOnDestroy",
+        value: function ngOnDestroy() {
+          this.subscriptions$.forEach(function (sub) {
+            sub.unsubscribe();
           });
         }
       }, {
@@ -2093,6 +2144,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
         this.http = http;
         this.userService = userService;
+        this.subscriptions$ = [];
         this.user = new src_app_models_User__WEBPACK_IMPORTED_MODULE_1__["User"]("", "");
       }
 
@@ -2103,12 +2155,20 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
           this.user.name = "";
           this.user.surname = "";
-          this.userService.getUserInfo().subscribe(function (info) {
+          var sub = this.userService.getUserInfo().subscribe(function (info) {
             _this7.userInfo = info;
 
             if (info && info.user) {
               _this7.user = info.user;
             }
+          });
+          this.subscriptions$.push(sub);
+        }
+      }, {
+        key: "ngOnDestroy",
+        value: function ngOnDestroy() {
+          this.subscriptions$.forEach(function (sub) {
+            sub.unsubscribe();
           });
         }
       }, {
@@ -2119,8 +2179,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: "changePassword",
         value: function changePassword(form) {
-          this.userService.updatePassword(form.value).subscribe(function (res) {
+          var sub = this.userService.updatePassword(form.value).subscribe(function (res) {
             form.reset();
+            sub.unsubscribe();
           });
         }
       }, {
@@ -2592,6 +2653,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         _classCallCheck(this, LecturesComponent);
 
         this.httpService = httpService;
+        this.subscriptions$ = [];
       }
 
       _createClass(LecturesComponent, [{
@@ -2599,8 +2661,16 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         value: function ngOnInit() {
           var _this8 = this;
 
-          this.httpService.getAllLectures().subscribe(function (lectures) {
+          var sub = this.httpService.getAllLectures().subscribe(function (lectures) {
             _this8.lectures = lectures;
+          });
+          this.subscriptions$.push(sub);
+        }
+      }, {
+        key: "ngOnDestroy",
+        value: function ngOnDestroy() {
+          this.subscriptions$.forEach(function (sub) {
+            sub.unsubscribe();
           });
         }
       }, {
@@ -2761,11 +2831,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: "submit",
         value: function submit(form) {
-          var _this9 = this;
-
-          this.user.login(form.value).subscribe(function () {
-            _this9.router.navigate(["/"]);
-          });
+          this.user.login(form.value);
         }
       }, {
         key: "isDisabled",
@@ -2931,55 +2997,61 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     /* harmony import */
 
 
-    var _angular_platform_browser__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(
+    var angular_animations__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(
+    /*! angular-animations */
+    "./node_modules/angular-animations/__ivy_ngcc__/fesm2015/angular-animations.js");
+    /* harmony import */
+
+
+    var _angular_platform_browser__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(
     /*! @angular/platform-browser */
     "./node_modules/@angular/platform-browser/__ivy_ngcc__/fesm2015/platform-browser.js");
     /* harmony import */
 
 
-    var src_app_services_cards_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(
+    var src_app_services_cards_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(
     /*! src/app/services/cards.service */
     "./src/app/services/cards.service.ts");
     /* harmony import */
 
 
-    var src_app_services_states_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(
+    var src_app_services_states_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(
     /*! src/app/services/states.service */
     "./src/app/services/states.service.ts");
     /* harmony import */
 
 
-    var _services_notifications_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(
+    var _services_notifications_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(
     /*! ../../services/notifications.service */
     "./src/app/services/notifications.service.ts");
     /* harmony import */
 
 
-    var _services_user_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(
+    var _services_user_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(
     /*! ../../services/user.service */
     "./src/app/services/user.service.ts");
     /* harmony import */
 
 
-    var _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(
+    var _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(
     /*! @ng-bootstrap/ng-bootstrap */
     "./node_modules/@ng-bootstrap/ng-bootstrap/__ivy_ngcc__/fesm2015/ng-bootstrap.js");
     /* harmony import */
 
 
-    var _angular_common__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(
+    var _angular_common__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(
     /*! @angular/common */
     "./node_modules/@angular/common/__ivy_ngcc__/fesm2015/common.js");
     /* harmony import */
 
 
-    var _search_bar_search_bar_component__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(
+    var _search_bar_search_bar_component__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(
     /*! ../search-bar/search-bar.component */
     "./src/app/components/search-bar/search-bar.component.ts");
     /* harmony import */
 
 
-    var _angular_material_progress_bar__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(
+    var _angular_material_progress_bar__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(
     /*! @angular/material/progress-bar */
     "./node_modules/@angular/material/__ivy_ngcc__/fesm2015/progress-bar.js");
 
@@ -3133,6 +3205,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵclassMap"](ctx_r15.setAlertClass(notif_r18));
 
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("@pulseOnEnter", undefined)("@fadeOutOnLeave", undefined);
+
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](5);
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate1"](" ", notif_r18.message, "\n");
@@ -3151,33 +3225,54 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         this.statesService = statesService;
         this.notification = notification;
         this.userService = userService;
+        this.subscriptions$ = [];
         this.loading = false;
       }
 
       _createClass(NavBarComponent, [{
         key: "ngOnInit",
         value: function ngOnInit() {
-          var _this10 = this;
+          var _this9 = this;
 
           this.setPageTitle();
-          this.userService.authentication().subscribe(function (val) {
-            return _this10.loggedIn = val;
+          var sub = this.userService.authentication().subscribe(function (val) {
+            return _this9.loggedIn = val;
           });
-          this.statesService.getLoadingState().subscribe(function (val) {
-            _this10.loading = val;
+          this.subscriptions$.push(sub);
+          sub = this.statesService.getLoadingState().subscribe(function (val) {
+            _this9.loading = val;
           });
-          this.router.events.subscribe(function (e) {//clear messages on route change
-            //this.notification.clearNotifications();
+          this.subscriptions$.push(sub);
+          this.router.events.subscribe(function (e) {
+            //clear messages on route change
+            if (e instanceof _angular_router__WEBPACK_IMPORTED_MODULE_1__["NavigationEnd"]) {
+              if (_this9.router.url == "/") {
+                _this9.notification.clearNotifications("alert"); //prevent successfull login message from being removed on home
+
+              } else {
+                _this9.notification.clearNotifications("alert", "success");
+              }
+            }
           });
-          this.notification.getNotifications().subscribe(function (notifs) {
-            return _this10.notifications = notifs;
+          this.subscriptions$.push(sub);
+          sub = this.notification.getNotifications().subscribe(function (notifs) {
+            return _this9.notifications = notifs;
           });
+          this.subscriptions$.push(sub);
 
           if (this.router.url.match(/vorlesung/)) {
-            this.cardsService.getCards().subscribe(function (cards) {
-              _this10.cards = cards;
+            sub = this.cardsService.getCards().subscribe(function (cards) {
+              _this9.cards = cards;
             });
+            this.subscriptions$.push(sub);
           }
+        }
+      }, {
+        key: "ngOnDestroy",
+        value: function ngOnDestroy() {
+          this.subscriptions$.forEach(function (sub) {
+            sub.unsubscribe();
+          });
         }
       }, {
         key: "closeAlert",
@@ -3222,7 +3317,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         key: "logout",
         value: function logout() {
           this.userService.logout();
-          this.router.navigate(["/"]);
         }
       }]);
 
@@ -3230,7 +3324,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     }();
 
     NavBarComponent.ɵfac = function NavBarComponent_Factory(t) {
-      return new (t || NavBarComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_1__["Router"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_platform_browser__WEBPACK_IMPORTED_MODULE_2__["Title"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](src_app_services_cards_service__WEBPACK_IMPORTED_MODULE_3__["CardsService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](src_app_services_states_service__WEBPACK_IMPORTED_MODULE_4__["StatesService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_services_notifications_service__WEBPACK_IMPORTED_MODULE_5__["NotificationsService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_services_user_service__WEBPACK_IMPORTED_MODULE_6__["UserService"]));
+      return new (t || NavBarComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_1__["Router"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_platform_browser__WEBPACK_IMPORTED_MODULE_3__["Title"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](src_app_services_cards_service__WEBPACK_IMPORTED_MODULE_4__["CardsService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](src_app_services_states_service__WEBPACK_IMPORTED_MODULE_5__["StatesService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_services_notifications_service__WEBPACK_IMPORTED_MODULE_6__["NotificationsService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_services_user_service__WEBPACK_IMPORTED_MODULE_7__["UserService"]));
     };
 
     NavBarComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({
@@ -3293,7 +3387,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](17, NavBarComponent_div_17_Template, 6, 3, "div", 13);
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](17, NavBarComponent_div_17_Template, 6, 5, "div", 13);
         }
 
         if (rf & 2) {
@@ -3326,8 +3420,16 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngForOf", ctx.notifications);
         }
       },
-      directives: [_ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_7__["NgbNavbar"], _angular_router__WEBPACK_IMPORTED_MODULE_1__["RouterLinkWithHref"], _angular_common__WEBPACK_IMPORTED_MODULE_8__["NgIf"], _angular_common__WEBPACK_IMPORTED_MODULE_8__["NgForOf"], _search_bar_search_bar_component__WEBPACK_IMPORTED_MODULE_9__["SearchBarComponent"], _angular_material_progress_bar__WEBPACK_IMPORTED_MODULE_10__["MatProgressBar"]],
-      styles: [".row[_ngcontent-%COMP%] {\r\n  width: 100%;\r\n}\r\nnav[_ngcontent-%COMP%] {\r\n  position: relative;\r\n}\r\n#progress[_ngcontent-%COMP%] {\r\n  position: relative;\r\n}\r\nmat-progress-bar[_ngcontent-%COMP%] {\r\n  position: absolute;\r\n  top: 0;\r\n}\r\n.alert[_ngcontent-%COMP%] {\r\n  width: 90%;\r\n  margin: auto;\r\n  margin-top: 5px;\r\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvY29tcG9uZW50cy9uYXYtYmFyL25hdi1iYXIuY29tcG9uZW50LmNzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNFLFdBQVc7QUFDYjtBQUNBO0VBQ0Usa0JBQWtCO0FBQ3BCO0FBRUE7RUFDRSxrQkFBa0I7QUFDcEI7QUFDQTtFQUNFLGtCQUFrQjtFQUNsQixNQUFNO0FBQ1I7QUFDQTtFQUNFLFVBQVU7RUFDVixZQUFZO0VBQ1osZUFBZTtBQUNqQiIsImZpbGUiOiJzcmMvYXBwL2NvbXBvbmVudHMvbmF2LWJhci9uYXYtYmFyLmNvbXBvbmVudC5jc3MiLCJzb3VyY2VzQ29udGVudCI6WyIucm93IHtcclxuICB3aWR0aDogMTAwJTtcclxufVxyXG5uYXYge1xyXG4gIHBvc2l0aW9uOiByZWxhdGl2ZTtcclxufVxyXG5cclxuI3Byb2dyZXNzIHtcclxuICBwb3NpdGlvbjogcmVsYXRpdmU7XHJcbn1cclxubWF0LXByb2dyZXNzLWJhciB7XHJcbiAgcG9zaXRpb246IGFic29sdXRlO1xyXG4gIHRvcDogMDtcclxufVxyXG4uYWxlcnQge1xyXG4gIHdpZHRoOiA5MCU7XHJcbiAgbWFyZ2luOiBhdXRvO1xyXG4gIG1hcmdpbi10b3A6IDVweDtcclxufVxyXG4iXX0= */"]
+      directives: [_ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_8__["NgbNavbar"], _angular_router__WEBPACK_IMPORTED_MODULE_1__["RouterLinkWithHref"], _angular_common__WEBPACK_IMPORTED_MODULE_9__["NgIf"], _angular_common__WEBPACK_IMPORTED_MODULE_9__["NgForOf"], _search_bar_search_bar_component__WEBPACK_IMPORTED_MODULE_10__["SearchBarComponent"], _angular_material_progress_bar__WEBPACK_IMPORTED_MODULE_11__["MatProgressBar"]],
+      styles: [".row[_ngcontent-%COMP%] {\r\n  width: 100%;\r\n}\r\nnav[_ngcontent-%COMP%] {\r\n  position: relative;\r\n}\r\n#progress[_ngcontent-%COMP%] {\r\n  position: relative;\r\n}\r\nmat-progress-bar[_ngcontent-%COMP%] {\r\n  position: absolute;\r\n  top: 0;\r\n}\r\n.alert[_ngcontent-%COMP%] {\r\n  width: 90%;\r\n  margin: auto;\r\n  margin-top: 5px;\r\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvY29tcG9uZW50cy9uYXYtYmFyL25hdi1iYXIuY29tcG9uZW50LmNzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNFLFdBQVc7QUFDYjtBQUNBO0VBQ0Usa0JBQWtCO0FBQ3BCO0FBRUE7RUFDRSxrQkFBa0I7QUFDcEI7QUFDQTtFQUNFLGtCQUFrQjtFQUNsQixNQUFNO0FBQ1I7QUFDQTtFQUNFLFVBQVU7RUFDVixZQUFZO0VBQ1osZUFBZTtBQUNqQiIsImZpbGUiOiJzcmMvYXBwL2NvbXBvbmVudHMvbmF2LWJhci9uYXYtYmFyLmNvbXBvbmVudC5jc3MiLCJzb3VyY2VzQ29udGVudCI6WyIucm93IHtcclxuICB3aWR0aDogMTAwJTtcclxufVxyXG5uYXYge1xyXG4gIHBvc2l0aW9uOiByZWxhdGl2ZTtcclxufVxyXG5cclxuI3Byb2dyZXNzIHtcclxuICBwb3NpdGlvbjogcmVsYXRpdmU7XHJcbn1cclxubWF0LXByb2dyZXNzLWJhciB7XHJcbiAgcG9zaXRpb246IGFic29sdXRlO1xyXG4gIHRvcDogMDtcclxufVxyXG4uYWxlcnQge1xyXG4gIHdpZHRoOiA5MCU7XHJcbiAgbWFyZ2luOiBhdXRvO1xyXG4gIG1hcmdpbi10b3A6IDVweDtcclxufVxyXG4iXX0= */"],
+      data: {
+        animation: [Object(angular_animations__WEBPACK_IMPORTED_MODULE_2__["pulseOnEnterAnimation"])({
+          scale: 1.05,
+          duration: 500
+        }), Object(angular_animations__WEBPACK_IMPORTED_MODULE_2__["fadeOutOnLeaveAnimation"])({
+          duration: 200
+        })]
+      }
     });
     /*@__PURE__*/
 
@@ -3337,21 +3439,27 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         args: [{
           selector: "app-nav-bar",
           templateUrl: "./nav-bar.component.html",
-          styleUrls: ["./nav-bar.component.css"]
+          styleUrls: ["./nav-bar.component.css"],
+          animations: [Object(angular_animations__WEBPACK_IMPORTED_MODULE_2__["pulseOnEnterAnimation"])({
+            scale: 1.05,
+            duration: 500
+          }), Object(angular_animations__WEBPACK_IMPORTED_MODULE_2__["fadeOutOnLeaveAnimation"])({
+            duration: 200
+          })]
         }]
       }], function () {
         return [{
           type: _angular_router__WEBPACK_IMPORTED_MODULE_1__["Router"]
         }, {
-          type: _angular_platform_browser__WEBPACK_IMPORTED_MODULE_2__["Title"]
+          type: _angular_platform_browser__WEBPACK_IMPORTED_MODULE_3__["Title"]
         }, {
-          type: src_app_services_cards_service__WEBPACK_IMPORTED_MODULE_3__["CardsService"]
+          type: src_app_services_cards_service__WEBPACK_IMPORTED_MODULE_4__["CardsService"]
         }, {
-          type: src_app_services_states_service__WEBPACK_IMPORTED_MODULE_4__["StatesService"]
+          type: src_app_services_states_service__WEBPACK_IMPORTED_MODULE_5__["StatesService"]
         }, {
-          type: _services_notifications_service__WEBPACK_IMPORTED_MODULE_5__["NotificationsService"]
+          type: _services_notifications_service__WEBPACK_IMPORTED_MODULE_6__["NotificationsService"]
         }, {
-          type: _services_user_service__WEBPACK_IMPORTED_MODULE_6__["UserService"]
+          type: _services_user_service__WEBPACK_IMPORTED_MODULE_7__["UserService"]
         }];
       }, null);
     })();
@@ -3390,6 +3498,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     function () {
       function NotificationsComponent() {
         _classCallCheck(this, NotificationsComponent);
+
+        this.subscriptions$ = [];
       }
 
       _createClass(NotificationsComponent, [{
@@ -3426,9 +3536,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](NotificationsComponent, [{
         type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"],
         args: [{
-          selector: 'app-notifications',
-          templateUrl: './notifications.component.html',
-          styleUrls: ['./notifications.component.css']
+          selector: "app-notifications",
+          templateUrl: "./notifications.component.html",
+          styleUrls: ["./notifications.component.css"]
         }]
       }], function () {
         return [];
@@ -3472,38 +3582,40 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     /* harmony import */
 
 
-    var src_app_services_http_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(
-    /*! src/app/services/http.service */
-    "./src/app/services/http.service.ts");
-    /* harmony import */
-
-
-    var src_app_services_user_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(
+    var src_app_services_user_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(
     /*! src/app/services/user.service */
     "./src/app/services/user.service.ts");
 
     var OverviewComponent =
     /*#__PURE__*/
     function () {
-      function OverviewComponent(http, userService) {
+      function OverviewComponent(userService) {
         _classCallCheck(this, OverviewComponent);
 
-        this.http = http;
         this.userService = userService;
         this.user = new src_app_models_User__WEBPACK_IMPORTED_MODULE_1__["User"]("", "");
+        this.subscriptions$ = [];
       }
 
       _createClass(OverviewComponent, [{
         key: "ngOnInit",
         value: function ngOnInit() {
-          var _this11 = this;
+          var _this10 = this;
 
-          this.userService.getUserInfo().subscribe(function (info) {
-            _this11.userInfo = info;
+          var sub = this.userService.getUserInfo().subscribe(function (info) {
+            _this10.userInfo = info;
 
             if (info && info.user) {
-              _this11.user = info.user;
+              _this10.user = info.user;
             }
+          });
+          this.subscriptions$.push(sub);
+        }
+      }, {
+        key: "ngOnDestroy",
+        value: function ngOnDestroy() {
+          this.subscriptions$.forEach(function (sub) {
+            sub.unsubscribe();
           });
         }
       }]);
@@ -3512,7 +3624,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     }();
 
     OverviewComponent.ɵfac = function OverviewComponent_Factory(t) {
-      return new (t || OverviewComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](src_app_services_http_service__WEBPACK_IMPORTED_MODULE_2__["HttpService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](src_app_services_user_service__WEBPACK_IMPORTED_MODULE_3__["UserService"]));
+      return new (t || OverviewComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](src_app_services_user_service__WEBPACK_IMPORTED_MODULE_2__["UserService"]));
     };
 
     OverviewComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({
@@ -3636,9 +3748,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         }]
       }], function () {
         return [{
-          type: src_app_services_http_service__WEBPACK_IMPORTED_MODULE_2__["HttpService"]
-        }, {
-          type: src_app_services_user_service__WEBPACK_IMPORTED_MODULE_3__["UserService"]
+          type: src_app_services_user_service__WEBPACK_IMPORTED_MODULE_2__["UserService"]
         }];
       }, null);
     })();
@@ -3760,22 +3870,24 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
         this.cardsService = cardsService;
         this.stateService = stateService;
+        this.subscriptions$ = [];
       }
 
       _createClass(SearchBarComponent, [{
         key: "ngOnInit",
         value: function ngOnInit() {
-          var _this12 = this;
+          var _this11 = this;
 
-          this.stateService.getHideSuggestions().subscribe(function (value) {
-            _this12.clearSuggestions = value;
+          var sub = this.stateService.getHideSuggestions().subscribe(function (value) {
+            _this11.clearSuggestions = value;
 
             if (value) {
-              _this12.suggestions = [];
+              _this11.suggestions = [];
             }
           });
-          this.cardsService.getCards().subscribe(function (cards) {
-            _this12.cards = cards;
+          this.subscriptions$.push(sub);
+          sub = this.cardsService.getCards().subscribe(function (cards) {
+            _this11.cards = cards;
             cards.forEach(function (card) {
               if (card.thema == null) {
                 card.thema = "";
@@ -3785,6 +3897,14 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                 card.content = "";
               }
             });
+          });
+          this.subscriptions$.push(sub);
+        }
+      }, {
+        key: "ngOnDestroy",
+        value: function ngOnDestroy() {
+          this.subscriptions$.forEach(function (sub) {
+            sub.unsubscribe();
           });
         }
       }, {
@@ -3974,18 +4094,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: "submit",
         value: function submit(form) {
-          var _this13 = this;
-
-          this.userService.createAccount(form.value).subscribe(function (response) {
-            if (response) {
-              _this13.router.navigate(["/"]);
-            }
-          }, function (error) {
-            if (error.headers.status = 422) {
-              console.log(error);
-              _this13.errors = error.error.errors;
-            }
-          });
+          this.userService.createAccount(form.value);
         }
       }, {
         key: "setStyle",
@@ -4258,24 +4367,34 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         this.cardsService = cardsService;
         this.statesService = statesService;
         this.dialog = dialog;
+        this.subscriptions$ = [];
       }
 
       _createClass(UpdateCardFormComponent, [{
         key: "ngOnInit",
         value: function ngOnInit() {
-          var _this14 = this;
+          var _this12 = this;
 
-          this.cardsService.getCards().subscribe(function (cards) {
-            _this14.cards = cards;
+          var sub = this.cardsService.getCards().subscribe(function (cards) {
+            _this12.cards = cards;
           });
-          this.cardsService.getActiveCardIndex().subscribe(function (index) {
-            _this14.activeCardIndex = index;
+          this.subscriptions$.push(sub);
+          sub = this.cardsService.getActiveCardIndex().subscribe(function (index) {
+            _this12.activeCardIndex = index;
 
-            if (_this14.cards) {
-              _this14.cardCopy = Object.assign({}, _this14.cards[_this14.activeCardIndex]);
+            if (_this12.cards) {
+              _this12.cardCopy = Object.assign({}, _this12.cards[_this12.activeCardIndex]);
             }
 
-            _this14.cardIndex = _this14.activeCardIndex;
+            _this12.cardIndex = _this12.activeCardIndex;
+          });
+          this.subscriptions$.push(sub);
+        }
+      }, {
+        key: "ngOnDestroy",
+        value: function ngOnDestroy() {
+          this.subscriptions$.forEach(function (sub) {
+            sub.unsubscribe();
           });
         }
       }, {
@@ -4293,8 +4412,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         value: function onSubmit(f) {
           this.cardCopy.content = f.value.content;
           this.cardCopy.thema = f.value.thema;
-          this.cardsService.updateCard(Object.assign({}, this.cardCopy), this.cardIndex).subscribe(function (resp) {
+          var sub = this.cardsService.updateCard(Object.assign({}, this.cardCopy), this.cardIndex).subscribe(function (resp) {
             f.reset();
+            sub.unsubscribe();
           });
         }
       }, {
@@ -4707,13 +4827,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       _inherits(HttpError, _Notification);
 
       function HttpError(m, c) {
-        var _this15;
+        var _this13;
 
         _classCallCheck(this, HttpError);
 
-        _this15 = _possibleConstructorReturn(this, _getPrototypeOf(HttpError).call(this, "warning", m));
-        _this15.code = c;
-        return _this15;
+        _this13 = _possibleConstructorReturn(this, _getPrototypeOf(HttpError).call(this, "warning", m));
+        _this13.code = c;
+        return _this13;
       }
 
       return HttpError;
@@ -4920,10 +5040,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       _createClass(AboutComponent, [{
         key: "ngOnInit",
         value: function ngOnInit() {
-          var _this16 = this;
+          var _this14 = this;
 
           this.user.authentication().subscribe(function (val) {
-            _this16.loggedIn = val;
+            _this14.loggedIn = val;
           });
         }
       }]);
@@ -5260,14 +5380,14 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       _createClass(AccountPageComponent, [{
         key: "ngOnInit",
         value: function ngOnInit() {
-          var _this17 = this;
+          var _this15 = this;
 
           this.page = "overview";
           this.userService.getUserInfo().subscribe(function (info) {
             if (info && info.cards) {
-              _this17.cardCount = info.cards.length;
+              _this15.cardCount = info.cards.length;
             } else {
-              _this17.cardCount = 0;
+              _this15.cardCount = 0;
             }
           });
         }
@@ -5300,7 +5420,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       selectors: [["app-account-page"]],
       decls: 15,
       vars: 9,
-      consts: [[1, "container"], [1, "row"], [1, "col-md-4", "col-xs-12"], [1, "list-group"], [3, "click"], [3, "class", "click", 4, "ngIf"], [1, "col-md-8", "col-xs-12", 3, "ngSwitch"], [4, "ngSwitchCase"]],
+      consts: [[1, "container"], [1, "row"], [1, "col-md-4", "col-xs-12"], [1, "list-group"], [3, "click"], [3, "class", "click", 4, "ngIf"], ["id", "sub", 1, "col-md-8", "col-xs-12", 3, "ngSwitch"], [4, "ngSwitchCase"]],
       template: function AccountPageComponent_Template(rf, ctx) {
         if (rf & 1) {
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](0, "app-nav-bar");
@@ -5387,7 +5507,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         }
       },
       directives: [_components_nav_bar_nav_bar_component__WEBPACK_IMPORTED_MODULE_2__["NavBarComponent"], _angular_common__WEBPACK_IMPORTED_MODULE_3__["NgIf"], _angular_common__WEBPACK_IMPORTED_MODULE_3__["NgSwitch"], _angular_common__WEBPACK_IMPORTED_MODULE_3__["NgSwitchCase"], _components_footer_footer_component__WEBPACK_IMPORTED_MODULE_4__["FooterComponent"], _components_overview_overview_component__WEBPACK_IMPORTED_MODULE_5__["OverviewComponent"], _components_change_profile_change_profile_component__WEBPACK_IMPORTED_MODULE_6__["ChangeProfileComponent"], _components_cards_overview_cards_overview_component__WEBPACK_IMPORTED_MODULE_7__["CardsOverviewComponent"]],
-      styles: [".container[_ngcontent-%COMP%] {\r\n  margin-top: 15px;\r\n  margin-bottom: 50px;\r\n}\r\n.col-xs-12[_ngcontent-%COMP%] {\r\n  margin-top: 10px;\r\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvcm91dGVzL2FjY291bnQtcGFnZS9hY2NvdW50LXBhZ2UuY29tcG9uZW50LmNzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNFLGdCQUFnQjtFQUNoQixtQkFBbUI7QUFDckI7QUFDQTtFQUNFLGdCQUFnQjtBQUNsQiIsImZpbGUiOiJzcmMvYXBwL3JvdXRlcy9hY2NvdW50LXBhZ2UvYWNjb3VudC1wYWdlLmNvbXBvbmVudC5jc3MiLCJzb3VyY2VzQ29udGVudCI6WyIuY29udGFpbmVyIHtcclxuICBtYXJnaW4tdG9wOiAxNXB4O1xyXG4gIG1hcmdpbi1ib3R0b206IDUwcHg7XHJcbn1cclxuLmNvbC14cy0xMiB7XHJcbiAgbWFyZ2luLXRvcDogMTBweDtcclxufVxyXG4iXX0= */"]
+      styles: [".container[_ngcontent-%COMP%] {\r\n  margin-top: 15px;\r\n  margin-bottom: 50px;\r\n}\r\n#sub[_ngcontent-%COMP%] {\r\n  margin-top: 10px;\r\n\r\n  background: white;\r\n  overflow-y: auto;\r\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvcm91dGVzL2FjY291bnQtcGFnZS9hY2NvdW50LXBhZ2UuY29tcG9uZW50LmNzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNFLGdCQUFnQjtFQUNoQixtQkFBbUI7QUFDckI7QUFDQTtFQUNFLGdCQUFnQjs7RUFFaEIsaUJBQWlCO0VBQ2pCLGdCQUFnQjtBQUNsQiIsImZpbGUiOiJzcmMvYXBwL3JvdXRlcy9hY2NvdW50LXBhZ2UvYWNjb3VudC1wYWdlLmNvbXBvbmVudC5jc3MiLCJzb3VyY2VzQ29udGVudCI6WyIuY29udGFpbmVyIHtcclxuICBtYXJnaW4tdG9wOiAxNXB4O1xyXG4gIG1hcmdpbi1ib3R0b206IDUwcHg7XHJcbn1cclxuI3N1YiB7XHJcbiAgbWFyZ2luLXRvcDogMTBweDtcclxuXHJcbiAgYmFja2dyb3VuZDogd2hpdGU7XHJcbiAgb3ZlcmZsb3cteTogYXV0bztcclxufVxyXG4iXX0= */"]
     });
     /*@__PURE__*/
 
@@ -5549,23 +5669,23 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: "ngOnInit",
         value: function ngOnInit() {
-          var _this18 = this;
+          var _this16 = this;
 
           this.title.setTitle("Cards");
           this.vlAbrv = this.route.snapshot.paramMap.get("abrv");
           this.cardsService.getCards().subscribe(function (cards) {
             if (cards.length == 0) {
-              _this18.stateServie.setFormMode("add");
+              _this16.stateServie.setFormMode("add");
             }
           });
           this.stateServie.getTyping().subscribe(function (val) {
-            return _this18.inTypingField = val;
+            return _this16.inTypingField = val;
           });
           this.stateServie.getLoadingState().subscribe(function (value) {
-            return _this18.loading = value;
+            return _this16.loading = value;
           });
           this.stateServie.getFormMode().subscribe(function (mode) {
-            return _this18.formMode = mode;
+            return _this16.formMode = mode;
           });
         }
       }, {
@@ -5755,10 +5875,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       _createClass(HomePageComponent, [{
         key: "ngOnInit",
         value: function ngOnInit() {
-          var _this19 = this;
+          var _this17 = this;
 
           this.statesService.getLoadingState().subscribe(function (val) {
-            _this19.loading = val;
+            _this17.loading = val;
           });
         }
       }, {
@@ -6110,7 +6230,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       _createClass(CardsService, [{
         key: "getCards",
         value: function getCards() {
-          var _this20 = this;
+          var _this18 = this;
 
           this.statesService.setLoadingState(true);
           var abrv = this.router.url.split(/vorlesung\//)[1]; //get the lecture abreviation from the route
@@ -6127,13 +6247,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             this.http.get(this.config.urlBase + "cards/?abrv=" + abrv, {
               observe: "response"
             }).subscribe(function (response) {
-              _this20.statesService.setLoadingState(false);
+              _this18.statesService.setLoadingState(false);
 
-              _this20.cards$.next(response.body);
+              _this18.cards$.next(response.body);
             }, function (error) {
-              _this20.notifications.handleErrors(error);
+              _this18.notifications.handleErrors(error);
 
-              _this20.statesService.setLoadingState(false);
+              _this18.statesService.setLoadingState(false);
             });
             return this.cards$.asObservable();
           }
@@ -6141,7 +6261,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: "updateCard",
         value: function updateCard(card, index) {
-          var _this21 = this;
+          var _this19 = this;
 
           this.statesService.setLoadingState(true); //send update to server using http service
 
@@ -6151,33 +6271,33 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             headers: this.config.headers,
             observe: "response"
           }).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["tap"])(function (resp) {
-            _this21.statesService.setLoadingState(false);
+            _this19.statesService.setLoadingState(false);
 
-            _this21.statesService.setFormMode("reset"); //reset form to its previous state
+            _this19.statesService.setFormMode("reset"); //reset form to its previous state
             //update subject
 
 
-            var cards = _this21.cards$.getValue();
+            var cards = _this19.cards$.getValue();
 
             cards[index] = card;
 
-            _this21.cards$.next(cards);
+            _this19.cards$.next(cards);
 
             setTimeout(function () {
               //show new card timeout needed because the carousel needs time to refresh
               //its view
-              _this21.setNewCardIndex(index);
+              _this19.setNewCardIndex(index);
             }, 100);
           }, function (error) {
-            _this21.notifications.handleErrors(error);
+            _this19.notifications.handleErrors(error);
 
-            _this21.statesService.setLoadingState(false);
+            _this19.statesService.setLoadingState(false);
           }));
         }
       }, {
         key: "addCard",
         value: function addCard(card) {
-          var _this22 = this;
+          var _this20 = this;
 
           this.statesService.setLoadingState(true); //send new card to server using http service
 
@@ -6187,26 +6307,26 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             headers: this.config.headers,
             observe: "response"
           }).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["tap"])(function (response) {
-            _this22.statesService.setLoadingState(false);
+            _this20.statesService.setLoadingState(false);
 
             card._id = response.body.id; //set id received from server response
             //upate subject
 
-            var cards = _this22.cards$.getValue();
+            var cards = _this20.cards$.getValue();
 
             cards.push(card);
 
-            _this22.cards$.next(cards);
+            _this20.cards$.next(cards);
 
             setTimeout(function () {
               //show new card timeout needed because the carousel needs time to refresh
               //its view
-              _this22.setNewCardIndex(cards.length - 1);
+              _this20.setNewCardIndex(cards.length - 1);
             }, 100);
           }, function (error) {
-            _this22.notifications.handleErrors(error);
+            _this20.notifications.handleErrors(error);
 
-            _this22.statesService.setLoadingState(false);
+            _this20.statesService.setLoadingState(false);
           }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["map"])(function (res) {
             return res.body;
           }));
@@ -6440,7 +6560,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       _createClass(HttpService, [{
         key: "getAllLectures",
         value: function getAllLectures() {
-          var _this23 = this;
+          var _this21 = this;
 
           this.statesService.setLoadingState(true);
 
@@ -6453,13 +6573,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             return this.http.get(this.urlBase + "lectures", {
               observe: "response"
             }).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["tap"])(function (res) {
-              _this23.statesService.setLoadingState(false);
+              _this21.statesService.setLoadingState(false);
 
-              _this23.lectures$ = new rxjs__WEBPACK_IMPORTED_MODULE_2__["BehaviorSubject"](res.body); //set the lectures subject
+              _this21.lectures$ = new rxjs__WEBPACK_IMPORTED_MODULE_2__["BehaviorSubject"](res.body); //set the lectures subject
             }, function (error) {
-              _this23.addErrors(error);
+              _this21.addErrors(error);
 
-              _this23.statesService.setLoadingState(false);
+              _this21.statesService.setLoadingState(false);
             }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])(function (res) {
               return res.body;
             }));
@@ -6469,7 +6589,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: "getCurrentLecture",
         value: function getCurrentLecture() {
-          var _this24 = this;
+          var _this22 = this;
 
           var abrv = this.router.url.split(/vorlesung\//)[1]; //get the abreviation of the lecture from the url
 
@@ -6481,11 +6601,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             this.http.get(this.urlBase + "lectures/find?abrv=" + abrv, {
               observe: "response"
             }).subscribe(function (res) {
-              _this24.lecture$.next(res.body);
+              _this22.lecture$.next(res.body);
             }, function (error) {
-              _this24.addErrors(error);
+              _this22.addErrors(error);
 
-              _this24.statesService.setLoadingState(false);
+              _this22.statesService.setLoadingState(false);
             });
             return this.lecture$.asObservable();
           }
@@ -6494,7 +6614,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: "addLecture",
         value: function addLecture(lecture) {
-          var _this25 = this;
+          var _this23 = this;
 
           this.statesService.setLoadingState(true);
           return this.http.post(this.urlBase + "lectures/new", {
@@ -6504,17 +6624,17 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             observe: "response"
           }).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["tap"])(function (res) {
             //add the new lecture to the lectures subject
-            _this25.statesService.setLoadingState(false);
+            _this23.statesService.setLoadingState(false);
 
-            var lectures = _this25.lectures$.getValue();
+            var lectures = _this23.lectures$.getValue();
 
             lectures.push(lecture);
 
-            _this25.lectures$.next(lectures);
+            _this23.lectures$.next(lectures);
           }, function (error) {
-            _this25.addErrors(error);
+            _this23.addErrors(error);
 
-            _this25.statesService.setLoadingState(false);
+            _this23.statesService.setLoadingState(false);
           }));
         } //because errors suck and we dont have a unified error handling system in the backend
 
@@ -6674,7 +6794,22 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: "clearNotifications",
         value: function clearNotifications() {
-          this.notifications$.next([]);
+          var _this24 = this;
+
+          var notifs = this.notifications$.getValue();
+
+          for (var _len = arguments.length, types = new Array(_len), _key = 0; _key < _len; _key++) {
+            types[_key] = arguments[_key];
+          }
+
+          types.forEach(function (type) {
+            for (var i = 0; i < notifs.length; i++) {
+              if (notifs[i].type === type) {
+                _this24.removeNotification(i);
+              }
+            }
+          });
+          this.notifications$.next(notifs);
         }
       }, {
         key: "removeLoginInfo",
@@ -6982,6 +7117,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         this.statesService = statesService;
         this.router = router;
         this.notifications = notifications;
+        this.auth$ = new rxjs__WEBPACK_IMPORTED_MODULE_1__["BehaviorSubject"](false); //subject which is true if user is authenticated
+
         this.userId$ = new rxjs__WEBPACK_IMPORTED_MODULE_1__["BehaviorSubject"](null);
         this.config = new _config__WEBPACK_IMPORTED_MODULE_4__["HttpConfig"]();
       }
@@ -6989,8 +7126,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       _createClass(UserService, [{
         key: "canActivate",
         value: function canActivate() {
-          if (!this.auth$) {
-            if (localStorage.getItem("userId")) {
+          if (this.auth$.getValue()) {
+            return true;
+          } else {
+            var id = localStorage.getItem("userId");
+
+            if (id) {
+              this.setUser(id);
               return true;
             } else {
               this.notifications.addNotification(new _models_Notification__WEBPACK_IMPORTED_MODULE_3__["InfoMessage"]("Du musst dich einloggen, um diese Seite zu besuchen"));
@@ -6998,55 +7140,54 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
               this.router.navigate(["login"]);
               return false;
             }
-          } else if (this.auth$.getValue()) {
-            return true;
-          } else {
-            this.setUser(null);
-            return false;
           }
         } //used to login the user
 
       }, {
         key: "login",
         value: function login(form) {
-          var _this26 = this;
+          var _this25 = this;
 
           this.statesService.setLoadingState(true);
-          return this.http.post(this.config.urlBase + "login", form, {
+          this.http.post(this.config.urlBase + "login", form, {
             headers: this.config.headers,
             observe: "response"
-          }).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["tap"])(function (res) {
-            _this26.statesService.setLoadingState(false);
+          }).subscribe(function (res) {
+            _this25.statesService.setLoadingState(false);
 
-            _this26.setUser(res.body._id, form.remember);
+            _this25.setUser(res.body._id, form.remember);
 
-            _this26.notifications.removeLoginInfo();
+            _this25.notifications.removeLoginInfo();
 
-            _this26.notifications.addNotification(new _models_Notification__WEBPACK_IMPORTED_MODULE_3__["SuccessMessage"]("Herzlich willkommen ".concat(res.body.username)));
+            _this25.notifications.addNotification(new _models_Notification__WEBPACK_IMPORTED_MODULE_3__["SuccessMessage"]("Herzlich willkommen ".concat(res.body.username)));
+
+            _this25.router.navigateByUrl("/");
           }, function (error) {
-            _this26.notifications.handleErrors(error);
+            _this25.notifications.handleErrors(error);
 
-            _this26.setUser(null);
+            _this25.setUser(null);
 
-            _this26.statesService.setLoadingState(false);
-          }));
+            _this25.statesService.setLoadingState(false);
+          });
         }
       }, {
         key: "createAccount",
         value: function createAccount(form) {
-          var _this27 = this;
+          var _this26 = this;
 
           return this.http.post(this.config.urlBase + "user/new", form, {
             headers: this.config.headers,
             observe: "response"
           }).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["tap"])(function (res) {
-            _this27.setUser(res.body._id);
+            _this26.setUser(res.body._id);
 
-            _this27.statesService.setLoadingState(false);
+            _this26.statesService.setLoadingState(false);
+
+            _this26.router.navigate(["/"]);
           }, function (error) {
-            _this27.notifications.handleErrors(error);
+            _this26.notifications.handleErrors(error);
 
-            _this27.statesService.setLoadingState(false);
+            _this26.statesService.setLoadingState(false);
           }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["map"])(function (res) {
             return res.body;
           }));
@@ -7059,21 +7200,23 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: "logout",
         value: function logout() {
-          var _this28 = this;
+          var _this27 = this;
 
           this.statesService.setLoadingState(true);
           this.http.get(this.config.urlBase + "user/logout", {
             observe: "response"
           }).subscribe(function (res) {
-            _this28.statesService.setLoadingState(false);
+            _this27.statesService.setLoadingState(false);
 
-            _this28.setUser(null);
+            _this27.setUser(null);
 
-            _this28.notifications.addNotification(new _models_Notification__WEBPACK_IMPORTED_MODULE_3__["SuccessMessage"]("Erfolgreich abgemeldet"));
+            _this27.notifications.addNotification(new _models_Notification__WEBPACK_IMPORTED_MODULE_3__["SuccessMessage"]("Erfolgreich abgemeldet"));
+
+            _this27.router.navigate(["/"]);
           }, function (error) {
-            _this28.notifications.handleErrors(error);
+            _this27.notifications.handleErrors(error);
 
-            _this28.statesService.setLoadingState(false);
+            _this27.statesService.setLoadingState(false);
           });
         }
       }, {
@@ -7097,15 +7240,18 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: "getUserInfo",
         value: function getUserInfo() {
-          var _this29 = this;
+          var _this28 = this;
 
           if (this.accountInfo$) {
             return this.accountInfo$.asObservable();
           } else {
+            this.statesService.setLoadingState(true);
             this.accountInfo$ = new rxjs__WEBPACK_IMPORTED_MODULE_1__["BehaviorSubject"](null);
             this.http.get(this.config.urlBase + "user/info", {
               observe: "response"
             }).subscribe(function (res) {
+              _this28.statesService.setLoadingState(false);
+
               var _iteratorNormalCompletion3 = true;
               var _didIteratorError3 = false;
               var _iteratorError3 = undefined;
@@ -7130,11 +7276,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                 }
               }
 
-              _this29.accountInfo$.next(res.body);
+              _this28.accountInfo$.next(res.body);
             }, function (error) {
-              _this29.statesService.setLoadingState(false);
+              _this28.router.navigateByUrl("/login");
 
-              _this29.notifications.handleErrors(error);
+              _this28.statesService.setLoadingState(false);
+
+              _this28.notifications.handleErrors(error);
             });
             return this.accountInfo$.asObservable();
           }
@@ -7142,45 +7290,45 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: "updateAccount",
         value: function updateAccount(form) {
-          var _this30 = this;
+          var _this29 = this;
 
           this.statesService.setLoadingState(true);
           this.http.put(this.config.urlBase + "user/updateAccount", form, {
             headers: this.config.headers,
             observe: "response"
           }).subscribe(function (res) {
-            _this30.statesService.setLoadingState(false);
+            _this29.statesService.setLoadingState(false);
 
-            var info = _this30.accountInfo$.getValue();
+            var info = _this29.accountInfo$.getValue();
 
             info.user = form;
 
-            _this30.accountInfo$.next(info);
+            _this29.accountInfo$.next(info);
 
-            _this30.notifications.addNotification(new _models_Notification__WEBPACK_IMPORTED_MODULE_3__["SuccessMessage"]("Deine Informationen wurden erfolgreich aktualisiert"));
+            _this29.notifications.addNotification(new _models_Notification__WEBPACK_IMPORTED_MODULE_3__["SuccessMessage"]("Deine Informationen wurden erfolgreich aktualisiert"));
           }, function (error) {
-            _this30.notifications.handleErrors(error);
+            _this29.notifications.handleErrors(error);
 
-            _this30.statesService.setLoadingState(false);
+            _this29.statesService.setLoadingState(false);
           });
         }
       }, {
         key: "updatePassword",
         value: function updatePassword(form) {
-          var _this31 = this;
+          var _this30 = this;
 
           this.statesService.setLoadingState(true);
           return this.http.put(this.config.urlBase + "user/updatePassword", form, {
             headers: this.config.headers,
             observe: "response"
           }).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["tap"])(function (res) {
-            _this31.statesService.setLoadingState(false);
+            _this30.statesService.setLoadingState(false);
 
-            _this31.notifications.addNotification(new _models_Notification__WEBPACK_IMPORTED_MODULE_3__["SuccessMessage"]("Dein Passwort wurde erfolgreich aktualisiert"));
+            _this30.notifications.addNotification(new _models_Notification__WEBPACK_IMPORTED_MODULE_3__["SuccessMessage"]("Dein Passwort wurde erfolgreich aktualisiert"));
           }, function (error) {
-            _this31.notifications.handleErrors(error);
+            _this30.notifications.handleErrors(error);
 
-            _this31.statesService.setLoadingState(false);
+            _this30.statesService.setLoadingState(false);
           }));
         }
       }, {

@@ -49,7 +49,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
       this.loading = val;
     });
     this.subscriptions$.push(sub);
-    sub = this.router.events.subscribe((e) => {
+    this.router.events.subscribe((e) => {
       //clear messages on route change
 
       if (e instanceof NavigationEnd) {
@@ -105,7 +105,5 @@ export class NavBarComponent implements OnInit, OnDestroy {
   }
   logout() {
     this.userService.logout();
-
-    this.router.navigate(["/"]);
   }
 }

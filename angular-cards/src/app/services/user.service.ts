@@ -46,28 +46,27 @@ export class UserService implements CanActivate {
   //used to login the user
   login(form) {
     this.statesService.setLoadingState(true);
-    return this.http
+    this.http
       .post<User>(this.config.urlBase + "login", form, {
         headers: this.config.headers,
         observe: "response",
       })
-      .pipe(
-        tap(
-          (res) => {
-            this.statesService.setLoadingState(false);
-            this.setUser(res.body._id, form.remember);
-            this.notifications.removeLoginInfo();
-            this.notifications.addNotification(
-              new SuccessMessage(`Herzlich willkommen ${res.body.username}`)
-            );
-            this.router.navigateByUrl("/");
-          },
-          (error) => {
-            this.notifications.handleErrors(error);
-            this.setUser(null);
-            this.statesService.setLoadingState(false);
-          }
-        )
+      .subscribe(
+        (res) => {
+          this.statesService.setLoadingState(false);
+          this.setUser(res.body._id, form.remember);
+          this.notifications.removeLoginInfo();
+          this.notifications.addNotification(
+            new SuccessMessage(`Herzlich willkommen ${res.body.username}`)
+          );
+
+          this.router.navigateByUrl("/");
+        },
+        (error) => {
+          this.notifications.handleErrors(error);
+          this.setUser(null);
+          this.statesService.setLoadingState(false);
+        }
       );
   }
   createAccount(form): Observable<User> {
@@ -107,6 +106,7 @@ export class UserService implements CanActivate {
           this.notifications.addNotification(
             new SuccessMessage("Erfolgreich abgemeldet")
           );
+          this.router.navigate(["/"]);
         },
         (error) => {
           this.notifications.handleErrors(error);
