@@ -60,6 +60,7 @@ export class UserService implements CanActivate {
             this.notifications.addNotification(
               new SuccessMessage(`Herzlich willkommen ${res.body.username}`)
             );
+            this.router.navigateByUrl("/");
           },
           (error) => {
             this.notifications.handleErrors(error);
@@ -80,6 +81,7 @@ export class UserService implements CanActivate {
           (res) => {
             this.setUser(res.body._id);
             this.statesService.setLoadingState(false);
+            this.router.navigate(["/"]);
           },
           (error) => {
             this.notifications.handleErrors(error);

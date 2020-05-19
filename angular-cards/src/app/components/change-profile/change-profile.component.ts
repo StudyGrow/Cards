@@ -1,27 +1,35 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { HttpService } from "../../services/http.service";
 import { NgForm } from "@angular/forms";
 import { User } from "src/app/models/User";
 import { UserInfo } from "src/app/models/userInfo";
 import { UserService } from "src/app/services/user.service";
+import { Subscription } from "rxjs";
 @Component({
   selector: "app-change-profile",
   templateUrl: "./change-profile.component.html",
   styleUrls: ["./change-profile.component.css"],
 })
-export class ChangeProfileComponent implements OnInit {
+export class ChangeProfileComponent implements OnInit, OnDestroy {
   public userInfo: UserInfo;
+  subscriptions$: Subscription[] = [];
   public user = new User("", "");
   constructor(private http: HttpService, private userService: UserService) {}
 
   ngOnInit(): void {
     this.user.name = "";
     this.user.surname = "";
-    this.userService.getUserInfo().subscribe((info) => {
+    let sub = this.userService.getUserInfo().subscribe((info) => {
       this.userInfo = info;
       if (info && info.user) {
         this.user = info.user;
       }
+    });
+    this.subscriptions$.push(sub);
+  }
+  ngOnDestroy() {
+    this.subscriptions$.forEach((sub) => {
+      sub.unsubscribe();
     });
   }
 
@@ -29,8 +37,9 @@ export class ChangeProfileComponent implements OnInit {
     this.userService.updateAccount(form.value);
   }
   changePassword(form: NgForm) {
-    this.userService.updatePassword(form.value).subscribe((res) => {
+    let sub = this.userService.updatePassword(form.value).subscribe((res) => {
       form.reset();
+      sub.unsubscribe();
     });
   }
   setStyle(password, password2) {

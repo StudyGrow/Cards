@@ -14,9 +14,7 @@ export class LoginFormComponent implements OnInit {
 
   ngOnInit(): void {}
   submit(form: NgForm) {
-    this.user.login(form.value).subscribe(() => {
-      this.router.navigate(["/"]);
-    });
+    this.user.login(form.value);
   }
 
   isDisabled(username, password) {

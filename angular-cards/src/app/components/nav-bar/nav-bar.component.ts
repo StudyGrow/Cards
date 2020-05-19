@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { Card } from "../../models/Card";
 import { Router, NavigationEnd } from "@angular/router";
 import { Title } from "@angular/platform-browser";
@@ -13,6 +13,7 @@ import {
   pulseOnEnterAnimation,
   fadeOutOnLeaveAnimation,
 } from "angular-animations";
+import { Subscription } from "rxjs";
 @Component({
   selector: "app-nav-bar",
   templateUrl: "./nav-bar.component.html",
@@ -22,11 +23,11 @@ import {
     fadeOutOnLeaveAnimation({ duration: 200 }),
   ],
 })
-export class NavBarComponent implements OnInit {
+export class NavBarComponent implements OnInit, OnDestroy {
   public loggedIn: boolean;
   public cards: Card[];
   public notifications: Notification[];
-
+  subscriptions$: Subscription[] = [];
   public loading: boolean = false;
   public constructor(
     private router: Router,
@@ -40,11 +41,15 @@ export class NavBarComponent implements OnInit {
 
   ngOnInit(): void {
     this.setPageTitle();
-    this.userService.authentication().subscribe((val) => (this.loggedIn = val));
-    this.statesService.getLoadingState().subscribe((val) => {
+    let sub = this.userService
+      .authentication()
+      .subscribe((val) => (this.loggedIn = val));
+    this.subscriptions$.push(sub);
+    sub = this.statesService.getLoadingState().subscribe((val) => {
       this.loading = val;
     });
-    this.router.events.subscribe((e) => {
+    this.subscriptions$.push(sub);
+    sub = this.router.events.subscribe((e) => {
       //clear messages on route change
 
       if (e instanceof NavigationEnd) {
@@ -55,14 +60,22 @@ export class NavBarComponent implements OnInit {
         }
       }
     });
-    this.notification
+    this.subscriptions$.push(sub);
+    sub = this.notification
       .getNotifications()
       .subscribe((notifs) => (this.notifications = notifs));
+    this.subscriptions$.push(sub);
     if (this.router.url.match(/vorlesung/)) {
-      this.cardsService.getCards().subscribe((cards) => {
+      sub = this.cardsService.getCards().subscribe((cards) => {
         this.cards = cards;
       });
+      this.subscriptions$.push(sub);
     }
+  }
+  ngOnDestroy() {
+    this.subscriptions$.forEach((sub) => {
+      sub.unsubscribe();
+    });
   }
   closeAlert(i: number) {
     this.notification.removeNotification(i);
