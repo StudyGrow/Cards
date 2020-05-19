@@ -27,7 +27,7 @@ router.post(
     } else {
       req.services.user.createUser(req.body, (err, user) => {
         if (err) {
-          res.status(422).send(err.message);
+          res.status(501).send(err.message);
         } else {
           res.status(200).send({ _id: user._id, username: user.username, email: user.email });
         }
@@ -71,7 +71,7 @@ router.put(
     } else {
       req.services.user.updatePassword(req.user, req.body.password, (err) => {
         if (err) {
-          res.status(422).send(err.message);
+          res.status(501).send(err.message);
         } else {
           res.status(200).send();
         }
@@ -101,7 +101,7 @@ router.put(
       req.services.user.updateAccount(req.user, req.body, (err) => {
         if (err) {
           console.log(err);
-          res.status(422).send(err.message);
+          res.status(501).send(err.message);
         } else {
           res.status(200).send();
         }

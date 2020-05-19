@@ -148,6 +148,7 @@ export class UserService implements CanActivate {
             this.accountInfo$.next(res.body);
           },
           (error) => {
+            this.router.navigateByUrl("/login");
             this.statesService.setLoadingState(false);
             this.notifications.handleErrors(error);
           }
