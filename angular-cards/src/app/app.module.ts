@@ -13,7 +13,6 @@ import {
   CollapseModule,
   TooltipModule,
 } from "angular-bootstrap-md";
-import { KatexModule } from "ng-katex";
 
 //Components
 import { AppComponent } from "./app.component";
@@ -58,6 +57,9 @@ import de from "@angular/common/locales/de";
 
 // the second parameter 'fr-FR' is optional
 registerLocaleData(de);
+
+//Pipes
+import { SafeHtmlPipe } from "./components/card/card.component";
 
 declare var Hammer: any;
 //Config to allow swipe gestures on carousel
@@ -111,6 +113,7 @@ export class MyHammerConfig extends HammerGestureConfig {
     ChangeProfileComponent,
     CardsOverviewComponent,
     NotificationsComponent,
+    SafeHtmlPipe,
   ],
   imports: [
     BrowserModule,
@@ -127,7 +130,6 @@ export class MyHammerConfig extends HammerGestureConfig {
     CollapseModule,
     TooltipModule,
     StoreModule.forRoot({}, {}),
-    KatexModule,
   ],
   providers: [
     StatesService,

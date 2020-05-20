@@ -38,8 +38,12 @@ export class AddCardFormComponent implements OnInit, OnDestroy {
   }
   setStyle() {}
   onSubmit(f: NgForm) {
-    this.newCard = new Card(f.value.thema, f.value.content, this.lecture.abrv);
-
+    this.newCard = new Card(
+      f.value.thema,
+      f.value.content,
+      this.lecture.abrv,
+      0
+    );
     let sub = this.cardsService.addCard(this.newCard).subscribe((res) => {
       f.reset();
       sub.unsubscribe();
