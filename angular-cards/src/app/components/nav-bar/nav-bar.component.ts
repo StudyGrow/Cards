@@ -50,9 +50,9 @@ export class NavBarComponent implements OnInit, OnDestroy {
     });
     this.subscriptions$.push(sub);
     this.router.events.subscribe((e) => {
-      //clear messages on route change
-
       if (e instanceof NavigationEnd) {
+        this.userService.clearAccountInfo();
+        //clear messages on route change
         if (this.router.url == "/") {
           this.notification.clearNotifications("alert"); //prevent successfull login message from being removed on home
         } else {

@@ -80,6 +80,10 @@ router.put(
   }
 );
 
+router.post("/pic", (req, res) => {
+  console.log("Req.body: ", req.body);
+});
+
 router.put(
   "/updateAccount",
   [
