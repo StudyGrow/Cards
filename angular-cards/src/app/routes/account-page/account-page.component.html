@@ -1,35 +1,31 @@
-<app-nav-bar></app-nav-bar>
-<div class="container">
-  <div class="row">
-    <div class="col-md-4 col-xs-12">
-      <div class="list-group">
-        <button
-          [class]="setClass('overview')"
-          (click)="changePage($event, 'overview')"
-        >
-          Übersicht
-        </button>
-        <button
-          [class]="setClass('management')"
-          (click)="changePage($event, 'management')"
-        >
-          Profildaten ändern
-        </button>
-        <button
-          *ngIf="cardCount > 0"
-          [class]="setClass('cards')"
-          (click)="changePage($event, 'cards')"
-        >
-          Karteikarten
-        </button>
-      </div>
-    </div>
-
-    <div class="col-md-8 col-xs-12" id="sub" [ngSwitch]="page">
-      <app-overview *ngSwitchCase="'overview'"></app-overview>
-      <app-change-profile *ngSwitchCase="'management'"></app-change-profile>
-      <app-cards-overview *ngSwitchCase="'cards'"></app-cards-overview>
+<div class="row">
+  <div class="col-md-4 col-xs-12">
+    <div class="list-group">
+      <button
+        [class]="setClass('overview')"
+        (click)="changePage($event, 'overview')"
+      >
+        Übersicht
+      </button>
+      <button
+        [class]="setClass('management')"
+        (click)="changePage($event, 'management')"
+      >
+        Profildaten ändern
+      </button>
+      <button
+        *ngIf="cardCount > 0"
+        [class]="setClass('cards')"
+        (click)="changePage($event, 'cards')"
+      >
+        Karteikarten
+      </button>
     </div>
   </div>
+
+  <div class="col-md-8 col-xs-12" id="sub" [ngSwitch]="page">
+    <app-overview *ngSwitchCase="'overview'"></app-overview>
+    <app-change-profile *ngSwitchCase="'management'"></app-change-profile>
+    <app-cards-overview *ngSwitchCase="'cards'"></app-cards-overview>
+  </div>
 </div>
-<app-footer></app-footer>
