@@ -40,6 +40,11 @@ export class CardComponent implements OnInit, OnDestroy {
       //hides te card content when carousel slides
       this.content.hide();
     });
+    if (this.card.latex != 0) {
+      this.parse(this.card.content);
+    } else {
+      this.parsed.push(this.card.content);
+    }
     this.subscriptions$.push(sub);
   }
 
@@ -47,11 +52,6 @@ export class CardComponent implements OnInit, OnDestroy {
     this.subscriptions$.forEach((sub) => {
       sub.unsubscribe();
     });
-    if (this.card.latex != 0) {
-      this.parse(this.card.content);
-    } else {
-      this.parsed.push(this.card.content);
-    }
   }
 
   parse(cardContent: any) {
