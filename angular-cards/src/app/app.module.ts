@@ -5,14 +5,28 @@ import { HttpClientModule } from "@angular/common/http";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { AppRoutingModule } from "./app-routing.module";
 import { FormsModule } from "@angular/forms";
-import { MatProgressBarModule } from "@angular/material/progress-bar";
-import { MatDialogModule } from "@angular/material/dialog";
+
 import {
   CarouselModule,
   WavesModule,
   CollapseModule,
   TooltipModule,
 } from "angular-bootstrap-md";
+
+//Services
+import { StatesService } from "./services/states.service";
+
+//Material Modules
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { UpdateCardFormComponent } from "./components/update-card-form/update-card-form.component";
+import { MatProgressBarModule } from "@angular/material/progress-bar";
+import { MatDialogModule } from "@angular/material/dialog";
+//Gestures
+import {
+  HammerModule,
+  HammerGestureConfig,
+  HAMMER_GESTURE_CONFIG,
+} from "@angular/platform-browser";
 
 //Components
 import { AppComponent } from "./app.component";
@@ -25,19 +39,6 @@ import { AddLectureFormComponent } from "./components/add-lecture-form/add-lectu
 import { LecturesComponent } from "./components/lectures/lectures.component";
 import { HomePageComponent } from "./routes/home-page/home-page.component";
 import { CardsPageComponent } from "./routes/cards-page/cards-page.component";
-//Services
-import { StatesService } from "./services/states.service";
-import { HttpService } from "./services/http.service";
-
-//Material Modules
-import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { UpdateCardFormComponent } from "./components/update-card-form/update-card-form.component";
-//Gestures
-import {
-  HammerModule,
-  HammerGestureConfig,
-  HAMMER_GESTURE_CONFIG,
-} from "@angular/platform-browser";
 import { LoginPageComponent } from "./routes/login-page/login-page.component";
 import { LoginFormComponent } from "./components/login-form/login-form.component";
 import { SignupPageComponent } from "./routes/signup-page/signup-page.component";
@@ -54,8 +55,6 @@ import { NotificationsComponent } from "./components/notifications/notifications
 //Localization
 import { registerLocaleData } from "@angular/common";
 import de from "@angular/common/locales/de";
-
-// the second parameter 'fr-FR' is optional
 registerLocaleData(de);
 
 //Pipes
@@ -133,7 +132,6 @@ export class MyHammerConfig extends HammerGestureConfig {
   ],
   providers: [
     StatesService,
-    HttpService,
     { provide: LOCALE_ID, useValue: "de" },
 
     {

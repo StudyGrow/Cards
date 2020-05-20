@@ -4,8 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon start.js",
-    "stop": "nodemon stop.js"
+    "watch": "nodemon start.js"
   },
   "repository": {
     "type": "git",
