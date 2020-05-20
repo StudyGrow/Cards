@@ -1,0 +1,11 @@
+.container {
+  padding: 15px;
+  box-shadow: 0 0px 10px rgba(46, 46, 46, 0.438);
+  border-radius: 5px;
+  max-width: 700px;
+}
+.alert {
+  max-width: 700px;
+  margin: auto;
+  margin-bottom: 10px;
+}

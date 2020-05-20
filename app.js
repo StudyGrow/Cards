@@ -15,7 +15,7 @@ app.use(
     secret: "wibgewe13f13", //random string
     resave: false,
     saveUninitialized: false,
-    cookie: { secure: false },
+    cookie: { secure: false }, //secure needs to be set to true here
   })
 );
 
@@ -36,16 +36,14 @@ app.use(passport.session());
 //    }
 //   })
 
-//Logs each request for debuggin purposes
-app.get("*", (req, res, next) => {
-  console.log(req.url);
-  if (req.user) {
-    console.log("user:", req.user.username);
-  }
-  next();
-});
-
-//This route needs access to the passport object and can therefore not be moved to a different file
+//Logs each request
+// app.get("*", (req, res, next) => {
+//   console.log(req.url);
+//   if (req.user) {
+//     console.log("user:", req.user.username);
+//   }
+//   next();
+// });
 app.post("/api/login", (req, res, next) => {
   req.services.user.login(passport, req, res, next);
 });

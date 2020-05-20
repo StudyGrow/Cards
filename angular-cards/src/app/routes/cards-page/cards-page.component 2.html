@@ -1,0 +1,20 @@
+<app-nav-bar [cards]="cards"></app-nav-bar>
+<div id="progress">
+  <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
+</div>
+<br />
+<div class="container">
+  <app-carousel
+    (setLoading)="setLoading($event)"
+    [lecture]="lecture"
+  ></app-carousel>
+  <br />
+  <app-add-card-form
+    *ngIf="formMode == 'add'"
+    [lecture]="lecture"
+  ></app-add-card-form>
+  <app-update-card-form
+    *ngIf="formMode == 'edit'"
+    [lecture]="lecture"
+  ></app-update-card-form>
+</div>
