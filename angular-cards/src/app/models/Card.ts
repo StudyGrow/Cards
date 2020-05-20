@@ -1,8 +1,10 @@
 export class Card {
   _id?: string;
   thema: string;
+  author?: string;
   content: string;
   abrv: string;
+  date?: Date;
   constructor(thema, content, abrv) {
     this.thema = thema;
     this.content = content;

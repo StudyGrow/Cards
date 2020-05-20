@@ -1,5 +1,6 @@
+//This route handles all the lecture specific requests
 const express = require("express");
-const { check, query, validationResult } = require("express-validator");
+const { check, query, validationResult } = require("express-validator"); //to validate the request
 const router = express.Router();
 
 //Get all lectures
@@ -7,37 +8,15 @@ router.get("/", (req, res) => {
   req.services.lectures.getLectures((err, lectures) => {
     if (err) {
       console.log(err);
-      res.status(422).send(err);
+      res.status(501).send(err);
     } else {
-      res.status(200).send(
-        lectures.sort((vl1, vl2) => {
-          if (vl1.name > vl2.name) {
-            return 1;
-          } else {
-            return -1;
-          }
-        })
-      );
+      res.status(200).send(lectures);
     }
   });
 });
 
-//This route could be used to find any lecture with a query that is provided by the query q
-// router.get("/lecture", (req, res) => {
-//   req.services.lectures.getLectureByQuery(req.query.q, (err, lecture) => {
-//     if (err) {
-//       console.log(error);
-//       res.status(422).send(error.message);
-//     } else if (lecture) {
-//       res.status(200).send(lecture);
-//     } else {
-//       res.status(422).send("No lecture found");
-//     }
-//   });
-// });
-
 //Get one specific lecture
-//query should include the abreviation of the lecture
+//query includes abrv, the abreviation of the lecture
 router.get(
   "/find",
   [
@@ -60,10 +39,9 @@ router.get(
       },
       (err, lecture) => {
         if (err) {
-          console.log(error);
-          res.status(422).send(error.message);
+          res.status(501).send(error.message);
         } else if (lecture) {
-          res.status(200).send(lecture);
+          res.send(lecture);
         } else {
           res.status(422).send("No lecture found");
         }
@@ -93,7 +71,7 @@ router.post(
     }
     req.services.lectures.addLecture(req.body.lecture, (err) => {
       if (err) {
-        res.status(422).send(err.message);
+        res.status(501).send(err.message);
       } else {
         res.status(200).send();
       }

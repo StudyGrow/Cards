@@ -1,6 +1,12 @@
 .container {
   max-width: 900px;
   padding: 0;
+  margin-bottom: 50px;
+}
+.alert {
+  width: 90%;
+  margin: auto;
+  margin-bottom: 5px;
 }
 .row {
   width: 90%;

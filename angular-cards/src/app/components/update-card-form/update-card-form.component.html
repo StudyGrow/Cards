@@ -2,7 +2,7 @@
   <form #f="ngForm" (ngSubmit)="onSubmit(f)" novalidate>
     <h4>Karteikarte bearbeiten</h4>
     <div class="form-group">
-      <label for="thema">Überschrift</label>
+      <label for="thema">Frage</label>
       <input
         class="form-control"
         id="thema"
@@ -13,6 +13,8 @@
         required
         #thema="ngModel"
         [(ngModel)]="cardCopy.thema"
+        (focus)="inField()"
+        (blur)="resetNav()"
       />
       <small
         class="form-text float-right"
@@ -21,7 +23,7 @@
       </small>
     </div>
     <div class="form-group">
-      <label for="content">Informationen</label>
+      <label for="content">Antwort</label>
       <textarea
         class="form-control"
         id="content"
@@ -30,6 +32,8 @@
         required
         #content="ngModel"
         [(ngModel)]="cardCopy.content"
+        (focus)="inField()"
+        (blur)="resetNav()"
       ></textarea>
       <small
         class="form-text float-right"

@@ -1,36 +1,37 @@
-import { Component, OnInit, Input } from "@angular/core";
+import { Component, OnInit, Input, OnDestroy } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { CardsService } from "../../services/cards.service";
 import { StatesService } from "../../services/states.service";
-import { HttpService } from "../../services/http.service";
+
 import { Card } from "../../models/Card";
 import { SearchSuggestion } from "../../models/SearchSuggestion";
-import { Vorlesung } from "src/app/models/Vorlesung";
+import { Subscription } from "rxjs";
 
 @Component({
   selector: "app-search-bar",
   templateUrl: "./search-bar.component.html",
   styleUrls: ["./search-bar.component.css"],
 })
-export class SearchBarComponent implements OnInit {
+export class SearchBarComponent implements OnInit, OnDestroy {
   constructor(
     private cardsService: CardsService,
-    private stateService: StatesService,
-    private http: HttpService
+    private stateService: StatesService
   ) {}
+  subscriptions$: Subscription[] = [];
   cards: Card[];
   suggestions: SearchSuggestion[];
   uInput: string;
   clearSuggestions: boolean;
 
   ngOnInit(): void {
-    this.stateService.getHideSuggestions().subscribe((value) => {
+    let sub = this.stateService.getHideSuggestions().subscribe((value) => {
       this.clearSuggestions = value;
       if (value) {
         this.suggestions = [];
       }
     });
-    this.cardsService.getCards().subscribe((cards) => {
+    this.subscriptions$.push(sub);
+    sub = this.cardsService.getCards().subscribe((cards) => {
       this.cards = cards;
       cards.forEach((card) => {
         if (card.thema == null) {
@@ -41,8 +42,19 @@ export class SearchBarComponent implements OnInit {
         }
       });
     });
+    this.subscriptions$.push(sub);
   }
-
+  ngOnDestroy() {
+    this.subscriptions$.forEach((sub) => {
+      sub.unsubscribe();
+    });
+  }
+  inField() {
+    this.stateService.setTyping(true);
+  }
+  resetNav() {
+    this.stateService.setTyping(false);
+  }
   findMatches(e: Event) {
     this.stateService.setHideSuggestions(false); //show suggestions
     if (this.uInput && this.uInput.length > 2) {
@@ -58,7 +70,7 @@ export class SearchBarComponent implements OnInit {
   }
   navigateTo(e: Event, index: number) {
     e.preventDefault();
-
+    this.uInput = "";
     this.cardsService.setNewCardIndex(index);
   }
 }

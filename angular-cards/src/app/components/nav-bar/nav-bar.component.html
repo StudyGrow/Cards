@@ -24,17 +24,17 @@
             >
           </li>
 
-          <li *ngIf="!user" class="{{ isActive('/login') }} nav-item">
+          <li *ngIf="!loggedIn" class="{{ isActive('/login') }} nav-item">
             <a class="nav-link" routerLink="/login"
               ><i class="fas fa-user"></i> Login</a
             >
           </li>
-          <li *ngIf="!user" class="{{ isActive('/signup') }} nav-item">
+          <li *ngIf="!loggedIn" class="{{ isActive('/signup') }} nav-item">
             <a class="nav-link" routerLink="/signup"
               ><i class="fas fa-plus"></i> Registrieren</a
             >
           </li>
-          <li *ngIf="user" class="{{ isActive('/profile') }} nav-item">
+          <li *ngIf="loggedIn" class="{{ isActive('/profile') }} nav-item">
             <div class="dropdown">
               <a
                 class="nav-link"
@@ -49,9 +49,8 @@
               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <a
                   class="dropdown-item disabled"
-                  href="#"
+                  routerLink="/account"
                   placement="bottom"
-                  ngbTooltip="im Aufbau"
                   >Account management</a
                 >
                 <a class="dropdown-item" (click)="logout()">
@@ -71,4 +70,23 @@
 </nav>
 <div id="progress">
   <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
+</div>
+
+<div
+  #alert
+  *ngFor="let notif of notifications; index as i"
+  [@pulseOnEnter]
+  [@fadeOutOnLeave]
+  [class]="setAlertClass(notif)"
+  role="alert"
+>
+  <button
+    type="button"
+    class="close"
+    aria-label="Close"
+    (click)="closeAlert(i)"
+  >
+    <span aria-hidden="true">&times;</span>
+  </button>
+  {{ notif.message }}
 </div>

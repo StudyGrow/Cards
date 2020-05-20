@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { NgForm } from "@angular/forms";
 import { HttpService } from "../../services/http.service";
+import { UserService } from "../../services/user.service";
 import { Router } from "@angular/router";
 @Component({
   selector: "app-login-form",
@@ -8,25 +9,12 @@ import { Router } from "@angular/router";
   styleUrls: ["./login-form.component.css"],
 })
 export class LoginFormComponent implements OnInit {
-  constructor(private http: HttpService, private router: Router) {}
+  constructor(private user: UserService, private router: Router) {}
   public errors;
 
-  ngOnInit(): void {
-  
-  }
+  ngOnInit(): void {}
   submit(form: NgForm) {
-    this.http.login(form.value).subscribe(
-      (response) => {
-        if (response.status == 200) {
-          this.router.navigate(["/"]);
-        }
-      },
-      (error) => {
-        if ((error.headers.status = 422)) {
-          this.errors = error.error.errors;
-        }
-      }
-    );
+    this.user.login(form.value);
   }
 
   isDisabled(username, password) {

@@ -2,30 +2,19 @@ import { Component, OnInit } from "@angular/core";
 import { NgForm } from "@angular/forms";
 import { HttpService } from "../../services/http.service";
 import { Router } from "@angular/router";
+import { UserService } from "src/app/services/user.service";
 @Component({
   selector: "app-signup-form",
   templateUrl: "./signup-form.component.html",
   styleUrls: ["./signup-form.component.css"],
 })
 export class SignupFormComponent implements OnInit {
-  constructor(private http: HttpService, private router: Router) {}
+  constructor(private userService: UserService, private router: Router) {}
   errors;
 
   ngOnInit(): void {}
   submit(form: NgForm) {
-    this.http.createAccount(form.value).subscribe(
-      (response) => {
-        if (response) {
-              this.router.navigate(["/"]);
-        }
-      },
-      (error) => {
-        if ((error.headers.status = 422)) {
-          console.log(error);
-          this.errors = error.error.errors;
-        }
-      }
-    );
+    this.userService.createAccount(form.value);
   }
   setStyle(password, password2) {
     if (

@@ -15,12 +15,6 @@
       "internalConsoleOptions": "neverOpen",
       "skipFiles": ["<node_internals>/**"]
     },
-    {
-      "type": "node",
-      "request": "attach",
-      "name": "Attach",
-      "port": 80
-    },
 
     {
       "type": "chrome",

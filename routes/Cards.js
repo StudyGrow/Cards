@@ -1,7 +1,9 @@
+//handles all card specific routes
 const express = require("express");
-const { check, query, validationResult } = require("express-validator");
+const { check, query, validationResult } = require("express-validator"); //uses to validate requests
 const router = express.Router();
 
+//route to get the cards from a specific lecture
 router.get(
   "/",
   [
@@ -12,7 +14,7 @@ router.get(
   (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      res.status(422).json({ errors: errors.array() });
+      res.status(422).json({ errors: errors.array() }); //send errors to the client
       return;
     }
 
@@ -22,8 +24,7 @@ router.get(
       },
       (err, cards) => {
         if (err) {
-          console.log(err);
-          res.status(422).send(err);
+          res.status(501).send(err.message);
         } else {
           res.status(200).send(cards);
         }
@@ -31,10 +32,8 @@ router.get(
     );
   }
 );
+
 //Add card to the database
-//We manually fetch the user from our dataBase here.
-//This is a temporary fix, the user should be bound tp the req object
-// when making a post request here
 router.post(
   "/new",
   [
@@ -65,20 +64,26 @@ router.post(
 
     req.services.cards.addCard(req.body.card, req.user, (err, id) => {
       if (err) {
-        res.status(422).send(err.message);
+        res.status(501).send(err.message);
       } else {
         res.json({
-          id: id,
-        }); //sende id an client zurück
+          id: id, //send id of the card to the client
+        });
       }
     });
   }
 );
+
 //Update Card in the database
-//This one will later need to check if the user is actually the author of the card
 router.put(
   "/update",
   [
+    check("card._id")
+      .isLength({
+        min: 1,
+        max: 200,
+      })
+      .withMessage("_id der Karte muss angegeben werden"),
     check("card.thema")
       .isLength({
         min: 3,
@@ -101,7 +106,7 @@ router.put(
     } else {
       req.services.cards.updateCard(req.body.card, req.user, (err) => {
         if (err) {
-          res.status(422).send(err.message);
+          res.status(501).send(err.message);
         } else {
           res.status(200).send();
         }

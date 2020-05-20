@@ -1,22 +1,31 @@
-import { Component, OnInit, Input } from "@angular/core";
-
+import { Component, OnInit, Input, OnDestroy } from "@angular/core";
 import { Card } from "../../models/Card";
-import { KatexOptions } from 'ng-katex';
-
+import { KatexOptions } from "ng-katex";
+import { ViewChild } from "@angular/core";
+import { CardsService } from "../../services/cards.service";
+import { Subscription } from "rxjs";
 @Component({
   selector: "app-card",
   templateUrl: "./card.component.html",
-  styleUrls: ["./card.component.css"]
+  styleUrls: ["./card.component.css"],
 })
-export class CardComponent implements OnInit {
+export class CardComponent implements OnInit, OnDestroy {
   @Input() card: Card;
-  paragraph: string = `
-  You can write text, that contains expressions like this: $x ^ 2 + 5$ inside them. As you probably know.
-  You also can write expressions in display mode as follows: $$\\sum_{i=1}^n(x_i^2 - \\overline{x}^2)$$.
-  In first case you will need to use \\$expression\\$ and in the second one \\$\\$expression\\$\\$.
-  To scape the \\$ symbol it's mandatory to write as follows: \\\\$
-`;
-  constructor() {}
+  @ViewChild("test", { static: true }) content;
+  subscriptions$: Subscription[] = [];
+  constructor(private cs: CardsService) {}
   public isCollapsed = true;
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    let sub = this.cs.getActiveCardIndex().subscribe((change) => {
+      //hides te card content when carousel slides
+      this.content.hide();
+    });
+    this.subscriptions$.push(sub);
+  }
+
+  ngOnDestroy() {
+    this.subscriptions$.forEach((sub) => {
+      sub.unsubscribe();
+    });
+  }
 }

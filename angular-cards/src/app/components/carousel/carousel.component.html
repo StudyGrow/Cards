@@ -15,7 +15,7 @@
     id="editCard"
     type="button"
     placement="top"
-    [disabled]="formMode == 'edit' || !cards || cards.length == 0"
+    [disabled]="isDisabled()"
     (click)="enableEdit()"
     ngbTooltip="Bearbeiten"
   >
@@ -36,7 +36,7 @@
   </button>
 </div>
 <div *ngIf="cards && cards.length > 0" class="row">
-  <a (click)="goToPrev()">
+  <a *ngIf="cards.length > 0" (click)="goToPrev()">
     <span class="fas fa-chevron-left"></span>
   </a>
   <div id="carousel" (swipeleft)="goToPrev()" (swiperight)="goToNext()">
@@ -55,7 +55,7 @@
       </ng-container>
     </mdb-carousel>
   </div>
-  <a (click)="goToNext()">
+  <a *ngIf="cards.length > 0" (click)="goToNext()">
     <span class="fas fa-chevron-right"></span>
   </a>
 </div>
