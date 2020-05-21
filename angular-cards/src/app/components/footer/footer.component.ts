@@ -24,7 +24,7 @@ export class FooterComponent implements OnInit {
     let scrollToTop = window.setInterval(() => {
       let pos = window.pageYOffset;
       if (pos > 0) {
-        window.scrollTo(0, pos - 20); // how far to scroll on each step
+        window.scrollTo(0, pos - window.innerHeight * 0.05); // how far to scroll on each step
       } else {
         window.clearInterval(scrollToTop);
       }
