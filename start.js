@@ -45,9 +45,9 @@ app.use(helmet());
 const httpServer = http.createServer(app);
 const httpsServer = https.createServer(credentials, app);
 
-httpServer.listen(80, () => {
-  console.log("HTTP Server running on port 80");
-});
+// httpServer.listen(80, () => {
+//   console.log("HTTP Server running on port 80");
+// });
 app.use(helmet());
 
 httpsServer.listen(443, () => {
