@@ -27,22 +27,37 @@ export class UserService implements CanActivate {
     private notifications: NotificationsService //to show notifications
   ) {}
 
-  canActivate(): boolean {
-    if (this.auth$.getValue()) {
-      return true;
-    } else {
-      let loggedIn = JSON.parse(localStorage.getItem("loggedIn"));
-      if (loggedIn) {
-        return true;
-      } else {
-        this.notifications.addNotification(
-          new InfoMessage("Du musst dich einloggen, um diese Seite zu besuchen")
-        );
-        this.setUser(null);
-        this.router.navigate(["login"]);
-        return false;
-      }
-    }
+  canActivate(): Observable<boolean> {
+    this.statesService.setLoadingState(true);
+    return this.http
+      .get<boolean>(this.config.urlBase + "/user/auth", {
+        observe: "response",
+      })
+      .pipe(
+        tap(
+          (res) => {
+            this.statesService.setLoadingState(false);
+            this.auth$.next(res.body);
+            if (res.body === false) {
+              this.notifications.addNotification(
+                new InfoMessage(
+                  "Du musst dich einloggen, um diese Seite zu besuchen"
+                )
+              );
+              this.setUser(null);
+              this.router.navigate(["login"]);
+            }
+          },
+          (err) => {
+            this.statesService.setLoadingState(false);
+            this.auth$.next(false);
+            this.notifications.handleErrors(err);
+            this.setUser(null);
+            this.router.navigateByUrl("/");
+          }
+        ),
+        map((res) => res.body)
+      );
   }
   //used to login the user
   login(form) {
@@ -155,7 +170,7 @@ export class UserService implements CanActivate {
     }
   }
   clearAccountInfo() {
-    if (this.accountInfo$) {
+    if (this.accountInfo$ && !this.router.url.match(/account/)) {
       this.accountInfo$.next(null);
     }
   }

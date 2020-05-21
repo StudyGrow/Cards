@@ -59,6 +59,7 @@ registerLocaleData(de);
 
 //Pipes
 import { SafeHtmlPipe } from "./components/card/card.component";
+import { ErrorPageComponent } from './routes/error-page/error-page.component';
 
 declare var Hammer: any;
 //Config to allow swipe gestures on carousel
@@ -113,6 +114,7 @@ export class MyHammerConfig extends HammerGestureConfig {
     CardsOverviewComponent,
     NotificationsComponent,
     SafeHtmlPipe,
+    ErrorPageComponent,
   ],
   imports: [
     BrowserModule,

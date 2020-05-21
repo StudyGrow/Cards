@@ -113,6 +113,13 @@ router.put(
     }
   }
 );
+router.get("/auth", (req, res) => {
+  if (req.user) {
+    res.status(200).send(true);
+  } else {
+    res.status(200).send(false);
+  }
+});
 //logout the user
 router.get("/logout", (req, res) => {
   req.logout();
