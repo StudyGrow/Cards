@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
-import { HttpService } from "../../services/http.service";
+
 import { NgForm } from "@angular/forms";
 import { User } from "src/app/models/User";
 import { UserInfo } from "src/app/models/userInfo";
@@ -14,7 +14,8 @@ export class ChangeProfileComponent implements OnInit, OnDestroy {
   public userInfo: UserInfo;
   subscriptions$: Subscription[] = [];
   public user = new User("", "");
-  constructor(private http: HttpService, private userService: UserService) {}
+  fileToUpload: File = null;
+  constructor(private userService: UserService) {}
 
   ngOnInit(): void {
     this.user.name = "";
@@ -40,6 +41,16 @@ export class ChangeProfileComponent implements OnInit, OnDestroy {
     let sub = this.userService.updatePassword(form.value).subscribe((res) => {
       form.reset();
       sub.unsubscribe();
+    });
+  }
+  handleFileInput(file: File) {
+    const formData: FormData = new FormData();
+    this.fileToUpload = file;
+    formData.append("fileKey", this.fileToUpload);
+    this.userService.uploadFile(formData).subscribe((success) => {
+      if (success) {
+        console.log("yay");
+      }
     });
   }
   setStyle(password, password2) {

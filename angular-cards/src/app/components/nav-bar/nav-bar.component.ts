@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { Card } from "../../models/Card";
-import { Router, NavigationEnd } from "@angular/router";
+import { Router, NavigationEnd, NavigationStart } from "@angular/router";
 import { Title } from "@angular/platform-browser";
 
 import { CardsService } from "src/app/services/cards.service";
@@ -40,6 +40,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    let cardsSub: Subscription;
     this.setPageTitle();
     let sub = this.userService
       .authentication()
@@ -50,9 +51,19 @@ export class NavBarComponent implements OnInit, OnDestroy {
     });
     this.subscriptions$.push(sub);
     this.router.events.subscribe((e) => {
-      //clear messages on route change
-
       if (e instanceof NavigationEnd) {
+        if (this.router.url.match(/vorlesung/)) {
+          cardsSub = this.cardsService.getCards().subscribe((cards) => {
+            this.cards = cards;
+          });
+        } else {
+          this.cards = null;
+          if (cardsSub) {
+            cardsSub.unsubscribe();
+          }
+        }
+        this.userService.clearAccountInfo();
+        //clear messages on route change
         if (this.router.url == "/") {
           this.notification.clearNotifications("alert"); //prevent successfull login message from being removed on home
         } else {
@@ -65,12 +76,6 @@ export class NavBarComponent implements OnInit, OnDestroy {
       .getNotifications()
       .subscribe((notifs) => (this.notifications = notifs));
     this.subscriptions$.push(sub);
-    if (this.router.url.match(/vorlesung/)) {
-      sub = this.cardsService.getCards().subscribe((cards) => {
-        this.cards = cards;
-      });
-      this.subscriptions$.push(sub);
-    }
   }
   ngOnDestroy() {
     this.subscriptions$.forEach((sub) => {

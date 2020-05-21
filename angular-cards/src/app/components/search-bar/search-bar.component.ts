@@ -72,5 +72,6 @@ export class SearchBarComponent implements OnInit, OnDestroy {
     e.preventDefault();
     this.uInput = "";
     this.cardsService.setNewCardIndex(index);
+    this.stateService.setHideSuggestions(true);
   }
 }

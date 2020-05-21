@@ -1,3 +1,29 @@
+<h2>Profilbild ändern</h2>
+<div class="row">
+  <div class="col-sm-4 col-xs-12">
+    <img src="assets/profile.svg" alt="Profile picture" />
+  </div>
+  <div class="col-sm-8 col-xs-12">
+    <div class="input-group">
+      <div class="custom-file">
+        <form (change)="handleFileInput($event.target.files)">
+          <input
+            type="file"
+            class="custom-file-input"
+            id="inputGroupFile01"
+            aria-describedby="inputGroupFileAddon01"
+          />
+        </form>
+        <label class="custom-file-label" for="inputGroupFile01"
+          >Choose file</label
+        >
+      </div>
+    </div>
+    <small class="form-text">Die maximale Größe ist 200KB </small>
+  </div>
+</div>
+
+<hr />
 <h2>Accountdaten ändern</h2>
 <form #form="ngForm" (ngSubmit)="changeAccount(form)" novalidate>
   <div class="form-group">

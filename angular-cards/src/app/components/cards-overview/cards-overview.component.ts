@@ -10,12 +10,14 @@ import { Subscription } from "rxjs";
 })
 export class CardsOverviewComponent implements OnInit, OnDestroy {
   subscriptions$: Subscription[] = [];
-  public cards: Card[];
+  public cards: Card[] = [];
   constructor(private userService: UserService) {}
 
   ngOnInit(): void {
     let sub = this.userService.getUserInfo().subscribe((info) => {
-      this.cards = info.cards;
+      if (info && info.cards) {
+        this.cards = info.cards;
+      }
     });
     this.subscriptions$.push(sub);
   }
