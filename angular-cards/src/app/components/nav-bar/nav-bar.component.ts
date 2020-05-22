@@ -105,6 +105,9 @@ export class NavBarComponent implements OnInit, OnDestroy {
         break;
       default:
         currentTitle = "Cards";
+        if (this.router.url.match(/account/)) {
+          currentTitle = "Account";
+        }
     }
     this.titleService.setTitle(currentTitle);
   }
