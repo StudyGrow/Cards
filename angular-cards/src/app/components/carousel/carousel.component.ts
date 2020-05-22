@@ -5,13 +5,14 @@ import {
   ViewChild,
   OnDestroy,
 } from "@angular/core";
-import { HttpService } from "../../services/http.service";
+
 import { StatesService } from "../../services/states.service";
 import { CardsService } from "../../services/cards.service";
 import { Card } from "../../models/Card";
 import { Vorlesung } from "src/app/models/Vorlesung";
 import { UserService } from "../../services/user.service";
 import { Subscription } from "rxjs";
+import { LecturesService } from "src/app/services/lectures.service";
 @Component({
   selector: "app-carousel",
   templateUrl: "./carousel.component.html",
@@ -36,7 +37,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
   private userId: string;
   subscriptions$: Subscription[] = [];
   constructor(
-    private httpService: HttpService,
+    private lectureService: LecturesService,
     private stateService: StatesService,
     private cardsService: CardsService,
     private userService: UserService
@@ -48,7 +49,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
       .getUserId()
       .subscribe((userId) => (this.userId = userId));
     this.subscriptions$.push(sub);
-    sub = this.httpService.getCurrentLecture().subscribe((lecture) => {
+    sub = this.lectureService.getCurrentLecture().subscribe((lecture) => {
       this.lecture = lecture;
       this.title = this.lecture.name;
     });

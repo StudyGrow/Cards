@@ -16,7 +16,7 @@ module.exports = function userService() {
 
   //Login the user
   userService.login = async (passport, req, res, next) => {
-    passport.authenticate("local", (error, user, info) => {
+    passport.authenticate("local", { session: req.body.remember === true }, (error, user, info) => {
       //authenticate the user using the local strategy for passport
       if (error) res.status(422).send(error.message);
       else
@@ -34,7 +34,7 @@ module.exports = function userService() {
         throw new Error("Bitte logge dich erst ein");
       }
       let info = new Object();
-      let cards = await Card.find({ author: user._id });
+      let cards = await Card.find({ authorId: user._id });
       info.cards = cards;
       callback(null, info);
     } catch (error) {

@@ -36,7 +36,7 @@ router.post(
   }
 );
 function auth(req, res, next) {
-  if (req.user) {
+  if (req.isAuthenticated()) {
     next();
   } else {
     res.status(400).send();
@@ -53,6 +53,10 @@ router.get("/info", auth, (req, res) => {
       res.status(200).send(info);
     }
   });
+});
+
+router.get("/id", auth, (req, res) => {
+  res.status(200).send(req.user._id);
 });
 
 router.put(
@@ -114,7 +118,7 @@ router.put(
   }
 );
 router.get("/auth", (req, res) => {
-  if (req.user) {
+  if (req.isAuthenticated()) {
     res.status(200).send(true);
   } else {
     res.status(200).send(false);
