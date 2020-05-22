@@ -11,7 +11,7 @@ import { HttpError } from "../models/Notification";
 @Injectable({
   providedIn: "root",
 })
-export class HttpService {
+export class LecturesService {
   private urlBase: string = "api/"; //url  base on which to adress the server with
 
   private lecture$: BehaviorSubject<Vorlesung> = new BehaviorSubject<Vorlesung>(

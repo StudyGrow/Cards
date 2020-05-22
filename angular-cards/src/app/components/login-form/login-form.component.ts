@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { NgForm } from "@angular/forms";
-import { HttpService } from "../../services/http.service";
+
 import { UserService } from "../../services/user.service";
 import { Router } from "@angular/router";
 @Component({
@@ -10,7 +10,8 @@ import { Router } from "@angular/router";
 })
 export class LoginFormComponent implements OnInit {
   constructor(private user: UserService, private router: Router) {}
-  public errors;
+
+  public check = true;
 
   ngOnInit(): void {}
   submit(form: NgForm) {

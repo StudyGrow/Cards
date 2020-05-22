@@ -6,7 +6,7 @@ import {
   ElementRef,
 } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
-import { HttpService } from "../../services/http.service";
+
 import { StatesService } from "../../services/states.service";
 import { Vorlesung } from "src/app/models/Vorlesung";
 import { CardsService } from "src/app/services/cards.service";
@@ -46,7 +46,7 @@ export class CardsPageComponent implements OnInit {
     private route: ActivatedRoute,
     private stateServie: StatesService,
     private cardsService: CardsService,
-    private http: HttpService,
+
     private title: Title
   ) {}
 

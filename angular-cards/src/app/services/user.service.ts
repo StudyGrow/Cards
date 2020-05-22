@@ -14,10 +14,9 @@ import { User } from "../models/User";
   providedIn: "root",
 })
 export class UserService implements CanActivate {
-  private auth$ = new BehaviorSubject<boolean>(false); //subject which is true if user is authenticated
   private userId$ = new BehaviorSubject<string>(null); //subject which stores the userid
   private accountInfo$: BehaviorSubject<UserInfo>; //stores account info of the user
-
+  private loggedIn: BehaviorSubject<boolean>;
   private config = new HttpConfig();
 
   constructor(
@@ -37,7 +36,7 @@ export class UserService implements CanActivate {
         tap(
           (res) => {
             this.statesService.setLoadingState(false);
-            this.auth$.next(res.body);
+            this.setLogin(res.body);
             if (res.body === false) {
               this.notifications.addNotification(
                 new InfoMessage(
@@ -50,7 +49,7 @@ export class UserService implements CanActivate {
           },
           (err) => {
             this.statesService.setLoadingState(false);
-            this.auth$.next(false);
+            this.setLogin(false);
             this.notifications.handleErrors(err);
             this.setUser(null);
             this.router.navigateByUrl("/");
@@ -70,7 +69,7 @@ export class UserService implements CanActivate {
       .subscribe(
         (res) => {
           this.statesService.setLoadingState(false);
-          this.setUser(res.body._id, form.remember);
+          this.setUser(res.body._id);
           this.notifications.removeLoginInfo();
           this.notifications.addNotification(
             new SuccessMessage(`Herzlich willkommen ${res.body.username}`)
@@ -106,9 +105,28 @@ export class UserService implements CanActivate {
         map((res) => res.body)
       );
   }
-
+  authentication(): Observable<boolean> {
+    if (!this.loggedIn) {
+      this.loggedIn = new BehaviorSubject<boolean>(false);
+      this.canActivate().subscribe((val) => {
+        this.loggedIn.next(val);
+      });
+    }
+    return this.loggedIn.asObservable();
+  }
   getUserId(): Observable<string> {
-    return this.userId$.asObservable();
+    if (this.userId$.getValue()) {
+      return this.userId$.asObservable();
+    } else {
+      return this.http
+        .get<string>(this.config.urlBase + "user/id", { observe: "response" })
+        .pipe(
+          tap((res) => {
+            this.setUser(res.body);
+          }),
+          map((res) => res.body)
+        );
+    }
   }
 
   logout() {
@@ -119,6 +137,7 @@ export class UserService implements CanActivate {
         (res) => {
           this.statesService.setLoadingState(false);
           this.setUser(null);
+          this.setLogin(false);
           this.notifications.addNotification(
             new SuccessMessage("Erfolgreich abgemeldet")
           );
@@ -131,16 +150,8 @@ export class UserService implements CanActivate {
       );
   }
 
-  authentication(): Observable<boolean> {
-    return this.auth$.asObservable();
-  }
-
   getUserInfo(): Observable<UserInfo> {
-    if (
-      this.auth$.getValue() &&
-      this.accountInfo$ &&
-      this.accountInfo$.getValue()
-    ) {
+    if (this.accountInfo$ && this.accountInfo$.getValue()) {
       return this.accountInfo$.asObservable();
     } else {
       this.statesService.setLoadingState(true);
@@ -251,17 +262,18 @@ export class UserService implements CanActivate {
     console.log("not yet implemented");
   }
 
-  private setUser(id: string, remember?: boolean) {
+  private setUser(id: string) {
+    this.userId$.next(id);
     if (id) {
-      this.userId$.next(id);
-      this.auth$.next(true);
-      if (remember) {
-        localStorage.setItem("loggedIn", new Boolean(true).toString()); //store the login state locally
-      }
+      this.setLogin(true);
+    }
+  }
+  private setLogin(val: boolean) {
+    console.log("its me");
+    if (this.loggedIn) {
+      this.loggedIn.next(val);
     } else {
-      this.userId$.next(null);
-      this.auth$.next(false);
-      localStorage.removeItem("loggedIn");
+      this.loggedIn = new BehaviorSubject<boolean>(val);
     }
   }
 }
