@@ -1,3 +1,21 @@
+<div
+  *ngIf="this.pageOffset > 50"
+  [@fadeInOnEnter]
+  [@fadeOutOnLeave]
+  class="btn-div"
+>
+  <button
+    mat-mini-fab
+    (click)="backToTop()"
+    color="primary"
+    aria-label="Example icon button with a delete icon"
+  >
+    <span class="material-icons">
+      arrow_upward
+    </span>
+  </button>
+</div>
+
 <footer class="footer">
   <ul class="list-group list-group-horizontal">
     <li class="list-group-item">
@@ -12,7 +30,7 @@
       >
     </li>
     <li class="list-group-item">
-      v.0.2
+      v.0.3
     </li>
   </ul>
 </footer>

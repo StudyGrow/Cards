@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { UserInfo } from "../models/userInfo";
-import { Observable, BehaviorSubject } from "rxjs";
+import { Observable, BehaviorSubject, of } from "rxjs";
 import { Router, CanActivate } from "@angular/router";
 import { tap, map } from "rxjs/operators";
 import { InfoMessage, HttpError, SuccessMessage } from "../models/Notification";
@@ -15,33 +15,49 @@ import { User } from "../models/User";
 })
 export class UserService implements CanActivate {
   private auth$ = new BehaviorSubject<boolean>(false); //subject which is true if user is authenticated
-  private userId$ = new BehaviorSubject<string>(null);
-  private accountInfo$: BehaviorSubject<UserInfo>; //stores account info of the user used
+  private userId$ = new BehaviorSubject<string>(null); //subject which stores the userid
+  private accountInfo$: BehaviorSubject<UserInfo>; //stores account info of the user
+
   private config = new HttpConfig();
+
   constructor(
     private http: HttpClient, //for sending http requests
-    private statesService: StatesService,
-    private router: Router,
-    private notifications: NotificationsService
+    private statesService: StatesService, //to set the loadingstate
+    private router: Router, //to redirect
+    private notifications: NotificationsService //to show notifications
   ) {}
 
-  canActivate(): boolean {
-    if (this.auth$.getValue()) {
-      return true;
-    } else {
-      let id = localStorage.getItem("userId");
-      if (id) {
-        this.setUser(id);
-        return true;
-      } else {
-        this.notifications.addNotification(
-          new InfoMessage("Du musst dich einloggen, um diese Seite zu besuchen")
-        );
-        this.setUser(null);
-        this.router.navigate(["login"]);
-        return false;
-      }
-    }
+  canActivate(): Observable<boolean> {
+    this.statesService.setLoadingState(true);
+    return this.http
+      .get<boolean>(this.config.urlBase + "/user/auth", {
+        observe: "response",
+      })
+      .pipe(
+        tap(
+          (res) => {
+            this.statesService.setLoadingState(false);
+            this.auth$.next(res.body);
+            if (res.body === false) {
+              this.notifications.addNotification(
+                new InfoMessage(
+                  "Du musst dich einloggen, um diese Seite zu besuchen"
+                )
+              );
+              this.setUser(null);
+              this.router.navigate(["login"]);
+            }
+          },
+          (err) => {
+            this.statesService.setLoadingState(false);
+            this.auth$.next(false);
+            this.notifications.handleErrors(err);
+            this.setUser(null);
+            this.router.navigateByUrl("/");
+          }
+        ),
+        map((res) => res.body)
+      );
   }
   //used to login the user
   login(form) {
@@ -116,26 +132,21 @@ export class UserService implements CanActivate {
   }
 
   authentication(): Observable<boolean> {
-    if (this.auth$) {
-      return this.auth$.asObservable();
-    } else {
-      let id = localStorage.getItem("userId");
-      if (id) {
-        this.auth$ = new BehaviorSubject<boolean>(true);
-        this.userId$.next(id);
-      } else {
-        this.auth$ = new BehaviorSubject<boolean>(false);
-      }
-      return this.auth$.asObservable();
-    }
+    return this.auth$.asObservable();
   }
 
   getUserInfo(): Observable<UserInfo> {
-    if (this.accountInfo$) {
+    if (
+      this.auth$.getValue() &&
+      this.accountInfo$ &&
+      this.accountInfo$.getValue()
+    ) {
       return this.accountInfo$.asObservable();
     } else {
       this.statesService.setLoadingState(true);
-      this.accountInfo$ = new BehaviorSubject<UserInfo>(null);
+      if (!this.accountInfo$) {
+        this.accountInfo$ = new BehaviorSubject<UserInfo>(null);
+      }
       this.http
         .get<UserInfo>(this.config.urlBase + "user/info", {
           observe: "response",
@@ -146,7 +157,7 @@ export class UserService implements CanActivate {
             for (const card of res.body.cards) {
               card.date = new Date(card.date);
             }
-
+            this.setUser(res.body.user._id);
             this.accountInfo$.next(res.body);
           },
           (error) => {
@@ -157,6 +168,34 @@ export class UserService implements CanActivate {
         );
       return this.accountInfo$.asObservable();
     }
+  }
+  clearAccountInfo() {
+    if (this.accountInfo$ && !this.router.url.match(/account/)) {
+      this.accountInfo$.next(null);
+    }
+  }
+  uploadFile(file: FormData): Observable<boolean> {
+    console.log(file);
+    this.statesService.setLoadingState(true);
+    return this.http
+      .post<boolean>(this.config.urlBase + "user/pic", file, {
+        observe: "response",
+      })
+      .pipe(
+        tap(
+          (res) => {
+            this.statesService.setLoadingState(false);
+            this.notifications.addNotification(
+              new SuccessMessage("Profilbild wurde erfolgreich geändert")
+            );
+          },
+          (error) => {
+            this.statesService.setLoadingState(false);
+            console.log(error);
+          }
+        ),
+        map((res) => res.body)
+      );
   }
   updateAccount(form) {
     this.statesService.setLoadingState(true);
@@ -211,17 +250,18 @@ export class UserService implements CanActivate {
   deleteAccount() {
     console.log("not yet implemented");
   }
+
   private setUser(id: string, remember?: boolean) {
     if (id) {
       this.userId$.next(id);
       this.auth$.next(true);
       if (remember) {
-        localStorage.setItem("userId", JSON.stringify(id)); //store the user locally to keep the session
+        localStorage.setItem("loggedIn", new Boolean(true).toString()); //store the login state locally
       }
     } else {
       this.userId$.next(null);
       this.auth$.next(false);
-      localStorage.removeItem("userId");
+      localStorage.removeItem("loggedIn");
     }
   }
 }
