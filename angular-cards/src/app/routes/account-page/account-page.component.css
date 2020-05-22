@@ -2,9 +2,10 @@
   margin-top: 15px;
   margin-bottom: 50px;
 }
+#navigation {
+  margin-bottom: 10px;
+}
 #sub {
-  margin-top: 10px;
-
   background: white;
   overflow-y: auto;
 }
