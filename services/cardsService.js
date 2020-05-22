@@ -21,7 +21,8 @@ module.exports = function cardsService() {
       card.vorlesung = form.abrv;
       card.latex = 0;
       if (user) {
-        card.author = user._id; //add user as author of card
+        card.authorId = user._id; //add user as author of card
+        card.authorName = user.username;
       }
       await card.save();
       callback(null, card._id);
@@ -34,11 +35,11 @@ module.exports = function cardsService() {
   cardsService.updateCard = async (card, user, callback) => {
     try {
       let tmp = await Card.findById(card._id); //find the card in the database
-      if (tmp && tmp.author && tmp.author != "" && !user) {
+      if (tmp && tmp.authorId && tmp.authorId != "" && !user) {
         //There is an author, but there is no user logged in
         throw new Error("Fehler: Du bist nicht der Author dieser Karte. Bitte logge dich ein.");
       }
-      if (tmp.author && tmp.author != "" && tmp.author != user._id) {
+      if (tmp.authorId && tmp.authorId != "" && tmp.authorId != user._id) {
         //The user is not the author of the card
         throw new Error("Fehler: Du bist nicht der Author dieser Karte.");
       }
