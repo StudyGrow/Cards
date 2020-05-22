@@ -23,6 +23,7 @@ const routes: Routes = [
     component: AccountPageComponent,
     canActivate: [AuthGuard],
     children: [
+      { path: "", redirectTo: "overview", pathMatch: "full" },
       { path: "overview", component: OverviewComponent },
       { path: "manage", component: ChangeProfileComponent },
       { path: "cards", component: CardsOverviewComponent },

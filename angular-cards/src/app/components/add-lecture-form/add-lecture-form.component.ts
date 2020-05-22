@@ -1,7 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from "@angular/core";
 import { NgForm } from "@angular/forms";
 import { Vorlesung } from "../../models/Vorlesung";
-import { HttpService } from "../../services/http.service";
+import { LecturesService } from "../../services/lectures.service";
 import { StatesService } from "../../services/states.service";
 import { Subscription } from "rxjs";
 @Component({
@@ -12,7 +12,7 @@ import { Subscription } from "rxjs";
 export class AddLectureFormComponent implements OnInit {
   subscriptions$: Subscription[] = [];
   constructor(
-    private http: HttpService,
+    private lecture: LecturesService,
     private statesService: StatesService
   ) {}
   @Output() emitVl: EventEmitter<Vorlesung> = new EventEmitter();
@@ -25,7 +25,7 @@ export class AddLectureFormComponent implements OnInit {
   onSubmit(f: NgForm) {
     let newLecture = new Vorlesung(f.value.name, f.value.abrv.toLowerCase());
     this.statesService.setLoadingState(true);
-    let sub = this.http.addLecture(newLecture).subscribe((response) => {
+    let sub = this.lecture.addLecture(newLecture).subscribe((response) => {
       this.statesService.setLoadingState(false);
       this.emitVl.emit(newLecture);
       sub.unsubscribe();

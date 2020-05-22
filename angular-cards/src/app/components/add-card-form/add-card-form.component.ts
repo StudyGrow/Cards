@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from "@angular/core";
 import { NgForm } from "@angular/forms";
 import { StatesService } from "../../services/states.service";
 import { CardsService } from "../../services/cards.service";
-import { HttpService } from "../../services/http.service";
+import { LecturesService } from "../../services/lectures.service";
 import { Card } from "../../models/Card";
 import { Vorlesung } from "src/app/models/Vorlesung";
 import { Observable, Subscription } from "rxjs";
@@ -22,11 +22,11 @@ export class AddCardFormComponent implements OnInit, OnDestroy {
   constructor(
     private cardsService: CardsService,
     private stateService: StatesService,
-    private http: HttpService
+    private lectureService: LecturesService
   ) {}
 
   ngOnInit(): void {
-    let sub = this.http
+    let sub = this.lectureService
       .getCurrentLecture()
       .subscribe((lecture) => (this.lecture = lecture));
     this.subscriptions$.push(sub);

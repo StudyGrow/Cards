@@ -7,9 +7,9 @@ import {
   OnDestroy,
 } from "@angular/core";
 import { Vorlesung } from "../../models/Vorlesung";
-import { HttpService } from "../../services/http.service";
-import { Card } from "../../models/Card";
+
 import { Subscription } from "rxjs";
+import { LecturesService } from "src/app/services/lectures.service";
 @Component({
   selector: "app-lectures",
   templateUrl: "./lectures.component.html",
@@ -20,10 +20,10 @@ export class LecturesComponent implements OnInit, OnDestroy {
 
   @Input() newVl: Vorlesung;
 
-  constructor(private httpService: HttpService) {}
+  constructor(private lecture: LecturesService) {}
   subscriptions$: Subscription[] = [];
   ngOnInit(): void {
-    let sub = this.httpService.getAllLectures().subscribe((lectures) => {
+    let sub = this.lecture.getAllLectures().subscribe((lectures) => {
       this.lectures = lectures;
     });
     this.subscriptions$.push(sub);

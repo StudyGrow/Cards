@@ -17,7 +17,8 @@ const schema = new mongoose.Schema({
   img: {
     type: Buffer,
   },
-  author: String,
+  authorId: String,
+  authorName: String,
   date: Date,
   latex: Number,
 });

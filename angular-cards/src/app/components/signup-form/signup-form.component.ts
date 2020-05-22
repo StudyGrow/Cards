@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { NgForm } from "@angular/forms";
-import { HttpService } from "../../services/http.service";
+
 import { Router } from "@angular/router";
 import { UserService } from "src/app/services/user.service";
 @Component({
