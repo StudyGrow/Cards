@@ -2,18 +2,51 @@ before_script:
   - apt-get update -qq
   - apt-get install -qq git
   # Setup SSH deploy keys
-  - 'which ssh-agent || ( apt-get install -qq openssh-client )'
+  - "which ssh-agent || ( apt-get install -qq openssh-client )"
   - eval $(ssh-agent -s)
   - ssh-add <(echo "$SSH_PRIVATE_KEY")
   - mkdir -p ~/.ssh
   - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
-    
-deploy_staging:
+
+cache:
+  paths: -node_modules/
+
+deploy_stage:
+  stage: deploy
   type: deploy
   environment:
     name: staging
     url: example.com
   script:
-    - ssh ubuntu@ec2-3-88-135-223.compute-1.amazonaws.com "cd deploy && git checkout master && git pull origin master && exit"
+    - ssh ubuntu@ec2-3-88-135-223.compute-1.amazonaws.com "
+      cd deploy &&
+      git checkout master &&
+      git pull origin master &&
+      rm ./package-lock.json &&
+      npm i && cd angular-cards &&
+      ng build &&
+      git push origin master &&
+      exit"
   only:
     - master
+
+deploy_production:
+  stage: deploy
+  environment:
+    name: staging
+    url: example.com
+  script:
+    - ssh ubuntu@ec2-3-88-135-223.compute-1.amazonaws.com "
+      cd deploy &&
+      git checkout master &&
+      git pull origin master &&
+      rm ./package-lock.json &&
+      npm i && cd angular-cards &&
+      ng build --prod &&
+      git push origin master &&
+      cd .. &&
+      npm stop &&
+      npm start &&
+      exit"
+  only:
+    - tags
