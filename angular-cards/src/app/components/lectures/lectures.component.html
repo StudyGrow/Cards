@@ -1,4 +1,4 @@
-<ul class="list list-group">
+<ul class="list list-group" *ngIf="lectures$ | async as lectures">
   <li class="list-group-item" *ngFor="let lecture of lectures">
     <a [routerLink]="setLink(lecture)">{{ lecture.name }}</a>
   </li>

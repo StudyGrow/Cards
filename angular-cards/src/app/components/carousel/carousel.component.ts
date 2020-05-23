@@ -11,7 +11,7 @@ import { CardsService } from "../../services/cards.service";
 import { Card } from "../../models/Card";
 import { Vorlesung } from "src/app/models/Vorlesung";
 import { UserService } from "../../services/user.service";
-import { Subscription } from "rxjs";
+import { Subscription, Observable } from "rxjs";
 import { LecturesService } from "src/app/services/lectures.service";
 @Component({
   selector: "app-carousel",
@@ -19,8 +19,6 @@ import { LecturesService } from "src/app/services/lectures.service";
   styleUrls: ["./carousel.component.css"],
 })
 export class CarouselComponent implements OnInit, OnDestroy {
-  lecture: Vorlesung;
-
   @ViewChild("mycarousel", { static: false }) public carousel: any;
   @HostListener("swipeleft", ["$event"]) public swipePrev(event: any) {
     this.carousel.previousSlide();
@@ -30,7 +28,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
   }
   cards: Card[]; //array of all the cards
   activeSlide: number;
-  title: string;
+  lecture$: Observable<Vorlesung>;
   addComponentHidden: boolean;
   formShow: boolean;
   formMode: string;
@@ -49,11 +47,8 @@ export class CarouselComponent implements OnInit, OnDestroy {
       .getUserId()
       .subscribe((userId) => (this.userId = userId));
     this.subscriptions$.push(sub);
-    sub = this.lectureService.getCurrentLecture().subscribe((lecture) => {
-      this.lecture = lecture;
-      this.title = this.lecture.name;
-    });
-    this.subscriptions$.push(sub);
+    this.lecture$ = this.lectureService.getCurrentLecture();
+
     sub = this.cardsService.getCards().subscribe((cards) => {
       this.cards = cards;
     }); //load the specific cards from the server by subscribing to the observable that the card-service provides

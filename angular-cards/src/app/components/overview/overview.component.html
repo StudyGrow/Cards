@@ -1,4 +1,4 @@
-<div class="card">
+<div class="card" *ngIf="user$ | async as user">
   <div class="card-body">
     <h2 class="card-title">
       <img src="assets/profile.svg" alt="Profile picture" /> {{ user.username }}

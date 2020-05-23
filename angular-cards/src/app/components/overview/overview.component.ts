@@ -2,7 +2,8 @@ import { Component, OnInit, OnDestroy } from "@angular/core";
 import { UserInfo } from "../../models/userInfo";
 import { User } from "src/app/models/User";
 import { UserService } from "src/app/services/user.service";
-import { Subscription } from "rxjs";
+import { Subscription, Observable } from "rxjs";
+import { map } from "rxjs/operators";
 @Component({
   selector: "app-overview",
   templateUrl: "./overview.component.html",
@@ -13,15 +14,13 @@ export class OverviewComponent implements OnInit, OnDestroy {
   public user = new User("", "");
   subscriptions$: Subscription[] = [];
   constructor(private userService: UserService) {}
-
+  public user$: Observable<User>;
   ngOnInit(): void {
-    let sub = this.userService.getUserInfo().subscribe((info) => {
-      this.userInfo = info;
-      if (info && info.user) {
-        this.user = info.user;
-      }
-    });
-    this.subscriptions$.push(sub);
+    this.user$ = this.userService.getUserInfo().pipe(
+      map((info) => {
+        if (info) return info.user;
+      })
+    );
   }
   ngOnDestroy() {
     this.subscriptions$.forEach((sub) => {

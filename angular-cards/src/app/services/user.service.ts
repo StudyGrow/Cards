@@ -108,9 +108,13 @@ export class UserService implements CanActivate {
   authentication(): Observable<boolean> {
     if (!this.loggedIn) {
       this.loggedIn = new BehaviorSubject<boolean>(false);
-      this.canActivate().subscribe((val) => {
-        this.loggedIn.next(val);
-      });
+      this.http
+        .get<boolean>(this.config.urlBase + "/user/auth", {
+          observe: "response",
+        })
+        .subscribe((res) => {
+          this.loggedIn.next(res.body);
+        });
     }
     return this.loggedIn.asObservable();
   }
@@ -187,26 +191,27 @@ export class UserService implements CanActivate {
   }
   uploadFile(file: FormData): Observable<boolean> {
     console.log(file);
-    this.statesService.setLoadingState(true);
-    return this.http
-      .post<boolean>(this.config.urlBase + "user/pic", file, {
-        observe: "response",
-      })
-      .pipe(
-        tap(
-          (res) => {
-            this.statesService.setLoadingState(false);
-            this.notifications.addNotification(
-              new SuccessMessage("Profilbild wurde erfolgreich geändert")
-            );
-          },
-          (error) => {
-            this.statesService.setLoadingState(false);
-            console.log(error);
-          }
-        ),
-        map((res) => res.body)
-      );
+    //this.statesService.setLoadingState(true);
+    // return this.http
+    //   .post<boolean>(this.config.urlBase + "user/pic", file, {
+    //     observe: "response",
+    //   })
+    //   .pipe(
+    //     tap(
+    //       (res) => {
+    //         this.statesService.setLoadingState(false);
+    //         this.notifications.addNotification(
+    //           new SuccessMessage("Profilbild wurde erfolgreich geändert")
+    //         );
+    //       },
+    //       (error) => {
+    //         this.statesService.setLoadingState(false);
+    //         console.log(error);
+    //       }
+    //     ),
+    //     map((res) => res.body)
+    //   );
+    return of(true);
   }
   updateAccount(form) {
     this.statesService.setLoadingState(true);
@@ -269,7 +274,6 @@ export class UserService implements CanActivate {
     }
   }
   private setLogin(val: boolean) {
-    console.log("its me");
     if (this.loggedIn) {
       this.loggedIn.next(val);
     } else {

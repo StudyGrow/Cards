@@ -1,4 +1,4 @@
-<div class="list-group">
+<div class="list-group" *ngIf="cards$ | async as cards">
   <a *ngFor="let card of cards" class="list-group-item list-group-item-action">
     <div class="d-flex w-100 justify-content-between">
       <h5 class="mb-1">{{ card.thema }}</h5>

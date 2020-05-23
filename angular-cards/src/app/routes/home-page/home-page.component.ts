@@ -8,17 +8,7 @@ import { StatesService } from "../../services/states.service";
   styleUrls: ["./home-page.component.css"],
 })
 export class HomePageComponent implements OnInit {
-  public loading: boolean = false;
-  public newVl: Vorlesung;
   constructor(private statesService: StatesService) {}
 
-  ngOnInit(): void {
-    this.statesService.getLoadingState().subscribe((val) => {
-      this.loading = val;
-    });
-  }
-
-  emitVl(lecture: Vorlesung) {
-    this.newVl = lecture;
-  }
+  ngOnInit(): void {}
 }

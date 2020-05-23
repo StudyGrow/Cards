@@ -8,7 +8,7 @@ import {
 } from "@angular/core";
 import { Vorlesung } from "../../models/Vorlesung";
 
-import { Subscription } from "rxjs";
+import { Subscription, Observable } from "rxjs";
 import { LecturesService } from "src/app/services/lectures.service";
 @Component({
   selector: "app-lectures",
@@ -16,29 +16,19 @@ import { LecturesService } from "src/app/services/lectures.service";
   styleUrls: ["./lectures.component.css"],
 })
 export class LecturesComponent implements OnInit, OnDestroy {
-  lectures: Vorlesung[];
-
-  @Input() newVl: Vorlesung;
+  lectures$: Observable<Vorlesung[]>;
 
   constructor(private lecture: LecturesService) {}
   subscriptions$: Subscription[] = [];
   ngOnInit(): void {
-    let sub = this.lecture.getAllLectures().subscribe((lectures) => {
-      this.lectures = lectures;
-    });
-    this.subscriptions$.push(sub);
+    this.lectures$ = this.lecture.getAllLectures();
   }
   ngOnDestroy() {
     this.subscriptions$.forEach((sub) => {
       sub.unsubscribe();
     });
   }
-  ngOnChanges() {
-    if (this.newVl) {
-      console.log("got new vl: ", this.newVl);
-      this.lectures.push(this.newVl);
-    }
-  }
+
   setLink(lecture: Vorlesung) {
     return "/vorlesung/" + lecture.abrv;
   }

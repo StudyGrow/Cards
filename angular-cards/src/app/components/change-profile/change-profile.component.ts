@@ -47,11 +47,7 @@ export class ChangeProfileComponent implements OnInit, OnDestroy {
     const formData: FormData = new FormData();
     this.fileToUpload = file;
     formData.append("fileKey", this.fileToUpload);
-    this.userService.uploadFile(formData).subscribe((success) => {
-      if (success) {
-        console.log("yay");
-      }
-    });
+    this.userService.uploadFile(formData).subscribe((success) => {});
   }
   setStyle(password, password2) {
     if (
