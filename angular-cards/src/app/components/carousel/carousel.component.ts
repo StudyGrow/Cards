@@ -129,10 +129,10 @@ export class CarouselComponent implements OnInit, OnDestroy {
     } else {
       let currCard = this.cards[this.activeSlide]; //get the card that is currently showing
 
-      if (!currCard.author || currCard.author.length == 0) {
+      if (!currCard.authorId || currCard.authorId.length == 0) {
         return false;
       }
-      if (!this.userId || currCard.author !== this.userId) {
+      if (!this.userId || currCard.authorId !== this.userId) {
         //there is an author an it is not the user
         return true;
       } else {

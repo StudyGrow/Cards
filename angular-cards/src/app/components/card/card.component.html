@@ -19,6 +19,10 @@
           <div  [innerHtml]="parsed[0] | safeHtml"></div>
       </pre>
     </div>
+    <p *ngIf="card.authorName" class="card-text">
+      <small class="text-muted float-right"
+        >Ersteller: {{ card.authorName }}</small
+      >
+    </p>
   </div>
 </div>
-
