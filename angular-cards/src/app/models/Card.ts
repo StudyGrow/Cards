@@ -1,11 +1,13 @@
 export class Card {
-  _id?: string;
   thema: string;
-  author?: string;
   content: string;
   abrv: string;
-  date?: Date;
   latex: number;
+
+  _id?: string;
+  authorId?: string;
+  authorName?: string;
+  date?: Date;
 
   constructor(thema, content, abrv, latex) {
     this.thema = thema;

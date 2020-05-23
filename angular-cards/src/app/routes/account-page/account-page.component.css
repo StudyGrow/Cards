@@ -1,6 +1,6 @@
-.container {
-  margin-top: 15px;
-  margin-bottom: 50px;
+#list {
+  position: sticky;
+  top: 5px;
 }
 #navigation {
   margin-bottom: 10px;

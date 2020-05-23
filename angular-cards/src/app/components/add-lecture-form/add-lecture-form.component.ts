@@ -15,7 +15,7 @@ export class AddLectureFormComponent implements OnInit {
     private lecture: LecturesService,
     private statesService: StatesService
   ) {}
-  @Output() emitVl: EventEmitter<Vorlesung> = new EventEmitter();
+
   ngOnInit(): void {}
   ngOnDestroy() {
     this.subscriptions$.forEach((sub) => {
@@ -24,14 +24,10 @@ export class AddLectureFormComponent implements OnInit {
   }
   onSubmit(f: NgForm) {
     let newLecture = new Vorlesung(f.value.name, f.value.abrv.toLowerCase());
-    this.statesService.setLoadingState(true);
     let sub = this.lecture.addLecture(newLecture).subscribe((response) => {
-      this.statesService.setLoadingState(false);
-      this.emitVl.emit(newLecture);
+      f.reset();
       sub.unsubscribe();
     });
-
-    f.reset();
   }
 
   setCharIndicatorStyle(field, max: number) {
