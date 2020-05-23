@@ -9,7 +9,8 @@ before_script:
   - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
 
 cache:
-  - paths: -node_modules/
+  paths:
+    - node_modules/
 
 deploy_stage:
   stage: deploy
