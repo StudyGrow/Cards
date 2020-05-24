@@ -25,7 +25,6 @@ deploy_stage:
       git pull origin master &&
       rm ./package-lock.json &&
       npm i && cd angular-cards &&
-      ng build &&
       git push origin master &&
       exit"
   only:
