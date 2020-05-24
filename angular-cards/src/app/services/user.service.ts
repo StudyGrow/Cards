@@ -84,25 +84,22 @@ export class UserService implements CanActivate {
         }
       );
   }
-  createAccount(form): Observable<User> {
-    return this.http
+  createAccount(form) {
+    this.http
       .post<User>(this.config.urlBase + "user/new", form, {
         headers: this.config.headers,
         observe: "response",
       })
-      .pipe(
-        tap(
-          (res) => {
-            this.setUser(res.body._id);
-            this.statesService.setLoadingState(false);
-            this.router.navigate(["/"]);
-          },
-          (error) => {
-            this.notifications.handleErrors(error);
-            this.statesService.setLoadingState(false);
-          }
-        ),
-        map((res) => res.body)
+      .subscribe(
+        (res) => {
+          this.setUser(res.body._id);
+          this.statesService.setLoadingState(false);
+          this.router.navigate(["/"]);
+        },
+        (error) => {
+          this.notifications.handleErrors(error);
+          this.statesService.setLoadingState(false);
+        }
       );
   }
   authentication(): Observable<boolean> {
@@ -145,9 +142,10 @@ export class UserService implements CanActivate {
           this.notifications.addNotification(
             new SuccessMessage("Erfolgreich abgemeldet")
           );
-          this.router.navigate(["/"]);
         },
         (error) => {
+          this.setUser(null);
+          this.setLogin(false);
           this.notifications.handleErrors(error);
           this.statesService.setLoadingState(false);
         }
@@ -171,6 +169,9 @@ export class UserService implements CanActivate {
             this.statesService.setLoadingState(false);
             for (const card of res.body.cards) {
               card.date = new Date(card.date);
+            }
+            if (res.body.user && res.body.user.creationDate) {
+              res.body.user.creationDate = new Date(res.body.user.creationDate);
             }
             this.setUser(res.body.user._id);
             this.accountInfo$.next(res.body);

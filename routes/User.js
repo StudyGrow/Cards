@@ -27,8 +27,9 @@ router.post(
     } else {
       req.services.user.createUser(req.body, (err, user) => {
         if (err) {
-          res.status(501).send(err.message);
+          res.status(422).send(err.message);
         } else {
+          req.login(user._id, () => {});
           res.status(200).send({ _id: user._id, username: user.username, email: user.email });
         }
       });

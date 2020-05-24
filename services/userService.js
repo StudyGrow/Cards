@@ -104,15 +104,21 @@ function addAccount(form, callback) {
     email: form.email,
     creationDate: new Date(),
   });
-  hashPassword(form.password, (password) => {
-    user.password = password; //save password as a hash
-    user.save((err, user) => {
-      if (err) {
-        callback(err, false);
-      } else {
-        callback(false, user);
-      }
-    });
+  hashPassword(form.password, (err, password) => {
+    if (password) {
+      user.password = password; //save password as a hash
+      user.save((err, user) => {
+        if (err) {
+          callback(err, false);
+        } else {
+          callback(false, user);
+        }
+      });
+    } else if (err) {
+      callback(err, false);
+    } else {
+      callback(new Error("Ein unbekannter Fehler ist aufgetreten"), false);
+    }
   });
 }
 

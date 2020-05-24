@@ -4,6 +4,7 @@ export class User {
   _id: string;
   name: string;
   surname: string;
+  creationDate?: Date;
   constructor(name: string, email: string) {
     this.username = name;
     this.email = email;
