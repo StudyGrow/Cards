@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { UserInfo } from "../models/userInfo";
+import { UserInfo } from "../models/UserInfo";
 import { Observable, BehaviorSubject, of } from "rxjs";
 import { Router, CanActivate } from "@angular/router";
 import { tap, map } from "rxjs/operators";
