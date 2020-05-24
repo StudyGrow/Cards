@@ -5,7 +5,8 @@
   "main": "app.js",
   "scripts": {
     "start": "node start.js",
-    "stop": "node stop.js"
+    "stop": "node stop.js",
+    "build": "cd angular-cards && ng build"
   },
   "repository": {
     "type": "git",
