@@ -16,7 +16,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@angular/cli": "^9.0.3",
     "bcrypt": "^4.0.1",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
@@ -34,6 +33,7 @@
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^0.901.7",
+    "@angular/cli": "^9.1.7",
     "@angular/compiler": "^9.1.9",
     "@angular/compiler-cli": "^9.1.9",
     "nodemon": "^2.0.2"
