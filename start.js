@@ -9,6 +9,8 @@ const helmet = require("helmet");
 const kill = require("./node_modules/kill-port");
 const port = 8080;
 const portSSL = 443;
+const PORT = process.env.PORT || 3000;
+
 // const privateKey = fs.readFileSync("/etc/letsencrypt/live/rwth-aachen.tk/privkey.pem", "utf8");
 // const certificate = fs.readFileSync("/etc/letsencrypt/live/rwth-aachen.tk/cert.pem", "utf8");
 // const ca = fs.readFileSync("/etc/letsencrypt/live/rwth-aachen.tk/chain.pem", "utf8");
@@ -53,6 +55,7 @@ app.use(helmet());
 // httpsServer.listen(443, () => {
 //   console.log("HTTPS Server running on port 443");
 // });
-const server = app.listen(80, () => {
+
+const server = app.listen(PORT, () => {
   console.log(`Express is running on port ${server.address().port}`);
 });
