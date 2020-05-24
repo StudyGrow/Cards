@@ -118,7 +118,7 @@ export class UserService implements CanActivate {
   getUserId(): Observable<string> {
     if (this.userId$.getValue()) {
       return this.userId$.asObservable();
-    } else {
+    } else if (this.loggedIn) {
       return this.http
         .get<string>(this.config.urlBase + "user/id", { observe: "response" })
         .pipe(
