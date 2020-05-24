@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node start.js",
     "stop": "node stop.js",
-    "build": "cd angular-cards && ng build"
+    "build": "cd angular-cards && npm install && ng build"
   },
   "repository": {
     "type": "git",
