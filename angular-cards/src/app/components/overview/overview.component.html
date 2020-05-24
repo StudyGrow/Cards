@@ -15,7 +15,7 @@
         </div>
       </div>
     </li>
-    <li class="list-group-item">
+    <li *ngIf="user.name" class="list-group-item">
       <div class="row">
         <div class="col-6">
           Vorname
@@ -25,13 +25,23 @@
         </div>
       </div>
     </li>
-    <li class="list-group-item">
+    <li *ngIf="user.surname" class="list-group-item">
       <div class="row">
         <div class="col-6">
           Nachname
         </div>
         <div class="col-6 text-right">
           {{ user.surname }}
+        </div>
+      </div>
+    </li>
+    <li *ngIf="user.creationDate" class="list-group-item">
+      <div class="row">
+        <div class="col-6">
+          Mitglied seit
+        </div>
+        <div class="col-6 text-right">
+          {{ user.creationDate | date: "longDate":"de" }}
         </div>
       </div>
     </li>
