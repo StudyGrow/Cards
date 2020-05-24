@@ -8,7 +8,7 @@
     "buildng": "cd angular-cards && ng build --prod",
     "stop": "node stop.js",
     "preinstall": "npm install -g angular-cli",
-    "postinstall": "npm install && cd angular-cards && npm install && ng build --prod"
+    "heroku-postbuild": "npm install && cd angular-cards && npm install && ng build --prod"
   },
   "repository": {
     "type": "git",
