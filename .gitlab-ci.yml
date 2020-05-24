@@ -1,45 +1,5 @@
-before_script:
-  # Setup SSH deploy keys
-  - "which ssh-agent || ( apt-get install -qq openssh-client )"
-  - eval $(ssh-agent -s)
-  - echo "${SSH_PRIVATE_KEY}" | ssh-add -
-  - mkdir -p ~/.ssh
-  - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
-
-cache:
-  paths:
-    - node_modules/
-
-deploy_stage:
+deploy:
   stage: deploy
-  type: deploy
-  environment:
-    name: staging
-    url: example.com
   script:
-    - ssh ubuntu@ec2-3-88-135-223.compute-1.amazonaws.com "
-      touch test &&
-      exit"
-  only:
-    - master
-
-deploy_production:
-  stage: deploy
-  environment:
-    name: staging
-    url: example.com
-  script:
-    - ssh ubuntu@ec2-3-88-135-223.compute-1.amazonaws.com "
-      cd deploy &&
-      git checkout master &&
-      git pull origin master &&
-      rm ./package-lock.json &&
-      npm i && cd angular-cards &&
-      ng build --prod &&
-      git push origin master &&
-      cd .. &&
-      npm stop &&
-      npm start &&
-      exit"
-  only:
-    - tags
+  - gem install dpl
+  - dpl --provider=heroku --app=<app_id> --api-key=$HEROKU_API_KEY
