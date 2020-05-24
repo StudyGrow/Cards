@@ -18,6 +18,8 @@ deploy_stage:
     url: example.com
   script:
     - ssh ubuntu@ec2-3-88-135-223.compute-1.amazonaws.com "
+    tmux attach-session -t 0 &&
+    ls
       cd deploy &&
       git checkout master &&
       git pull origin master &&
