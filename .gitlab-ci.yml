@@ -1,5 +1,6 @@
 deploy:
   stage: deploy
   script:
-  - gem install dpl
-  - dpl --provider=heroku --app=<app_id> --api-key=$HEROKU_API_KEY
+  - cd ~/deploy
+  - git pull origin master
+  - git push heroku master
