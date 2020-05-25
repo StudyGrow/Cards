@@ -1,6 +1,6 @@
 deploy:
   stage: deploy
   script:
-  - cd ~/deploy
+  - cd ~/project
   - git pull origin master
   - git push heroku master
