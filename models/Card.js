@@ -14,9 +14,7 @@ const schema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  img: {
-    type: Buffer,
-  },
+  tags: [String],
   authorId: String,
   authorName: String,
   date: Date,

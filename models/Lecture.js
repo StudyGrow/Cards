@@ -9,6 +9,7 @@ const vlSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  tagList: [String],
 });
 
 const Lecture = (module.exports = mongoose.model("Lecture", vlSchema));

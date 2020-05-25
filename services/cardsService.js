@@ -1,6 +1,7 @@
 //service which provides card related services
 const mongoose = require("mongoose");
 const Card = mongoose.model("Card");
+const Lecture = mongoose.model("Lecture");
 
 module.exports = function cardsService() {
   //returns all the cards matching the query
@@ -24,6 +25,10 @@ module.exports = function cardsService() {
         card.authorId = user._id; //add user as author of card
         card.authorName = user.username;
       }
+      if (form.tags) {
+        card.tags = form.tags.split("#", 10);
+      }
+      await updateTags(card.vorlesung, card.tags);
       await card.save();
       callback(null, card._id);
     } catch (error) {
@@ -56,3 +61,19 @@ module.exports = function cardsService() {
 
   return cardsService;
 };
+
+async function updateTags(vlabrv, tags) {
+  tags.forEach((tag) => {
+    if (tag.length > 0) {
+      Lecture.updateOne({ abrv: vlabrv }, { $addToSet: { tagList: [tag] } }, () => {});
+    }
+  });
+
+  // let vl = await Lecture.findOne({ abrv: vlabrv });
+  // console.log(vl);
+  // tags.forEach((tag) => {
+  //   if (tag.length > 0 && !vl.tagList.includes(tag)) {
+  //     Lecture.findOneAndUpdate(vlabrv, { $push: { tagList: tag } });
+  //   }
+  // });
+}
