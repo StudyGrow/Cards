@@ -64,7 +64,7 @@ After the process has finished you can stop the Angular Dev Server and navigate 
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+This project is licensed under the MIT License
 
 ## Acknowledgments
 
