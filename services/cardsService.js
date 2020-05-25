@@ -28,7 +28,7 @@ module.exports = function cardsService() {
       if (form.tags) {
         card.tags = form.tags.split("#", 10);
       }
-      await updateTags(card.vorlesung, card.tags);
+      updateTags(card.vorlesung, card.tags);
       await card.save();
       callback(null, card._id);
     } catch (error) {
@@ -62,18 +62,10 @@ module.exports = function cardsService() {
   return cardsService;
 };
 
-async function updateTags(vlabrv, tags) {
+function updateTags(vlabrv, tags) {
   tags.forEach((tag) => {
     if (tag.length > 0) {
       Lecture.updateOne({ abrv: vlabrv }, { $addToSet: { tagList: [tag] } }, () => {});
     }
   });
-
-  // let vl = await Lecture.findOne({ abrv: vlabrv });
-  // console.log(vl);
-  // tags.forEach((tag) => {
-  //   if (tag.length > 0 && !vl.tagList.includes(tag)) {
-  //     Lecture.findOneAndUpdate(vlabrv, { $push: { tagList: tag } });
-  //   }
-  // });
 }
