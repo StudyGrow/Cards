@@ -13,9 +13,6 @@ import {
   TooltipModule,
 } from "angular-bootstrap-md";
 
-//Services
-import { StatesService } from "./services/states.service";
-
 //Material Modules
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { UpdateCardFormComponent } from "./components/update-card-form/update-card-form.component";
@@ -32,6 +29,14 @@ import {
   HAMMER_GESTURE_CONFIG,
 } from "@angular/platform-browser";
 
+//Localization
+import { registerLocaleData } from "@angular/common";
+import de from "@angular/common/locales/de";
+registerLocaleData(de);
+
+//Pipes
+import { SafeHtmlPipe } from "./components/card/card.component";
+
 //Components
 import { AppComponent } from "./app.component";
 import { NavBarComponent } from "./components/nav-bar/nav-bar.component";
@@ -47,7 +52,6 @@ import { LoginPageComponent } from "./routes/login-page/login-page.component";
 import { LoginFormComponent } from "./components/login-form/login-form.component";
 import { SignupPageComponent } from "./routes/signup-page/signup-page.component";
 import { SignupFormComponent } from "./components/signup-form/signup-form.component";
-import { StoreModule } from "@ngrx/store";
 import { FooterComponent } from "./components/footer/footer.component";
 import { AboutComponent } from "./routes/about/about.component";
 import { AccountPageComponent } from "./routes/account-page/account-page.component";
@@ -55,14 +59,6 @@ import { OverviewComponent } from "./components/overview/overview.component";
 import { ChangeProfileComponent } from "./components/change-profile/change-profile.component";
 import { CardsOverviewComponent } from "./components/cards-overview/cards-overview.component";
 import { NotificationsComponent } from "./components/notifications/notifications.component";
-
-//Localization
-import { registerLocaleData } from "@angular/common";
-import de from "@angular/common/locales/de";
-registerLocaleData(de);
-
-//Pipes
-import { SafeHtmlPipe } from "./components/card/card.component";
 import { ErrorPageComponent } from "./routes/error-page/error-page.component";
 import { LectureHeaderComponent } from "./components/lecture-header/lecture-header.component";
 import { FilterTagsComponent } from "./components/filter-tags/filter-tags.component";
@@ -142,10 +138,8 @@ export class MyHammerConfig extends HammerGestureConfig {
     HammerModule,
     CollapseModule,
     TooltipModule,
-    StoreModule.forRoot({}, {}),
   ],
   providers: [
-    StatesService,
     { provide: LOCALE_ID, useValue: "de" },
 
     {
