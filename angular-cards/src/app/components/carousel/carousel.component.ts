@@ -5,7 +5,7 @@ import {
   ViewChild,
   OnDestroy,
 } from "@angular/core";
-
+import { FormControl } from "@angular/forms";
 import { StatesService } from "../../services/states.service";
 import { CardsService } from "../../services/cards.service";
 import { Card } from "../../models/Card";
