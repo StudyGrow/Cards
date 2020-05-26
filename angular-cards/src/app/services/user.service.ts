@@ -123,7 +123,9 @@ export class UserService implements CanActivate {
         .get<string>(this.config.urlBase + "user/id", { observe: "response" })
         .pipe(
           tap((res) => {
-            this.setUser(res.body);
+            if (res.body) {
+              this.setUser(res.body);
+            }
           }),
           map((res) => res.body)
         );
