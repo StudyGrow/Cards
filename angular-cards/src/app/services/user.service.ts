@@ -29,7 +29,7 @@ export class UserService implements CanActivate {
   canActivate(): Observable<boolean> {
     this.statesService.setLoadingState(true);
     return this.http
-      .get<boolean>(this.config.urlBase + "/user/auth", {
+      .get<boolean>(this.config.urlBase + "user/auth", {
         observe: "response",
       })
       .pipe(
