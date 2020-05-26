@@ -24,6 +24,7 @@ import { MatDialogModule } from "@angular/material/dialog";
 import { MatButtonModule } from "@angular/material/button";
 import { MatSelectModule } from "@angular/material/select";
 import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatMenuModule } from "@angular/material/menu";
 //Gestures
 import {
   HammerModule,
@@ -64,7 +65,7 @@ registerLocaleData(de);
 import { SafeHtmlPipe } from "./components/card/card.component";
 import { ErrorPageComponent } from "./routes/error-page/error-page.component";
 import { LectureHeaderComponent } from "./components/lecture-header/lecture-header.component";
-import { FilterTagsComponent } from './components/filter-tags/filter-tags.component';
+import { FilterTagsComponent } from "./components/filter-tags/filter-tags.component";
 
 declare var Hammer: any;
 //Config to allow swipe gestures on carousel
@@ -133,6 +134,7 @@ export class MyHammerConfig extends HammerGestureConfig {
     MatProgressBarModule,
     MatButtonModule,
     MatDialogModule,
+    MatMenuModule,
     MatFormFieldModule,
     MatSelectModule,
     CarouselModule,
