@@ -4,14 +4,15 @@ import {
   HostListener,
   ViewChild,
   OnDestroy,
+  ChangeDetectorRef,
 } from "@angular/core";
-import { FormControl } from "@angular/forms";
+
 import { StatesService } from "../../services/states.service";
 import { CardsService } from "../../services/cards.service";
 import { Card } from "../../models/Card";
-import { Vorlesung } from "src/app/models/Vorlesung";
+
 import { UserService } from "../../services/user.service";
-import { Subscription, Observable } from "rxjs";
+import { Subscription } from "rxjs";
 import { LecturesService } from "src/app/services/lectures.service";
 @Component({
   selector: "app-carousel",
@@ -21,14 +22,15 @@ import { LecturesService } from "src/app/services/lectures.service";
 export class CarouselComponent implements OnInit, OnDestroy {
   @ViewChild("mycarousel", { static: false }) public carousel: any;
   @HostListener("swipeleft", ["$event"]) public swipePrev(event: any) {
-    this.carousel.previousSlide();
+    this.goToPrev();
   }
   @HostListener("swiperight", ["$event"]) public swipeNext(event: any) {
-    this.carousel.nextSlide();
+    this.goToNext();
   }
+  loading: boolean;
   cards: Card[]; //array of all the cards
   activeSlide: number;
-  lecture$: Observable<Vorlesung>;
+
   addComponentHidden: boolean;
   formShow: boolean;
   formMode: string;
@@ -38,36 +40,42 @@ export class CarouselComponent implements OnInit, OnDestroy {
     private lectureService: LecturesService,
     private stateService: StatesService,
     private cardsService: CardsService,
-    private userService: UserService
+    private userService: UserService,
+    private cd: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
-    this.activeSlide = 0;
     let sub = this.userService
       .getUserId()
       .subscribe((userId) => (this.userId = userId));
     this.subscriptions$.push(sub);
-    this.lecture$ = this.lectureService.getCurrentLecture();
 
     sub = this.cardsService.getCards().subscribe((cards) => {
-      this.cards = cards;
+      this.loading = true;
+      this.cards = [];
+      setTimeout(() => {
+        //use timeout here because mdbootstrap will not set active slide accordomgly otherwise
+        this.loading = false;
+        this.cards = cards;
+      }, 500);
     }); //load the specific cards from the server by subscribing to the observable that the card-service provides
     this.subscriptions$.push(sub);
+
     this.stateService.setFormMode("none");
     sub = this.stateService.getFormMode().subscribe((mode) => {
-      this.formShow = mode == "add";
+      this.formShow = mode === "add";
       this.formMode = mode;
     });
     this.subscriptions$.push(sub);
 
     sub = this.cardsService.getNewCardIndex().subscribe((index) => {
       if (this.carousel) {
-        this.activeSlide = index;
         this.carousel.selectSlide(index);
       }
     });
     this.subscriptions$.push(sub);
   }
+
   ngOnDestroy() {
     this.subscriptions$.forEach((sub) => {
       sub.unsubscribe();
@@ -105,17 +113,17 @@ export class CarouselComponent implements OnInit, OnDestroy {
     this.carousel.selectSlide(rand.toString());
   }
   goToPrev() {
-    if (this.formMode != "edit") {
+    if (this.cards.length > 1 && this.formMode != "edit") {
       this.carousel.previousSlide();
     }
   }
   goToNext() {
-    if (this.formMode != "edit") {
+    if (this.cards.length > 1 && this.formMode != "edit") {
       this.carousel.nextSlide();
     }
   }
   onSlide(slideEvent) {
-    this.activeSlide = parseInt(slideEvent.relatedTarget);
+    this.activeSlide;
     this.cardsService.setActiveCardIndex(parseInt(slideEvent.relatedTarget));
   }
   isDisabled() {
@@ -124,7 +132,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
     } else {
       let currCard = this.cards[this.activeSlide]; //get the card that is currently showing
 
-      if (!currCard.authorId || currCard.authorId.length == 0) {
+      if (!currCard || !currCard.authorId || currCard.authorId.length == 0) {
         return false;
       }
       if (!this.userId || currCard.authorId !== this.userId) {

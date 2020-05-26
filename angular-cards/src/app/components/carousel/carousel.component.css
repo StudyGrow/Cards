@@ -1,8 +1,17 @@
 .container {
   padding: 0;
 }
+#spinner {
+  position: absolute;
 
+  width: 100%;
+}
+.spinner-border {
+  margin-right: auto;
+  margin-left: auto;
+}
 #btnDiv {
+  position: relative;
   display: block;
   width: 90%;
   text-align: right;

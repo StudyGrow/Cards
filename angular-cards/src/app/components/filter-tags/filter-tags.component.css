@@ -8,6 +8,7 @@ button {
   background-color: bisque;
 }
 #filter {
+  margin-top: 5px;
   position: absolute;
   right: 0;
   margin-right: 15px;
