@@ -1,0 +1,17 @@
+<div id="filter" class="col-12">
+  <div class="form-group float-right">
+    <mat-form-field *ngIf="(lecture$ | async)?.tagList as tags">
+      <mat-select
+        panelClass="menu"
+        multiple
+        placeholder="Nach Thema filtern"
+        [(value)]="selected"
+        (openedChange)="applyFilter($event)"
+      >
+        <mat-option *ngFor="let tag of tags" [value]="tag">
+          {{ tag }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</div>

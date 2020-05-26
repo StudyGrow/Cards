@@ -8,11 +8,13 @@ export class Card {
   authorId?: string;
   authorName?: string;
   date?: Date;
+  tags?: string[];
 
-  constructor(thema, content, abrv, latex) {
+  constructor(thema, content, abrv, latex, tags) {
     this.thema = thema;
     this.content = content;
     this.abrv = abrv;
     latex = latex;
+    this.tags = tags;
   }
 }

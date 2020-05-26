@@ -28,6 +28,7 @@ module.exports = function vlService() {
       const vl = new Lecture();
       vl.name = lecture.name;
       vl.abrv = lecture.abrv.toLowerCase();
+
       await vl.save();
       callback(null);
     } catch (error) {

@@ -15,18 +15,13 @@ import { LecturesService } from "src/app/services/lectures.service";
   templateUrl: "./lectures.component.html",
   styleUrls: ["./lectures.component.css"],
 })
-export class LecturesComponent implements OnInit, OnDestroy {
+export class LecturesComponent implements OnInit {
   lectures$: Observable<Vorlesung[]>;
 
   constructor(private lecture: LecturesService) {}
-  subscriptions$: Subscription[] = [];
+
   ngOnInit(): void {
     this.lectures$ = this.lecture.getAllLectures();
-  }
-  ngOnDestroy() {
-    this.subscriptions$.forEach((sub) => {
-      sub.unsubscribe();
-    });
   }
 
   setLink(lecture: Vorlesung) {

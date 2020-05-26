@@ -42,7 +42,8 @@ export class AddCardFormComponent implements OnInit, OnDestroy {
       f.value.thema,
       f.value.content,
       this.lecture.abrv,
-      0
+      0,
+      f.value.tags
     );
     let sub = this.cardsService.addCard(this.newCard).subscribe((res) => {
       f.reset();

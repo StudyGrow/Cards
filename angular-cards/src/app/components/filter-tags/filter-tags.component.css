@@ -1,0 +1,15 @@
+.col-6 {
+  padding: 0;
+}
+button {
+  margin-left: 10px;
+}
+.menu {
+  background-color: bisque;
+}
+#filter {
+  margin-top: 5px;
+  position: absolute;
+  right: 0;
+  margin-right: 15px;
+}

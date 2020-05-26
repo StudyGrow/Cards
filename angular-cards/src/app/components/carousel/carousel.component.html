@@ -1,4 +1,10 @@
-<h1 id="vorlesung">{{ (lecture$ | async)?.name }}</h1>
+<app-lecture-header></app-lecture-header>
+<div id="spinner" *ngIf="loading" class="row">
+  <div class="spinner-border" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+</div>
+
 <div class="btn-group" id="btnDiv" role="group">
   <button
     class="btn btn-light"
@@ -35,7 +41,11 @@
     <div [class]="formMode == 'add' ? 'fas fa-minus' : 'fas fa-plus'"></div>
   </button>
 </div>
-<div *ngIf="cards && cards.length > 0" class="row">
+<div
+  *ngIf="cards && cards.length > 0"
+  class="row"
+  [style]="this.loading ? 'display: none' : ''"
+>
   <a *ngIf="cards.length > 0" (click)="goToPrev()">
     <span class="fas fa-chevron-left"></span>
   </a>
@@ -43,16 +53,18 @@
     <mdb-carousel
       (activeSlideChange)="onSlide($event)"
       #mycarousel
-      [(activeSlideIndex)]="activeSlide"
+      [activeSlideIndex]="0"
       [animation]="'slide'"
       [isControls]="false"
       [allowSwipe]="true"
       [interval]="'0'"
-      ><ng-container *ngFor="let card of cards; index as i">
-        <mdb-carousel-item [id]="i.toString()">
-          <app-card [card]="card"></app-card>
-        </mdb-carousel-item>
-      </ng-container>
+    >
+      <mdb-carousel-item
+        *ngFor="let card of cards; index as i"
+        [id]="i.toString()"
+      >
+        <app-card [card]="card"></app-card>
+      </mdb-carousel-item>
     </mdb-carousel>
   </div>
   <a *ngIf="cards.length > 0" (click)="goToNext()">

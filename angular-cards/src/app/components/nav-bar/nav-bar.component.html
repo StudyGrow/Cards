@@ -35,28 +35,30 @@
             >
           </li>
           <li *ngIf="loggedIn" class="{{ isActive('/profile') }} nav-item">
-            <div class="dropdown">
+            <a class="nav-link" [matMenuTriggerFor]="menu">
+              <i class="fas fa-user-circle"></i> Account
+            </a>
+            <mat-menu #menu="matMenu">
               <a
-                class="nav-link"
-                type="button"
-                id="dropdownMenuButton"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
+                class="dropdown-item"
+                routerLink="/account/overview"
+                placement="bottom"
+                >Account management</a
               >
-                <i class="fas fa-user-circle"></i> Account
+              <a class="dropdown-item" (click)="logout()">
+                Logout
               </a>
-              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a
-                  class="dropdown-item"
-                  routerLink="/account/overview"
-                  placement="bottom"
-                  >Account management</a
-                >
-                <a class="dropdown-item" (click)="logout()">
-                  Logout
-                </a>
-              </div>
+            </mat-menu>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <a
+                class="dropdown-item"
+                routerLink="/account/overview"
+                placement="bottom"
+                >Account management</a
+              >
+              <a class="dropdown-item" (click)="logout()">
+                Logout
+              </a>
             </div>
           </li>
         </ul>
@@ -90,3 +92,4 @@
   </button>
   {{ notif.message }}
 </div>
+<app-filter-tags *ngIf="cards"></app-filter-tags>

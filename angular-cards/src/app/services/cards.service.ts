@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 
-import { Observable, BehaviorSubject } from "rxjs";
+import { Observable, BehaviorSubject, of } from "rxjs";
 import { Card } from "../models/Card";
 import { StatesService } from "./states.service";
 import { tap, map } from "rxjs/operators";
@@ -26,7 +26,9 @@ export class CardsService {
   private activeCardIndex$: BehaviorSubject<number> = new BehaviorSubject<
     number
   >(0);
+  private tags: string[];
 
+  private copy: Card[];
   private config = new HttpConfig();
   constructor(
     private notifications: NotificationsService,
@@ -54,6 +56,7 @@ export class CardsService {
         .subscribe(
           (response) => {
             this.statesService.setLoadingState(false);
+            this.copy = response.body;
             this.cards$.next(response.body);
           },
           (error) => {
@@ -169,5 +172,32 @@ export class CardsService {
   //subsribe to this function to always get the index of the card that is currently shown
   getActiveCardIndex(): Observable<number> {
     return this.activeCardIndex$.asObservable();
+  }
+
+  applyFilter(tags: string[]): Observable<boolean> {
+    let cards = this.cards$.getValue();
+
+    if (this.tags === tags || tags === undefined) {
+      return of(false);
+    } else if (tags.length == 0) {
+      this.resetFilter();
+      return of(false);
+    }
+    this.tags = tags;
+    let res = cards.filter((card) => {
+      for (const tag of tags) {
+        if (card.tags.includes(tag)) {
+          return true;
+        }
+      }
+      return false;
+    });
+    this.cards$.next(res);
+    this.setActiveCardIndex(0);
+    return of(true);
+  }
+  resetFilter() {
+    this.setNewCardIndex(0);
+    this.cards$.next(this.copy);
   }
 }
