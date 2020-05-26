@@ -106,7 +106,7 @@ export class UserService implements CanActivate {
     if (!this.loggedIn) {
       this.loggedIn = new BehaviorSubject<boolean>(false);
       this.http
-        .get<boolean>(this.config.urlBase + "/user/auth", {
+        .get<boolean>(this.config.urlBase + "user/auth", {
           observe: "response",
         })
         .subscribe((res) => {
