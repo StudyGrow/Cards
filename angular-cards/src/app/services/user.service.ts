@@ -28,35 +28,39 @@ export class UserService implements CanActivate {
 
   canActivate(): Observable<boolean> {
     this.statesService.setLoadingState(true);
-    return this.http
+    this.http
       .get<boolean>(this.config.urlBase + "/user/auth", {
         observe: "response",
       })
-      .pipe(
-        tap(
-          (res) => {
+      .subscribe(
+        (res) => {
+          this.statesService.setLoadingState(false);
+          this.setLogin(res.body);
+          if (res.body === false) {
+            this.notifications.addNotification(
+              new InfoMessage(
+                "Du musst dich einloggen, um diese Seite zu besuchen"
+              )
+            );
+            console.log(res);
+            this.setUser(null);
+            this.router.navigate(["login"]);
+          }
+        },
+        (err) => {
+          if (err.status == 304) {
+            console.log("not");
             this.statesService.setLoadingState(false);
-            this.setLogin(res.body);
-            if (res.body === false) {
-              this.notifications.addNotification(
-                new InfoMessage(
-                  "Du musst dich einloggen, um diese Seite zu besuchen"
-                )
-              );
-              this.setUser(null);
-              this.router.navigate(["login"]);
-            }
-          },
-          (err) => {
+          } else {
             this.statesService.setLoadingState(false);
             this.setLogin(false);
             this.notifications.handleErrors(err);
             this.setUser(null);
             this.router.navigateByUrl("/");
           }
-        ),
-        map((res) => res.body)
+        }
       );
+    return this.authentication();
   }
   //used to login the user
   login(form) {
@@ -79,6 +83,7 @@ export class UserService implements CanActivate {
         },
         (error) => {
           this.notifications.handleErrors(error);
+
           this.setUser(null);
           this.statesService.setLoadingState(false);
         }
@@ -109,9 +114,14 @@ export class UserService implements CanActivate {
         .get<boolean>(this.config.urlBase + "/user/auth", {
           observe: "response",
         })
-        .subscribe((res) => {
-          this.loggedIn.next(res.body);
-        });
+        .subscribe(
+          (res) => {
+            this.loggedIn.next(res.body);
+          },
+          (err) => {
+            console.log(err);
+          }
+        );
     }
     return this.loggedIn.asObservable();
   }
