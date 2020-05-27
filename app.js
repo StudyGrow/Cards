@@ -11,6 +11,7 @@ app.use(require("./middleware/serviceMiddleware")());
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.enable('trust proxy');
 app.use(
   session({
     secret: "wibgewe13f13", //random string
