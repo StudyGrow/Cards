@@ -28,7 +28,7 @@
     "express-validator": "^6.4.0",
     "helmet": "^3.21.2",
     "kill-port": "^1.6.0",
-    "mongoose": "^5.8.11",
+    "mongoose": "^5.9.16",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
     "socket.io": "^2.3.0",

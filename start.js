@@ -46,17 +46,17 @@ require("./models/Lecture");
 require("./models/User");
 const app = require("./app");
 app.use(helmet());
-app.use(
-  session({
-    secret: "wibgewe13f13", //random string
-    resave: false,
-    proxy: true,
-    saveUninitialized: false,
-    cookie: { secure: false }, //secure needs to be set to true here
+// app.use(
+//   session({
+//     secret: "wibgewe13f13", //random string
+//     resave: false,
+//     proxy: true,
+//     saveUninitialized: false,
+//     cookie: { secure: false }, //secure needs to be set to true here
 
-    store: new MongoStore({ mongooseConnection: mongoose.connection }),
-  })
-);
+//     store: new MongoStore({ mongooseConnection: mongoose.connection }),
+//   })
+// );
 // const httpServer = http.createServer(app);
 // const httpsServer = https.createServer(credentials, app);
 
