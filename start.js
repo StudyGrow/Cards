@@ -50,6 +50,7 @@ app.use(
   session({
     secret: "wibgewe13f13", //random string
     resave: false,
+    proxy: true,
     saveUninitialized: false,
     cookie: { secure: true }, //secure needs to be set to true here
 
