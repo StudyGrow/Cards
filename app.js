@@ -1,13 +1,11 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const helmet = require("helmet");
-// const mongoose = require("mongoose");
 const path = require("path");
 const session = require("express-session");
 const MongoStore = require("connect-mongo")(session); //store session on MongoDb
 const app = express();
 const mongoose = require("mongoose");
-// app.set("trust proxy", 1);
 app.use(helmet());
 app.use(require("./middleware/serviceMiddleware")());
 
@@ -18,7 +16,6 @@ app.use(
     secret: "wibgewe13f13", //random string
     resave: false,
     saveUninitialized: false,
-    // proxy: true,
     cookie: { secure: true }, //secure needs to be set to true here
 
     store: new MongoStore({ mongooseConnection: mongoose.connection }),
