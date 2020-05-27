@@ -11,16 +11,16 @@ app.use(require("./middleware/serviceMiddleware")());
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.use(
-  session({
-    secret: "wibgewe13f13", //random string
-    resave: false,
-    saveUninitialized: false,
-    cookie: { secure: true }, //secure needs to be set to true here
+// app.use(
+//   session({
+//     secret: "wibgewe13f13", //random string
+//     resave: false,
+//     saveUninitialized: false,
+//     cookie: { secure: true }, //secure needs to be set to true here
 
-    store: new MongoStore({ mongooseConnection: mongoose.connection }),
-  })
-);
+//     store: new MongoStore({ mongooseConnection: mongoose.connection }),
+//   })
+// );
 
 const passport = require("passport");
 
