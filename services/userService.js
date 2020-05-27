@@ -21,8 +21,11 @@ module.exports = function userService() {
       if (error) res.status(422).send(error.message);
       else
         req.login(user._id, function (error) {
-          if (error) res.status(422).send(error.message);
-          res.status(200).send({ _id: user._id, username: user.username, email: user.email });
+          if (error) {
+            res.status(422).send(error.message);
+          } else {
+            res.status(200).send({ _id: user._id, username: user.username, email: user.email });
+          }
         });
     })(req, res, next);
   };

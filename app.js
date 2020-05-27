@@ -3,6 +3,7 @@ const bodyParser = require("body-parser");
 const helmet = require("helmet");
 const path = require("path");
 const session = require("express-session");
+const MongoStore = require("connect-mongo")(session); //store session on MongoDb
 const app = express();
 
 app.use(helmet());
@@ -16,6 +17,8 @@ app.use(
     resave: false,
     saveUninitialized: false,
     cookie: { secure: true }, //secure needs to be set to true here
+
+    store: new MongoStore({ mongooseConnection: mongoose.connection }),
   })
 );
 
