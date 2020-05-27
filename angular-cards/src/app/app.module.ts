@@ -21,8 +21,11 @@ import { MatDialogModule } from "@angular/material/dialog";
 import { MatButtonModule } from "@angular/material/button";
 import { MatSelectModule } from "@angular/material/select";
 import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatInputModule } from "@angular/material/input";
 import { MatMenuModule } from "@angular/material/menu";
 import { MatTooltipModule } from "@angular/material/tooltip";
+import { MatAutocompleteModule } from "@angular/material/autocomplete";
+import { MatIconModule } from "@angular/material/icon";
 //Gestures
 import {
   HammerModule,
@@ -125,15 +128,17 @@ export class MyHammerConfig extends HammerGestureConfig {
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-
     FormsModule,
     BrowserAnimationsModule,
     MatProgressBarModule,
     MatButtonModule,
     MatDialogModule,
     MatTooltipModule,
+    MatInputModule,
     MatMenuModule,
     MatFormFieldModule,
+    MatAutocompleteModule,
+    MatIconModule,
     MatSelectModule,
     CarouselModule,
     WavesModule,
