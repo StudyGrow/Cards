@@ -10,6 +10,7 @@ const kill = require("./node_modules/kill-port");
 const port = 8080;
 const portSSL = 443;
 const PORT = process.env.PORT || 3000;
+const session = require("express-session");
 const MongoStore = require("connect-mongo")(session); //store session on MongoDb
 
 // const privateKey = fs.readFileSync("/etc/letsencrypt/live/rwth-aachen.tk/privkey.pem", "utf8");
