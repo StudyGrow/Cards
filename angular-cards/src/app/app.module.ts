@@ -2,7 +2,7 @@
 import { BrowserModule } from "@angular/platform-browser";
 import { NgModule, Injectable, LOCALE_ID } from "@angular/core";
 import { HttpClientModule } from "@angular/common/http";
-import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
+
 import { AppRoutingModule } from "./app-routing.module";
 import { FormsModule } from "@angular/forms";
 
@@ -22,6 +22,7 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatSelectModule } from "@angular/material/select";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatMenuModule } from "@angular/material/menu";
+import { MatTooltipModule } from "@angular/material/tooltip";
 //Gestures
 import {
   HammerModule,
@@ -124,12 +125,13 @@ export class MyHammerConfig extends HammerGestureConfig {
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    NgbModule,
+
     FormsModule,
     BrowserAnimationsModule,
     MatProgressBarModule,
     MatButtonModule,
     MatDialogModule,
+    MatTooltipModule,
     MatMenuModule,
     MatFormFieldModule,
     MatSelectModule,

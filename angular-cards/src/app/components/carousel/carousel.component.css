@@ -1,15 +1,12 @@
-.container {
-  padding: 0;
-}
 #spinner {
   position: absolute;
-
   width: 100%;
 }
 .spinner-border {
   margin-right: auto;
   margin-left: auto;
 }
+
 #btnDiv {
   position: relative;
   display: block;
@@ -18,38 +15,41 @@
   margin: auto;
   margin-bottom: 10px;
 }
-#carouselExampleControls {
-  margin-top: 10px;
-  margin-bottom: 10px;
+#carousel {
+  width: 100%;
+  z-index: -1;
 }
 .carousel-item {
-  min-height: 100px;
+  min-height: 150px;
 }
 
-.carousel-control-prev {
-  width: 5%;
-}
-
-.carousel-control-next {
-  width: 5%;
-}
-a {
+.navig {
   color: black;
   display: inline-flex;
   align-items: center;
   width: 5%;
+  position: absolute;
+  padding: 0;
+}
+#right {
+  right: 0;
+  height: 100%;
+}
+#left {
+  left: 0;
+  height: 100%;
 }
 span {
   text-align: center;
   width: 100%;
 }
-#carousel {
-  width: 90%;
-}
+
 .row {
+  position: relative;
   max-width: 900px;
   margin: 0;
 }
 app-card {
-  width: 100%;
+  width: 90%;
+  margin: auto;
 }
