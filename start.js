@@ -56,7 +56,7 @@ app.use(
     store: new MongoStore({ mongooseConnection: mongoose.connection }),
   })
 );
-const httpServer = http.createServer(app);
+// const httpServer = http.createServer(app);
 // const httpsServer = https.createServer(credentials, app);
 
 // httpServer.listen(80, () => {

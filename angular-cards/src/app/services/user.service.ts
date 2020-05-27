@@ -54,7 +54,7 @@ export class UserService implements CanActivate {
       //not initialized -> make first http call
       this.auth$ = new BehaviorSubject<boolean>(false); //assume not logged in
       this.http
-        .get<boolean>(this.config.urlBase + "/user/auth", {
+        .get<boolean>(this.config.urlBase + "user/auth", {
           observe: "response",
         })
         .subscribe(
