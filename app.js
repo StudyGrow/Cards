@@ -19,7 +19,7 @@ app.use(
     resave: false,
     saveUninitialized: false,
     // proxy: true,
-    cookie: { secure: false }, //secure needs to be set to true here
+    cookie: { secure: true }, //secure needs to be set to true here
 
     store: new MongoStore({ mongooseConnection: mongoose.connection }),
   })
