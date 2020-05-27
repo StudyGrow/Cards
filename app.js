@@ -5,7 +5,7 @@ const path = require("path");
 const session = require("express-session");
 const MongoStore = require("connect-mongo")(session); //store session on MongoDb
 const app = express();
-
+app.set("trust proxy", 1);
 app.use(helmet());
 app.use(require("./middleware/serviceMiddleware")());
 
