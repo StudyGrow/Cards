@@ -12,11 +12,7 @@
 #search {
   max-width: 150px;
 }
-@media (max-width: 600px) {
-  #search {
-    padding-right: 20px;
-  }
-}
+
 a {
   font-size: smaller;
 }
@@ -25,4 +21,7 @@ button {
   width: 2px;
   box-sizing: border-box;
   text-align: right;
+}
+.example-form {
+  font-size: 11px;
 }

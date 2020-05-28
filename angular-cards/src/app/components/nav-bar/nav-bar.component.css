@@ -19,14 +19,8 @@ mat-progress-bar {
 }
 #searchbar {
   padding: 0;
+  top: 1px;
+  right: 5px;
   text-align: right;
-}
-::ng-deep .mat-form-field-flex > .mat-form-field-infix {
-  padding: 0.4em 0px !important;
-}
-::ng-deep .mat-form-field-appearance-outline .mat-form-field-label {
-  margin-top: -15px;
-}
-::ng-deep label.ng-star-inserted {
-  transform: translateY(-0.59375em) scale(0.75) !important;
+  position: absolute;
 }

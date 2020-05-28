@@ -13,6 +13,7 @@ import { CardsService } from "../../services/cards.service";
 import { Subscription } from "rxjs";
 import { DomSanitizer } from "@angular/platform-browser";
 import { parse, HtmlGenerator } from "latex.js/dist/latex.js";
+import { StatesService } from "src/app/services/states.service";
 
 @Pipe({ name: "safeHtml" })
 export class SafeHtmlPipe implements PipeTransform {
@@ -21,6 +22,7 @@ export class SafeHtmlPipe implements PipeTransform {
     return this.sanitized.bypassSecurityTrustHtml(value);
   }
 }
+
 @Component({
   selector: "app-card",
   templateUrl: "./card.component.html",
@@ -28,11 +30,23 @@ export class SafeHtmlPipe implements PipeTransform {
 })
 export class CardComponent implements OnInit, OnDestroy {
   @Input() card: Card;
+  inTypingField: boolean = false;
   @HostListener("swipeleft", ["$event"]) public swipePrev(event: any) {
     this.cs.goNext();
   }
   @HostListener("swiperight", ["$event"]) public swipeNext(event: any) {
     this.cs.goPrev();
+  }
+
+  @HostListener("window:keyup", ["$event"])
+  handleKeyDown(event: KeyboardEvent) {
+    if (!this.inTypingField) {
+      if (event.key == "ArrowDown") {
+        this.content.open();
+      } else if (event.key == "ArrowUp") {
+        this.content.close();
+      }
+    }
   }
   @ViewChild("answer", { static: true }) content;
   subscriptions$: Subscription[] = [];
@@ -40,7 +54,7 @@ export class CardComponent implements OnInit, OnDestroy {
   styleAppend = `<link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/latex.js@0.12.1/dist/css/katex.css"><link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/latex.js@0.12.1/dist/css/article.css"><script src="https://cdn.jsdelivr.net/npm/latex.js@0.12.1/dist/dist/js/base.js"></script>`;
   parsed: any = [];
 
-  constructor(private cs: CardsService) {}
+  constructor(private cs: CardsService, private stateServie: StatesService) {}
   public isCollapsed = true;
   ngOnInit(): void {
     let sub = this.cs.getActiveCardIndex().subscribe((change) => {
