@@ -9,6 +9,7 @@
   <button
     class="btn btn-light"
     id="rand"
+    placement="top"
     matTooltip="Zufall"
     matTooltipPosition="above"
     (click)="showRandomCard()"
@@ -34,19 +35,19 @@
     type="button"
     data-toggle="button"
     (click)="toggleAddView()"
-    matTooltipPosition="above"
     [matTooltip]="formMode == 'add' ? 'Verstecken' : 'Hinzufügen'"
+    matTooltipPosition="above"
     [disabled]="formMode == 'edit'"
   >
     <div [class]="formMode == 'add' ? 'fas fa-minus' : 'fas fa-plus'"></div>
   </button>
 </div>
 <div
-  *ngIf="cards && cards.length > 0"
   class="row"
+  *ngIf="cards && cards.length > 0"
   [style]="this.loading ? 'display: none' : ''"
 >
-  <a *ngIf="cards.length > 0" (click)="goToPrev()">
+  <a id="left" class="navig col" *ngIf="cards.length > 0" (click)="goToPrev()">
     <span class="fas fa-chevron-left"></span>
   </a>
   <div id="carousel" (swipeleft)="goToPrev()" (swiperight)="goToNext()">
@@ -67,7 +68,7 @@
       </mdb-carousel-item>
     </mdb-carousel>
   </div>
-  <a *ngIf="cards.length > 0" (click)="goToNext()">
+  <a id="right" class="navig col" *ngIf="cards.length > 0" (click)="goToNext()">
     <span class="fas fa-chevron-right"></span>
   </a>
 </div>
