@@ -5,6 +5,7 @@
   "main": "app.js",
   "scripts": {
     "start": "node start.js",
+    "watch": "nodemon start.js",
     "buildng": "cd angular-cards && ng build --prod",
     "stop": "node stop.js",
     "heroku-prebuild": "npm install && cd angular-cards && npm install",
