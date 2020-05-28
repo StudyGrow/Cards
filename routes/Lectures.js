@@ -43,7 +43,9 @@ router.get(
         } else if (lecture) {
           res.send(lecture);
         } else {
-          res.status(422).send("No lecture found");
+          res
+            .status(422)
+            .send(`Es wurde keine Vorlesung mit der Abkürzung ${req.query.abrv} gefunden.`);
         }
       }
     );
