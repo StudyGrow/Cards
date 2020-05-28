@@ -40,6 +40,7 @@ Then navigate to the angular-cards folder and start the Angular Dev Server with 
 ng serve --proxy-config proxy.conf.json --open
 ```
 
+We use proxy config to bypass CORS problem, caused by angular, when communicating with our server.\
 After you are done modifying the frontend you can use the following command to build your project:
 
 ```
