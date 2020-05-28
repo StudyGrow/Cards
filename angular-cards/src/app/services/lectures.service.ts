@@ -77,6 +77,7 @@ export class LecturesService {
           },
           (error) => {
             this.addErrors(error);
+            this.router.navigateByUrl("/");
             this.statesService.setLoadingState(false);
           }
         );
