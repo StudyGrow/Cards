@@ -4,6 +4,7 @@ import {
   Input,
   OnDestroy,
   Pipe,
+  HostListener,
   PipeTransform,
 } from "@angular/core";
 import { Card } from "../../models/Card";
@@ -27,7 +28,13 @@ export class SafeHtmlPipe implements PipeTransform {
 })
 export class CardComponent implements OnInit, OnDestroy {
   @Input() card: Card;
-  @ViewChild("test", { static: true }) content;
+  @HostListener("swipeleft", ["$event"]) public swipePrev(event: any) {
+    this.cs.goNext();
+  }
+  @HostListener("swiperight", ["$event"]) public swipeNext(event: any) {
+    this.cs.goPrev();
+  }
+  @ViewChild("answer", { static: true }) content;
   subscriptions$: Subscription[] = [];
 
   styleAppend = `<link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/latex.js@0.12.1/dist/css/katex.css"><link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/latex.js@0.12.1/dist/css/article.css"><script src="https://cdn.jsdelivr.net/npm/latex.js@0.12.1/dist/dist/js/base.js"></script>`;
@@ -38,7 +45,7 @@ export class CardComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     let sub = this.cs.getActiveCardIndex().subscribe((change) => {
       //hides te card content when carousel slides
-      this.content.hide();
+      this.content.close();
     });
     if (this.card.latex != 0) {
       this.parse(this.card.content);

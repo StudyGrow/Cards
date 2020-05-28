@@ -21,12 +21,7 @@ import { LecturesService } from "src/app/services/lectures.service";
 })
 export class CarouselComponent implements OnInit, OnDestroy {
   @ViewChild("mycarousel", { static: false }) public carousel: any;
-  @HostListener("swipeleft", ["$event"]) public swipePrev(event: any) {
-    this.goToPrev();
-  }
-  @HostListener("swiperight", ["$event"]) public swipeNext(event: any) {
-    this.goToNext();
-  }
+
   loading: boolean;
   cards: Card[]; //array of all the cards
   activeSlide: number;
@@ -37,11 +32,9 @@ export class CarouselComponent implements OnInit, OnDestroy {
   private userId: string;
   subscriptions$: Subscription[] = [];
   constructor(
-    private lectureService: LecturesService,
     private stateService: StatesService,
     private cardsService: CardsService,
-    private userService: UserService,
-    private cd: ChangeDetectorRef
+    private userService: UserService
   ) {}
 
   ngOnInit(): void {

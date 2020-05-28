@@ -17,7 +17,6 @@
 }
 #carousel {
   width: 100%;
-  z-index: -1;
 }
 .carousel-item {
   min-height: 150px;
@@ -34,10 +33,12 @@
 #right {
   right: 0;
   height: 100%;
+  z-index: 1000;
 }
 #left {
   left: 0;
   height: 100%;
+  z-index: 1000;
 }
 span {
   text-align: center;

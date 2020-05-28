@@ -26,6 +26,7 @@ import { MatMenuModule } from "@angular/material/menu";
 import { MatTooltipModule } from "@angular/material/tooltip";
 import { MatAutocompleteModule } from "@angular/material/autocomplete";
 import { MatIconModule } from "@angular/material/icon";
+import { MatExpansionModule } from "@angular/material/expansion";
 //Gestures
 import {
   HammerModule,
@@ -140,6 +141,7 @@ export class MyHammerConfig extends HammerGestureConfig {
     MatAutocompleteModule,
     MatIconModule,
     MatSelectModule,
+    MatExpansionModule,
     CarouselModule,
     WavesModule,
     HammerModule,
