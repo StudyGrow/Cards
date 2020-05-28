@@ -1,6 +1,6 @@
-<div id="filter" class="col-12">
-  <div class="form-group float-right">
-    <mat-form-field *ngIf="(lecture$ | async)?.tagList as tags">
+<div id="filter" class="col-12" *ngIf="(lecture$ | async)?.tagList as tags">
+  <div class="form-group float-right" *ngIf="tags.length > 0">
+    <mat-form-field>
       <mat-select
         panelClass="menu"
         multiple
