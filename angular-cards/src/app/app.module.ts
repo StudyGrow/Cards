@@ -127,7 +127,9 @@ export class MyHammerConfig extends HammerGestureConfig {
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-
+    MatTooltipModule,
+    MatAutocompleteModule,
+    MatIconModule,
     FormsModule,
     BrowserAnimationsModule,
     MatProgressBarModule,
