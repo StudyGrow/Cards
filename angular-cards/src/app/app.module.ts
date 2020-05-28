@@ -2,6 +2,7 @@
 import { BrowserModule } from "@angular/platform-browser";
 import { NgModule, Injectable, LOCALE_ID } from "@angular/core";
 import { HttpClientModule } from "@angular/common/http";
+
 import { AppRoutingModule } from "./app-routing.module";
 import { FormsModule } from "@angular/forms";
 
@@ -20,6 +21,7 @@ import { MatDialogModule } from "@angular/material/dialog";
 import { MatButtonModule } from "@angular/material/button";
 import { MatSelectModule } from "@angular/material/select";
 import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatInputModule } from "@angular/material/input";
 import { MatMenuModule } from "@angular/material/menu";
 import { MatTooltipModule } from "@angular/material/tooltip";
 import { MatAutocompleteModule } from "@angular/material/autocomplete";
@@ -127,16 +129,17 @@ export class MyHammerConfig extends HammerGestureConfig {
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    MatTooltipModule,
-    MatAutocompleteModule,
-    MatIconModule,
     FormsModule,
     BrowserAnimationsModule,
     MatProgressBarModule,
     MatButtonModule,
     MatDialogModule,
+    MatTooltipModule,
+    MatInputModule,
     MatMenuModule,
     MatFormFieldModule,
+    MatAutocompleteModule,
+    MatIconModule,
     MatSelectModule,
     MatExpansionModule,
     CarouselModule,
