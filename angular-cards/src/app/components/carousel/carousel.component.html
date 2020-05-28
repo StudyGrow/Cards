@@ -9,8 +9,8 @@
   <button
     class="btn btn-light"
     id="rand"
-    placement="top"
-    ngbTooltip="Zufall"
+    matTooltip="Zufall"
+    matTooltipPosition="above"
     (click)="showRandomCard()"
     [disabled]="formMode == 'edit' || !cards || cards.length == 0"
   >
@@ -20,10 +20,10 @@
     class="btn btn-light"
     id="editCard"
     type="button"
-    placement="top"
     [disabled]="isDisabled()"
     (click)="enableEdit()"
-    ngbTooltip="Bearbeiten"
+    matTooltip="Bearbeiten"
+    matTooltipPosition="above"
   >
     <div class="fas fa-pen"></div>
   </button>
@@ -34,8 +34,8 @@
     type="button"
     data-toggle="button"
     (click)="toggleAddView()"
-    placement="top"
-    [ngbTooltip]="formMode == 'add' ? 'Verstecken' : 'Hinzufügen'"
+    matTooltipPosition="above"
+    [matTooltip]="formMode == 'add' ? 'Verstecken' : 'Hinzufügen'"
     [disabled]="formMode == 'edit'"
   >
     <div [class]="formMode == 'add' ? 'fas fa-minus' : 'fas fa-plus'"></div>
