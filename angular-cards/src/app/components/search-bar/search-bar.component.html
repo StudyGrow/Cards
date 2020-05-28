@@ -12,6 +12,7 @@
       (focus)="inField()"
       (blur)="resetNav()"
     />
+    <mat-icon matSuffix>search</mat-icon>
   </mat-form-field>
   <div *ngIf="uInput" id="matches">
     <mat-option *ngFor="let suggestion of suggestions">

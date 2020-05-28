@@ -62,8 +62,14 @@ export class CarouselComponent implements OnInit, OnDestroy {
     this.subscriptions$.push(sub);
 
     sub = this.cardsService.getNewCardIndex().subscribe((index) => {
+      let newSlide = index;
       if (this.carousel) {
-        this.carousel.selectSlide(index);
+        if (newSlide < 0) {
+          newSlide = 0;
+        } else if (newSlide >= this.cards.length) {
+          newSlide = this.cards.length - 1;
+        }
+        this.carousel.selectSlide(newSlide);
       }
     });
     this.subscriptions$.push(sub);
