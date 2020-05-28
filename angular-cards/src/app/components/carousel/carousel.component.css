@@ -18,9 +18,8 @@
   margin: auto;
   margin-bottom: 10px;
 }
-#carouselExampleControls {
-  margin-top: 10px;
-  margin-bottom: 10px;
+#carousel {
+  width: 100%;
 }
 .carousel-item {
   min-height: 100px;
@@ -38,6 +37,18 @@ a {
   display: inline-flex;
   align-items: center;
   width: 5%;
+  position: absolute;
+  padding: 0;
+}
+#right {
+  right: 0;
+  height: 100%;
+  z-index: 1000;
+}
+#left {
+  left: 0;
+  height: 100%;
+  z-index: 1000;
 }
 span {
   text-align: center;
