@@ -10,8 +10,7 @@
     class="btn btn-light"
     id="rand"
     placement="top"
-    matTooltip="Zufall"
-    matTooltipPosition="above"
+    ngbTooltip="Zufall"
     (click)="showRandomCard()"
     [disabled]="formMode == 'edit' || !cards || cards.length == 0"
   >
@@ -21,10 +20,10 @@
     class="btn btn-light"
     id="editCard"
     type="button"
+    placement="top"
     [disabled]="isDisabled()"
     (click)="enableEdit()"
-    matTooltip="Bearbeiten"
-    matTooltipPosition="above"
+    ngbTooltip="Bearbeiten"
   >
     <div class="fas fa-pen"></div>
   </button>
@@ -35,19 +34,19 @@
     type="button"
     data-toggle="button"
     (click)="toggleAddView()"
-    [matTooltip]="formMode == 'add' ? 'Verstecken' : 'Hinzufügen'"
-    matTooltipPosition="above"
+    placement="top"
+    [ngbTooltip]="formMode == 'add' ? 'Verstecken' : 'Hinzufügen'"
     [disabled]="formMode == 'edit'"
   >
     <div [class]="formMode == 'add' ? 'fas fa-minus' : 'fas fa-plus'"></div>
   </button>
 </div>
 <div
-  class="row"
   *ngIf="cards && cards.length > 0"
+  class="row"
   [style]="this.loading ? 'display: none' : ''"
 >
-  <a id="left" class="navig col" *ngIf="cards.length > 0" (click)="goToPrev()">
+  <a *ngIf="cards.length > 0" (click)="goToPrev()">
     <span class="fas fa-chevron-left"></span>
   </a>
   <div id="carousel" (swipeleft)="goToPrev()" (swiperight)="goToNext()">
@@ -68,7 +67,7 @@
       </mdb-carousel-item>
     </mdb-carousel>
   </div>
-  <a id="right" class="navig col" *ngIf="cards.length > 0" (click)="goToNext()">
+  <a *ngIf="cards.length > 0" (click)="goToNext()">
     <span class="fas fa-chevron-right"></span>
   </a>
 </div>

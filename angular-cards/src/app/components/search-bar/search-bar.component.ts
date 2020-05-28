@@ -1,8 +1,8 @@
 import { Component, OnInit, Input, OnDestroy } from "@angular/core";
-
+import { FormsModule } from "@angular/forms";
 import { CardsService } from "../../services/cards.service";
 import { StatesService } from "../../services/states.service";
-import { MatFormFieldModule } from "@angular/material/form-field";
+
 import { Card } from "../../models/Card";
 import { SearchSuggestion } from "../../models/SearchSuggestion";
 import { Subscription } from "rxjs";
@@ -53,15 +53,10 @@ export class SearchBarComponent implements OnInit, OnDestroy {
     this.stateService.setTyping(true);
   }
   resetNav() {
-    setTimeout(() => {
-      this.uInput = "";
-    }, 120);
-
     this.stateService.setTyping(false);
   }
   findMatches(e: Event) {
     this.stateService.setHideSuggestions(false); //show suggestions
-
     if (this.uInput && this.uInput.length > 2) {
       this.suggestions = [];
       const regex = new RegExp(`${this.uInput}`, "gi");
@@ -74,7 +69,6 @@ export class SearchBarComponent implements OnInit, OnDestroy {
     }
   }
   navigateTo(e: Event, index: number) {
-    console.log("hi");
     e.preventDefault();
     this.uInput = "";
     this.cardsService.setNewCardIndex(index);

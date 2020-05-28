@@ -20,10 +20,3 @@ pre {
 
   background-color: #fff;
 }
-.card {
-  border-radius: 5px;
-  box-shadow: 0 0 8px rgba(194, 194, 194, 0.637);
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-}

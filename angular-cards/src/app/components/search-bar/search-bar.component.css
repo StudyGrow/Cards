@@ -1,24 +1,14 @@
 #matches {
-  z-index: 1000;
-  position: absolute;
-  right: 0;
-  top: 40px;
-  background-color: white;
-  max-height: 200px;
-  max-width: 150px;
-  overflow: auto;
-  box-shadow: 0 0 10px rgba(194, 194, 194, 0.637);
-}
-#search {
-  max-width: 150px;
-  align-items: flex-end;
-}
-a {
-  max-width: 150px;
-}
-button {
-  padding: 0;
-  width: 2px;
-  box-sizing: border-box;
-  text-align: right;
-}
+    position: absolute;
+    top: 40px;
+    z-index: 1000;
+    right: 0;
+    max-width: 300px;
+    padding: 1px;
+    max-height: 200px;
+    overflow: auto;
+    box-shadow: 0 5px 10px rgba(46, 46, 46, 0.438);
+  }
+  #search {
+    max-width: 150px;
+  }
