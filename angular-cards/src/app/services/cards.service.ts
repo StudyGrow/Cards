@@ -143,18 +143,14 @@ export class CardsService {
     //show the next slide index
     let index = this.newCardIndex$.getValue();
     index++;
-    if (index >= this.cards$.getValue().length) {
-      index = 0;
-    }
+
     this.newCardIndex$.next(index);
   }
   goPrev() {
     //show the next slide index
     let index = this.newCardIndex$.getValue();
     index--;
-    if (index < 0) {
-      index = this.cards$.getValue().length - 1;
-    }
+
     this.newCardIndex$.next(index);
   }
   //only the carousel should be subscribed to this
