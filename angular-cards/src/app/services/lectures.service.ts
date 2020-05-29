@@ -5,23 +5,19 @@ import { tap, map } from "rxjs/operators";
 import { StatesService } from "./states.service";
 import { NotificationsService } from "./notifications.service";
 import { Router } from "@angular/router";
+import { HttpConfig } from "./config";
 //Models
 import { Vorlesung } from "../models/Vorlesung";
-import { HttpError } from "../models/Notification";
+
 @Injectable({
   providedIn: "root",
 })
 export class LecturesService {
-  private urlBase: string = "api/"; //url  base on which to adress the server with
-
   private lecture$: BehaviorSubject<Vorlesung> = new BehaviorSubject<Vorlesung>(
     new Vorlesung("", "")
   ); //holds the current lecture
   private lectures$: BehaviorSubject<Vorlesung[]>; //holds all lectures
-
-  private httpOptions = {
-    headers: new HttpHeaders({ "Content-Type": "application/json" }),
-  };
+  private config = new HttpConfig();
 
   constructor(
     private notifications: NotificationsService,
@@ -40,7 +36,7 @@ export class LecturesService {
     } else {
       //load lectures from the server
       return this.http
-        .get<Vorlesung[]>(this.urlBase + "lectures", {
+        .get<Vorlesung[]>(this.config.urlBase + "lectures", {
           observe: "response",
         })
         .pipe(
@@ -50,7 +46,7 @@ export class LecturesService {
               this.lectures$ = new BehaviorSubject<Vorlesung[]>(res.body); //set the lectures subject
             },
             (error) => {
-              this.addErrors(error);
+              this.notifications.handleErrors(error);
               this.statesService.setLoadingState(false);
             }
           ),
@@ -68,7 +64,7 @@ export class LecturesService {
     } else {
       //fetch the lecture from the server
       this.http
-        .get<Vorlesung>(this.urlBase + "lectures/find?abrv=" + abrv, {
+        .get<Vorlesung>(this.config.urlBase + "lectures/find?abrv=" + abrv, {
           observe: "response",
         })
         .subscribe(
@@ -76,7 +72,7 @@ export class LecturesService {
             this.lecture$.next(res.body);
           },
           (error) => {
-            this.addErrors(error);
+            this.notifications.handleErrors(error);
             this.router.navigateByUrl("/");
             this.statesService.setLoadingState(false);
           }
@@ -90,10 +86,10 @@ export class LecturesService {
     this.statesService.setLoadingState(true);
     return this.http
       .post<any>(
-        this.urlBase + "lectures/new",
+        this.config.urlBase + "lectures/new",
         { lecture: lecture },
         {
-          headers: this.httpOptions.headers,
+          headers: this.config.headers,
           observe: "response",
         }
       )
@@ -107,53 +103,10 @@ export class LecturesService {
             this.lectures$.next(lectures);
           },
           (error) => {
-            this.addErrors(error);
+            this.notifications.handleErrors(error);
             this.statesService.setLoadingState(false);
           }
         )
       );
-  }
-
-  //because errors suck and we dont have a unified error handling system in the backend
-
-  addErrors(error) {
-    let err = error.error;
-    console.log(error);
-    if (error.status == 400) {
-      this.notifications.addNotification(
-        new HttpError("Bitte logge dich erst ein.", error.status)
-      );
-      this.router.navigateByUrl("/login");
-    } else if (error.status == 422) {
-      if (typeof err == "string") {
-        this.notifications.addNotification(new HttpError(err, error.status));
-      } else if (typeof err == "object") {
-        this.notifications.addNotification(
-          new HttpError(
-            "Ein unbekannter Fehler ist aufgetreten. Versuche es später erneut.",
-            error.status
-          )
-        );
-        console.log(err);
-      } else {
-        for (const e of err) {
-          this.notifications.addNotification(new HttpError(e, error.status));
-        }
-      }
-    } else if (error.status >= 500) {
-      this.notifications.addNotification(
-        new HttpError(
-          "Der Server scheint offline zu sein. Versuche es später erneut.",
-          error.status
-        )
-      );
-    } else {
-      this.notifications.addNotification(
-        new HttpError(
-          "Ein unbekannter Fehler ist aufgetreten. Versuche es später erneut.",
-          error.status
-        )
-      );
-    }
   }
 }
