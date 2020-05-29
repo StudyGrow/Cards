@@ -26,6 +26,7 @@ export class CardsService {
   private activeCardIndex$: BehaviorSubject<number> = new BehaviorSubject<
     number
   >(0);
+  private activeCard$ = new BehaviorSubject<Card>(null);
   private tags: string[];
 
   private copy: Card[];
@@ -58,6 +59,7 @@ export class CardsService {
             this.statesService.setLoadingState(false);
             this.copy = response.body;
             this.cards$.next(response.body);
+            this.activeCard$.next(response.body[0]);
           },
           (error) => {
             this.notifications.handleErrors(error);
@@ -163,11 +165,15 @@ export class CardsService {
   }
   //only the carousel should call this method (on the sliding event)
   setActiveCardIndex(i: number) {
+    this.activeCard$.next(this.cards$.getValue()[i]);
     this.activeCardIndex$.next(i);
   }
   //subsribe to this function to always get the index of the card that is currently shown
   getActiveCardIndex(): Observable<number> {
     return this.activeCardIndex$.asObservable();
+  }
+  activeCard(): Observable<Card> {
+    return this.activeCard$.asObservable();
   }
 
   applyFilter(tags: string[]): Observable<boolean> {
