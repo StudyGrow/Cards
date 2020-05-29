@@ -7,18 +7,19 @@ import {
 } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 
-import { StatesService } from "../../services/states.service";
 import { Vorlesung } from "src/app/models/Vorlesung";
 import { CardsService } from "src/app/services/cards.service";
-import { Card } from "../../models/Card";
+
 import { Title } from "@angular/platform-browser";
+import { Card } from "../models/Card";
+import { StatesService } from "../services/states.service";
 
 @Component({
-  selector: "app-cards-page",
-  templateUrl: "./cards-page.component.html",
-  styleUrls: ["./cards-page.component.css"],
+  selector: "app-cards",
+  templateUrl: "./cards.component.html",
+  styleUrls: ["./cards.component.css"],
 })
-export class CardsPageComponent implements OnInit {
+export class CardsComponent implements OnInit {
   public vlAbrv: string;
   public lecture: Vorlesung;
   public loading: boolean = true;

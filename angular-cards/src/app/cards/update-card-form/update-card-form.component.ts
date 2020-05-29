@@ -1,10 +1,7 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
-import { NgForm } from "@angular/forms";
 import { StatesService } from "../../services/states.service";
-
 import { CardsService } from "../../services/cards.service";
 import { Card } from "../../models/Card";
-
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { Subscription } from "rxjs";
 
@@ -15,7 +12,6 @@ import { Subscription } from "rxjs";
 })
 export class UpdateCardFormComponent implements OnInit, OnDestroy {
   public cardCopy: Card;
-  private cards: Card[];
   private cardIndex: number; //saves the cardindex which the user is currently updating
   private activeCardIndex: number; //saves the active cardindex
   subscriptions$: Subscription[] = [];
@@ -26,11 +22,7 @@ export class UpdateCardFormComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    let sub = this.cardsService.getCards().subscribe((cards) => {
-      this.cards = cards;
-    });
-    this.subscriptions$.push(sub);
-    sub = this.cardsService.activeCard().subscribe((card) => {
+    let sub = this.cardsService.activeCard().subscribe((card) => {
       this.activeCardIndex = card.positionIndex;
 
       this.cardCopy = { ...card };
@@ -51,7 +43,7 @@ export class UpdateCardFormComponent implements OnInit, OnDestroy {
   resetNav() {
     this.statesService.setTyping(false);
   }
-  onSubmit(f: NgForm) {
+  onSubmit(f) {
     this.cardCopy.content = f.value.content;
     this.cardCopy.thema = f.value.thema;
     let sub = this.cardsService

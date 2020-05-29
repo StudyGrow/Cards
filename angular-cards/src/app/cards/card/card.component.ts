@@ -3,26 +3,15 @@ import {
   OnInit,
   Input,
   OnDestroy,
-  Pipe,
   HostListener,
-  PipeTransform,
 } from "@angular/core";
 import { Card } from "../../models/Card";
 import { ViewChild } from "@angular/core";
 import { CardsService } from "../../services/cards.service";
 import { Subscription } from "rxjs";
-import { DomSanitizer } from "@angular/platform-browser";
 import { parse, HtmlGenerator } from "latex.js/dist/latex.js";
 import { StatesService } from "src/app/services/states.service";
-
-@Pipe({ name: "safeHtml" })
-export class SafeHtmlPipe implements PipeTransform {
-  constructor(private sanitized: DomSanitizer) {}
-  transform(value) {
-    return this.sanitized.bypassSecurityTrustHtml(value);
-  }
-}
-
+import { SafeHtmlPipe } from "../../shared/safe-html.pipe";
 @Component({
   selector: "app-card",
   templateUrl: "./card.component.html",

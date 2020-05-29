@@ -1,5 +1,5 @@
 import { Component, OnInit, Output, EventEmitter } from "@angular/core";
-import { NgForm } from "@angular/forms";
+
 import { Vorlesung } from "../../models/Vorlesung";
 import { LecturesService } from "../../services/lectures.service";
 import { StatesService } from "../../services/states.service";
@@ -22,7 +22,7 @@ export class AddLectureFormComponent implements OnInit {
       sub.unsubscribe();
     });
   }
-  onSubmit(f: NgForm) {
+  onSubmit(f) {
     let newLecture = new Vorlesung(f.value.name, f.value.abrv.toLowerCase());
     let sub = this.lecture.addLecture(newLecture).subscribe((response) => {
       f.reset();

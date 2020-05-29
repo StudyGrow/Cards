@@ -1,11 +1,4 @@
-import {
-  Component,
-  OnInit,
-  HostListener,
-  ViewChild,
-  OnDestroy,
-  ChangeDetectorRef,
-} from "@angular/core";
+import { Component, OnInit, ViewChild, OnDestroy } from "@angular/core";
 
 import { StatesService } from "../../services/states.service";
 import { CardsService } from "../../services/cards.service";
@@ -13,7 +6,7 @@ import { Card } from "../../models/Card";
 
 import { UserService } from "../../services/user.service";
 import { Subscription } from "rxjs";
-import { LecturesService } from "src/app/services/lectures.service";
+
 @Component({
   selector: "app-carousel",
   templateUrl: "./carousel.component.html",
