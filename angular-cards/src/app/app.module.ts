@@ -61,10 +61,7 @@ import { SignupFormComponent } from "./components/signup-form/signup-form.compon
 import { FooterComponent } from "./components/footer/footer.component";
 import { AboutComponent } from "./routes/about/about.component";
 import { AccountPageComponent } from "./routes/account-page/account-page.component";
-import { OverviewComponent } from "./components/overview/overview.component";
-import { ChangeProfileComponent } from "./components/change-profile/change-profile.component";
-import { CardsOverviewComponent } from "./components/cards-overview/cards-overview.component";
-import { NotificationsComponent } from "./components/notifications/notifications.component";
+
 import { ErrorPageComponent } from "./routes/error-page/error-page.component";
 import { LectureHeaderComponent } from "./components/lecture-header/lecture-header.component";
 import { FilterTagsComponent } from "./components/filter-tags/filter-tags.component";
@@ -117,10 +114,7 @@ export class MyHammerConfig extends HammerGestureConfig {
     FooterComponent,
     AboutComponent,
     AccountPageComponent,
-    OverviewComponent,
-    ChangeProfileComponent,
-    CardsOverviewComponent,
-    NotificationsComponent,
+
     SafeHtmlPipe,
     ErrorPageComponent,
     LectureHeaderComponent,

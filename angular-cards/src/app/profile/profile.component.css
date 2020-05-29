@@ -1,0 +1,10 @@
+#list {
+  position: sticky;
+  top: 5px;
+  margin-bottom: 10px;
+}
+
+#sub {
+  background: white;
+  overflow-y: auto;
+}
