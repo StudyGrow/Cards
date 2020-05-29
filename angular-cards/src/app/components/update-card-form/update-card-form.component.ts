@@ -30,13 +30,14 @@ export class UpdateCardFormComponent implements OnInit, OnDestroy {
       this.cards = cards;
     });
     this.subscriptions$.push(sub);
-    sub = this.cardsService.getActiveCardIndex().subscribe((index) => {
-      this.activeCardIndex = index;
-      if (this.cards) {
-        this.cardCopy = { ...this.cards[this.activeCardIndex] };
-      }
+    sub = this.cardsService.activeCard().subscribe((card) => {
+      this.activeCardIndex = card.positionIndex;
+
+      this.cardCopy = { ...card };
+
       this.cardIndex = this.activeCardIndex;
     });
+
     this.subscriptions$.push(sub);
   }
   ngOnDestroy() {

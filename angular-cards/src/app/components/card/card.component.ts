@@ -57,7 +57,7 @@ export class CardComponent implements OnInit, OnDestroy {
   constructor(private cs: CardsService, private stateServie: StatesService) {}
   public isCollapsed = true;
   ngOnInit(): void {
-    let sub = this.cs.getActiveCardIndex().subscribe((change) => {
+    let sub = this.cs.activeCard().subscribe((change) => {
       //hides te card content when carousel slides
       this.content.close();
     });

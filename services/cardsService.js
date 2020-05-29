@@ -40,7 +40,7 @@ module.exports = function cardsService() {
   cardsService.updateCard = async (card, user, callback) => {
     try {
       let tmp = await Card.findById(card._id); //find the card in the database
-      if (tmp && tmp.authorId && tmp.authorId != "" && !user) {
+      if (tmp && tmp.authorId && !user) {
         //There is an author, but there is no user logged in
         throw new Error("Fehler: Du bist nicht der Author dieser Karte. Bitte logge dich ein.");
       }

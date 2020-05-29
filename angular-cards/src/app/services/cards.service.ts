@@ -14,25 +14,24 @@ import { NotificationsService } from "./notifications.service";
 export class CardsService {
   //contains lecture abreviation of the current lecutre
   private abrv: string;
+
   //loads cards once from the server and whenever lecture changes
   //and provides them as an Observable
   private cards$: BehaviorSubject<Card[]> = new BehaviorSubject<Card[]>([]);
+  private copy: Card[]; // a copy of the cards in case the user resets tags filter
+
   //provides a Subject to set a new index on which card the carousel should show
   private newCardIndex$: BehaviorSubject<number> = new BehaviorSubject<number>(
     0
   );
-  //provides a Subject of the index of the card that is currently shown
-  //only the carousel shoul set nex values for this subject
-  private activeCardIndex$: BehaviorSubject<number> = new BehaviorSubject<
-    number
-  >(0);
+  //a Subject of the card that is currently shown
   private activeCard$ = new BehaviorSubject<Card>(null);
-  private tags: string[];
+  private tags: string[] = []; //save applied filters
 
-  private copy: Card[];
-  private config = new HttpConfig();
+  private config = new HttpConfig(); //configuration for http communication with the server
+
   constructor(
-    private notifications: NotificationsService,
+    private notifications: NotificationsService, //display errors to user
     private http: HttpClient, //to make calls to the server
     private statesService: StatesService, //for setting the loading state
     private router: Router //used to get the lecture abreviation from the route
@@ -59,7 +58,9 @@ export class CardsService {
             this.statesService.setLoadingState(false);
             this.copy = response.body;
             this.cards$.next(response.body);
-            this.activeCard$.next(response.body[0]);
+            if (response.body) {
+              this.activeCard$.next(response.body[0]); //first card
+            }
           },
           (error) => {
             this.notifications.handleErrors(error);
@@ -142,19 +143,18 @@ export class CardsService {
       );
   }
   goNext() {
-    //show the next slide index
+    //show the next slide index (carousel component handles out of bounds)
     let index = this.newCardIndex$.getValue();
     index++;
-
     this.newCardIndex$.next(index);
   }
   goPrev() {
-    //show the next slide index
+    //show the next slide index (carousel component handles out of bounds)
     let index = this.newCardIndex$.getValue();
     index--;
-
     this.newCardIndex$.next(index);
   }
+
   //only the carousel should be subscribed to this
   getNewCardIndex(): Observable<number> {
     return this.newCardIndex$.asObservable();
@@ -165,27 +165,25 @@ export class CardsService {
   }
   //only the carousel should call this method (on the sliding event)
   setActiveCardIndex(i: number) {
-    this.activeCard$.next(this.cards$.getValue()[i]);
-    this.activeCardIndex$.next(i);
+    let active = this.cards$.getValue()[i];
+    active.positionIndex = i;
+    this.activeCard$.next(active);
   }
-  //subsribe to this function to always get the index of the card that is currently shown
-  getActiveCardIndex(): Observable<number> {
-    return this.activeCardIndex$.asObservable();
-  }
+  //subsribe to this function to always get the card that is currently shown
   activeCard(): Observable<Card> {
     return this.activeCard$.asObservable();
   }
 
   applyFilter(tags: string[]): Observable<boolean> {
     let cards = this.cards$.getValue();
-
     if (this.tags === tags || tags === undefined) {
       return of(false);
-    } else if (tags.length == 0) {
+    } else if (tags.length === 0) {
       this.resetFilter();
       return of(false);
     }
     this.tags = tags;
+    //filter out cards which dont match any of the tags
     let res = cards.filter((card) => {
       for (const tag of tags) {
         if (card.tags.includes(tag)) {
@@ -195,11 +193,11 @@ export class CardsService {
       return false;
     });
     this.cards$.next(res);
-    this.setActiveCardIndex(0);
+    this.setNewCardIndex(0);
     return of(true);
   }
   resetFilter() {
     this.setNewCardIndex(0);
-    this.cards$.next(this.copy);
+    this.cards$.next(this.copy); //reset the cards to their initial state
   }
 }

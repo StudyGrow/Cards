@@ -106,7 +106,7 @@ router.put(
     } else {
       req.services.cards.updateCard(req.body.card, req.user, (err) => {
         if (err) {
-          res.status(501).send(err.message);
+          res.status(422).send(err.message);
         } else {
           res.status(200).send();
         }

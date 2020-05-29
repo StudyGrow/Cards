@@ -4,6 +4,7 @@ export class Card {
   abrv: string;
   latex: number;
 
+  positionIndex?: number;
   _id?: string;
   authorId?: string;
   authorName?: string;
