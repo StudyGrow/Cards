@@ -83,7 +83,7 @@ export class UserService implements CanActivate {
         (res) => {
           this.statesService.setLoadingState(false);
           this.setUserId(res.body._id);
-          this.notifications.removeLoginInfo();
+          this.notifications.clearNotifications("success");
           this.notifications.addNotification(
             new SuccessMessage(`Herzlich willkommen ${res.body.username}`)
           );

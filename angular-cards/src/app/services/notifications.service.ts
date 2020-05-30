@@ -14,12 +14,14 @@ export class NotificationsService {
     notifications.push(n);
   }
 
-  //removes a specific error from the error array
+  //removes a specific notification
   removeNotification(index: number) {
     let notifications = this.notifications$.getValue();
     notifications.splice(index, 1); //remove error at position index
     this.notifications$.next(notifications);
   }
+
+  //remove notifations by type
   clearNotifications(...types: string[]) {
     let notifs = this.notifications$.getValue();
     types.forEach((type) => {
@@ -32,26 +34,19 @@ export class NotificationsService {
 
     this.notifications$.next(notifs);
   }
-  removeLoginInfo() {
-    let notifs = this.notifications$.getValue();
-    for (let i = 0; i < notifs.length; i++) {
-      if (notifs[i] instanceof InfoMessage) {
-        //only check if notif is of type InfoMessage as LoginInfo is the only info message for now
-        this.removeNotification(i);
-      }
-    }
-  }
-  getNotifications(): Observable<Notification[]> {
+
+  notifications(): Observable<Notification[]> {
     return this.notifications$.asObservable();
   }
 
   //because errors suck and we dont have a unified error handling system in the backend
   handleErrors(error) {
+    this.clearNotifications("warning", "success", "info");
     let err = error.error;
     console.log(error);
     if (error.status == 400) {
       this.addNotification(
-        new InfoMessage("Du musst dich einloggen, um diese Seite zu besuchen")
+        new HttpError("Du musst dich einloggen, um diese Seite zu besuchen")
       );
     } else if (error.status == 422) {
       if (typeof err == "string") {
