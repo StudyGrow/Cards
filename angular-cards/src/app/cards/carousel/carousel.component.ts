@@ -1,4 +1,10 @@
-import { Component, OnInit, ViewChild, OnDestroy } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  OnDestroy,
+  HostListener,
+} from "@angular/core";
 
 import { StatesService } from "../../services/states.service";
 import { CardsService } from "../../services/cards.service";
@@ -15,6 +21,18 @@ import { Subscription } from "rxjs";
 export class CarouselComponent implements OnInit, OnDestroy {
   @ViewChild("mycarousel", { static: false }) public carousel: any;
 
+  @HostListener("window:keyup", ["$event"]) handleKeyDown(
+    event: KeyboardEvent
+  ) {
+    if (!this.inTypingField) {
+      if (event.key == "ArrowRight") {
+        this.carousel.nextSlide();
+      } else if (event.key == "ArrowLeft") {
+        this.carousel.previousSlide();
+      }
+    }
+  }
+  private inTypingField: boolean;
   loading: boolean;
   cards: Card[]; //array of all the cards
   activeSlide: number;
@@ -35,7 +53,10 @@ export class CarouselComponent implements OnInit, OnDestroy {
       .getUserId()
       .subscribe((userId) => (this.userId = userId));
     this.subscriptions$.push(sub);
-
+    sub = this.stateService
+      .getTyping()
+      .subscribe((val) => (this.inTypingField = val));
+    this.subscriptions$.push(sub);
     sub = this.cardsService.getCards().subscribe((cards) => {
       this.loading = true;
       this.cards = [];

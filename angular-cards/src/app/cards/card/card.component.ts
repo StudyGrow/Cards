@@ -12,6 +12,7 @@ import { Subscription } from "rxjs";
 import { parse, HtmlGenerator } from "latex.js/dist/latex.js";
 
 import { SafeHtmlPipe } from "../../shared/safe-html.pipe";
+import { StatesService } from "src/app/services/states.service";
 @Component({
   selector: "app-card",
   templateUrl: "./card.component.html",
@@ -19,7 +20,9 @@ import { SafeHtmlPipe } from "../../shared/safe-html.pipe";
 })
 export class CardComponent implements OnInit, OnDestroy {
   @Input() card: Card;
+  @Input() index: number;
   inTypingField: boolean = false;
+  activeIndex: number;
   @HostListener("swipeleft", ["$event"]) public swipePrev(event: any) {
     this.cs.goNext();
   }
@@ -27,9 +30,10 @@ export class CardComponent implements OnInit, OnDestroy {
     this.cs.goPrev();
   }
 
-  @HostListener("window:keyup", ["$event"])
-  handleKeyDown(event: KeyboardEvent) {
-    if (!this.inTypingField) {
+  @HostListener("window:keyup", ["$event"]) handleKeyDown(
+    event: KeyboardEvent
+  ) {
+    if (!this.inTypingField && this.activeIndex == this.index) {
       if (event.key == "ArrowDown") {
         this.content.open();
       } else if (event.key == "ArrowUp") {
@@ -43,11 +47,12 @@ export class CardComponent implements OnInit, OnDestroy {
   styleAppend = `<link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/latex.js@0.12.1/dist/css/katex.css"><link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/latex.js@0.12.1/dist/css/article.css"><script src="https://cdn.jsdelivr.net/npm/latex.js@0.12.1/dist/dist/js/base.js"></script>`;
   parsed: any = [];
 
-  constructor(private cs: CardsService) {}
+  constructor(private cs: CardsService, private states: StatesService) {}
   public isCollapsed = true;
   ngOnInit(): void {
-    let sub = this.cs.activeCard().subscribe((change) => {
+    let sub = this.cs.activeCard().subscribe((card) => {
       //hides te card content when carousel slides
+      this.activeIndex = card.positionIndex || 0;
       this.content.close();
     });
     if (this.card.latex != 0) {
@@ -55,6 +60,10 @@ export class CardComponent implements OnInit, OnDestroy {
     } else {
       this.parsed.push(this.card.content);
     }
+    this.subscriptions$.push(sub);
+    sub = this.states
+      .getTyping()
+      .subscribe((val) => (this.inTypingField = val));
     this.subscriptions$.push(sub);
   }
 

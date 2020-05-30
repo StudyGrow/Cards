@@ -64,7 +64,7 @@
         *ngFor="let card of cards; index as i"
         [id]="i.toString()"
       >
-        <app-card [card]="card"></app-card>
+        <app-card [card]="card" [index]="i"></app-card>
       </mdb-carousel-item>
     </mdb-carousel>
   </div>

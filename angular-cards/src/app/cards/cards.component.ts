@@ -33,16 +33,6 @@ export class CardsComponent implements OnInit {
   onClick() {
     this.stateServie.setHideSuggestions(true);
   }
-  @HostListener("window:keyup", ["$event"])
-  handleKeyDown(event: KeyboardEvent) {
-    if (!this.inTypingField) {
-      if (event.key == "ArrowRight") {
-        this.cardsService.goNext();
-      } else if (event.key == "ArrowLeft") {
-        this.cardsService.goPrev();
-      }
-    }
-  }
   constructor(
     private route: ActivatedRoute,
     private stateServie: StatesService,
