@@ -1,6 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { Vorlesung } from "../../models/Vorlesung";
-import { StatesService } from "../../services/states.service";
+import { UserService } from "src/app/services/user.service";
 
 @Component({
   selector: "app-home-page",
@@ -8,7 +7,12 @@ import { StatesService } from "../../services/states.service";
   styleUrls: ["./home-page.component.css"],
 })
 export class HomePageComponent implements OnInit {
-  constructor(private statesService: StatesService) {}
+  constructor(private user: UserService) {}
+  authenticated: boolean;
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.user.authentication().subscribe((val) => {
+      this.authenticated = val;
+    });
+  }
 }

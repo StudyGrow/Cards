@@ -1,4 +1,4 @@
-<div class="row">
+<div *ngIf="authenticated" class="row">
   <div class="col-lg-6 col-xs-12">
     <app-lectures></app-lectures>
     <br />
@@ -7,4 +7,8 @@
   <div class="col-lg-4 col-xs-12">
     <app-add-lecture-form></app-add-lecture-form>
   </div>
+</div>
+
+<div *ngIf="!authenticated">
+  <app-lectures></app-lectures>
 </div>

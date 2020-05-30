@@ -49,6 +49,11 @@
   Vorlesungen, für die bisher Karten hinzugefügt wurden. Wähle deine Vorlesung
   aus. Falls du die Vorlesung nich in der Liste findest, dann kannst du sie
   hinzufügen indem du das Formular ausfüllst und auf "Hinzufügen" drückst.
+  <span *ngIf="!loggedIn">
+    Dafür musst du dich jedoch
+    <a routerLink="/login">einloggen</a> oder einen
+    <a routerLink="/signup"> Account erstellen</a>.
+  </span>
   <br />
   Nachdem du auf die Vorlesung gedrückt hast kommst du auf eine neue Seite, auf
   der du dir alle Karteikarten, die zu der Vorlesung bereits hinzugefügt wurden,
