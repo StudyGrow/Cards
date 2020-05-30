@@ -2,7 +2,7 @@
 const express = require("express");
 const { check, query, validationResult } = require("express-validator"); //to validate the request
 const router = express.Router();
-
+const auth = require("./authentication");
 //Get all lectures
 router.get("/", (req, res) => {
   req.services.lectures.getLectures((err, lectures) => {
@@ -65,6 +65,7 @@ router.post(
       .isLength({ min: 1, max: 60 })
       .withMessage("Lecture name must be between between 1 and 60 characters"),
   ],
+  auth,
   (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {

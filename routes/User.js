@@ -2,7 +2,7 @@
 const express = require("express");
 const { check, validationResult } = require("express-validator"); //checks the request
 const router = express.Router();
-
+const auth = require("./authentication");
 //create a new user account
 router.post(
   "/new",
@@ -36,13 +36,7 @@ router.post(
     }
   }
 );
-function auth(req, res, next) {
-  if (req.isAuthenticated()) {
-    next();
-  } else {
-    res.status(400).send("login required"); //send message to client
-  }
-}
+
 router.get("/info", auth, (req, res) => {
   req.services.user.getAccountInfo(req.user, (err, info) => {
     if (err) {
