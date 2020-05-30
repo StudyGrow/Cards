@@ -3,6 +3,7 @@ const express = require("express");
 const { check, validationResult } = require("express-validator"); //checks the request
 const router = express.Router();
 const auth = require("./authentication");
+const admin = require("./adminAuthentication");
 //create a new user account
 router.post(
   "/new",
@@ -36,7 +37,9 @@ router.post(
     }
   }
 );
-
+router.get("/admin", admin, (req, res) => {
+  res.send("Hallo admin");
+});
 router.get("/info", auth, (req, res) => {
   req.services.user.getAccountInfo(req.user, (err, info) => {
     if (err) {
