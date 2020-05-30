@@ -25,9 +25,9 @@ export class CarouselComponent implements OnInit, OnDestroy {
     event: KeyboardEvent
   ) {
     if (!this.inTypingField) {
-      if (event.key == "ArrowRight") {
+      if (this.carousel && event.key == "ArrowRight") {
         this.carousel.nextSlide();
-      } else if (event.key == "ArrowLeft") {
+      } else if (this.carousel && event.key == "ArrowLeft") {
         this.carousel.previousSlide();
       }
     }
@@ -113,7 +113,9 @@ export class CarouselComponent implements OnInit, OnDestroy {
   }
 
   selectSlide(n: number) {
-    this.carousel.selectSlide(n.toString());
+    if (this.carousel) {
+      this.carousel.selectSlide(n.toString());
+    }
   }
   showRandomCard() {
     var rand: number = this.activeSlide;
@@ -123,15 +125,17 @@ export class CarouselComponent implements OnInit, OnDestroy {
       count++;
       rand = Math.floor(Math.random() * this.cards.length); //random Cardindex
     }
-    this.carousel.selectSlide(rand.toString());
+    if (this.carousel) {
+      this.carousel.selectSlide(rand.toString());
+    }
   }
   goToPrev() {
-    if (this.cards.length > 1 && this.formMode != "edit") {
+    if (this.carousel && this.cards.length > 1 && this.formMode != "edit") {
       this.carousel.previousSlide();
     }
   }
   goToNext() {
-    if (this.cards.length > 1 && this.formMode != "edit") {
+    if (this.carousel && this.cards.length > 1 && this.formMode != "edit") {
       this.carousel.nextSlide();
     }
   }

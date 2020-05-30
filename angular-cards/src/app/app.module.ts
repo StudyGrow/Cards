@@ -2,9 +2,8 @@
 import { BrowserModule } from "@angular/platform-browser";
 import { NgModule, Injectable, LOCALE_ID } from "@angular/core";
 import { HttpClientModule } from "@angular/common/http";
-
+import { SharedModule } from "./shared/shared.module";
 import { AppRoutingModule } from "./app-routing.module";
-import { FormsModule } from "@angular/forms";
 
 //Material Modules
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
@@ -15,7 +14,7 @@ import { MatSelectModule } from "@angular/material/select";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { MatMenuModule } from "@angular/material/menu";
-
+import { MatChipsModule } from "@angular/material/chips";
 import { MatAutocompleteModule } from "@angular/material/autocomplete";
 import { MatIconModule } from "@angular/material/icon";
 
@@ -84,40 +83,34 @@ export class MyHammerConfig extends HammerGestureConfig {
     AppComponent,
     NavBarComponent,
     SearchBarComponent,
-
     AddLectureFormComponent,
     LecturesComponent,
     HomePageComponent,
-
     LoginPageComponent,
     LoginFormComponent,
     SignupPageComponent,
     SignupFormComponent,
     FooterComponent,
     AboutComponent,
-
     ErrorPageComponent,
-
     FilterTagsComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    FormsModule,
     BrowserAnimationsModule,
     MatProgressBarModule,
     MatButtonModule,
     MatDialogModule,
-
+    MatChipsModule,
     MatInputModule,
     MatMenuModule,
-
+    SharedModule,
     MatFormFieldModule,
     MatAutocompleteModule,
     MatIconModule,
     MatSelectModule,
-
     HammerModule,
   ],
   providers: [

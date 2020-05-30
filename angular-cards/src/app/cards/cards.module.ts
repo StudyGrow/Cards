@@ -15,7 +15,6 @@ import { CarouselModule, WavesModule } from "angular-bootstrap-md";
 @NgModule({
   declarations: [
     CardsComponent,
-
     CardComponent,
     AddCardFormComponent,
     CarouselComponent,
