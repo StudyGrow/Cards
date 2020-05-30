@@ -1,11 +1,10 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
-import { NgForm } from "@angular/forms";
 import { StatesService } from "../../services/states.service";
 import { CardsService } from "../../services/cards.service";
 import { LecturesService } from "../../services/lectures.service";
 import { Card } from "../../models/Card";
 import { Vorlesung } from "src/app/models/Vorlesung";
-import { Observable, Subscription } from "rxjs";
+import { Subscription } from "rxjs";
 
 @Component({
   selector: "app-add-card-form",
@@ -37,7 +36,7 @@ export class AddCardFormComponent implements OnInit, OnDestroy {
     });
   }
   setStyle() {}
-  onSubmit(f: NgForm) {
+  onSubmit(f) {
     this.newCard = new Card(
       f.value.thema,
       f.value.content,

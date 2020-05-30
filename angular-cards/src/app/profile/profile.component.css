@@ -1,10 +1,9 @@
 #list {
   position: sticky;
   top: 5px;
-}
-#navigation {
   margin-bottom: 10px;
 }
+
 #sub {
   background: white;
   overflow-y: auto;
