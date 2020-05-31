@@ -2,6 +2,8 @@
 const User = require("../models/User");
 const Card = require("../models/Card");
 const bcrypt = require("bcryptjs"); //used to encrypt and decrypt passwords
+const mail = require("./mailService");
+const crypto = require("crypto-random-string")
 
 module.exports = function userService() {
   //create a new Account for the site
@@ -106,6 +108,8 @@ function addAccount(form, callback) {
     username: form.username,
     email: form.email,
     creationDate: new Date(),
+    confirmed: false,
+    token: crypto(32)
   });
   hashPassword(form.password, (err, password) => {
     if (password) {
@@ -114,6 +118,7 @@ function addAccount(form, callback) {
         if (err) {
           callback(err, false);
         } else {
+          mail.sendConfirmationMail(user)
           callback(false, user);
         }
       });

@@ -5,4 +5,5 @@ module.exports = {
   cards: require("./cardsService")(),
   user: require("./userService")(),
   lectures: require("./vorlesungenService")(),
+  mail: require("./mailService")(),
 };

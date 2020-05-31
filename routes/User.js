@@ -31,7 +31,7 @@ router.post(
           res.status(422).send(err.message);
         } else {
           req.login(user._id, () => {});
-          res.status(200).send({ _id: user._id, username: user.username, email: user.email });
+          res.status(200).send({ _id: user._id, username: user.username, email: user.email, confirmed: user.confirmed});
         }
       });
     }
