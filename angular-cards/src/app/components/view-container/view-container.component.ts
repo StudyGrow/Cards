@@ -33,4 +33,15 @@ export class ViewContainerComponent implements OnInit {
   setAlertClass(notif: Notification) {
     return `alert alert-${notif.type} alert-dismissible fade show`;
   }
+
+  backToTop() {
+    let scrollToTop = window.setInterval(() => {
+      let pos = window.pageYOffset;
+      if (pos > 0) {
+        window.scrollTo(0, pos - window.innerHeight * 0.05); // how far to scroll on each step
+      } else {
+        window.clearInterval(scrollToTop);
+      }
+    }, 16);
+  }
 }

@@ -58,11 +58,11 @@ export class CarouselComponent implements OnInit, OnDestroy {
       .subscribe((val) => (this.inTypingField = val));
     this.subscriptions$.push(sub);
     sub = this.cardsService.getCards().subscribe((cards) => {
-      this.loading = true;
+      this.stateService.setLoadingState(true);
       this.cards = [];
       setTimeout(() => {
         //use timeout here because mdbootstrap will not set active slide accordomgly otherwise
-        this.loading = false;
+        this.stateService.setLoadingState(false);
         this.cards = cards;
       }, 500);
     }); //load the specific cards from the server by subscribing to the observable that the card-service provides

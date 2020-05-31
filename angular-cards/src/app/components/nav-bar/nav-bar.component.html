@@ -17,5 +17,8 @@
   </div>
 </nav>
 <div id="progress">
-  <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
+  <mat-progress-bar
+    *ngIf="loading$ | async"
+    mode="indeterminate"
+  ></mat-progress-bar>
 </div>
