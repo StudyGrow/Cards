@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { UserInfo } from "../models/UserInfo";
-import { Observable, BehaviorSubject, of } from "rxjs";
+import { Observable, BehaviorSubject, of, Subject, Subscription } from "rxjs";
 import { Router, CanActivate } from "@angular/router";
 import { tap, map } from "rxjs/operators";
 import { InfoMessage, HttpError, SuccessMessage } from "../models/Notification";
@@ -17,7 +17,6 @@ export class UserService implements CanActivate {
   private userId$ = new BehaviorSubject<string>(null); //subject which stores the userid
   private accountInfo$: BehaviorSubject<UserInfo>; //stores account info of the user
   private auth$: BehaviorSubject<boolean>; //subject which holds wether the user is authenticated
-
   private config = new HttpConfig();
 
   constructor(
@@ -287,4 +286,5 @@ export class UserService implements CanActivate {
       this.setUserId(null);
     }
   }
+
 }
