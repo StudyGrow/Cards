@@ -1,15 +1,3 @@
-button {
-  margin-left: 10px;
-}
-.menu {
-  background-color: bisque;
-}
-#filter {
-  margin-top: 5px;
-  margin-left: 10px;
-  padding-left: 50px;
-  width: 90%;
-}
 mat-form-field {
-  width: 80%;
+  margin: 7px;
 }

@@ -12,6 +12,7 @@ export class StatesService {
   private loading$: BehaviorSubject<boolean> = new BehaviorSubject(false);
   private hideSgtn$: BehaviorSubject<boolean> = new BehaviorSubject(true);
   private typing$: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  private drawertoggler$ = new BehaviorSubject(false);
   constructor() {}
 
   getFormMode(): Observable<string> {
@@ -46,5 +47,15 @@ export class StatesService {
   }
   getHideSuggestions(): Observable<boolean> {
     return this.hideSgtn$.asObservable();
+  }
+  toggleDrawer() {
+    let curr = this.drawertoggler$.getValue();
+    this.drawertoggler$.next(!curr);
+  }
+  closeDrawer() {
+    this.drawertoggler$.next(false);
+  }
+  toggle(): Observable<boolean> {
+    return this.drawertoggler$.asObservable();
   }
 }

@@ -17,7 +17,9 @@ import { MatMenuModule } from "@angular/material/menu";
 import { MatChipsModule } from "@angular/material/chips";
 import { MatAutocompleteModule } from "@angular/material/autocomplete";
 import { MatIconModule } from "@angular/material/icon";
-
+import { MatSidenavModule } from "@angular/material/sidenav";
+import { MatListModule } from "@angular/material/list";
+import { MatDividerModule } from "@angular/material/divider";
 //Gestures
 import {
   HammerModule,
@@ -49,6 +51,8 @@ import { AboutComponent } from "./routes/about/about.component";
 import { ErrorPageComponent } from "./routes/error-page/error-page.component";
 
 import { FilterTagsComponent } from "./components/filter-tags/filter-tags.component";
+import { NavListComponent } from "./components/nav-list/nav-list.component";
+import { ViewContainerComponent } from "./components/view-container/view-container.component";
 
 declare var Hammer: any;
 //Config to allow swipe gestures on carousel
@@ -94,6 +98,8 @@ export class MyHammerConfig extends HammerGestureConfig {
     AboutComponent,
     ErrorPageComponent,
     FilterTagsComponent,
+    NavListComponent,
+    ViewContainerComponent,
   ],
   imports: [
     BrowserModule,
@@ -102,8 +108,11 @@ export class MyHammerConfig extends HammerGestureConfig {
     BrowserAnimationsModule,
     MatProgressBarModule,
     MatButtonModule,
+    MatListModule,
     MatDialogModule,
+    MatSidenavModule,
     MatChipsModule,
+    MatDividerModule,
     MatInputModule,
     MatMenuModule,
     SharedModule,

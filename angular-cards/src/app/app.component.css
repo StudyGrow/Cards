@@ -1,3 +1,9 @@
 .container {
   padding: 15px;
 }
+app-nav-bar {
+  height: 10%;
+}
+app-view-container {
+  height: 90%;
+}

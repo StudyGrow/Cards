@@ -28,7 +28,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
   public cards: Card[];
   public notifications: Notification[];
   subscriptions$: Subscription[] = [];
-  public loading: boolean = false;
+  public loading: boolean = null;
   public constructor(
     private router: Router,
     private titleService: Title,
@@ -62,6 +62,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
             cardsSub.unsubscribe();
           }
         }
+        this.statesService.closeDrawer();
         this.userService.clearAccountInfo();
         //clear messages on route change
         if (this.router.url == "/") {
@@ -82,15 +83,11 @@ export class NavBarComponent implements OnInit, OnDestroy {
       sub.unsubscribe();
     });
   }
-  closeAlert(i: number) {
-    this.notification.removeNotification(i);
-  }
+
   isActive(path: string): string {
     return path === this.router.url ? "active" : "";
   }
-  setAlertClass(notif: Notification) {
-    return `alert alert-${notif.type} alert-dismissible fade show`;
-  }
+
   setPageTitle(): void {
     let currentTitle: string;
     switch (this.router.url) {
@@ -111,7 +108,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
     }
     this.titleService.setTitle(currentTitle);
   }
-  logout() {
-    this.userService.logout();
+  drawerToggle() {
+    this.statesService.toggleDrawer();
   }
 }
