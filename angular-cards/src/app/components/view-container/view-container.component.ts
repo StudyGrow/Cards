@@ -1,4 +1,10 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  HostListener,
+  ElementRef,
+} from "@angular/core";
 import { StatesService } from "src/app/services/states.service";
 import { NotificationsService } from "src/app/services/notifications.service";
 import { Observable } from "rxjs";
@@ -6,25 +12,46 @@ import { Notification } from "../../models/Notification";
 import {
   pulseOnEnterAnimation,
   fadeOutOnLeaveAnimation,
+  fadeInOnEnterAnimation,
 } from "angular-animations";
+import { ScrollDispatcher, CdkScrollable } from "@angular/cdk/overlay";
+import { MatDrawerContent } from "@angular/material/sidenav";
 @Component({
   selector: "app-view-container",
   templateUrl: "./view-container.component.html",
   styleUrls: ["./view-container.component.css"],
   animations: [
+    fadeInOnEnterAnimation({ duration: 200 }),
+
     pulseOnEnterAnimation({ scale: 1.05, duration: 500 }),
     fadeOutOnLeaveAnimation({ duration: 200 }),
   ],
 })
 export class ViewContainerComponent implements OnInit {
+  public pageOffset: number = 0;
   @ViewChild("drawer", { static: true }) drawer;
+
   notifications$: Observable<Notification[]>;
   constructor(
+    private scroll: ScrollDispatcher,
     private states: StatesService,
     private notifService: NotificationsService
   ) {}
 
+  setOffset(event) {
+    if (event.measureScrollOffset("top") > 50 && this.pageOffset < 50) {
+      this.pageOffset = 51;
+    } else {
+      this.pageOffset = 49;
+    }
+    this.pageOffset = event.measureScrollOffset("top");
+    console.log(this.pageOffset > 50);
+  }
+
   ngOnInit(): void {
+    this.scroll.scrolled().subscribe((data: MatDrawerContent) => {
+      this.setOffset(data);
+    });
     this.notifications$ = this.notifService.notifications();
     this.states.toggle().subscribe((val) => {
       if (val === true) {

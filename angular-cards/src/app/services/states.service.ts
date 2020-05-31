@@ -10,7 +10,7 @@ export class StatesService {
   private formMode$: BehaviorSubject<string> = new BehaviorSubject("none");
   private lastFormMode: string;
   private loadingCount = 0;
-  private loading$: BehaviorSubject<boolean> = new BehaviorSubject(true);
+  private loading$: BehaviorSubject<boolean> = new BehaviorSubject(false);
   private hideSgtn$: BehaviorSubject<boolean> = new BehaviorSubject(true);
   private typing$: BehaviorSubject<boolean> = new BehaviorSubject(false);
   private drawertoggler$ = new BehaviorSubject(false);

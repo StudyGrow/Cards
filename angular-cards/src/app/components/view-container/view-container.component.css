@@ -8,3 +8,11 @@ mat-drawer-content {
 mat-drawer {
   min-width: 200px;
 }
+button {
+  position: fixed;
+  outline: none;
+  z-index: 1000;
+  bottom: 50px;
+  right: 10px;
+  margin: 0;
+}

@@ -2,27 +2,39 @@
   <mat-drawer #drawer mode="over" (closedStart)="closing()">
     <app-nav-list></app-nav-list>
   </mat-drawer>
-  <mat-drawer-content>
-    <div class="container" *ngIf="notifications$ | async as notifications">
-      <div
-        #alert
-        *ngFor="let notif of notifications; index as i"
-        [@pulseOnEnter]
-        [@fadeOutOnLeave]
-        [class]="setAlertClass(notif)"
-        role="alert"
-      >
-        <button
-          type="button"
-          class="close"
-          aria-label="Close"
-          (click)="closeAlert(i)"
+  <mat-drawer-content cdkScrollable>
+    <div class="container">
+      <div class="" *ngIf="notifications$ | async as notifications">
+        <div
+          #alert
+          *ngFor="let notif of notifications; index as i"
+          [@pulseOnEnter]
+          [@fadeOutOnLeave]
+          [class]="setAlertClass(notif)"
+          role="alert"
         >
-          <span aria-hidden="true">&times;</span>
-        </button>
-        {{ notif.message }}
+          <button
+            type="button"
+            class="close"
+            aria-label="Close"
+            (click)="closeAlert(i)"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+          {{ notif.message }}
+        </div>
       </div>
       <router-outlet></router-outlet>
+      <div
+        *ngIf="pageOffset > 50"
+        [@fadeInOnEnter]
+        [@fadeOutOnLeave]
+        class="btn-div"
+      >
+        <button id="up" mat-fab color="primary" (click)="backToTop()">
+          <mat-icon matSuffix>arrow_upward</mat-icon>
+        </button>
+      </div>
     </div>
   </mat-drawer-content>
 </mat-drawer-container>
