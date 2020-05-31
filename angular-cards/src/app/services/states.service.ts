@@ -9,6 +9,7 @@ import { BehaviorSubject, Observable } from "rxjs";
 export class StatesService {
   private formMode$: BehaviorSubject<string> = new BehaviorSubject("none");
   private lastFormMode: string;
+  private loadingCount = 0;
   private loading$: BehaviorSubject<boolean> = new BehaviorSubject(true);
   private hideSgtn$: BehaviorSubject<boolean> = new BehaviorSubject(true);
   private typing$: BehaviorSubject<boolean> = new BehaviorSubject(false);
@@ -40,7 +41,18 @@ export class StatesService {
     return this.loading$.asObservable();
   }
   setLoadingState(value: boolean) {
-    this.loading$.next(value);
+    if (value) {
+      this.loadingCount++;
+      if (this.loadingCount == 1) {
+        this.loading$.next(true);
+      }
+    } else {
+      this.loadingCount--;
+      if (this.loadingCount <= 0) {
+        this.loadingCount = 0;
+        this.loading$.next(false);
+      }
+    }
   }
   setHideSuggestions(value: boolean) {
     this.hideSgtn$.next(value);

@@ -252,6 +252,7 @@ export class UserService implements CanActivate {
           this.setUserId(null);
           this.setLogin(false);
           this.router.navigateByUrl("/");
+          this.statesService.closeDrawer();
           this.notifications.addNotification(
             new SuccessMessage("Erfolgreich abgemeldet")
           );
@@ -287,5 +288,4 @@ export class UserService implements CanActivate {
       this.setUserId(null);
     }
   }
-
 }

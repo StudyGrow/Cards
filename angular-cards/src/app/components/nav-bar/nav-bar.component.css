@@ -34,3 +34,6 @@ mat-progress-bar {
   margin-right: auto;
   margin-left: auto;
 }
+#col {
+  padding: 0;
+}

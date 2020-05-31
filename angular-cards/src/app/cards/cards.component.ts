@@ -48,9 +48,4 @@ export class CardsComponent implements OnInit {
 
     this.stateServie.getFormMode().subscribe((mode) => (this.formMode = mode));
   }
-
-  setLoading(loading: boolean): void {
-    this.loading = loading;
-    this.stateServie.setLoadingState(loading);
-  }
 }
