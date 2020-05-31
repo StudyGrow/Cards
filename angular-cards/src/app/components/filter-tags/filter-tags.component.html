@@ -20,7 +20,10 @@
       [matChipInputFor]="chipList"
       [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
       (matChipInputTokenEnd)="add($event)"
+      (focus)="inField()"
+      (blur)="resetNav()"
     />
+    <mat-icon matSuffix>filter_list</mat-icon>
   </mat-chip-list>
   <mat-autocomplete
     #auto="matAutocomplete"

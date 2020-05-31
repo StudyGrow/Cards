@@ -9,26 +9,19 @@ import { NotificationsService } from "../../services/notifications.service";
 import { StatesService } from "src/app/services/states.service";
 import { Notification } from "../../models/Notification";
 import { UserService } from "../../services/user.service";
-import {
-  pulseOnEnterAnimation,
-  fadeOutOnLeaveAnimation,
-} from "angular-animations";
-import { Subscription, Observable } from "rxjs";
+
+import { Subscription } from "rxjs";
 @Component({
   selector: "app-nav-bar",
   templateUrl: "./nav-bar.component.html",
   styleUrls: ["./nav-bar.component.css"],
-  animations: [
-    pulseOnEnterAnimation({ scale: 1.05, duration: 500 }),
-    fadeOutOnLeaveAnimation({ duration: 200 }),
-  ],
 })
 export class NavBarComponent implements OnInit, OnDestroy {
   public loggedIn: boolean;
   public cards: Card[] = [];
   public notifications: Notification[];
   subscriptions$: Subscription[] = [];
-  public loading$: Observable<boolean>;
+  public loading: boolean;
   private cardsSub: Subscription;
   public constructor(
     private router: Router,
@@ -39,15 +32,18 @@ export class NavBarComponent implements OnInit, OnDestroy {
     private notification: NotificationsService,
     private userService: UserService
   ) {}
-
+  ngAfterViewInit() {
+    this.statesService.getLoadingState().subscribe((val) => {
+      this.loading = val;
+      this.cdr.detectChanges();
+    });
+  }
   ngOnInit(): void {
     this.setPageTitle();
     let sub = this.userService
       .authentication()
       .subscribe((val) => (this.loggedIn = val));
     this.subscriptions$.push(sub);
-
-    this.loading$ = this.statesService.getLoadingState();
 
     this.router.events.subscribe((e) => {
       if (e instanceof NavigationEnd) {
@@ -63,16 +59,6 @@ export class NavBarComponent implements OnInit, OnDestroy {
     this.subscriptions$.push(sub);
   }
   handleRouteChanges() {
-    if (!this.router.url.match(/vorlesung/)) {
-      this.cards = null;
-      if (this.cardsSub) {
-        this.cardsSub.unsubscribe();
-      }
-    } else if (!this.cards) {
-      this.cardsSub = this.cardsService.getCards().subscribe((cards) => {
-        this.cards = cards;
-      });
-    }
     this.statesService.closeDrawer();
     if (!this.router.url.match(/account/)) {
       this.userService.clearAccountInfo();

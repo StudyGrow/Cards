@@ -1,5 +1,5 @@
 <mat-drawer-container class="example-container" [hasBackdrop]="true">
-  <mat-drawer #drawer mode="over">
+  <mat-drawer #drawer mode="over" (closedStart)="closing()">
     <app-nav-list></app-nav-list>
   </mat-drawer>
   <mat-drawer-content>

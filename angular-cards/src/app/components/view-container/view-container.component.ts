@@ -3,11 +3,18 @@ import { StatesService } from "src/app/services/states.service";
 import { NotificationsService } from "src/app/services/notifications.service";
 import { Observable } from "rxjs";
 import { Notification } from "../../models/Notification";
-
+import {
+  pulseOnEnterAnimation,
+  fadeOutOnLeaveAnimation,
+} from "angular-animations";
 @Component({
   selector: "app-view-container",
   templateUrl: "./view-container.component.html",
   styleUrls: ["./view-container.component.css"],
+  animations: [
+    pulseOnEnterAnimation({ scale: 1.05, duration: 500 }),
+    fadeOutOnLeaveAnimation({ duration: 200 }),
+  ],
 })
 export class ViewContainerComponent implements OnInit {
   @ViewChild("drawer", { static: true }) drawer;
@@ -33,7 +40,9 @@ export class ViewContainerComponent implements OnInit {
   setAlertClass(notif: Notification) {
     return `alert alert-${notif.type} alert-dismissible fade show`;
   }
-
+  closing() {
+    this.states.closeDrawer();
+  }
   backToTop() {
     let scrollToTop = window.setInterval(() => {
       let pos = window.pageYOffset;

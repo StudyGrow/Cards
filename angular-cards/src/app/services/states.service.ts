@@ -36,13 +36,11 @@ export class StatesService {
   getTyping(): Observable<boolean> {
     return this.typing$.asObservable();
   }
-  getLoadingState(): BehaviorSubject<boolean> {
-    return this.loading$;
+  getLoadingState(): Observable<boolean> {
+    return this.loading$.asObservable();
   }
   setLoadingState(value: boolean) {
-    setTimeout(() => {
-      this.loading$.next(value);
-    });
+    this.loading$.next(value);
   }
   setHideSuggestions(value: boolean) {
     this.hideSgtn$.next(value);

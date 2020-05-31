@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 
-import { Observable, BehaviorSubject, of } from "rxjs";
+import { Observable, BehaviorSubject, of, from } from "rxjs";
 import { Card } from "../models/Card";
 import { StatesService } from "./states.service";
 import { tap, map } from "rxjs/operators";
@@ -18,7 +18,7 @@ export class CardsService {
   //loads cards once from the server and whenever lecture changes
   //and provides them as an Observable
   private cards$: BehaviorSubject<Card[]> = new BehaviorSubject<Card[]>([]);
-  private copy: Card[]; // a copy of the cards in case the user resets tags filter
+  private copy: Card[] = []; // a copy of the cards in case the user resets tags filter
 
   //provides a Subject to set a new index on which card the carousel should show
   private newCardIndex$: BehaviorSubject<number> = new BehaviorSubject<number>(
@@ -38,13 +38,12 @@ export class CardsService {
   ) {}
 
   getCards(): Observable<Card[]> {
-    this.statesService.setLoadingState(true);
     let abrv = this.router.url.split(/vorlesung\//)[1]; //get the lecture abreviation from the route
-    if (this.abrv === abrv) {
-      //cards were already loaded for this lecture
-      this.statesService.setLoadingState(false);
-      return this.cards$.asObservable();
-    } else {
+
+    if (abrv && this.abrv !== abrv) {
+      //make a new call
+
+      this.statesService.setLoadingState(true);
       this.abrv = abrv;
       //remove the old cards before fetching the new ones
       this.cards$.next([]);
@@ -57,9 +56,11 @@ export class CardsService {
           (response) => {
             this.statesService.setLoadingState(false);
             this.copy = response.body;
-            this.cards$.next(response.body);
             if (response.body) {
+              this.cards$.next(response.body);
               this.activeCard$.next(response.body[0]); //first card
+            } else {
+              console.log("got empy response");
             }
           },
           (error) => {
@@ -67,8 +68,8 @@ export class CardsService {
             this.statesService.setLoadingState(false);
           }
         );
-      return this.cards$.asObservable();
     }
+    return this.cards$.asObservable();
   }
 
   updateCard(card: Card, index: number): Observable<any> {
@@ -176,10 +177,11 @@ export class CardsService {
 
   applyFilter(tags: string[]): Observable<boolean> {
     let cards = this.cards$.getValue();
-    if (this.tags === tags || tags === undefined) {
-      this.resetFilter();
+    console.log(tags, this.tags);
+    if (this.tags === tags) {
       return of(false);
-    } else if (tags.length === 0) {
+    }
+    if (tags.length === 0) {
       this.resetFilter();
       return of(false);
     }
@@ -198,6 +200,7 @@ export class CardsService {
     return of(true);
   }
   resetFilter() {
+    this.tags = [];
     this.setNewCardIndex(0);
     this.cards$.next(this.copy); //reset the cards to their initial state
   }
