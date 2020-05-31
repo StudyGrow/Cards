@@ -5,6 +5,7 @@ export class User {
   name: string;
   surname: string;
   creationDate?: Date;
+  confirmed?: boolean;
   constructor(name: string, email: string) {
     this.username = name;
     this.email = email;

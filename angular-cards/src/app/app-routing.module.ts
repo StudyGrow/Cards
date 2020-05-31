@@ -7,13 +7,14 @@ import { SignupPageComponent } from "./routes/signup-page/signup-page.component"
 import { AboutComponent } from "./routes/about/about.component";
 import { UserService as AuthGuard } from "./services/user.service";
 import { ErrorPageComponent } from "./routes/error-page/error-page.component";
+import { ConfirmationPageComponent } from './routes/confirmation-page/confirmation-page.component';
 const routes: Routes = [
   { path: "", component: HomePageComponent },
 
   { path: "login", component: LoginPageComponent },
   { path: "signup", component: SignupPageComponent },
   { path: "about", component: AboutComponent },
-
+  { path: "confirmation", component: ConfirmationPageComponent },
   {
     path: "account",
     canActivate: [AuthGuard],

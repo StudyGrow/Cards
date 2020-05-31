@@ -50,6 +50,8 @@ import { AboutComponent } from "./routes/about/about.component";
 import { ErrorPageComponent } from "./routes/error-page/error-page.component";
 
 import { FilterTagsComponent } from "./components/filter-tags/filter-tags.component";
+import { ConfirmationPageComponent } from './routes/confirmation-page/confirmation-page.component';
+import { ConfirmationComponent } from './components/confirmation/confirmation.component';
 
 declare var Hammer: any;
 //Config to allow swipe gestures on carousel
@@ -99,6 +101,10 @@ export class MyHammerConfig extends HammerGestureConfig {
     ErrorPageComponent,
 
     FilterTagsComponent,
+
+    ConfirmationPageComponent,
+
+    ConfirmationComponent,
   ],
   imports: [
     BrowserModule,
