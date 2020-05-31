@@ -4,6 +4,9 @@
 nav {
   position: relative;
 }
+.navbar {
+  padding: 8px;
+}
 
 #progress {
   position: relative;
@@ -11,6 +14,7 @@ nav {
 mat-progress-bar {
   position: absolute;
   top: 0;
+  z-index: 1000;
 }
 .alert {
   width: 90%;
@@ -18,9 +22,15 @@ mat-progress-bar {
   margin-top: 5px;
 }
 #searchbar {
-  padding: 0;
-  top: 1px;
   right: 5px;
   text-align: right;
-  position: absolute;
+  padding-right: 0;
+}
+
+#toggle {
+  outline: none;
+}
+.row {
+  margin-right: auto;
+  margin-left: auto;
 }

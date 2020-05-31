@@ -6,6 +6,7 @@ import { MatExpansionModule } from "@angular/material/expansion";
 import { MatDialogModule } from "@angular/material/dialog";
 import { MatTooltipModule } from "@angular/material/tooltip";
 import { SafeHtmlPipe } from "./safe-html.pipe";
+
 @NgModule({
   imports: [MatExpansionModule, MatDialogModule, MatTooltipModule],
   declarations: [SafeHtmlPipe],

@@ -1,0 +1,40 @@
+<mat-nav-list>
+  <a mat-list-item class="{{ isActive('/') }}" routerLink="/"
+    ><mat-icon>home</mat-icon> Vorlesungen</a
+  >
+
+  <a
+    mat-list-item
+    *ngIf="!loggedIn"
+    class=" {{ isActive('/login') }}"
+    routerLink="/login"
+    ><mat-icon>person</mat-icon>Login</a
+  >
+
+  <a
+    mat-list-item
+    *ngIf="!loggedIn"
+    class="{{ isActive('/signup') }}"
+    routerLink="/signup"
+    ><mat-icon>add_box</mat-icon> Registrieren</a
+  >
+
+  <a
+    mat-list-item
+    *ngIf="loggedIn"
+    class="{{ isActive('account') }}"
+    [matMenuTriggerFor]="menu"
+  >
+    <mat-icon>account_box</mat-icon> Account
+  </a>
+  <mat-menu #menu="matMenu">
+    <a class="dropdown-item" routerLink="/account/overview" placement="bottom"
+      >Account management</a
+    >
+    <a class="dropdown-item" (click)="logout()">
+      Logout
+    </a>
+  </mat-menu>
+  <mat-divider></mat-divider>
+  <app-filter-tags *ngIf="cards"></app-filter-tags>
+</mat-nav-list>

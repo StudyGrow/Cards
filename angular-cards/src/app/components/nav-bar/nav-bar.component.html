@@ -1,71 +1,17 @@
-<nav
-  class="navbar navbar-expand-lg navbar-light bg-light"
-  role="alert"
-  style="padding-right: 0;"
->
+<nav class="navbar navbar-light bg-light">
   <div class="row">
-    <div class="col-6">
+    <div class="col-6" id="col">
       <button
-        class="navbar-toggler"
-        type="button"
-        data-toggle="collapse"
-        data-target="#navbarNav"
-        aria-controls="navbarNav"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
+        id="toggle"
+        class="align-middle"
+        mat-button
+        (click)="drawerToggle()"
       >
-        <span class="navbar-toggler-icon"></span>
+        <mat-icon>menu</mat-icon>
       </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav" id="navlist">
-          <li class="{{ isActive('/') }} nav-item">
-            <a class="nav-link" routerLink="/" tabindex="1"
-              ><i class="fas fa-home"></i> Vorlesungen</a
-            >
-          </li>
-
-          <li *ngIf="!loggedIn" class="{{ isActive('/login') }} nav-item">
-            <a class="nav-link" routerLink="/login"
-              ><i class="fas fa-user"></i> Login</a
-            >
-          </li>
-          <li *ngIf="!loggedIn" class="{{ isActive('/signup') }} nav-item">
-            <a class="nav-link" routerLink="/signup"
-              ><i class="fas fa-plus"></i> Registrieren</a
-            >
-          </li>
-          <li *ngIf="loggedIn" class="{{ isActive('/profile') }} nav-item">
-            <a class="nav-link" [matMenuTriggerFor]="menu">
-              <i class="fas fa-user-circle"></i> Account
-            </a>
-            <mat-menu #menu="matMenu">
-              <a
-                class="dropdown-item"
-                routerLink="/account/overview"
-                placement="bottom"
-                >Account management</a
-              >
-              <a class="dropdown-item" (click)="logout()">
-                Logout
-              </a>
-            </mat-menu>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <a
-                class="dropdown-item"
-                routerLink="/account/overview"
-                placement="bottom"
-                >Account management</a
-              >
-              <a class="dropdown-item" (click)="logout()">
-                Logout
-              </a>
-            </div>
-          </li>
-        </ul>
-      </div>
     </div>
 
-    <div *ngIf="cards" class="col-6" id="searchbar">
+    <div *ngIf="cards" class="col-6 float-right" id="searchbar">
       <app-search-bar></app-search-bar>
     </div>
   </div>
@@ -73,23 +19,3 @@
 <div id="progress">
   <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
 </div>
-
-<div
-  #alert
-  *ngFor="let notif of notifications; index as i"
-  [@pulseOnEnter]
-  [@fadeOutOnLeave]
-  [class]="setAlertClass(notif)"
-  role="alert"
->
-  <button
-    type="button"
-    class="close"
-    aria-label="Close"
-    (click)="closeAlert(i)"
-  >
-    <span aria-hidden="true">&times;</span>
-  </button>
-  {{ notif.message }}
-</div>
-<app-filter-tags *ngIf="cards"></app-filter-tags>

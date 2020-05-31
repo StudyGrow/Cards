@@ -251,6 +251,7 @@ export class UserService implements CanActivate {
           this.statesService.setLoadingState(false);
           this.setUserId(null);
           this.setLogin(false);
+          this.router.navigateByUrl("/");
           this.notifications.addNotification(
             new SuccessMessage("Erfolgreich abgemeldet")
           );

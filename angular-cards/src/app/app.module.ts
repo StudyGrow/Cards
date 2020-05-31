@@ -2,9 +2,8 @@
 import { BrowserModule } from "@angular/platform-browser";
 import { NgModule, Injectable, LOCALE_ID } from "@angular/core";
 import { HttpClientModule } from "@angular/common/http";
-
+import { SharedModule } from "./shared/shared.module";
 import { AppRoutingModule } from "./app-routing.module";
-import { FormsModule } from "@angular/forms";
 
 //Material Modules
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
@@ -15,10 +14,12 @@ import { MatSelectModule } from "@angular/material/select";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { MatMenuModule } from "@angular/material/menu";
-
+import { MatChipsModule } from "@angular/material/chips";
 import { MatAutocompleteModule } from "@angular/material/autocomplete";
 import { MatIconModule } from "@angular/material/icon";
-
+import { MatSidenavModule } from "@angular/material/sidenav";
+import { MatListModule } from "@angular/material/list";
+import { MatDividerModule } from "@angular/material/divider";
 //Gestures
 import {
   HammerModule,
@@ -50,8 +51,10 @@ import { AboutComponent } from "./routes/about/about.component";
 import { ErrorPageComponent } from "./routes/error-page/error-page.component";
 
 import { FilterTagsComponent } from "./components/filter-tags/filter-tags.component";
-import { ConfirmationPageComponent } from './routes/confirmation-page/confirmation-page.component';
-import { ConfirmationComponent } from './components/confirmation/confirmation.component';
+import { ConfirmationPageComponent } from "./routes/confirmation-page/confirmation-page.component";
+import { ConfirmationComponent } from "./components/confirmation/confirmation.component";
+import { NavListComponent } from "./components/nav-list/nav-list.component";
+import { ViewContainerComponent } from "./components/view-container/view-container.component";
 
 declare var Hammer: any;
 //Config to allow swipe gestures on carousel
@@ -86,44 +89,43 @@ export class MyHammerConfig extends HammerGestureConfig {
     AppComponent,
     NavBarComponent,
     SearchBarComponent,
-
     AddLectureFormComponent,
     LecturesComponent,
     HomePageComponent,
-
     LoginPageComponent,
     LoginFormComponent,
     SignupPageComponent,
     SignupFormComponent,
     FooterComponent,
     AboutComponent,
-
     ErrorPageComponent,
-
     FilterTagsComponent,
 
     ConfirmationPageComponent,
 
     ConfirmationComponent,
+    NavListComponent,
+    ViewContainerComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    FormsModule,
     BrowserAnimationsModule,
     MatProgressBarModule,
     MatButtonModule,
+    MatListModule,
     MatDialogModule,
-
+    MatSidenavModule,
+    MatChipsModule,
+    MatDividerModule,
     MatInputModule,
     MatMenuModule,
-
+    SharedModule,
     MatFormFieldModule,
     MatAutocompleteModule,
     MatIconModule,
     MatSelectModule,
-
     HammerModule,
   ],
   providers: [

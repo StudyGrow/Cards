@@ -58,10 +58,7 @@ export class LecturesService {
   //get the Current lecture
   getCurrentLecture(): Observable<Vorlesung> {
     let abrv = this.router.url.split(/vorlesung\//)[1]; //get the abreviation of the lecture from the url
-    if (this.lecture$.getValue().abrv == abrv) {
-      //the lecture was already loaded
-      return this.lecture$.asObservable();
-    } else {
+    if (abrv && this.lecture$.getValue().abrv !== abrv) {
       //fetch the lecture from the server
       this.http
         .get<Vorlesung>(this.config.urlBase + "lectures/find?abrv=" + abrv, {
@@ -77,8 +74,8 @@ export class LecturesService {
             this.statesService.setLoadingState(false);
           }
         );
-      return this.lecture$.asObservable();
     }
+    return this.lecture$.asObservable();
   }
 
   //add a lecture to the database on the server

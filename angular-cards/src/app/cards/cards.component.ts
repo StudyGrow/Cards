@@ -44,15 +44,8 @@ export class CardsComponent implements OnInit {
   ngOnInit(): void {
     this.title.setTitle("Cards");
     this.vlAbrv = this.route.snapshot.paramMap.get("abrv");
-    this.cardsService.getCards().subscribe((cards) => {
-      if (cards.length == 0) {
-        this.stateServie.setFormMode("add");
-      }
-    });
     this.stateServie.getTyping().subscribe((val) => (this.inTypingField = val));
-    this.stateServie
-      .getLoadingState()
-      .subscribe((value) => (this.loading = value));
+
     this.stateServie.getFormMode().subscribe((mode) => (this.formMode = mode));
   }
 

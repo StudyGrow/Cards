@@ -1,17 +1,36 @@
-<div id="filter" class="col-12" *ngIf="(lecture$ | async)?.tagList as tags">
-  <div class="form-group float-right" *ngIf="tags.length > 0">
-    <mat-form-field>
-      <mat-select
-        panelClass="menu"
-        multiple
-        placeholder="Nach Thema filtern"
-        [(value)]="selected"
-        (openedChange)="applyFilter($event)"
-      >
-        <mat-option *ngFor="let tag of tags" [value]="tag">
-          {{ tag }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-  </div>
-</div>
+<mat-form-field
+  class="example-chip-list"
+  *ngIf="lecture.tagList && lecture.tagList.length > 0"
+>
+  <mat-chip-list #chipList aria-label="Tag selection">
+    <mat-chip
+      *ngFor="let tag of selected"
+      [selectable]="true"
+      [removable]="true"
+      (removed)="remove(tag)"
+    >
+      {{ tag }}
+      <mat-icon matChipRemove>cancel</mat-icon>
+    </mat-chip>
+    <input
+      placeholder="Filter"
+      #Input
+      [formControl]="formCtrl"
+      [matAutocomplete]="auto"
+      [matChipInputFor]="chipList"
+      [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+      (matChipInputTokenEnd)="add($event)"
+      (focus)="inField()"
+      (blur)="resetNav()"
+    />
+    <mat-icon matSuffix>filter_list</mat-icon>
+  </mat-chip-list>
+  <mat-autocomplete
+    #auto="matAutocomplete"
+    (optionSelected)="selected1($event)"
+  >
+    <mat-option *ngFor="let option of filteredTags | async" [value]="option">
+      {{ option }}
+    </mat-option>
+  </mat-autocomplete>
+</mat-form-field>

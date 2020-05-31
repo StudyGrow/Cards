@@ -9,9 +9,10 @@ import { BehaviorSubject, Observable } from "rxjs";
 export class StatesService {
   private formMode$: BehaviorSubject<string> = new BehaviorSubject("none");
   private lastFormMode: string;
-  private loading$: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  private loading$: BehaviorSubject<boolean> = new BehaviorSubject(true);
   private hideSgtn$: BehaviorSubject<boolean> = new BehaviorSubject(true);
   private typing$: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  private drawertoggler$ = new BehaviorSubject(false);
   constructor() {}
 
   getFormMode(): Observable<string> {
@@ -35,8 +36,8 @@ export class StatesService {
   getTyping(): Observable<boolean> {
     return this.typing$.asObservable();
   }
-  getLoadingState(): BehaviorSubject<boolean> {
-    return this.loading$;
+  getLoadingState(): Observable<boolean> {
+    return this.loading$.asObservable();
   }
   setLoadingState(value: boolean) {
     this.loading$.next(value);
@@ -46,5 +47,15 @@ export class StatesService {
   }
   getHideSuggestions(): Observable<boolean> {
     return this.hideSgtn$.asObservable();
+  }
+  toggleDrawer() {
+    let curr = this.drawertoggler$.getValue() || false;
+    this.drawertoggler$.next(!curr);
+  }
+  closeDrawer() {
+    this.drawertoggler$.next(false);
+  }
+  toggle(): Observable<boolean> {
+    return this.drawertoggler$.asObservable();
   }
 }
