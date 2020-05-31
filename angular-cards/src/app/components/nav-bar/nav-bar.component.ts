@@ -21,6 +21,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
   public cards: Card[] = [];
   public notifications: Notification[];
   subscriptions$: Subscription[] = [];
+  showCards: boolean;
   public loading: boolean;
   private cardsSub: Subscription;
   public constructor(
@@ -44,7 +45,9 @@ export class NavBarComponent implements OnInit, OnDestroy {
       .authentication()
       .subscribe((val) => (this.loggedIn = val));
     this.subscriptions$.push(sub);
-
+    this.cardsService.getCards().subscribe((cards) => {
+      this.cards = cards;
+    });
     this.router.events.subscribe((e) => {
       if (e instanceof NavigationEnd) {
         setTimeout(() => {
@@ -63,7 +66,11 @@ export class NavBarComponent implements OnInit, OnDestroy {
     if (!this.router.url.match(/account/)) {
       this.userService.clearAccountInfo();
     }
-
+    if (!this.router.url.match(/vorlesung/)) {
+      this.showCards = false;
+    } else {
+      this.showCards = true;
+    }
     //clear messages on route change
     if (this.router.url == "/") {
       this.notification.clearNotifications("alert"); //prevent successfull login message from being removed on home
