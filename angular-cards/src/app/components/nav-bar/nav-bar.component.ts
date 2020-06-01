@@ -27,39 +27,39 @@ export class NavBarComponent implements OnInit, OnDestroy {
   public constructor(
     private router: Router,
     private titleService: Title,
-    private cdr: ChangeDetectorRef,
+
     private cardsService: CardsService,
     private statesService: StatesService,
     private notification: NotificationsService,
-    private userService: UserService
+    private userService: UserService,
+    private cdr: ChangeDetectorRef
   ) {}
-  ngAfterViewInit() {
-    this.statesService.getLoadingState().subscribe((val) => {
-      this.loading = val;
-      this.cdr.detectChanges();
-    });
-  }
-  ngOnInit(): void {
-    this.setPageTitle();
-    let sub = this.userService
-      .authentication()
-      .subscribe((val) => (this.loggedIn = val));
-    this.subscriptions$.push(sub);
-    this.cardsService.getCards().subscribe((cards) => {
-      this.cards = cards;
-    });
-    this.router.events.subscribe((e) => {
-      if (e instanceof NavigationEnd) {
-        setTimeout(() => {
-          this.handleRouteChanges();
-        });
-      }
-    });
 
-    sub = this.notification
-      .notifications()
-      .subscribe((notifs) => (this.notifications = notifs));
-    this.subscriptions$.push(sub);
+  ngOnInit(): void {
+    setTimeout(() => {
+      this.setPageTitle();
+      this.statesService.getLoadingState().subscribe((val) => {
+        this.loading = val;
+        this.cdr.detectChanges();
+      });
+      let sub = this.userService
+        .authentication()
+        .subscribe((val) => (this.loggedIn = val));
+      this.subscriptions$.push(sub);
+      this.cardsService.getCards().subscribe((cards) => {
+        this.cards = cards;
+      });
+      this.router.events.subscribe((e) => {
+        if (e instanceof NavigationEnd) {
+          this.handleRouteChanges();
+        }
+      });
+
+      sub = this.notification
+        .notifications()
+        .subscribe((notifs) => (this.notifications = notifs));
+      this.subscriptions$.push(sub);
+    }, 0);
   }
   handleRouteChanges() {
     this.statesService.closeDrawer();
