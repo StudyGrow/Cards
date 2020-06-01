@@ -7,7 +7,7 @@ import {
 } from "@angular/core";
 import { StatesService } from "src/app/services/states.service";
 import { NotificationsService } from "src/app/services/notifications.service";
-import { Observable } from "rxjs";
+import { Observable, of, BehaviorSubject } from "rxjs";
 import { Notification } from "../../models/Notification";
 import {
   pulseOnEnterAnimation,
@@ -29,6 +29,8 @@ import { MatDrawerContent } from "@angular/material/sidenav";
 })
 export class ViewContainerComponent implements OnInit {
   public pageOffset: number = 0;
+  public subj$ = new BehaviorSubject<boolean>(false);
+  public show$: Observable<boolean>;
   @ViewChild("drawer", { static: true }) drawer;
 
   notifications$: Observable<Notification[]>;
@@ -39,16 +41,21 @@ export class ViewContainerComponent implements OnInit {
   ) {}
 
   setOffset(event) {
-    if (event.measureScrollOffset("top") > 50 && this.pageOffset < 50) {
-      this.pageOffset = 51;
+    if (event.measureScrollOffset("top") > 50) {
+      this.subj$.next(true);
     } else {
-      this.pageOffset = 49;
+      this.subj$.next(false);
     }
     this.pageOffset = event.measureScrollOffset("top");
     console.log(this.pageOffset > 50);
+    console.log(this.subj$.getValue());
   }
 
+  showIcon() {
+    return this.subj$.asObservable();
+  }
   ngOnInit(): void {
+    this.show$ = this.showIcon();
     this.scroll.scrolled().subscribe((data: MatDrawerContent) => {
       this.setOffset(data);
     });

@@ -26,7 +26,7 @@
       </div>
       <router-outlet></router-outlet>
       <div
-        *ngIf="pageOffset > 50"
+        *ngIf="show$ | async"
         [@fadeInOnEnter]
         [@fadeOutOnLeave]
         class="btn-div"
