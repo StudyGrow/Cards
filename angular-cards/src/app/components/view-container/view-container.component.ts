@@ -41,19 +41,6 @@ export class ViewContainerComponent implements OnInit {
     private notifService: NotificationsService
   ) {}
 
-  setOffset(event) {
-    if (!this.subj$.getValue() && event.measureScrollOffset("top") > 50) {
-      this.subj$.next(true);
-      console.log("switch");
-    } else if (this.subj$.getValue() && event.measureScrollOffset("top") < 50) {
-      this.subj$.next(false);
-      console.log("switch");
-    }
-    this.pageOffset = event.measureScrollOffset("top");
-
-    console.log(this.subj$.getValue());
-  }
-
   ngOnInit(): void {
     this.show$ = this.content.elementScrolled().pipe(
       startWith(false),
@@ -61,7 +48,6 @@ export class ViewContainerComponent implements OnInit {
     );
     this.show$.subscribe((val) => {
       this.cdr.detectChanges();
-      console.log(val);
     });
     this.notifications$ = this.notifService.notifications();
     this.states.toggle().subscribe((val) => {
@@ -82,13 +68,6 @@ export class ViewContainerComponent implements OnInit {
     this.states.closeDrawer();
   }
   backToTop() {
-    let scrollToTop = window.setInterval(() => {
-      let pos = this.pageOffset;
-      if (pos > 0) {
-        this.content.scrollTo({ top: 0 }); // how far to scroll on each step
-      } else {
-        window.clearInterval(scrollToTop);
-      }
-    }, 16);
+    this.content.scrollTo({ top: 0, behavior: "smooth" }); // how far to scroll on each step
   }
 }
