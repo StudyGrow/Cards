@@ -37,10 +37,6 @@ import { AppComponent } from "./app.component";
 import { NavBarComponent } from "./components/nav-bar/nav-bar.component";
 import { SearchBarComponent } from "./components/search-bar/search-bar.component";
 
-import { AddLectureFormComponent } from "./components/add-lecture-form/add-lecture-form.component";
-import { LecturesComponent } from "./components/lectures/lectures.component";
-import { HomePageComponent } from "./routes/home-page/home-page.component";
-
 import { LoginPageComponent } from "./routes/login-page/login-page.component";
 import { LoginFormComponent } from "./components/login-form/login-form.component";
 import { SignupPageComponent } from "./routes/signup-page/signup-page.component";
@@ -51,8 +47,11 @@ import { AboutComponent } from "./routes/about/about.component";
 import { ErrorPageComponent } from "./routes/error-page/error-page.component";
 
 import { FilterTagsComponent } from "./components/filter-tags/filter-tags.component";
+import { ConfirmationPageComponent } from "./routes/confirmation-page/confirmation-page.component";
+import { ConfirmationComponent } from "./components/confirmation/confirmation.component";
 import { NavListComponent } from "./components/nav-list/nav-list.component";
 import { ViewContainerComponent } from "./components/view-container/view-container.component";
+import { HomeModule } from "./home/home.module";
 
 declare var Hammer: any;
 //Config to allow swipe gestures on carousel
@@ -87,9 +86,7 @@ export class MyHammerConfig extends HammerGestureConfig {
     AppComponent,
     NavBarComponent,
     SearchBarComponent,
-    AddLectureFormComponent,
-    LecturesComponent,
-    HomePageComponent,
+
     LoginPageComponent,
     LoginFormComponent,
     SignupPageComponent,
@@ -98,6 +95,10 @@ export class MyHammerConfig extends HammerGestureConfig {
     AboutComponent,
     ErrorPageComponent,
     FilterTagsComponent,
+
+    ConfirmationPageComponent,
+
+    ConfirmationComponent,
     NavListComponent,
     ViewContainerComponent,
   ],
@@ -121,6 +122,7 @@ export class MyHammerConfig extends HammerGestureConfig {
     MatIconModule,
     MatSelectModule,
     HammerModule,
+    HomeModule,
   ],
   providers: [
     { provide: LOCALE_ID, useValue: "de" },

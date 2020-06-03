@@ -17,6 +17,9 @@ const userSchema = new mongoose.Schema({
   name: String,
   surname: String,
   status: String,
+  confirmed: Boolean,
+  token: String,
+  tokenExpiration: Date,
 });
 
 const User = (module.exports = mongoose.model("User", userSchema));

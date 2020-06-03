@@ -177,7 +177,7 @@ export class CardsService {
 
   applyFilter(tags: string[]): Observable<boolean> {
     let cards = this.cards$.getValue();
-    console.log(tags, this.tags);
+
     if (this.tags === tags) {
       return of(false);
     }

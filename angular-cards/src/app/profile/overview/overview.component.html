@@ -3,6 +3,7 @@
     <h2 class="card-title">
       <img src="assets/profile.svg" alt="Profile picture" /> {{ user.username }}
     </h2>
+    <div *ngIf="user.confirmed == false">Check your email inbox to confirm your account</div>
   </div>
   <ul class="list-group list-group-flush">
     <li class="list-group-item">

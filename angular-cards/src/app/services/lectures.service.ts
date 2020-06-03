@@ -16,7 +16,7 @@ export class LecturesService {
   private lecture$: BehaviorSubject<Vorlesung> = new BehaviorSubject<Vorlesung>(
     new Vorlesung("", "")
   ); //holds the current lecture
-  private lectures$: BehaviorSubject<Vorlesung[]>; //holds all lectures
+  private lectures$ = new BehaviorSubject<Vorlesung[]>(null); //holds all lectures
   private config = new HttpConfig();
 
   constructor(
@@ -28,31 +28,25 @@ export class LecturesService {
 
   //get an array of all lectures
   getAllLectures(): Observable<Vorlesung[]> {
-    this.statesService.setLoadingState(true);
-    if (this.lectures$) {
-      //lectures were already loaded once
-      this.statesService.setLoadingState(false);
-      return this.lectures$.asObservable();
-    } else {
+    if (!this.lectures$.getValue()) {
       //load lectures from the server
-      return this.http
+      this.statesService.setLoadingState(true);
+      this.http
         .get<Vorlesung[]>(this.config.urlBase + "lectures", {
           observe: "response",
         })
-        .pipe(
-          tap(
-            (res) => {
-              this.statesService.setLoadingState(false);
-              this.lectures$ = new BehaviorSubject<Vorlesung[]>(res.body); //set the lectures subject
-            },
-            (error) => {
-              this.notifications.handleErrors(error);
-              this.statesService.setLoadingState(false);
-            }
-          ),
-          map((res) => res.body)
+        .subscribe(
+          (res) => {
+            this.statesService.setLoadingState(false);
+            this.lectures$.next(res.body); //set the lectures subject
+          },
+          (error) => {
+            this.notifications.handleErrors(error);
+            this.statesService.setLoadingState(false);
+          }
         );
     }
+    return this.lectures$.asObservable();
   }
 
   //get the Current lecture
@@ -60,12 +54,15 @@ export class LecturesService {
     let abrv = this.router.url.split(/vorlesung\//)[1]; //get the abreviation of the lecture from the url
     if (abrv && this.lecture$.getValue().abrv !== abrv) {
       //fetch the lecture from the server
+      this.lecture$.next(new Vorlesung("", "")); //reset the lecture
+      this.statesService.setLoadingState(true);
       this.http
         .get<Vorlesung>(this.config.urlBase + "lectures/find?abrv=" + abrv, {
           observe: "response",
         })
         .subscribe(
           (res) => {
+            this.statesService.setLoadingState(false);
             this.lecture$.next(res.body);
           },
           (error) => {

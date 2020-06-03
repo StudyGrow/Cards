@@ -9,4 +9,6 @@ router.use("/cards", require("./Cards"));
 //User routes
 router.use("/user", require("./User"));
 
+router.use("/mail", require("./Mail"));
+
 module.exports = router;
