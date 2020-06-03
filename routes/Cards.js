@@ -114,5 +114,30 @@ router.put(
     }
   }
 );
+router.post(
+  "/vote",
+  check("value")
+    .isLength({
+      min: -1,
+      max: 1,
+    })
+    .withMessage("vote ist ungültig"),
+  check("id").withMessage("Karten Id benötigt"),
+  (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      res.status(422).json({
+        errors: errors.array(),
+      });
+    }
+    req.services.castVote(req.body, (err) => {
+      if (err) {
+        res.status(422).send(err.message);
+      } else {
+        res.status(200).send();
+      }
+    });
+  }
+);
 
 module.exports = router;

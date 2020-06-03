@@ -2,6 +2,7 @@
 const mongoose = require("mongoose");
 const Card = mongoose.model("Card");
 const Lecture = mongoose.model("Lecture");
+const Vote = require("../models/Vote");
 
 module.exports = function cardsService() {
   //returns all the cards matching the query
@@ -58,10 +59,43 @@ module.exports = function cardsService() {
       callback(error);
     }
   };
-
+  cardsService.castVote = async (form, callback) => {
+    try {
+      if (!req.isAuthenticated()) {
+        throw Error("Bitte logge dich erst ein");
+      }
+      let card = await Card.findById(form.id);
+      if (!card) {
+        throw Error("Karte konnte nicht gefunden werden");
+      }
+      let vote = await Vote.find({ cardId: form.id, userId: req.user._id });
+      if (vote) {
+        updateVote(form, callback);
+      } else {
+        createVote(form, callback);
+      }
+    } catch (error) {
+      callback(error);
+    }
+  };
   return cardsService;
 };
-
+async function updateVote(form, callback) {
+  checkVote(form.value);
+  await Vote.updateOne({ cardId: form.id, userId: req.user._id }, { vote: form.value });
+  callback(null);
+}
+async function createVote(form, callback) {
+  checkVote(form.value);
+  let vote = new Vote({ cardId: form.id, userId: req.user._id, vote: form.value });
+  await vote.save();
+  callback(null);
+}
+function checkVote(vote) {
+  if (form.vote !== 1 && form.vote !== -1) {
+    throw new Error("Vote muss entweder 1 oder -1 sein");
+  }
+}
 function updateTags(vlabrv, tags) {
   tags.forEach((tag) => {
     if (tag.length > 0) {
