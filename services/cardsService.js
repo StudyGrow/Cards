@@ -83,17 +83,28 @@ module.exports = function cardsService() {
 async function updateVote(form, callback) {
   checkVote(form.value);
   await Vote.updateOne({ cardId: form.id, userId: req.user._id }, { vote: form.value });
+  calculateNewCardRating(form);
   callback(null);
 }
 async function createVote(form, callback) {
   checkVote(form.value);
   let vote = new Vote({ cardId: form.id, userId: req.user._id, vote: form.value });
   await vote.save();
+  calculateNewCardRating(form);
   callback(null);
 }
 function checkVote(vote) {
-  if (form.vote !== 1 && form.vote !== -1) {
+  if (vote !== 1 && vote !== -1) {
     throw new Error("Vote muss entweder 1 oder -1 sein");
+  }
+}
+async function calculateNewCardRating(vote) {
+  try {
+    let currRating = await Card.findById(vote.cardId).rating;
+    currRating -= vote.value;
+    Card.findByIdAndUpdate(vote.cardId, { rating: currRating }, () => {});
+  } catch (error) {
+    console.log(error);
   }
 }
 function updateTags(vlabrv, tags) {
