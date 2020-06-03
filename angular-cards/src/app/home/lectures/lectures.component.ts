@@ -1,11 +1,4 @@
-import {
-  Component,
-  OnInit,
-  Output,
-  EventEmitter,
-  Input,
-  OnDestroy,
-} from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { Vorlesung } from "../../models/Vorlesung";
 
 import { Subscription, Observable } from "rxjs";
