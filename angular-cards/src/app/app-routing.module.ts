@@ -28,6 +28,7 @@ const routes: Routes = [
     path: "vorlesung/:abrv",
     loadChildren: () =>
       import("./cards/cards.module").then((m) => m.CardsModule),
+    data: { preload: true },
   },
   { path: "**", component: ErrorPageComponent },
 ];
