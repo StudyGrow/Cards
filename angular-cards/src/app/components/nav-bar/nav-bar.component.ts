@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from "@angular/core";
 import { Card } from "../../models/Card";
-import { Router, NavigationEnd } from "@angular/router";
+import { Router, NavigationEnd, NavigationStart } from "@angular/router";
 import { Title } from "@angular/platform-browser";
 
 import { CardsService } from "src/app/services/cards.service";
@@ -50,7 +50,10 @@ export class NavBarComponent implements OnInit, OnDestroy {
         this.cards = cards;
       });
       this.router.events.subscribe((e) => {
-        if (e instanceof NavigationEnd) {
+        if (e instanceof NavigationStart) {
+          this.statesService.setLoadingState(true);
+        } else if (e instanceof NavigationEnd) {
+          this.statesService.setLoadingState(false);
           this.handleRouteChanges();
         }
       });

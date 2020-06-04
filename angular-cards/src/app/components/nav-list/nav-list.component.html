@@ -1,12 +1,17 @@
 <mat-nav-list>
-  <a mat-list-item class="{{ isActive('/') }}" routerLink="/"
+  <a
+    mat-list-item
+    routerLinkActive="active"
+    [routerLinkActiveOptions]="{ exact: true }"
+    routerLink="/"
     ><mat-icon>home</mat-icon> Vorlesungen</a
   >
 
   <a
     mat-list-item
     *ngIf="!loggedIn"
-    class=" {{ isActive('/login') }}"
+    routerLinkActive="active"
+    [routerLinkActiveOptions]="{ exact: true }"
     routerLink="/login"
     ><mat-icon>person</mat-icon>Login</a
   >
@@ -14,7 +19,8 @@
   <a
     mat-list-item
     *ngIf="!loggedIn"
-    class="{{ isActive('/signup') }}"
+    routerLinkActive="active"
+    [routerLinkActiveOptions]="{ exact: true }"
     routerLink="/signup"
     ><mat-icon>add_box</mat-icon> Registrieren</a
   >
@@ -22,7 +28,7 @@
   <a
     mat-list-item
     *ngIf="loggedIn"
-    class="{{ isActive('account') }}"
+    routerLinkActive="active"
     [matMenuTriggerFor]="menu"
   >
     <mat-icon>account_box</mat-icon> Account

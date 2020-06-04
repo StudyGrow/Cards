@@ -24,10 +24,12 @@
           {{ notif.message }}
         </div>
       </div>
-      <router-outlet></router-outlet>
+      <div [@fadeOutOnLeave]="getAnimationData(outlet)">
+        <router-outlet #outlet="outlet"></router-outlet>
+      </div>
     </div>
 
-    <div *ngIf="show$ | async" id="up">
+    <div *ngIf="show$ | async" [@fadeOutOnLeave] id="up">
       <button id="btn" mat-fab color="primary" (click)="backToTop()">
         <mat-icon matSuffix>arrow_upward</mat-icon>
       </button>

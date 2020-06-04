@@ -18,6 +18,7 @@ import {
 import { ScrollDispatcher, CdkScrollable } from "@angular/cdk/overlay";
 import { MatDrawerContent, MatDrawer } from "@angular/material/sidenav";
 import { map, startWith } from "rxjs/operators";
+import { RouterOutlet } from "@angular/router";
 @Component({
   selector: "app-view-container",
   templateUrl: "./view-container.component.html",
@@ -57,6 +58,9 @@ export class ViewContainerComponent implements OnInit {
         this.drawer.close();
       }
     });
+  }
+  getAnimationData(outlet: RouterOutlet) {
+    return outlet && outlet.isActivated;
   }
   closeAlert(i: number) {
     this.notifService.removeNotification(i);

@@ -122,7 +122,7 @@ router.post(
       max: 1,
     })
     .withMessage("vote ist ungültig"),
-  check("id").withMessage("Karten Id benötigt"),
+  check("id").not().isEmpty().withMessage("Karten Id benötigt"),
   (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {

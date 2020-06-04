@@ -15,4 +15,4 @@ const voteSchema = new mongoose.Schema({
   },
 });
 
-const User = (module.exports = mongoose.model("User", voteSchema));
+const User = (module.exports = mongoose.model("Vote", voteSchema));
