@@ -13,6 +13,7 @@ import { CardsService } from "src/app/services/cards.service";
 import { Title } from "@angular/platform-browser";
 import { Card } from "../models/Card";
 import { StatesService } from "../services/states.service";
+import { Observable } from "rxjs";
 
 @Component({
   selector: "app-cards",
@@ -24,7 +25,6 @@ export class CardsComponent implements OnInit {
   public lecture: Vorlesung;
   public loading: boolean = true;
   public formMode: string = "none";
-  public cards: Card[];
 
   private inTypingField: boolean;
   @ViewChild("alert", { static: false }) alert: ElementRef;
@@ -33,6 +33,8 @@ export class CardsComponent implements OnInit {
   onClick() {
     this.stateServie.setHideSuggestions(true);
   }
+  cards$: Observable<Card[]>;
+  formMode$: Observable<string>;
   constructor(
     private route: ActivatedRoute,
     private stateServie: StatesService,
@@ -43,9 +45,8 @@ export class CardsComponent implements OnInit {
 
   ngOnInit(): void {
     this.title.setTitle("Cards");
-    this.vlAbrv = this.route.snapshot.paramMap.get("abrv");
-    this.stateServie.getTyping().subscribe((val) => (this.inTypingField = val));
+    this.cards$ = this.cardsService.getCards();
 
-    this.stateServie.getFormMode().subscribe((mode) => (this.formMode = mode));
+    this.formMode$ = this.stateServie.getFormMode();
   }
 }
