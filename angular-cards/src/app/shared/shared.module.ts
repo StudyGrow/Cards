@@ -6,7 +6,7 @@ import { MatExpansionModule } from "@angular/material/expansion";
 import { MatDialogModule } from "@angular/material/dialog";
 import { MatTooltipModule } from "@angular/material/tooltip";
 import { SafeHtmlPipe } from "./safe-html.pipe";
-
+import { MatButtonToggleModule } from "@angular/material/button-toggle";
 @NgModule({
   imports: [MatExpansionModule, MatDialogModule, MatTooltipModule],
   declarations: [SafeHtmlPipe],
@@ -19,6 +19,7 @@ import { SafeHtmlPipe } from "./safe-html.pipe";
     MatExpansionModule,
     MatDialogModule,
     MatTooltipModule,
+    MatButtonToggleModule,
   ],
 })
 export class SharedModule {}

@@ -12,6 +12,7 @@ import { Card } from "../../models/Card";
 
 import { UserService } from "../../services/user.service";
 import { Subscription } from "rxjs";
+import { MatButtonToggleGroup } from "@angular/material/button-toggle";
 
 @Component({
   selector: "app-carousel",
@@ -20,6 +21,7 @@ import { Subscription } from "rxjs";
 })
 export class CarouselComponent implements OnInit, OnDestroy {
   @ViewChild("mycarousel", { static: false }) public carousel: any;
+  @ViewChild("group", { static: true }) public vote: MatButtonToggleGroup;
 
   @HostListener("window:keyup", ["$event"]) handleKeyDown(
     event: KeyboardEvent
@@ -49,10 +51,16 @@ export class CarouselComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    let sub = this.userService
+    let sub = this.vote.change.subscribe((event) => {
+      let vote = parseInt(event.value);
+      console.log(vote);
+    });
+    this.subscriptions$.push(sub);
+    sub = this.userService
       .getUserId()
       .subscribe((userId) => (this.userId = userId));
     this.subscriptions$.push(sub);
+
     sub = this.stateService
       .getTyping()
       .subscribe((val) => (this.inTypingField = val));

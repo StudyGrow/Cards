@@ -54,3 +54,11 @@ app-card {
   width: 90%;
   margin: auto;
 }
+
+#vote {
+  display: block;
+  width: 90%;
+  text-align: right;
+  margin: auto;
+  font-size: smaller;
+}

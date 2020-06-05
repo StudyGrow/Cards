@@ -1,9 +1,4 @@
 <app-lecture-header></app-lecture-header>
-<div id="spinner" *ngIf="loading" class="row">
-  <div class="spinner-border" role="status">
-    <span class="sr-only">Loading...</span>
-  </div>
-</div>
 
 <div class="btn-group" id="btnDiv" role="group">
   <button
@@ -71,4 +66,18 @@
   <a id="right" class="navig col" *ngIf="cards.length > 0" (click)="goToNext()">
     <span class="fas fa-chevron-right"></span>
   </a>
+</div>
+<div class="row" id="vote">
+  <mat-button-toggle-group class="float-right" #group="matButtonToggleGroup">
+    <mat-button-toggle value="1" aria-label="Text align left">
+      <span class="material-icons">
+        thumb_up
+      </span>
+    </mat-button-toggle>
+    <mat-button-toggle value="-1" aria-label="Text align center">
+      <span class="material-icons">
+        thumb_down
+      </span>
+    </mat-button-toggle>
+  </mat-button-toggle-group>
 </div>

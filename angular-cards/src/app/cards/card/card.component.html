@@ -12,7 +12,7 @@
         <div  [innerHtml]="parsed[0] | safeHtml"></div>
     </pre>
   </mat-expansion-panel>
-  <p *ngIf="card.authorName" class="card-text">
+  <p *ngIf="card.authorName" class="card-text" id="author">
     <small class="text-muted float-right"
       >Ersteller: {{ card.authorName }}</small
     >
