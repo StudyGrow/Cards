@@ -11,7 +11,7 @@ import { MatProgressBarModule } from "@angular/material/progress-bar";
 import { MatDialogModule } from "@angular/material/dialog";
 import { MatButtonModule } from "@angular/material/button";
 import { MatSelectModule } from "@angular/material/select";
-
+import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { MatMenuModule } from "@angular/material/menu";
@@ -87,7 +87,6 @@ export class MyHammerConfig extends HammerGestureConfig {
     AppComponent,
     NavBarComponent,
     SearchBarComponent,
-
     LoginPageComponent,
     LoginFormComponent,
     SignupPageComponent,
@@ -96,9 +95,7 @@ export class MyHammerConfig extends HammerGestureConfig {
     AboutComponent,
     ErrorPageComponent,
     FilterTagsComponent,
-
     ConfirmationPageComponent,
-
     ConfirmationComponent,
     NavListComponent,
     ViewContainerComponent,
@@ -111,7 +108,7 @@ export class MyHammerConfig extends HammerGestureConfig {
     MatProgressBarModule,
     MatButtonModule,
     MatListModule,
-
+    MatToolbarModule,
     MatDialogModule,
     MatSidenavModule,
     MatChipsModule,

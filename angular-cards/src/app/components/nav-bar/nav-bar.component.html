@@ -1,21 +1,14 @@
-<nav class="navbar navbar-light bg-light">
-  <div class="row">
-    <div class="col-6" id="col">
-      <button
-        id="toggle"
-        class="align-middle"
-        mat-button
-        (click)="drawerToggle()"
-      >
-        <mat-icon>menu</mat-icon>
-      </button>
-    </div>
+<mat-toolbar>
+  <button id="toggle" class="align-middle" mat-button (click)="drawerToggle()">
+    <mat-icon>menu</mat-icon>
+  </button>
 
-    <div *ngIf="showCards" class="col-6 float-right" id="searchbar">
-      <app-search-bar></app-search-bar>
-    </div>
-  </div>
-</nav>
+  <span class="example-spacer"></span>
+  <span *ngIf="showCards" id="searchbar">
+    <app-search-bar></app-search-bar>
+  </span>
+</mat-toolbar>
+
 <div id="progress">
   <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
 </div>
