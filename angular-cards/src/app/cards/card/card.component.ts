@@ -13,6 +13,7 @@ import { parse, HtmlGenerator } from "latex.js/dist/latex.js";
 
 import { SafeHtmlPipe } from "../../shared/safe-html.pipe";
 import { StatesService } from "src/app/services/states.service";
+import { MatButtonToggleGroup } from "@angular/material/button-toggle";
 @Component({
   selector: "app-card",
   templateUrl: "./card.component.html",
@@ -21,6 +22,7 @@ import { StatesService } from "src/app/services/states.service";
 export class CardComponent implements OnInit, OnDestroy {
   @Input() card: Card;
   @Input() index: number;
+
   inTypingField: boolean = false;
   activeIndex: number;
   @HostListener("swipeleft", ["$event"]) public swipePrev(event: any) {

@@ -7,10 +7,11 @@
     <mat-expansion-panel-header>
       <mat-panel-title> Antwort</mat-panel-title>
     </mat-expansion-panel-header>
-
+    <mat-panel-description> </mat-panel-description>
     <pre lang="de">
         <div  [innerHtml]="parsed[0] | safeHtml"></div>
     </pre>
+    <app-vote></app-vote>
   </mat-expansion-panel>
   <p *ngIf="card.authorName" class="card-text" id="author">
     <small class="text-muted float-right"
