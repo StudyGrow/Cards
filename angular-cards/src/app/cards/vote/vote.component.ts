@@ -1,6 +1,7 @@
-import { Component, OnInit, ViewChild, OnDestroy } from "@angular/core";
+import { Component, OnInit, ViewChild, OnDestroy, Input } from "@angular/core";
 import { MatButtonToggleGroup } from "@angular/material/button-toggle";
 import { Subscription } from "rxjs";
+import { UserService } from "src/app/services/user.service";
 
 @Component({
   selector: "app-vote",
@@ -9,6 +10,8 @@ import { Subscription } from "rxjs";
 })
 export class VoteComponent implements OnInit, OnDestroy {
   private vote: number = 0;
+  @Input() index: number;
+
   private subscriptions$: Subscription[] = [];
   constructor() {}
 

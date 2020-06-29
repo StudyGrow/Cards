@@ -8,12 +8,11 @@ import {
 import { Card } from "../../models/Card";
 import { ViewChild } from "@angular/core";
 import { CardsService } from "../../services/cards.service";
-import { Subscription } from "rxjs";
+import { Subscription, Observable } from "rxjs";
 import { parse, HtmlGenerator } from "latex.js/dist/latex.js";
-
-import { SafeHtmlPipe } from "../../shared/safe-html.pipe";
 import { StatesService } from "src/app/services/states.service";
-import { MatButtonToggleGroup } from "@angular/material/button-toggle";
+import { UserService } from "src/app/services/user.service";
+
 @Component({
   selector: "app-card",
   templateUrl: "./card.component.html",
@@ -22,6 +21,7 @@ import { MatButtonToggleGroup } from "@angular/material/button-toggle";
 export class CardComponent implements OnInit, OnDestroy {
   @Input() card: Card;
   @Input() index: number;
+  auth$: Observable<boolean>;
 
   inTypingField: boolean = false;
   activeIndex: number;
@@ -49,7 +49,11 @@ export class CardComponent implements OnInit, OnDestroy {
   styleAppend = `<link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/latex.js@0.12.1/dist/css/katex.css"><link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/latex.js@0.12.1/dist/css/article.css"><script src="https://cdn.jsdelivr.net/npm/latex.js@0.12.1/dist/dist/js/base.js"></script>`;
   parsed: any = [];
 
-  constructor(private cs: CardsService, private states: StatesService) {}
+  constructor(
+    private cs: CardsService,
+    private states: StatesService,
+    private user: UserService
+  ) {}
   public isCollapsed = true;
   ngOnInit(): void {
     let sub = this.cs.activeCard().subscribe((card) => {
@@ -67,6 +71,7 @@ export class CardComponent implements OnInit, OnDestroy {
       .getTyping()
       .subscribe((val) => (this.inTypingField = val));
     this.subscriptions$.push(sub);
+    this.auth$ = this.user.authentication();
   }
 
   ngOnDestroy() {
