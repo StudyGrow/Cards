@@ -8,21 +8,31 @@ import { Subscription } from "rxjs";
   styleUrls: ["./vote.component.css"],
 })
 export class VoteComponent implements OnInit, OnDestroy {
-  @ViewChild("group", { static: true }) public vote: MatButtonToggleGroup;
+  private vote: number = 0;
   private subscriptions$: Subscription[] = [];
   constructor() {}
 
-  ngOnInit(): void {
-    let sub = this.vote.change.subscribe((event) => {
-      let vote = parseInt(event.value);
-      console.log(vote);
-    });
-    this.subscriptions$.push(sub);
-  }
+  ngOnInit(): void {}
 
   ngOnDestroy() {
     this.subscriptions$.forEach((sub) => {
       sub.unsubscribe();
     });
+  }
+
+  setBtnClass(s: string) {
+    if (s === "up" && this.vote === 1) {
+      return "btn up";
+    } else if (s === "down" && this.vote === -1) {
+      return "btn down";
+    } else return "btn ";
+  }
+
+  toggleVote(n: number) {
+    if (this.vote === n) {
+      this.vote = 0;
+    } else {
+      this.vote = n;
+    }
   }
 }

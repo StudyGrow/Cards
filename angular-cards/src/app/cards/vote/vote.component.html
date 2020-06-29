@@ -1,12 +1,8 @@
-<mat-button-toggle-group class="float-right" #group="matButtonToggleGroup">
-  <mat-button-toggle value="1" aria-label="Text align left">
-    <span class="material-icons">
-      thumb_up
-    </span>
-  </mat-button-toggle>
-  <mat-button-toggle value="-1" aria-label="Text align center">
-    <span class="material-icons">
-      thumb_down
-    </span>
-  </mat-button-toggle>
-</mat-button-toggle-group>
+<div class="d-flex flex-row-reverse" role="group">
+  <button type="button" [class]="setBtnClass('down')" (click)="toggleVote(-1)">
+    <i class="fas fa-arrow-down"></i>
+  </button>
+  <button type="button" [class]="setBtnClass('up')" (click)="toggleVote(1)">
+    <i class="fas fa-arrow-up"></i>
+  </button>
+</div>
