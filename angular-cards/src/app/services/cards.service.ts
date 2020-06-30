@@ -31,6 +31,8 @@ export class CardsService {
 
   private config = new HttpConfig(); //configuration for http communication with the server
 
+  private votes$ = new BehaviorSubject<Vote[]>([]);
+
   constructor(
     private notifications: NotificationsService, //display errors to user
     private http: HttpClient, //to make calls to the server
@@ -48,27 +50,11 @@ export class CardsService {
       this.abrv = abrv;
       //remove the old cards before fetching the new ones
       this.cards$.next([]);
+      //remove the old votes before fetching the new ones
+      this.votes$.next([]);
       //make server request
-      this.http
-        .get<Card[]>(this.config.urlBase + "cards/?abrv=" + abrv, {
-          observe: "response",
-        })
-        .subscribe(
-          (response) => {
-            this.statesService.setLoadingState(false);
-            this.copy = response.body;
-            if (response.body) {
-              this.cards$.next(response.body);
-              this.activeCard$.next(response.body[0]); //first card
-            } else {
-              console.log("got empy response");
-            }
-          },
-          (error) => {
-            this.notifications.handleErrors(error);
-            this.statesService.setLoadingState(false);
-          }
-        );
+      this.fetchCards(abrv);
+      this.fetchVotes(abrv);
     }
     return this.cards$.asObservable();
   }
@@ -228,5 +214,46 @@ export class CardsService {
           }
         );
     }
+  }
+  private fetchCards(abrv: string) {
+    this.http
+      .get<Card[]>(this.config.urlBase + "cards/?abrv=" + abrv, {
+        observe: "response",
+      })
+      .subscribe(
+        (response) => {
+          this.statesService.setLoadingState(false);
+          this.copy = response.body;
+          if (response.body) {
+            this.cards$.next(response.body);
+            this.activeCard$.next(response.body[0]); //first card
+          } else {
+            console.log("got empy response");
+          }
+        },
+        (error) => {
+          this.notifications.handleErrors(error);
+          this.statesService.setLoadingState(false);
+        }
+      );
+  }
+  private fetchVotes(abrv: string) {
+    return this.http
+      .get<Vote[]>(this.config.urlBase + "cards/votes?abrv=" + abrv, {
+        observe: "response",
+      })
+      .subscribe(
+        (response) => {
+          if (response.body) {
+            this.votes$.next(response.body);
+            console.log(response.body);
+          } else {
+            console.log("got empy response");
+          }
+        },
+        (error) => {
+          this.notifications.handleErrors(error);
+        }
+      );
   }
 }

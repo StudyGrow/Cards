@@ -139,4 +139,30 @@ router.post(
   }
 );
 
+router.get(
+  "/votes",
+  [
+    query("abrv")
+      .isLength({ min: 3, max: 7 })
+      .withMessage("Lecture abreviation must be between 3 and 7 characters"),
+  ],
+  (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      res.status(422).json({
+        errors: errors.array(),
+      });
+    }
+    if (req.isAuthenticated()) {
+      req.services.votes.getVotesByLectureAbrv(req.query.abrv, req.user._id, (err, votes) => {
+        if (err) {
+          res.status(422).send(err.message);
+        } else {
+          res.status(200).send(votes);
+        }
+      });
+    }
+  }
+);
+
 module.exports = router;

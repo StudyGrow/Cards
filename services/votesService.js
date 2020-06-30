@@ -3,6 +3,24 @@ const Card = require("../models/Card");
 const Lecture = require("../models/Lecture");
 
 module.exports = function votesService() {
+  votesService.getVotesByQuery = async (query, callback) => {
+    try {
+      let votes = await Vote.find(query);
+      callback(null, votes);
+    } catch (error) {
+      callback(error, null);
+    }
+  };
+
+  votesService.getVotesByLectureAbrv = async (abrv, uId, callback) => {
+    try {
+      let lecture = await Lecture.findOne({ abrv: abrv });
+      let votes = await Vote.find({ lectureId: lecture._id, userId: uId });
+      callback(null, votes);
+    } catch (error) {
+      callback(error, null);
+    }
+  };
   votesService.castVote = async (req, callback) => {
     try {
       if (!req.isAuthenticated()) {
