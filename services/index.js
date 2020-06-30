@@ -6,4 +6,5 @@ module.exports = {
   user: require("./userService")(),
   lectures: require("./vorlesungenService")(),
   mail: require("./mailService")(),
+  votes: require("./votesService")(),
 };

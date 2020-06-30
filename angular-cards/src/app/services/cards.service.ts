@@ -212,7 +212,7 @@ export class CardsService {
       this.http
         .post<Vote>(
           this.config.urlBase + "cards/vote",
-          { vote: vote, card: card },
+          { value: vote, id: card._id },
           {
             headers: this.config.headers,
             observe: "response",

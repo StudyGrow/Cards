@@ -116,12 +116,7 @@ router.put(
 );
 router.post(
   "/vote",
-  check("value")
-    .isLength({
-      min: -1,
-      max: 1,
-    })
-    .withMessage("vote ist ungültig"),
+
   check("id").not().isEmpty().withMessage("Karten Id benötigt"),
   (req, res) => {
     const errors = validationResult(req);
@@ -130,11 +125,15 @@ router.post(
         errors: errors.array(),
       });
     }
-    req.services.castVote(req.body, (err) => {
+
+    let vote = parseInt(req.body.value);
+    req.services.votes.castVote(req, (err) => {
       if (err) {
         res.status(422).send(err.message);
       } else {
-        res.status(200).send();
+        res.status(200).json({
+          vote: vote,
+        });
       }
     });
   }
