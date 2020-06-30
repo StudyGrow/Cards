@@ -1,7 +1,6 @@
-import { Component, OnInit, ViewChild, OnDestroy, Input } from "@angular/core";
-import { MatButtonToggleGroup } from "@angular/material/button-toggle";
+import { Component, OnInit, OnDestroy, Input } from "@angular/core";
 import { Subscription } from "rxjs";
-import { UserService } from "src/app/services/user.service";
+import { CardsService } from "src/app/services/cards.service";
 
 @Component({
   selector: "app-vote",
@@ -10,10 +9,10 @@ import { UserService } from "src/app/services/user.service";
 })
 export class VoteComponent implements OnInit, OnDestroy {
   private vote: number = 0;
-  @Input() index: number;
+  @Input() index: number; //cardIndex in card array that the vote belongs to
 
   private subscriptions$: Subscription[] = [];
-  constructor() {}
+  constructor(private cardService: CardsService) {}
 
   ngOnInit(): void {}
 
@@ -34,8 +33,10 @@ export class VoteComponent implements OnInit, OnDestroy {
   toggleVote(n: number) {
     if (this.vote === n) {
       this.vote = 0;
+      this.cardService.castVote(this.index, 0);
     } else {
       this.vote = n;
+      this.cardService.castVote(this.index, n);
     }
   }
 }

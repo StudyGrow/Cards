@@ -8,6 +8,7 @@ import { Router } from "@angular/router";
 import { HttpConfig } from "./config";
 import { HttpClient } from "@angular/common/http";
 import { NotificationsService } from "./notifications.service";
+import { Vote } from "../models/Vote";
 @Injectable({
   providedIn: "root",
 })
@@ -203,5 +204,29 @@ export class CardsService {
     this.tags = [];
     this.setNewCardIndex(0);
     this.cards$.next(this.copy); //reset the cards to their initial state
+  }
+
+  castVote(cardIndex: number, vote: number) {
+    let card = this.cards$.getValue()[cardIndex];
+    if (card) {
+      this.http
+        .post<Vote>(
+          this.config.urlBase + "cards/vote",
+          { vote: vote, card: card },
+          {
+            headers: this.config.headers,
+            observe: "response",
+          }
+        )
+        .subscribe(
+          (resp) => {
+            console.log(resp.body);
+            //handle local votes here on successfull response
+          },
+          (error) => {
+            this.notifications.handleErrors(error);
+          }
+        );
+    }
   }
 }
