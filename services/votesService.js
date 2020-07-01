@@ -52,9 +52,8 @@ module.exports = function votesService() {
 async function updateVote(req) {
   checkVote(req.body.value);
   await Vote.updateOne({ cardId: req.body.id, userId: req.user._id }, { value: req.body.value });
-
-  //calculateNewCardRating(form);
 }
+
 async function createVote(req, abrv) {
   checkVote(req.body.value);
   let lecture = await Lecture.findOne({ abrv: abrv });
@@ -65,8 +64,6 @@ async function createVote(req, abrv) {
     value: req.body.value,
   });
   await vote.save();
-
-  //calculateNewCardRating(form);
 }
 function deleteVote(req) {
   Vote.findOneAndDelete({ cardId: req.body.id, userId: req.user._id }, () => {});
@@ -77,12 +74,15 @@ function checkVote(vote) {
     throw new Error("Vote muss entweder 1 oder -1 sein");
   }
 }
-async function calculateNewCardRating(form) {
-  //probably will be removed, we should calculate the new rating periodically and not on every vote
+
+//this function shoul be called periodically to calculate the new rating
+//calculate the new rating by findind all votes that were made for a specific card and then update the value with the summation of the votes
+async function updateTotalVotes(id, val) {
   try {
-    let currRating = await Card.findById(form.id).rating;
-    currRating -= form.value;
-    Card.findByIdAndUpdate(form.id, { rating: currRating }, () => {});
+    let card = await Card.findById(id);
+    let currRating = card.rating || 0;
+    currRating += val;
+    Card.findByIdAndUpdate(id, { rating: currRating }, () => {});
   } catch (error) {
     console.log(error);
   }
