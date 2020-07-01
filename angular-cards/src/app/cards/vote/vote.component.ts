@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy, Input } from "@angular/core";
 import { Subscription } from "rxjs";
 import { CardsService } from "src/app/services/cards.service";
+import { VotesService } from "src/app/services/votes.service";
 
 @Component({
   selector: "app-vote",
@@ -9,12 +10,17 @@ import { CardsService } from "src/app/services/cards.service";
 })
 export class VoteComponent implements OnInit, OnDestroy {
   private vote: number = 0;
-  @Input() index: number; //cardIndex in card array that the vote belongs to
+  @Input() id: string; //cardIndex in card array that the vote belongs to
 
   private subscriptions$: Subscription[] = [];
-  constructor(private cardService: CardsService) {}
+  constructor(private votes: VotesService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    let sub = this.votes.loadInitialVote(this.id).subscribe((init) => {
+      this.vote = init?.value || 0;
+    });
+    this.subscriptions$.push(sub);
+  }
 
   ngOnDestroy() {
     this.subscriptions$.forEach((sub) => {
@@ -33,10 +39,10 @@ export class VoteComponent implements OnInit, OnDestroy {
   toggleVote(n: number) {
     if (this.vote === n) {
       this.vote = 0;
-      this.cardService.castVote(this.index, 0);
+      this.votes.castVote(this.id, 0);
     } else {
       this.vote = n;
-      this.cardService.castVote(this.index, n);
+      this.votes.castVote(this.id, n);
     }
   }
 }

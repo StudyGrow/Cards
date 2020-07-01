@@ -51,7 +51,7 @@ module.exports = function votesService() {
 
 async function updateVote(req) {
   checkVote(req.body.value);
-  await Vote.updateOne({ cardId: req.body.id, userId: req.user._id }, { vote: req.body.value });
+  await Vote.updateOne({ cardId: req.body.id, userId: req.user._id }, { value: req.body.value });
 
   //calculateNewCardRating(form);
 }
@@ -62,7 +62,7 @@ async function createVote(req, abrv) {
     cardId: req.body.id,
     userId: req.user._id,
     lectureId: lecture._id,
-    vote: req.body.value,
+    value: req.body.value,
   });
   await vote.save();
 

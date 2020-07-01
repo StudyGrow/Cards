@@ -10,6 +10,8 @@ export class Card {
   authorName?: string;
   date?: Date;
   tags?: string[];
+  vote?: number;
+  totalVotes?: number;
 
   constructor(thema, content, abrv, latex, tags) {
     this.thema = thema;

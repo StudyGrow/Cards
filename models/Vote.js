@@ -13,7 +13,7 @@ const voteSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  vote: {
+  value: {
     type: Number,
     required: true,
   },

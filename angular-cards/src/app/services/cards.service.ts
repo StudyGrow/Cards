@@ -9,6 +9,7 @@ import { HttpConfig } from "./config";
 import { HttpClient } from "@angular/common/http";
 import { NotificationsService } from "./notifications.service";
 import { Vote } from "../models/Vote";
+import { VotesService } from "./votes.service";
 @Injectable({
   providedIn: "root",
 })
@@ -31,13 +32,12 @@ export class CardsService {
 
   private config = new HttpConfig(); //configuration for http communication with the server
 
-  private votes$ = new BehaviorSubject<Vote[]>([]);
-
   constructor(
     private notifications: NotificationsService, //display errors to user
     private http: HttpClient, //to make calls to the server
     private statesService: StatesService, //for setting the loading state
-    private router: Router //used to get the lecture abreviation from the route
+    private router: Router, //used to get the lecture abreviation from the route
+    private votes: VotesService
   ) {}
 
   getCards(): Observable<Card[]> {
@@ -50,11 +50,10 @@ export class CardsService {
       this.abrv = abrv;
       //remove the old cards before fetching the new ones
       this.cards$.next([]);
-      //remove the old votes before fetching the new ones
-      this.votes$.next([]);
+
       //make server request
       this.fetchCards(abrv);
-      this.fetchVotes(abrv);
+      this.votes.fetchVotes(abrv); //fetch the new votes
     }
     return this.cards$.asObservable();
   }
@@ -192,29 +191,6 @@ export class CardsService {
     this.cards$.next(this.copy); //reset the cards to their initial state
   }
 
-  castVote(cardIndex: number, vote: number) {
-    let card = this.cards$.getValue()[cardIndex];
-    if (card) {
-      this.http
-        .post<Vote>(
-          this.config.urlBase + "cards/vote",
-          { value: vote, id: card._id },
-          {
-            headers: this.config.headers,
-            observe: "response",
-          }
-        )
-        .subscribe(
-          (resp) => {
-            console.log(resp.body);
-            //handle local votes here on successfull response
-          },
-          (error) => {
-            this.notifications.handleErrors(error);
-          }
-        );
-    }
-  }
   private fetchCards(abrv: string) {
     this.http
       .get<Card[]>(this.config.urlBase + "cards/?abrv=" + abrv, {
@@ -226,6 +202,7 @@ export class CardsService {
           this.copy = response.body;
           if (response.body) {
             this.cards$.next(response.body);
+
             this.activeCard$.next(response.body[0]); //first card
           } else {
             console.log("got empy response");
@@ -234,25 +211,6 @@ export class CardsService {
         (error) => {
           this.notifications.handleErrors(error);
           this.statesService.setLoadingState(false);
-        }
-      );
-  }
-  private fetchVotes(abrv: string) {
-    return this.http
-      .get<Vote[]>(this.config.urlBase + "cards/votes?abrv=" + abrv, {
-        observe: "response",
-      })
-      .subscribe(
-        (response) => {
-          if (response.body) {
-            this.votes$.next(response.body);
-            console.log(response.body);
-          } else {
-            console.log("got empy response");
-          }
-        },
-        (error) => {
-          this.notifications.handleErrors(error);
         }
       );
   }
