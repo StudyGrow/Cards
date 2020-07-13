@@ -79,7 +79,7 @@ export class UpdateCardFormComponent implements OnInit, OnDestroy {
     if (content.value) {
       return {
         color:
-          content.value && content.value.length > 400 ? "#ff0000" : "#000000",
+          content.value && content.value.length > 1000 ? "#ff0000" : "#000000",
       };
     } else {
       return { color: "#000000" };
@@ -99,7 +99,7 @@ export class UpdateCardFormComponent implements OnInit, OnDestroy {
       return true;
     }
     return (
-      content.value.length > 400 ||
+      content.value.length > 1000 ||
       (thema.value.length > 0 && thema.value.length < 3) ||
       thema.value.length > 200
     );

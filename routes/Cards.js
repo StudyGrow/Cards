@@ -49,9 +49,9 @@ router.post(
     check("card.content")
       .isLength({
         min: 1,
-        max: 400,
+        max: 1000,
       })
-      .withMessage("Inhalt darf nicht mehr als 400 Zeichen enthalten"),
+      .withMessage("Inhalt darf nicht mehr als 1000 Zeichen enthalten"),
   ],
   (req, res) => {
     const errors = validationResult(req);
@@ -93,9 +93,9 @@ router.put(
     check("card.content")
       .isLength({
         min: 1,
-        max: 400,
+        max: 1000,
       })
-      .withMessage("Inhalt darf nicht mehr als 400 Zeichen enthalten"),
+      .withMessage("Inhalt darf nicht mehr als 1000 Zeichen enthalten"),
   ],
   (req, res) => {
     const errors = validationResult(req);
