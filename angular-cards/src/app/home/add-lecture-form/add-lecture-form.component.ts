@@ -55,7 +55,7 @@ export class AddLectureFormComponent implements OnInit {
         abrv.value.length < 3 ||
         abrv.value.length > 7 ||
         name.value.length == 0 ||
-        name.value.length > 60
+        name.value.length > 200
       );
     }
   }

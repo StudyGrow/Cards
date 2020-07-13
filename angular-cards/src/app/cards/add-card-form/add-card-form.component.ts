@@ -61,7 +61,7 @@ export class AddCardFormComponent implements OnInit, OnDestroy {
       return {
         color:
           (thema.value && thema.value.length > 0 && thema.value.length < 3) ||
-          thema.value.length > 60
+          thema.value.length > 200
             ? "#ff0000"
             : "#000000",
       };
@@ -96,7 +96,7 @@ export class AddCardFormComponent implements OnInit, OnDestroy {
     return (
       content.value.length > 400 ||
       (thema.value.length > 0 && thema.value.length < 3) ||
-      thema.value.length > 60
+      thema.value.length > 200
     );
   }
 }
