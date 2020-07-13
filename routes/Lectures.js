@@ -62,8 +62,8 @@ router.post(
         "Please provide a valid lecture abreviation (must be between 3 and 7 characters)"
       ),
     check("lecture.name")
-      .isLength({ min: 1, max: 200 })
-      .withMessage("Lecture name must be between between 1 and 200 characters"),
+      .isLength({ min: 1, max: 500 })
+      .withMessage("Lecture name must be between between 1 and 500 characters"),
   ],
   auth,
   (req, res) => {

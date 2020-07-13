@@ -43,9 +43,9 @@ router.post(
     check("card.thema")
       .isLength({
         min: 3,
-        max: 200,
+        max: 500,
       })
-      .withMessage("Thema muss zwischen 3 und 200 Zeichen enthalten"),
+      .withMessage("Thema muss zwischen 3 und 500 Zeichen enthalten"),
     check("card.content")
       .isLength({
         min: 1,
@@ -81,15 +81,15 @@ router.put(
     check("card._id")
       .isLength({
         min: 1,
-        max: 200,
+        max: 500,
       })
       .withMessage("_id der Karte muss angegeben werden"),
     check("card.thema")
       .isLength({
         min: 3,
-        max: 200,
+        max: 500,
       })
-      .withMessage("Thema muss zwischen 3 und 200 Zeichen enthalten"),
+      .withMessage("Thema muss zwischen 3 und 500 Zeichen enthalten"),
     check("card.content")
       .isLength({
         min: 1,
