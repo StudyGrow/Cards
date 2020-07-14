@@ -9,7 +9,6 @@ import { CarouselComponent } from "./carousel/carousel.component";
 import { LectureHeaderComponent } from "./lecture-header/lecture-header.component";
 import { UpdateCardFormComponent } from "./update-card-form/update-card-form.component";
 import { CarouselModule, WavesModule } from "angular-bootstrap-md";
-import { NewVlComponent } from './new-vl/new-vl.component';
 
 //Pipes
 
@@ -21,7 +20,6 @@ import { NewVlComponent } from './new-vl/new-vl.component';
     CarouselComponent,
     LectureHeaderComponent,
     UpdateCardFormComponent,
-    NewVlComponent,
   ],
   imports: [CardsRoutingModule, SharedModule, CarouselModule, WavesModule],
 })

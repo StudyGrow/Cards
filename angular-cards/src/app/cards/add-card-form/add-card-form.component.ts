@@ -1,11 +1,10 @@
-import { Component, OnInit, OnDestroy, Input } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { StatesService } from "../../services/states.service";
 import { CardsService } from "../../services/cards.service";
 import { LecturesService } from "../../services/lectures.service";
 import { Card } from "../../models/Card";
 import { Vorlesung } from "src/app/models/Vorlesung";
 import { Subscription } from "rxjs";
-import { Router } from "@angular/router";
 
 @Component({
   selector: "app-add-card-form",
@@ -13,7 +12,6 @@ import { Router } from "@angular/router";
   styleUrls: ["./add-card-form.component.css"],
 })
 export class AddCardFormComponent implements OnInit, OnDestroy {
-  @Input() neu: boolean = false;
   lecture: Vorlesung;
   newCard: Card;
   hidden: boolean;
@@ -23,7 +21,6 @@ export class AddCardFormComponent implements OnInit, OnDestroy {
   constructor(
     private cardsService: CardsService,
     private stateService: StatesService,
-    private router: Router,
     private lectureService: LecturesService
   ) {}
 
@@ -47,19 +44,10 @@ export class AddCardFormComponent implements OnInit, OnDestroy {
       0,
       f.value.tags
     );
-    if (this.neu) {
-      this.lectureService.addLecture(this.lecture).subscribe((res) => {
-        let sub = this.cardsService.addCard(this.newCard).subscribe((res) => {
-          sub.unsubscribe();
-        });
-        this.router.navigateByUrl(`vorlesung/${this.lecture.abrv}`);
-      });
-    } else {
-      let sub = this.cardsService.addCard(this.newCard).subscribe((res) => {
-        f.reset();
-        sub.unsubscribe();
-      });
-    }
+    let sub = this.cardsService.addCard(this.newCard).subscribe((res) => {
+      f.reset();
+      sub.unsubscribe();
+    });
   }
   inField() {
     this.stateService.setTyping(true);
