@@ -25,7 +25,7 @@ const routes: Routes = [
       import("./profile/profile.module").then((m) => m.ProfileModule),
   },
   {
-    path: "vorlesung/:abrv",
+    path: "vorlesung",
     loadChildren: () =>
       import("./cards/cards.module").then((m) => m.CardsModule),
     data: { preload: true },

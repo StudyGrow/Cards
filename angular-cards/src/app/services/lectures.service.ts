@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
-import { HttpClient, HttpHeaders, HttpResponse } from "@angular/common/http";
-import { Observable, BehaviorSubject } from "rxjs";
-import { tap, map } from "rxjs/operators";
+import { HttpClient, HttpResponse } from "@angular/common/http";
+import { Observable, BehaviorSubject, of } from "rxjs";
+import { tap } from "rxjs/operators";
 import { StatesService } from "./states.service";
 import { NotificationsService } from "./notifications.service";
 import { Router } from "@angular/router";
@@ -52,7 +52,10 @@ export class LecturesService {
   //get the Current lecture
   getCurrentLecture(): Observable<Vorlesung> {
     let abrv = this.router.url.split(/vorlesung\//)[1]; //get the abreviation of the lecture from the url
-    if (abrv && this.lecture$.getValue().abrv !== abrv) {
+    if (abrv == "neu") {
+      let tmp = of(JSON.parse(localStorage.getItem("vl")));
+      return tmp;
+    } else if (abrv && this.lecture$.getValue().abrv !== abrv) {
       //fetch the lecture from the server
       this.lecture$.next(new Vorlesung("", "")); //reset the lecture
       this.statesService.setLoadingState(true);
@@ -93,8 +96,10 @@ export class LecturesService {
             //add the new lecture to the lectures subject
             this.statesService.setLoadingState(false);
             let lectures = this.lectures$.getValue();
-            lectures.push(lecture);
-            this.lectures$.next(lectures);
+            if (lectures) {
+              lectures.push(lecture);
+              this.lectures$.next(lectures);
+            }
           },
           (error) => {
             this.notifications.handleErrors(error);
