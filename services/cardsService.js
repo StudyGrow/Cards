@@ -63,9 +63,11 @@ module.exports = function cardsService() {
 };
 
 function updateTags(vlabrv, tags) {
-  tags.forEach((tag) => {
-    if (tag.length > 0) {
-      Lecture.updateOne({ abrv: vlabrv }, { $addToSet: { tagList: [tag] } }, () => {});
-    }
-  });
+  if (tags) {
+    tags.forEach((tag) => {
+      if (tag.length > 0) {
+        Lecture.updateOne({ abrv: vlabrv }, { $addToSet: { tagList: [tag] } }, () => {});
+      }
+    });
+  }
 }
