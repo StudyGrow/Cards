@@ -4,6 +4,7 @@ import { Vorlesung } from "../../models/Vorlesung";
 import { LecturesService } from "../../services/lectures.service";
 import { StatesService } from "../../services/states.service";
 import { Subscription } from "rxjs";
+import { Router } from "@angular/router";
 @Component({
   selector: "app-add-lecture-form",
   templateUrl: "./add-lecture-form.component.html",
@@ -11,10 +12,7 @@ import { Subscription } from "rxjs";
 })
 export class AddLectureFormComponent implements OnInit {
   subscriptions$: Subscription[] = [];
-  constructor(
-    private lecture: LecturesService,
-    private statesService: StatesService
-  ) {}
+  constructor(private lecture: LecturesService, private router: Router) {}
 
   ngOnInit(): void {}
   ngOnDestroy() {
@@ -24,10 +22,12 @@ export class AddLectureFormComponent implements OnInit {
   }
   onSubmit(f) {
     let newLecture = new Vorlesung(f.value.name, f.value.abrv.toLowerCase());
-    let sub = this.lecture.addLecture(newLecture).subscribe((response) => {
-      f.reset();
-      sub.unsubscribe();
-    });
+    localStorage.setItem("vl", JSON.stringify(newLecture));
+    this.router.navigateByUrl("/vorlesung/neu");
+    // let sub = this.lecture.addLecture(newLecture).subscribe((response) => {
+    //   f.reset();
+    //   sub.unsubscribe();
+    // });
   }
 
   setCharIndicatorStyle(field, max: number) {
