@@ -28,9 +28,9 @@ export class CarouselComponent implements OnInit, OnDestroy {
   ) {
     if (!this.inTypingField) {
       if (this.carousel && event.key == "ArrowRight") {
-        this.carousel.nextSlide();
+        this.goToNext();
       } else if (this.carousel && event.key == "ArrowLeft") {
-        this.carousel.previousSlide();
+        this.goToPrev();
       }
     }
   }
@@ -119,8 +119,13 @@ export class CarouselComponent implements OnInit, OnDestroy {
   }
 
   selectSlide(n: number) {
-    if (this.carousel) {
+    if (this.carousel && this.cards.length > 1 && this.formMode != "edit") {
       this.carousel.selectSlide(n.toString());
+    } else {
+      this.notallowed = true;
+      setTimeout(() => {
+        this.notallowed = false;
+      }, 100);
     }
   }
   showRandomCard() {
