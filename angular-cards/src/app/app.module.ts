@@ -1,9 +1,10 @@
-//Modules
+//Core Modules
 import { BrowserModule } from "@angular/platform-browser";
 import { NgModule, Injectable, LOCALE_ID } from "@angular/core";
 import { HttpClientModule } from "@angular/common/http";
 import { SharedModule } from "./shared/shared.module";
 import { AppRoutingModule } from "./app-routing.module";
+import { StoreModule } from "@ngrx/store";
 
 //Material Modules
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
@@ -26,6 +27,9 @@ import {
   HammerGestureConfig,
   HAMMER_GESTURE_CONFIG,
 } from "@angular/platform-browser";
+
+//Reducers
+import { Reducer } from "./store/reducer";
 
 //Localization
 import { registerLocaleData } from "@angular/common";
@@ -123,6 +127,7 @@ export class MyHammerConfig extends HammerGestureConfig {
     MatSelectModule,
     HammerModule,
     HomeModule,
+    StoreModule.forRoot({ shop: Reducer }),
   ],
   providers: [
     { provide: LOCALE_ID, useValue: "de" },
