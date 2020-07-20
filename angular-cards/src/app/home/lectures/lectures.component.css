@@ -1,0 +1,9 @@
+.list-group-item {
+  color: rgb(0, 0, 0);
+  font-size: large;
+  text-decoration: none;
+  padding-left: 0;
+}
+ul {
+  width: max-content;
+}

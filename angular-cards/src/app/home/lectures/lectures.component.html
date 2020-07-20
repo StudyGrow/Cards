@@ -1,6 +1,12 @@
 <h4 *ngIf="lectures$">Vorlesungen</h4>
-<ul class="list list-group" *ngIf="lectures$ | async as lectures">
-  <li class="list-group-item" *ngFor="let lecture of lectures">
-    <a [routerLink]="setLink(lecture)">{{ lecture.name }}</a>
-  </li>
+<ul
+  class="list list-group list-group-flush"
+  *ngIf="lectures$ | async as lectures"
+>
+  <a
+    *ngFor="let lecture of lectures"
+    class="list-group-item list-group-item-action"
+    [routerLink]="setLink(lecture)"
+    >{{ lecture.name }}</a
+  >
 </ul>
