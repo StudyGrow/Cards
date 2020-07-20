@@ -42,11 +42,7 @@
     <div [class]="formMode == 'add' ? 'fas fa-minus' : 'fas fa-plus'"></div>
   </button>
 </div>
-<div
-  class="row"
-  *ngIf="cards && cards.length > 0"
-  [style]="this.loading ? 'display: none' : ''"
->
+<div class="row" *ngIf="cards && cards.length > 0" [@fadeInOnEnter]>
   <a id="left" class="navig col" *ngIf="cards.length > 0" (click)="goToPrev()">
     <span class="fas fa-chevron-left"></span>
   </a>
@@ -64,7 +60,7 @@
         *ngFor="let card of cards; index as i"
         [id]="i.toString()"
       >
-        <app-card [card]="card" [index]="i"></app-card>
+        <app-card [@shake]="notallowed" [card]="card" [index]="i"></app-card>
       </mdb-carousel-item>
     </mdb-carousel>
   </div>

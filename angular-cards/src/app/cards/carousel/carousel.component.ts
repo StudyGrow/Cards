@@ -12,11 +12,13 @@ import { Card } from "../../models/Card";
 
 import { UserService } from "../../services/user.service";
 import { Subscription } from "rxjs";
+import { fadeInOnEnterAnimation, shakeAnimation } from "angular-animations";
 
 @Component({
   selector: "app-carousel",
   templateUrl: "./carousel.component.html",
   styleUrls: ["./carousel.component.css"],
+  animations: [fadeInOnEnterAnimation(), shakeAnimation()],
 })
 export class CarouselComponent implements OnInit, OnDestroy {
   @ViewChild("mycarousel", { static: false }) public carousel: any;
@@ -40,6 +42,8 @@ export class CarouselComponent implements OnInit, OnDestroy {
   addComponentHidden: boolean;
   formShow: boolean;
   formMode: string;
+
+  notallowed: boolean = false;
   private userId: string;
   subscriptions$: Subscription[] = [];
   constructor(
@@ -134,11 +138,21 @@ export class CarouselComponent implements OnInit, OnDestroy {
   goToPrev() {
     if (this.carousel && this.cards.length > 1 && this.formMode != "edit") {
       this.carousel.previousSlide();
+    } else {
+      this.notallowed = true;
+      setTimeout(() => {
+        this.notallowed = false;
+      }, 100);
     }
   }
   goToNext() {
     if (this.carousel && this.cards.length > 1 && this.formMode != "edit") {
       this.carousel.nextSlide();
+    } else {
+      this.notallowed = true;
+      setTimeout(() => {
+        this.notallowed = false;
+      }, 100);
     }
   }
   onSlide(slideEvent) {
