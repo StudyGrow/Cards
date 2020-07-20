@@ -10,7 +10,11 @@ body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
   overflow-x: hidden;
 }
-
+/*
+.btn-primary {
+  background-color: #6610f2;
+}
+*/
 /* width */
 ::-webkit-scrollbar {
   width: 5px;
