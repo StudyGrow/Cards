@@ -18,7 +18,7 @@ app.use(
     resave: false,
     saveUninitialized: false,
     proxy: true,
-    cookie: { secure: false }, //secure needs to be set to true here
+    cookie: { secure: process.env.NODE_ENV.indexOf("development") > -1 ? false : true }, //secure needs to be set to true for production here
 
     store: new MongoStore({ mongooseConnection: mongoose.connection }),
   })
