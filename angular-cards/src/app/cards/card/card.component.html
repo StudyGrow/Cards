@@ -1,16 +1,18 @@
-<div class="card" id="`{{ card._id }}`">
+<div class="card shadow mb-1 mt-1" id="`{{ card._id }}`">
   <div class="card-header">
     {{ card.thema }}
   </div>
 
-  <mat-expansion-panel #answer>
+  <mat-expansion-panel #answer class="mat-elevation-z0 p-0">
     <mat-expansion-panel-header>
       <mat-panel-title> Antwort</mat-panel-title>
     </mat-expansion-panel-header>
-
-    <pre lang="de">
+    <ng-template matExpansionPanelContent>
+      <hr class="m-0" />
+      <pre lang="de">
         <div  [innerHtml]="parsed[0] | safeHtml"></div>
     </pre>
+    </ng-template>
   </mat-expansion-panel>
   <p *ngIf="card.authorName" class="card-text">
     <small class="text-muted float-right"
