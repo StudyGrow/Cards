@@ -15,7 +15,7 @@ export class CardsEffects {
       ofType(ActionTypes.FETCH_CARDS),
       mergeMap(() =>
         this.cs.fetchCardsData().pipe(
-          map((cards) => Act.LoadSuccess({ cards: cards })),
+          map((data) => Act.LoadSuccess({ data: data })),
           catchError((reason) => of(Act.LoadFailure({ reason: reason })))
         )
       )

@@ -8,6 +8,8 @@ import { Router, ActivatedRoute } from "@angular/router";
 import { HttpConfig } from "./config";
 import { HttpClient } from "@angular/common/http";
 import { NotificationsService } from "./notifications.service";
+import { Vorlesung } from "../models/Vorlesung";
+import { CardsData } from "../store/reducer";
 @Injectable({
   providedIn: "root",
 })
@@ -37,10 +39,10 @@ export class CardsService {
     private router: Router, //used to get the lecture abreviation from the route
     private route: ActivatedRoute
   ) {}
-  fetchCardsData(): Observable<Card[]> {
+  fetchCardsData(): Observable<CardsData> {
     let abrv = this.router.url.split(/vorlesung\//)[1]; //get the lecture abreviation from the route
     return this.http
-      .get<Card[]>(this.config.urlBase + "cards/?abrv=" + abrv)
+      .get<CardsData>(this.config.urlBase + "cards/a?abrv=" + abrv)
       .pipe(
         tap((cards) => {
           console.log(cards);

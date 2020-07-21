@@ -1,6 +1,7 @@
 import { Action, createAction, props, union } from "@ngrx/store";
 import { Card } from "../models/Card";
 import { Vorlesung } from "../models/Vorlesung";
+import { CardsData } from "./reducer";
 
 //Types of Actions
 export enum ActionTypes {
@@ -23,7 +24,7 @@ export const fetchCards = createAction(
 
 export const LoadSuccess = createAction(
   ActionTypes.LOAD_SUCCESS,
-  props<{ cards: Card[] }>()
+  props<{ data: CardsData }>()
 );
 
 export const LoadFailure = createAction(

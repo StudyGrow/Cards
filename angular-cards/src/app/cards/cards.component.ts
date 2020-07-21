@@ -52,6 +52,9 @@ export class CardsComponent implements OnInit {
     this.cards$.subscribe((cards) => {
       console.log(cards);
     });
+    this.store.select((state) => {
+      console.log(state);
+    });
     this.store.dispatch({ type: ActionTypes.FETCH_CARDS });
     this.stateServie.getTyping().subscribe((val) => (this.inTypingField = val));
 

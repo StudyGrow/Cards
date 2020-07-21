@@ -5,12 +5,16 @@ import { Vorlesung } from "../models/Vorlesung";
 
 //defines the state of our app
 export interface State {
-  cardsData: { cards: Card[]; lecture: Vorlesung };
+  cardsData: { cards: Card[]; lecture: Vorlesung; uid: string };
 }
-
+export class CardsData {
+  cards: Card[];
+  lecture: Vorlesung;
+  uid: string;
+}
 //initial state of the app
 export const initialState: State = {
-  cardsData: { cards: [], lecture: new Vorlesung() },
+  cardsData: { cards: [], lecture: new Vorlesung(), uid: null },
 };
 
 //Reducer which will dispatch changes to the store
@@ -22,9 +26,11 @@ const _cardsReducer = createReducer(
     lecture: state.cardsData.lecture,
     //add card to the end of the cards array
   })),
-  on(Actions.LoadSuccess, (state, { cards }) => ({
+  on(Actions.LoadSuccess, (state, { data }) => ({
     ...state,
-    cards: cards, //update cards with newly fecthed cards
+    cards: data.cards, //update cards with newly fecthed cards
+    lecture: data.lecture,
+    uid: data.uid,
   })),
   on(Actions.LoadFailure, (state) => state) //on failure don't update state
 );
