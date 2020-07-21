@@ -31,3 +31,9 @@ pre {
 ::ng-deep .mat-expansion-panel-body {
   padding-bottom: 0 !important;
 }
+
+.text-muted {
+  position: sticky;
+  bottom: -2.5rem;
+  right: 0;
+}
