@@ -74,7 +74,6 @@ export class SearchBarComponent implements OnInit, OnDestroy {
     }
   }
   navigateTo(e: Event, index: number) {
-    console.log("hi");
     e.preventDefault();
     this.uInput = "";
     this.cardsService.setNewCardIndex(index);

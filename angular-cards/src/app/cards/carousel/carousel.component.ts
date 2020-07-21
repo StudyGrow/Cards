@@ -160,7 +160,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
       return true;
     }
     let currCard = this.cards[this.activeSlide]; //get the card that is currently showing
-    console.log(this.cards, currCard);
+
     if (!currCard) {
       return true;
     }
