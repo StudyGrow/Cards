@@ -14,7 +14,7 @@ export class CardsData {
 }
 //initial state of the app
 export const initialState: State = {
-  cardsData: { cards: [], lecture: new Vorlesung(), uid: null },
+  cardsData: { cards: [], lecture: null, uid: null },
 };
 
 //Reducer which will dispatch changes to the store

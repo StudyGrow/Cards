@@ -3,7 +3,7 @@ import { Injectable } from "@angular/core";
 import { Observable, BehaviorSubject, of, from } from "rxjs";
 import { Card } from "../models/Card";
 import { StatesService } from "./states.service";
-import { tap, map } from "rxjs/operators";
+import { tap, map, shareReplay, publish, refCount } from "rxjs/operators";
 import { Router, ActivatedRoute } from "@angular/router";
 import { HttpConfig } from "./config";
 import { HttpClient } from "@angular/common/http";
@@ -29,7 +29,7 @@ export class CardsService {
   //a Subject of the card that is currently shown
   private activeCard$ = new BehaviorSubject<Card>(null);
   private tags: string[] = []; //save applied filters
-
+  private cache: Observable<CardsData>;
   private config = new HttpConfig(); //configuration for http communication with the server
 
   constructor(
@@ -41,13 +41,9 @@ export class CardsService {
   ) {}
   fetchCardsData(): Observable<CardsData> {
     let abrv = this.router.url.split(/vorlesung\//)[1]; //get the lecture abreviation from the route
-    return this.http
-      .get<CardsData>(this.config.urlBase + "cards/a?abrv=" + abrv)
-      .pipe(
-        tap((cards) => {
-          console.log(cards);
-        })
-      );
+    return this.http.get<CardsData>(
+      this.config.urlBase + "cards/a?abrv=" + abrv
+    );
   }
 
   getCards(): Observable<Card[]> {

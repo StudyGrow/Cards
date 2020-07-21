@@ -1,6 +1,13 @@
 <div class="container">
-  <app-lecture-header></app-lecture-header>
-  <app-carousel *ngIf="cards$ | async as cards" [cards]="cards"></app-carousel>
+  <h1 class="text-center" *ngIf="lecture$ | async as lecture">
+    {{ lecture.name }}
+  </h1>
+
+  <app-carousel
+    *ngIf="cards$ | async as cards"
+    [cards]="cards"
+    [id]="uid$ | async"
+  ></app-carousel>
 
   <br />
   <app-add-card-form *ngIf="formMode == 'add'"></app-add-card-form>

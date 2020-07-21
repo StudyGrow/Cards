@@ -15,7 +15,7 @@ import { StatesService } from "../services/states.service";
 import { select, Store } from "@ngrx/store";
 import { ActionTypes } from "../store/actions";
 import { Observable } from "rxjs";
-import { State } from "../store/reducer";
+import { State, CardsData } from "../store/reducer";
 import { map } from "rxjs/operators";
 
 @Component({
@@ -28,9 +28,17 @@ export class CardsComponent implements OnInit {
   public lecture: Vorlesung;
   public loading: boolean = true;
   public formMode: string = "none";
-  public cards$: Observable<Card[]> = this.store.select(
-    (state) => state.cardsData.cards
+  private data$: Observable<CardsData> = this.store.select(
+    //holds cards data from store
+    (state) => state.cardsData
   );
+  public cards$: Observable<Card[]> = this.data$.pipe(
+    map((data) => data.cards)
+  );
+  public lecture$: Observable<Vorlesung> = this.data$.pipe(
+    map((data) => data.lecture)
+  );
+  public uid$: Observable<string> = this.data$.pipe(map((data) => data.uid));
 
   private inTypingField: boolean;
   @ViewChild("alert", { static: false }) alert: ElementRef;
@@ -49,12 +57,7 @@ export class CardsComponent implements OnInit {
   ngOnInit(): void {
     this.title.setTitle("Cards");
     this.vlAbrv = this.route.snapshot.paramMap.get("abrv");
-    this.cards$.subscribe((cards) => {
-      console.log(cards);
-    });
-    this.store.select((state) => {
-      console.log(state);
-    });
+
     this.store.dispatch({ type: ActionTypes.FETCH_CARDS });
     this.stateServie.getTyping().subscribe((val) => (this.inTypingField = val));
 

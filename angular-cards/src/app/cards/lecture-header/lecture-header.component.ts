@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, Input } from "@angular/core";
 import { Observable } from "rxjs";
 import { Vorlesung } from "src/app/models/Vorlesung";
 import { LecturesService } from "src/app/services/lectures.service";
@@ -9,10 +9,10 @@ import { LecturesService } from "src/app/services/lectures.service";
   styleUrls: ["./lecture-header.component.css"],
 })
 export class LectureHeaderComponent implements OnInit {
+  @Input() vl: Vorlesung;
+
   lecture$: Observable<Vorlesung>;
   constructor(private lectureService: LecturesService) {}
 
-  ngOnInit(): void {
-    this.lecture$ = this.lectureService.getCurrentLecture();
-  }
+  ngOnInit(): void {}
 }

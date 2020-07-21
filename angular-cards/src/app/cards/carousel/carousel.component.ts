@@ -39,14 +39,16 @@ export class CarouselComponent implements OnInit, OnDestroy {
   private inTypingField: boolean;
   loading: boolean;
   @Input() cards: Card[]; //array of all the cards
-  activeSlide: number;
+  @Input() uid: string; //array of all the cards
+
+  activeSlide = 0; //holds the slide which is currently shown
 
   addComponentHidden: boolean;
   formShow: boolean;
   formMode: string;
 
   notallowed: boolean = false;
-  private userId: string;
+
   subscriptions$: Subscription[] = [];
   constructor(
     private stateService: StatesService,
@@ -55,25 +57,11 @@ export class CarouselComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    let sub = this.userService
-      .getUserId()
-      .subscribe((userId) => (this.userId = userId));
-    this.subscriptions$.push(sub);
-    sub = this.stateService
+    let sub = this.stateService
       .getTyping()
       .subscribe((val) => (this.inTypingField = val));
     this.subscriptions$.push(sub);
-    // sub = this.cardsService.getCards().subscribe((cards) => {
 
-    //   this.cards = [];
-    //   this.loading = true;
-    //   setTimeout(() => {
-    //     //use timeout here because mdbootstrap will not set active slide accordomgly otherwise
-
-    //     this.loading = false;
-    //     this.cards = cards;
-    //   }, 500);
-    // }); //load the specific cards from the server by subscribing to the observable that the card-service provides
     this.subscriptions$.push(sub);
 
     this.stateService.setFormMode("none");
@@ -87,11 +75,12 @@ export class CarouselComponent implements OnInit, OnDestroy {
       let newSlide = index;
       if (this.carousel) {
         if (newSlide < 0) {
-          newSlide = 0;
-        } else if (newSlide >= this.cards.length) {
           newSlide = this.cards.length - 1;
+        } else if (newSlide >= this.cards.length) {
+          newSlide = 0;
+        } else {
+          this.carousel.selectSlide(newSlide);
         }
-        this.carousel.selectSlide(newSlide);
       }
     });
     this.subscriptions$.push(sub);
@@ -163,24 +152,26 @@ export class CarouselComponent implements OnInit, OnDestroy {
     }
   }
   onSlide(slideEvent) {
-    this.activeSlide;
-    this.cardsService.setActiveCardIndex(parseInt(slideEvent.relatedTarget));
+    this.activeSlide = slideEvent.relatedTarget;
+    this.cardsService.setActiveCardIndex(slideEvent.relatedTarget);
   }
   isDisabled() {
     if (this.formMode == "edit" || !this.cards || this.cards.length == 0) {
       return true;
-    } else {
-      let currCard = this.cards[this.activeSlide]; //get the card that is currently showing
+    }
+    let currCard = this.cards[this.activeSlide]; //get the card that is currently showing
+    console.log(this.cards, currCard);
+    if (!currCard) {
+      return true;
+    }
 
-      if (!currCard || !currCard.authorId || currCard.authorId.length == 0) {
-        return false;
-      }
-      if (!this.userId || currCard.authorId !== this.userId) {
-        //there is an author an it is not the user
-        return true;
-      } else {
-        return false;
-      }
+    if (!currCard.authorId) {
+      //there is a card, but there is no author
+      return false;
+    }
+    if (!this.uid || currCard.authorId !== this.uid) {
+      //there is an author an it is not the user
+      return true;
     }
   }
 }

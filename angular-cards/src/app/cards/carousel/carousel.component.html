@@ -45,7 +45,7 @@
   <a id="left" class="navig col" *ngIf="cards.length > 0" (click)="goToPrev()">
     <span class="fas fa-chevron-left"></span>
   </a>
-  <div id="carousel" (swipeleft)="goToPrev()" (swiperight)="goToNext()">
+  <div id="carousel">
     <mdb-carousel
       (activeSlideChange)="onSlide($event)"
       #mycarousel
