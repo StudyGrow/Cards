@@ -6,6 +6,9 @@ import { SharedModule } from "./shared/shared.module";
 import { AppRoutingModule } from "./app-routing.module";
 import { StoreModule } from "@ngrx/store";
 
+//Dev Module
+import { StoreDevtoolsModule } from "@ngrx/store-devtools";
+
 //Material Modules
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { MatProgressBarModule } from "@angular/material/progress-bar";
@@ -29,7 +32,10 @@ import {
 } from "@angular/platform-browser";
 
 //Reducers
-import { Reducer } from "./store/reducer";
+import { cardsReducer } from "./store/reducer";
+//Effects
+import { EffectsModule } from "@ngrx/effects";
+import { CardsEffects } from "./store/effects";
 
 //Localization
 import { registerLocaleData } from "@angular/common";
@@ -127,7 +133,9 @@ export class MyHammerConfig extends HammerGestureConfig {
     MatSelectModule,
     HammerModule,
     HomeModule,
-    StoreModule.forRoot({ shop: Reducer }),
+    StoreDevtoolsModule.instrument({ maxAge: 10 }),
+    StoreModule.forRoot({ cardsData: cardsReducer }),
+    EffectsModule.forRoot([CardsEffects]),
   ],
   providers: [
     { provide: LOCALE_ID, useValue: "de" },

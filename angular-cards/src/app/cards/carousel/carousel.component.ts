@@ -4,15 +4,17 @@ import {
   ViewChild,
   OnDestroy,
   HostListener,
+  Input,
 } from "@angular/core";
 
 import { StatesService } from "../../services/states.service";
-import { CardsService } from "../../services/cards.service";
+
 import { Card } from "../../models/Card";
 
 import { UserService } from "../../services/user.service";
 import { Subscription } from "rxjs";
 import { fadeInOnEnterAnimation, shakeAnimation } from "angular-animations";
+import { CardsService } from "src/app/services/cards.service";
 
 @Component({
   selector: "app-carousel",
@@ -36,7 +38,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
   }
   private inTypingField: boolean;
   loading: boolean;
-  cards: Card[]; //array of all the cards
+  @Input() cards: Card[]; //array of all the cards
   activeSlide: number;
 
   addComponentHidden: boolean;
@@ -61,17 +63,17 @@ export class CarouselComponent implements OnInit, OnDestroy {
       .getTyping()
       .subscribe((val) => (this.inTypingField = val));
     this.subscriptions$.push(sub);
-    sub = this.cardsService.getCards().subscribe((cards) => {
-      this.stateService.setLoadingState(true);
-      this.cards = [];
-      this.loading = true;
-      setTimeout(() => {
-        //use timeout here because mdbootstrap will not set active slide accordomgly otherwise
-        this.stateService.setLoadingState(false);
-        this.loading = false;
-        this.cards = cards;
-      }, 500);
-    }); //load the specific cards from the server by subscribing to the observable that the card-service provides
+    // sub = this.cardsService.getCards().subscribe((cards) => {
+
+    //   this.cards = [];
+    //   this.loading = true;
+    //   setTimeout(() => {
+    //     //use timeout here because mdbootstrap will not set active slide accordomgly otherwise
+
+    //     this.loading = false;
+    //     this.cards = cards;
+    //   }, 500);
+    // }); //load the specific cards from the server by subscribing to the observable that the card-service provides
     this.subscriptions$.push(sub);
 
     this.stateService.setFormMode("none");

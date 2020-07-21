@@ -4,7 +4,7 @@ import { Observable, BehaviorSubject, of, from } from "rxjs";
 import { Card } from "../models/Card";
 import { StatesService } from "./states.service";
 import { tap, map } from "rxjs/operators";
-import { Router } from "@angular/router";
+import { Router, ActivatedRoute } from "@angular/router";
 import { HttpConfig } from "./config";
 import { HttpClient } from "@angular/common/http";
 import { NotificationsService } from "./notifications.service";
@@ -34,8 +34,19 @@ export class CardsService {
     private notifications: NotificationsService, //display errors to user
     private http: HttpClient, //to make calls to the server
     private statesService: StatesService, //for setting the loading state
-    private router: Router //used to get the lecture abreviation from the route
+    private router: Router, //used to get the lecture abreviation from the route
+    private route: ActivatedRoute
   ) {}
+  fetchCardsData(): Observable<Card[]> {
+    let abrv = this.router.url.split(/vorlesung\//)[1]; //get the lecture abreviation from the route
+    return this.http
+      .get<Card[]>(this.config.urlBase + "cards/?abrv=" + abrv)
+      .pipe(
+        tap((cards) => {
+          console.log(cards);
+        })
+      );
+  }
 
   getCards(): Observable<Card[]> {
     let abrv = this.router.url.split(/vorlesung\//)[1]; //get the lecture abreviation from the route

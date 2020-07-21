@@ -1,23 +1,23 @@
 import { Injectable } from "@angular/core";
-import { Actions, Effect, ofType } from "@ngrx/effects";
-import { EMPTY } from "rxjs";
+import { Actions, Effect, ofType, createEffect } from "@ngrx/effects";
+import { EMPTY, of, Observable } from "rxjs";
 import { catchError, map, mergeMap } from "rxjs/operators";
-import { ActionTypes } from "./actions";
+import { ActionTypes, Actions as Act } from "./actions";
 import { CardsService } from "../services/cards.service";
 
 @Injectable()
-export class ShopEffects {
+export class CardsEffects {
   constructor(private actions$: Actions, private cs: CardsService) {}
 
   @Effect()
-  loadData$ = this.actions$.pipe(
-    ofType(ActionTypes.load),
-    mergeMap(() =>
-      this.cs.getCards().pipe(
-        map((fruits) => {
-          return { type: ActionTypes.LoadSuccess, payload: fruits };
-        }),
-        catchError(() => EMPTY)
+  loadCards$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(ActionTypes.FETCH_CARDS),
+      mergeMap(() =>
+        this.cs.fetchCardsData().pipe(
+          map((cards) => Act.LoadSuccess({ cards: cards })),
+          catchError((reason) => of(Act.LoadFailure({ reason: reason })))
+        )
       )
     )
   );

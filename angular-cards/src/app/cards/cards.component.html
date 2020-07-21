@@ -1,5 +1,6 @@
 <div class="container">
-  <app-carousel></app-carousel>
+  <app-lecture-header></app-lecture-header>
+  <app-carousel *ngIf="cards$ | async as cards" [cards]="cards"></app-carousel>
 
   <br />
   <app-add-card-form *ngIf="formMode == 'add'"></app-add-card-form>

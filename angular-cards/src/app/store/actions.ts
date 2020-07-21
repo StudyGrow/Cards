@@ -1,25 +1,34 @@
-import { Action } from "@ngrx/store";
+import { Action, createAction, props, union } from "@ngrx/store";
 import { Card } from "../models/Card";
+import { Vorlesung } from "../models/Vorlesung";
 
+//Types of Actions
 export enum ActionTypes {
-  Add = "[Card] Add new card to the collection",
-  LoadCards = "[Cards] Load cards from server",
-  LoadSuccess = "[Cards] Load success",
-}
-export class AddCard implements Action {
-  readonly type = ActionTypes.Add;
-
-  constructor(public payload: Card) {}
+  ADD_CARD = "[Card] Add new card to the collection",
+  FETCH_CARDS = "[Cards] Fetch cards from server",
+  LOAD_SUCCESS = "[Cards] Load success",
+  LOAD_FAILURE = "[Cards] Load failure",
 }
 
-export class GetCards implements Action {
-  readonly type = ActionTypes.LoadCards;
-}
+//Concrete Actions for each type
+export const addCard = createAction(
+  ActionTypes.ADD_CARD,
+  props<{ card: Card }>()
+);
 
-export class LoadItems implements Action {
-  readonly type = ActionTypes.LoadSuccess;
+export const fetchCards = createAction(
+  ActionTypes.FETCH_CARDS,
+  props<{ abrv: string }>()
+);
 
-  constructor(public payload: Card[]) {}
-}
+export const LoadSuccess = createAction(
+  ActionTypes.LOAD_SUCCESS,
+  props<{ cards: Card[] }>()
+);
 
-export type ActionsUnion = AddCard | LoadItems | GetCards;
+export const LoadFailure = createAction(
+  ActionTypes.LOAD_FAILURE,
+  props<{ reason: string }>()
+);
+
+export const Actions = { addCard, fetchCards, LoadSuccess, LoadFailure };
