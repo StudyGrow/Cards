@@ -1,24 +1,22 @@
-<form class="example-form">
-  <mat-form-field style="height: 50px;" id="search" appearance="outline">
-    <input
-      autocomplete="off"
-      matInput
-      [(ngModel)]="uInput"
-      [ngModelOptions]="{ standalone: true }"
-      (input)="findMatches($event)"
-      id="search"
-      type="search"
-      placeholder="Frage"
-      (focus)="inField()"
-      (blur)="resetNav()"
-    />
-    <mat-icon matSuffix>search</mat-icon>
-  </mat-form-field>
-  <div *ngIf="uInput" id="matches">
-    <mat-option *ngFor="let suggestion of suggestions">
-      <a href="#" (click)="navigateTo($event, suggestion.index)">{{
-        suggestion.title
-      }}</a>
-    </mat-option>
-  </div>
-</form>
+<mat-form-field>
+  <input
+    autocomplete="off"
+    matInput
+    [(ngModel)]="uInput"
+    [ngModelOptions]="{ standalone: true }"
+    (input)="findMatches($event)"
+    id="search"
+    type="search"
+    placeholder="Frage"
+    (focus)="inField()"
+    (blur)="resetNav()"
+  />
+  <mat-icon matSuffix>search</mat-icon>
+</mat-form-field>
+<div *ngIf="uInput" id="matches">
+  <mat-option *ngFor="let suggestion of suggestions">
+    <a href="#" (click)="navigateTo($event, suggestion.index)">{{
+      suggestion.title
+    }}</a>
+  </mat-option>
+</div>

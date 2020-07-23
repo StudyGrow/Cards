@@ -6,6 +6,8 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { Card } from "../../models/Card";
 import { SearchSuggestion } from "../../models/SearchSuggestion";
 import { Subscription } from "rxjs";
+import { Store } from "@ngrx/store";
+import { map } from "rxjs/operators";
 
 @Component({
   selector: "app-search-bar",
@@ -15,7 +17,8 @@ import { Subscription } from "rxjs";
 export class SearchBarComponent implements OnInit, OnDestroy {
   constructor(
     private cardsService: CardsService,
-    private stateService: StatesService
+    private stateService: StatesService,
+    private store: Store<any>
   ) {}
   subscriptions$: Subscription[] = [];
   cards: Card[];
@@ -31,17 +34,20 @@ export class SearchBarComponent implements OnInit, OnDestroy {
       }
     });
     this.subscriptions$.push(sub);
-    sub = this.cardsService.getCards().subscribe((cards) => {
-      this.cards = cards;
-      cards.forEach((card) => {
-        if (card.thema == null) {
-          card.thema = "";
-        }
-        if (card.content == null) {
-          card.content = "";
-        }
+    sub = this.store
+      .select("cardsData")
+      .pipe(map((data) => data.cardsData.cards))
+      .subscribe((cards) => {
+        this.cards = cards;
+        cards.forEach((card) => {
+          if (card.thema == null) {
+            card.thema = "";
+          }
+          if (card.content == null) {
+            card.content = "";
+          }
+        });
       });
-    });
     this.subscriptions$.push(sub);
   }
   ngOnDestroy() {
