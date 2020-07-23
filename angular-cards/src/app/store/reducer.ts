@@ -1,10 +1,10 @@
-import { Actions } from "./actions";
+import * as Actions from "./actions";
 import { createReducer, on } from "@ngrx/store";
 import { Card } from "../models/Card";
 import { Vorlesung } from "../models/Vorlesung";
 
 //defines the state of our app
-export interface State {
+export interface AppState {
   cardsData: { cards: Card[]; lecture: Vorlesung; uid: string };
 }
 export class CardsData {
@@ -13,7 +13,7 @@ export class CardsData {
   uid: string;
 }
 //initial state of the app
-export const initialState: State = {
+export const initialState: AppState = {
   cardsData: { cards: [], lecture: null, uid: null },
 };
 

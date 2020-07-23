@@ -15,7 +15,7 @@ import { StatesService } from "../services/states.service";
 import { select, Store } from "@ngrx/store";
 import { ActionTypes } from "../store/actions";
 import { Observable } from "rxjs";
-import { State, CardsData } from "../store/reducer";
+import { AppState, CardsData } from "../store/reducer";
 import { map } from "rxjs/operators";
 
 @Component({
@@ -50,7 +50,7 @@ export class CardsComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private stateServie: StatesService,
-    private store: Store<State>,
+    private store: Store<AppState>,
     private title: Title
   ) {}
 

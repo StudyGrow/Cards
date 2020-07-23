@@ -5,10 +5,11 @@ import { CardsData } from "./reducer";
 
 //Types of Actions
 export enum ActionTypes {
-  ADD_CARD = "[Card] Add new card to the collection",
   FETCH_CARDS = "[Cards] Fetch cards from server",
   LOAD_SUCCESS = "[Cards] Load success",
   LOAD_FAILURE = "[Cards] Load failure",
+  ADD_CARD = "[Card] Add new card to the collection",
+  ADD_CARD_SUCCESS = "[Card] Add card success",
 }
 
 //Concrete Actions for each type
@@ -32,4 +33,14 @@ export const LoadFailure = createAction(
   props<{ reason: string }>()
 );
 
-export const Actions = { addCard, fetchCards, LoadSuccess, LoadFailure };
+export const addCardSuccess = createAction(
+  ActionTypes.ADD_CARD_SUCCESS,
+  props<{ card: Card }>()
+);
+
+export const FetchCardsActions = {
+  fetchCards,
+  LoadSuccess,
+};
+
+export const AddCardActions = { addCard, addCardSuccess };

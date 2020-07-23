@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input } from "@angular/core";
+import { Component, OnInit, OnDestroy, Input, ViewChild } from "@angular/core";
 import { StatesService } from "../../services/states.service";
 import { CardsService } from "../../services/cards.service";
 import { LecturesService } from "../../services/lectures.service";
@@ -6,6 +6,11 @@ import { Card } from "../../models/Card";
 import { Vorlesung } from "src/app/models/Vorlesung";
 import { Subscription } from "rxjs";
 import { Router } from "@angular/router";
+import { Store } from "@ngrx/store";
+import { AppState } from "src/app/store/reducer";
+import { addCard } from "src/app/store/actions";
+import { CardsEffects } from "src/app/store/effects";
+import { NgForm } from "@angular/forms";
 
 @Component({
   selector: "app-add-card-form",
@@ -14,6 +19,7 @@ import { Router } from "@angular/router";
 })
 export class AddCardFormComponent implements OnInit, OnDestroy {
   @Input() neu: boolean = false;
+  @ViewChild("f") form: NgForm;
   lecture: Vorlesung;
   newCard: Card;
   hidden: boolean;
@@ -24,13 +30,17 @@ export class AddCardFormComponent implements OnInit, OnDestroy {
     private cardsService: CardsService,
     private stateService: StatesService,
     private router: Router,
-    private lectureService: LecturesService
+    private lectureService: LecturesService,
+    private store: Store<AppState>,
+    private actionState: CardsEffects
   ) {}
 
   ngOnInit(): void {
     let sub = this.lectureService
       .getCurrentLecture()
       .subscribe((lecture) => (this.lecture = lecture));
+    this.subscriptions$.push(sub);
+    sub = this.actionState.addCard$.subscribe((res) => this.form.reset());
     this.subscriptions$.push(sub);
   }
   ngOnDestroy() {
@@ -49,16 +59,11 @@ export class AddCardFormComponent implements OnInit, OnDestroy {
     );
     if (this.neu) {
       this.lectureService.addLecture(this.lecture).subscribe((res) => {
-        let sub = this.cardsService.addCard(this.newCard).subscribe((res) => {
-          sub.unsubscribe();
-        });
+        this.store.dispatch(addCard({ card: this.newCard }));
         this.router.navigateByUrl(`vorlesung/${this.lecture.abrv}`);
       });
     } else {
-      let sub = this.cardsService.addCard(this.newCard).subscribe((res) => {
-        f.reset();
-        sub.unsubscribe();
-      });
+      this.store.dispatch(addCard({ card: this.newCard }));
     }
   }
   inField() {

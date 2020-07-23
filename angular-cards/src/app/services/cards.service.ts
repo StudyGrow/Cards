@@ -9,7 +9,9 @@ import { HttpConfig } from "./config";
 import { HttpClient } from "@angular/common/http";
 import { NotificationsService } from "./notifications.service";
 import { Vorlesung } from "../models/Vorlesung";
-import { CardsData } from "../store/reducer";
+import { CardsData, AppState } from "../store/reducer";
+import { Store, select } from "@ngrx/store";
+
 @Injectable({
   providedIn: "root",
 })
@@ -36,8 +38,7 @@ export class CardsService {
     private notifications: NotificationsService, //display errors to user
     private http: HttpClient, //to make calls to the server
     private statesService: StatesService, //for setting the loading state
-    private router: Router, //used to get the lecture abreviation from the route
-    private route: ActivatedRoute
+    private router: Router //used to get the lecture abreviation from the route
   ) {}
   fetchCardsData(): Observable<CardsData> {
     let abrv = this.router.url.split(/vorlesung\//)[1]; //get the lecture abreviation from the route
@@ -142,16 +143,20 @@ export class CardsService {
               //show new card timeout needed because the carousel needs time to refresh
               //its view
               this.setNewCardIndex(cards.length - 1);
-            }, 100);
+            }, 200);
           },
           (error) => {
             this.notifications.handleErrors(error);
             this.statesService.setLoadingState(false);
           }
         ),
-        map((res) => res.body)
+        map((res) => {
+          card._id = res.body.id;
+          return card;
+        })
       );
   }
+
   goNext() {
     //show the next slide index (carousel component handles out of bounds)
     let index = this.newCardIndex$.getValue();
