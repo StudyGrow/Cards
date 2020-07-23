@@ -38,8 +38,14 @@ export class CardsService {
     private notifications: NotificationsService, //display errors to user
     private http: HttpClient, //to make calls to the server
     private statesService: StatesService, //for setting the loading state
-    private router: Router //used to get the lecture abreviation from the route
-  ) {}
+    private router: Router, //used to get the lecture abreviation from the route
+    private store: Store<any>
+  ) {
+    this.store
+      .select("cardsData")
+      .pipe(map((data) => data.cardsData.cards))
+      .subscribe(this.cards$);
+  }
   fetchCardsData(): Observable<CardsData> {
     let abrv = this.router.url.split(/vorlesung\//)[1]; //get the lecture abreviation from the route
     return this.http.get<CardsData>(
@@ -117,6 +123,33 @@ export class CardsService {
       );
   }
 
+  updateCard2(card: Card): Observable<any> {
+    this.statesService.setLoadingState(true);
+    //send update to server using http service
+    return this.http
+      .put<any>(
+        this.config.urlBase + "cards/update",
+        { card: card },
+        {
+          headers: this.config.headers,
+          observe: "response",
+        }
+      )
+      .pipe(
+        tap(
+          (resp) => {
+            this.statesService.setLoadingState(false);
+            this.statesService.setFormMode("reset"); //reset form to its previous state
+          },
+          (error) => {
+            this.notifications.handleErrors(error);
+            this.statesService.setLoadingState(false);
+          }
+        ),
+        map((res) => card)
+      );
+  }
+
   addCard(card: Card): Observable<any> {
     this.statesService.setLoadingState(true);
     //send new card to server using http service
@@ -181,8 +214,11 @@ export class CardsService {
   //only the carousel should call this method (on the sliding event)
   setActiveCardIndex(i: number) {
     let active = this.cards$.getValue()[i];
-    active.positionIndex = i;
-    this.activeCard$.next(active);
+
+    if (active) {
+      active.positionIndex = i;
+      this.activeCard$.next(active);
+    }
   }
   //subsribe to this function to always get the card that is currently shown
   activeCard(): Observable<Card> {

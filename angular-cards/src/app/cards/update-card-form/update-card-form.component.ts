@@ -5,6 +5,9 @@ import { Card } from "../../models/Card";
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { Subscription } from "rxjs";
 import { Template } from "@angular/compiler/src/render3/r3_ast";
+import { Store } from "@ngrx/store";
+import { AppState } from "src/app/store/reducer";
+import { map, share } from "rxjs/operators";
 
 @Component({
   selector: "app-update-card-form",
@@ -19,14 +22,15 @@ export class UpdateCardFormComponent implements OnInit, OnDestroy {
   constructor(
     private cardsService: CardsService,
     private statesService: StatesService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private store: Store<any>
   ) {}
 
   ngOnInit(): void {
-    let sub = this.cardsService.activeCard().subscribe((card) => {
-      this.activeCardIndex = card.positionIndex;
+    let sub = this.store.select("cardsData").subscribe((data) => {
+      this.activeCardIndex = data.activeIndex;
 
-      this.cardCopy = { ...card };
+      this.cardCopy = { ...data.cardsData.cards[this.activeCardIndex] };
 
       this.cardIndex = this.activeCardIndex;
     });

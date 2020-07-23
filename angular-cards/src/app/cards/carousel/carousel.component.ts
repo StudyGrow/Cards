@@ -15,7 +15,9 @@ import { UserService } from "../../services/user.service";
 import { Subscription } from "rxjs";
 import { fadeInOnEnterAnimation, shakeAnimation } from "angular-animations";
 import { CardsService } from "src/app/services/cards.service";
-
+import { Store } from "@ngrx/store";
+import { AppState } from "src/app/store/reducer";
+import { setActiveCardIndex } from "../../store/actions";
 @Component({
   selector: "app-carousel",
   templateUrl: "./carousel.component.html",
@@ -53,7 +55,8 @@ export class CarouselComponent implements OnInit, OnDestroy {
   constructor(
     private stateService: StatesService,
     private cardsService: CardsService,
-    private userService: UserService
+    private userService: UserService,
+    private store: Store<AppState>
   ) {}
 
   ngOnInit(): void {
@@ -110,8 +113,17 @@ export class CarouselComponent implements OnInit, OnDestroy {
   }
 
   selectSlide(n: number) {
-    if (this.carousel && this.cards.length > 1 && this.formMode != "edit") {
-      this.carousel.selectSlide(n.toString());
+    if (
+      this.carousel &&
+      n &&
+      this.cards.length > 1 &&
+      this.formMode != "edit"
+    ) {
+      if (n >= this.cards.length) {
+        this.carousel.selectSlide(this.cards.length - 1);
+      } else {
+        this.carousel.selectSlide(n);
+      }
     } else {
       this.notallowed = true;
       setTimeout(() => {
@@ -128,7 +140,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
       rand = Math.floor(Math.random() * this.cards.length); //random Cardindex
     }
     if (this.carousel) {
-      this.carousel.selectSlide(rand.toString());
+      this.carousel.selectSlide(rand);
     }
   }
   goToPrev() {
@@ -153,7 +165,9 @@ export class CarouselComponent implements OnInit, OnDestroy {
   }
   onSlide(slideEvent) {
     this.activeSlide = slideEvent.relatedTarget;
-    this.cardsService.setActiveCardIndex(slideEvent.relatedTarget);
+    if (slideEvent.relatedTarget) {
+      this.store.dispatch(setActiveCardIndex({ index: this.activeSlide }));
+    }
   }
   isDisabled() {
     if (this.formMode == "edit" || !this.cards || this.cards.length == 0) {
