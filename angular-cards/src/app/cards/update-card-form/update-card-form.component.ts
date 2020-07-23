@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Component, OnInit, OnDestroy, ViewChild } from "@angular/core";
 import { StatesService } from "../../services/states.service";
 import { CardsService } from "../../services/cards.service";
 import { Card } from "../../models/Card";
@@ -8,6 +8,9 @@ import { Template } from "@angular/compiler/src/render3/r3_ast";
 import { Store } from "@ngrx/store";
 import { AppState } from "src/app/store/reducer";
 import { map, share } from "rxjs/operators";
+import { updateCard } from "src/app/store/actions";
+import { CardsEffects } from "src/app/store/effects";
+import { NgForm } from "@angular/forms";
 
 @Component({
   selector: "app-update-card-form",
@@ -15,6 +18,7 @@ import { map, share } from "rxjs/operators";
   styleUrls: ["./update-card-form.component.css"],
 })
 export class UpdateCardFormComponent implements OnInit, OnDestroy {
+  @ViewChild("f") form: NgForm;
   public cardCopy: Card;
   private cardIndex: number; //saves the cardindex which the user is currently updating
   private activeCardIndex: number; //saves the active cardindex
@@ -23,7 +27,8 @@ export class UpdateCardFormComponent implements OnInit, OnDestroy {
     private cardsService: CardsService,
     private statesService: StatesService,
     public dialog: MatDialog,
-    private store: Store<any>
+    private store: Store<any>,
+    private actionState: CardsEffects
   ) {}
 
   ngOnInit(): void {
@@ -34,7 +39,8 @@ export class UpdateCardFormComponent implements OnInit, OnDestroy {
 
       this.cardIndex = this.activeCardIndex;
     });
-
+    this.subscriptions$.push(sub);
+    sub = this.actionState.addCard$.subscribe((res) => this.form.reset());
     this.subscriptions$.push(sub);
   }
   ngOnDestroy() {
@@ -51,12 +57,7 @@ export class UpdateCardFormComponent implements OnInit, OnDestroy {
   onSubmit(f) {
     this.cardCopy.content = f.value.content;
     this.cardCopy.thema = f.value.thema;
-    let sub = this.cardsService
-      .updateCard({ ...this.cardCopy }, this.cardIndex)
-      .subscribe((resp) => {
-        f.reset();
-        sub.unsubscribe();
-      });
+    let sub = this.store.dispatch(updateCard({ card: this.cardCopy }));
   }
   cancelEdit() {
     const dialogRef = this.dialog.open(DialogOverviewExampleDialog, {

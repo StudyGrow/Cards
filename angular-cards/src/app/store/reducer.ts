@@ -32,9 +32,7 @@ const _cardsReducer = createReducer(
   on(Actions.updateCardSuccess, (state, { card }) => ({
     ...state,
     cardsData: {
-      cards: state.cardsData.cards.map((c) =>
-        c._id === card._id ? { ...c, ...card } : c
-      ),
+      cards: updateObjectInArray(state.cardsData.cards, card),
       lecture: state.cardsData.lecture,
     },
 
@@ -59,6 +57,18 @@ export function cardsReducer(state, action) {
   return _cardsReducer(state, action);
 }
 
-function replaceCard(cards: Card[], card: Card) {
-  return;
+function updateObjectInArray(cards: Card[], card: Card) {
+  console.log(card);
+  return cards.map((item, index) => {
+    if (item._id !== card._id) {
+      // This isn't the item we care about - keep it as-is
+      return item;
+    }
+
+    // Otherwise, this is the one we want - return an updated value
+    return {
+      ...item,
+      ...card,
+    };
+  });
 }
