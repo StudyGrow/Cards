@@ -41,7 +41,12 @@
     <div [class]="formMode == 'add' ? 'fas fa-minus' : 'fas fa-plus'"></div>
   </button>
 </div>
-<div class="row" *ngIf="cards && cards.length > 0" [@fadeInOnEnter]>
+<div
+  class="row"
+  *ngIf="cards && cards.length > 0"
+  [@fadeInOnEnter]
+  [@fadeOutOnLeave]
+>
   <a id="left" class="navig col" *ngIf="cards.length > 0" (click)="goToPrev()">
     <span class="fas fa-chevron-left"></span>
   </a>

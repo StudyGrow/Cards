@@ -13,7 +13,11 @@ import { Card } from "../../models/Card";
 
 import { UserService } from "../../services/user.service";
 import { Subscription } from "rxjs";
-import { fadeInOnEnterAnimation, shakeAnimation } from "angular-animations";
+import {
+  fadeInOnEnterAnimation,
+  shakeAnimation,
+  fadeOutOnLeaveAnimation,
+} from "angular-animations";
 import { CardsService } from "src/app/services/cards.service";
 import { Store } from "@ngrx/store";
 import { AppState } from "src/app/store/reducer";
@@ -22,7 +26,11 @@ import { setActiveCardIndex } from "../../store/actions";
   selector: "app-carousel",
   templateUrl: "./carousel.component.html",
   styleUrls: ["./carousel.component.css"],
-  animations: [fadeInOnEnterAnimation(), shakeAnimation()],
+  animations: [
+    fadeInOnEnterAnimation(),
+    fadeOutOnLeaveAnimation(),
+    shakeAnimation(),
+  ],
 })
 export class CarouselComponent implements OnInit, OnDestroy {
   @ViewChild("mycarousel", { static: false }) public carousel: any;
@@ -55,7 +63,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
   constructor(
     private stateService: StatesService,
     private cardsService: CardsService,
-    private userService: UserService,
+
     private store: Store<AppState>
   ) {}
 

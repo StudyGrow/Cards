@@ -166,17 +166,12 @@ export class CardsService {
         tap(
           (response) => {
             this.statesService.setLoadingState(false);
-            card._id = response.body.id; //set id received from server response
-            //upate subject
-            let cards = this.cards$.getValue();
-            cards.push(card);
-            this.cards$.next(cards);
 
             setTimeout(() => {
               //show new card timeout needed because the carousel needs time to refresh
               //its view
-              this.setNewCardIndex(cards.length - 1);
-            }, 200);
+              this.setNewCardIndex(this.cards$.getValue().length - 1);
+            }, 600);
           },
           (error) => {
             this.notifications.handleErrors(error);
