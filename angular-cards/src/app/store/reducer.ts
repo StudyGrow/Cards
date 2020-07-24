@@ -7,6 +7,7 @@ import { Vorlesung } from "../models/Vorlesung";
 export interface AppState {
   cardsData: { cards: Card[]; lecture: Vorlesung; uid: string };
   activeIndex: number;
+  lectures: Vorlesung[];
 }
 export class CardsData {
   cards: Card[];
@@ -17,6 +18,7 @@ export class CardsData {
 export const initialState: AppState = {
   cardsData: { cards: [], lecture: null, uid: null },
   activeIndex: 0,
+  lectures: [],
 };
 
 //Reducer which will dispatch changes to the store
@@ -28,6 +30,10 @@ const _cardsReducer = createReducer(
       cards: [...state.cardsData.cards, card],
       lecture: state.cardsData.lecture,
     },
+  })),
+  on(Actions.fetchLecturesSuccess, (state, { lectures }) => ({
+    ...state,
+    lectures: lectures,
   })),
   on(Actions.updateCardSuccess, (state, { card }) => ({
     ...state,

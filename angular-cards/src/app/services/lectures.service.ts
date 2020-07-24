@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpResponse } from "@angular/common/http";
 import { Observable, BehaviorSubject, of } from "rxjs";
-import { tap } from "rxjs/operators";
+import { tap, map } from "rxjs/operators";
 import { StatesService } from "./states.service";
 import { NotificationsService } from "./notifications.service";
 import { Router } from "@angular/router";
@@ -28,25 +28,24 @@ export class LecturesService {
 
   //get an array of all lectures
   getAllLectures(): Observable<Vorlesung[]> {
-    if (!this.lectures$.getValue()) {
-      //load lectures from the server
-      this.statesService.setLoadingState(true);
-      this.http
-        .get<Vorlesung[]>(this.config.urlBase + "lectures", {
-          observe: "response",
-        })
-        .subscribe(
+    //load lectures from the server
+    this.statesService.setLoadingState(true);
+    return this.http
+      .get<Vorlesung[]>(this.config.urlBase + "lectures", {
+        observe: "response",
+      })
+      .pipe(
+        tap(
           (res) => {
             this.statesService.setLoadingState(false);
-            this.lectures$.next(res.body); //set the lectures subject
           },
           (error) => {
             this.notifications.handleErrors(error);
             this.statesService.setLoadingState(false);
           }
-        );
-    }
-    return this.lectures$.asObservable();
+        ),
+        map((res) => res.body)
+      );
   }
 
   //get the Current lecture

@@ -9,12 +9,18 @@ import {
   FetchCardsActions,
   AddCardActions,
   UpdateCardActions,
+  FetchLecturesActions,
 } from "./actions";
 import { CardsService } from "../services/cards.service";
+import { LecturesService } from "../services/lectures.service";
 
 @Injectable()
 export class CardsEffects {
-  constructor(private actions$: Actions, private cs: CardsService) {}
+  constructor(
+    private actions$: Actions,
+    private cs: CardsService,
+    private lectures: LecturesService
+  ) {}
 
   @Effect()
   loadCards$ = createEffect(() =>
@@ -24,6 +30,22 @@ export class CardsEffects {
         this.cs.fetchCardsData().pipe(
           map((data) => FetchCardsActions.LoadSuccess({ data: data })),
           catchError((reason) => of(LoadFailure({ reason: reason })))
+        )
+      )
+    )
+  );
+
+  @Effect()
+  fetchLectures$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(FetchLecturesActions.fetchLectures),
+      mergeMap(() =>
+        this.lectures.getAllLectures().pipe(
+          map((data) =>
+            FetchLecturesActions.fetchLecturesSuccess({ lectures: data })
+          ),
+          catchError((reason) => of(LoadFailure({ reason: reason }))),
+          share()
         )
       )
     )
