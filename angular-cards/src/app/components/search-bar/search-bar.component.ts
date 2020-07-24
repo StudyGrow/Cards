@@ -12,6 +12,7 @@ import {
   setTypingMode,
   setSuggestionsMode,
 } from "src/app/store/actions/actions";
+import { setActiveCardIndex } from "src/app/store/actions/cardActions";
 
 @Component({
   selector: "app-search-bar",
@@ -89,7 +90,8 @@ export class SearchBarComponent implements OnInit, OnDestroy {
   navigateTo(e: Event, index: number) {
     e.preventDefault();
     this.uInput = "";
-    this.cardsService.setNewCardIndex(index);
+    this.store.dispatch(setActiveCardIndex({ index: index }));
+
     this.store.dispatch(setSuggestionsMode({ hide: true }));
   }
 }

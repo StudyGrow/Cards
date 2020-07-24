@@ -13,15 +13,14 @@
   />
   <mat-icon matSuffix>search</mat-icon>
 </mat-form-field>
-<div *ngIf="uInput" id="matches">
-  <ul
-    class="list list-group list-group-flush"
-    *ngFor="let suggestion of suggestions"
-  >
+<div *ngIf="uInput" id="matches" class="shadow">
+  <ul class="list list-group list-group-flush">
     <a
+      id="match"
       href="#"
+      *ngFor="let suggestion of suggestions"
       (click)="navigateTo($event, suggestion.index)"
-      class="list-group-item list-group-item-action p-2"
+      class="list-group-item list-group-item-action p-3"
       >{{ suggestion.title }}</a
     >
   </ul>
