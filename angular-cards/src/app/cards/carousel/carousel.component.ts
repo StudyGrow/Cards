@@ -63,12 +63,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
   notallowed: boolean = false;
 
   subscriptions$: Subscription[] = [];
-  constructor(
-    private stateService: StatesService,
-    private cardsService: CardsService,
-
-    private store: Store<any>
-  ) {}
+  constructor(private store: Store<any>) {}
 
   ngOnInit(): void {
     let sub = this.store
@@ -93,24 +88,8 @@ export class CarouselComponent implements OnInit, OnDestroy {
       .pipe(map((state) => state.activeIndex))
       .subscribe((val) => {
         this.hanldeNewIndex(val);
-        console.log(val);
       });
     this.subscriptions$.push(sub);
-    sub = this.cardsService.getNewCardIndex().subscribe((index) => {
-      this.hanldeNewIndex(index);
-    });
-    this.subscriptions$.push(sub);
-  }
-
-  hanldeNewIndex(index: number) {
-    if (this.carousel) {
-      if (index < 0) {
-        index = this.cards.length - 1;
-      } else if (index >= this.cards.length) {
-        index = 0;
-      }
-      this.carousel.selectSlide(index);
-    }
   }
 
   ngOnDestroy() {
@@ -119,21 +98,24 @@ export class CarouselComponent implements OnInit, OnDestroy {
     });
   }
 
-  toggleAddView(): void {
-    if (this.formMode != "edit") {
-      if (this.formMode == "add") {
-        this.store.dispatch(setFormMode({ mode: "none" }));
-      } else {
-        this.store.dispatch(setFormMode({ mode: "add" }));
+  //this function does some adjustments if the index is out of bounds
+  hanldeNewIndex(index: number) {
+    if (this.carousel && index !== this.activeSlide) {
+      //got a new index
+      if (index < 0) {
+        index = this.cards.length - 1;
+      } else if (index >= this.cards.length) {
+        index = 0;
       }
+      this.carousel.selectSlide(index); //select new slide
     }
   }
-  enableEdit() {
-    this.store.dispatch(setFormMode({ mode: "edit" }));
-  }
-
-  setClass() {
-    return this.formMode == "add" ? "btn btn-info" : "btn btn-light";
+  //this function update the current slide index
+  onSlide(slideEvent) {
+    this.activeSlide = slideEvent.relatedTarget; //update active slide
+    if (slideEvent.relatedTarget) {
+      this.store.dispatch(setActiveCardIndex({ index: this.activeSlide })); //update in store
+    }
   }
 
   selectSlide(n: number) {
@@ -143,11 +125,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
       this.cards.length > 1 &&
       this.formMode != "edit"
     ) {
-      if (n >= this.cards.length) {
-        this.carousel.selectSlide(this.cards.length - 1);
-      } else {
-        this.carousel.selectSlide(n);
-      }
+      this.carousel.selectSlide(n);
     } else {
       this.notallowed = true;
       setTimeout(() => {
@@ -187,13 +165,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
       }, 100);
     }
   }
-  onSlide(slideEvent) {
-    this.activeSlide = slideEvent.relatedTarget;
 
-    if (slideEvent.relatedTarget) {
-      this.store.dispatch(setActiveCardIndex({ index: this.activeSlide }));
-    }
-  }
   isDisabled() {
     if (this.formMode == "edit" || !this.cards || this.cards.length == 0) {
       return true;
@@ -212,5 +184,21 @@ export class CarouselComponent implements OnInit, OnDestroy {
       //there is an author an it is not the user
       return true;
     }
+  }
+  toggleAddView(): void {
+    if (this.formMode != "edit") {
+      if (this.formMode == "add") {
+        this.store.dispatch(setFormMode({ mode: "none" }));
+      } else {
+        this.store.dispatch(setFormMode({ mode: "add" }));
+      }
+    }
+  }
+  enableEdit() {
+    this.store.dispatch(setFormMode({ mode: "edit" }));
+  }
+
+  setClass() {
+    return this.formMode == "add" ? "btn btn-info" : "btn btn-light";
   }
 }

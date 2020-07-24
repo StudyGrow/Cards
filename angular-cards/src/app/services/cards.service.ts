@@ -107,14 +107,6 @@ export class CardsService {
     this.newCardIndex$.next(index);
   }
 
-  //only the carousel should be subscribed to this
-  getNewCardIndex(): Observable<number> {
-    return this.newCardIndex$.asObservable();
-  }
-  //use this function to tell the carousel to go to a specific slide i
-  setNewCardIndex(i: number) {
-    this.newCardIndex$.next(i);
-  }
   /*
   applyFilter(tags: string[]): Observable<boolean> {
     let cards = this.cards$.getValue();
