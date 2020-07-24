@@ -31,12 +31,6 @@ export class CardComponent implements OnInit, OnDestroy {
   @Input() index: number;
   inTypingField: boolean = false;
   activeIndex: number;
-  @HostListener("swipeleft", ["$event"]) public swipePrev(event: any) {
-    this.cs.goNext();
-  }
-  @HostListener("swiperight", ["$event"]) public swipeNext(event: any) {
-    this.cs.goPrev();
-  }
 
   @HostListener("window:keyup", ["$event"]) handleKeyDown(
     event: KeyboardEvent

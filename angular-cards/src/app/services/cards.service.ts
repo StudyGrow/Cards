@@ -94,19 +94,6 @@ export class CardsService {
       );
   }
 
-  goNext() {
-    //show the next slide index (carousel component handles out of bounds)
-    let index = this.newCardIndex$.getValue();
-    index++;
-    this.newCardIndex$.next(index);
-  }
-  goPrev() {
-    //show the next slide index (carousel component handles out of bounds)
-    let index = this.newCardIndex$.getValue();
-    index--;
-    this.newCardIndex$.next(index);
-  }
-
   /*
   applyFilter(tags: string[]): Observable<boolean> {
     let cards = this.cards$.getValue();
