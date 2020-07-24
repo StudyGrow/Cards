@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" *ngIf="data$; async" [@fadeInOnEnter]>
   <h1 class="text-center" *ngIf="lecture$ | async as lecture">
     {{ lecture.name }}
   </h1>

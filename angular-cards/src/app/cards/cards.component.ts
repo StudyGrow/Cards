@@ -18,11 +18,13 @@ import { Observable } from "rxjs";
 import { AppState, CardsData } from "../store/reducer";
 import { map, tap, share } from "rxjs/operators";
 import { fetchCards } from "../store/actions/cardActions";
+import { fadeInOnEnterAnimation } from "angular-animations";
 
 @Component({
   selector: "app-cards",
   templateUrl: "./cards.component.html",
   styleUrls: ["./cards.component.css"],
+  animations: [fadeInOnEnterAnimation()],
 })
 export class CardsComponent implements OnInit {
   public vlAbrv: string;
