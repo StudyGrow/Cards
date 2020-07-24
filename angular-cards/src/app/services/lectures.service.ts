@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpResponse } from "@angular/common/http";
 import { Observable, BehaviorSubject, of } from "rxjs";
-import { tap, map } from "rxjs/operators";
+import { tap, map, share } from "rxjs/operators";
 import { StatesService } from "./states.service";
 import { NotificationsService } from "./notifications.service";
 import { Router } from "@angular/router";
@@ -40,7 +40,8 @@ export class LecturesService {
             this.statesService.setLoadingState(false);
           }
         ),
-        map((res) => res.body)
+        map((res) => res.body),
+        share()
       );
   }
 

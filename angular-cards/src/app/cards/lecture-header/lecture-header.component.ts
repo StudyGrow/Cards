@@ -12,7 +12,7 @@ export class LectureHeaderComponent implements OnInit {
   @Input() vl: Vorlesung;
 
   lecture$: Observable<Vorlesung>;
-  constructor(private lectureService: LecturesService) {}
+  constructor() {}
 
   ngOnInit(): void {}
 }
