@@ -30,8 +30,8 @@ export class CardsComponent implements OnInit {
   public vlAbrv: string;
   public lecture: Vorlesung;
   public loading: boolean = true;
-  public formMode: string = "none";
-  private data$: Observable<any> = this.store
+  public formMode: string;
+  public data$: Observable<any> = this.store
     .select(
       //holds cards data from store
       (state) => state.cardsData
@@ -57,7 +57,7 @@ export class CardsComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private stateServie: StatesService,
-    private store: Store<AppState>,
+    private store: Store<any>,
     private title: Title
   ) {}
 
@@ -67,7 +67,11 @@ export class CardsComponent implements OnInit {
 
     this.store.dispatch(fetchCards());
     this.stateServie.getTyping().subscribe((val) => (this.inTypingField = val));
-
-    this.stateServie.getFormMode().subscribe((mode) => (this.formMode = mode));
+    this.store
+      .select("cardsData")
+      .pipe(map((state) => state.formMode))
+      .subscribe((mode) => {
+        this.formMode = mode;
+      });
   }
 }

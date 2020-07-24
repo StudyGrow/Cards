@@ -1,5 +1,6 @@
 import * as Actions from "./actions/cardActions";
 import * as LectureActions from "./actions/LectureActions";
+import { setFormMode } from "./actions/actions";
 import { createReducer, on } from "@ngrx/store";
 import { Card } from "../models/Card";
 import { Vorlesung } from "../models/Vorlesung";
@@ -9,6 +10,7 @@ export interface AppState {
   cardsData: { cards: Card[]; lecture: Vorlesung; uid: string };
   activeIndex: number;
   lectures: Vorlesung[];
+  formMode: string;
 }
 export class CardsData {
   cards: Card[];
@@ -20,6 +22,7 @@ export const initialState: AppState = {
   cardsData: { cards: [], lecture: null, uid: null },
   activeIndex: 0,
   lectures: [],
+  formMode: "hide",
 };
 
 //Reducer which will dispatch changes to the store
@@ -36,7 +39,10 @@ const _cardsReducer = createReducer(
     ...state,
     lectures: lectures,
   })),
-
+  on(setFormMode, (state, { mode }) => ({
+    ...state,
+    formMode: mode,
+  })),
   on(LectureActions.addLercture, (state, { lecture }) => ({
     ...state,
     lectures: [...state.lectures, lecture],

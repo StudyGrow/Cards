@@ -10,6 +10,7 @@ import { Store } from "@ngrx/store";
 import { updateCard } from "src/app/store/actions/cardActions";
 import { CardsEffects } from "src/app/store/effects/effects";
 import { NgForm } from "@angular/forms";
+import { setFormMode } from "src/app/store/actions/actions";
 
 @Component({
   selector: "app-update-card-form",
@@ -38,7 +39,10 @@ export class UpdateCardFormComponent implements OnInit, OnDestroy {
       this.cardIndex = this.activeCardIndex;
     });
     this.subscriptions$.push(sub);
-    sub = this.actionState.addCard$.subscribe((res) => this.form.reset());
+    sub = this.actionState.updateCard$.subscribe((res) => {
+      this.store.dispatch(setFormMode({ mode: "reset" }));
+      this.form.reset();
+    });
     this.subscriptions$.push(sub);
   }
   ngOnDestroy() {
@@ -55,7 +59,7 @@ export class UpdateCardFormComponent implements OnInit, OnDestroy {
   onSubmit(f) {
     this.cardCopy.content = f.value.content;
     this.cardCopy.thema = f.value.thema;
-    let sub = this.store.dispatch(updateCard({ card: this.cardCopy }));
+    this.store.dispatch(updateCard({ card: this.cardCopy }));
   }
   cancelEdit() {
     const dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
@@ -115,11 +119,12 @@ export class UpdateCardFormComponent implements OnInit, OnDestroy {
 export class DialogOverviewExampleDialog {
   constructor(
     public dialogRef: MatDialogRef<DialogOverviewExampleDialog>,
-    private service: StatesService
+    private service: StatesService,
+    private store: Store<any>
   ) {}
 
   cancel() {
-    this.service.setFormMode("reset");
+    this.store.dispatch(setFormMode({ mode: "reset" }));
     this.service.setLoadingState(false);
     this.dialogRef.close();
   }

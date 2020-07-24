@@ -22,6 +22,8 @@ import { CardsService } from "src/app/services/cards.service";
 import { Store } from "@ngrx/store";
 import { AppState } from "src/app/store/reducer";
 import { setActiveCardIndex } from "../../store/actions/cardActions";
+import { setFormMode } from "src/app/store/actions/actions";
+import { map } from "rxjs/operators";
 @Component({
   selector: "app-carousel",
   templateUrl: "./carousel.component.html",
@@ -54,7 +56,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
   activeSlide = 0; //holds the slide which is currently shown
 
   addComponentHidden: boolean;
-  formShow: boolean;
+
   formMode: string;
 
   notallowed: boolean = false;
@@ -64,22 +66,22 @@ export class CarouselComponent implements OnInit, OnDestroy {
     private stateService: StatesService,
     private cardsService: CardsService,
 
-    private store: Store<AppState>
+    private store: Store<any>
   ) {}
 
   ngOnInit(): void {
-    let sub = this.stateService
+    let sub = this.store
+      .select("cardsData")
+      .pipe(map((state) => state.formMode))
+      .subscribe((mode) => {
+        this.formMode = mode;
+      });
+    this.subscriptions$.push(sub);
+    sub = this.stateService
       .getTyping()
       .subscribe((val) => (this.inTypingField = val));
     this.subscriptions$.push(sub);
 
-    this.subscriptions$.push(sub);
-
-    this.stateService.setFormMode("none");
-    sub = this.stateService.getFormMode().subscribe((mode) => {
-      this.formShow = mode === "add";
-      this.formMode = mode;
-    });
     this.subscriptions$.push(sub);
 
     sub = this.cardsService.getNewCardIndex().subscribe((index) => {
@@ -106,18 +108,18 @@ export class CarouselComponent implements OnInit, OnDestroy {
   toggleAddView(): void {
     if (this.formMode != "edit") {
       if (this.formMode == "add") {
-        this.stateService.setFormMode("none");
+        this.store.dispatch(setFormMode({ mode: "none" }));
       } else {
-        this.stateService.setFormMode("add");
+        this.store.dispatch(setFormMode({ mode: "add" }));
       }
     }
   }
   enableEdit() {
-    this.stateService.setFormMode("edit");
+    this.store.dispatch(setFormMode({ mode: "edit" }));
   }
 
   setClass() {
-    return !this.formShow ? "btn btn-light" : "btn btn-info";
+    return this.formMode == "add" ? "btn btn-info" : "btn btn-light";
   }
 
   selectSlide(n: number) {
@@ -173,7 +175,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
   }
   onSlide(slideEvent) {
     this.activeSlide = slideEvent.relatedTarget;
-    console.log(this.activeSlide);
+
     if (slideEvent.relatedTarget) {
       this.store.dispatch(setActiveCardIndex({ index: this.activeSlide }));
     }
