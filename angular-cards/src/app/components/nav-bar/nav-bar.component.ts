@@ -3,7 +3,6 @@ import { Card } from "../../models/Card";
 import { Router, NavigationEnd } from "@angular/router";
 import { Title } from "@angular/platform-browser";
 
-import { CardsService } from "src/app/services/cards.service";
 import { NotificationsService } from "../../services/notifications.service";
 
 import { StatesService } from "src/app/services/states.service";
@@ -23,12 +22,11 @@ export class NavBarComponent implements OnInit, OnDestroy {
   subscriptions$: Subscription[] = [];
   showCards: boolean;
   public loading: boolean;
-  private cardsSub: Subscription;
+
   public constructor(
     private router: Router,
     private titleService: Title,
 
-    private cardsService: CardsService,
     private statesService: StatesService,
     private notification: NotificationsService,
     private userService: UserService,

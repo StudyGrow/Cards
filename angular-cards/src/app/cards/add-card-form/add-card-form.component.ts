@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy, Input, ViewChild } from "@angular/core";
 import { StatesService } from "../../services/states.service";
-import { CardsService } from "../../services/cards.service";
-import { LecturesService } from "../../services/lectures.service";
+
 import { Card } from "../../models/Card";
 import { Vorlesung } from "src/app/models/Vorlesung";
 import { Subscription } from "rxjs";
@@ -28,10 +27,9 @@ export class AddCardFormComponent implements OnInit, OnDestroy {
   themaLength: number;
   subscriptions$: Subscription[] = [];
   constructor(
-    private cardsService: CardsService,
     private stateService: StatesService,
     private router: Router,
-    private lectureService: LecturesService,
+
     private store: Store<AppState>,
     private actionState: CardsEffects
   ) {}

@@ -2,7 +2,6 @@ import { Component, OnInit } from "@angular/core";
 import { Observable } from "rxjs";
 import { Vorlesung } from "src/app/models/Vorlesung";
 import { LecturesService } from "src/app/services/lectures.service";
-import { CardsService } from "src/app/services/cards.service";
 
 import { COMMA, ENTER } from "@angular/cdk/keycodes";
 import { ElementRef, ViewChild } from "@angular/core";
@@ -44,11 +43,7 @@ export class FilterTagsComponent implements OnInit {
   @ViewChild("Input") input: ElementRef<HTMLInputElement>;
   @ViewChild("auto") matAutocomplete: MatAutocomplete;
 
-  constructor(
-    private cardService: CardsService,
-    private states: StatesService,
-    private store: Store<any>
-  ) {}
+  constructor(private states: StatesService, private store: Store<any>) {}
   selected = [];
   ngOnInit(): void {
     this.lecture$
