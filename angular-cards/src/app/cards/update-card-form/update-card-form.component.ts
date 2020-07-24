@@ -7,7 +7,10 @@ import { Subscription } from "rxjs";
 
 import { Store } from "@ngrx/store";
 
-import { updateCard } from "src/app/store/actions/cardActions";
+import {
+  updateCard,
+  setActiveCardIndex,
+} from "src/app/store/actions/cardActions";
 import { CardsEffects } from "src/app/store/effects/effects";
 import { NgForm } from "@angular/forms";
 import { setFormMode, setTypingMode } from "src/app/store/actions/actions";
@@ -41,6 +44,12 @@ export class UpdateCardFormComponent implements OnInit, OnDestroy {
     this.subscriptions$.push(sub);
     sub = this.actionState.updateCard$.subscribe((res) => {
       this.store.dispatch(setFormMode({ mode: "reset" }));
+      setTimeout(() => {
+        this.store.dispatch(
+          setActiveCardIndex({ index: this.activeCardIndex })
+        );
+      }, 300);
+
       this.form.reset();
     });
     this.subscriptions$.push(sub);

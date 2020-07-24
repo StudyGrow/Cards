@@ -7,7 +7,7 @@ import { Subscription } from "rxjs";
 import { Router } from "@angular/router";
 import { Store } from "@ngrx/store";
 import { AppState } from "src/app/store/reducer";
-import { addCard } from "src/app/store/actions/cardActions";
+import { addCard, setActiveCardIndex } from "src/app/store/actions/cardActions";
 import { addLercture } from "src/app/store/actions/LectureActions";
 import { CardsEffects } from "src/app/store/effects/effects";
 import { NgForm } from "@angular/forms";
@@ -38,6 +38,7 @@ export class AddCardFormComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     let sub = this.actionState.addCard$.subscribe((res) => this.form.reset());
     this.subscriptions$.push(sub);
+
     if (this.neu) {
       this.lecture = JSON.parse(localStorage.getItem("vl"));
       sub = this.actionState.addLecture$.subscribe((res) =>
@@ -53,10 +54,11 @@ export class AddCardFormComponent implements OnInit, OnDestroy {
   }
   setStyle() {}
   onSubmit(f) {
+    let abrv = this.router.url.split(/vorlesung\//)[1]; //get the lecture abreviation from the route
     this.newCard = new Card(
       f.value.thema,
       f.value.content,
-      this.lecture.abrv,
+      abrv,
       0,
       f.value.tags
     );
@@ -65,6 +67,9 @@ export class AddCardFormComponent implements OnInit, OnDestroy {
       this.store.dispatch(addCard({ card: this.newCard }));
     } else {
       this.store.dispatch(addCard({ card: this.newCard }));
+      setTimeout(() => {
+        this.store.dispatch(setActiveCardIndex({ index: -1 }));
+      }, 300);
     }
   }
   inField() {

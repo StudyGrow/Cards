@@ -16,22 +16,11 @@ import { Store, select } from "@ngrx/store";
   providedIn: "root",
 })
 export class CardsService {
-  //contains lecture abreviation of the current lecutre
-  private abrv: string;
-
-  //loads cards once from the server and whenever lecture changes
-  //and provides them as an Observable
-
-  private copy: Card[] = []; // a copy of the cards in case the user resets tags filter
-
   //provides a Subject to set a new index on which card the carousel should show
   private newCardIndex$: BehaviorSubject<number> = new BehaviorSubject<number>(
     0
   );
-  //a Subject of the card that is currently shown
-  private activeCard$ = new BehaviorSubject<Card>(null);
-  private tags: string[] = []; //save applied filters
-  private cache: Observable<CardsData>;
+
   private config = new HttpConfig(); //configuration for http communication with the server
 
   constructor(

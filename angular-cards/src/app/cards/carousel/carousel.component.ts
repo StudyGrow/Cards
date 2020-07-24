@@ -24,6 +24,7 @@ import { AppState } from "src/app/store/reducer";
 import { setActiveCardIndex } from "../../store/actions/cardActions";
 import { setFormMode } from "src/app/store/actions/actions";
 import { map } from "rxjs/operators";
+import { state } from "@angular/animations";
 @Component({
   selector: "app-carousel",
   templateUrl: "./carousel.component.html",
@@ -87,19 +88,29 @@ export class CarouselComponent implements OnInit, OnDestroy {
 
     this.subscriptions$.push(sub);
 
+    sub = this.store
+      .select("cardsData")
+      .pipe(map((state) => state.activeIndex))
+      .subscribe((val) => {
+        this.hanldeNewIndex(val);
+        console.log(val);
+      });
+    this.subscriptions$.push(sub);
     sub = this.cardsService.getNewCardIndex().subscribe((index) => {
-      let newSlide = index;
-      if (this.carousel) {
-        if (newSlide < 0) {
-          newSlide = this.cards.length - 1;
-        } else if (newSlide >= this.cards.length) {
-          newSlide = 0;
-        } else {
-          this.carousel.selectSlide(newSlide);
-        }
-      }
+      this.hanldeNewIndex(index);
     });
     this.subscriptions$.push(sub);
+  }
+
+  hanldeNewIndex(index: number) {
+    if (this.carousel) {
+      if (index < 0) {
+        index = this.cards.length - 1;
+      } else if (index >= this.cards.length) {
+        index = 0;
+      }
+      this.carousel.selectSlide(index);
+    }
   }
 
   ngOnDestroy() {
