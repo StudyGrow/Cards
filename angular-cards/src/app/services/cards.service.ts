@@ -66,7 +66,6 @@ export class CardsService {
         tap(
           (resp) => {
             this.statesService.setLoadingState(false);
-            this.statesService.setFormMode("reset"); //reset form to its previous state
           },
           (error) => {
             this.notifications.handleErrors(error);

@@ -64,7 +64,6 @@ export class CardComponent implements OnInit, OnDestroy {
         //hides te card content when carousel slides
 
         this.activeIndex = index || 0;
-        this.content.close();
       });
     if (this.card.latex != 0) {
       this.parse(this.card.content);
