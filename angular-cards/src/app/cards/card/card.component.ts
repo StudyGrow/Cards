@@ -72,9 +72,12 @@ export class CardComponent implements OnInit, OnDestroy {
       this.parsed.push(this.card.content);
     }
     this.subscriptions$.push(sub);
-    sub = this.states
-      .getTyping()
-      .subscribe((val) => (this.inTypingField = val));
+    this.store
+      .select("cardsData")
+      .pipe(map((state) => state.typingMode))
+      .subscribe((val) => {
+        this.inTypingField = val;
+      });
     this.subscriptions$.push(sub);
   }
 

@@ -10,7 +10,7 @@ import { Store } from "@ngrx/store";
 import { updateCard } from "src/app/store/actions/cardActions";
 import { CardsEffects } from "src/app/store/effects/effects";
 import { NgForm } from "@angular/forms";
-import { setFormMode } from "src/app/store/actions/actions";
+import { setFormMode, setTypingMode } from "src/app/store/actions/actions";
 
 @Component({
   selector: "app-update-card-form",
@@ -51,10 +51,10 @@ export class UpdateCardFormComponent implements OnInit, OnDestroy {
     });
   }
   inField() {
-    this.statesService.setTyping(true);
+    this.store.dispatch(setTypingMode({ typing: true }));
   }
   resetNav() {
-    this.statesService.setTyping(false);
+    this.store.dispatch(setTypingMode({ typing: false }));
   }
   onSubmit(f) {
     this.cardCopy.content = f.value.content;

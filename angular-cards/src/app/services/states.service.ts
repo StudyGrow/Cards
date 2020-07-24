@@ -7,8 +7,6 @@ import { BehaviorSubject, Observable } from "rxjs";
   providedIn: "root",
 })
 export class StatesService {
-  private formMode$: BehaviorSubject<string> = new BehaviorSubject("none");
-  private lastFormMode: string;
   private loadingCount = 0;
   private loading$: BehaviorSubject<boolean> = new BehaviorSubject(false);
   private hideSgtn$: BehaviorSubject<boolean> = new BehaviorSubject(true);
@@ -16,27 +14,6 @@ export class StatesService {
   private drawertoggler$ = new BehaviorSubject(false);
   constructor() {}
 
-  getFormMode(): Observable<string> {
-    return this.formMode$.asObservable();
-  }
-  setFormMode(mode: string): void {
-    if (mode == "reset") {
-      if (!this.lastFormMode) {
-        //last form mode is undefined
-        this.lastFormMode = "none";
-      } // last Form mode defined
-      this.formMode$.next(this.lastFormMode);
-    } else {
-      this.formMode$.next(mode);
-      if (mode != "edit") this.lastFormMode = mode;
-    }
-  }
-  setTyping(val: boolean) {
-    this.typing$.next(val);
-  }
-  getTyping(): Observable<boolean> {
-    return this.typing$.asObservable();
-  }
   getLoadingState(): Observable<boolean> {
     return this.loading$.asObservable();
   }

@@ -8,6 +8,7 @@ import { SearchSuggestion } from "../../models/SearchSuggestion";
 import { Subscription } from "rxjs";
 import { Store } from "@ngrx/store";
 import { map } from "rxjs/operators";
+import { setTypingMode } from "src/app/store/actions/actions";
 
 @Component({
   selector: "app-search-bar",
@@ -56,14 +57,14 @@ export class SearchBarComponent implements OnInit, OnDestroy {
     });
   }
   inField() {
-    this.stateService.setTyping(true);
+    this.store.dispatch(setTypingMode({ typing: true }));
   }
   resetNav() {
     setTimeout(() => {
       this.uInput = "";
     }, 120);
 
-    this.stateService.setTyping(false);
+    this.store.dispatch(setTypingMode({ typing: false }));
   }
   findMatches(e: Event) {
     this.stateService.setHideSuggestions(false); //show suggestions

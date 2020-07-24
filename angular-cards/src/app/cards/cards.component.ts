@@ -66,7 +66,13 @@ export class CardsComponent implements OnInit {
     this.vlAbrv = this.route.snapshot.paramMap.get("abrv");
 
     this.store.dispatch(fetchCards());
-    this.stateServie.getTyping().subscribe((val) => (this.inTypingField = val));
+    this.store
+      .select("cardsData")
+      .pipe(map((state) => state.typingMode))
+      .subscribe((val) => {
+        this.inTypingField = val;
+      });
+
     this.store
       .select("cardsData")
       .pipe(map((state) => state.formMode))

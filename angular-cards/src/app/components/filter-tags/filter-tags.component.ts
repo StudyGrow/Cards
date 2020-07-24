@@ -15,6 +15,7 @@ import { MatChipInputEvent } from "@angular/material/chips";
 import { map, startWith, share } from "rxjs/operators";
 import { StatesService } from "src/app/services/states.service";
 import { Store } from "@ngrx/store";
+import { setTypingMode } from "src/app/store/actions/actions";
 
 @Component({
   selector: "app-filter-tags",
@@ -116,10 +117,10 @@ export class FilterTagsComponent implements OnInit {
     this.formCtrl.setValue(null);
   }
   inField() {
-    this.states.setTyping(true);
+    this.store.dispatch(setTypingMode({ typing: true }));
   }
   resetNav() {
-    this.states.setTyping(false);
+    this.store.dispatch(setTypingMode({ typing: false }));
   }
   private _filter(value: string): string[] {
     const filterValue = value.toLowerCase();

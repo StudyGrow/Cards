@@ -11,6 +11,7 @@ import { addCard } from "src/app/store/actions/cardActions";
 import { addLercture } from "src/app/store/actions/LectureActions";
 import { CardsEffects } from "src/app/store/effects/effects";
 import { NgForm } from "@angular/forms";
+import { setTypingMode } from "src/app/store/actions/actions";
 
 @Component({
   selector: "app-add-card-form",
@@ -67,10 +68,10 @@ export class AddCardFormComponent implements OnInit, OnDestroy {
     }
   }
   inField() {
-    this.stateService.setTyping(true);
+    this.store.dispatch(setTypingMode({ typing: true }));
   }
   resetNav() {
-    this.stateService.setTyping(false);
+    this.store.dispatch(setTypingMode({ typing: false }));
   }
   //Function to set style of small character indicator
   setThemaCharIndicatorStyle(thema) {

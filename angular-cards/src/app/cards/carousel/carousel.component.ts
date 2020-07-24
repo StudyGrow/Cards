@@ -77,9 +77,12 @@ export class CarouselComponent implements OnInit, OnDestroy {
         this.formMode = mode;
       });
     this.subscriptions$.push(sub);
-    sub = this.stateService
-      .getTyping()
-      .subscribe((val) => (this.inTypingField = val));
+    sub = this.store
+      .select("cardsData")
+      .pipe(map((state) => state.typingMode))
+      .subscribe((val) => {
+        this.inTypingField = val;
+      });
     this.subscriptions$.push(sub);
 
     this.subscriptions$.push(sub);
