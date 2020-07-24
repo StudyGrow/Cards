@@ -31,12 +31,7 @@ export class StatesService {
       }
     }
   }
-  setHideSuggestions(value: boolean) {
-    this.hideSgtn$.next(value);
-  }
-  getHideSuggestions(): Observable<boolean> {
-    return this.hideSgtn$.asObservable();
-  }
+
   toggleDrawer() {
     let curr = this.drawertoggler$.getValue() || false;
     this.drawertoggler$.next(!curr);

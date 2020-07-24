@@ -19,6 +19,7 @@ import { AppState, CardsData } from "../store/reducer";
 import { map, tap, share } from "rxjs/operators";
 import { fetchCards } from "../store/actions/cardActions";
 import { fadeInOnEnterAnimation } from "angular-animations";
+import { setSuggestionsMode } from "../store/actions/actions";
 
 @Component({
   selector: "app-cards",
@@ -52,7 +53,7 @@ export class CardsComponent implements OnInit {
 
   @HostListener("click", ["$event.target"])
   onClick() {
-    this.stateServie.setHideSuggestions(true);
+    this.store.dispatch(setSuggestionsMode({ hide: true }));
   }
   constructor(
     private route: ActivatedRoute,

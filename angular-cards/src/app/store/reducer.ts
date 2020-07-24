@@ -1,6 +1,10 @@
 import * as Actions from "./actions/cardActions";
 import * as LectureActions from "./actions/LectureActions";
-import { setFormMode, setTypingMode } from "./actions/actions";
+import {
+  setFormMode,
+  setTypingMode,
+  setSuggestionsMode,
+} from "./actions/actions";
 import { createReducer, on } from "@ngrx/store";
 import { Card } from "../models/Card";
 import { Vorlesung } from "../models/Vorlesung";
@@ -12,6 +16,7 @@ export interface AppState {
   lectures: Vorlesung[];
   formMode: string;
   typingMode: boolean;
+  hideSearchResults: boolean;
 }
 export class CardsData {
   cards: Card[];
@@ -25,6 +30,7 @@ export const initialState: AppState = {
   lectures: [],
   formMode: "hide",
   typingMode: false,
+  hideSearchResults: true,
 };
 
 //Reducer which will dispatch changes to the store
@@ -71,6 +77,10 @@ const _cardsReducer = createReducer(
   on(setTypingMode, (state, { typing }) => ({
     ...state,
     typingMode: typing,
+  })),
+  on(setSuggestionsMode, (state, { hide }) => ({
+    ...state,
+    hideSearchResults: hide,
   })),
   on(Actions.LoadFailure, (state) => state) //on failure don't update state
 );

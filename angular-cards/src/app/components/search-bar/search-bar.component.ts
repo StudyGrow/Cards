@@ -8,7 +8,10 @@ import { SearchSuggestion } from "../../models/SearchSuggestion";
 import { Subscription } from "rxjs";
 import { Store } from "@ngrx/store";
 import { map } from "rxjs/operators";
-import { setTypingMode } from "src/app/store/actions/actions";
+import {
+  setTypingMode,
+  setSuggestionsMode,
+} from "src/app/store/actions/actions";
 
 @Component({
   selector: "app-search-bar",
@@ -28,12 +31,15 @@ export class SearchBarComponent implements OnInit, OnDestroy {
   clearSuggestions: boolean;
 
   ngOnInit(): void {
-    let sub = this.stateService.getHideSuggestions().subscribe((value) => {
-      this.clearSuggestions = value;
-      if (value) {
-        this.suggestions = [];
-      }
-    });
+    let sub = this.store
+      .select("cardsData")
+      .pipe(map((state) => state.hideSearchResults))
+      .subscribe((value) => {
+        this.clearSuggestions = value;
+        if (value) {
+          this.suggestions = [];
+        }
+      });
     this.subscriptions$.push(sub);
     sub = this.store
       .select("cardsData")
@@ -67,7 +73,7 @@ export class SearchBarComponent implements OnInit, OnDestroy {
     this.store.dispatch(setTypingMode({ typing: false }));
   }
   findMatches(e: Event) {
-    this.stateService.setHideSuggestions(false); //show suggestions
+    this.store.dispatch(setSuggestionsMode({ hide: false })); //show suggestions
 
     if (this.uInput && this.uInput.length > 2) {
       this.suggestions = [];
@@ -84,6 +90,6 @@ export class SearchBarComponent implements OnInit, OnDestroy {
     e.preventDefault();
     this.uInput = "";
     this.cardsService.setNewCardIndex(index);
-    this.stateService.setHideSuggestions(true);
+    this.store.dispatch(setSuggestionsMode({ hide: true }));
   }
 }
