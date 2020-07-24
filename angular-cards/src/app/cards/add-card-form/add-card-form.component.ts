@@ -8,7 +8,7 @@ import { Subscription } from "rxjs";
 import { Router } from "@angular/router";
 import { Store } from "@ngrx/store";
 import { AppState } from "src/app/store/reducer";
-import { addCard } from "src/app/store/actions/actions";
+import { addCard } from "src/app/store/actions/cardActions";
 import { addLercture } from "src/app/store/actions/LectureActions";
 import { CardsEffects } from "src/app/store/effects/effects";
 import { NgForm } from "@angular/forms";

@@ -9,7 +9,7 @@ import {
   FetchCardsActions,
   AddCardActions,
   UpdateCardActions,
-} from "../actions/actions";
+} from "../actions/cardActions";
 import * as LectureActions from "../actions/LectureActions";
 import { CardsService } from "../../services/cards.service";
 import { LecturesService } from "../../services/lectures.service";

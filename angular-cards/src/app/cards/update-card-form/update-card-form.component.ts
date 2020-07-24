@@ -8,7 +8,7 @@ import { Template } from "@angular/compiler/src/render3/r3_ast";
 import { Store } from "@ngrx/store";
 import { AppState } from "src/app/store/reducer";
 import { map, share } from "rxjs/operators";
-import { updateCard } from "src/app/store/actions/actions";
+import { updateCard } from "src/app/store/actions/cardActions";
 import { CardsEffects } from "src/app/store/effects/effects";
 import { NgForm } from "@angular/forms";
 

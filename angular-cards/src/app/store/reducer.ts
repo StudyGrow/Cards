@@ -1,4 +1,4 @@
-import * as Actions from "./actions/actions";
+import * as Actions from "./actions/cardActions";
 import * as LectureActions from "./actions/LectureActions";
 import { createReducer, on } from "@ngrx/store";
 import { Card } from "../models/Card";
@@ -47,8 +47,6 @@ const _cardsReducer = createReducer(
       cards: updateObjectInArray(state.cardsData.cards, card),
       lecture: state.cardsData.lecture,
     },
-
-    //add card to the end of the cards array
   })),
   on(Actions.LoadSuccess, (state, { data }) => ({
     ...state,
