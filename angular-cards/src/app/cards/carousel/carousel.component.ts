@@ -173,6 +173,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
   }
   onSlide(slideEvent) {
     this.activeSlide = slideEvent.relatedTarget;
+    console.log(this.activeSlide);
     if (slideEvent.relatedTarget) {
       this.store.dispatch(setActiveCardIndex({ index: this.activeSlide }));
     }

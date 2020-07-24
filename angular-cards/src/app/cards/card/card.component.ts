@@ -13,12 +13,20 @@ import { parse, HtmlGenerator } from "latex.js/dist/latex.js";
 
 import { SafeHtmlPipe } from "../../shared/safe-html.pipe";
 import { StatesService } from "src/app/services/states.service";
+import { Store } from "@ngrx/store";
+import { map } from "rxjs/operators";
 @Component({
   selector: "app-card",
   templateUrl: "./card.component.html",
   styleUrls: ["./card.component.css"],
 })
 export class CardComponent implements OnInit, OnDestroy {
+  constructor(
+    private cs: CardsService,
+    private states: StatesService,
+    private store: Store<any>
+  ) {}
+
   @Input() card: Card;
   @Input() index: number;
   inTypingField: boolean = false;
@@ -47,14 +55,17 @@ export class CardComponent implements OnInit, OnDestroy {
   styleAppend = `<link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/latex.js@0.12.1/dist/css/katex.css"><link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/latex.js@0.12.1/dist/css/article.css"><script src="https://cdn.jsdelivr.net/npm/latex.js@0.12.1/dist/dist/js/base.js"></script>`;
   parsed: any = [];
 
-  constructor(private cs: CardsService, private states: StatesService) {}
   public isCollapsed = true;
   ngOnInit(): void {
-    let sub = this.cs.activeCard().subscribe((card) => {
-      //hides te card content when carousel slides
-      this.activeIndex = card.positionIndex || 0;
-      this.content.close();
-    });
+    let sub = this.store
+      .select("cardsData")
+      .pipe(map((state) => state.activeIndex))
+      .subscribe((index) => {
+        //hides te card content when carousel slides
+
+        this.activeIndex = index || 0;
+        this.content.close();
+      });
     if (this.card.latex != 0) {
       this.parse(this.card.content);
     } else {

@@ -74,7 +74,7 @@ export class FilterTagsComponent implements OnInit {
       if (val === false) {
         if (this.selected.length === 0 && this.selectedChanged) {
           this.selectedChanged = false;
-          this.cardService.resetFilter();
+          // this.cardService.resetFilter();
         } else {
           this.applyFilter();
         }
@@ -84,7 +84,7 @@ export class FilterTagsComponent implements OnInit {
   applyFilter() {
     if (this.selected.length > 0) {
       this.selectedChanged = true;
-      this.cardService.applyFilter(this.selected);
+      //this.cardService.applyFilter(this.selected);
     }
   }
 

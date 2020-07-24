@@ -11,7 +11,7 @@ import { Card } from "src/app/models/Card";
 })
 export class NavListComponent implements OnInit {
   loggedIn: boolean;
-  cards: Card[];
+  onCardRoute: boolean;
   constructor(
     private userService: UserService,
     private cardsService: CardsService,
@@ -23,11 +23,9 @@ export class NavListComponent implements OnInit {
     this.router.events.subscribe((e) => {
       if (e instanceof NavigationEnd) {
         if (this.router.url.match(/vorlesung/)) {
-          this.cardsService.getCards().subscribe((cards) => {
-            this.cards = cards;
-          });
+          this.onCardRoute = true;
         } else {
-          this.cards = null;
+          this.onCardRoute = false;
         }
         this.userService.clearAccountInfo();
       }

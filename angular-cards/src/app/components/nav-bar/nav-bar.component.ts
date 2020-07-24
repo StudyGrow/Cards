@@ -46,9 +46,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
         .authentication()
         .subscribe((val) => (this.loggedIn = val));
       this.subscriptions$.push(sub);
-      this.cardsService.getCards().subscribe((cards) => {
-        this.cards = cards;
-      });
+
       this.router.events.subscribe((e) => {
         if (e instanceof NavigationEnd) {
           this.handleRouteChanges();

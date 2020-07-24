@@ -21,7 +21,7 @@ export class CardsService {
 
   //loads cards once from the server and whenever lecture changes
   //and provides them as an Observable
-  private cards$: BehaviorSubject<Card[]> = new BehaviorSubject<Card[]>([]);
+
   private copy: Card[] = []; // a copy of the cards in case the user resets tags filter
 
   //provides a Subject to set a new index on which card the carousel should show
@@ -40,87 +40,14 @@ export class CardsService {
     private statesService: StatesService, //for setting the loading state
     private router: Router, //used to get the lecture abreviation from the route
     private store: Store<any>
-  ) {
-    this.store
-      .select("cardsData")
-      .pipe(map((data) => data.cardsData.cards))
-      .subscribe(this.cards$);
-  }
+  ) {}
+
+  //This loads all cards specific data which is needed on the route of a specific lecture
   fetchCardsData(): Observable<CardsData> {
     let abrv = this.router.url.split(/vorlesung\//)[1]; //get the lecture abreviation from the route
     return this.http.get<CardsData>(
       this.config.urlBase + "cards/a?abrv=" + abrv
     );
-  }
-
-  getCards(): Observable<Card[]> {
-    let abrv = this.router.url.split(/vorlesung\//)[1]; //get the lecture abreviation from the route
-
-    if (abrv && this.abrv !== abrv) {
-      //make a new call
-
-      this.statesService.setLoadingState(true);
-      this.abrv = abrv;
-      //remove the old cards before fetching the new ones
-      this.cards$.next([]);
-      //make server request
-      this.http
-        .get<Card[]>(this.config.urlBase + "cards/?abrv=" + abrv, {
-          observe: "response",
-        })
-        .subscribe(
-          (response) => {
-            this.statesService.setLoadingState(false);
-            this.copy = response.body;
-            if (response.body) {
-              this.cards$.next(response.body);
-              this.activeCard$.next(response.body[0]); //first card
-            } else {
-              console.log("got empy response");
-            }
-          },
-          (error) => {
-            this.notifications.handleErrors(error);
-            this.statesService.setLoadingState(false);
-          }
-        );
-    }
-    return this.cards$.asObservable();
-  }
-
-  updateCard(card: Card, index: number): Observable<any> {
-    this.statesService.setLoadingState(true);
-    //send update to server using http service
-    return this.http
-      .put<any>(
-        this.config.urlBase + "cards/update",
-        { card: card },
-        {
-          headers: this.config.headers,
-          observe: "response",
-        }
-      )
-      .pipe(
-        tap(
-          (resp) => {
-            this.statesService.setLoadingState(false);
-            this.statesService.setFormMode("reset"); //reset form to its previous state
-            //update subject
-            let cards = this.cards$.getValue();
-            cards[index] = card;
-            this.cards$.next(cards);
-            setTimeout(() => {
-              //show new card timeout needed because the carousel needs time to refresh
-              //its view
-              this.setNewCardIndex(index);
-            }, 100);
-          },
-          (error) => {
-            this.notifications.handleErrors(error);
-            this.statesService.setLoadingState(false);
-          }
-        )
-      );
   }
 
   updateCard2(card: Card): Observable<any> {
@@ -166,12 +93,6 @@ export class CardsService {
         tap(
           (response) => {
             this.statesService.setLoadingState(false);
-
-            setTimeout(() => {
-              //show new card timeout needed because the carousel needs time to refresh
-              //its view
-              this.setNewCardIndex(this.cards$.getValue().length - 1);
-            }, 600);
           },
           (error) => {
             this.notifications.handleErrors(error);
@@ -206,20 +127,7 @@ export class CardsService {
   setNewCardIndex(i: number) {
     this.newCardIndex$.next(i);
   }
-  //only the carousel should call this method (on the sliding event)
-  setActiveCardIndex(i: number) {
-    let active = this.cards$.getValue()[i];
-
-    if (active) {
-      active.positionIndex = i;
-      this.activeCard$.next(active);
-    }
-  }
-  //subsribe to this function to always get the card that is currently shown
-  activeCard(): Observable<Card> {
-    return this.activeCard$.asObservable();
-  }
-
+  /*
   applyFilter(tags: string[]): Observable<boolean> {
     let cards = this.cards$.getValue();
 
@@ -248,5 +156,5 @@ export class CardsService {
     this.tags = [];
     this.setNewCardIndex(0);
     this.cards$.next(this.copy); //reset the cards to their initial state
-  }
+  }*/
 }
