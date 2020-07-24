@@ -13,9 +13,6 @@ import { Vorlesung } from "../models/Vorlesung";
   providedIn: "root",
 })
 export class LecturesService {
-  private lecture$: BehaviorSubject<Vorlesung> = new BehaviorSubject<Vorlesung>(
-    new Vorlesung()
-  ); //holds the current lecture
   private config = new HttpConfig();
 
   constructor(
@@ -45,19 +42,6 @@ export class LecturesService {
         ),
         map((res) => res.body)
       );
-  }
-
-  //get the Current lecture
-  getCurrentLecture(): Observable<Vorlesung> {
-    let abrv = this.router.url.split(/vorlesung\//)[1]; //get the abreviation of the lecture from the url
-    if (!abrv) {
-      return of(new Vorlesung()); //return empty object when not on cards route
-    }
-    if (abrv == "neu") {
-      //on route where we are creating a new  lecture
-      let tmp = of(JSON.parse(localStorage.getItem("vl")));
-      return tmp;
-    }
   }
 
   //add a lecture to the database on the server

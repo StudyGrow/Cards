@@ -37,13 +37,10 @@ export class AddCardFormComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    let sub = this.lectureService
-      .getCurrentLecture()
-      .subscribe((lecture) => (this.lecture = lecture));
-    this.subscriptions$.push(sub);
-    sub = this.actionState.addCard$.subscribe((res) => this.form.reset());
+    let sub = this.actionState.addCard$.subscribe((res) => this.form.reset());
     this.subscriptions$.push(sub);
     if (this.neu) {
+      this.lecture = JSON.parse(localStorage.getItem("vl"));
       sub = this.actionState.addLecture$.subscribe((res) =>
         this.router.navigateByUrl(`vorlesung/${this.lecture.abrv}`)
       );
