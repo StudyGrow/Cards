@@ -5,7 +5,7 @@ import { Subscription, Observable } from "rxjs";
 import { LecturesService } from "src/app/services/lectures.service";
 import { Store } from "@ngrx/store";
 import { AppState } from "src/app/store/reducer";
-import { fetchLectures } from "src/app/store/actions";
+import { fetchLectures } from "src/app/store/actions/LectureActions";
 @Component({
   selector: "app-lectures",
   templateUrl: "./lectures.component.html",

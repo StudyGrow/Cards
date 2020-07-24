@@ -8,8 +8,9 @@ import { Subscription } from "rxjs";
 import { Router } from "@angular/router";
 import { Store } from "@ngrx/store";
 import { AppState } from "src/app/store/reducer";
-import { addCard } from "src/app/store/actions";
-import { CardsEffects } from "src/app/store/effects";
+import { addCard } from "src/app/store/actions/actions";
+import { addLercture } from "src/app/store/actions/LectureActions";
+import { CardsEffects } from "src/app/store/effects/effects";
 import { NgForm } from "@angular/forms";
 
 @Component({
@@ -42,6 +43,12 @@ export class AddCardFormComponent implements OnInit, OnDestroy {
     this.subscriptions$.push(sub);
     sub = this.actionState.addCard$.subscribe((res) => this.form.reset());
     this.subscriptions$.push(sub);
+    if (this.neu) {
+      sub = this.actionState.addLecture$.subscribe((res) =>
+        this.router.navigateByUrl(`vorlesung/${this.lecture.abrv}`)
+      );
+      this.subscriptions$.push(sub);
+    }
   }
   ngOnDestroy() {
     this.subscriptions$.forEach((sub) => {
@@ -58,10 +65,8 @@ export class AddCardFormComponent implements OnInit, OnDestroy {
       f.value.tags
     );
     if (this.neu) {
-      this.lectureService.addLecture(this.lecture).subscribe((res) => {
-        this.store.dispatch(addCard({ card: this.newCard }));
-        this.router.navigateByUrl(`vorlesung/${this.lecture.abrv}`);
-      });
+      this.store.dispatch(addLercture({ lecture: this.lecture }));
+      this.store.dispatch(addCard({ card: this.newCard }));
     } else {
       this.store.dispatch(addCard({ card: this.newCard }));
     }

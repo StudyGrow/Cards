@@ -17,7 +17,7 @@ import { select, Store } from "@ngrx/store";
 import { Observable } from "rxjs";
 import { AppState, CardsData } from "../store/reducer";
 import { map, tap, share } from "rxjs/operators";
-import { fetchCards } from "../store/actions";
+import { fetchCards } from "../store/actions/actions";
 
 @Component({
   selector: "app-cards",

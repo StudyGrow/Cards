@@ -21,7 +21,7 @@ import {
 import { CardsService } from "src/app/services/cards.service";
 import { Store } from "@ngrx/store";
 import { AppState } from "src/app/store/reducer";
-import { setActiveCardIndex } from "../../store/actions";
+import { setActiveCardIndex } from "../../store/actions/actions";
 @Component({
   selector: "app-carousel",
   templateUrl: "./carousel.component.html",

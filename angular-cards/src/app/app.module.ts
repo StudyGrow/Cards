@@ -35,7 +35,7 @@ import {
 import { cardsReducer } from "./store/reducer";
 //Effects
 import { EffectsModule } from "@ngrx/effects";
-import { CardsEffects } from "./store/effects";
+import { CardsEffects } from "./store/effects/effects";
 
 //Localization
 import { registerLocaleData } from "@angular/common";

@@ -14,9 +14,8 @@ import { Vorlesung } from "../models/Vorlesung";
 })
 export class LecturesService {
   private lecture$: BehaviorSubject<Vorlesung> = new BehaviorSubject<Vorlesung>(
-    new Vorlesung("", "")
+    new Vorlesung()
   ); //holds the current lecture
-  private lectures$ = new BehaviorSubject<Vorlesung[]>(null); //holds all lectures
   private config = new HttpConfig();
 
   constructor(
@@ -51,34 +50,18 @@ export class LecturesService {
   //get the Current lecture
   getCurrentLecture(): Observable<Vorlesung> {
     let abrv = this.router.url.split(/vorlesung\//)[1]; //get the abreviation of the lecture from the url
+    if (!abrv) {
+      return of(new Vorlesung()); //return empty object when not on cards route
+    }
     if (abrv == "neu") {
+      //on route where we are creating a new  lecture
       let tmp = of(JSON.parse(localStorage.getItem("vl")));
       return tmp;
-    } else if (abrv && this.lecture$.getValue().abrv !== abrv) {
-      //fetch the lecture from the server
-      this.lecture$.next(new Vorlesung("", "")); //reset the lecture
-      this.statesService.setLoadingState(true);
-      this.http
-        .get<Vorlesung>(this.config.urlBase + "lectures/find?abrv=" + abrv, {
-          observe: "response",
-        })
-        .subscribe(
-          (res) => {
-            this.statesService.setLoadingState(false);
-            this.lecture$.next(res.body);
-          },
-          (error) => {
-            this.notifications.handleErrors(error);
-            this.router.navigateByUrl("/");
-            this.statesService.setLoadingState(false);
-          }
-        );
     }
-    return this.lecture$.asObservable();
   }
 
   //add a lecture to the database on the server
-  addLecture(lecture: Vorlesung): Observable<HttpResponse<any>> {
+  addLecture(lecture: Vorlesung): Observable<Vorlesung> {
     this.statesService.setLoadingState(true);
     return this.http
       .post<any>(
@@ -94,17 +77,13 @@ export class LecturesService {
           (res) => {
             //add the new lecture to the lectures subject
             this.statesService.setLoadingState(false);
-            let lectures = this.lectures$.getValue();
-            if (lectures) {
-              lectures.push(lecture);
-              this.lectures$.next(lectures);
-            }
           },
           (error) => {
             this.notifications.handleErrors(error);
             this.statesService.setLoadingState(false);
           }
-        )
+        ),
+        map((res) => res.body)
       );
   }
 }

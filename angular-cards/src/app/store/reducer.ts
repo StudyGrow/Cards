@@ -1,4 +1,5 @@
-import * as Actions from "./actions";
+import * as Actions from "./actions/actions";
+import * as LectureActions from "./actions/LectureActions";
 import { createReducer, on } from "@ngrx/store";
 import { Card } from "../models/Card";
 import { Vorlesung } from "../models/Vorlesung";
@@ -31,9 +32,14 @@ const _cardsReducer = createReducer(
       lecture: state.cardsData.lecture,
     },
   })),
-  on(Actions.fetchLecturesSuccess, (state, { lectures }) => ({
+  on(LectureActions.fetchLecturesSuccess, (state, { lectures }) => ({
     ...state,
     lectures: lectures,
+  })),
+
+  on(LectureActions.addLercture, (state, { lecture }) => ({
+    ...state,
+    lectures: [...state.lectures, lecture],
   })),
   on(Actions.updateCardSuccess, (state, { card }) => ({
     ...state,

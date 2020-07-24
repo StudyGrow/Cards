@@ -13,8 +13,9 @@ import {
 } from "@angular/material/autocomplete";
 import { MatChipInputEvent } from "@angular/material/chips";
 
-import { map, startWith } from "rxjs/operators";
+import { map, startWith, share } from "rxjs/operators";
 import { StatesService } from "src/app/services/states.service";
+import { Store } from "@ngrx/store";
 
 @Component({
   selector: "app-filter-tags",
@@ -22,7 +23,16 @@ import { StatesService } from "src/app/services/states.service";
   styleUrls: ["./filter-tags.component.css"],
 })
 export class FilterTagsComponent implements OnInit {
-  lecture$: Observable<Vorlesung>;
+  private data$: Observable<any> = this.store
+    .select(
+      //holds cards data from store
+      (state) => state.cardsData
+    )
+    .pipe(share());
+
+  public lecture$: Observable<Vorlesung> = this.data$.pipe(
+    map((data) => data.cardsData.lecture)
+  );
 
   separatorKeysCodes: number[] = [ENTER, COMMA];
   formCtrl = new FormControl();
@@ -35,17 +45,25 @@ export class FilterTagsComponent implements OnInit {
   @ViewChild("auto") matAutocomplete: MatAutocomplete;
 
   constructor(
-    private lectureService: LecturesService,
     private cardService: CardsService,
-    private states: StatesService
+    private states: StatesService,
+    private store: Store<any>
   ) {}
   selected = [];
   ngOnInit(): void {
-    this.lecture$ = this.lectureService.getCurrentLecture();
-    this.lecture$.subscribe((lect) => {
-      this.lecture = lect;
-      this.tags = this.lecture.tagList;
-    });
+    this.lecture$
+      .pipe(
+        map((lecture) => {
+          if (lecture) {
+            return lecture.tagList;
+          } else {
+            return [];
+          }
+        })
+      )
+      .subscribe((tags) => {
+        this.tags = tags;
+      });
     this.filteredTags = this.formCtrl.valueChanges.pipe(
       startWith(null),
       map((tag: string | null) => {

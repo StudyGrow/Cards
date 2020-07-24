@@ -1,12 +1,10 @@
 import { Action, createAction, props, union } from "@ngrx/store";
-import { Card } from "../models/Card";
-import { CardsData } from "./reducer";
-import { Vorlesung } from "../models/Vorlesung";
+import { Card } from "../../models/Card";
+import { CardsData } from "../reducer";
+import { Vorlesung } from "../../models/Vorlesung";
 
 //Types of Actions
 enum ActionTypes {
-  FETCH_LECTURES = "[Lectures] Fetch from server",
-  FETCH_LECTURES_SUCCESS = "[Lectures] Load success",
   FETCH_CARDS = "[Cards] Fetch from server",
   LOAD_SUCCESS = "[Cards] Load success",
   LOAD_FAILURE = "[Cards] Load failure",
@@ -20,13 +18,6 @@ enum ActionTypes {
 //Concrete Actions for each type
 
 export const fetchCards = createAction(ActionTypes.FETCH_CARDS);
-
-export const fetchLectures = createAction(ActionTypes.FETCH_LECTURES);
-
-export const fetchLecturesSuccess = createAction(
-  ActionTypes.FETCH_LECTURES_SUCCESS,
-  props<{ lectures: Vorlesung[] }>()
-);
 
 export const setActiveCardIndex = createAction(
   ActionTypes.SET_ACITVE_CARD_INDEX,
@@ -67,12 +58,6 @@ export const FetchCardsActions = {
   //this loads lectures cards and user id
   fetchCards,
   LoadSuccess,
-};
-
-export const FetchLecturesActions = {
-  //this loads lectures cards and user id
-  fetchLectures,
-  fetchLecturesSuccess,
 };
 
 export const AddCardActions = { addCard, addCardSuccess };
