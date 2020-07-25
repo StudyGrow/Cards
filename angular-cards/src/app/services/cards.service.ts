@@ -65,11 +65,11 @@ export class CardsService {
       );
   }
 
-  addCard(card: Card): Observable<any> {
+  addCard(card: Card): Observable<Card> {
     this.statesService.setLoadingState(true);
     //send new card to server using http service
     return this.http
-      .post<any>(
+      .post<{ id: string }>(
         this.config.urlBase + "cards/new",
         { card: card },
         {
@@ -88,8 +88,7 @@ export class CardsService {
           }
         ),
         map((res) => {
-          card._id = res.body.id;
-          return card;
+          return { ...card, _id: res.body.id };
         })
       );
   }

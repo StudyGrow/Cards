@@ -26,12 +26,12 @@ export class FilterTagsComponent implements OnInit {
   private data$: Observable<any> = this.store
     .select(
       //holds cards data from store
-      (state) => state.cardsData
+      "cardsData"
     )
     .pipe(share());
 
   public lecture$: Observable<Vorlesung> = this.data$.pipe(
-    map((data) => data.cardsData.lecture)
+    map((data) => data.lecture)
   );
 
   separatorKeysCodes: number[] = [ENTER, COMMA];

@@ -20,6 +20,7 @@ import { map, tap, share } from "rxjs/operators";
 import { fetchCards } from "../store/actions/cardActions";
 import { fadeInOnEnterAnimation } from "angular-animations";
 import { setSuggestionsMode } from "../store/actions/actions";
+import { getCardsData, selectUserId } from "../store/selector";
 
 @Component({
   selector: "app-cards",
@@ -29,24 +30,23 @@ import { setSuggestionsMode } from "../store/actions/actions";
 })
 export class CardsComponent implements OnInit {
   public vlAbrv: string;
-  public lecture: Vorlesung;
+
   public loading: boolean = true;
   public formMode: string;
   public data$: Observable<any> = this.store
     .select(
       //holds cards data from store
-      (state) => state.cardsData
+      "cardsData"
     )
-    .pipe(share());
+    .pipe(map(getCardsData), share());
+
   public cards$: Observable<Card[]> = this.data$.pipe(
-    map((data) => data.cardsData.cards)
+    map((data) => data.cards)
   );
   public lecture$: Observable<Vorlesung> = this.data$.pipe(
-    map((data) => data.cardsData.lecture)
+    map((data) => data.currLecture)
   );
-  public uid$: Observable<string> = this.data$.pipe(
-    map((data) => data.cardsData.uid)
-  );
+  public uid$: Observable<string> = this.store.pipe(map(selectUserId));
 
   private inTypingField: boolean;
   @ViewChild("alert", { static: false }) alert: ElementRef;

@@ -42,9 +42,10 @@ export class SearchBarComponent implements OnInit, OnDestroy {
         }
       });
     this.subscriptions$.push(sub);
+
     sub = this.store
       .select("cardsData")
-      .pipe(map((data) => data.cardsData.cards))
+      .pipe(map((data) => data.cards))
       .subscribe((cards) => {
         this.cards = cards;
         cards.forEach((card) => {

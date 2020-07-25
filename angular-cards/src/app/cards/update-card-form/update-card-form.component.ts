@@ -14,6 +14,8 @@ import {
 import { CardsEffects } from "src/app/store/effects/effects";
 import { NgForm } from "@angular/forms";
 import { setFormMode, setTypingMode } from "src/app/store/actions/actions";
+import { map } from "rxjs/operators";
+import { getCardsData } from "src/app/store/selector";
 
 @Component({
   selector: "app-update-card-form",
@@ -35,9 +37,10 @@ export class UpdateCardFormComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     let sub = this.store.select("cardsData").subscribe((data) => {
+      console.log(data.cards[data.activeIndex]);
       this.activeCardIndex = data.activeIndex;
 
-      this.cardCopy = { ...data.cardsData.cards[this.activeCardIndex] };
+      this.cardCopy = { ...data.cards[data.activeIndex] };
 
       this.cardIndex = this.activeCardIndex;
     });
@@ -45,9 +48,7 @@ export class UpdateCardFormComponent implements OnInit, OnDestroy {
     sub = this.actionState.updateCard$.subscribe((res) => {
       this.store.dispatch(setFormMode({ mode: "reset" }));
       setTimeout(() => {
-        this.store.dispatch(
-          setActiveCardIndex({ index: this.activeCardIndex })
-        );
+        this.store.dispatch(setActiveCardIndex({ index: this.cardIndex }));
       }, 300);
 
       this.form.reset();
@@ -68,6 +69,7 @@ export class UpdateCardFormComponent implements OnInit, OnDestroy {
   onSubmit(f) {
     this.cardCopy.content = f.value.content;
     this.cardCopy.thema = f.value.thema;
+    console.log(this.cardCopy);
     this.store.dispatch(updateCard({ card: this.cardCopy }));
   }
   cancelEdit() {

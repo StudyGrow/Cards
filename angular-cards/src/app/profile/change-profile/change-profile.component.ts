@@ -12,7 +12,7 @@ import { Subscription } from "rxjs";
 export class ChangeProfileComponent implements OnInit, OnDestroy {
   public userInfo: UserInfo;
   subscriptions$: Subscription[] = [];
-  public user = new User("", "");
+  public user = new User();
   fileToUpload: File = null;
   constructor(private userService: UserService) {}
 

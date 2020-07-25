@@ -5,18 +5,21 @@ import {
   setTypingMode,
   setSuggestionsMode,
 } from "./actions/actions";
-import { createReducer, on } from "@ngrx/store";
+import { createReducer, on, Action } from "@ngrx/store";
 import { Card } from "../models/Card";
 import { Vorlesung } from "../models/Vorlesung";
+import { User } from "../models/User";
 
 //defines the state of our app
 export interface AppState {
-  cardsData: { cards: Card[]; lecture: Vorlesung; uid: string };
+  cards: Card[];
+  currLecture: Vorlesung;
   activeIndex: number;
   lectures: Vorlesung[];
   formMode: string;
   typingMode: boolean;
   hideSearchResults: boolean;
+  user: User;
 }
 export class CardsData {
   cards: Card[];
@@ -25,23 +28,23 @@ export class CardsData {
 }
 //initial state of the app
 export const initialState: AppState = {
-  cardsData: { cards: [], lecture: null, uid: null },
+  cards: [],
+  currLecture: null,
   activeIndex: 0,
   lectures: [],
-  formMode: "hide",
+  formMode: "none",
   typingMode: false,
   hideSearchResults: true,
+  user: new User(),
 };
 
 //Reducer which will dispatch changes to the store
 const _cardsReducer = createReducer(
   initialState,
-  on(Actions.addCard, (state, { card }) => ({
+  on(Actions.addCardSuccess, (state, { card }) => ({
     ...state,
-    cardsData: {
-      cards: [...state.cardsData.cards, card],
-      lecture: state.cardsData.lecture,
-    },
+    cards: [...state.cards, card],
+    lecture: state.currLecture,
   })),
   on(LectureActions.fetchLecturesSuccess, (state, { lectures }) => ({
     ...state,
@@ -57,18 +60,13 @@ const _cardsReducer = createReducer(
   })),
   on(Actions.updateCardSuccess, (state, { card }) => ({
     ...state,
-    cardsData: {
-      cards: updateObjectInArray(state.cardsData.cards, card),
-      lecture: state.cardsData.lecture,
-    },
+    cards: updateObjectInArray(state.cards, card),
   })),
   on(Actions.LoadSuccess, (state, { data }) => ({
     ...state,
-    cardsData: {
-      cards: data.cards,
-      lecture: data.lecture,
-      uid: data.uid,
-    },
+    cards: data.cards,
+    currLecture: data.lecture,
+    user: { ...state.user, _id: data.uid },
   })),
   on(Actions.setActiveCardIndex, (state, { index }) => ({
     ...state,
@@ -85,7 +83,7 @@ const _cardsReducer = createReducer(
   on(Actions.LoadFailure, (state) => state) //on failure don't update state
 );
 
-export function cardsReducer(state, action) {
+export function cardsReducer(state: AppState, action: Action) {
   return _cardsReducer(state, action);
 }
 

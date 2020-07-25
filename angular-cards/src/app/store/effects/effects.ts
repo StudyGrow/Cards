@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Actions, Effect, ofType, createEffect } from "@ngrx/effects";
 import { of, Observable } from "rxjs";
-import { share } from "rxjs/operators";
+import { share, tap } from "rxjs/operators";
 
 import { catchError, map, mergeMap, exhaustMap } from "rxjs/operators";
 import {
