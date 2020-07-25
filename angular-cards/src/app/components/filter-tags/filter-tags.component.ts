@@ -16,6 +16,7 @@ import { map, startWith, share } from "rxjs/operators";
 import { StatesService } from "src/app/services/states.service";
 import { Store } from "@ngrx/store";
 import { setTypingMode } from "src/app/store/actions/actions";
+import { selectDrawerState } from "src/app/store/selector";
 
 @Component({
   selector: "app-filter-tags",
@@ -66,16 +67,19 @@ export class FilterTagsComponent implements OnInit {
         return tag ? this._filter(tag) : this.tags.slice();
       })
     );
-    this.states.toggle().subscribe((val) => {
-      if (val === false) {
-        if (this.selected.length === 0 && this.selectedChanged) {
-          this.selectedChanged = false;
-          // this.cardService.resetFilter();
-        } else {
-          this.applyFilter();
+    this.store
+      .select("cardsData")
+      .pipe(map(selectDrawerState))
+      .subscribe((val) => {
+        if (val === false) {
+          if (this.selected.length === 0 && this.selectedChanged) {
+            this.selectedChanged = false;
+            // this.cardService.resetFilter();
+          } else {
+            this.applyFilter();
+          }
         }
-      }
-    });
+      });
   }
   applyFilter() {
     if (this.selected.length > 0) {

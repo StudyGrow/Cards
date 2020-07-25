@@ -11,7 +11,10 @@ import { UserService } from "../../services/user.service";
 
 import { Subscription } from "rxjs";
 import { Store } from "@ngrx/store";
-import { toggleDrawerState } from "src/app/store/actions/actions";
+import {
+  toggleDrawerState,
+  setDrawerState,
+} from "src/app/store/actions/actions";
 @Component({
   selector: "app-nav-bar",
   templateUrl: "./nav-bar.component.html",
@@ -61,7 +64,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
     }, 0);
   }
   handleRouteChanges() {
-    this.statesService.closeDrawer();
+    this.store.dispatch(setDrawerState({ show: false }));
     if (!this.router.url.match(/account/)) {
       this.userService.clearAccountInfo();
     }

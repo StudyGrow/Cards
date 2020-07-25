@@ -6,6 +6,8 @@ enum ActionTypes {
   SET_SUGGESTIONS_VISIBILITY_MODE = "[Suggestions] show or hide search results",
   SET_DRAWER = "[Drawer] change drawer state (open ,closed)",
   TOGGLE_DRAWER = "[Drawer] toggle drawer",
+  INCREMENT_LOADING = "[Loading] increment the loading state",
+  DECREMENT_LOADING = "[Loading] increment the loading state",
 }
 
 export const setFormMode = createAction(
@@ -29,3 +31,7 @@ export const setDrawerState = createAction(
 );
 
 export const toggleDrawerState = createAction(ActionTypes.TOGGLE_DRAWER);
+
+export const incrementLoading = createAction(ActionTypes.INCREMENT_LOADING);
+
+export const decrementLoading = createAction(ActionTypes.DECREMENT_LOADING);

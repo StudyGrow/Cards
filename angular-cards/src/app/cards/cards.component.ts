@@ -38,7 +38,14 @@ export class CardsComponent implements OnInit {
       //holds cards data from store
       "cardsData"
     )
-    .pipe(map(getCardsData), share());
+    .pipe(
+      tap((data) => {
+        console.log(data.loading);
+      }),
+      map(getCardsData),
+
+      share()
+    );
 
   public cards$: Observable<Card[]> = this.data$.pipe(
     map((data) => data.cards)

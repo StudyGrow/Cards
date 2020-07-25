@@ -31,15 +31,4 @@ export class StatesService {
       }
     }
   }
-
-  toggleDrawer() {
-    let curr = this.drawertoggler$.getValue() || false;
-    this.drawertoggler$.next(!curr);
-  }
-  closeDrawer() {
-    this.drawertoggler$.next(false);
-  }
-  toggle(): Observable<boolean> {
-    return this.drawertoggler$.asObservable();
-  }
 }
