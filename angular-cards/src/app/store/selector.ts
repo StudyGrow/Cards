@@ -12,6 +12,10 @@ export const selectUserId = (state: AppState) => state.user?._id;
 
 export const selectDrawerState = (state: AppState) => state.showDrawer;
 
+export const isLoading = (state: AppState) => state.loading > 0;
+
+export const selectLectures = (state: AppState) => state.lectures;
+
 export const getCardsData = createSelector(
   selectCards,
   selectCurrentLecture,
@@ -22,5 +26,3 @@ export const getCardsData = createSelector(
     uid,
   })
 );
-
-export const selectLectures = (state: AppState) => state.lectures;

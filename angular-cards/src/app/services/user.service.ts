@@ -114,22 +114,6 @@ export class UserService implements CanActivate {
         }
       );
   }
-  getUserId(): Observable<string> {
-    if (this.userId$.getValue()) {
-      return this.userId$.asObservable();
-    } else if (this.auth$) {
-      return this.http
-        .get<string>(this.config.urlBase + "user/id", { observe: "response" })
-        .pipe(
-          tap((res) => {
-            if (res.body) {
-              this.setUserId(res.body);
-            }
-          }),
-          map((res) => res.body)
-        );
-    }
-  }
 
   getUserInfo(): Observable<UserInfo> {
     if (this.accountInfo$ && this.accountInfo$.getValue()) {
@@ -252,7 +236,7 @@ export class UserService implements CanActivate {
           this.setUserId(null);
           this.setLogin(false);
           this.router.navigateByUrl("/");
-          this.statesService.closeDrawer();
+
           this.notifications.addNotification(
             new SuccessMessage("Erfolgreich abgemeldet")
           );
