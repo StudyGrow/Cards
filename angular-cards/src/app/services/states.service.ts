@@ -9,9 +9,7 @@ import { BehaviorSubject, Observable } from "rxjs";
 export class StatesService {
   private loadingCount = 0;
   private loading$: BehaviorSubject<boolean> = new BehaviorSubject(false);
-  private hideSgtn$: BehaviorSubject<boolean> = new BehaviorSubject(true);
-  private typing$: BehaviorSubject<boolean> = new BehaviorSubject(false);
-  private drawertoggler$ = new BehaviorSubject(false);
+
   constructor() {}
 
   getLoadingState(): Observable<boolean> {

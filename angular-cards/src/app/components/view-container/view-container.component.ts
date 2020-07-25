@@ -21,6 +21,7 @@ import { map, startWith } from "rxjs/operators";
 import { Store } from "@ngrx/store";
 import { selectDrawerState } from "src/app/store/selector";
 import { setDrawerState } from "src/app/store/actions/actions";
+import { Router } from "@angular/router";
 @Component({
   selector: "app-view-container",
   templateUrl: "./view-container.component.html",
@@ -41,7 +42,8 @@ export class ViewContainerComponent implements OnInit {
   constructor(
     private cdr: ChangeDetectorRef,
     private store: Store<any>,
-    private notifService: NotificationsService
+    private notifService: NotificationsService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
