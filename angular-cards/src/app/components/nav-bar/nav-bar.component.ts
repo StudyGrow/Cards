@@ -10,6 +10,8 @@ import { Notification } from "../../models/Notification";
 import { UserService } from "../../services/user.service";
 
 import { Subscription } from "rxjs";
+import { Store } from "@ngrx/store";
+import { toggleDrawerState } from "src/app/store/actions/actions";
 @Component({
   selector: "app-nav-bar",
   templateUrl: "./nav-bar.component.html",
@@ -30,7 +32,8 @@ export class NavBarComponent implements OnInit, OnDestroy {
     private statesService: StatesService,
     private notification: NotificationsService,
     private userService: UserService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private store: Store<any>
   ) {}
 
   ngOnInit(): void {
@@ -106,6 +109,6 @@ export class NavBarComponent implements OnInit, OnDestroy {
     this.titleService.setTitle(currentTitle);
   }
   drawerToggle() {
-    this.statesService.toggleDrawer();
+    this.store.dispatch(toggleDrawerState());
   }
 }

@@ -10,6 +10,8 @@ export const selectCurrentLecture = (state: AppState) => state.currLecture;
 
 export const selectUserId = (state: AppState) => state.user?._id;
 
+export const selectDrawerState = (state: AppState) => state.showDrawer;
+
 export const getCardsData = createSelector(
   selectCards,
   selectCurrentLecture,

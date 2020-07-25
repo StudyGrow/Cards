@@ -4,6 +4,8 @@ import {
   setFormMode,
   setTypingMode,
   setSuggestionsMode,
+  setDrawerState,
+  toggleDrawerState,
 } from "./actions/actions";
 import { createReducer, on, Action } from "@ngrx/store";
 import { Card } from "../models/Card";
@@ -20,6 +22,7 @@ export interface AppState {
   typingMode: boolean;
   hideSearchResults: boolean;
   user: User;
+  showDrawer: boolean;
 }
 export class CardsData {
   cards: Card[];
@@ -36,6 +39,7 @@ export const initialState: AppState = {
   typingMode: false,
   hideSearchResults: true,
   user: new User(),
+  showDrawer: false,
 };
 
 //Reducer which will dispatch changes to the store
@@ -79,6 +83,11 @@ const _cardsReducer = createReducer(
   on(setSuggestionsMode, (state, { hide }) => ({
     ...state,
     hideSearchResults: hide,
+  })),
+  on(setDrawerState, (state, { show }) => ({ ...state, showDrawer: show })),
+  on(toggleDrawerState, (state) => ({
+    ...state,
+    showDrawer: !state.showDrawer,
   })),
   on(Actions.LoadFailure, (state) => state) //on failure don't update state
 );
