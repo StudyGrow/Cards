@@ -4,22 +4,22 @@ import {
   HostListener,
   ViewChild,
   ElementRef,
+  OnDestroy,
 } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
 
 import { Vorlesung } from "src/app/models/Vorlesung";
 
 import { Title } from "@angular/platform-browser";
 import { Card } from "../models/Card";
 
-import { select, Store } from "@ngrx/store";
+import { Store } from "@ngrx/store";
 
-import { Observable } from "rxjs";
-import { AppState, CardsData } from "../store/reducer";
+import { Observable, Subscription } from "rxjs";
+
 import { map, tap, share } from "rxjs/operators";
 import { fetchCards } from "../store/actions/cardActions";
 import { fadeInOnEnterAnimation } from "angular-animations";
-import { setSuggestionsMode, incrementLoading } from "../store/actions/actions";
+import { setSuggestionsMode } from "../store/actions/actions";
 import { getCardsData, selectUserId } from "../store/selector";
 
 @Component({
@@ -28,64 +28,45 @@ import { getCardsData, selectUserId } from "../store/selector";
   styleUrls: ["./cards.component.css"],
   animations: [fadeInOnEnterAnimation()],
 })
-export class CardsComponent implements OnInit {
-  public vlAbrv: string;
-
-  public loading: boolean = true;
+export class CardsComponent implements OnInit, OnDestroy {
   public formMode: string;
-  public data$: Observable<any> = this.store
-    .select(
-      //holds cards data from store
-      "cardsData"
-    )
-    .pipe(
-      tap((data) => {
-        console.log(data);
-      }),
-      map(getCardsData),
-
-      share()
-    );
-
-  public cards$: Observable<Card[]> = this.data$.pipe(
-    map((data) => data.cards)
-  );
-  public lecture$: Observable<Vorlesung> = this.data$.pipe(
-    map((data) => data.currLecture)
-  );
-  public uid$: Observable<string> = this.store.pipe(map(selectUserId));
-
-  private inTypingField: boolean;
+  private subscriptions$: Subscription[] = [];
   @ViewChild("alert", { static: false }) alert: ElementRef;
 
   @HostListener("click", ["$event.target"])
   onClick() {
     this.store.dispatch(setSuggestionsMode({ hide: true }));
   }
-  constructor(
-    private route: ActivatedRoute,
+  //holds data from store
+  public data$: Observable<any> = this.store.select("cardsData").pipe(
+    tap((data) => {
+      console.log(data);
+    }),
+    map(getCardsData),
 
-    private store: Store<any>,
-    private title: Title
-  ) {}
+    share()
+  );
+
+  public lecture$: Observable<Vorlesung> = this.data$.pipe(
+    map((data) => data.currLecture)
+  );
+
+  constructor(private store: Store<any>, private title: Title) {}
 
   ngOnInit(): void {
     this.title.setTitle("Cards");
-    this.vlAbrv = this.route.snapshot.paramMap.get("abrv");
 
     this.store.dispatch(fetchCards());
-    this.store
-      .select("cardsData")
-      .pipe(map((state) => state.typingMode))
-      .subscribe((val) => {
-        this.inTypingField = val;
-      });
 
-    this.store
+    let sub = this.store
       .select("cardsData")
       .pipe(map((state) => state.formMode))
       .subscribe((mode) => {
         this.formMode = mode;
       });
+    this.subscriptions$.push(sub);
+  }
+  ngOnDestroy() {
+    this.subscriptions$.forEach((sub) => sub.unsubscribe());
   }
 }

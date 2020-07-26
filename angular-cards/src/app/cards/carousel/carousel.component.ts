@@ -24,7 +24,7 @@ import { setActiveCardIndex } from "../../store/actions/cardActions";
 import { setFormMode } from "src/app/store/actions/actions";
 import { map, share } from "rxjs/operators";
 import { state } from "@angular/animations";
-import { selectCards } from "src/app/store/selector";
+import { selectCards, selectUserId } from "src/app/store/selector";
 @Component({
   selector: "app-carousel",
   templateUrl: "./carousel.component.html",
@@ -36,6 +36,23 @@ import { selectCards } from "src/app/store/selector";
   ],
 })
 export class CarouselComponent implements OnInit, OnDestroy {
+  private inTypingField: boolean;
+
+  private data$: Observable<AppState> = this.store
+    .select(
+      //holds cards data from store
+      "cardsData"
+    )
+    .pipe(share());
+
+  loading: boolean;
+  cards: Card[]; //array of all the cards
+  activeSlide = 0; //holds the slide which is currently shown
+  formMode: string;
+  notallowed: boolean = false;
+
+  subscriptions$: Subscription[] = [];
+
   @ViewChild("mycarousel", { static: false }) public carousel: any;
 
   @HostListener("window:keyup", ["$event"]) handleKeyDown(
@@ -49,30 +66,11 @@ export class CarouselComponent implements OnInit, OnDestroy {
       }
     }
   }
-  private inTypingField: boolean;
-  loading: boolean;
-  cards: Card[]; //array of all the cards
-  @Input() uid: string; //array of all the cards
+  private uid: string; //array of all the cards
 
-  activeSlide = 0; //holds the slide which is currently shown
-  private data$: Observable<any>;
-  addComponentHidden: boolean;
-
-  formMode: string;
-
-  notallowed: boolean = false;
-
-  subscriptions$: Subscription[] = [];
   constructor(private store: Store<any>) {}
 
   ngOnInit(): void {
-    this.data$ = this.store
-      .select(
-        //holds cards data from store
-        "cardsData"
-      )
-      .pipe(share());
-
     let sub = this.data$
       .pipe(map((state) => state.formMode))
       .subscribe((mode) => {
@@ -99,8 +97,15 @@ export class CarouselComponent implements OnInit, OnDestroy {
       )
       .pipe(map(selectCards))
       .subscribe((cards) => {
-        this.cards = [...cards];
+        this.cards = cards;
       });
+
+    this.subscriptions$.push(sub);
+
+    sub = this.data$.pipe(map(selectUserId)).subscribe((id) => {
+      this.uid = id;
+    });
+
     this.subscriptions$.push(sub);
   }
 
@@ -192,6 +197,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
       //there is a card, but there is no author
       return false;
     }
+
     if (!this.uid || currCard.authorId !== this.uid) {
       //there is an author an it is not the user
       return true;

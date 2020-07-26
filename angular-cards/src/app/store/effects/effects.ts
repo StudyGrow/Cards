@@ -9,6 +9,7 @@ import {
   FetchCardsActions,
   AddCardActions,
   UpdateCardActions,
+  setActiveCardIndex,
 } from "../actions/cardActions";
 import * as LectureActions from "../actions/LectureActions";
 import { CardsService } from "../../services/cards.service";
@@ -32,7 +33,9 @@ export class CardsEffects {
       mergeMap(() => {
         this.store.dispatch(incrementLoading());
         return this.cs.fetchCardsData().pipe(
-          tap(() => this.store.dispatch(decrementLoading())),
+          tap(() => {
+            this.store.dispatch(decrementLoading());
+          }),
           map((data) => FetchCardsActions.LoadSuccess({ data: data })),
           catchError((reason) => of(LoadFailure({ reason: reason })))
         );
@@ -81,7 +84,10 @@ export class CardsEffects {
       exhaustMap((action) => {
         this.store.dispatch(incrementLoading());
         return this.cs.addCard(action.card).pipe(
-          tap(() => this.store.dispatch(decrementLoading())),
+          tap(() => {
+            this.store.dispatch(decrementLoading());
+            this.store.dispatch(setActiveCardIndex({ index: -1 }));
+          }),
           map((res) => AddCardActions.addCardSuccess({ card: res })),
           catchError((reason) => of(LoadFailure({ reason: reason })))
         );
@@ -97,7 +103,9 @@ export class CardsEffects {
       exhaustMap((action) => {
         this.store.dispatch(incrementLoading());
         return this.cs.updateCard2(action.card).pipe(
-          tap(() => this.store.dispatch(decrementLoading())),
+          tap((card) => {
+            this.store.dispatch(decrementLoading());
+          }),
           map((card) => UpdateCardActions.updateCardSuccess({ card: card })),
           catchError((reason) => of(LoadFailure({ reason: reason })))
         );

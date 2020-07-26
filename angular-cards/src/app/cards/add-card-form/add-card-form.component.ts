@@ -72,9 +72,6 @@ export class AddCardFormComponent implements OnInit, OnDestroy {
       this.store.dispatch(addCard({ card: this.newCard }));
     } else {
       this.store.dispatch(addCard({ card: this.newCard }));
-      setTimeout(() => {
-        this.store.dispatch(setActiveCardIndex({ index: -1 }));
-      }, 300);
     }
   }
   inField() {

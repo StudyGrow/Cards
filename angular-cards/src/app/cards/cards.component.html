@@ -3,10 +3,7 @@
     {{ lecture.name }}
   </h1>
 
-  <app-carousel
-    *ngIf="cards$ | async as cards"
-    [id]="uid$ | async"
-  ></app-carousel>
+  <app-carousel></app-carousel>
 
   <app-add-card-form *ngIf="formMode == 'add'"></app-add-card-form>
   <app-update-card-form *ngIf="formMode == 'edit'"></app-update-card-form>

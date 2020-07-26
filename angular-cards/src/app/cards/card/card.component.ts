@@ -14,7 +14,7 @@ import { parse, HtmlGenerator } from "latex.js/dist/latex.js";
 import { SafeHtmlPipe } from "../../shared/safe-html.pipe";
 
 import { Store } from "@ngrx/store";
-import { map } from "rxjs/operators";
+import { map, share } from "rxjs/operators";
 @Component({
   selector: "app-card",
   templateUrl: "./card.component.html",
@@ -23,50 +23,50 @@ import { map } from "rxjs/operators";
 export class CardComponent implements OnInit, OnDestroy {
   constructor(private store: Store<any>) {}
 
-  @Input() card: Card;
-  @Input() index: number;
   inTypingField: boolean = false;
   activeIndex: number;
+
+  styleAppend = `<link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/latex.js@0.12.1/dist/css/katex.css"><link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/latex.js@0.12.1/dist/css/article.css"><script src="https://cdn.jsdelivr.net/npm/latex.js@0.12.1/dist/dist/js/base.js"></script>`;
+  parsed: any = [];
+
+  public isCollapsed = true;
+
+  @Input() card: Card;
+  @Input() index: number;
 
   @HostListener("window:keyup", ["$event"]) handleKeyDown(
     event: KeyboardEvent
   ) {
     if (!this.inTypingField && this.activeIndex == this.index) {
       if (event.key == "ArrowDown") {
-        this.content.open();
+        this.content.toggle();
       } else if (event.key == "ArrowUp") {
-        this.content.close();
+        this.content.toggle();
       }
     }
   }
   @ViewChild("answer", { static: true }) content;
   subscriptions$: Subscription[] = [];
 
-  styleAppend = `<link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/latex.js@0.12.1/dist/css/katex.css"><link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/latex.js@0.12.1/dist/css/article.css"><script src="https://cdn.jsdelivr.net/npm/latex.js@0.12.1/dist/dist/js/base.js"></script>`;
-  parsed: any = [];
-
-  public isCollapsed = true;
   ngOnInit(): void {
-    let sub = this.store
-      .select("cardsData")
+    let data$ = this.store.select("cardsData").pipe(share());
+    let sub = data$
       .pipe(map((state) => state.activeIndex))
       .subscribe((index) => {
         //hides te card content when carousel slides
 
         this.activeIndex = index || 0;
       });
+    this.subscriptions$.push(sub);
     if (this.card.latex != 0) {
       this.parse(this.card.content);
     } else {
       this.parsed.push(this.card.content);
     }
-    this.subscriptions$.push(sub);
-    this.store
-      .select("cardsData")
-      .pipe(map((state) => state.typingMode))
-      .subscribe((val) => {
-        this.inTypingField = val;
-      });
+
+    sub = data$.pipe(map((state) => state.typingMode)).subscribe((val) => {
+      this.inTypingField = val;
+    });
     this.subscriptions$.push(sub);
   }
 

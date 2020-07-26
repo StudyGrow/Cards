@@ -8,7 +8,7 @@ export const selectCards = (state: AppState) => state.cards;
 
 export const selectCurrentLecture = (state: AppState) => state.currLecture;
 
-export const selectUserId = (state: AppState) => state.user?._id;
+export const selectUserId = (state: AppState) => state.user._id;
 
 export const selectDrawerState = (state: AppState) => state.showDrawer;
 

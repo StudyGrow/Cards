@@ -13,8 +13,6 @@ import {
 import { CardsEffects } from "src/app/store/effects/effects";
 import { NgForm } from "@angular/forms";
 import { setFormMode, setTypingMode } from "src/app/store/actions/actions";
-import { map } from "rxjs/operators";
-import { getCardsData } from "src/app/store/selector";
 
 @Component({
   selector: "app-update-card-form",
@@ -22,20 +20,22 @@ import { getCardsData } from "src/app/store/selector";
   styleUrls: ["./update-card-form.component.css"],
 })
 export class UpdateCardFormComponent implements OnInit, OnDestroy {
-  @ViewChild("f") form: NgForm;
   public cardCopy: Card;
   private cardIndex: number; //saves the cardindex which the user is currently updating
   private activeCardIndex: number; //saves the active cardindex
-  subscriptions$: Subscription[] = [];
+  private subscriptions$: Subscription[] = [];
+
   constructor(
     public dialog: MatDialog,
     private store: Store<any>,
     private actionState: CardsEffects
   ) {}
 
+  @ViewChild("f") form: NgForm;
+
   ngOnInit(): void {
     let sub = this.store.select("cardsData").subscribe((data) => {
-      console.log(data.cards[data.activeIndex]);
+      console.log(this.activeCardIndex);
       this.activeCardIndex = data.activeIndex;
 
       this.cardCopy = { ...data.cards[data.activeIndex] };
@@ -43,11 +43,13 @@ export class UpdateCardFormComponent implements OnInit, OnDestroy {
       this.cardIndex = this.activeCardIndex;
     });
     this.subscriptions$.push(sub);
-    sub = this.actionState.updateCard$.subscribe((res) => {
+
+    sub = this.actionState.updateCard$.subscribe(() => {
       this.store.dispatch(setFormMode({ mode: "reset" }));
+
       setTimeout(() => {
-        this.store.dispatch(setActiveCardIndex({ index: this.cardIndex }));
-      }, 300);
+        this.store.dispatch(setActiveCardIndex({ index: 0 }));
+      }, 100);
 
       this.form.reset();
     });
