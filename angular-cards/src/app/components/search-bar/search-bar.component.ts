@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, OnDestroy } from "@angular/core";
 
 import { CardsService } from "../../services/cards.service";
-import { StatesService } from "../../services/states.service";
+
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { Card } from "../../models/Card";
 import { SearchSuggestion } from "../../models/SearchSuggestion";
@@ -22,7 +22,7 @@ import { setActiveCardIndex } from "src/app/store/actions/cardActions";
 export class SearchBarComponent implements OnInit, OnDestroy {
   constructor(
     private cardsService: CardsService,
-    private stateService: StatesService,
+
     private store: Store<any>
   ) {}
   subscriptions$: Subscription[] = [];

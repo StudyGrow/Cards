@@ -11,7 +11,7 @@ import { Vorlesung } from "src/app/models/Vorlesung";
 
 import { Title } from "@angular/platform-browser";
 import { Card } from "../models/Card";
-import { StatesService } from "../services/states.service";
+
 import { select, Store } from "@ngrx/store";
 
 import { Observable } from "rxjs";
@@ -64,7 +64,7 @@ export class CardsComponent implements OnInit {
   }
   constructor(
     private route: ActivatedRoute,
-    private stateServie: StatesService,
+
     private store: Store<any>,
     private title: Title
   ) {}

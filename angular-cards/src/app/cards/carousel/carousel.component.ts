@@ -8,8 +8,6 @@ import {
   ChangeDetectorRef,
 } from "@angular/core";
 
-import { StatesService } from "../../services/states.service";
-
 import { Card } from "../../models/Card";
 
 import { UserService } from "../../services/user.service";

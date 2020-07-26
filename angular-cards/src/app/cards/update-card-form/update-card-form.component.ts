@@ -1,5 +1,4 @@
 import { Component, OnInit, OnDestroy, ViewChild } from "@angular/core";
-import { StatesService } from "../../services/states.service";
 
 import { Card } from "../../models/Card";
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
@@ -29,7 +28,6 @@ export class UpdateCardFormComponent implements OnInit, OnDestroy {
   private activeCardIndex: number; //saves the active cardindex
   subscriptions$: Subscription[] = [];
   constructor(
-    private statesService: StatesService,
     public dialog: MatDialog,
     private store: Store<any>,
     private actionState: CardsEffects
@@ -130,7 +128,7 @@ export class UpdateCardFormComponent implements OnInit, OnDestroy {
 export class DialogOverviewExampleDialog {
   constructor(
     public dialogRef: MatDialogRef<DialogOverviewExampleDialog>,
-    private service: StatesService,
+
     private store: Store<any>
   ) {}
 

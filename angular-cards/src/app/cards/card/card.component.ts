@@ -12,7 +12,7 @@ import { Subscription } from "rxjs";
 import { parse, HtmlGenerator } from "latex.js/dist/latex.js";
 
 import { SafeHtmlPipe } from "../../shared/safe-html.pipe";
-import { StatesService } from "src/app/services/states.service";
+
 import { Store } from "@ngrx/store";
 import { map } from "rxjs/operators";
 @Component({
@@ -21,11 +21,7 @@ import { map } from "rxjs/operators";
   styleUrls: ["./card.component.css"],
 })
 export class CardComponent implements OnInit, OnDestroy {
-  constructor(
-    private cs: CardsService,
-    private states: StatesService,
-    private store: Store<any>
-  ) {}
+  constructor(private store: Store<any>) {}
 
   @Input() card: Card;
   @Input() index: number;

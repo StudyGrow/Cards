@@ -6,7 +6,7 @@ import {
   ElementRef,
   ChangeDetectorRef,
 } from "@angular/core";
-import { StatesService } from "src/app/services/states.service";
+
 import { NotificationsService } from "src/app/services/notifications.service";
 import { Observable, of, BehaviorSubject } from "rxjs";
 import { Notification } from "../../models/Notification";

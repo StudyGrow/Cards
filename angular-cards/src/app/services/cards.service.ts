@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 
 import { Observable, BehaviorSubject, of, from } from "rxjs";
 import { Card } from "../models/Card";
-import { StatesService } from "./states.service";
+
 import {
   tap,
   map,
@@ -30,7 +30,7 @@ export class CardsService {
   constructor(
     private notifications: NotificationsService, //display errors to user
     private http: HttpClient, //to make calls to the server
-    private statesService: StatesService, //for setting the loading state
+
     private router: Router //used to get the lecture abreviation from the route
   ) {}
 
@@ -49,7 +49,6 @@ export class CardsService {
   }
 
   updateCard2(card: Card): Observable<any> {
-    this.statesService.setLoadingState(true);
     //send update to server using http service
     return this.http
       .put<any>(
@@ -62,12 +61,9 @@ export class CardsService {
       )
       .pipe(
         tap(
-          (resp) => {
-            this.statesService.setLoadingState(false);
-          },
+          (resp) => {},
           (error) => {
             this.notifications.handleErrors(error);
-            this.statesService.setLoadingState(false);
           }
         ),
         map((res) => card)
@@ -75,7 +71,6 @@ export class CardsService {
   }
 
   addCard(card: Card): Observable<Card> {
-    this.statesService.setLoadingState(true);
     //send new card to server using http service
     return this.http
       .post<{ id: string }>(
@@ -88,12 +83,9 @@ export class CardsService {
       )
       .pipe(
         tap(
-          (response) => {
-            this.statesService.setLoadingState(false);
-          },
+          (response) => {},
           (error) => {
             this.notifications.handleErrors(error);
-            this.statesService.setLoadingState(false);
           }
         ),
         map((res) => {

@@ -1,8 +1,8 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpResponse } from "@angular/common/http";
 import { Observable, BehaviorSubject, of } from "rxjs";
-import { tap, map, share, shareReplay } from "rxjs/operators";
-import { StatesService } from "./states.service";
+import { tap, map, share, shareReplay, catchError } from "rxjs/operators";
+
 import { NotificationsService } from "./notifications.service";
 import { Router } from "@angular/router";
 import { HttpConfig } from "./config";
@@ -18,9 +18,7 @@ export class LecturesService {
 
   constructor(
     private notifications: NotificationsService,
-    private http: HttpClient, //for sending http requests
-    private statesService: StatesService, //set the loading state
-    private router: Router //to get info in the current url
+    private http: HttpClient //for sending http requests
   ) {}
 
   //get an array of all lectures
@@ -35,16 +33,12 @@ export class LecturesService {
         })
         .pipe(
           tap(
-            (res) => {
-              this.statesService.setLoadingState(false);
-            },
+            (res) => {},
             (error) => {
               this.notifications.handleErrors(error);
-              this.statesService.setLoadingState(false);
             }
           ),
           map((res) => res.body),
-
           shareReplay({ bufferSize: 1, refCount: true })
         );
       return this.cache;
@@ -53,7 +47,6 @@ export class LecturesService {
 
   //add a lecture to the database on the server
   addLecture(lecture: Vorlesung): Observable<Vorlesung> {
-    this.statesService.setLoadingState(true);
     return this.http
       .post<any>(
         this.config.urlBase + "lectures/new",
@@ -67,11 +60,9 @@ export class LecturesService {
         tap(
           (res) => {
             //add the new lecture to the lectures subject
-            this.statesService.setLoadingState(false);
           },
           (error) => {
             this.notifications.handleErrors(error);
-            this.statesService.setLoadingState(false);
           }
         ),
         map((res) => res.body)

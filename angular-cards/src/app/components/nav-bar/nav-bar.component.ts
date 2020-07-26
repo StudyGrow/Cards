@@ -5,7 +5,6 @@ import { Title } from "@angular/platform-browser";
 
 import { NotificationsService } from "../../services/notifications.service";
 
-import { StatesService } from "src/app/services/states.service";
 import { Notification } from "../../models/Notification";
 import { UserService } from "../../services/user.service";
 
@@ -34,7 +33,6 @@ export class NavBarComponent implements OnInit, OnDestroy {
     private router: Router,
     private titleService: Title,
 
-    private statesService: StatesService,
     private notification: NotificationsService,
     private userService: UserService,
     private cdr: ChangeDetectorRef,

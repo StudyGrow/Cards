@@ -13,7 +13,7 @@ import {
 import { MatChipInputEvent } from "@angular/material/chips";
 
 import { map, startWith, share } from "rxjs/operators";
-import { StatesService } from "src/app/services/states.service";
+
 import { Store } from "@ngrx/store";
 import { setTypingMode } from "src/app/store/actions/actions";
 import { selectDrawerState } from "src/app/store/selector";
@@ -45,7 +45,7 @@ export class FilterTagsComponent implements OnInit {
   @ViewChild("Input") input: ElementRef<HTMLInputElement>;
   @ViewChild("auto") matAutocomplete: MatAutocomplete;
 
-  constructor(private states: StatesService, private store: Store<any>) {}
+  constructor(private store: Store<any>) {}
   selected = [];
   ngOnInit(): void {
     this.lecture$

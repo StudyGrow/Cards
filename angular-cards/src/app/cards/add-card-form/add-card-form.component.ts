@@ -1,5 +1,4 @@
 import { Component, OnInit, OnDestroy, Input, ViewChild } from "@angular/core";
-import { StatesService } from "../../services/states.service";
 
 import { Card } from "../../models/Card";
 import { Vorlesung } from "src/app/models/Vorlesung";
@@ -28,7 +27,6 @@ export class AddCardFormComponent implements OnInit, OnDestroy {
   themaLength: number;
   subscriptions$: Subscription[] = [];
   constructor(
-    private stateService: StatesService,
     private router: Router,
 
     private store: Store<AppState>,
@@ -37,7 +35,6 @@ export class AddCardFormComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     let sub = this.actionState.addCard$.subscribe((res) => {
-      console.log(res);
       this.form.reset();
     });
     this.subscriptions$.push(sub);
@@ -57,7 +54,12 @@ export class AddCardFormComponent implements OnInit, OnDestroy {
   }
   setStyle() {}
   onSubmit(f) {
-    let abrv = this.router.url.split(/vorlesung\//)[1]; //get the lecture abreviation from the route
+    let abrv;
+    if (this.neu) {
+      abrv = this.lecture.abrv; //get the lecture abreviation stored lecture
+    } else {
+      abrv = this.router.url.split(/vorlesung\//)[1]; //get the lecture abreviation from the route
+    }
     this.newCard = new Card(
       f.value.thema,
       f.value.content,

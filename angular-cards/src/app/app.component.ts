@@ -1,7 +1,6 @@
 import { Component, ViewChild, ElementRef } from "@angular/core";
 import { Title } from "@angular/platform-browser";
 import { Router } from "@angular/router";
-import { StatesService } from "./services/states.service";
 
 @Component({
   selector: "app-root",

@@ -7,7 +7,7 @@ import { InfoMessage, HttpError, SuccessMessage } from "../models/Notification";
 import { NotificationsService } from "./notifications.service";
 import { HttpConfig } from "./config";
 import { HttpClient } from "@angular/common/http";
-import { StatesService } from "./states.service";
+
 import { User } from "../models/User";
 
 @Injectable({
@@ -21,7 +21,7 @@ export class UserService implements CanActivate {
 
   constructor(
     private http: HttpClient, //for sending http requests
-    private statesService: StatesService, //to set the loadingstate
+
     private router: Router, //to redirect
     private notifications: NotificationsService //to show notifications
   ) {}
@@ -29,10 +29,8 @@ export class UserService implements CanActivate {
   //checks wheter page can be accessed. returns the authentication subject while redirecting
   //to login page if the result is false
   canActivate(): Observable<boolean> {
-    this.statesService.setLoadingState(true);
     return this.authentication().pipe(
       tap((res) => {
-        this.statesService.setLoadingState(false);
         if (res === false) {
           this.notifications.addNotification(
             new InfoMessage(
@@ -72,7 +70,6 @@ export class UserService implements CanActivate {
   }
   //used to login the user
   login(form) {
-    this.statesService.setLoadingState(true);
     this.http
       .post<User>(this.config.urlBase + "login", form, {
         headers: this.config.headers,
@@ -80,7 +77,6 @@ export class UserService implements CanActivate {
       })
       .subscribe(
         (res) => {
-          this.statesService.setLoadingState(false);
           this.setUserId(res.body._id);
           this.notifications.clearNotifications("success");
           this.notifications.addNotification(
@@ -91,7 +87,6 @@ export class UserService implements CanActivate {
         (error) => {
           this.notifications.handleErrors(error);
           this.setLogin(false);
-          this.statesService.setLoadingState(false);
         }
       );
   }
@@ -105,12 +100,11 @@ export class UserService implements CanActivate {
         (res) => {
           this.setUserId(res.body._id);
           this.setLogin(true);
-          this.statesService.setLoadingState(false);
+
           this.router.navigate(["/"]);
         },
         (error) => {
           this.notifications.handleErrors(error);
-          this.statesService.setLoadingState(false);
         }
       );
   }
@@ -119,7 +113,6 @@ export class UserService implements CanActivate {
     if (this.accountInfo$ && this.accountInfo$.getValue()) {
       return this.accountInfo$.asObservable();
     } else {
-      this.statesService.setLoadingState(true);
       if (!this.accountInfo$) {
         this.accountInfo$ = new BehaviorSubject<UserInfo>(null);
       }
@@ -129,7 +122,6 @@ export class UserService implements CanActivate {
         })
         .subscribe(
           (res) => {
-            this.statesService.setLoadingState(false);
             for (const card of res.body.cards) {
               card.date = new Date(card.date);
             }
@@ -141,7 +133,7 @@ export class UserService implements CanActivate {
           },
           (error) => {
             this.router.navigateByUrl("/login");
-            this.statesService.setLoadingState(false);
+
             this.notifications.handleErrors(error);
           }
         );
@@ -178,7 +170,6 @@ export class UserService implements CanActivate {
     return of(true);
   }
   updateAccount(form) {
-    this.statesService.setLoadingState(true);
     this.http
       .put<any>(this.config.urlBase + "user/updateAccount", form, {
         headers: this.config.headers,
@@ -186,8 +177,6 @@ export class UserService implements CanActivate {
       })
       .subscribe(
         (res) => {
-          this.statesService.setLoadingState(false);
-
           let info = this.accountInfo$.getValue();
           info.user = form;
           this.accountInfo$.next(info);
@@ -199,13 +188,11 @@ export class UserService implements CanActivate {
         },
         (error) => {
           this.notifications.handleErrors(error);
-          this.statesService.setLoadingState(false);
         }
       );
   }
 
   updatePassword(form) {
-    this.statesService.setLoadingState(true);
     return this.http
       .put<any>(this.config.urlBase + "user/updatePassword", form, {
         headers: this.config.headers,
@@ -214,25 +201,21 @@ export class UserService implements CanActivate {
       .pipe(
         tap(
           (res) => {
-            this.statesService.setLoadingState(false);
             this.notifications.addNotification(
               new SuccessMessage("Dein Passwort wurde erfolgreich aktualisiert")
             );
           },
           (error) => {
             this.notifications.handleErrors(error);
-            this.statesService.setLoadingState(false);
           }
         )
       );
   }
   logout() {
-    this.statesService.setLoadingState(true);
     this.http
       .get<any>(this.config.urlBase + "user/logout", { observe: "response" })
       .subscribe(
         (res) => {
-          this.statesService.setLoadingState(false);
           this.setUserId(null);
           this.setLogin(false);
           this.router.navigateByUrl("/");
@@ -245,7 +228,6 @@ export class UserService implements CanActivate {
           this.setUserId(null);
           this.setLogin(false);
           this.notifications.handleErrors(error);
-          this.statesService.setLoadingState(false);
         }
       );
   }
