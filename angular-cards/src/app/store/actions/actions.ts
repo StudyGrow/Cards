@@ -7,7 +7,7 @@ enum ActionTypes {
   SET_DRAWER = "[Drawer] change drawer state (open ,closed)",
   TOGGLE_DRAWER = "[Drawer] toggle drawer",
   INCREMENT_LOADING = "[Loading] increment the loading state",
-  DECREMENT_LOADING = "[Loading] increment the loading state",
+  DECREMENT_LOADING = "[Loading] decrement the loading state",
 }
 
 export const setFormMode = createAction(

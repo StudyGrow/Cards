@@ -9,12 +9,13 @@ import { StatesService } from "src/app/services/states.service";
 import { Notification } from "../../models/Notification";
 import { UserService } from "../../services/user.service";
 
-import { Subscription } from "rxjs";
+import { Subscription, Observable } from "rxjs";
 import { Store } from "@ngrx/store";
 import {
   toggleDrawerState,
   setDrawerState,
 } from "src/app/store/actions/actions";
+import { map } from "rxjs/operators";
 @Component({
   selector: "app-nav-bar",
   templateUrl: "./nav-bar.component.html",
@@ -27,6 +28,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
   subscriptions$: Subscription[] = [];
   showCards: boolean;
   public loading: boolean;
+  public loading$: Observable<boolean>;
 
   public constructor(
     private router: Router,
@@ -42,10 +44,14 @@ export class NavBarComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     setTimeout(() => {
       this.setPageTitle();
-      this.statesService.getLoadingState().subscribe((val) => {
-        this.loading = val;
-        this.cdr.detectChanges();
-      });
+      this.store
+        .select("cardsData")
+        .pipe(map((state) => state.loading))
+        .subscribe((val) => {
+          this.loading = val;
+          this.cdr.detectChanges();
+        });
+
       let sub = this.userService
         .authentication()
         .subscribe((val) => (this.loggedIn = val));

@@ -19,7 +19,7 @@ import { AppState, CardsData } from "../store/reducer";
 import { map, tap, share } from "rxjs/operators";
 import { fetchCards } from "../store/actions/cardActions";
 import { fadeInOnEnterAnimation } from "angular-animations";
-import { setSuggestionsMode } from "../store/actions/actions";
+import { setSuggestionsMode, incrementLoading } from "../store/actions/actions";
 import { getCardsData, selectUserId } from "../store/selector";
 
 @Component({
@@ -40,7 +40,7 @@ export class CardsComponent implements OnInit {
     )
     .pipe(
       tap((data) => {
-        console.log(data.loading);
+        console.log(data);
       }),
       map(getCardsData),
 

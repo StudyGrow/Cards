@@ -5,6 +5,7 @@ import {
   OnDestroy,
   HostListener,
   Input,
+  ChangeDetectorRef,
 } from "@angular/core";
 
 import { StatesService } from "../../services/states.service";
@@ -12,7 +13,7 @@ import { StatesService } from "../../services/states.service";
 import { Card } from "../../models/Card";
 
 import { UserService } from "../../services/user.service";
-import { Subscription } from "rxjs";
+import { Subscription, Observable } from "rxjs";
 import {
   fadeInOnEnterAnimation,
   shakeAnimation,
@@ -23,8 +24,9 @@ import { Store } from "@ngrx/store";
 import { AppState } from "src/app/store/reducer";
 import { setActiveCardIndex } from "../../store/actions/cardActions";
 import { setFormMode } from "src/app/store/actions/actions";
-import { map } from "rxjs/operators";
+import { map, share } from "rxjs/operators";
 import { state } from "@angular/animations";
+import { selectCards } from "src/app/store/selector";
 @Component({
   selector: "app-carousel",
   templateUrl: "./carousel.component.html",
@@ -51,11 +53,11 @@ export class CarouselComponent implements OnInit, OnDestroy {
   }
   private inTypingField: boolean;
   loading: boolean;
-  @Input() cards: Card[]; //array of all the cards
+  cards: Card[]; //array of all the cards
   @Input() uid: string; //array of all the cards
 
   activeSlide = 0; //holds the slide which is currently shown
-
+  private data$: Observable<any>;
   addComponentHidden: boolean;
 
   formMode: string;
@@ -66,28 +68,40 @@ export class CarouselComponent implements OnInit, OnDestroy {
   constructor(private store: Store<any>) {}
 
   ngOnInit(): void {
-    let sub = this.store
-      .select("cardsData")
+    this.data$ = this.store
+      .select(
+        //holds cards data from store
+        "cardsData"
+      )
+      .pipe(share());
+
+    let sub = this.data$
       .pipe(map((state) => state.formMode))
       .subscribe((mode) => {
         this.formMode = mode;
       });
     this.subscriptions$.push(sub);
-    sub = this.store
-      .select("cardsData")
-      .pipe(map((state) => state.typingMode))
-      .subscribe((val) => {
-        this.inTypingField = val;
-      });
+
+    sub = this.data$.pipe(map((state) => state.typingMode)).subscribe((val) => {
+      this.inTypingField = val;
+    });
     this.subscriptions$.push(sub);
 
-    this.subscriptions$.push(sub);
-
-    sub = this.store
-      .select("cardsData")
+    sub = this.data$
       .pipe(map((state) => state.activeIndex))
       .subscribe((val) => {
         this.hanldeNewIndex(val);
+      });
+    this.subscriptions$.push(sub);
+
+    sub = this.store
+      .select(
+        //holds cards data from store
+        "cardsData"
+      )
+      .pipe(map(selectCards))
+      .subscribe((cards) => {
+        this.cards = [...cards];
       });
     this.subscriptions$.push(sub);
   }

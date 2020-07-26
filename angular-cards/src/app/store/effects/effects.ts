@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Actions, Effect, ofType, createEffect } from "@ngrx/effects";
 import { of, Observable } from "rxjs";
-import { share, tap } from "rxjs/operators";
+import { share, tap, startWith } from "rxjs/operators";
 
 import { catchError, map, mergeMap, exhaustMap } from "rxjs/operators";
 import {
@@ -13,41 +13,48 @@ import {
 import * as LectureActions from "../actions/LectureActions";
 import { CardsService } from "../../services/cards.service";
 import { LecturesService } from "../../services/lectures.service";
+import { incrementLoading, decrementLoading } from "../actions/actions";
+import { Store } from "@ngrx/store";
 
 @Injectable()
 export class CardsEffects {
   constructor(
     private actions$: Actions,
     private cs: CardsService,
-    private lectures: LecturesService
+    private lectures: LecturesService,
+    private store: Store<any>
   ) {}
 
   @Effect()
-  loadCards$ = createEffect(() =>
-    this.actions$.pipe(
+  loadCards$ = createEffect(() => {
+    return this.actions$.pipe(
       ofType(FetchCardsActions.fetchCards),
-      mergeMap(() =>
-        this.cs.fetchCardsData().pipe(
+      mergeMap(() => {
+        this.store.dispatch(incrementLoading());
+        return this.cs.fetchCardsData().pipe(
+          tap(() => this.store.dispatch(decrementLoading())),
           map((data) => FetchCardsActions.LoadSuccess({ data: data })),
           catchError((reason) => of(LoadFailure({ reason: reason })))
-        )
-      )
-    )
-  );
+        );
+      })
+    );
+  });
 
   @Effect()
   fetchLectures$ = createEffect(() =>
     this.actions$.pipe(
       ofType(LectureActions.fetchLectures),
-      mergeMap(() =>
-        this.lectures.getAllLectures().pipe(
+      mergeMap(() => {
+        this.store.dispatch(incrementLoading());
+        return this.lectures.getAllLectures().pipe(
+          tap(() => this.store.dispatch(decrementLoading())),
           map((data) =>
             LectureActions.fetchLecturesSuccess({ lectures: data })
           ),
           catchError((reason) => of(LoadFailure({ reason: reason }))),
           share()
-        )
-      )
+        );
+      })
     )
   );
 
@@ -55,12 +62,14 @@ export class CardsEffects {
   addLecture$ = createEffect(() =>
     this.actions$.pipe(
       ofType(LectureActions.addLercture),
-      exhaustMap((action) =>
-        this.lectures.addLecture(action.lecture).pipe(
+      exhaustMap((action) => {
+        this.store.dispatch(incrementLoading());
+        return this.lectures.addLecture(action.lecture).pipe(
+          tap(() => this.store.dispatch(decrementLoading())),
           map((res) => LectureActions.addLectureSuccess({ lecture: res })),
           catchError((reason) => of(LoadFailure({ reason: reason })))
-        )
-      ),
+        );
+      }),
       share()
     )
   );
@@ -69,12 +78,14 @@ export class CardsEffects {
   addCard$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AddCardActions.addCard),
-      exhaustMap((action) =>
-        this.cs.addCard(action.card).pipe(
+      exhaustMap((action) => {
+        this.store.dispatch(incrementLoading());
+        return this.cs.addCard(action.card).pipe(
+          tap(() => this.store.dispatch(decrementLoading())),
           map((res) => AddCardActions.addCardSuccess({ card: res })),
           catchError((reason) => of(LoadFailure({ reason: reason })))
-        )
-      ),
+        );
+      }),
       share()
     )
   );
@@ -83,12 +94,14 @@ export class CardsEffects {
   updateCard$ = createEffect(() =>
     this.actions$.pipe(
       ofType(UpdateCardActions.updateCard),
-      exhaustMap((action) =>
-        this.cs.updateCard2(action.card).pipe(
+      exhaustMap((action) => {
+        this.store.dispatch(incrementLoading());
+        return this.cs.updateCard2(action.card).pipe(
+          tap(() => this.store.dispatch(decrementLoading())),
           map((card) => UpdateCardActions.updateCardSuccess({ card: card })),
           catchError((reason) => of(LoadFailure({ reason: reason })))
-        )
-      ),
+        );
+      }),
       share()
     )
   );
