@@ -9,6 +9,7 @@ import { HttpConfig } from "./config";
 import { HttpClient } from "@angular/common/http";
 
 import { User } from "../models/User";
+import { read } from "fs";
 
 @Injectable({
   providedIn: "root",
@@ -110,34 +111,30 @@ export class UserService implements CanActivate {
   }
 
   getUserInfo(): Observable<UserInfo> {
-    if (this.accountInfo$ && this.accountInfo$.getValue()) {
-      return this.accountInfo$.asObservable();
-    } else {
-      if (!this.accountInfo$) {
-        this.accountInfo$ = new BehaviorSubject<UserInfo>(null);
-      }
-      this.http
+    {
+      return this.http
         .get<UserInfo>(this.config.urlBase + "user/info", {
           observe: "response",
         })
-        .subscribe(
-          (res) => {
-            for (const card of res.body.cards) {
-              card.date = new Date(card.date);
+        .pipe(
+          tap(
+            (res) => {
+              for (const card of res.body.cards) {
+                card.date = new Date(card.date);
+              }
+              if (res.body.user && res.body.user.creationDate) {
+                res.body.user.creationDate = new Date(
+                  res.body.user.creationDate
+                );
+              }
+            },
+            (error) => {
+              this.router.navigateByUrl("/login");
+              this.notifications.handleErrors(error);
             }
-            if (res.body.user && res.body.user.creationDate) {
-              res.body.user.creationDate = new Date(res.body.user.creationDate);
-            }
-            this.setUserId(res.body.user._id);
-            this.accountInfo$.next(res.body);
-          },
-          (error) => {
-            this.router.navigateByUrl("/login");
-
-            this.notifications.handleErrors(error);
-          }
+          ),
+          map((res) => res.body)
         );
-      return this.accountInfo$.asObservable();
     }
   }
   clearAccountInfo() {

@@ -1,6 +1,4 @@
-import { Action, createAction, props, union } from "@ngrx/store";
-import { Card } from "../../models/Card";
-import { CardsData } from "../reducer";
+import { createAction, props } from "@ngrx/store";
 import { Vorlesung } from "../../models/Vorlesung";
 
 enum ActionTypes {

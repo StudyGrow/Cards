@@ -16,12 +16,15 @@ import { CardsService } from "../../services/cards.service";
 import { LecturesService } from "../../services/lectures.service";
 import { incrementLoading, decrementLoading } from "../actions/actions";
 import { Store } from "@ngrx/store";
+import { fetchUserData, fetchUserDataSuccess } from "../actions/UserActions";
+import { UserService } from "src/app/services/user.service";
 
 @Injectable()
 export class CardsEffects {
   constructor(
     private actions$: Actions,
     private cs: CardsService,
+    private user: UserService,
     private lectures: LecturesService,
     private store: Store<any>
   ) {}
@@ -107,6 +110,24 @@ export class CardsEffects {
             this.store.dispatch(decrementLoading());
           }),
           map((card) => UpdateCardActions.updateCardSuccess({ card: card })),
+          catchError((reason) => of(LoadFailure({ reason: reason })))
+        );
+      }),
+      share()
+    )
+  );
+
+  @Effect()
+  fetchUserInfo$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(fetchUserData),
+      mergeMap(() => {
+        this.store.dispatch(incrementLoading());
+        return this.user.getUserInfo().pipe(
+          tap(() => {
+            this.store.dispatch(decrementLoading());
+          }),
+          map((info) => fetchUserDataSuccess(info)),
           catchError((reason) => of(LoadFailure({ reason: reason })))
         );
       }),

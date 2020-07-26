@@ -1,5 +1,9 @@
 import { Component, OnInit } from "@angular/core";
 import { UserService } from "../services/user.service";
+import { Store } from "@ngrx/store";
+import { map } from "rxjs/operators";
+import { selectUserInfo } from "../store/selector";
+import { fetchUserData } from "../store/actions/UserActions";
 
 @Component({
   selector: "app-profile",
@@ -9,15 +13,22 @@ import { UserService } from "../services/user.service";
 export class ProfileComponent implements OnInit {
   public page: string;
   public cardCount = 0;
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService, private store: Store<any>) {}
 
   ngOnInit(): void {
-    this.userService.getUserInfo().subscribe((info) => {
-      if (info && info.cards) {
-        this.cardCount = info.cards.length;
-      } else {
-        this.cardCount = 0;
-      }
-    });
+    let sub = this.store
+      .select("cardsData")
+      .pipe(
+        map(selectUserInfo),
+        map((info) => info.cards)
+      )
+      .subscribe((cards) => {
+        if (cards) {
+          this.cardCount = cards.length;
+        } else {
+          this.cardCount = 0;
+        }
+      });
+    this.store.dispatch(fetchUserData());
   }
 }

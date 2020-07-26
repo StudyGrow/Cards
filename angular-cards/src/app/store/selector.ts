@@ -8,13 +8,17 @@ export const selectCards = (state: AppState) => state.cards;
 
 export const selectCurrentLecture = (state: AppState) => state.currLecture;
 
-export const selectUserId = (state: AppState) => state.user._id;
+export const selectUserId = (state: AppState) => state.userData.user?._id;
 
 export const selectDrawerState = (state: AppState) => state.showDrawer;
 
 export const isLoading = (state: AppState) => state.loading > 0;
 
 export const selectLectures = (state: AppState) => state.lectures;
+
+export const selectUserInfo = (state: AppState) => state.userData;
+
+export const selectUser = (state: AppState) => state.userData.user;
 
 export const getCardsData = createSelector(
   selectCards,

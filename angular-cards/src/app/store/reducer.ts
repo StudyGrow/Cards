@@ -13,6 +13,9 @@ import { createReducer, on, Action } from "@ngrx/store";
 import { Card } from "../models/Card";
 import { Vorlesung } from "../models/Vorlesung";
 import { User } from "../models/User";
+import { UserInfo } from "../models/UserInfo";
+import { state } from "@angular/animations";
+import { fetchUserDataSuccess } from "./actions/UserActions";
 
 //defines the state of our app
 export interface AppState {
@@ -23,7 +26,7 @@ export interface AppState {
   formMode: string;
   typingMode: boolean;
   hideSearchResults: boolean;
-  user: User;
+  userData: UserInfo;
   showDrawer: boolean;
   loading: number;
 }
@@ -41,7 +44,7 @@ export const initialState: AppState = {
   formMode: "none",
   typingMode: false,
   hideSearchResults: true,
-  user: new User(),
+  userData: new UserInfo(null, new User()),
   showDrawer: false,
   loading: 0,
 };
@@ -74,7 +77,13 @@ const _cardsReducer = createReducer(
     ...state,
     cards: data.cards,
     currLecture: data.lecture,
-    user: { ...state.user, _id: data.uid },
+    userData: {
+      ...state.userData,
+      user: {
+        ...state.userData.user,
+        _id: data.uid,
+      },
+    },
   })),
   on(Actions.setActiveCardIndex, (state, { index }) => ({
     ...state,
@@ -100,6 +109,10 @@ const _cardsReducer = createReducer(
   on(decrementLoading, (state) => ({
     ...state,
     loading: state.loading - 1,
+  })),
+  on(fetchUserDataSuccess, (state, info) => ({
+    ...state,
+    userData: { ...state.userData, cards: info.cards, user: info.user },
   })),
   on(Actions.LoadFailure, (state) => state) //on failure don't update state
 );

@@ -4,6 +4,9 @@ import { User } from "src/app/models/User";
 import { UserInfo } from "src/app/models/UserInfo";
 import { UserService } from "src/app/services/user.service";
 import { Subscription } from "rxjs";
+import { Store } from "@ngrx/store";
+import { map } from "rxjs/operators";
+import { selectUserInfo, selectUser } from "src/app/store/selector";
 @Component({
   selector: "app-change-profile",
   templateUrl: "./change-profile.component.html",
@@ -14,17 +17,21 @@ export class ChangeProfileComponent implements OnInit, OnDestroy {
   subscriptions$: Subscription[] = [];
   public user = new User();
   fileToUpload: File = null;
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService, private store: Store<any>) {}
 
   ngOnInit(): void {
     this.user.name = "";
     this.user.surname = "";
-    let sub = this.userService.getUserInfo().subscribe((info) => {
-      this.userInfo = info;
-      if (info && info.user) {
-        this.user = info.user;
-      }
-    });
+
+    let sub = this.store
+      .select("cardsData")
+      .pipe(map(selectUserInfo))
+      .subscribe((info) => {
+        this.userInfo = info;
+        if (info && info.user) {
+          this.user = info.user;
+        }
+      });
     this.subscriptions$.push(sub);
   }
   ngOnDestroy() {
