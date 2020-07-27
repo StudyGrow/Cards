@@ -7,6 +7,7 @@ import { Subscription } from "rxjs";
 import { Store } from "@ngrx/store";
 import { map } from "rxjs/operators";
 import { selectUserInfo, selectUser } from "src/app/store/selector";
+import { updateUserData } from "src/app/store/actions/UserActions";
 @Component({
   selector: "app-change-profile",
   templateUrl: "./change-profile.component.html",
@@ -29,7 +30,7 @@ export class ChangeProfileComponent implements OnInit, OnDestroy {
       .subscribe((info) => {
         this.userInfo = info;
         if (info && info.user) {
-          this.user = info.user;
+          this.user = { ...info.user };
         }
       });
     this.subscriptions$.push(sub);
@@ -41,7 +42,7 @@ export class ChangeProfileComponent implements OnInit, OnDestroy {
   }
 
   changeAccount(form: NgForm) {
-    this.userService.updateAccount(form.value);
+    this.store.dispatch(updateUserData(form.value));
   }
   changePassword(form: NgForm) {
     let sub = this.userService.updatePassword(form.value).subscribe((res) => {

@@ -4,26 +4,23 @@ import {
   ViewChild,
   OnDestroy,
   HostListener,
-  Input,
-  ChangeDetectorRef,
 } from "@angular/core";
 
 import { Card } from "../../models/Card";
 
-import { UserService } from "../../services/user.service";
 import { Subscription, Observable } from "rxjs";
 import {
   fadeInOnEnterAnimation,
   shakeAnimation,
   fadeOutOnLeaveAnimation,
 } from "angular-animations";
-import { CardsService } from "src/app/services/cards.service";
+
 import { Store } from "@ngrx/store";
 import { AppState } from "src/app/store/reducer";
 import { setActiveCardIndex } from "../../store/actions/cardActions";
 import { setFormMode } from "src/app/store/actions/actions";
 import { map, share } from "rxjs/operators";
-import { state } from "@angular/animations";
+
 import { selectCards, selectUserId } from "src/app/store/selector";
 @Component({
   selector: "app-carousel",

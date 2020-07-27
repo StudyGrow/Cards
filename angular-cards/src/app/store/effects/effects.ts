@@ -16,7 +16,16 @@ import { CardsService } from "../../services/cards.service";
 import { LecturesService } from "../../services/lectures.service";
 import { incrementLoading, decrementLoading } from "../actions/actions";
 import { Store } from "@ngrx/store";
-import { fetchUserData, fetchUserDataSuccess } from "../actions/UserActions";
+import {
+  fetchUserData,
+  fetchUserDataSuccess,
+  updateUserData,
+  updateUserDataSuccess,
+  login,
+  loginSuccess,
+  auth,
+  authenticated,
+} from "../actions/UserActions";
 import { UserService } from "src/app/services/user.service";
 
 @Injectable()
@@ -128,6 +137,56 @@ export class CardsEffects {
             this.store.dispatch(decrementLoading());
           }),
           map((info) => fetchUserDataSuccess(info)),
+          catchError((reason) => of(LoadFailure({ reason: reason })))
+        );
+      }),
+      share()
+    )
+  );
+
+  @Effect()
+  updateUserInfo$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(updateUserData),
+      exhaustMap((action) => {
+        this.store.dispatch(incrementLoading());
+        return this.user.updateAccount(action).pipe(
+          tap(() => {
+            this.store.dispatch(decrementLoading());
+          }),
+          map((user) => updateUserDataSuccess(user)),
+          catchError((reason) => of(LoadFailure({ reason: reason })))
+        );
+      }),
+      share()
+    )
+  );
+
+  @Effect()
+  login$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(login),
+      exhaustMap((user) => {
+        this.store.dispatch(incrementLoading());
+        return this.user.login(user).pipe(
+          tap(() => {
+            this.store.dispatch(decrementLoading());
+          }),
+          map((user) => loginSuccess(user)),
+          catchError((reason) => of(LoadFailure({ reason: reason })))
+        );
+      }),
+      share()
+    )
+  );
+
+  @Effect()
+  auth$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(auth),
+      mergeMap(() => {
+        return this.user.authentication().pipe(
+          map((val) => authenticated({ auth: val })),
           catchError((reason) => of(LoadFailure({ reason: reason })))
         );
       }),

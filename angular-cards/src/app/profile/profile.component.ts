@@ -13,7 +13,7 @@ import { fetchUserData } from "../store/actions/UserActions";
 export class ProfileComponent implements OnInit {
   public page: string;
   public cardCount = 0;
-  constructor(private userService: UserService, private store: Store<any>) {}
+  constructor(private store: Store<any>) {}
 
   ngOnInit(): void {
     let sub = this.store

@@ -2,14 +2,19 @@ import { Injectable } from "@angular/core";
 import { UserInfo } from "../models/UserInfo";
 import { Observable, BehaviorSubject, of, Subject, Subscription } from "rxjs";
 import { Router, CanActivate } from "@angular/router";
-import { tap, map } from "rxjs/operators";
+import { tap, map, share } from "rxjs/operators";
 import { InfoMessage, HttpError, SuccessMessage } from "../models/Notification";
 import { NotificationsService } from "./notifications.service";
 import { HttpConfig } from "./config";
 import { HttpClient } from "@angular/common/http";
 
 import { User } from "../models/User";
-import { read } from "fs";
+import { Store } from "@ngrx/store";
+import {
+  updateUserDataSuccess,
+  logoutUser,
+} from "../store/actions/UserActions";
+import { selectUser, authenticated } from "../store/selector";
 
 @Injectable({
   providedIn: "root",
@@ -17,12 +22,12 @@ import { read } from "fs";
 export class UserService implements CanActivate {
   private userId$ = new BehaviorSubject<string>(null); //subject which stores the userid
   private accountInfo$: BehaviorSubject<UserInfo>; //stores account info of the user
-  private auth$: BehaviorSubject<boolean>; //subject which holds wether the user is authenticated
+  private auth$: Observable<boolean>; //subject which holds wether the user is authenticated
   private config = new HttpConfig();
 
   constructor(
     private http: HttpClient, //for sending http requests
-
+    private store: Store<any>,
     private router: Router, //to redirect
     private notifications: NotificationsService //to show notifications
   ) {}
@@ -30,65 +35,35 @@ export class UserService implements CanActivate {
   //checks wheter page can be accessed. returns the authentication subject while redirecting
   //to login page if the result is false
   canActivate(): Observable<boolean> {
-    return this.authentication().pipe(
-      tap((res) => {
-        if (res === false) {
-          this.notifications.addNotification(
-            new InfoMessage(
-              "Du musst dich einloggen, um diese Seite zu besuchen"
-            )
-          );
-          this.router.navigate(["login"]);
-        }
-      })
-    );
+    return this.store.select("cardsData").pipe(map(authenticated));
   }
 
   //central function to handle authentication
   //it makes the http authentication call only the first time
   //and caches the result in a subject which is returned on subsequent calls
   authentication(): Observable<boolean> {
-    if (!this.auth$) {
-      //not initialized -> make first http call
-      this.auth$ = new BehaviorSubject<boolean>(false); //assume not logged in
-      this.http
-        .get<boolean>(this.config.urlBase + "user/auth", {
-          observe: "response",
-        })
-        .subscribe(
-          (res) => {
-            this.setLogin(res.body); //update the subject with the response
-          },
-          (err) => {
-            if (err.status !== 304) {
-              //reset authentication only if no 304 code
-              this.setLogin(false);
-            }
-          }
-        );
-    }
-    return this.auth$.asObservable();
+    return this.http.get<boolean>(this.config.urlBase + "user/auth");
   }
   //used to login the user
-  login(form) {
-    this.http
+  login(form: User): Observable<User> {
+    return this.http
       .post<User>(this.config.urlBase + "login", form, {
         headers: this.config.headers,
         observe: "response",
       })
-      .subscribe(
-        (res) => {
-          this.setUserId(res.body._id);
-          this.notifications.clearNotifications("success");
-          this.notifications.addNotification(
-            new SuccessMessage(`Herzlich willkommen ${res.body.username}`)
-          );
-          this.router.navigateByUrl("/");
-        },
-        (error) => {
-          this.notifications.handleErrors(error);
-          this.setLogin(false);
-        }
+      .pipe(
+        tap(
+          (res) => {
+            this.notifications.clearNotifications("success");
+            this.notifications.addNotification(
+              new SuccessMessage(`Herzlich willkommen ${res.body.username}`)
+            );
+          },
+          (error) => {
+            this.notifications.handleErrors(error);
+          }
+        ),
+        map((res) => res.body)
       );
   }
   createAccount(form) {
@@ -99,10 +74,7 @@ export class UserService implements CanActivate {
       })
       .subscribe(
         (res) => {
-          this.setUserId(res.body._id);
-          this.setLogin(true);
-
-          this.router.navigate(["/"]);
+          this.router.navigateByUrl("/login");
         },
         (error) => {
           this.notifications.handleErrors(error);
@@ -166,26 +138,29 @@ export class UserService implements CanActivate {
     //   );
     return of(true);
   }
-  updateAccount(form) {
-    this.http
+  updateAccount(form: User): Observable<User> {
+    return this.http
       .put<any>(this.config.urlBase + "user/updateAccount", form, {
         headers: this.config.headers,
         observe: "response",
       })
-      .subscribe(
-        (res) => {
-          let info = this.accountInfo$.getValue();
-          info.user = form;
-          this.accountInfo$.next(info);
-          this.notifications.addNotification(
-            new SuccessMessage(
-              "Deine Informationen wurden erfolgreich aktualisiert"
-            )
-          );
-        },
-        (error) => {
-          this.notifications.handleErrors(error);
-        }
+      .pipe(
+        tap(
+          (res) => {
+            console.log(res);
+            this.notifications.addNotification(
+              new SuccessMessage(
+                "Deine Informationen wurden erfolgreich aktualisiert"
+              )
+            );
+          },
+          (error) => {
+            this.notifications.handleErrors(error);
+          }
+        ),
+        map((res) => {
+          return form;
+        })
       );
   }
 
@@ -213,8 +188,7 @@ export class UserService implements CanActivate {
       .get<any>(this.config.urlBase + "user/logout", { observe: "response" })
       .subscribe(
         (res) => {
-          this.setUserId(null);
-          this.setLogin(false);
+          this.store.dispatch(logoutUser());
           this.router.navigateByUrl("/");
 
           this.notifications.addNotification(
@@ -222,8 +196,7 @@ export class UserService implements CanActivate {
           );
         },
         (error) => {
-          this.setUserId(null);
-          this.setLogin(false);
+          this.store.dispatch(logoutUser());
           this.notifications.handleErrors(error);
         }
       );
@@ -231,24 +204,5 @@ export class UserService implements CanActivate {
 
   deleteAccount() {
     console.log("not yet implemented");
-  }
-
-  private setUserId(id: string) {
-    this.userId$.next(id);
-    if (id) {
-      //if id exists user is logged
-      this.setLogin(true);
-    }
-  }
-  private setLogin(val: boolean) {
-    if (this.auth$) {
-      this.auth$.next(val);
-    } else {
-      this.auth$ = new BehaviorSubject<boolean>(val);
-    }
-    if (val === false) {
-      //user not logged in, so remove userid as well
-      this.setUserId(null);
-    }
   }
 }

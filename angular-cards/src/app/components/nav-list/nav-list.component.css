@@ -5,3 +5,16 @@ a {
   color: #007bff;
   background-color: rgba(230, 230, 230, 0.411);
 }
+mat-icon {
+  margin-right: 3px;
+}
+#logout {
+  margin-top: auto;
+  position: absolute;
+  bottom: 0;
+  margin-bottom: 10px;
+}
+mat-nav-list {
+  height: 100%;
+  position: relative;
+}

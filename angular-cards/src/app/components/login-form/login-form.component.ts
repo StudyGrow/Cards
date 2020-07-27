@@ -3,19 +3,33 @@ import { NgForm } from "@angular/forms";
 
 import { UserService } from "../../services/user.service";
 import { Router } from "@angular/router";
+import { Store } from "@ngrx/store";
+import { login } from "src/app/store/actions/UserActions";
+import { CardsEffects } from "src/app/store/effects/effects";
 @Component({
   selector: "app-login-form",
   templateUrl: "./login-form.component.html",
   styleUrls: ["./login-form.component.css"],
 })
 export class LoginFormComponent implements OnInit {
-  constructor(private user: UserService, private router: Router) {}
+  constructor(
+    private store: Store<any>,
+    private router: Router,
+    private actionState: CardsEffects
+  ) {}
 
   public check = true;
 
   ngOnInit(): void {}
   submit(form: NgForm) {
-    this.user.login(form.value);
+    this.store.dispatch;
+    this.store.dispatch(login(form.value));
+    this.actionState.login$.subscribe(
+      (res) => {
+        this.router.navigateByUrl("/");
+      },
+      (err) => {}
+    );
   }
 
   isDisabled(username, password) {

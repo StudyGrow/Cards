@@ -70,7 +70,7 @@ export class ViewContainerComponent implements OnInit {
     this.notifService.removeNotification(i);
   }
   setAlertClass(notif: Notification) {
-    return `alert alert-${notif.type} alert-dismissible fade show`;
+    return `alert alert-${notif.type} alert-dismissible fade show shadow`;
   }
   closing() {
     this.store.dispatch(setDrawerState({ show: false }));

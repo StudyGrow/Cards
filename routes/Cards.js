@@ -50,12 +50,13 @@ router.get(
     let cards = req.services.cards.findByAbrv(abrv);
     let vl = req.services.lectures.findByAbrv(abrv);
     let userid;
+    let username;
     if (req.isAuthenticated()) {
       userid = req.user._id;
     }
 
     Promise.all([cards, vl]).then((obj) => {
-      res.json({ cards: obj[0], lecture: obj[1], uid: userid });
+      res.json({ cards: obj[0], lecture: obj[1], uid: userid, username: username });
     });
   }
 );
