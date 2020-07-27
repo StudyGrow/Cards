@@ -15,14 +15,7 @@ import { Vorlesung } from "../models/Vorlesung";
 import { User } from "../models/User";
 import { UserInfo } from "../models/UserInfo";
 import { state } from "@angular/animations";
-import {
-  fetchUserDataSuccess,
-  updateUserDataSuccess,
-  logoutUser,
-  login,
-  auth,
-  authenticated,
-} from "./actions/UserActions";
+import * as UserActions from "./actions/UserActions";
 
 //defines the state of our app
 export interface AppState {
@@ -117,23 +110,23 @@ const _cardsReducer = createReducer(
     ...state,
     loading: state.loading - 1,
   })),
-  on(fetchUserDataSuccess, (state, info) => ({
+  on(UserActions.fetchUserDataSuccess, (state, info) => ({
     ...state,
     userData: { ...state.userData, cards: info.cards, user: info.user },
   })),
-  on(updateUserDataSuccess, (state, user) => ({
+  on(UserActions.updateUserDataSuccess, (state, user) => ({
     ...state,
     userData: { ...state.userData, user: user },
   })),
-  on(authenticated, (state, { auth }) => ({
+  on(UserActions.authenticated, (state, { auth }) => ({
     ...state,
     userData: { ...state.userData, authenticated: auth },
   })),
-  on(login, (state, user) => ({
+  on(UserActions.login, (state, user) => ({
     ...state,
     userData: { ...state.userData, user: user, authenticated: true },
   })),
-  on(logoutUser, (state) => ({
+  on(UserActions.logoutSuccess, (state) => ({
     ...state,
     userData: { ...state.userData, user: new User(), authenticated: false },
   })),

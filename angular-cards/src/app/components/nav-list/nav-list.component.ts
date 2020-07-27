@@ -7,7 +7,7 @@ import { Store } from "@ngrx/store";
 import { map } from "rxjs/operators";
 import { authenticated } from "src/app/store/selector";
 import { Observable } from "rxjs";
-import { logoutUser } from "src/app/store/actions/UserActions";
+import { logout as logoutUser } from "src/app/store/actions/UserActions";
 
 @Component({
   selector: "app-nav-list",

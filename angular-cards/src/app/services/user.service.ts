@@ -10,19 +10,15 @@ import { HttpClient } from "@angular/common/http";
 
 import { User } from "../models/User";
 import { Store } from "@ngrx/store";
-import {
-  updateUserDataSuccess,
-  logoutUser,
-} from "../store/actions/UserActions";
-import { selectUser, authenticated } from "../store/selector";
+
+import { authenticated } from "../store/selector";
 
 @Injectable({
   providedIn: "root",
 })
 export class UserService implements CanActivate {
-  private userId$ = new BehaviorSubject<string>(null); //subject which stores the userid
   private accountInfo$: BehaviorSubject<UserInfo>; //stores account info of the user
-  private auth$: Observable<boolean>; //subject which holds wether the user is authenticated
+
   private config = new HttpConfig();
 
   constructor(
@@ -42,7 +38,9 @@ export class UserService implements CanActivate {
   //it makes the http authentication call only the first time
   //and caches the result in a subject which is returned on subsequent calls
   authentication(): Observable<boolean> {
-    return this.http.get<boolean>(this.config.urlBase + "user/auth");
+    return this.http
+      .get<boolean>(this.config.urlBase + "user/auth")
+      .pipe(share());
   }
   //used to login the user
   login(form: User): Observable<User> {
@@ -83,31 +81,27 @@ export class UserService implements CanActivate {
   }
 
   getUserInfo(): Observable<UserInfo> {
-    {
-      return this.http
-        .get<UserInfo>(this.config.urlBase + "user/info", {
-          observe: "response",
-        })
-        .pipe(
-          tap(
-            (res) => {
-              for (const card of res.body.cards) {
-                card.date = new Date(card.date);
-              }
-              if (res.body.user && res.body.user.creationDate) {
-                res.body.user.creationDate = new Date(
-                  res.body.user.creationDate
-                );
-              }
-            },
-            (error) => {
-              this.router.navigateByUrl("/login");
-              this.notifications.handleErrors(error);
+    return this.http
+      .get<UserInfo>(this.config.urlBase + "user/info", {
+        observe: "response",
+      })
+      .pipe(
+        tap(
+          (res) => {
+            for (const card of res.body.cards) {
+              card.date = new Date(card.date);
             }
-          ),
-          map((res) => res.body)
-        );
-    }
+            if (res.body.user && res.body.user.creationDate) {
+              res.body.user.creationDate = new Date(res.body.user.creationDate);
+            }
+          },
+          (error) => {
+            this.router.navigateByUrl("/login");
+            this.notifications.handleErrors(error);
+          }
+        ),
+        map((res) => res.body)
+      );
   }
   clearAccountInfo() {
     if (this.accountInfo$ && !this.router.url.match(/account/)) {
@@ -183,22 +177,18 @@ export class UserService implements CanActivate {
         )
       );
   }
-  logout() {
-    this.http
+  logoutServer(): Observable<any> {
+    return this.http
       .get<any>(this.config.urlBase + "user/logout", { observe: "response" })
-      .subscribe(
-        (res) => {
-          this.store.dispatch(logoutUser());
-          this.router.navigateByUrl("/");
-
-          this.notifications.addNotification(
-            new SuccessMessage("Erfolgreich abgemeldet")
-          );
-        },
-        (error) => {
-          this.store.dispatch(logoutUser());
-          this.notifications.handleErrors(error);
-        }
+      .pipe(
+        tap(
+          () => {},
+          (error) => {
+            this.notifications.handleErrors(error);
+          }
+        ),
+        map((res) => res.body),
+        share()
       );
   }
 

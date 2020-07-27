@@ -8,6 +8,7 @@ enum ActionTypes {
   UPDATE_USER_DATA = "[User] Update user info",
   UPDATE_USER_DATA_SUCCESS = "[User] successfull update of user info",
   LOGOUT_USER = "[User] logout",
+  LOGOUT_USER_SUCCESS = "[User] logout success",
   LOGIN_USER = "[User] login",
   LOGIN_USER_SUCCESS = "[User] login success",
   AUTHENTICATE = "[User] check if user is authenticated",
@@ -40,7 +41,9 @@ export const updateUserData = createAction(
   props<User>()
 );
 
-export const logoutUser = createAction(ActionTypes.LOGOUT_USER);
+export const logoutSuccess = createAction(ActionTypes.LOGOUT_USER_SUCCESS);
+
+export const logout = createAction(ActionTypes.LOGOUT_USER);
 
 export const updateUserDataSuccess = createAction(
   ActionTypes.UPDATE_USER_DATA,

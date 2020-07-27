@@ -3,7 +3,6 @@ import { createSelector } from "@ngrx/store";
 import { AppState } from "./reducer";
 import { Card } from "../models/Card";
 import { Vorlesung } from "../models/Vorlesung";
-import { state } from "@angular/animations";
 
 export const selectCards = (state: AppState) => state.cards;
 

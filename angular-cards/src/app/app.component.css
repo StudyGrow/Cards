@@ -6,4 +6,5 @@ app-nav-bar {
 }
 app-view-container {
   height: 90%;
+  margin-bottom: 50px;
 }

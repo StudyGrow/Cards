@@ -24,7 +24,9 @@ import {
   login,
   loginSuccess,
   auth,
+  logout,
   authenticated,
+  logoutSuccess,
 } from "../actions/UserActions";
 import { UserService } from "src/app/services/user.service";
 
@@ -191,6 +193,19 @@ export class CardsEffects {
         );
       }),
       share()
+    )
+  );
+
+  @Effect()
+  logout$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(logout),
+      mergeMap(() => {
+        return this.user.logoutServer().pipe(
+          map(() => logoutSuccess()),
+          catchError((reason) => of(LoadFailure({ reason: reason })))
+        );
+      })
     )
   );
 }
