@@ -21,10 +21,18 @@
   <div *ngIf="loggedIn$ | async">
     <div mat-subheader>Account</div>
 
-    <a mat-list-item routerLink="/account/overview">
+    <a
+      mat-list-item
+      routerLink="/account/overview"
+      class=" {{ isActive('/account/overview') }}"
+    >
       <mat-icon>account_box</mat-icon> Übersicht</a
     >
-    <a mat-list-item routerLink="/account/cards">
+    <a
+      mat-list-item
+      routerLink="/account/cards"
+      class=" {{ isActive('/account/cards') }}"
+    >
       <mat-icon>style</mat-icon> Meine Karten</a
     >
   </div>

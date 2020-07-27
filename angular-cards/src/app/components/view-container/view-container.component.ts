@@ -36,6 +36,7 @@ export class ViewContainerComponent implements OnInit {
   public pageOffset: number = 0;
   public subj$ = new BehaviorSubject<boolean>(false);
   public show$: Observable<boolean>;
+
   @ViewChild("drawer", { static: true }) drawer: MatDrawer;
   @ViewChild("mainContent", { static: true }) content: MatDrawerContent;
   notifications$: Observable<Notification[]>;

@@ -130,6 +130,11 @@ const _cardsReducer = createReducer(
     ...state,
     userData: { ...state.userData, user: new User(), authenticated: false },
   })),
+  on(Actions.clearCardData, (state) => ({
+    ...state,
+    currLecture: initialState.currLecture,
+    cards: initialState.cards,
+  })),
   on(Actions.LoadFailure, (state) => state) //on failure don't update state
 );
 

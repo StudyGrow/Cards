@@ -13,7 +13,8 @@ import { authenticated } from "../store/selector";
 })
 export class HomeComponent implements OnInit {
   authenticated$: Observable<boolean>;
-  constructor(private user: UserService, private store: Store<any>) {}
+
+  constructor(private store: Store<any>) {}
 
   ngOnInit(): void {
     this.authenticated$ = this.store

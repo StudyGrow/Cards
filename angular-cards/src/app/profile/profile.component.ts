@@ -1,18 +1,20 @@
-import { Component, OnInit } from "@angular/core";
-import { UserService } from "../services/user.service";
+import { Component, OnInit, OnDestroy } from "@angular/core";
+
 import { Store } from "@ngrx/store";
 import { map } from "rxjs/operators";
 import { selectUserInfo } from "../store/selector";
 import { fetchUserData } from "../store/actions/UserActions";
+import { Subscription } from "rxjs";
 
 @Component({
   selector: "app-profile",
   templateUrl: "./profile.component.html",
   styleUrls: ["./profile.component.css"],
 })
-export class ProfileComponent implements OnInit {
+export class ProfileComponent implements OnInit, OnDestroy {
   public page: string;
   public cardCount = 0;
+  private subs: Subscription[] = [];
   constructor(private store: Store<any>) {}
 
   ngOnInit(): void {
@@ -29,6 +31,10 @@ export class ProfileComponent implements OnInit {
           this.cardCount = 0;
         }
       });
+    this.subs.push(sub);
     this.store.dispatch(fetchUserData());
+  }
+  ngOnDestroy() {
+    this.subs.forEach((sub) => sub.unsubscribe());
   }
 }

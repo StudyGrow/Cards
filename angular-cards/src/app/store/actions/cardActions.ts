@@ -13,12 +13,14 @@ enum ActionTypes {
   UPDATE_CARD = "[Card] update card in the  collection",
   UPDATE_CARD_SUCCESS = "[Card] update card success",
   SET_ACITVE_CARD_INDEX = "[Index] update the index of the card which is currently showing",
+  CLEAR_CARD_DATA = "[Cards] clear data about cards",
 }
 
 //Concrete Actions for each type
 
 export const fetchCards = createAction(ActionTypes.FETCH_CARDS);
 
+export const clearCardData = createAction(ActionTypes.CLEAR_CARD_DATA);
 export const setActiveCardIndex = createAction(
   ActionTypes.SET_ACITVE_CARD_INDEX,
   props<{ index: number }>()

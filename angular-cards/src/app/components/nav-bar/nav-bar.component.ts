@@ -15,6 +15,9 @@ import {
   setDrawerState,
 } from "src/app/store/actions/actions";
 import { map } from "rxjs/operators";
+import { selectCurrentLecture, authenticated } from "src/app/store/selector";
+import { clearCardData } from "src/app/store/actions/cardActions";
+
 @Component({
   selector: "app-nav-bar",
   templateUrl: "./nav-bar.component.html",
@@ -42,25 +45,26 @@ export class NavBarComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     setTimeout(() => {
       this.setPageTitle();
-      this.store
+      let sub = this.store
         .select("cardsData")
         .pipe(map((state) => state.loading))
         .subscribe((val) => {
           this.loading = val;
           this.cdr.detectChanges();
         });
-
-      let sub = this.userService
-        .authentication()
+      this.subscriptions$.push(sub);
+      sub = this.store
+        .select("cardsData")
+        .pipe(map(authenticated))
         .subscribe((val) => (this.loggedIn = val));
       this.subscriptions$.push(sub);
 
-      this.router.events.subscribe((e) => {
+      sub = this.router.events.subscribe((e) => {
         if (e instanceof NavigationEnd) {
           this.handleRouteChanges();
         }
       });
-
+      this.subscriptions$.push(sub);
       sub = this.notification
         .notifications()
         .subscribe((notifs) => (this.notifications = notifs));
@@ -73,6 +77,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
       this.userService.clearAccountInfo();
     }
     if (!this.router.url.match(/vorlesung/)) {
+      this.store.dispatch(clearCardData());
       this.showCards = false;
     } else {
       this.showCards = true;
