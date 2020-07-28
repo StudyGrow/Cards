@@ -1,4 +1,8 @@
-<div class="row no-gutters" id="controls">
+<div
+  class="row no-gutters"
+  *ngIf="filteredCards$ | async as cards"
+  id="controls"
+>
   <div class="col-md-9 p-1">
     <app-filter-tags></app-filter-tags>
   </div>
@@ -43,11 +47,11 @@
   </div>
 </div>
 
-<div class="row" *ngIf="cards && cards.length > 0" [@fadeInOnEnter]>
+<div class="row" *ngIf="filteredCards$ | async as cards" [@fadeInOnEnter]>
   <a id="left" class="navig col" *ngIf="cards.length > 0" (click)="goToPrev()">
     <span class="fas fa-chevron-left"></span>
   </a>
-  <div id="carousel">
+  <div id="carousel" *ngIf="cards.length > 0">
     <mdb-carousel
       (activeSlideChange)="onSlide($event)"
       #mycarousel

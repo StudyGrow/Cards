@@ -13,6 +13,7 @@ import { Store } from "@ngrx/store";
 import {
   toggleDrawerState,
   setDrawerState,
+  resetFilter,
 } from "src/app/store/actions/actions";
 import { map } from "rxjs/operators";
 import { selectCurrentLecture, authenticated } from "src/app/store/selector";
@@ -78,6 +79,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
     }
     if (!this.router.url.match(/vorlesung/)) {
       this.store.dispatch(clearCardData());
+      this.store.dispatch(resetFilter());
       this.showCards = false;
     } else {
       this.showCards = true;

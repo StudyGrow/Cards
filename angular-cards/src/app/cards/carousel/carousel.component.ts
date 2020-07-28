@@ -8,18 +8,18 @@ import {
 
 import { Card } from "../../models/Card";
 
-import { Subscription, Observable } from "rxjs";
+import { Subscription, Observable, of } from "rxjs";
 import {
   fadeInOnEnterAnimation,
   shakeAnimation,
   fadeOutOnLeaveAnimation,
 } from "angular-animations";
-
+import { combineLatest } from "rxjs/index";
 import { Store } from "@ngrx/store";
 import { AppState } from "src/app/store/reducer";
 import { setActiveCardIndex } from "../../store/actions/cardActions";
 import { setFormMode } from "src/app/store/actions/actions";
-import { map, share } from "rxjs/operators";
+import { map, share, startWith } from "rxjs/operators";
 
 import { selectCards, selectUserId } from "src/app/store/selector";
 import { state } from "@angular/animations";
@@ -45,10 +45,26 @@ export class CarouselComponent implements OnInit, OnDestroy {
     .pipe(share());
 
   loading: boolean;
-  cards: Card[]; //array of all the cards
+  private uid: string;
+  private cards$: Observable<Card[]> = this.store
+    .select(
+      //holds cards data from store
+      "cardsData"
+    )
+    .pipe(map(selectCards));
+  filters$: Observable<string[]> = this.data$.pipe(map((state) => state.tags));
+  private cards: Card[]; //array of all the cards
+  filteredCards$: Observable<Card[]> = combineLatest(
+    this.cards$,
+    this.filters$
+  ).pipe(
+    startWith([]),
+    map(([cards, filters]) => this.applyFilter(cards, filters))
+  );
+
   activeSlide = 0; //holds the slide which is currently shown
   formMode: string;
-  filters: string[];
+
   notallowed: boolean = false;
 
   subscriptions$: Subscription[] = [];
@@ -66,11 +82,12 @@ export class CarouselComponent implements OnInit, OnDestroy {
       }
     }
   }
-  private uid: string; //array of all the cards
 
   constructor(private store: Store<any>) {}
 
   ngOnInit(): void {
+    this.filteredCards$;
+    this.filteredCards$.subscribe((val) => console.log(val));
     let sub = this.data$
       .pipe(map((state) => state.formMode))
       .subscribe((mode) => {
@@ -89,21 +106,10 @@ export class CarouselComponent implements OnInit, OnDestroy {
         this.hanldeNewIndex(val);
       });
     this.subscriptions$.push(sub);
-    sub = this.data$.pipe(map((state) => state.tags)).subscribe((tags) => {
-      console.log(tags);
-      this.filters = tags;
-      console.log(this.filters);
+
+    sub = this.cards$.subscribe((cards) => {
+      this.cards = cards;
     });
-    this.subscriptions$.push(sub);
-    sub = this.store
-      .select(
-        //holds cards data from store
-        "cardsData"
-      )
-      .pipe(map(selectCards))
-      .subscribe((cards) => {
-        this.cards = this.applyFilter(cards);
-      });
 
     this.subscriptions$.push(sub);
 
@@ -224,13 +230,13 @@ export class CarouselComponent implements OnInit, OnDestroy {
   setClass() {
     return this.formMode == "add" ? "btn btn-info" : "btn btn-light";
   }
-  applyFilter(cards: Card[]): Card[] {
-    console.log(this.filters);
-    if (!this.filters || this.filters.length === 0) {
+  applyFilter(cards: Card[], filters?: string[]): Card[] {
+    if (!filters || filters.length === 0) {
       return cards;
     }
+
     let res = cards.filter((card) => {
-      for (const tag of this.filters) {
+      for (const tag of filters) {
         if (!card.tags) {
           return false;
         }

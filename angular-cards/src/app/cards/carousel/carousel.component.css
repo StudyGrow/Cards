@@ -6,9 +6,11 @@
   margin-right: auto;
   margin-left: auto;
 }
-
+::ng-deep .mat-form-field-wrapper {
+  margin-bottom: -1.25em;
+}
 #btnDiv {
-  height: auto;
+  width: auto;
 }
 #carousel {
   width: 100%;
