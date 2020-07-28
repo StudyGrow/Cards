@@ -173,8 +173,8 @@ export class CarouselComponent implements OnInit, OnDestroy {
       this.carousel.selectSlide(rand);
     }
   }
-  goToPrev() {
-    if (this.carousel && this.cards.length > 1 && this.formMode != "edit") {
+  goToPrev(length?: number) {
+    if (this.carousel && length > 1 && this.formMode != "edit") {
       this.carousel.previousSlide();
     } else {
       this.notallowed = true;
@@ -183,8 +183,8 @@ export class CarouselComponent implements OnInit, OnDestroy {
       }, 100);
     }
   }
-  goToNext() {
-    if (this.carousel && this.cards.length > 1 && this.formMode != "edit") {
+  goToNext(length?: number) {
+    if (this.carousel && length > 1 && this.formMode != "edit") {
       this.carousel.nextSlide();
     } else {
       this.notallowed = true;

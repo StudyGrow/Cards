@@ -48,7 +48,12 @@
 </div>
 
 <div class="row" *ngIf="filteredCards$ | async as cards" [@fadeInOnEnter]>
-  <a id="left" class="navig col" *ngIf="cards.length > 0" (click)="goToPrev()">
+  <a
+    id="left"
+    class="navig col"
+    *ngIf="cards.length > 1"
+    (click)="goToPrev(cards.length)"
+  >
     <span class="fas fa-chevron-left"></span>
   </a>
   <div id="carousel" *ngIf="cards.length > 0">
@@ -69,7 +74,12 @@
       </mdb-carousel-item>
     </mdb-carousel>
   </div>
-  <a id="right" class="navig col" *ngIf="cards.length > 0" (click)="goToNext()">
+  <a
+    id="right"
+    class="navig col"
+    *ngIf="cards.length > 1"
+    (click)="goToNext(cards.length)"
+  >
     <span class="fas fa-chevron-right"></span>
   </a>
 </div>
