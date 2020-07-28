@@ -8,12 +8,7 @@
 }
 
 #btnDiv {
-  position: absolute;
-  right: 0;
-  display: flexbox;
-  align-items: flex-end;
-  text-align: right;
-  margin: auto;
+  height: auto;
 }
 #carousel {
   width: 100%;
