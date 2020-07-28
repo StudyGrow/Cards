@@ -9,6 +9,12 @@ export const selectCards = (state: AppState) => state.cards;
 
 export const selectTags = (state: AppState) => state.tags;
 
+export const filteredCards = createSelector(
+  selectCards,
+  selectTags,
+  (cards, filter) => applyFilter(cards, filter)
+);
+
 export const selectCurrentLecture = (state: AppState) => state.currLecture;
 
 export const selectUserId = (state: AppState) => state.userData.user?._id;
@@ -35,3 +41,22 @@ export const getCardsData = createSelector(
     uid,
   })
 );
+
+function applyFilter(cards: Card[], filters: string[]): Card[] {
+  if (!filters || filters.length === 0) {
+    return cards;
+  }
+
+  let res = cards.filter((card) => {
+    for (const tag of filters) {
+      if (!card.tags) {
+        return false;
+      }
+      if (card.tags.includes(tag)) {
+        return true;
+      }
+    }
+    return false;
+  });
+  return res;
+}

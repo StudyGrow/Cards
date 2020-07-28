@@ -22,7 +22,11 @@ import { setActiveCardIndex } from "../../store/actions/cardActions";
 import { setFormMode } from "src/app/store/actions/actions";
 import { map, share, startWith, delay } from "rxjs/operators";
 
-import { selectCards, selectUserId } from "src/app/store/selector";
+import {
+  selectCards,
+  selectUserId,
+  filteredCards,
+} from "src/app/store/selector";
 import { state } from "@angular/animations";
 
 @Component({
@@ -53,11 +57,8 @@ export class CarouselComponent implements OnInit, OnDestroy {
   filters$: Observable<string[]> = this.data$.pipe(map((state) => state.tags));
   cards: Card[]; //array of all the cards
   cardCount = 0;
-  filteredCards$: Observable<Card[]> = combineLatest(
-    this.cards$,
-    this.filters$
-  ).pipe(
-    map(([cards, filters]) => this.applyFilter(cards, filters)),
+  filteredCards$: Observable<Card[]> = this.data$.pipe(
+    map(filteredCards),
     delay(200)
   );
 
@@ -238,23 +239,5 @@ export class CarouselComponent implements OnInit, OnDestroy {
 
   setClass() {
     return this.formMode == "add" ? "btn btn-info" : "btn btn-light";
-  }
-  applyFilter(cards: Card[], filters: string[]): Card[] {
-    if (!filters || filters.length === 0) {
-      return cards;
-    }
-
-    let res = cards.filter((card) => {
-      for (const tag of filters) {
-        if (!card.tags) {
-          return false;
-        }
-        if (card.tags.includes(tag)) {
-          return true;
-        }
-      }
-      return false;
-    });
-    return res;
   }
 }
