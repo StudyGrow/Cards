@@ -8,12 +8,12 @@
 }
 
 #btnDiv {
-  position: relative;
-  display: block;
-  width: 90%;
+  position: absolute;
+  right: 0;
+  display: flexbox;
+  align-items: flex-end;
   text-align: right;
   margin: auto;
-  margin-bottom: 10px;
 }
 #carousel {
   width: 100%;
@@ -53,4 +53,9 @@ span {
 app-card {
   width: 90%;
   margin: auto;
+}
+#controls {
+  width: 90%;
+  margin: auto;
+  position: relative;
 }

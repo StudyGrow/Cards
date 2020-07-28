@@ -133,11 +133,11 @@ const _cardsReducer = createReducer(
   })),
   on(StateActions.applyFilter, (state, { tags }) => ({
     ...state,
-    tags: [...state.tags, ...tags],
+    tags: addTags([...state.tags], tags),
   })),
   on(StateActions.removeTag, (state, { tag }) => ({
     ...state,
-    tags: state.tags.filter((item) => item != tag),
+    tags: removeInArray([...state.tags], tag),
   })),
   on(StateActions.resetFilter, (state) => ({
     ...state,
@@ -163,4 +163,19 @@ function updateObjectInArray(cards: Card[], card: Card) {
       ...card,
     };
   });
+}
+
+function removeInArray(items: string[], item: string) {
+  const filterValue = item.toLowerCase();
+
+  return items.filter((item) => item.toLowerCase().indexOf(filterValue) === 0);
+}
+
+function addTags(origin: string[], tags: string[]) {
+  tags.forEach((tag) => {
+    if (!origin.includes(tag)) {
+      origin.push(tag);
+    }
+  });
+  return origin;
 }

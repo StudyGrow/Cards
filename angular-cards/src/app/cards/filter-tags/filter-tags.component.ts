@@ -1,5 +1,5 @@
-import { Component, OnInit, Output } from "@angular/core";
-import { Observable } from "rxjs";
+import { Component, OnInit, Output, OnDestroy } from "@angular/core";
+import { Observable, Subscription } from "rxjs";
 import { Vorlesung } from "src/app/models/Vorlesung";
 import { LecturesService } from "src/app/services/lectures.service";
 
@@ -28,7 +28,7 @@ import { selectDrawerState } from "src/app/store/selector";
   templateUrl: "./filter-tags.component.html",
   styleUrls: ["./filter-tags.component.css"],
 })
-export class FilterTagsComponent implements OnInit {
+export class FilterTagsComponent implements OnInit, OnDestroy {
   private data$: Observable<any> = this.store
     .select(
       //holds cards data from store
@@ -39,23 +39,24 @@ export class FilterTagsComponent implements OnInit {
   public lecture$: Observable<Vorlesung> = this.data$.pipe(
     map((data) => data.currLecture)
   );
-
+  selected = []; //active tags
+  subs: Subscription[] = [];
   separatorKeysCodes: number[] = [ENTER, COMMA];
   formCtrl = new FormControl();
   tags: string[] = [];
   filteredTags: Observable<string[]>;
   selectedChanged: boolean = false;
 
-  lecture: Vorlesung;
   @ViewChild("Input") input: ElementRef<HTMLInputElement>;
   @ViewChild("auto") matAutocomplete: MatAutocomplete;
 
   constructor(private store: Store<any>) {}
-  selected = [];
+
   ngOnInit(): void {
     let sub = this.lecture$.subscribe((lect) => {
       this.tags = lect.tagList;
     });
+    this.subs.push(sub);
     this.filteredTags = this.formCtrl.valueChanges.pipe(
       startWith(null),
       map((tag: string | null) => {
@@ -118,5 +119,8 @@ export class FilterTagsComponent implements OnInit {
     return this.tags.filter(
       (item) => item.toLowerCase().indexOf(filterValue) === 0
     );
+  }
+  ngOnDestroy() {
+    this.subs.forEach((sub) => sub.unsubscribe());
   }
 }
