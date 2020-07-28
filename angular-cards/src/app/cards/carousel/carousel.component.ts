@@ -227,7 +227,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
   setClass() {
     return this.formMode == "add" ? "btn btn-info" : "btn btn-light";
   }
-  applyFilter(cards: Card[], filters?: string[]): Card[] {
+  applyFilter(cards: Card[], filters: string[]): Card[] {
     if (!filters || filters.length === 0) {
       return cards;
     }
