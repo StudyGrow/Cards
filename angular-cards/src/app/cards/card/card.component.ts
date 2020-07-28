@@ -53,9 +53,11 @@ export class CardComponent implements OnInit, OnDestroy {
     let sub = data$
       .pipe(map((state) => state.activeIndex))
       .subscribe((index) => {
-        //hides te card content when carousel slides
-
-        this.activeIndex = index || 0;
+        //hides the card content when carousel slides
+        if (this.activeIndex != index) {
+          this.content.close();
+        }
+        this.activeIndex = index;
       });
     this.subscriptions$.push(sub);
     if (this.card.latex != 0) {

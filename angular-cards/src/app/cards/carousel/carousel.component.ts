@@ -57,10 +57,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
   filteredCards$: Observable<Card[]> = combineLatest(
     this.cards$,
     this.filters$
-  ).pipe(
-    startWith([]),
-    map(([cards, filters]) => this.applyFilter(cards, filters))
-  );
+  ).pipe(map(([cards, filters]) => this.applyFilter(cards, filters)));
 
   activeSlide = 0; //holds the slide which is currently shown
   formMode: string;
@@ -130,7 +127,8 @@ export class CarouselComponent implements OnInit, OnDestroy {
   hanldeNewIndex(index: number) {
     if (this.carousel && index !== this.activeSlide) {
       //got a new index
-      if (index < 0) {
+      if (index == -1) {
+        //handy if you want to go to the last slide but dont know the number of calls in the component where the action is dispatched
         index = this.cards.length - 1;
       } else if (index >= this.cards.length) {
         index = 0;
@@ -141,9 +139,8 @@ export class CarouselComponent implements OnInit, OnDestroy {
   //this function update the current slide index
   onSlide(slideEvent) {
     this.activeSlide = slideEvent.relatedTarget; //update active slide
-    if (slideEvent.relatedTarget) {
-      this.store.dispatch(setActiveCardIndex({ index: this.activeSlide })); //update in store
-    }
+
+    this.store.dispatch(setActiveCardIndex({ index: this.activeSlide })); //update in store
   }
 
   selectSlide(n: number) {
@@ -174,7 +171,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
     }
   }
   goToPrev(length?: number) {
-    if (this.carousel && length > 1 && this.formMode != "edit") {
+    if (this.carousel && this.formMode != "edit") {
       this.carousel.previousSlide();
     } else {
       this.notallowed = true;
@@ -184,7 +181,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
     }
   }
   goToNext(length?: number) {
-    if (this.carousel && length > 1 && this.formMode != "edit") {
+    if (this.carousel && this.formMode != "edit") {
       this.carousel.nextSlide();
     } else {
       this.notallowed = true;
