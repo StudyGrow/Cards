@@ -48,7 +48,7 @@
   </div>
 </div>
 
-<div class="row">
+<div class="row" *ngIf="cards" [@fadeInOnEnter]>
   <a
     id="left"
     class="navig col"
@@ -58,11 +58,11 @@
   >
     <span class="fas fa-chevron-left"></span>
   </a>
-  <div id="carousel" *ngIf="filteredCards$ | async as cards" [@fadeInOnEnter]>
+  <div id="carousel">
     <mdb-carousel
       (activeSlideChange)="onSlide($event)"
       #mycarousel
-      [activeSlideIndex]="0"
+      [(activeSlideIndex)]="this.activeSlide"
       [animation]="'slide'"
       [isControls]="false"
       [allowSwipe]="true"

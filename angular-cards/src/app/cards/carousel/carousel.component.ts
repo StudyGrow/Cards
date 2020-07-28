@@ -47,14 +47,11 @@ export class CarouselComponent implements OnInit, OnDestroy {
 
   loading: boolean;
   private uid: string;
-  private cards$: Observable<Card[]> = this.store
-    .select(
-      //holds cards data from store
-      "cardsData"
-    )
-    .pipe(map(selectCards));
+  private cards$: Observable<Card[]> = this.store.select(
+    (state) => state.cardsData.cards
+  );
   filters$: Observable<string[]> = this.data$.pipe(map((state) => state.tags));
-  private cards: Card[]; //array of all the cards
+  cards: Card[]; //array of all the cards
   cardCount = 0;
   filteredCards$: Observable<Card[]> = combineLatest(
     this.cards$,
@@ -112,7 +109,6 @@ export class CarouselComponent implements OnInit, OnDestroy {
     this.subscriptions$.push(sub);
     sub = this.filteredCards$.subscribe((cards) => {
       this.cardCount = cards.length;
-      this.cards = cards;
     });
 
     this.subscriptions$.push(sub);
@@ -121,6 +117,20 @@ export class CarouselComponent implements OnInit, OnDestroy {
       this.uid = id;
     });
 
+    this.subscriptions$.push(sub);
+    sub = this.filteredCards$.subscribe((cards) => {
+      if (!this.cards) {
+        setTimeout(() => {
+          this.cards = cards;
+        }, 100);
+      } else if (this.cards.length != cards.length) {
+        //cards have changed
+        this.cards = null;
+        setTimeout(() => {
+          this.cards = cards;
+        }, 100);
+      }
+    });
     this.subscriptions$.push(sub);
   }
 

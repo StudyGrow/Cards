@@ -141,7 +141,7 @@ const _cardsReducer = createReducer(
   })),
   on(StateActions.resetFilter, (state) => ({
     ...state,
-    tags: initialState.tags,
+    tags: [],
   })),
   on(Actions.LoadFailure, (state) => state) //on failure don't update state
 );
