@@ -56,7 +56,6 @@ import { AboutComponent } from "./routes/about/about.component";
 
 import { ErrorPageComponent } from "./routes/error-page/error-page.component";
 
-import { FilterTagsComponent } from "./components/filter-tags/filter-tags.component";
 import { ConfirmationPageComponent } from "./routes/confirmation-page/confirmation-page.component";
 import { ConfirmationComponent } from "./components/confirmation/confirmation.component";
 import { NavListComponent } from "./components/nav-list/nav-list.component";
@@ -104,7 +103,6 @@ export class MyHammerConfig extends HammerGestureConfig {
     FooterComponent,
     AboutComponent,
     ErrorPageComponent,
-    FilterTagsComponent,
 
     ConfirmationPageComponent,
 
@@ -122,14 +120,13 @@ export class MyHammerConfig extends HammerGestureConfig {
     MatListModule,
     MatDialogModule,
     MatSidenavModule,
-    MatChipsModule,
+
     MatDividerModule,
-    MatInputModule,
+
     MatMenuModule,
     SharedModule,
     MatFormFieldModule,
-    MatAutocompleteModule,
-    MatIconModule,
+
     MatSelectModule,
     HammerModule,
     HomeModule,

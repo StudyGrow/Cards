@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, Output } from "@angular/core";
 import { Observable } from "rxjs";
 import { Vorlesung } from "src/app/models/Vorlesung";
 import { LecturesService } from "src/app/services/lectures.service";
@@ -15,7 +15,12 @@ import { MatChipInputEvent } from "@angular/material/chips";
 import { map, startWith, share } from "rxjs/operators";
 
 import { Store } from "@ngrx/store";
-import { setTypingMode } from "src/app/store/actions/actions";
+import {
+  setTypingMode,
+  applyFilter,
+  resetFilter,
+  removeTag,
+} from "src/app/store/actions/actions";
 import { selectDrawerState } from "src/app/store/selector";
 
 @Component({
@@ -32,7 +37,7 @@ export class FilterTagsComponent implements OnInit {
     .pipe(share());
 
   public lecture$: Observable<Vorlesung> = this.data$.pipe(
-    map((data) => data.lecture)
+    map((data) => data.currLecture)
   );
 
   separatorKeysCodes: number[] = [ENTER, COMMA];
@@ -48,43 +53,22 @@ export class FilterTagsComponent implements OnInit {
   constructor(private store: Store<any>) {}
   selected = [];
   ngOnInit(): void {
-    this.lecture$
-      .pipe(
-        map((lecture) => {
-          if (lecture) {
-            return lecture.tagList;
-          } else {
-            return [];
-          }
-        })
-      )
-      .subscribe((tags) => {
-        this.tags = tags;
-      });
+    let sub = this.lecture$.subscribe((lect) => {
+      this.tags = lect.tagList;
+    });
     this.filteredTags = this.formCtrl.valueChanges.pipe(
       startWith(null),
       map((tag: string | null) => {
         return tag ? this._filter(tag) : this.tags.slice();
       })
     );
-    this.store
-      .select("cardsData")
-      .pipe(map(selectDrawerState))
-      .subscribe((val) => {
-        if (val === false) {
-          if (this.selected.length === 0 && this.selectedChanged) {
-            this.selectedChanged = false;
-            // this.cardService.resetFilter();
-          } else {
-            this.applyFilter();
-          }
-        }
-      });
   }
+
   applyFilter() {
     if (this.selected.length > 0) {
       this.selectedChanged = true;
-      //this.cardService.applyFilter(this.selected);
+      console.log("hi");
+      this.store.dispatch(applyFilter({ tags: [...this.selected] }));
     }
   }
 
@@ -107,12 +91,13 @@ export class FilterTagsComponent implements OnInit {
     }
   }
 
-  remove(fruit: string): void {
-    const index = this.selected.indexOf(fruit);
+  remove(tag: string): void {
+    const index = this.selected.indexOf(tag);
 
     if (index >= 0) {
       this.selected.splice(index, 1);
     }
+    this.store.dispatch(removeTag({ tag: tag }));
   }
 
   selected1(event: MatAutocompleteSelectedEvent): void {
@@ -124,13 +109,14 @@ export class FilterTagsComponent implements OnInit {
     this.store.dispatch(setTypingMode({ typing: true }));
   }
   resetNav() {
+    this.applyFilter();
     this.store.dispatch(setTypingMode({ typing: false }));
   }
   private _filter(value: string): string[] {
     const filterValue = value.toLowerCase();
 
     return this.tags.filter(
-      (fruit) => fruit.toLowerCase().indexOf(filterValue) === 0
+      (item) => item.toLowerCase().indexOf(filterValue) === 0
     );
   }
 }

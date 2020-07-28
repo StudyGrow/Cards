@@ -1,20 +1,11 @@
 import * as Actions from "./actions/cardActions";
 import * as LectureActions from "./actions/LectureActions";
-import {
-  setFormMode,
-  setTypingMode,
-  setSuggestionsMode,
-  setDrawerState,
-  toggleDrawerState,
-  incrementLoading,
-  decrementLoading,
-} from "./actions/actions";
+import * as StateActions from "./actions/actions";
 import { createReducer, on, Action } from "@ngrx/store";
 import { Card } from "../models/Card";
 import { Vorlesung } from "../models/Vorlesung";
 import { User } from "../models/User";
 import { UserInfo } from "../models/UserInfo";
-import { state } from "@angular/animations";
 import * as UserActions from "./actions/UserActions";
 
 //defines the state of our app
@@ -29,6 +20,7 @@ export interface AppState {
   userData: UserInfo;
   showDrawer: boolean;
   loading: number;
+  tags: string[];
 }
 export class CardsData {
   cards: Card[];
@@ -38,7 +30,7 @@ export class CardsData {
 //initial state of the app
 export const initialState: AppState = {
   cards: [],
-  currLecture: null,
+  currLecture: new Vorlesung(),
   activeIndex: 0,
   lectures: [],
   formMode: "none",
@@ -47,6 +39,7 @@ export const initialState: AppState = {
   userData: new UserInfo(null, new User()),
   showDrawer: false,
   loading: 0,
+  tags: [],
 };
 
 //Reducer which will dispatch changes to the store
@@ -61,7 +54,7 @@ const _cardsReducer = createReducer(
     ...state,
     lectures: lectures,
   })),
-  on(setFormMode, (state, { mode }) => ({
+  on(StateActions.setFormMode, (state, { mode }) => ({
     ...state,
     formMode: mode,
   })),
@@ -89,24 +82,27 @@ const _cardsReducer = createReducer(
     ...state,
     activeIndex: index,
   })),
-  on(setTypingMode, (state, { typing }) => ({
+  on(StateActions.setTypingMode, (state, { typing }) => ({
     ...state,
     typingMode: typing,
   })),
-  on(setSuggestionsMode, (state, { hide }) => ({
+  on(StateActions.setSuggestionsMode, (state, { hide }) => ({
     ...state,
     hideSearchResults: hide,
   })),
-  on(setDrawerState, (state, { show }) => ({ ...state, showDrawer: show })),
-  on(toggleDrawerState, (state) => ({
+  on(StateActions.setDrawerState, (state, { show }) => ({
+    ...state,
+    showDrawer: show,
+  })),
+  on(StateActions.toggleDrawerState, (state) => ({
     ...state,
     showDrawer: !state.showDrawer,
   })),
-  on(incrementLoading, (state) => ({
+  on(StateActions.incrementLoading, (state) => ({
     ...state,
     loading: state.loading + 1,
   })),
-  on(decrementLoading, (state) => ({
+  on(StateActions.decrementLoading, (state) => ({
     ...state,
     loading: state.loading - 1,
   })),
@@ -134,6 +130,18 @@ const _cardsReducer = createReducer(
     ...state,
     currLecture: initialState.currLecture,
     cards: initialState.cards,
+  })),
+  on(StateActions.applyFilter, (state, { tags }) => ({
+    ...state,
+    tags: [...state.tags, ...tags],
+  })),
+  on(StateActions.removeTag, (state, { tag }) => ({
+    ...state,
+    tags: state.tags.filter((item) => item != tag),
+  })),
+  on(StateActions.resetFilter, (state) => ({
+    ...state,
+    tags: initialState.tags,
   })),
   on(Actions.LoadFailure, (state) => state) //on failure don't update state
 );

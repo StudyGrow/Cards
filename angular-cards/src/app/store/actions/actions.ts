@@ -8,7 +8,22 @@ enum ActionTypes {
   TOGGLE_DRAWER = "[Drawer] toggle drawer",
   INCREMENT_LOADING = "[Loading] increment the loading state",
   DECREMENT_LOADING = "[Loading] decrement the loading state",
+  APPLY_FILTER = "[Filter] change the current cards filter for carousel cards",
+  RESET_FILTER = "[Filter] reset the filter to show all cards",
+  REMOVE_TAG = "[Filter] remove tag from the filter",
 }
+
+export const applyFilter = createAction(
+  ActionTypes.APPLY_FILTER,
+  props<{ tags: string[] }>()
+);
+
+export const removeTag = createAction(
+  ActionTypes.REMOVE_TAG,
+  props<{ tag: string }>()
+);
+
+export const resetFilter = createAction(ActionTypes.RESET_FILTER);
 
 export const setFormMode = createAction(
   ActionTypes.SET_FORM_MODE,

@@ -37,7 +37,7 @@
     >
   </div>
   <mat-divider></mat-divider>
-  <app-filter-tags *ngIf="onCardRoute"></app-filter-tags>
+
   <a mat-list-item (click)="logout()" id="logout" *ngIf="loggedIn$ | async">
     <mat-icon>exit_to_app</mat-icon> Logout
   </a>
