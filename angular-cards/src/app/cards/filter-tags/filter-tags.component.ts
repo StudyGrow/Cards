@@ -53,13 +53,14 @@ export class FilterTagsComponent implements OnInit, OnDestroy {
   constructor(private store: Store<any>) {}
 
   ngOnInit(): void {
-    let sub = this.data$
-      .pipe(map(selectTags))
-      .subscribe((tags) => (this.selected = tags));
+    let sub = this.data$.pipe(map(selectTags)).subscribe((tags) => {
+      this.selected = tags;
+    });
+    this.subs.push(sub);
     sub = this.lecture$.subscribe((lect) => {
       this.tags = lect.tagList;
     });
-    this.subs.push(sub);
+
     this.filteredTags = this.formCtrl.valueChanges.pipe(
       startWith(null),
       map((tag: string | null) => {
