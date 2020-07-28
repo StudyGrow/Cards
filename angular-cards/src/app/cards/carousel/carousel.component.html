@@ -48,15 +48,21 @@
   </div>
 </div>
 
-<div class="row" *ngIf="filteredCards$ | async as cards" [@fadeInOnEnter]>
-  <a id="left" class="navig col" *ngIf="cards.length > 1" (click)="goToPrev()">
+<div class="row">
+  <a
+    id="left"
+    class="navig col"
+    *ngIf="cardCount > 1"
+    [@fadeInOnEnter]
+    (click)="goToPrev()"
+  >
     <span class="fas fa-chevron-left"></span>
   </a>
-  <div id="carousel" *ngIf="cards.length > 0">
+  <div id="carousel" *ngIf="filteredCards$ | async as cards" [@fadeInOnEnter]>
     <mdb-carousel
       (activeSlideChange)="onSlide($event)"
       #mycarousel
-      [activeSlideIndex]="this.activeSlide"
+      [activeSlideIndex]="0"
       [animation]="'slide'"
       [isControls]="false"
       [allowSwipe]="true"
@@ -70,7 +76,13 @@
       </mdb-carousel-item>
     </mdb-carousel>
   </div>
-  <a id="right" class="navig col" *ngIf="cards.length > 1" (click)="goToNext()">
+  <a
+    id="right"
+    class="navig col"
+    *ngIf="cardCount > 1"
+    [@fadeInOnEnter]
+    (click)="goToNext()"
+  >
     <span class="fas fa-chevron-right"></span>
   </a>
 </div>

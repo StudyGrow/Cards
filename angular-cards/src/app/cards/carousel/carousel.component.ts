@@ -4,6 +4,7 @@ import {
   ViewChild,
   OnDestroy,
   HostListener,
+  NgZone,
 } from "@angular/core";
 
 import { Card } from "../../models/Card";
@@ -19,7 +20,7 @@ import { Store } from "@ngrx/store";
 import { AppState } from "src/app/store/reducer";
 import { setActiveCardIndex } from "../../store/actions/cardActions";
 import { setFormMode } from "src/app/store/actions/actions";
-import { map, share, startWith } from "rxjs/operators";
+import { map, share, startWith, delay } from "rxjs/operators";
 
 import { selectCards, selectUserId } from "src/app/store/selector";
 import { state } from "@angular/animations";
@@ -54,10 +55,14 @@ export class CarouselComponent implements OnInit, OnDestroy {
     .pipe(map(selectCards));
   filters$: Observable<string[]> = this.data$.pipe(map((state) => state.tags));
   private cards: Card[]; //array of all the cards
+  cardCount = 0;
   filteredCards$: Observable<Card[]> = combineLatest(
     this.cards$,
     this.filters$
-  ).pipe(map(([cards, filters]) => this.applyFilter(cards, filters)));
+  ).pipe(
+    map(([cards, filters]) => this.applyFilter(cards, filters)),
+    delay(200)
+  );
 
   activeSlide = 0; //holds the slide which is currently shown
   formMode: string;
@@ -80,11 +85,13 @@ export class CarouselComponent implements OnInit, OnDestroy {
     }
   }
 
-  constructor(private store: Store<any>) {}
+  constructor(private store: Store<any>, private zone: NgZone) {
+    this.filteredCards$.subscribe((val) => {
+      console.log(val);
+    });
+  }
 
   ngOnInit(): void {
-    this.filteredCards$;
-    this.filteredCards$.subscribe((val) => console.log(val));
     let sub = this.data$
       .pipe(map((state) => state.formMode))
       .subscribe((mode) => {
@@ -103,8 +110,8 @@ export class CarouselComponent implements OnInit, OnDestroy {
         this.hanldeNewIndex(val);
       });
     this.subscriptions$.push(sub);
-
-    sub = this.cards$.subscribe((cards) => {
+    sub = this.filteredCards$.subscribe((cards) => {
+      this.cardCount = cards.length;
       this.cards = cards;
     });
 
@@ -129,8 +136,8 @@ export class CarouselComponent implements OnInit, OnDestroy {
       //got a new index
       if (index == -1) {
         //handy if you want to go to the last slide but dont know the number of calls in the component where the action is dispatched
-        index = this.cards.length - 1;
-      } else if (index >= this.cards.length) {
+        index = this.cardCount - 1;
+      } else if (index >= this.cardCount) {
         index = 0;
       }
       this.carousel.selectSlide(index); //select new slide
@@ -144,12 +151,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
   }
 
   selectSlide(n: number) {
-    if (
-      this.carousel &&
-      n &&
-      this.cards.length > 1 &&
-      this.formMode != "edit"
-    ) {
+    if (this.carousel && n && this.cardCount > 1 && this.formMode != "edit") {
       this.carousel.selectSlide(n);
     } else {
       this.notallowed = true;
@@ -164,14 +166,14 @@ export class CarouselComponent implements OnInit, OnDestroy {
     while (count < 5 && rand == this.activeSlide) {
       //calculate a new random index
       count++;
-      rand = Math.floor(Math.random() * this.cards.length); //random Cardindex
+      rand = Math.floor(Math.random() * this.cardCount); //random Cardindex
     }
     if (this.carousel) {
       this.carousel.selectSlide(rand);
     }
   }
   goToPrev(length?: number) {
-    if (this.carousel && this.formMode != "edit") {
+    if (this.carousel && this.cardCount > 1 && this.formMode != "edit") {
       this.carousel.previousSlide();
     } else {
       this.notallowed = true;
@@ -181,7 +183,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
     }
   }
   goToNext(length?: number) {
-    if (this.carousel && this.formMode != "edit") {
+    if (this.carousel && this.cardCount > 1 && this.formMode != "edit") {
       this.carousel.nextSlide();
     } else {
       this.notallowed = true;
@@ -192,7 +194,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
   }
 
   isDisabled() {
-    if (this.formMode == "edit" || !this.cards || this.cards.length == 0) {
+    if (this.formMode == "edit" || !this.cards || this.cardCount == 0) {
       return true;
     }
     let currCard = this.cards[this.activeSlide]; //get the card that is currently showing
