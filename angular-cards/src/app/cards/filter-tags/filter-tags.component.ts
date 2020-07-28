@@ -21,7 +21,7 @@ import {
   resetFilter,
   removeTag,
 } from "src/app/store/actions/actions";
-import { selectDrawerState } from "src/app/store/selector";
+import { selectDrawerState, selectTags } from "src/app/store/selector";
 
 @Component({
   selector: "app-filter-tags",
@@ -53,7 +53,10 @@ export class FilterTagsComponent implements OnInit, OnDestroy {
   constructor(private store: Store<any>) {}
 
   ngOnInit(): void {
-    let sub = this.lecture$.subscribe((lect) => {
+    let sub = this.data$
+      .pipe(map(selectTags))
+      .subscribe((tags) => (this.selected = tags));
+    sub = this.lecture$.subscribe((lect) => {
       this.tags = lect.tagList;
     });
     this.subs.push(sub);
@@ -80,7 +83,7 @@ export class FilterTagsComponent implements OnInit, OnDestroy {
       // Add our fruit
 
       if ((value || "").trim()) {
-        this.selected.push(value.trim());
+        this.store.dispatch(applyFilter({ tags: [value] }));
       }
 
       // Reset the input value
@@ -93,16 +96,11 @@ export class FilterTagsComponent implements OnInit, OnDestroy {
   }
 
   remove(tag: string): void {
-    const index = this.selected.indexOf(tag);
-
-    if (index >= 0) {
-      this.selected.splice(index, 1);
-    }
     this.store.dispatch(removeTag({ tag: tag }));
   }
 
   selected1(event: MatAutocompleteSelectedEvent): void {
-    this.selected.push(event.option.viewValue);
+    this.store.dispatch(applyFilter({ tags: [event.option.viewValue] }));
     this.input.nativeElement.value = "";
     this.formCtrl.setValue(null);
   }
@@ -110,7 +108,6 @@ export class FilterTagsComponent implements OnInit, OnDestroy {
     this.store.dispatch(setTypingMode({ typing: true }));
   }
   resetNav() {
-    this.applyFilter();
     this.store.dispatch(setTypingMode({ typing: false }));
   }
   private _filter(value: string): string[] {

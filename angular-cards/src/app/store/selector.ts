@@ -3,8 +3,11 @@ import { createSelector } from "@ngrx/store";
 import { AppState } from "./reducer";
 import { Card } from "../models/Card";
 import { Vorlesung } from "../models/Vorlesung";
+import { state } from "@angular/animations";
 
 export const selectCards = (state: AppState) => state.cards;
+
+export const selectTags = (state: AppState) => state.tags;
 
 export const selectCurrentLecture = (state: AppState) => state.currLecture;
 

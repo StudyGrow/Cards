@@ -30,7 +30,7 @@ import { state } from "@angular/animations";
   templateUrl: "./carousel.component.html",
   styleUrls: ["./carousel.component.css"],
   animations: [
-    fadeInOnEnterAnimation(),
+    fadeInOnEnterAnimation({ duration: 500 }),
     fadeOutOnLeaveAnimation(),
     shakeAnimation(),
   ],
@@ -122,13 +122,13 @@ export class CarouselComponent implements OnInit, OnDestroy {
       if (!this.cards) {
         setTimeout(() => {
           this.cards = cards;
-        }, 100);
+        }, 200);
       } else if (this.cards.length != cards.length) {
         //cards have changed
         this.cards = null;
         setTimeout(() => {
           this.cards = cards;
-        }, 100);
+        }, 200);
       }
     });
     this.subscriptions$.push(sub);

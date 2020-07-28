@@ -166,9 +166,15 @@ function updateObjectInArray(cards: Card[], card: Card) {
 }
 
 function removeInArray(items: string[], item: string) {
-  const filterValue = item.toLowerCase();
+  if (items.length == 1 && items[0] == item) {
+    return [];
+  } else {
+    const filterValue = item.toLowerCase();
 
-  return items.filter((item) => item.toLowerCase().indexOf(filterValue) === 0);
+    return items.filter(
+      (item) => item.toLowerCase().indexOf(filterValue) === 0
+    );
+  }
 }
 
 function addTags(origin: string[], tags: string[]) {
