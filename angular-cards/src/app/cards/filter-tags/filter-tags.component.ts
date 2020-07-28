@@ -68,7 +68,7 @@ export class FilterTagsComponent implements OnInit, OnDestroy {
   applyFilter() {
     if (this.selected.length > 0) {
       this.selectedChanged = true;
-      console.log("hi");
+
       this.store.dispatch(applyFilter({ tags: [...this.selected] }));
     }
   }

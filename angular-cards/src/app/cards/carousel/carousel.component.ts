@@ -22,6 +22,8 @@ import { setFormMode } from "src/app/store/actions/actions";
 import { map, share } from "rxjs/operators";
 
 import { selectCards, selectUserId } from "src/app/store/selector";
+import { state } from "@angular/animations";
+
 @Component({
   selector: "app-carousel",
   templateUrl: "./carousel.component.html",
@@ -46,6 +48,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
   cards: Card[]; //array of all the cards
   activeSlide = 0; //holds the slide which is currently shown
   formMode: string;
+  filters: string[];
   notallowed: boolean = false;
 
   subscriptions$: Subscription[] = [];
@@ -86,7 +89,12 @@ export class CarouselComponent implements OnInit, OnDestroy {
         this.hanldeNewIndex(val);
       });
     this.subscriptions$.push(sub);
-
+    sub = this.data$.pipe(map((state) => state.tags)).subscribe((tags) => {
+      console.log(tags);
+      this.filters = tags;
+      console.log(this.filters);
+    });
+    this.subscriptions$.push(sub);
     sub = this.store
       .select(
         //holds cards data from store
@@ -94,7 +102,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
       )
       .pipe(map(selectCards))
       .subscribe((cards) => {
-        this.cards = cards;
+        this.cards = this.applyFilter(cards);
       });
 
     this.subscriptions$.push(sub);
@@ -215,5 +223,23 @@ export class CarouselComponent implements OnInit, OnDestroy {
 
   setClass() {
     return this.formMode == "add" ? "btn btn-info" : "btn btn-light";
+  }
+  applyFilter(cards: Card[]): Card[] {
+    console.log(this.filters);
+    if (!this.filters || this.filters.length === 0) {
+      return cards;
+    }
+    let res = cards.filter((card) => {
+      for (const tag of this.filters) {
+        if (!card.tags) {
+          return false;
+        }
+        if (card.tags.includes(tag)) {
+          return true;
+        }
+      }
+      return false;
+    });
+    return res;
   }
 }
