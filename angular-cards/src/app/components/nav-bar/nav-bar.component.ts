@@ -22,7 +22,7 @@ import { clearCardData } from "src/app/store/actions/cardActions";
 @Component({
   selector: "app-nav-bar",
   templateUrl: "./nav-bar.component.html",
-  styleUrls: ["./nav-bar.component.css"],
+  styleUrls: ["./nav-bar.component.scss"],
 })
 export class NavBarComponent implements OnInit, OnDestroy {
   public loggedIn: boolean;

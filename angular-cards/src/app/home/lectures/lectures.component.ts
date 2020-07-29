@@ -11,7 +11,7 @@ import { selectLectures } from "src/app/store/selector";
 @Component({
   selector: "app-lectures",
   templateUrl: "./lectures.component.html",
-  styleUrls: ["./lectures.component.css"],
+  styleUrls: ["./lectures.component.scss"],
 })
 export class LecturesComponent implements OnInit {
   lectures$: Observable<Vorlesung[]>;

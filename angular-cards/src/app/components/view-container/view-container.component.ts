@@ -25,7 +25,7 @@ import { Router } from "@angular/router";
 @Component({
   selector: "app-view-container",
   templateUrl: "./view-container.component.html",
-  styleUrls: ["./view-container.component.css"],
+  styleUrls: ["./view-container.component.scss"],
   animations: [
     fadeInOnEnterAnimation({ duration: 200 }),
     pulseOnEnterAnimation({ scale: 1.05, duration: 500 }),

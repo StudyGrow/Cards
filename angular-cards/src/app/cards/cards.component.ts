@@ -25,7 +25,7 @@ import { getCardsData, selectUserId } from "../store/selector";
 @Component({
   selector: "app-cards",
   templateUrl: "./cards.component.html",
-  styleUrls: ["./cards.component.css"],
+  styleUrls: ["./cards.component.scss"],
   animations: [fadeInOnEnterAnimation()],
 })
 export class CardsComponent implements OnInit, OnDestroy {
