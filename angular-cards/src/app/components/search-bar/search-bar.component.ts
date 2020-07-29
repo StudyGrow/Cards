@@ -131,13 +131,22 @@ export class SearchBarComponent implements OnInit, OnDestroy {
       this.store.dispatch(setSuggestionsMode({ hide: true }));
     }
   }
+  enabled = false
+  size = 0
 
-   beginScroll(paragraph: HTMLElement) {
-    var time = paragraph.offsetWidth * 0.02
+  beginScroll(paragraph: HTMLElement) {
+    if(this.enabled == true && this.size < paragraph.offsetWidth){
+      this.size = paragraph.offsetWidth
+    }
+    this.size = paragraph.offsetWidth
+    this.enabled = true
+    console.log(paragraph.offsetWidth)
+    var time = this.size * 0.02
     paragraph.classList.add('textToScroll');
     paragraph.style.setProperty('--time', time.toString());
   }
   endScroll(paragraph: HTMLElement) {
+    this.enabled = false
     paragraph.classList.remove('textToScroll');
   }
 }
