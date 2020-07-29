@@ -11,6 +11,7 @@ import { map, share } from "rxjs/operators";
 import {
   setTypingMode,
   setSuggestionsMode,
+  resetFilter,
 } from "src/app/store/actions/actions";
 import { setActiveCardIndex } from "src/app/store/actions/cardActions";
 import { selectAllCards, selectFilteredCards } from "src/app/store/selector";
@@ -86,7 +87,7 @@ export class SearchBarComponent implements OnInit, OnDestroy {
     this.store.dispatch(setSuggestionsMode({ hide: false })); //show suggestions
     this.suggestions = [];
     this.allSuggestions = [];
-    console.log(this.cards, this.currentSelection);
+
     if (this.uInput && this.uInput.length > 2) {
       const regex = new RegExp(`${this.uInput}`, "gi");
 
@@ -108,9 +109,31 @@ export class SearchBarComponent implements OnInit, OnDestroy {
       }
     }
   }
-  navigateTo(e: Event, index: number) {
+  navigateTo(e: Event, index: number, all: boolean) {
     e.preventDefault();
     this.uInput = "";
+    if (!all) {
+      //call from current selection
+      this.store.dispatch(setActiveCardIndex({ index: index }));
+      this.store.dispatch(setSuggestionsMode({ hide: true }));
+    } else if (!this.currentSelection.includes(this.cards[index])) {
+      //call from all cards and current selction does not inlude the suggestion
+      this.store.dispatch(resetFilter());
+      this.store.dispatch(setSuggestionsMode({ hide: true }));
+      setTimeout(() => {
+        this.store.dispatch(setActiveCardIndex({ index: index }));
+      }, 700);
+    } else {
+      //call from all cards and current selction inludes the suggestion
+      this.store.dispatch(setActiveCardIndex({ index: index }));
+      this.store.dispatch(setSuggestionsMode({ hide: true }));
+    }
+  }
+  navigate2(e: Event, index: number) {
+    e.preventDefault();
+    this.uInput = "";
+    this.store.dispatch(resetFilter());
+
     this.store.dispatch(setActiveCardIndex({ index: index }));
 
     this.store.dispatch(setSuggestionsMode({ hide: true }));

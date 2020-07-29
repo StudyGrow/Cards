@@ -17,12 +17,22 @@
   <mat-list>
     <div mat-subheader>Aktuell angezeigt</div>
     <mat-list-item *ngFor="let suggestion of suggestions">
-      <a mat-list-item href="#" class="sugg">{{ suggestion.title }}</a>
+      <a
+        mat-list-item
+        (click)="navigateTo($event, suggestion.index, false)"
+        class="sugg"
+        >{{ suggestion.title }}</a
+      >
     </mat-list-item>
     <mat-divider></mat-divider>
     <div mat-subheader>Alle Karten</div>
     <mat-list-item *ngFor="let suggestion of allSuggestions">
-      <a mat-list-item href="#" class="sugg">{{ suggestion.title }}</a>
+      <a
+        mat-list-item
+        (click)="navigateTo($event, suggestion.index, true)"
+        class="sugg"
+        >{{ suggestion.title }}</a
+      >
     </mat-list-item>
   </mat-list>
 </div>
