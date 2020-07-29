@@ -140,7 +140,6 @@ export class SearchBarComponent implements OnInit, OnDestroy {
     }
     this.size = paragraph.offsetWidth
     this.enabled = true
-    console.log(paragraph.offsetWidth)
     var time = this.size * 0.02
     paragraph.classList.add('textToScroll');
     paragraph.style.setProperty('--time', time.toString());
