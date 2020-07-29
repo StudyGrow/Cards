@@ -28,7 +28,7 @@ import { state } from "@angular/animations";
 @Component({
   selector: "app-carousel",
   templateUrl: "./carousel.component.html",
-  styleUrls: ["./carousel.component.css"],
+  styleUrls: ["./carousel.component.scss"],
   animations: [
     fadeInOnEnterAnimation({ duration: 500 }),
     fadeOutOnLeaveAnimation(),

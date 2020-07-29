@@ -15,7 +15,7 @@ import { setTypingMode } from "src/app/store/actions/actions";
 @Component({
   selector: "app-add-card-form",
   templateUrl: "./add-card-form.component.html",
-  styleUrls: ["./add-card-form.component.css"],
+  styleUrls: ["./add-card-form.component.scss"],
 })
 export class AddCardFormComponent implements OnInit, OnDestroy {
   @Input() neu: boolean = false;

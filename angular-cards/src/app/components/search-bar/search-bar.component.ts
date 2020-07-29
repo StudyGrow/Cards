@@ -22,7 +22,7 @@ import { FormControl } from "@angular/forms";
 @Component({
   selector: "app-search-bar",
   templateUrl: "./search-bar.component.html",
-  styleUrls: ["./search-bar.component.css"],
+  styleUrls: ["./search-bar.component.scss"],
 })
 export class SearchBarComponent implements OnInit, OnDestroy {
   constructor(private store: Store<any>) {}
@@ -130,5 +130,14 @@ export class SearchBarComponent implements OnInit, OnDestroy {
       this.store.dispatch(setActiveCardIndex({ index: index }));
       this.store.dispatch(setSuggestionsMode({ hide: true }));
     }
+  }
+
+   beginScroll(paragraph: HTMLElement) {
+    var time = paragraph.offsetWidth * 0.02
+    paragraph.classList.add('textToScroll');
+    paragraph.style.setProperty('--time', time.toString());
+  }
+  endScroll(paragraph: HTMLElement) {
+    paragraph.classList.remove('textToScroll');
   }
 }

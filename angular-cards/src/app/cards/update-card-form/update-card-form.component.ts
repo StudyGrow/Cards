@@ -19,7 +19,7 @@ import { selectActiveIndex, selectCurrentCard } from "src/app/store/selector";
 @Component({
   selector: "app-update-card-form",
   templateUrl: "./update-card-form.component.html",
-  styleUrls: ["./update-card-form.component.css"],
+  styleUrls: ["./update-card-form.component.scss"],
 })
 export class UpdateCardFormComponent implements OnInit, OnDestroy {
   public cardCopy: Card = new Card();

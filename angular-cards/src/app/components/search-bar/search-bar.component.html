@@ -31,7 +31,8 @@
         mat-list-item
         (click)="navigateTo($event, suggestion.index, false)"
         class="sugg"
-        >{{ suggestion.title }}</a
+        (mouseover)="beginScroll(paragraph)" (mouseleave)="endScroll(paragraph)"
+        ><p #paragraph>{{ suggestion.title }}</p></a
       >
     </mat-list-item>
     <mat-divider></mat-divider>
@@ -47,3 +48,4 @@
     </mat-list-item>
   </mat-list>
 </div>
+<button class= "but"></button>
