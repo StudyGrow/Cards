@@ -90,25 +90,27 @@ export class SearchBarComponent implements OnInit, OnDestroy {
 
     if (this.uInput && this.uInput.length > 2) {
       const regex = new RegExp(`${this.uInput}`, "gi");
-
-      for (let i = 0; i < this.currentSelection.length; i++) {
-        if (this.currentSelection[i].thema.match(regex)) {
+      let i = 0;
+      while (i < this.cards.length) {
+        if (
+          i < this.currentSelection.length &&
+          this.currentSelection[i].thema.match(regex)
+        ) {
           this.suggestions.push({
             title: this.currentSelection[i].thema,
             index: i,
           });
-        }
-      }
-      for (let i = 0; i < this.cards.length; i++) {
-        if (this.cards[i].thema.match(regex)) {
+        } else if (this.cards[i].thema.match(regex)) {
           this.allSuggestions.push({
             title: this.cards[i].thema,
             index: i,
           });
         }
+        i++;
       }
     }
   }
+
   navigateTo(e: Event, index: number, all: boolean) {
     e.preventDefault();
     this.uInput = "";
@@ -128,14 +130,5 @@ export class SearchBarComponent implements OnInit, OnDestroy {
       this.store.dispatch(setActiveCardIndex({ index: index }));
       this.store.dispatch(setSuggestionsMode({ hide: true }));
     }
-  }
-  navigate2(e: Event, index: number) {
-    e.preventDefault();
-    this.uInput = "";
-    this.store.dispatch(resetFilter());
-
-    this.store.dispatch(setActiveCardIndex({ index: index }));
-
-    this.store.dispatch(setSuggestionsMode({ hide: true }));
   }
 }

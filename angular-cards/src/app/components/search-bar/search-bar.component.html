@@ -13,9 +13,14 @@
   />
   <mat-icon matSuffix>search</mat-icon>
 </mat-form-field>
-<div id="matches" class="shadow w-100">
+<div *ngIf="uInput" id="matches" class="shadow w-100">
   <mat-list>
-    <div mat-subheader>Aktuell angezeigt</div>
+    <div
+      *ngIf="suggestions.length > 0 && allSuggestions.length > 0"
+      mat-subheader
+    >
+      Aktuell angezeigt
+    </div>
     <mat-list-item *ngFor="let suggestion of suggestions">
       <a
         mat-list-item
@@ -25,7 +30,7 @@
       >
     </mat-list-item>
     <mat-divider></mat-divider>
-    <div mat-subheader>Alle Karten</div>
+    <div *ngIf="allSuggestions.length > 0" mat-subheader>Alle Karten</div>
     <mat-list-item *ngFor="let suggestion of allSuggestions">
       <a
         mat-list-item
