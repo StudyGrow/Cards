@@ -79,11 +79,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
     }
   }
 
-  constructor(private store: Store<any>, private zone: NgZone) {
-    this.filteredCards$.subscribe((val) => {
-      console.log(val);
-    });
-  }
+  constructor(private store: Store<any>) {}
 
   ngOnInit(): void {
     let sub = this.data$

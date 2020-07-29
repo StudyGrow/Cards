@@ -29,6 +29,7 @@ export class SearchBarComponent implements OnInit, OnDestroy {
   subscriptions$: Subscription[] = []; //holds all subscriptions from observables to later unsub
   cards: Card[]; //all cards
   suggestions: SearchSuggestion[]; //search suggestions
+  allSuggestions: SearchSuggestion[]; //search suggestions
   uInput: string; //userInput
   data$: Observable<AppState> = this.store.select("cardsData").pipe(share()); //state of the store
   clearSuggestions: boolean; //wether to clear search suggestions
@@ -43,6 +44,7 @@ export class SearchBarComponent implements OnInit, OnDestroy {
         this.clearSuggestions = value;
         if (value) {
           this.suggestions = [];
+          this.allSuggestions = [];
         }
       });
     this.subscriptions$.push(sub);
@@ -82,15 +84,24 @@ export class SearchBarComponent implements OnInit, OnDestroy {
   }
   findMatches(e: Event) {
     this.store.dispatch(setSuggestionsMode({ hide: false })); //show suggestions
-
+    this.suggestions = [];
+    this.allSuggestions = [];
+    console.log(this.cards, this.currentSelection);
     if (this.uInput && this.uInput.length > 2) {
-      this.suggestions = [];
       const regex = new RegExp(`${this.uInput}`, "gi");
 
       for (let i = 0; i < this.currentSelection.length; i++) {
         if (this.currentSelection[i].thema.match(regex)) {
           this.suggestions.push({
             title: this.currentSelection[i].thema,
+            index: i,
+          });
+        }
+      }
+      for (let i = 0; i < this.cards.length; i++) {
+        if (this.cards[i].thema.match(regex)) {
+          this.allSuggestions.push({
+            title: this.cards[i].thema,
             index: i,
           });
         }

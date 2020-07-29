@@ -39,9 +39,6 @@ export class CardsComponent implements OnInit, OnDestroy {
   }
   //holds data from store
   public data$: Observable<any> = this.store.select("cardsData").pipe(
-    tap((data) => {
-      console.log(data);
-    }),
     map(getCardsData),
 
     share()

@@ -2,15 +2,20 @@
   z-index: 1000;
   position: absolute;
   top: 40px;
-
+  background-color: white;
   max-height: 200px;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
-#match {
+.sugg {
   text-overflow: ellipsis;
   overflow: hidden;
   width: 200px;
-
   white-space: nowrap;
+}
+::ng-deep .mat-list,
+.mat-subheader {
+  width: 200px;
 }
 
 button {
