@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Actions, Effect, ofType, createEffect } from "@ngrx/effects";
 import { of, Observable } from "rxjs";
-import { share, tap, startWith } from "rxjs/operators";
+import { share, tap, startWith, withLatestFrom } from "rxjs/operators";
 
 import { catchError, map, mergeMap, exhaustMap } from "rxjs/operators";
 import {
@@ -29,6 +29,7 @@ import {
   logoutSuccess,
 } from "../actions/UserActions";
 import { UserService } from "src/app/services/user.service";
+import { selectActiveIndex, selectLastCardIndex } from "../selector";
 
 @Injectable()
 export class CardsEffects {
@@ -39,7 +40,7 @@ export class CardsEffects {
     private lectures: LecturesService,
     private store: Store<any>
   ) {}
-
+  data$ = this.store.select("cardsData").pipe(share());
   @Effect()
   loadCards$ = createEffect(() => {
     return this.actions$.pipe(
@@ -95,12 +96,15 @@ export class CardsEffects {
   addCard$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AddCardActions.addCard),
-      exhaustMap((action) => {
+      withLatestFrom(this.data$.pipe(map(selectLastCardIndex))),
+      exhaustMap(([action, lastIndex]) => {
         this.store.dispatch(incrementLoading());
         return this.cs.addCard(action.card).pipe(
           tap(() => {
             this.store.dispatch(decrementLoading());
-            this.store.dispatch(setActiveCardIndex({ index: -1 }));
+            setTimeout(() => {
+              this.store.dispatch(setActiveCardIndex({ index: lastIndex }));
+            }, 1000);
           }),
           map((res) => AddCardActions.addCardSuccess({ card: res })),
           catchError((reason) => of(LoadFailure({ reason: reason })))
@@ -114,10 +118,14 @@ export class CardsEffects {
   updateCard$ = createEffect(() =>
     this.actions$.pipe(
       ofType(UpdateCardActions.updateCard),
-      exhaustMap((action) => {
+      withLatestFrom(this.data$.pipe(map(selectActiveIndex))),
+      exhaustMap(([action, activeIndex]) => {
         this.store.dispatch(incrementLoading());
         return this.cs.updateCard2(action.card).pipe(
           tap((card) => {
+            setTimeout(() => {
+              this.store.dispatch(setActiveCardIndex({ index: activeIndex }));
+            }, 1000);
             this.store.dispatch(decrementLoading());
           }),
           map((card) => UpdateCardActions.updateCardSuccess({ card: card })),

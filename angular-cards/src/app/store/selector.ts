@@ -32,6 +32,10 @@ export const selectFilteredCards = createSelector(
   selectTags,
   (cards, filter) => applyFilter(cards, filter)
 );
+export const selectLastCardIndex = createSelector(
+  selectFilteredCards,
+  (cards) => cards.length - 1
+);
 
 export const selectCurrentCard = createSelector(
   selectFilteredCards,

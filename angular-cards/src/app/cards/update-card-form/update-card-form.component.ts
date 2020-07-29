@@ -13,6 +13,8 @@ import {
 import { CardsEffects } from "src/app/store/effects/effects";
 import { NgForm } from "@angular/forms";
 import { setFormMode, setTypingMode } from "src/app/store/actions/actions";
+import { share, map } from "rxjs/operators";
+import { selectActiveIndex, selectCurrentCard } from "src/app/store/selector";
 
 @Component({
   selector: "app-update-card-form",
@@ -20,10 +22,11 @@ import { setFormMode, setTypingMode } from "src/app/store/actions/actions";
   styleUrls: ["./update-card-form.component.css"],
 })
 export class UpdateCardFormComponent implements OnInit, OnDestroy {
-  public cardCopy: Card;
+  public cardCopy: Card = new Card();
   private cardIndex: number; //saves the cardindex which the user is currently updating
   private activeCardIndex: number; //saves the active cardindex
   private subscriptions$: Subscription[] = [];
+  private data$ = this.store.select("cardsData").pipe(share());
 
   constructor(
     public dialog: MatDialog,
@@ -34,22 +37,19 @@ export class UpdateCardFormComponent implements OnInit, OnDestroy {
   @ViewChild("f") form: NgForm;
 
   ngOnInit(): void {
-    let sub = this.store.select("cardsData").subscribe((data) => {
-      console.log(this.activeCardIndex);
-      this.activeCardIndex = data.activeIndex;
-
-      this.cardCopy = { ...data.cards[data.activeIndex] };
+    let sub = this.data$.pipe(map(selectActiveIndex)).subscribe((index) => {
+      this.activeCardIndex = index;
 
       this.cardIndex = this.activeCardIndex;
     });
     this.subscriptions$.push(sub);
 
+    sub = this.data$.pipe(map(selectCurrentCard)).subscribe((card) => {
+      this.cardCopy = { ...card };
+    });
+    this.subscriptions$.push(sub);
     sub = this.actionState.updateCard$.subscribe(() => {
       this.store.dispatch(setFormMode({ mode: "reset" }));
-
-      setTimeout(() => {
-        this.store.dispatch(setActiveCardIndex({ index: 0 }));
-      }, 100);
 
       this.form.reset();
     });
@@ -69,7 +69,7 @@ export class UpdateCardFormComponent implements OnInit, OnDestroy {
   onSubmit(f) {
     this.cardCopy.content = f.value.content;
     this.cardCopy.thema = f.value.thema;
-    console.log(this.cardCopy);
+
     this.store.dispatch(updateCard({ card: this.cardCopy }));
   }
   cancelEdit() {
