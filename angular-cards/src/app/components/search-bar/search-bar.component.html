@@ -13,7 +13,11 @@
   />
   <mat-icon matSuffix>search</mat-icon>
 </mat-form-field>
-<div *ngIf="uInput" id="matches" class="shadow w-100">
+<div
+  *ngIf="uInput && (suggestions.length > 0 || allSuggestions.length > 0)"
+  id="matches"
+  class="shadow w-100"
+>
   <mat-list>
     <div
       *ngIf="suggestions.length > 0 && allSuggestions.length > 0"
@@ -23,6 +27,7 @@
     </div>
     <mat-list-item *ngFor="let suggestion of suggestions">
       <a
+        href="#"
         mat-list-item
         (click)="navigateTo($event, suggestion.index, false)"
         class="sugg"
@@ -33,6 +38,7 @@
     <div *ngIf="allSuggestions.length > 0" mat-subheader>Alle Karten</div>
     <mat-list-item *ngFor="let suggestion of allSuggestions">
       <a
+        href="#"
         mat-list-item
         (click)="navigateTo($event, suggestion.index, true)"
         class="sugg"

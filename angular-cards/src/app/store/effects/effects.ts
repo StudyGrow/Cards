@@ -14,7 +14,11 @@ import {
 import * as LectureActions from "../actions/LectureActions";
 import { CardsService } from "../../services/cards.service";
 import { LecturesService } from "../../services/lectures.service";
-import { incrementLoading, decrementLoading } from "../actions/actions";
+import {
+  incrementLoading,
+  decrementLoading,
+  setDrawerState,
+} from "../actions/actions";
 import { Store } from "@ngrx/store";
 import {
   fetchUserData,
@@ -210,6 +214,7 @@ export class CardsEffects {
       ofType(logout),
       mergeMap(() => {
         return this.user.logoutServer().pipe(
+          tap(() => this.store.dispatch(setDrawerState({ show: false }))),
           map(() => logoutSuccess()),
           catchError((reason) => of(LoadFailure({ reason: reason })))
         );
