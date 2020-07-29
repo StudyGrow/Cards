@@ -4,3 +4,7 @@ form {
   margin-right: auto;
   width: 90%;
 }
+h4 {
+  font-family: Arial, Helvetica, sans-serif !important;
+  font-size: 1.3rem !important;
+}
