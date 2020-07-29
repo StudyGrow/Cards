@@ -14,6 +14,10 @@ module.exports = function cardsService() {
     }
   };
 
+  cardsService.findByAbrv = async (abrv) => {
+    return await Card.find({ vorlesung: abrv });
+  };
+
   //creates a new card and adds it to the database
   cardsService.addCard = async (form, user, callback) => {
     try {

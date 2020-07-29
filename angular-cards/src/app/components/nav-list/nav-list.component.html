@@ -1,11 +1,11 @@
-<mat-nav-list>
+<mat-nav-list class="p-0">
   <a mat-list-item class="{{ isActive('/') }}" routerLink="/"
     ><mat-icon>home</mat-icon> Vorlesungen</a
   >
 
   <a
     mat-list-item
-    *ngIf="!loggedIn"
+    *ngIf="(loggedIn$ | async) == false"
     class=" {{ isActive('/login') }}"
     routerLink="/login"
     ><mat-icon>person</mat-icon>Login</a
@@ -13,28 +13,32 @@
 
   <a
     mat-list-item
-    *ngIf="!loggedIn"
+    *ngIf="(loggedIn$ | async) == false"
     class="{{ isActive('/signup') }}"
     routerLink="/signup"
     ><mat-icon>add_box</mat-icon> Registrieren</a
   >
+  <div *ngIf="loggedIn$ | async">
+    <div mat-subheader>Account</div>
 
-  <a
-    mat-list-item
-    *ngIf="loggedIn"
-    class="{{ isActive('account') }}"
-    [matMenuTriggerFor]="menu"
-  >
-    <mat-icon>account_box</mat-icon> Account
-  </a>
-  <mat-menu #menu="matMenu">
-    <a class="dropdown-item" routerLink="/account/overview" placement="bottom"
-      >Account management</a
+    <a
+      mat-list-item
+      routerLink="/account/overview"
+      class=" {{ isActive('/account/overview') }}"
     >
-    <a class="dropdown-item" (click)="logout()">
-      Logout
-    </a>
-  </mat-menu>
+      <mat-icon>account_box</mat-icon> Übersicht</a
+    >
+    <a
+      mat-list-item
+      routerLink="/account/cards"
+      class=" {{ isActive('/account/cards') }}"
+    >
+      <mat-icon>style</mat-icon> Meine Karten</a
+    >
+  </div>
   <mat-divider></mat-divider>
-  <app-filter-tags *ngIf="cards"></app-filter-tags>
+
+  <a mat-list-item (click)="logout()" id="logout" *ngIf="loggedIn$ | async">
+    <mat-icon>exit_to_app</mat-icon> Logout
+  </a>
 </mat-nav-list>

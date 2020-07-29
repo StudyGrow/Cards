@@ -6,15 +6,10 @@
   margin-right: auto;
   margin-left: auto;
 }
-
-#btnDiv {
-  position: relative;
-  display: block;
-  width: 90%;
-  text-align: right;
-  margin: auto;
-  margin-bottom: 10px;
+::ng-deep .mat-form-field-wrapper {
+  margin-bottom: -1.25em;
 }
+
 #carousel {
   width: 100%;
 }
@@ -53,4 +48,9 @@ span {
 app-card {
   width: 90%;
   margin: auto;
+}
+#controls {
+  width: 90%;
+  margin: auto;
+  position: relative;
 }

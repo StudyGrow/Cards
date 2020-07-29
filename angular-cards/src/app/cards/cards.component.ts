@@ -4,48 +4,66 @@ import {
   HostListener,
   ViewChild,
   ElementRef,
+  OnDestroy,
 } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
 
 import { Vorlesung } from "src/app/models/Vorlesung";
-import { CardsService } from "src/app/services/cards.service";
 
 import { Title } from "@angular/platform-browser";
 import { Card } from "../models/Card";
-import { StatesService } from "../services/states.service";
+
+import { Store } from "@ngrx/store";
+
+import { Observable, Subscription } from "rxjs";
+
+import { map, tap, share } from "rxjs/operators";
+import { fetchCards } from "../store/actions/cardActions";
+import { fadeInOnEnterAnimation } from "angular-animations";
+import { setSuggestionsMode } from "../store/actions/actions";
+import { getCardsData, selectUserId } from "../store/selector";
 
 @Component({
   selector: "app-cards",
   templateUrl: "./cards.component.html",
   styleUrls: ["./cards.component.css"],
+  animations: [fadeInOnEnterAnimation()],
 })
-export class CardsComponent implements OnInit {
-  public vlAbrv: string;
-  public lecture: Vorlesung;
-  public loading: boolean = true;
-  public formMode: string = "none";
-  public cards: Card[];
-
-  private inTypingField: boolean;
+export class CardsComponent implements OnInit, OnDestroy {
+  public formMode: string;
+  private subscriptions$: Subscription[] = [];
   @ViewChild("alert", { static: false }) alert: ElementRef;
 
   @HostListener("click", ["$event.target"])
   onClick() {
-    this.stateServie.setHideSuggestions(true);
+    this.store.dispatch(setSuggestionsMode({ hide: true }));
   }
-  constructor(
-    private route: ActivatedRoute,
-    private stateServie: StatesService,
-    private cardsService: CardsService,
+  //holds data from store
+  public data$: Observable<any> = this.store.select("cardsData").pipe(
+    map(getCardsData),
 
-    private title: Title
-  ) {}
+    share()
+  );
+
+  public lecture$: Observable<Vorlesung> = this.data$.pipe(
+    map((data) => data.currLecture)
+  );
+
+  constructor(private store: Store<any>, private title: Title) {}
 
   ngOnInit(): void {
     this.title.setTitle("Cards");
-    this.vlAbrv = this.route.snapshot.paramMap.get("abrv");
-    this.stateServie.getTyping().subscribe((val) => (this.inTypingField = val));
 
-    this.stateServie.getFormMode().subscribe((mode) => (this.formMode = mode));
+    this.store.dispatch(fetchCards());
+
+    let sub = this.store
+      .select("cardsData")
+      .pipe(map((state) => state.formMode))
+      .subscribe((mode) => {
+        this.formMode = mode;
+      });
+    this.subscriptions$.push(sub);
+  }
+  ngOnDestroy() {
+    this.subscriptions$.forEach((sub) => sub.unsubscribe());
   }
 }

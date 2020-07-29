@@ -15,7 +15,9 @@ mongoose.connect(databaseConfig.database, databaseConfig.options).catch((reason)
 mongoose.connection.on("connected", () => {
   console.log(
     `Mongoose connection open on ${
-      process.env.NODE_ENV.indexOf("development") > -1 ? "test" : "production"
+      process.env.NODE_ENV && process.env.NODE_ENV.indexOf("development") > -1
+        ? "test"
+        : "production"
     } database`
   );
 });

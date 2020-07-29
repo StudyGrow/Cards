@@ -33,6 +33,34 @@ router.get(
   }
 );
 
+router.get(
+  "/a",
+  [
+    query("abrv")
+      .isLength({ min: 3, max: 7 })
+      .withMessage("Lecture abreviation must be between 3 and 7 characters"),
+  ],
+  (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      res.status(422).json({ errors: errors.array() }); //send errors to the client
+      return;
+    }
+    let abrv = req.query.abrv;
+    let cards = req.services.cards.findByAbrv(abrv);
+    let vl = req.services.lectures.findByAbrv(abrv);
+    let userid;
+    let username;
+    if (req.isAuthenticated()) {
+      userid = req.user._id;
+    }
+
+    Promise.all([cards, vl]).then((obj) => {
+      res.json({ cards: obj[0], lecture: obj[1], uid: userid, username: username });
+    });
+  }
+);
+
 //Add card to the database
 router.post(
   "/new",

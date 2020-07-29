@@ -3,7 +3,7 @@ const User = require("../models/User");
 const Card = require("../models/Card");
 const bcrypt = require("bcryptjs"); //used to encrypt and decrypt passwords
 const mail = require("./mailService");
-const crypto = require("crypto-random-string")
+const crypto = require("crypto-random-string");
 
 module.exports = function userService() {
   //create a new Account for the site
@@ -60,15 +60,14 @@ module.exports = function userService() {
 
   userService.updateAccount = async (user, form, callback) => {
     try {
-      if (user.username == form.username && user.email == form.email) {
-        callback(null);
-        return;
-      } else if (user.email == form.email && user.username != form.username) {
-        await checkUnique(null, form.username);
-      } else if (user.email != form.email && user.username == form.username) {
-        await checkUnique(form.email, null);
-      } else {
-        await checkUnique(form.email, form.username);
+      if (user.username != form.username && user.email != form.email) {
+        if (user.email == form.email && user.username != form.username) {
+          await checkUnique(null, form.username);
+        } else if (user.email != form.email && user.username == form.username) {
+          await checkUnique(form.email, null);
+        } else {
+          await checkUnique(form.email, form.username);
+        }
       }
       await User.findByIdAndUpdate(user._id, {
         username: form.username,
@@ -109,7 +108,7 @@ function addAccount(form, callback) {
     email: form.email,
     creationDate: new Date(),
     confirmed: false,
-    token: crypto(32)
+    token: crypto(32),
   });
   hashPassword(form.password, (err, password) => {
     if (password) {
@@ -118,7 +117,7 @@ function addAccount(form, callback) {
         if (err) {
           callback(err, false);
         } else {
-          mail.sendConfirmationMail(user)
+          mail.sendConfirmationMail(user);
           callback(false, user);
         }
       });

@@ -1,11 +1,16 @@
-import { Component, OnInit, OnDestroy, Input } from "@angular/core";
-import { StatesService } from "../../services/states.service";
-import { CardsService } from "../../services/cards.service";
-import { LecturesService } from "../../services/lectures.service";
+import { Component, OnInit, OnDestroy, Input, ViewChild } from "@angular/core";
+
 import { Card } from "../../models/Card";
 import { Vorlesung } from "src/app/models/Vorlesung";
 import { Subscription } from "rxjs";
 import { Router } from "@angular/router";
+import { Store } from "@ngrx/store";
+import { AppState } from "src/app/store/reducer";
+import { addCard, setActiveCardIndex } from "src/app/store/actions/cardActions";
+import { addLercture } from "src/app/store/actions/LectureActions";
+import { CardsEffects } from "src/app/store/effects/effects";
+import { NgForm } from "@angular/forms";
+import { setTypingMode } from "src/app/store/actions/actions";
 
 @Component({
   selector: "app-add-card-form",
@@ -14,6 +19,7 @@ import { Router } from "@angular/router";
 })
 export class AddCardFormComponent implements OnInit, OnDestroy {
   @Input() neu: boolean = false;
+  @ViewChild("f") form: NgForm;
   lecture: Vorlesung;
   newCard: Card;
   hidden: boolean;
@@ -21,17 +27,25 @@ export class AddCardFormComponent implements OnInit, OnDestroy {
   themaLength: number;
   subscriptions$: Subscription[] = [];
   constructor(
-    private cardsService: CardsService,
-    private stateService: StatesService,
     private router: Router,
-    private lectureService: LecturesService
+
+    private store: Store<AppState>,
+    private actionState: CardsEffects
   ) {}
 
   ngOnInit(): void {
-    let sub = this.lectureService
-      .getCurrentLecture()
-      .subscribe((lecture) => (this.lecture = lecture));
+    let sub = this.actionState.addCard$.subscribe((res) => {
+      this.form.reset();
+    });
     this.subscriptions$.push(sub);
+
+    if (this.neu) {
+      this.lecture = JSON.parse(localStorage.getItem("vl"));
+      sub = this.actionState.addLecture$.subscribe((res) =>
+        this.router.navigateByUrl(`vorlesung/${this.lecture.abrv}`)
+      );
+      this.subscriptions$.push(sub);
+    }
   }
   ngOnDestroy() {
     this.subscriptions$.forEach((sub) => {
@@ -40,32 +54,31 @@ export class AddCardFormComponent implements OnInit, OnDestroy {
   }
   setStyle() {}
   onSubmit(f) {
+    let abrv;
+    if (this.neu) {
+      abrv = this.lecture.abrv; //get the lecture abreviation stored lecture
+    } else {
+      abrv = this.router.url.split(/vorlesung\//)[1]; //get the lecture abreviation from the route
+    }
     this.newCard = new Card(
       f.value.thema,
       f.value.content,
-      this.lecture.abrv,
+      abrv,
       0,
       f.value.tags
     );
     if (this.neu) {
-      this.lectureService.addLecture(this.lecture).subscribe((res) => {
-        let sub = this.cardsService.addCard(this.newCard).subscribe((res) => {
-          sub.unsubscribe();
-        });
-        this.router.navigateByUrl(`vorlesung/${this.lecture.abrv}`);
-      });
+      this.store.dispatch(addLercture({ lecture: this.lecture }));
+      this.store.dispatch(addCard({ card: this.newCard }));
     } else {
-      let sub = this.cardsService.addCard(this.newCard).subscribe((res) => {
-        f.reset();
-        sub.unsubscribe();
-      });
+      this.store.dispatch(addCard({ card: this.newCard }));
     }
   }
   inField() {
-    this.stateService.setTyping(true);
+    this.store.dispatch(setTypingMode({ typing: true }));
   }
   resetNav() {
-    this.stateService.setTyping(false);
+    this.store.dispatch(setTypingMode({ typing: false }));
   }
   //Function to set style of small character indicator
   setThemaCharIndicatorStyle(thema) {

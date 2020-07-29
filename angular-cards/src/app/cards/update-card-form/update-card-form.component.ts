@@ -1,10 +1,20 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
-import { StatesService } from "../../services/states.service";
-import { CardsService } from "../../services/cards.service";
+import { Component, OnInit, OnDestroy, ViewChild } from "@angular/core";
+
 import { Card } from "../../models/Card";
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { Subscription } from "rxjs";
-import { Template } from "@angular/compiler/src/render3/r3_ast";
+
+import { Store } from "@ngrx/store";
+
+import {
+  updateCard,
+  setActiveCardIndex,
+} from "src/app/store/actions/cardActions";
+import { CardsEffects } from "src/app/store/effects/effects";
+import { NgForm } from "@angular/forms";
+import { setFormMode, setTypingMode } from "src/app/store/actions/actions";
+import { share, map } from "rxjs/operators";
+import { selectActiveIndex, selectCurrentCard } from "src/app/store/selector";
 
 @Component({
   selector: "app-update-card-form",
@@ -12,25 +22,37 @@ import { Template } from "@angular/compiler/src/render3/r3_ast";
   styleUrls: ["./update-card-form.component.css"],
 })
 export class UpdateCardFormComponent implements OnInit, OnDestroy {
-  public cardCopy: Card;
+  public cardCopy: Card = new Card();
   private cardIndex: number; //saves the cardindex which the user is currently updating
   private activeCardIndex: number; //saves the active cardindex
-  subscriptions$: Subscription[] = [];
+  private subscriptions$: Subscription[] = [];
+  private data$ = this.store.select("cardsData").pipe(share());
+
   constructor(
-    private cardsService: CardsService,
-    private statesService: StatesService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private store: Store<any>,
+    private actionState: CardsEffects
   ) {}
 
-  ngOnInit(): void {
-    let sub = this.cardsService.activeCard().subscribe((card) => {
-      this.activeCardIndex = card.positionIndex;
+  @ViewChild("f") form: NgForm;
 
-      this.cardCopy = { ...card };
+  ngOnInit(): void {
+    let sub = this.data$.pipe(map(selectActiveIndex)).subscribe((index) => {
+      this.activeCardIndex = index;
 
       this.cardIndex = this.activeCardIndex;
     });
+    this.subscriptions$.push(sub);
 
+    sub = this.data$.pipe(map(selectCurrentCard)).subscribe((card) => {
+      this.cardCopy = { ...card };
+    });
+    this.subscriptions$.push(sub);
+    sub = this.actionState.updateCard$.subscribe(() => {
+      this.store.dispatch(setFormMode({ mode: "reset" }));
+
+      this.form.reset();
+    });
     this.subscriptions$.push(sub);
   }
   ngOnDestroy() {
@@ -39,20 +61,16 @@ export class UpdateCardFormComponent implements OnInit, OnDestroy {
     });
   }
   inField() {
-    this.statesService.setTyping(true);
+    this.store.dispatch(setTypingMode({ typing: true }));
   }
   resetNav() {
-    this.statesService.setTyping(false);
+    this.store.dispatch(setTypingMode({ typing: false }));
   }
   onSubmit(f) {
     this.cardCopy.content = f.value.content;
     this.cardCopy.thema = f.value.thema;
-    let sub = this.cardsService
-      .updateCard({ ...this.cardCopy }, this.cardIndex)
-      .subscribe((resp) => {
-        f.reset();
-        sub.unsubscribe();
-      });
+
+    this.store.dispatch(updateCard({ card: this.cardCopy }));
   }
   cancelEdit() {
     const dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
@@ -112,12 +130,12 @@ export class UpdateCardFormComponent implements OnInit, OnDestroy {
 export class DialogOverviewExampleDialog {
   constructor(
     public dialogRef: MatDialogRef<DialogOverviewExampleDialog>,
-    private service: StatesService
+
+    private store: Store<any>
   ) {}
 
   cancel() {
-    this.service.setFormMode("reset");
-    this.service.setLoadingState(false);
+    this.store.dispatch(setFormMode({ mode: "reset" }));
     this.dialogRef.close();
   }
   onNoClick(): void {

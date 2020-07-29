@@ -1,8 +1,7 @@
-import { Component, OnInit } from "@angular/core";
-import { Observable } from "rxjs";
+import { Component, OnInit, Output, OnDestroy } from "@angular/core";
+import { Observable, Subscription } from "rxjs";
 import { Vorlesung } from "src/app/models/Vorlesung";
 import { LecturesService } from "src/app/services/lectures.service";
-import { CardsService } from "src/app/services/cards.service";
 
 import { COMMA, ENTER } from "@angular/cdk/keycodes";
 import { ElementRef, ViewChild } from "@angular/core";
@@ -13,60 +12,68 @@ import {
 } from "@angular/material/autocomplete";
 import { MatChipInputEvent } from "@angular/material/chips";
 
-import { map, startWith } from "rxjs/operators";
-import { StatesService } from "src/app/services/states.service";
+import { map, startWith, share } from "rxjs/operators";
+
+import { Store } from "@ngrx/store";
+import {
+  setTypingMode,
+  applyFilter,
+  resetFilter,
+  removeTag,
+} from "src/app/store/actions/actions";
+import { selectDrawerState, selectTags } from "src/app/store/selector";
 
 @Component({
   selector: "app-filter-tags",
   templateUrl: "./filter-tags.component.html",
   styleUrls: ["./filter-tags.component.css"],
 })
-export class FilterTagsComponent implements OnInit {
-  lecture$: Observable<Vorlesung>;
+export class FilterTagsComponent implements OnInit, OnDestroy {
+  private data$: Observable<any> = this.store
+    .select(
+      //holds cards data from store
+      "cardsData"
+    )
+    .pipe(share());
 
+  public lecture$: Observable<Vorlesung> = this.data$.pipe(
+    map((data) => data.currLecture)
+  );
+  selected = []; //active tags
+  subs: Subscription[] = [];
   separatorKeysCodes: number[] = [ENTER, COMMA];
   formCtrl = new FormControl();
   tags: string[] = [];
   filteredTags: Observable<string[]>;
   selectedChanged: boolean = false;
 
-  lecture: Vorlesung;
   @ViewChild("Input") input: ElementRef<HTMLInputElement>;
   @ViewChild("auto") matAutocomplete: MatAutocomplete;
 
-  constructor(
-    private lectureService: LecturesService,
-    private cardService: CardsService,
-    private states: StatesService
-  ) {}
-  selected = [];
+  constructor(private store: Store<any>) {}
+
   ngOnInit(): void {
-    this.lecture$ = this.lectureService.getCurrentLecture();
-    this.lecture$.subscribe((lect) => {
-      this.lecture = lect;
-      this.tags = this.lecture.tagList;
+    let sub = this.data$.pipe(map(selectTags)).subscribe((tags) => {
+      this.selected = tags;
     });
+    this.subs.push(sub);
+    sub = this.lecture$.subscribe((lect) => {
+      this.tags = lect.tagList;
+    });
+
     this.filteredTags = this.formCtrl.valueChanges.pipe(
       startWith(null),
       map((tag: string | null) => {
         return tag ? this._filter(tag) : this.tags.slice();
       })
     );
-    this.states.toggle().subscribe((val) => {
-      if (val === false) {
-        if (this.selected.length === 0 && this.selectedChanged) {
-          this.selectedChanged = false;
-          this.cardService.resetFilter();
-        } else {
-          this.applyFilter();
-        }
-      }
-    });
   }
+
   applyFilter() {
-    if (this.selected.length > 0) {
-      this.selectedChanged = true;
-      this.cardService.applyFilter(this.selected);
+    if (this.selected.length === 0) {
+      this.store.dispatch(resetFilter());
+    } else {
+      this.store.dispatch(applyFilter({ tags: [...this.selected] }));
     }
   }
 
@@ -77,7 +84,7 @@ export class FilterTagsComponent implements OnInit {
       // Add our fruit
 
       if ((value || "").trim()) {
-        this.selected.push(value.trim());
+        this.store.dispatch(applyFilter({ tags: [value] }));
       }
 
       // Reset the input value
@@ -89,30 +96,29 @@ export class FilterTagsComponent implements OnInit {
     }
   }
 
-  remove(fruit: string): void {
-    const index = this.selected.indexOf(fruit);
-
-    if (index >= 0) {
-      this.selected.splice(index, 1);
-    }
+  remove(tag: string): void {
+    this.store.dispatch(removeTag({ tag: tag }));
   }
 
   selected1(event: MatAutocompleteSelectedEvent): void {
-    this.selected.push(event.option.viewValue);
+    this.store.dispatch(applyFilter({ tags: [event.option.viewValue] }));
     this.input.nativeElement.value = "";
     this.formCtrl.setValue(null);
   }
   inField() {
-    this.states.setTyping(true);
+    this.store.dispatch(setTypingMode({ typing: true }));
   }
   resetNav() {
-    this.states.setTyping(false);
+    this.store.dispatch(setTypingMode({ typing: false }));
   }
   private _filter(value: string): string[] {
     const filterValue = value.toLowerCase();
 
     return this.tags.filter(
-      (fruit) => fruit.toLowerCase().indexOf(filterValue) === 0
+      (item) => item.toLowerCase().indexOf(filterValue) === 0
     );
+  }
+  ngOnDestroy() {
+    this.subs.forEach((sub) => sub.unsubscribe());
   }
 }

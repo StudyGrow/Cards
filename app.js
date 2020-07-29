@@ -18,7 +18,10 @@ app.use(
     resave: false,
     saveUninitialized: false,
     proxy: true,
-    cookie: { secure: process.env.NODE_ENV.indexOf("development") > -1 ? false : true }, //secure needs to be set to true for production here
+    cookie: {
+      secure:
+        process.env.NODE_ENV && process.env.NODE_ENV.indexOf("development") > -1 ? false : true,
+    }, //secure needs to be set to true for production here
 
     store: new MongoStore({ mongooseConnection: mongoose.connection }),
   })
@@ -30,6 +33,13 @@ require("./config/passport")(passport);
 
 app.use(passport.initialize());
 app.use(passport.session());
+
+app.use((req, res, next) => {
+  if (process.env.NODE_ENV == "development") {
+    console.log("Request: ", req.originalUrl);
+  }
+  next();
+});
 
 app.post("/api/login", (req, res, next) => {
   req.services.user.login(passport, req, res, next);

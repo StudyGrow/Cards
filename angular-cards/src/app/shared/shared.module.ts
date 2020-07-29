@@ -8,6 +8,9 @@ import { MatDialogModule } from "@angular/material/dialog";
 import { MatTooltipModule } from "@angular/material/tooltip";
 import { SafeHtmlPipe } from "./safe-html.pipe";
 import { MatInputModule } from "@angular/material/input";
+import { MatAutocompleteModule } from "@angular/material/autocomplete";
+import { MatChipsModule } from "@angular/material/chips";
+import { MatIconModule } from "@angular/material/icon";
 
 @NgModule({
   imports: [
@@ -22,9 +25,13 @@ import { MatInputModule } from "@angular/material/input";
     CommonModule,
     SafeHtmlPipe,
     MatInputModule,
+    MatChipsModule,
+    MatIconModule,
     FormsModule,
+    MatInputModule,
     MatFormFieldModule,
     ReactiveFormsModule,
+    MatAutocompleteModule,
     MatExpansionModule,
     MatDialogModule,
     MatTooltipModule,

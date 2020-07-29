@@ -1,6 +1,6 @@
 module.exports = {
   database: `mongodb+srv://admin:admin@cluster0-eyxul.gcp.mongodb.net/${
-    process.env.NODE_ENV.indexOf("development") > -1 ? "test" : "production"
+    process.env.NODE_ENV && process.env.NODE_ENV.indexOf("development") > -1 ? "test" : "production"
   }?retryWrites=true&w=majority`,
   sercret: "42",
   options: {

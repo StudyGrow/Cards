@@ -12,6 +12,13 @@ module.exports = function vlService() {
     }
   };
 
+  vlService.findByAbrv = async (abrv) => {
+    try {
+      return await Lecture.findOne({ abrv: abrv }).sort("name");
+    } finally {
+    }
+  };
+
   //Returns the first lecture that matches the query
   vlService.getLectureByQuery = async (query, callback) => {
     try {

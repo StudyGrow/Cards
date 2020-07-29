@@ -3,14 +3,22 @@ import { Card } from "../../models/Card";
 import { Router, NavigationEnd } from "@angular/router";
 import { Title } from "@angular/platform-browser";
 
-import { CardsService } from "src/app/services/cards.service";
 import { NotificationsService } from "../../services/notifications.service";
 
-import { StatesService } from "src/app/services/states.service";
 import { Notification } from "../../models/Notification";
 import { UserService } from "../../services/user.service";
 
-import { Subscription } from "rxjs";
+import { Subscription, Observable } from "rxjs";
+import { Store } from "@ngrx/store";
+import {
+  toggleDrawerState,
+  setDrawerState,
+  resetFilter,
+} from "src/app/store/actions/actions";
+import { map } from "rxjs/operators";
+import { selectCurrentLecture, authenticated } from "src/app/store/selector";
+import { clearCardData } from "src/app/store/actions/cardActions";
+
 @Component({
   selector: "app-nav-bar",
   templateUrl: "./nav-bar.component.html",
@@ -23,38 +31,41 @@ export class NavBarComponent implements OnInit, OnDestroy {
   subscriptions$: Subscription[] = [];
   showCards: boolean;
   public loading: boolean;
-  private cardsSub: Subscription;
+  public loading$: Observable<boolean>;
+
   public constructor(
     private router: Router,
     private titleService: Title,
 
-    private cardsService: CardsService,
-    private statesService: StatesService,
     private notification: NotificationsService,
     private userService: UserService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private store: Store<any>
   ) {}
 
   ngOnInit(): void {
     setTimeout(() => {
       this.setPageTitle();
-      this.statesService.getLoadingState().subscribe((val) => {
-        this.loading = val;
-        this.cdr.detectChanges();
-      });
-      let sub = this.userService
-        .authentication()
+      let sub = this.store
+        .select("cardsData")
+        .pipe(map((state) => state.loading))
+        .subscribe((val) => {
+          this.loading = val;
+          this.cdr.detectChanges();
+        });
+      this.subscriptions$.push(sub);
+      sub = this.store
+        .select("cardsData")
+        .pipe(map(authenticated))
         .subscribe((val) => (this.loggedIn = val));
       this.subscriptions$.push(sub);
-      this.cardsService.getCards().subscribe((cards) => {
-        this.cards = cards;
-      });
-      this.router.events.subscribe((e) => {
+
+      sub = this.router.events.subscribe((e) => {
         if (e instanceof NavigationEnd) {
           this.handleRouteChanges();
         }
       });
-
+      this.subscriptions$.push(sub);
       sub = this.notification
         .notifications()
         .subscribe((notifs) => (this.notifications = notifs));
@@ -62,11 +73,13 @@ export class NavBarComponent implements OnInit, OnDestroy {
     }, 0);
   }
   handleRouteChanges() {
-    this.statesService.closeDrawer();
+    this.store.dispatch(setDrawerState({ show: false }));
     if (!this.router.url.match(/account/)) {
       this.userService.clearAccountInfo();
     }
     if (!this.router.url.match(/vorlesung/)) {
+      this.store.dispatch(clearCardData());
+      this.store.dispatch(resetFilter());
       this.showCards = false;
     } else {
       this.showCards = true;
@@ -110,6 +123,6 @@ export class NavBarComponent implements OnInit, OnDestroy {
     this.titleService.setTitle(currentTitle);
   }
   drawerToggle() {
-    this.statesService.toggleDrawer();
+    this.store.dispatch(toggleDrawerState());
   }
 }

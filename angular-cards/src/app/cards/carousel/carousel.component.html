@@ -1,56 +1,68 @@
-<app-lecture-header></app-lecture-header>
-<div id="spinner" *ngIf="loading" class="row">
-  <div class="spinner-border" role="status">
-    <span class="sr-only">Loading...</span>
+<div class="row no-gutters" id="controls">
+  <div class="col-md-9 col-xs-12 p-1 mb-2">
+    <app-filter-tags></app-filter-tags>
+  </div>
+  <div class="col-md-3 col-xs-12 mb-2 text-right" id="bntcol">
+    <div
+      class="btn-group"
+      *ngIf="filteredCards$ | async as cards"
+      id="btnDiv"
+      role="group"
+    >
+      <button
+        class="btn btn-light"
+        id="rand"
+        placement="top"
+        matTooltip="Zufall"
+        matTooltipPosition="above"
+        (click)="showRandomCard()"
+        [disabled]="formMode == 'edit' || !cards || cards.length == 0"
+      >
+        <div class="fas fa-random"></div>
+      </button>
+      <button
+        class="btn btn-light"
+        id="editCard"
+        type="button"
+        [disabled]="isDisabled()"
+        (click)="enableEdit()"
+        matTooltip="Bearbeiten"
+        matTooltipPosition="above"
+      >
+        <div class="fas fa-pen"></div>
+      </button>
+
+      <button
+        [ngClass]="setClass()"
+        id="toggleAdd"
+        type="button"
+        data-toggle="button"
+        (click)="toggleAddView()"
+        [matTooltip]="formMode == 'add' ? 'Verstecken' : 'Hinzufügen'"
+        matTooltipPosition="above"
+        [disabled]="formMode == 'edit'"
+      >
+        <div [class]="formMode == 'add' ? 'fas fa-minus' : 'fas fa-plus'"></div>
+      </button>
+    </div>
   </div>
 </div>
 
-<div class="btn-group" id="btnDiv" role="group">
-  <button
-    class="btn btn-light"
-    id="rand"
-    placement="top"
-    matTooltip="Zufall"
-    matTooltipPosition="above"
-    (click)="showRandomCard()"
-    [disabled]="formMode == 'edit' || !cards || cards.length == 0"
+<div class="row" *ngIf="cards" [@fadeInOnEnter]>
+  <a
+    id="left"
+    class="navig col"
+    *ngIf="cardCount > 1"
+    [@fadeInOnEnter]
+    (click)="goToPrev()"
   >
-    <div class="fas fa-random"></div>
-  </button>
-  <button
-    class="btn btn-light"
-    id="editCard"
-    type="button"
-    [disabled]="isDisabled()"
-    (click)="enableEdit()"
-    matTooltip="Bearbeiten"
-    matTooltipPosition="above"
-  >
-    <div class="fas fa-pen"></div>
-  </button>
-
-  <button
-    [ngClass]="setClass()"
-    id="toggleAdd"
-    type="button"
-    data-toggle="button"
-    (click)="toggleAddView()"
-    [matTooltip]="formMode == 'add' ? 'Verstecken' : 'Hinzufügen'"
-    matTooltipPosition="above"
-    [disabled]="formMode == 'edit'"
-  >
-    <div [class]="formMode == 'add' ? 'fas fa-minus' : 'fas fa-plus'"></div>
-  </button>
-</div>
-<div class="row" *ngIf="cards && cards.length > 0" [@fadeInOnEnter]>
-  <a id="left" class="navig col" *ngIf="cards.length > 0" (click)="goToPrev()">
     <span class="fas fa-chevron-left"></span>
   </a>
-  <div id="carousel" (swipeleft)="goToPrev()" (swiperight)="goToNext()">
+  <div id="carousel">
     <mdb-carousel
       (activeSlideChange)="onSlide($event)"
       #mycarousel
-      [activeSlideIndex]="0"
+      [(activeSlideIndex)]="this.activeSlide"
       [animation]="'slide'"
       [isControls]="false"
       [allowSwipe]="true"
@@ -64,7 +76,13 @@
       </mdb-carousel-item>
     </mdb-carousel>
   </div>
-  <a id="right" class="navig col" *ngIf="cards.length > 0" (click)="goToNext()">
+  <a
+    id="right"
+    class="navig col"
+    *ngIf="cardCount > 1"
+    [@fadeInOnEnter]
+    (click)="goToNext()"
+  >
     <span class="fas fa-chevron-right"></span>
   </a>
 </div>

@@ -1,9 +1,13 @@
-//Modules
+//Core Modules
 import { BrowserModule } from "@angular/platform-browser";
 import { NgModule, Injectable, LOCALE_ID } from "@angular/core";
 import { HttpClientModule } from "@angular/common/http";
 import { SharedModule } from "./shared/shared.module";
 import { AppRoutingModule } from "./app-routing.module";
+import { StoreModule } from "@ngrx/store";
+
+//Dev Module
+import { StoreDevtoolsModule } from "@ngrx/store-devtools";
 
 //Material Modules
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
@@ -27,6 +31,12 @@ import {
   HAMMER_GESTURE_CONFIG,
 } from "@angular/platform-browser";
 
+//Reducers
+import { cardsReducer } from "./store/reducer";
+//Effects
+import { EffectsModule } from "@ngrx/effects";
+import { CardsEffects } from "./store/effects/effects";
+
 //Localization
 import { registerLocaleData } from "@angular/common";
 import de from "@angular/common/locales/de";
@@ -46,7 +56,6 @@ import { AboutComponent } from "./routes/about/about.component";
 
 import { ErrorPageComponent } from "./routes/error-page/error-page.component";
 
-import { FilterTagsComponent } from "./components/filter-tags/filter-tags.component";
 import { ConfirmationPageComponent } from "./routes/confirmation-page/confirmation-page.component";
 import { ConfirmationComponent } from "./components/confirmation/confirmation.component";
 import { NavListComponent } from "./components/nav-list/nav-list.component";
@@ -94,7 +103,6 @@ export class MyHammerConfig extends HammerGestureConfig {
     FooterComponent,
     AboutComponent,
     ErrorPageComponent,
-    FilterTagsComponent,
 
     ConfirmationPageComponent,
 
@@ -112,17 +120,19 @@ export class MyHammerConfig extends HammerGestureConfig {
     MatListModule,
     MatDialogModule,
     MatSidenavModule,
-    MatChipsModule,
+
     MatDividerModule,
-    MatInputModule,
+
     MatMenuModule,
     SharedModule,
     MatFormFieldModule,
-    MatAutocompleteModule,
-    MatIconModule,
+
     MatSelectModule,
     HammerModule,
     HomeModule,
+    StoreDevtoolsModule.instrument({ maxAge: 10 }),
+    StoreModule.forRoot({ cardsData: cardsReducer }),
+    EffectsModule.forRoot([CardsEffects]),
   ],
   providers: [
     { provide: LOCALE_ID, useValue: "de" },

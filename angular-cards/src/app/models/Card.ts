@@ -1,21 +1,14 @@
 export class Card {
-  thema: string;
-  content: string;
-  abrv: string;
-  latex: number;
-
-  positionIndex?: number;
-  _id?: string;
-  authorId?: string;
-  authorName?: string;
-  date?: Date;
-  tags?: string[];
-
-  constructor(thema, content, abrv, latex, tags) {
-    this.thema = thema;
-    this.content = content;
-    this.abrv = abrv;
-    latex = latex;
-    this.tags = tags;
-  }
+  constructor(
+    public thema?: string,
+    public content?: string,
+    public abrv?: string,
+    public latex?: number,
+    public positionIndex?: number,
+    public _id?: string,
+    public authorId?: string,
+    public authorName?: string,
+    public date?: Date,
+    public tags?: string[]
+  ) {}
 }

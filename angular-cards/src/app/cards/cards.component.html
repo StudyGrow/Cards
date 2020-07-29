@@ -1,7 +1,10 @@
 <div class="container">
-  <app-carousel></app-carousel>
-
-  <br />
+  <h1 class="text-center" *ngIf="lecture$ | async as lecture">
+    {{ lecture.name }}
+  </h1>
+  <div style="min-height: 250px;">
+    <app-carousel></app-carousel>
+  </div>
   <app-add-card-form *ngIf="formMode == 'add'"></app-add-card-form>
   <app-update-card-form *ngIf="formMode == 'edit'"></app-update-card-form>
 </div>

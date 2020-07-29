@@ -2,7 +2,7 @@ import { Component, OnInit, Output, EventEmitter } from "@angular/core";
 
 import { Vorlesung } from "../../models/Vorlesung";
 import { LecturesService } from "../../services/lectures.service";
-import { StatesService } from "../../services/states.service";
+
 import { Subscription } from "rxjs";
 import { Router } from "@angular/router";
 @Component({
@@ -12,7 +12,7 @@ import { Router } from "@angular/router";
 })
 export class AddLectureFormComponent implements OnInit {
   subscriptions$: Subscription[] = [];
-  constructor(private lecture: LecturesService, private router: Router) {}
+  constructor(private router: Router) {}
 
   ngOnInit(): void {}
   ngOnDestroy() {

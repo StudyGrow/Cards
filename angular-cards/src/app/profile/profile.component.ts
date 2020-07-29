@@ -1,23 +1,40 @@
-import { Component, OnInit } from "@angular/core";
-import { UserService } from "../services/user.service";
+import { Component, OnInit, OnDestroy } from "@angular/core";
+
+import { Store } from "@ngrx/store";
+import { map } from "rxjs/operators";
+import { selectUserInfo } from "../store/selector";
+import { fetchUserData } from "../store/actions/UserActions";
+import { Subscription } from "rxjs";
 
 @Component({
   selector: "app-profile",
   templateUrl: "./profile.component.html",
   styleUrls: ["./profile.component.css"],
 })
-export class ProfileComponent implements OnInit {
+export class ProfileComponent implements OnInit, OnDestroy {
   public page: string;
   public cardCount = 0;
-  constructor(private userService: UserService) {}
+  private subs: Subscription[] = [];
+  constructor(private store: Store<any>) {}
 
   ngOnInit(): void {
-    this.userService.getUserInfo().subscribe((info) => {
-      if (info && info.cards) {
-        this.cardCount = info.cards.length;
-      } else {
-        this.cardCount = 0;
-      }
-    });
+    let sub = this.store
+      .select("cardsData")
+      .pipe(
+        map(selectUserInfo),
+        map((info) => info.cards)
+      )
+      .subscribe((cards) => {
+        if (cards) {
+          this.cardCount = cards.length;
+        } else {
+          this.cardCount = 0;
+        }
+      });
+    this.subs.push(sub);
+    this.store.dispatch(fetchUserData());
+  }
+  ngOnDestroy() {
+    this.subs.forEach((sub) => sub.unsubscribe());
   }
 }
