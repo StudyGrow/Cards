@@ -5,15 +5,11 @@ import { Card } from "../models/Card";
 import { Vorlesung } from "../models/Vorlesung";
 import { state } from "@angular/animations";
 
-export const selectCards = (state: AppState) => state.cards;
+export const selectAllCards = (state: AppState) => state.cards;
 
 export const selectTags = (state: AppState) => state.tags;
 
-export const filteredCards = createSelector(
-  selectCards,
-  selectTags,
-  (cards, filter) => applyFilter(cards, filter)
-);
+export const selectActiveIndex = (state: AppState) => state.activeIndex;
 
 export const selectCurrentLecture = (state: AppState) => state.currLecture;
 
@@ -31,8 +27,20 @@ export const selectUser = (state: AppState) => state.userData.user;
 
 export const authenticated = (state: AppState) => state.userData.authenticated;
 
+export const selectFilteredCards = createSelector(
+  selectAllCards,
+  selectTags,
+  (cards, filter) => applyFilter(cards, filter)
+);
+
+export const selectCurrentCard = createSelector(
+  selectFilteredCards,
+  selectActiveIndex,
+  (cards, index) => cards[index]
+);
+
 export const getCardsData = createSelector(
-  selectCards,
+  selectAllCards,
   selectCurrentLecture,
   selectUserId,
   (cards: Card[], currLecture: Vorlesung, uid: string) => ({

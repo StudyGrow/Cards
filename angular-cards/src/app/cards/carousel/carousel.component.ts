@@ -22,11 +22,7 @@ import { setActiveCardIndex } from "../../store/actions/cardActions";
 import { setFormMode } from "src/app/store/actions/actions";
 import { map, share, startWith, delay } from "rxjs/operators";
 
-import {
-  selectCards,
-  selectUserId,
-  filteredCards,
-} from "src/app/store/selector";
+import { selectUserId, selectFilteredCards } from "src/app/store/selector";
 import { state } from "@angular/animations";
 
 @Component({
@@ -58,7 +54,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
   cards: Card[]; //array of all the cards
   cardCount = 0;
   filteredCards$: Observable<Card[]> = this.data$.pipe(
-    map(filteredCards),
+    map(selectFilteredCards),
     delay(200)
   );
 
