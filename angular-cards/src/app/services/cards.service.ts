@@ -50,6 +50,7 @@ export class CardsService {
 
   updateCard2(card: Card): Observable<any> {
     //send update to server using http service
+    console.log(card)
     return this.http
       .put<any>(
         this.config.urlBase + "cards/update",

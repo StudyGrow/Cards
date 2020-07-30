@@ -18,7 +18,7 @@ import {
 import { combineLatest } from "rxjs/index";
 import { Store } from "@ngrx/store";
 import { AppState } from "src/app/store/reducer";
-import { setActiveCardIndex } from "../../store/actions/cardActions";
+import { updateCard, setActiveCardIndex } from "../../store/actions/cardActions";
 import { setFormMode } from "src/app/store/actions/actions";
 import { map, share, startWith, delay } from "rxjs/operators";
 
@@ -47,7 +47,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
 
   loading: boolean;
   private uid: string;
-  private cards$: Observable<Card[]> = this.store.select(
+  public cards$: Observable<Card[]> = this.store.select(
     (state) => state.cardsData.cards
   );
   filters$: Observable<string[]> = this.data$.pipe(map((state) => state.tags));
@@ -65,6 +65,8 @@ export class CarouselComponent implements OnInit, OnDestroy {
 
   subscriptions$: Subscription[] = [];
 
+  public cardCopy: Card = new Card();
+
   @ViewChild("mycarousel", { static: false }) public carousel: any;
 
   @HostListener("window:keyup", ["$event"]) handleKeyDown(
@@ -79,7 +81,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
     }
   }
 
-  constructor(private store: Store<any>) {}
+  constructor(private store: Store<any>) { }
 
   ngOnInit(): void {
     let sub = this.data$
@@ -231,5 +233,32 @@ export class CarouselComponent implements OnInit, OnDestroy {
 
   setClass() {
     return this.formMode == "add" ? "btn btn-info" : "btn btn-light";
+  }
+
+  enableLatex() {
+    console.log
+    var currCard = this.cards[this.activeSlide]; // current card being shown
+    console.log(currCard)
+    this.cardCopy = {...currCard}
+    this.cardCopy.latex = 1;
+    currCard.latex = 1;
+    this.store.dispatch(updateCard({ card: this.cardCopy }));
+    this.checkLatexState();
+  }
+
+  checkLatexState(){
+    if (!this.cards || this.cardCount == 0) {
+      return  "btn btn-light";
+    }
+    let currCard = this.cards[this.activeSlide]; // current card being shown
+    if (!currCard) {
+      return  "btn btn-light";
+    }
+    else if(currCard.latex == 1){
+      return  "btn btn-info";
+    }
+    else{
+      return  "btn btn-light";
+    }
   }
 }

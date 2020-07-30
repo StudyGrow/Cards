@@ -55,6 +55,7 @@ module.exports = function cardsService() {
       await Card.findByIdAndUpdate(card._id, {
         thema: card.thema,
         content: card.content,
+        latex: card.latex,
       });
       callback(null);
     } catch (error) {

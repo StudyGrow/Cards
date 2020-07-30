@@ -67,6 +67,7 @@ export class UpdateCardFormComponent implements OnInit, OnDestroy {
     this.store.dispatch(setTypingMode({ typing: false }));
   }
   onSubmit(f) {
+    console.log(f.value)
     this.cardCopy.content = f.value.content;
     this.cardCopy.thema = f.value.thema;
 
