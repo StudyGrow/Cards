@@ -11,6 +11,9 @@ import { addLercture } from "src/app/store/actions/LectureActions";
 import { CardsEffects } from "src/app/store/effects/effects";
 import { NgForm } from "@angular/forms";
 import { setTypingMode } from "src/app/store/actions/actions";
+import { map } from "rxjs/operators";
+import { selectUser } from "src/app/store/selector";
+import { User } from "src/app/models/User";
 
 @Component({
   selector: "app-add-card-form",
@@ -25,11 +28,12 @@ export class AddCardFormComponent implements OnInit, OnDestroy {
   hidden: boolean;
   Contentlength: number;
   themaLength: number;
+  author: User;
   subscriptions$: Subscription[] = [];
   constructor(
     private router: Router,
 
-    private store: Store<AppState>,
+    private store: Store<any>,
     private actionState: CardsEffects
   ) {}
 
@@ -38,7 +42,12 @@ export class AddCardFormComponent implements OnInit, OnDestroy {
       this.form.reset();
     });
     this.subscriptions$.push(sub);
-
+    sub = this.store
+      .select("cardsData")
+      .pipe(map(selectUser))
+      .subscribe((user) => {
+        this.author = user;
+      });
     if (this.neu) {
       this.lecture = JSON.parse(localStorage.getItem("vl"));
       sub = this.actionState.addLecture$.subscribe((res) =>
@@ -65,7 +74,10 @@ export class AddCardFormComponent implements OnInit, OnDestroy {
       f.value.content,
       abrv,
       0,
-      f.value.tags
+      f.value.tags,
+      null,
+      this.author._id,
+      this.author.name
     );
     if (this.neu) {
       this.store.dispatch(addLercture({ lecture: this.lecture }));
