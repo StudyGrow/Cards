@@ -48,7 +48,6 @@ const _cardsReducer = createReducer(
   on(Actions.addCardSuccess, (state, { card }) => ({
     ...state,
     cards: [...state.cards, card],
-    lecture: state.currLecture,
   })),
   on(LectureActions.fetchLecturesSuccess, (state, { lectures }) => ({
     ...state,
