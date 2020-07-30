@@ -12,8 +12,8 @@
         matTooltip="Bearbeiten" matTooltipPosition="above">
         <div class="fas fa-pen"></div>
       </button>
-      <button [ngClass]="checkLatexState()" id="toggleLatex" type="button"  (click)="enableLatex()"
-      matTooltip="Latex" matTooltipPosition="above">
+      <button [ngClass]="checkLatexState()" id="toggleLatex" type="button"  (click)="toggleLatex(latex)"
+      matTooltip="Latex" matTooltipPosition="above" #latex>
       <div class="fas fa-superscript"></div>
     </button>
 

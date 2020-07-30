@@ -234,15 +234,22 @@ export class CarouselComponent implements OnInit, OnDestroy {
   setClass() {
     return this.formMode == "add" ? "btn btn-info" : "btn btn-light";
   }
-
-  enableLatex() {
-    console.log
+  toggleLatex(latex: HTMLElement) {
     var currCard = this.cards[this.activeSlide]; // current card being shown
-    console.log(currCard)
     this.cardCopy = {...currCard}
-    this.cardCopy.latex = 1;
-    currCard.latex = 1;
-    this.store.dispatch(updateCard({ card: this.cardCopy }));
+
+    if(latex.classList.contains("btn-info") == true){
+      this.cardCopy.latex = 0;
+      latex.classList.remove("btn-info")
+      latex.classList.add('btn-light');
+      this.store.dispatch(updateCard({ card: this.cardCopy }));
+    }
+    else{
+      this.cardCopy.latex = 1;
+      latex.classList.remove('btn-light');
+      latex.classList.add("btn-info")
+      this.store.dispatch(updateCard({ card: this.cardCopy }));
+    }
     this.checkLatexState();
   }
 
