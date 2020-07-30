@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 
-import { Observable, BehaviorSubject, of, from } from "rxjs";
+import { Observable } from "rxjs";
 import { Card } from "../models/Card";
 
 import {
@@ -88,40 +88,7 @@ export class CardsService {
             this.notifications.handleErrors(error);
           }
         ),
-        map((res) => {
-          return { ...card, _id: res.body.id };
-        })
+        map((res) => ({ ...card, _id: res.body.id }))
       );
   }
-
-  /*
-  applyFilter(tags: string[]): Observable<boolean> {
-    let cards = this.cards$.getValue();
-
-    if (this.tags === tags) {
-      return of(false);
-    }
-    if (tags.length === 0) {
-      this.resetFilter();
-      return of(false);
-    }
-    this.tags = tags;
-    //filter out cards which dont match any of the tags
-    let res = cards.filter((card) => {
-      for (const tag of tags) {
-        if (card.tags.includes(tag)) {
-          return true;
-        }
-      }
-      return false;
-    });
-    this.cards$.next(res);
-    this.setNewCardIndex(0);
-    return of(true);
-  }
-  resetFilter() {
-    this.tags = [];
-    this.setNewCardIndex(0);
-    this.cards$.next(this.copy); //reset the cards to their initial state
-  }*/
 }

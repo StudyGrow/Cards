@@ -46,7 +46,9 @@ export class AddCardFormComponent implements OnInit, OnDestroy {
       .select("cardsData")
       .pipe(map(selectUser))
       .subscribe((user) => {
-        this.author = user;
+        if (user && this.author !== user) {
+          this.author = user;
+        }
       });
     if (this.neu) {
       this.lecture = JSON.parse(localStorage.getItem("vl"));
@@ -75,16 +77,16 @@ export class AddCardFormComponent implements OnInit, OnDestroy {
       abrv,
       0,
       f.value.tags,
-      null,
-      this.author._id,
-      this.author.name
+      null
     );
+    if (this.author) {
+      this.newCard.authorId = this.author._id;
+      this.newCard.authorName = this.author.name;
+    }
     if (this.neu) {
       this.store.dispatch(addLercture({ lecture: this.lecture }));
-      this.store.dispatch(addCard({ card: this.newCard }));
-    } else {
-      this.store.dispatch(addCard({ card: this.newCard }));
     }
+    this.store.dispatch(addCard({ card: this.newCard }));
   }
   inField() {
     this.store.dispatch(setTypingMode({ typing: true }));

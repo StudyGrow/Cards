@@ -100,17 +100,18 @@ export class CardsEffects {
   addCard$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AddCardActions.addCard),
-      withLatestFrom(this.data$.pipe(map(selectLastCardIndex))),
-      exhaustMap(([action, lastIndex]) => {
+      exhaustMap((action) => {
         this.store.dispatch(incrementLoading());
         return this.cs.addCard(action.card).pipe(
           tap(() => {
             this.store.dispatch(decrementLoading());
-            setTimeout(() => {
-              this.store.dispatch(setActiveCardIndex({ index: lastIndex }));
-            }, 1000);
           }),
           map((res) => AddCardActions.addCardSuccess({ card: res })),
+          tap(() => {
+            setTimeout(() => {
+              this.store.dispatch(setActiveCardIndex({ index: -1 })); //go to last card
+            }, 1000);
+          }),
           catchError((reason) => of(LoadFailure({ reason: reason })))
         );
       }),

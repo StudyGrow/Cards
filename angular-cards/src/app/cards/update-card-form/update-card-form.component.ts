@@ -39,7 +39,6 @@ export class UpdateCardFormComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     let sub = this.data$.pipe(map(selectActiveIndex)).subscribe((index) => {
       this.activeCardIndex = index;
-
       this.cardIndex = this.activeCardIndex;
     });
     this.subscriptions$.push(sub);

@@ -62,9 +62,11 @@ export class SearchBarComponent implements OnInit, OnDestroy {
       });
     });
     this.subscriptions$.push(sub);
-    sub = this.data$
-      .pipe(map(selectFilteredCards))
-      .subscribe((filtered) => (this.currentSelection = filtered));
+    sub = this.data$.pipe(map(selectFilteredCards)).subscribe((filtered) => {
+      if (this.currentSelection !== filtered) {
+        this.currentSelection = filtered;
+      }
+    });
     this.subscriptions$.push(sub);
   }
 
@@ -131,21 +133,21 @@ export class SearchBarComponent implements OnInit, OnDestroy {
       this.store.dispatch(setSuggestionsMode({ hide: true }));
     }
   }
-  enabled = false
-  size = 0
+  enabled = false;
+  size = 0;
 
   beginScroll(paragraph: HTMLElement) {
-    if(this.enabled == true && this.size < paragraph.offsetWidth){
-      this.size = paragraph.offsetWidth
+    if (this.enabled == true && this.size < paragraph.offsetWidth) {
+      this.size = paragraph.offsetWidth;
     }
-    this.size = paragraph.offsetWidth
-    this.enabled = true
-    var time = this.size * 0.02
-    paragraph.classList.add('textToScroll');
-    paragraph.style.setProperty('--time', time.toString());
+    this.size = paragraph.offsetWidth;
+    this.enabled = true;
+    var time = this.size * 0.02;
+    paragraph.classList.add("textToScroll");
+    paragraph.style.setProperty("--time", time.toString());
   }
   endScroll(paragraph: HTMLElement) {
-    this.enabled = false
-    paragraph.classList.remove('textToScroll');
+    this.enabled = false;
+    paragraph.classList.remove("textToScroll");
   }
 }
