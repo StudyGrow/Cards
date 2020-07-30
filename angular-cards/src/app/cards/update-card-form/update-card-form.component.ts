@@ -44,7 +44,6 @@ export class UpdateCardFormComponent implements OnInit, OnDestroy {
     this.subscriptions$.push(sub);
 
     sub = this.data$.pipe(map(selectCurrentCard)).subscribe((card) => {
-      console.log(card);
       if (card._id != this.cardCopy._id) {
         //got new card
         this.cardCopy = { ...this.cardCopy, ...card }; //overwrite cardCopy

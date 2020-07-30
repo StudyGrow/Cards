@@ -145,7 +145,6 @@ export class CarouselComponent implements OnInit, OnDestroy {
 
   //this function does some adjustments if the index is out of bounds
   hanldeNewIndex(index: number) {
-    console.log(index);
     if (this.carousel && index !== this.activeSlide) {
       //got a new index
       if (index == -1) {
