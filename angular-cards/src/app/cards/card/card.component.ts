@@ -15,6 +15,11 @@ import { SafeHtmlPipe } from "../../shared/safe-html.pipe";
 
 import { Store } from "@ngrx/store";
 import { map, share } from "rxjs/operators";
+import {
+  setActiveCardIndex,
+  goNext,
+  goPrev,
+} from "src/app/store/actions/cardActions";
 @Component({
   selector: "app-card",
   templateUrl: "./card.component.html",
@@ -26,7 +31,6 @@ export class CardComponent implements OnInit, OnDestroy {
   inTypingField: boolean = false;
   activeIndex: number;
 
-  styleAppend = `<link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/latex.js@0.12.1/dist/css/katex.css"><link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/latex.js@0.12.1/dist/css/article.scss"><script src="https://cdn.jsdelivr.net/npm/latex.js@0.12.1/dist/dist/js/base.js"></script>`;
   parsed: any = [];
 
   public isCollapsed = true;
@@ -45,6 +49,7 @@ export class CardComponent implements OnInit, OnDestroy {
       }
     }
   }
+
   @ViewChild("answer", { static: true }) content;
   subscriptions$: Subscription[] = [];
 
@@ -82,7 +87,7 @@ export class CardComponent implements OnInit, OnDestroy {
     var latex = cardContent;
     let generator = new HtmlGenerator({ hyphenate: false });
     let doc = parse(latex, { generator: generator }).htmlDocument();
-    latex = this.styleAppend + doc.body.innerHTML;
+    latex = doc.body.innerHTML;
     this.parsed.push(latex);
   }
 }

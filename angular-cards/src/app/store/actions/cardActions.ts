@@ -14,12 +14,15 @@ enum ActionTypes {
   UPDATE_CARD_SUCCESS = "[Card] update card success",
   SET_ACITVE_CARD_INDEX = "[Index] update the index of the card which is currently showing",
   CLEAR_CARD_DATA = "[Cards] clear data about cards",
+  GO_NEXT = "[Cards] Go to the next slide ",
+  GO_PREV = "[Cards] Go to the prev. slide ",
 }
 
 //Concrete Actions for each type
 
 export const fetchCards = createAction(ActionTypes.FETCH_CARDS);
-
+export const goNext = createAction(ActionTypes.GO_NEXT);
+export const goPrev = createAction(ActionTypes.GO_PREV);
 export const clearCardData = createAction(ActionTypes.CLEAR_CARD_DATA);
 export const setActiveCardIndex = createAction(
   ActionTypes.SET_ACITVE_CARD_INDEX,

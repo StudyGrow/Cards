@@ -83,7 +83,12 @@ export class CarouselComponent implements OnInit, OnDestroy {
       }
     }
   }
-
+  @HostListener("swipeleft", ["$event"]) public swipePrev(event: any) {
+    this.goToNext();
+  }
+  @HostListener("swiperight", ["$event"]) public swipeNext(event: any) {
+    this.goToPrev();
+  }
   constructor(private store: Store<any>) {}
 
   ngOnInit(): void {
@@ -140,6 +145,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
 
   //this function does some adjustments if the index is out of bounds
   hanldeNewIndex(index: number) {
+    console.log(index);
     if (this.carousel && index !== this.activeSlide) {
       //got a new index
       if (index == -1) {
