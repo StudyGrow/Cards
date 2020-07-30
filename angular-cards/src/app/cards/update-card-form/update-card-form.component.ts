@@ -22,7 +22,7 @@ import { selectActiveIndex, selectCurrentCard } from "src/app/store/selector";
   styleUrls: ["./update-card-form.component.scss"],
 })
 export class UpdateCardFormComponent implements OnInit, OnDestroy {
-  public cardCopy: Card = new Card();
+  public cardCopy: Card = new Card("", "");
   private cardIndex: number; //saves the cardindex which the user is currently updating
   private activeCardIndex: number; //saves the active cardindex
   private subscriptions$: Subscription[] = [];
@@ -45,7 +45,11 @@ export class UpdateCardFormComponent implements OnInit, OnDestroy {
     this.subscriptions$.push(sub);
 
     sub = this.data$.pipe(map(selectCurrentCard)).subscribe((card) => {
-      this.cardCopy = { ...card };
+      console.log(card);
+      if (card._id != this.cardCopy._id) {
+        //got new card
+        this.cardCopy = { ...this.cardCopy, ...card }; //overwrite cardCopy
+      }
     });
     this.subscriptions$.push(sub);
     sub = this.actionState.updateCard$.subscribe(() => {
@@ -71,7 +75,7 @@ export class UpdateCardFormComponent implements OnInit, OnDestroy {
     this.cardCopy.content = f.value.content;
     this.cardCopy.thema = f.value.thema;
 
-    this.store.dispatch(updateCard({ card: this.cardCopy }));
+    this.store.dispatch(updateCard({ card: { ...this.cardCopy } }));
   }
   cancelEdit() {
     const dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
