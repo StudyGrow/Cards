@@ -18,7 +18,10 @@ import {
 import { combineLatest } from "rxjs/index";
 import { Store } from "@ngrx/store";
 import { AppState } from "src/app/store/reducer";
-import { updateCard, setActiveCardIndex } from "../../store/actions/cardActions";
+import {
+  updateCard,
+  setActiveCardIndex,
+} from "../../store/actions/cardActions";
 import { setFormMode } from "src/app/store/actions/actions";
 import { map, share, startWith, delay } from "rxjs/operators";
 
@@ -81,7 +84,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
     }
   }
 
-  constructor(private store: Store<any>) { }
+  constructor(private store: Store<any>) {}
 
   ngOnInit(): void {
     let sub = this.data$
@@ -118,7 +121,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
         setTimeout(() => {
           this.cards = cards;
         }, 200);
-      } else if (this.cards.length != cards.length) {
+      } else if (this.cards != cards) {
         //cards have changed
         this.cards = null;
         setTimeout(() => {
@@ -236,36 +239,33 @@ export class CarouselComponent implements OnInit, OnDestroy {
   }
   toggleLatex(latex: HTMLElement) {
     var currCard = this.cards[this.activeSlide]; // current card being shown
-    this.cardCopy = {...currCard}
+    this.cardCopy = { ...currCard };
 
-    if(latex.classList.contains("btn-info") == true){
+    if (latex.classList.contains("btn-info") == true) {
       this.cardCopy.latex = 0;
-      latex.classList.remove("btn-info")
-      latex.classList.add('btn-light');
+      latex.classList.remove("btn-info");
+      latex.classList.add("btn-light");
       this.store.dispatch(updateCard({ card: this.cardCopy }));
-    }
-    else{
+    } else {
       this.cardCopy.latex = 1;
-      latex.classList.remove('btn-light');
-      latex.classList.add("btn-info")
+      latex.classList.remove("btn-light");
+      latex.classList.add("btn-info");
       this.store.dispatch(updateCard({ card: this.cardCopy }));
     }
     this.checkLatexState();
   }
 
-  checkLatexState(){
+  checkLatexState() {
     if (!this.cards || this.cardCount == 0) {
-      return  "btn btn-light";
+      return "btn btn-light";
     }
     let currCard = this.cards[this.activeSlide]; // current card being shown
     if (!currCard) {
-      return  "btn btn-light";
-    }
-    else if(currCard.latex == 1){
-      return  "btn btn-info";
-    }
-    else{
-      return  "btn btn-light";
+      return "btn btn-light";
+    } else if (currCard.latex == 1) {
+      return "btn btn-info";
+    } else {
+      return "btn btn-light";
     }
   }
 }
