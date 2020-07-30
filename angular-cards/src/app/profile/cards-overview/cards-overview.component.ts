@@ -10,7 +10,7 @@ import { fetchUserData } from "src/app/store/actions/UserActions";
 @Component({
   selector: "app-cards-overview",
   templateUrl: "./cards-overview.component.html",
-  styleUrls: ["./cards-overview.component.css"],
+  styleUrls: ["./cards-overview.component.scss"],
 })
 export class CardsOverviewComponent implements OnInit {
   subscriptions$: Subscription[] = [];

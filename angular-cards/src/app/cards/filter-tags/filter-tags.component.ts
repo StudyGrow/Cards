@@ -26,7 +26,7 @@ import { selectDrawerState, selectTags } from "src/app/store/selector";
 @Component({
   selector: "app-filter-tags",
   templateUrl: "./filter-tags.component.html",
-  styleUrls: ["./filter-tags.component.css"],
+  styleUrls: ["./filter-tags.component.scss"],
 })
 export class FilterTagsComponent implements OnInit, OnDestroy {
   private data$: Observable<any> = this.store

@@ -8,7 +8,7 @@ import { Router } from "@angular/router";
 @Component({
   selector: "app-add-lecture-form",
   templateUrl: "./add-lecture-form.component.html",
-  styleUrls: ["./add-lecture-form.component.css"],
+  styleUrls: ["./add-lecture-form.component.scss"],
 })
 export class AddLectureFormComponent implements OnInit {
   subscriptions$: Subscription[] = [];

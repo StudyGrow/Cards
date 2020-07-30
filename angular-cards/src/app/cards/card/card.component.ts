@@ -18,7 +18,7 @@ import { map, share } from "rxjs/operators";
 @Component({
   selector: "app-card",
   templateUrl: "./card.component.html",
-  styleUrls: ["./card.component.css"],
+  styleUrls: ["./card.component.scss"],
 })
 export class CardComponent implements OnInit, OnDestroy {
   constructor(private store: Store<any>) {}
@@ -26,7 +26,7 @@ export class CardComponent implements OnInit, OnDestroy {
   inTypingField: boolean = false;
   activeIndex: number;
 
-  styleAppend = `<link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/latex.js@0.12.1/dist/css/katex.css"><link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/latex.js@0.12.1/dist/css/article.css"><script src="https://cdn.jsdelivr.net/npm/latex.js@0.12.1/dist/dist/js/base.js"></script>`;
+  styleAppend = `<link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/latex.js@0.12.1/dist/css/katex.css"><link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/latex.js@0.12.1/dist/css/article.scss"><script src="https://cdn.jsdelivr.net/npm/latex.js@0.12.1/dist/dist/js/base.js"></script>`;
   parsed: any = [];
 
   public isCollapsed = true;

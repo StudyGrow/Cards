@@ -12,7 +12,7 @@ import { logout as logoutUser } from "src/app/store/actions/UserActions";
 @Component({
   selector: "app-nav-list",
   templateUrl: "./nav-list.component.html",
-  styleUrls: ["./nav-list.component.css"],
+  styleUrls: ["./nav-list.component.scss"],
 })
 export class NavListComponent implements OnInit, OnDestroy {
   loggedIn: boolean;
