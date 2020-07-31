@@ -11,11 +11,17 @@ enum ActionTypes {
   APPLY_FILTER = "[Filter] change the current cards filter for carousel cards",
   RESET_FILTER = "[Filter] reset the filter to show all cards",
   REMOVE_TAG = "[Filter] remove tag from the filter",
+  ADD_TAG = "[Filter] add tag to the filter",
 }
 
 export const applyFilter = createAction(
   ActionTypes.APPLY_FILTER,
   props<{ tags: string[] }>()
+);
+
+export const addTag = createAction(
+  ActionTypes.ADD_TAG,
+  props<{ tag: string }>()
 );
 
 export const removeTag = createAction(

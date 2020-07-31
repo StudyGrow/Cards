@@ -135,6 +135,10 @@ const _cardsReducer = createReducer(
     ...state,
     tags: addTags([...state.tags], tags),
   })),
+  on(StateActions.addTag, (state, { tag }) => ({
+    ...state,
+    tags: addTag(state.tags, tag),
+  })),
   on(StateActions.removeTag, (state, { tag }) => ({
     ...state,
     tags: removeInArray([...state.tags], tag),
@@ -191,5 +195,13 @@ function addTags(origin: string[], tags: string[]) {
       origin.push(tag);
     }
   });
+  return origin;
+}
+
+function addTag(origin: string[], tag: string) {
+  if (!origin.includes(tag)) {
+    return [...origin, tag];
+  }
+
   return origin;
 }

@@ -12,16 +12,21 @@ import {
 } from "@angular/material/autocomplete";
 import { MatChipInputEvent } from "@angular/material/chips";
 
-import { map, startWith, share } from "rxjs/operators";
+import { map, startWith, share, filter } from "rxjs/operators";
 
 import { Store } from "@ngrx/store";
 import {
   setTypingMode,
-  applyFilter,
   resetFilter,
   removeTag,
+  addTag,
 } from "src/app/store/actions/actions";
-import { selectDrawerState, selectTags } from "src/app/store/selector";
+import {
+  selectDrawerState,
+  selectTags,
+  selectAllTags,
+  selectTagOptions,
+} from "src/app/store/selector";
 
 @Component({
   selector: "app-filter-tags",
@@ -35,16 +40,15 @@ export class FilterTagsComponent implements OnInit, OnDestroy {
       "cardsData"
     )
     .pipe(share());
-
   public lecture$: Observable<Vorlesung> = this.data$.pipe(
-    map((data) => data.currLecture)
+    map((state) => state.currLecture)
   );
   selected = []; //active tags
   subs: Subscription[] = [];
   separatorKeysCodes: number[] = [ENTER, COMMA];
   formCtrl = new FormControl();
-  tags: string[] = [];
-  filteredTags: Observable<string[]>;
+  options: string[] = [];
+  filteredTags$: Observable<string[]>;
   selectedChanged: boolean = false;
 
   @ViewChild("Input") input: ElementRef<HTMLInputElement>;
@@ -54,56 +58,37 @@ export class FilterTagsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     let sub = this.data$.pipe(map(selectTags)).subscribe((tags) => {
-      this.selected = tags;
+      if (tags != this.selected) {
+        this.selected = tags; //currently selected tags in the filter
+      }
     });
     this.subs.push(sub);
-    sub = this.lecture$.subscribe((lect) => {
-      this.tags = lect.tagList;
+    sub = this.data$.pipe(map(selectTagOptions)).subscribe((tags) => {
+      if (tags != this.options) {
+        console.log(tags);
+        this.options = tags; //get all available tags
+      }
     });
-
-    this.filteredTags = this.formCtrl.valueChanges.pipe(
+    this.filteredTags$ = this.formCtrl.valueChanges.pipe(
       startWith(null),
       map((tag: string | null) => {
-        return tag ? this._filter(tag) : this.tags.slice();
+        return tag ? this._filter(tag) : this.options.slice();
       })
     );
   }
 
-  applyFilter() {
-    if (this.selected.length === 0) {
-      this.store.dispatch(resetFilter());
-    } else {
-      this.store.dispatch(applyFilter({ tags: [...this.selected] }));
-    }
-  }
-
-  add(event: MatChipInputEvent): void {
-    const input = event.input;
-    const value = event.value;
-    if (this.tags.includes(value)) {
-      // Add our fruit
-
-      if ((value || "").trim()) {
-        this.store.dispatch(applyFilter({ tags: [value] }));
-      }
-
-      // Reset the input value
-      if (input) {
-        input.value = "";
-      }
-
-      this.formCtrl.setValue(null);
-    }
-  }
-
   remove(tag: string): void {
+    //remove tag from the filters
     this.store.dispatch(removeTag({ tag: tag }));
   }
 
-  selected1(event: MatAutocompleteSelectedEvent): void {
-    this.store.dispatch(applyFilter({ tags: [event.option.viewValue] }));
+  add(event: MatAutocompleteSelectedEvent): void {
+    //add tag to the filters
+    let newTag = event.option.value;
+    if (!this.selected.includes(newTag)) {
+      this.store.dispatch(addTag({ tag: newTag }));
+    }
     this.input.nativeElement.value = "";
-    this.formCtrl.setValue(null);
   }
   inField() {
     this.store.dispatch(setTypingMode({ typing: true }));
@@ -114,10 +99,11 @@ export class FilterTagsComponent implements OnInit, OnDestroy {
   private _filter(value: string): string[] {
     const filterValue = value.toLowerCase();
 
-    return this.tags.filter(
+    return this.options.filter(
       (item) => item.toLowerCase().indexOf(filterValue) === 0
     );
   }
+
   ngOnDestroy() {
     this.subs.forEach((sub) => sub.unsubscribe());
   }

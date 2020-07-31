@@ -3,11 +3,12 @@ import { createSelector } from "@ngrx/store";
 import { AppState } from "./reducer";
 import { Card } from "../models/Card";
 import { Vorlesung } from "../models/Vorlesung";
-import { state } from "@angular/animations";
 
 export const selectAllCards = (state: AppState) => state.cards;
 
 export const selectTags = (state: AppState) => state.tags;
+
+export const selectAllTags = (state: AppState) => state.currLecture.tagList;
 
 export const selectActiveIndex = (state: AppState) => state.activeIndex;
 
@@ -26,6 +27,12 @@ export const selectUserInfo = (state: AppState) => state.userData;
 export const selectUser = (state: AppState) => state.userData.user;
 
 export const authenticated = (state: AppState) => state.userData.authenticated;
+
+export const selectTagOptions = createSelector(
+  selectAllTags,
+  selectTags,
+  (all, selected) => _filter(all, selected)
+);
 
 export const selectFilteredCards = createSelector(
   selectAllCards,
@@ -71,4 +78,13 @@ function applyFilter(cards: Card[], filters: string[]): Card[] {
     return false;
   });
   return res;
+}
+function _filter(all: any[], selected: any[]) {
+  if (!selected) {
+    return all;
+  } else if (!all) {
+    return all;
+  } else {
+    return all.filter((tag) => !selected.includes(tag));
+  }
 }

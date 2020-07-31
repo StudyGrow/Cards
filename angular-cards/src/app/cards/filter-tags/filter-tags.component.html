@@ -20,17 +20,13 @@
         [matAutocomplete]="auto"
         [matChipInputFor]="chipList"
         [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-        (matChipInputTokenEnd)="add($event)"
         (focus)="inField()"
         (blur)="resetNav()"
       />
       <mat-icon matSuffix>filter_list</mat-icon>
     </mat-chip-list>
-    <mat-autocomplete
-      #auto="matAutocomplete"
-      (optionSelected)="selected1($event)"
-    >
-      <mat-option *ngFor="let option of filteredTags | async" [value]="option">
+    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="add($event)">
+      <mat-option *ngFor="let option of filteredTags$ | async" [value]="option">
         {{ option }}
       </mat-option>
     </mat-autocomplete>

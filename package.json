@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "start": "NODE_ENV=production node start.js",
-    "watch": "NODE_ENV=development nodemon start.js",
+    "watch": "set NODE_ENV=development && nodemon start.js",
     "buildng": "cd angular-cards && ng build --prod",
     "stop": "node stop.js",
     "heroku-prebuild": "npm install && cd angular-cards && npm install",
