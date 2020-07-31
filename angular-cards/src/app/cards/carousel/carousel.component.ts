@@ -25,7 +25,12 @@ import {
 import { setFormMode } from "src/app/store/actions/actions";
 import { map, share, startWith, delay } from "rxjs/operators";
 
-import { selectUserId, selectFilteredCards } from "src/app/store/selector";
+import {
+  selectUserId,
+  selectFilteredCards,
+  lastCardChange,
+  newCards,
+} from "src/app/store/selector";
 import { state } from "@angular/animations";
 
 @Component({
@@ -54,12 +59,11 @@ export class CarouselComponent implements OnInit, OnDestroy {
     (state) => state.cardsData.cards
   );
   filters$: Observable<string[]> = this.data$.pipe(map((state) => state.tags));
+  filters: string[];
   cards: Card[]; //array of all the cards
   cardCount = 0;
-  filteredCards$: Observable<Card[]> = this.data$.pipe(
-    map(selectFilteredCards),
-    delay(200)
-  );
+
+  lastRefresh: Date;
 
   activeSlide = 0; //holds the slide which is currently shown
   formMode: string;
@@ -110,30 +114,29 @@ export class CarouselComponent implements OnInit, OnDestroy {
         this.hanldeNewIndex(val);
       });
     this.subscriptions$.push(sub);
-    sub = this.filteredCards$.subscribe((cards) => {
-      this.cardCount = cards.length;
-    });
 
     this.subscriptions$.push(sub);
 
     sub = this.data$.pipe(map(selectUserId)).subscribe((id) => {
       this.uid = id;
     });
-
     this.subscriptions$.push(sub);
-    sub = this.filteredCards$.subscribe((cards) => {
-      if (!this.cards) {
-        setTimeout(() => {
-          this.cards = cards;
-        }, 200);
-      } else if (this.cards != cards) {
+    sub = this.data$.pipe(map(newCards)).subscribe((obj) => {
+      if (
+        this.cards != obj.cards &&
+        (!this.lastRefresh || this.lastRefresh < obj.date)
+      ) {
         //cards have changed
+        this.lastRefresh = obj.date; //update the last refresh
+        this.cardCount = obj.cards.length;
+        console.log("new cards", obj.date, obj.cards);
         this.cards = null;
         setTimeout(() => {
-          this.cards = cards;
-        }, 200);
+          this.cards = obj.cards;
+        }, 0);
       }
     });
+
     this.subscriptions$.push(sub);
   }
 

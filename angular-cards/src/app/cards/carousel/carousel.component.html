@@ -3,12 +3,7 @@
     <app-filter-tags></app-filter-tags>
   </div>
   <div class="col-md-3 col-xs-12 mb-2 text-right" id="bntcol">
-    <div
-      class="btn-group"
-      *ngIf="filteredCards$ | async as cards"
-      id="btnDiv"
-      role="group"
-    >
+    <div class="btn-group" *ngIf="cards" id="btnDiv" role="group">
       <button
         class="btn btn-light"
         id="rand"

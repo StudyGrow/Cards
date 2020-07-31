@@ -28,6 +28,8 @@ export const selectUser = (state: AppState) => state.userData.user;
 
 export const authenticated = (state: AppState) => state.userData.authenticated;
 
+export const lastCardChange = (state: AppState) => state.filteredCardsChanged;
+
 export const selectTagOptions = createSelector(
   selectAllTags,
   selectTags,
@@ -38,6 +40,12 @@ export const selectFilteredCards = createSelector(
   selectAllCards,
   selectTags,
   (cards, filter) => applyFilter(cards, filter)
+);
+
+export const newCards = createSelector(
+  selectFilteredCards,
+  lastCardChange,
+  (cards, date) => ({ cards, date })
 );
 export const selectLastCardIndex = createSelector(
   selectFilteredCards,

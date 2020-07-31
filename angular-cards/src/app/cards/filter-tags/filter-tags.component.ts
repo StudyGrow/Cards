@@ -65,7 +65,6 @@ export class FilterTagsComponent implements OnInit, OnDestroy {
     this.subs.push(sub);
     sub = this.data$.pipe(map(selectTagOptions)).subscribe((tags) => {
       if (tags != this.options) {
-        console.log(tags);
         this.options = tags; //get all available tags
       }
     });

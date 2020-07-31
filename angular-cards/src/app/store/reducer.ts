@@ -22,6 +22,7 @@ export interface AppState {
   showDrawer: boolean;
   loading: number;
   tags: string[];
+  filteredCardsChanged: Date;
 }
 export class CardsData {
   cards: Card[];
@@ -41,6 +42,7 @@ export const initialState: AppState = {
   showDrawer: false,
   loading: 0,
   tags: [],
+  filteredCardsChanged: new Date(),
 };
 
 //Reducer which will dispatch changes to the store
@@ -49,6 +51,7 @@ const _cardsReducer = createReducer(
   on(Actions.addCardSuccess, (state, { card }) => ({
     ...state,
     cards: [...state.cards, card],
+    filteredCardsChanged: new Date(),
   })),
   on(LectureActions.fetchLecturesSuccess, (state, { lectures }) => ({
     ...state,
@@ -65,10 +68,12 @@ const _cardsReducer = createReducer(
   on(Actions.updateCardSuccess, (state, { card }) => ({
     ...state,
     cards: updateObjectInArray(state.cards, card),
+    filteredCardsChanged: new Date(),
   })),
   on(Actions.LoadSuccess, (state, { data }) => ({
     ...state,
     cards: data.cards,
+    filteredCardsChanged: new Date(),
     currLecture: data.lecture,
     userData: {
       ...state.userData,
@@ -130,22 +135,27 @@ const _cardsReducer = createReducer(
     ...state,
     currLecture: initialState.currLecture,
     cards: initialState.cards,
+    filteredCardsChanged: new Date(),
   })),
   on(StateActions.applyFilter, (state, { tags }) => ({
     ...state,
     tags: addTags([...state.tags], tags),
+    filteredCardsChanged: new Date(),
   })),
   on(StateActions.addTag, (state, { tag }) => ({
     ...state,
     tags: addTag(state.tags, tag),
+    filteredCardsChanged: new Date(),
   })),
   on(StateActions.removeTag, (state, { tag }) => ({
     ...state,
     tags: removeInArray([...state.tags], tag),
+    filteredCardsChanged: new Date(),
   })),
   on(StateActions.resetFilter, (state) => ({
     ...state,
     tags: [],
+    filteredCardsChanged: new Date(),
   })),
   on(Actions.goNext, (state) => ({
     ...state,
@@ -202,6 +212,5 @@ function addTag(origin: string[], tag: string) {
   if (!origin.includes(tag)) {
     return [...origin, tag];
   }
-
   return origin;
 }
