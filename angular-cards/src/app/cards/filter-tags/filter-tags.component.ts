@@ -12,7 +12,7 @@ import {
 } from "@angular/material/autocomplete";
 import { MatChipInputEvent } from "@angular/material/chips";
 
-import { map, startWith, share, filter } from "rxjs/operators";
+import { map, startWith, share, filter, tap } from "rxjs/operators";
 
 import { Store } from "@ngrx/store";
 import {
@@ -87,7 +87,7 @@ export class FilterTagsComponent implements OnInit, OnDestroy {
     if (!this.selected.includes(newTag)) {
       this.store.dispatch(addTag({ tag: newTag }));
     }
-    this.input.nativeElement.value = "";
+    this.formCtrl.setValue(null);
   }
   inField() {
     this.store.dispatch(setTypingMode({ typing: true }));

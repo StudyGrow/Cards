@@ -129,7 +129,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
         //cards have changed
         this.lastRefresh = obj.date; //update the last refresh
         this.cardCount = obj.cards.length;
-        console.log("new cards", obj.date, obj.cards);
+
         this.cards = null;
         setTimeout(() => {
           this.cards = obj.cards;
