@@ -29,9 +29,7 @@ module.exports = function cardsService() {
         card.authorId = user._id; //add user as author of card
         card.authorName = user.username;
       }
-      if (form.tags) {
-        card.tags = form.tags.split("#", 10);
-      }
+
       updateTags(card.vorlesung, card.tags);
       await card.save();
       callback(null, card._id);
@@ -71,7 +69,9 @@ function updateTags(vlabrv, tags) {
   if (tags) {
     tags.forEach((tag) => {
       if (tag.length > 0) {
-        Lecture.updateOne({ abrv: vlabrv }, { $addToSet: { tagList: [tag] } }, () => {});
+        Lecture.updateOne({ abrv: vlabrv }, { $addToSet: { tagList: [tag] } }, (err, res) => {
+          console.log(res);
+        });
       }
     });
   }

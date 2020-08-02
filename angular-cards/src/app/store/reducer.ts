@@ -51,6 +51,10 @@ const _cardsReducer = createReducer(
   on(Actions.addCardSuccess, (state, { card }) => ({
     ...state,
     cards: [...state.cards, card],
+    currLecture: {
+      ...state.currLecture,
+      tagList: addTags([...state.currLecture.tagList], card.tags),
+    }, //add new tags to the lectures taglist
     filteredCardsChanged: new Date(),
   })),
   on(LectureActions.fetchLecturesSuccess, (state, { lectures }) => ({

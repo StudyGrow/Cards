@@ -69,6 +69,7 @@ export class FilterTagsComponent implements OnInit, OnDestroy {
       }
     });
     this.filteredTags$ = this.formCtrl.valueChanges.pipe(
+      //autocomplete
       startWith(null),
       map((tag: string | null) => {
         return tag ? this._filter(tag) : this.options.slice();

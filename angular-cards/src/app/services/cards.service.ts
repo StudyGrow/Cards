@@ -3,21 +3,13 @@ import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { Card } from "../models/Card";
 
-import {
-  tap,
-  map,
-  shareReplay,
-  publish,
-  refCount,
-  share,
-} from "rxjs/operators";
-import { Router, ActivatedRoute } from "@angular/router";
+import { tap, map, share } from "rxjs/operators";
+import { Router } from "@angular/router";
 import { HttpConfig } from "./config";
 import { HttpClient } from "@angular/common/http";
 import { NotificationsService } from "./notifications.service";
-import { Vorlesung } from "../models/Vorlesung";
-import { CardsData, AppState } from "../store/reducer";
-import { Store, select } from "@ngrx/store";
+
+import { CardsData } from "../store/reducer";
 
 @Injectable({
   providedIn: "root",

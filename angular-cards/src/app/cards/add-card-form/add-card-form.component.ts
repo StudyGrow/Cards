@@ -71,14 +71,20 @@ export class AddCardFormComponent implements OnInit, OnDestroy {
     } else {
       abrv = this.router.url.split(/vorlesung\//)[1]; //get the lecture abreviation from the route
     }
+    console.log(f.value);
     this.newCard = new Card(
       f.value.thema,
       f.value.content,
+      f.value.tags.split("#"),
       abrv,
       0,
-      f.value.tags,
+      null,
+      null,
+      null,
+      null,
       null
     );
+    console.log(this.newCard);
     if (this.author) {
       this.newCard.authorId = this.author._id;
       this.newCard.authorName = this.author.name;
