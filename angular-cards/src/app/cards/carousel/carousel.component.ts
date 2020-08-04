@@ -39,7 +39,7 @@ import { state } from "@angular/animations";
   styleUrls: ["./carousel.component.scss"],
   animations: [
     fadeInOnEnterAnimation({ duration: 500 }),
-    fadeOutOnLeaveAnimation(),
+    fadeOutOnLeaveAnimation({ duration: 100 }),
     shakeAnimation(),
   ],
 })
@@ -80,9 +80,9 @@ export class CarouselComponent implements OnInit, OnDestroy {
     event: KeyboardEvent
   ) {
     if (!this.inTypingField) {
-      if (this.carousel && event.key == "ArrowRight") {
+      if (event.key == "ArrowRight") {
         this.goToNext();
-      } else if (this.carousel && event.key == "ArrowLeft") {
+      } else if (event.key == "ArrowLeft") {
         this.goToPrev();
       }
     }
@@ -139,7 +139,8 @@ export class CarouselComponent implements OnInit, OnDestroy {
         this.cards = null; //set null to explicitely refresh carousel view
         setTimeout(() => {
           this.cards = obj.cards;
-        }, 10);
+          this.activeSlide = 0;
+        }, 100);
       }
     });
     this.subscriptions$.push(sub);
@@ -153,6 +154,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
 
   //this function does some adjustments if the index is out of bounds
   hanldeNewIndex(index: number) {
+    console.log(index);
     if (this.carousel && index !== this.activeSlide) {
       //got a new index
       if (index == -1) {
@@ -166,8 +168,10 @@ export class CarouselComponent implements OnInit, OnDestroy {
   }
   //this function updates the current slide index in the store and for the component
   onSlide(slideEvent) {
-    this.activeSlide = slideEvent.relatedTarget; //update active slide
-    this.store.dispatch(setActiveCardIndex({ index: this.activeSlide })); //update in store
+    if (this.activeSlide != slideEvent.relatedTarget) {
+      this.activeSlide = slideEvent.relatedTarget; //update active slide
+      this.store.dispatch(setActiveCardIndex({ index: this.activeSlide })); //update in store
+    }
   }
 
   selectSlide(n: number) {

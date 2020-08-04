@@ -50,10 +50,10 @@ export class CardsEffects {
     return this.actions$.pipe(
       ofType(FetchCardsActions.fetchCards),
       mergeMap(() => {
-        incrementLoading();
+        this.store.dispatch(incrementLoading());
         return this.cs.fetchCardsData().pipe(
           tap(() => {
-            decrementLoading();
+            this.store.dispatch(decrementLoading());
           }),
           map((data) => FetchCardsActions.LoadSuccess({ data: data })),
           catchError((reason) => of(LoadFailure({ reason: reason })))
@@ -67,9 +67,9 @@ export class CardsEffects {
     this.actions$.pipe(
       ofType(LectureActions.fetchLectures),
       mergeMap(() => {
-        incrementLoading();
+        this.store.dispatch(incrementLoading());
         return this.lectures.getAllLectures().pipe(
-          tap(() => decrementLoading()),
+          tap(() => this.store.dispatch(decrementLoading())),
           map((data) =>
             LectureActions.fetchLecturesSuccess({ lectures: data })
           ),
@@ -85,9 +85,9 @@ export class CardsEffects {
     this.actions$.pipe(
       ofType(LectureActions.addLercture),
       exhaustMap((action) => {
-        incrementLoading();
+        this.store.dispatch(incrementLoading());
         return this.lectures.addLecture(action.lecture).pipe(
-          tap(() => decrementLoading()),
+          tap(() => this.store.dispatch(decrementLoading())),
           map((res) => LectureActions.addLectureSuccess({ lecture: res })),
           catchError((reason) => of(LoadFailure({ reason: reason })))
         );
@@ -101,12 +101,12 @@ export class CardsEffects {
     this.actions$.pipe(
       ofType(AddCardActions.addCard),
       exhaustMap((action) => {
-        incrementLoading();
+        this.store.dispatch(incrementLoading());
         return this.cs.addCard(action.card).pipe(
           tap(() => {
-            decrementLoading();
+            this.store.dispatch(decrementLoading());
             setTimeout(() => {
-              setActiveCardIndex({ index: -1 }); //go to last card
+              this.store.dispatch(setActiveCardIndex({ index: -1 })); //go to last card
             }, 1000);
           }),
           map((res) => AddCardActions.addCardSuccess({ card: res })),
@@ -124,13 +124,13 @@ export class CardsEffects {
       ofType(UpdateCardActions.updateCard),
       withLatestFrom(this.data$.pipe(map(selectActiveIndex))),
       exhaustMap(([action, activeIndex]) => {
-        incrementLoading();
+        this.store.dispatch(incrementLoading());
         return this.cs.updateCard2(action.card).pipe(
-          tap((card) => {
+          tap(() => {
             setTimeout(() => {
-              setActiveCardIndex({ index: activeIndex });
+              this.store.dispatch(setActiveCardIndex({ index: activeIndex }));
             }, 1000);
-            decrementLoading();
+            this.store.dispatch(decrementLoading());
           }),
           map((card) => UpdateCardActions.updateCardSuccess({ card: card })),
           catchError((reason) => of(LoadFailure({ reason: reason })))
@@ -145,10 +145,10 @@ export class CardsEffects {
     this.actions$.pipe(
       ofType(fetchUserData),
       mergeMap(() => {
-        incrementLoading();
+        this.store.dispatch(incrementLoading());
         return this.user.getUserInfo().pipe(
           tap(() => {
-            decrementLoading();
+            this.store.dispatch(decrementLoading());
           }),
           map((info) => fetchUserDataSuccess(info)),
           catchError((reason) => of(LoadFailure({ reason: reason })))
@@ -163,10 +163,10 @@ export class CardsEffects {
     this.actions$.pipe(
       ofType(updateUserData),
       exhaustMap((action) => {
-        incrementLoading();
+        this.store.dispatch(incrementLoading());
         return this.user.updateAccount(action).pipe(
           tap(() => {
-            decrementLoading();
+            this.store.dispatch(decrementLoading());
           }),
           map((user) => updateUserDataSuccess(user)),
           catchError((reason) => of(LoadFailure({ reason: reason })))
@@ -181,10 +181,10 @@ export class CardsEffects {
     this.actions$.pipe(
       ofType(login),
       exhaustMap((user) => {
-        incrementLoading();
+        this.store.dispatch(incrementLoading());
         return this.user.login(user).pipe(
           tap(() => {
-            decrementLoading();
+            this.store.dispatch(decrementLoading());
           }),
           map((user) => loginSuccess(user)),
           catchError((reason) => of(LoadFailure({ reason: reason })))
