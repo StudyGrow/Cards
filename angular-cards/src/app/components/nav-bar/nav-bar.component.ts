@@ -18,6 +18,7 @@ import {
 import { map } from "rxjs/operators";
 import { selectCurrentLecture, authenticated } from "src/app/store/selector";
 import { clearCardData } from "src/app/store/actions/cardActions";
+import { fetchUserData } from "src/app/store/actions/UserActions";
 
 @Component({
   selector: "app-nav-bar",
@@ -57,7 +58,14 @@ export class NavBarComponent implements OnInit, OnDestroy {
       sub = this.store
         .select("cardsData")
         .pipe(map(authenticated))
-        .subscribe((val) => (this.loggedIn = val));
+        .subscribe((val) => {
+          if (this.loggedIn != val) {
+            //this will only be the case the first time this function gets called
+
+            this.loggedIn = val;
+            if (val) this.store.dispatch(fetchUserData()); //if user is logged in fetch userdata
+          }
+        });
       this.subscriptions$.push(sub);
 
       sub = this.router.events.subscribe((e) => {
@@ -70,7 +78,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
         .notifications()
         .subscribe((notifs) => (this.notifications = notifs));
       this.subscriptions$.push(sub);
-    }, 0);
+    }, 1);
   }
   handleRouteChanges() {
     this.store.dispatch(setDrawerState({ show: false }));

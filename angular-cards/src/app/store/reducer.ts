@@ -50,7 +50,15 @@ const _cardsReducer = createReducer(
   initialState,
   on(Actions.addCardSuccess, (state, { card }) => ({
     ...state,
-    cards: [...state.cards, card],
+    cards: [
+      ...state.cards,
+      {
+        //add card
+        ...card,
+        authorId: state.userData.user._id, //add user id
+        authorName: state.userData.user.username, //add username
+      },
+    ],
     currLecture: {
       ...state.currLecture,
       tagList: addTags([...state.currLecture.tagList], card.tags),
