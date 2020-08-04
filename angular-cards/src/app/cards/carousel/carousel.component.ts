@@ -96,6 +96,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
   constructor(private store: Store<any>) {}
 
   ngOnInit(): void {
+    //Form Mode, depending on the mode we show different forms (add, edit,none)
     let sub = this.data$
       .pipe(map((state) => state.formMode))
       .subscribe((mode) => {
@@ -103,11 +104,13 @@ export class CarouselComponent implements OnInit, OnDestroy {
       });
     this.subscriptions$.push(sub);
 
+    //see if user is in a typing field, If so we disable carousel navigation with arrows
     sub = this.data$.pipe(map((state) => state.typingMode)).subscribe((val) => {
       this.inTypingField = val;
     });
     this.subscriptions$.push(sub);
 
+    //gets new slide indexes
     sub = this.data$
       .pipe(map((state) => state.activeIndex))
       .subscribe((val) => {
@@ -115,28 +118,28 @@ export class CarouselComponent implements OnInit, OnDestroy {
       });
     this.subscriptions$.push(sub);
 
-    this.subscriptions$.push(sub);
-
+    //get The user id to check if user has rigths to edit the card
     sub = this.data$.pipe(map(selectUserId)).subscribe((id) => {
       this.uid = id;
     });
     this.subscriptions$.push(sub);
+
+    //get new cards, either if on new route, or filter is applied
     sub = this.data$.pipe(map(newCards)).subscribe((obj) => {
       if (
-        this.cards != obj.cards &&
-        (!this.lastRefresh || this.lastRefresh < obj.date)
+        this.cards != obj.cards && //object reference has changed
+        (!this.lastRefresh || this.lastRefresh < obj.date) //modified time stamp is more recent than last refresh
       ) {
         //cards have changed
         this.lastRefresh = obj.date; //update the last refresh
         this.cardCount = obj.cards.length;
 
-        this.cards = null;
+        this.cards = null; //set null to explicitely refresh carousel view
         setTimeout(() => {
           this.cards = obj.cards;
         }, 0);
       }
     });
-
     this.subscriptions$.push(sub);
   }
 
@@ -156,40 +159,49 @@ export class CarouselComponent implements OnInit, OnDestroy {
       } else if (index >= this.cardCount) {
         index = 0;
       }
-      this.carousel.selectSlide(index); //select new slide
+      this.selectSlide(index); //select new slide
     }
   }
-  //this function update the current slide index
+  //this function updates the current slide index in the store and for the component
   onSlide(slideEvent) {
     this.activeSlide = slideEvent.relatedTarget; //update active slide
-
     this.store.dispatch(setActiveCardIndex({ index: this.activeSlide })); //update in store
   }
 
   selectSlide(n: number) {
-    if (this.carousel && n && this.cardCount > 1 && this.formMode != "edit") {
-      this.carousel.selectSlide(n);
-    } else {
-      this.notallowed = true;
-      setTimeout(() => {
-        this.notallowed = false;
-      }, 100);
+    if (this.carousel && this.cards && n >= 0 && n < this.cards.length) {
+      //only update if n is index inside the cards array
+      if (this.cardCount > 1 && this.formMode != "edit") {
+        this.carousel.selectSlide(n);
+      } else {
+        this.notallowed = true;
+        setTimeout(() => {
+          this.notallowed = false;
+        }, 100);
+      }
     }
   }
+
   showRandomCard() {
-    var rand: number = this.activeSlide;
-    var count = 0;
+    let rand: number = this.activeSlide;
+    let count = 0; //prevent infinite recalculations
     while (count < 5 && rand == this.activeSlide) {
+      //get a NEW random index
       //calculate a new random index
       count++;
       rand = Math.floor(Math.random() * this.cardCount); //random Cardindex
     }
-    if (this.carousel) {
-      this.carousel.selectSlide(rand);
-    }
+    this.selectSlide(rand);
   }
-  goToPrev(length?: number) {
-    if (this.carousel && this.cardCount > 1 && this.formMode != "edit") {
+
+  //select the previous slide
+  goToPrev() {
+    if (
+      this.carousel &&
+      this.cards &&
+      this.cardCount > 1 &&
+      this.formMode != "edit"
+    ) {
       this.carousel.previousSlide();
     } else {
       this.notallowed = true;
@@ -198,8 +210,15 @@ export class CarouselComponent implements OnInit, OnDestroy {
       }, 100);
     }
   }
-  goToNext(length?: number) {
-    if (this.carousel && this.cardCount > 1 && this.formMode != "edit") {
+
+  //select the next slide
+  goToNext() {
+    if (
+      this.carousel &&
+      this.cards &&
+      this.cardCount > 1 &&
+      this.formMode != "edit"
+    ) {
       this.carousel.nextSlide();
     } else {
       this.notallowed = true;
@@ -210,7 +229,12 @@ export class CarouselComponent implements OnInit, OnDestroy {
   }
 
   isDisabled() {
-    if (this.formMode == "edit" || !this.cards || this.cardCount == 0) {
+    if (
+      this.formMode == "edit" ||
+      !this.cards ||
+      this.cardCount == 0 ||
+      !this.carousel
+    ) {
       return true;
     }
     let currCard = this.cards[this.activeSlide]; //get the card that is currently showing
@@ -225,13 +249,15 @@ export class CarouselComponent implements OnInit, OnDestroy {
     }
 
     if (!this.uid || currCard.authorId !== this.uid) {
-      //there is an author an it is not the user
+      //there is an author and it is not the current user
       return true;
     }
   }
+  //toggle the state of the add card component
   toggleAddView(): void {
     if (this.formMode != "edit") {
-      if (this.formMode == "add") {
+      //we can only toggle it if we are not editing
+      if (this.formMode === "add") {
         this.store.dispatch(setFormMode({ mode: "none" }));
       } else {
         this.store.dispatch(setFormMode({ mode: "add" }));
@@ -239,9 +265,11 @@ export class CarouselComponent implements OnInit, OnDestroy {
     }
   }
   enableEdit() {
-    this.store.dispatch(setFormMode({ mode: "edit" }));
+    if (this.formMode != "edit") {
+      this.store.dispatch(setFormMode({ mode: "edit" }));
+    }
   }
-
+  //sets the class for the add button depending on the current formmode
   setClass() {
     return this.formMode == "add" ? "btn btn-info" : "btn btn-light";
   }
