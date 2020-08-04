@@ -54,7 +54,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
     .pipe(share());
 
   loading: boolean;
-  private uid: string;
+  private uid: string = "";
   public cards$: Observable<Card[]> = this.store.select(
     (state) => state.cardsData.cards
   );
@@ -120,7 +120,9 @@ export class CarouselComponent implements OnInit, OnDestroy {
 
     //get The user id to check if user has rigths to edit the card
     sub = this.data$.pipe(map(selectUserId)).subscribe((id) => {
-      this.uid = id;
+      if (this.uid !== id) {
+        this.uid = id;
+      }
     });
     this.subscriptions$.push(sub);
 
@@ -137,7 +139,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
         this.cards = null; //set null to explicitely refresh carousel view
         setTimeout(() => {
           this.cards = obj.cards;
-        }, 0);
+        }, 10);
       }
     });
     this.subscriptions$.push(sub);
@@ -229,30 +231,17 @@ export class CarouselComponent implements OnInit, OnDestroy {
   }
 
   isDisabled() {
-    if (
-      this.formMode == "edit" ||
-      !this.cards ||
-      this.cardCount == 0 ||
-      !this.carousel
-    ) {
+    if (this.formMode == "edit" || this.uid == "") {
       return true;
-    }
-    let currCard = this.cards[this.activeSlide]; //get the card that is currently showing
+    } else {
+      let currCard = this.cards[this.activeSlide]; //get the card that is currently showing
 
-    if (!currCard) {
-      return true;
+      if (currCard && currCard.authorId !== this.uid) {
+        //there is an author and it is not the current user
+        return true;
+      }
     }
-
-    if (!currCard.authorId) {
-      //there is a card, but there is no author
-      return false;
-    }
-
-    if (!this.uid || currCard.authorId !== this.uid) {
-      //there is an author and it is not the current user
-      return true;
-    }
-    return true;
+    return false;
   }
   //toggle the state of the add card component
   toggleAddView(): void {

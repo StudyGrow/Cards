@@ -105,13 +105,12 @@ export class CardsEffects {
         return this.cs.addCard(action.card).pipe(
           tap(() => {
             decrementLoading();
-          }),
-          map((res) => AddCardActions.addCardSuccess({ card: res })),
-          tap(() => {
             setTimeout(() => {
               setActiveCardIndex({ index: -1 }); //go to last card
-            }, 700);
+            }, 1000);
           }),
+          map((res) => AddCardActions.addCardSuccess({ card: res })),
+
           catchError((reason) => of(LoadFailure({ reason: reason })))
         );
       }),
@@ -130,7 +129,7 @@ export class CardsEffects {
           tap((card) => {
             setTimeout(() => {
               setActiveCardIndex({ index: activeIndex });
-            }, 700);
+            }, 1000);
             decrementLoading();
           }),
           map((card) => UpdateCardActions.updateCardSuccess({ card: card })),
