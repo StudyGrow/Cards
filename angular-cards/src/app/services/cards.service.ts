@@ -75,7 +75,7 @@ export class CardsService {
       )
       .pipe(
         tap(
-          (response) => {},
+          () => {},
           (error) => {
             this.notifications.handleErrors(error);
           }

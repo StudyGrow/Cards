@@ -13,5 +13,6 @@ export class AppComponent {
   public constructor(private titleService: Title, private store: Store<any>) {
     this.store.dispatch(auth());
     this.titleService.setTitle("Home");
+    this.store.select("cardsData").subscribe((state) => console.log(state));
   }
 }

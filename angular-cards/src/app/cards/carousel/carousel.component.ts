@@ -252,6 +252,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
       //there is an author and it is not the current user
       return true;
     }
+    return true;
   }
   //toggle the state of the add card component
   toggleAddView(): void {

@@ -38,7 +38,8 @@ export class AddCardFormComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    let sub = this.actionState.addCard$.subscribe((res) => {
+    let sub: Subscription;
+    sub = this.actionState.addCard$.subscribe((res) => {
       this.form.reset();
     });
     this.subscriptions$.push(sub);
