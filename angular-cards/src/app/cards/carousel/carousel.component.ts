@@ -239,7 +239,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
     } else {
       let currCard = this.cards[this.activeSlide]; //get the card that is currently showing
 
-      if (currCard && currCard.authorId !== this.uid) {
+      if (currCard && currCard.authorId && currCard.authorId !== this.uid) {
         //there is an author and it is not the current user
         return true;
       }
