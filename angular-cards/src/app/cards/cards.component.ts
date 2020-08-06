@@ -21,6 +21,7 @@ import { fetchCards } from "../store/actions/cardActions";
 import { fadeInOnEnterAnimation } from "angular-animations";
 import { setSuggestionsMode } from "../store/actions/actions";
 import { getCardsData, selectUserId } from "../store/selector";
+import { AppState } from "../store/reducer";
 
 @Component({
   selector: "app-cards",
@@ -30,6 +31,7 @@ import { getCardsData, selectUserId } from "../store/selector";
 })
 export class CardsComponent implements OnInit, OnDestroy {
   public formMode: string;
+  abrv: string;
   private subscriptions$: Subscription[] = [];
   @ViewChild("alert", { static: false }) alert: ElementRef;
 
@@ -52,15 +54,18 @@ export class CardsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.title.setTitle("Cards");
-
     this.store.dispatch(fetchCards());
 
-    let sub = this.store
-      .select("cardsData")
-      .pipe(map((state) => state.formMode))
-      .subscribe((mode) => {
-        this.formMode = mode;
-      });
+    let sub = this.store.select("cardsData").subscribe((state) => {
+      this.formMode = state.formMode;
+      if (this.abrv !== state.currLecture.abrv) {
+        this.abrv = state.currLecture.abrv;
+        console.log(this.abrv);
+        if (this.abrv) {
+          this.title.setTitle("Cards " + this.abrv.toUpperCase());
+        }
+      }
+    });
     this.subscriptions$.push(sub);
   }
   ngOnDestroy() {
