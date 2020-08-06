@@ -67,7 +67,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
             if (val) {
               setTimeout(() => {
                 this.store.dispatch(fetchUserData()); //if user is logged in fetch userdata
-              }, 200);
+              }, 1000);
             }
           }
         });
