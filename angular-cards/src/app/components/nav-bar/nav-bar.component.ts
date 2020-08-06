@@ -87,19 +87,22 @@ export class NavBarComponent implements OnInit, OnDestroy {
   }
   handleRouteChanges() {
     this.store.dispatch(setDrawerState({ show: false }));
-    if (!this.router.url.match(/account/)) {
+    if (this.router.url.match(/account/)) {
+      this.titleService.setTitle("Account");
+    } else {
       this.userService.clearAccountInfo();
     }
-    if (!this.router.url.match(/vorlesung/)) {
+    if (this.router.url.match(/vorlesung/)) {
+      this.showCards = true;
+    } else {
       this.store.dispatch(clearCardData());
       this.store.dispatch(resetFilter());
       this.showCards = false;
-    } else {
-      this.showCards = true;
     }
     //clear messages on route change
     if (this.router.url == "/") {
       this.notification.clearNotifications("alert"); //prevent successfull login message from being removed on home
+      this.titleService.setTitle("Home");
     } else {
       this.notification.clearNotifications("alert", "success");
     }

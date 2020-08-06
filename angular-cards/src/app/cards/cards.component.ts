@@ -31,7 +31,7 @@ import { AppState } from "../store/reducer";
 })
 export class CardsComponent implements OnInit, OnDestroy {
   public formMode: string;
-  abrv: string;
+  vlName: string;
   private subscriptions$: Subscription[] = [];
   @ViewChild("alert", { static: false }) alert: ElementRef;
 
@@ -58,15 +58,24 @@ export class CardsComponent implements OnInit, OnDestroy {
 
     let sub = this.store.select("cardsData").subscribe((state) => {
       this.formMode = state.formMode;
-      if (this.abrv !== state.currLecture.abrv) {
-        this.abrv = state.currLecture.abrv;
-        console.log(this.abrv);
-        if (this.abrv) {
-          this.title.setTitle("Cards " + this.abrv.toUpperCase());
+      if (this.vlName !== state.currLecture.name) {
+        this.vlName = state.currLecture.name;
+
+        if (this.vlName) {
+          this.title.setTitle("Cards · " + this.titleCase(this.vlName));
         }
       }
     });
     this.subscriptions$.push(sub);
+  }
+  titleCase(str: string) {
+    return str
+      .toLowerCase()
+      .split(" ")
+      .map(function (word) {
+        return word.replace(word[0], word[0].toUpperCase());
+      })
+      .join(" ");
   }
   ngOnDestroy() {
     this.subscriptions$.forEach((sub) => sub.unsubscribe());
