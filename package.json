@@ -26,21 +26,21 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-session": "^1.17.1",
-    "express-validator": "^6.4.0",
-    "helmet": "^3.21.2",
-    "kill-port": "^1.6.0",
+    "express-validator": "^6.6.1",
+    "helmet": "^3.23.3",
+    "kill-port": "^1.6.1",
     "mailgun-js": "^0.22.0",
-    "mongoose": "^5.9.16",
+    "mongoose": "^5.9.27",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
     "socket.io": "^2.3.0",
     "socket.io-client": "^2.3.0"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^0.901.7",
-    "@angular/cli": "^9.1.7",
-    "@angular/compiler": "^9.1.9",
-    "@angular/compiler-cli": "^9.1.9",
-    "nodemon": "^2.0.2"
+    "@angular-devkit/build-angular": "^0.901.12",
+    "@angular/cli": "^9.1.12",
+    "@angular/compiler": "^9.1.12",
+    "@angular/compiler-cli": "^9.1.12",
+    "nodemon": "^2.0.4"
   }
 }
