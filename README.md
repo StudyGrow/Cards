@@ -4,7 +4,7 @@ This project provides the code for frontend and backend of our cards website cur
 
 ## Getting Started
 
-To test this project locally you should download the project from the noHttps branch.
+To test this project locally you should clone this repository.
 
 ### Prerequisites
 
@@ -21,7 +21,7 @@ npm install
 npm will install all the dependencies for you. After that use the following command to start the server:
 
 ```
-npm run start
+npm run watch
 ```
 
 The server will tell you on which port it will be running in the console (3000 by default). Navigate to `http://localhost:port`, where port is the port provdided by the server.
