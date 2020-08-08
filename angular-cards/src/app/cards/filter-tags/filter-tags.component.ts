@@ -34,12 +34,11 @@ import {
   styleUrls: ["./filter-tags.component.scss"],
 })
 export class FilterTagsComponent implements OnInit, OnDestroy {
-  private data$: Observable<any> = this.store
-    .select(
-      //holds cards data from store
-      "cardsData"
-    )
-    .pipe(share());
+  private data$: Observable<any> = this.store.select(
+    //holds cards data from store
+    "cardsData"
+  );
+
   public lecture$: Observable<Vorlesung> = this.data$.pipe(
     map((state) => state.currLecture)
   );
