@@ -145,6 +145,7 @@ const _cardsReducer = createReducer(
   })),
   on(Actions.clearCardData, (state) => ({
     ...state,
+    formMode: "none",
     currLecture: initialState.currLecture,
     cards: initialState.cards,
     filteredCardsChanged: new Date(),
