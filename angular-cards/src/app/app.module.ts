@@ -61,8 +61,12 @@ import { ConfirmationComponent } from "./components/confirmation/confirmation.co
 import { NavListComponent } from "./components/nav-list/nav-list.component";
 import { ViewContainerComponent } from "./components/view-container/view-container.component";
 import { HomeModule } from "./home/home.module";
-import { ServiceWorkerModule } from '@angular/service-worker';
-import { environment } from '../environments/environment';
+import { ServiceWorkerModule } from "@angular/service-worker";
+import { environment } from "../environments/environment";
+
+import { HTTP_INTERCEPTORS } from "@angular/common/http";
+import { RequestCache } from "./cache/request-cache.service";
+import { CachingInterceptor } from "./cache/caching-interceptor.service";
 
 declare var Hammer: any;
 //Config to allow swipe gestures on carousel
@@ -135,11 +139,13 @@ export class MyHammerConfig extends HammerGestureConfig {
     StoreDevtoolsModule.instrument({ maxAge: 10 }),
     StoreModule.forRoot({ cardsData: cardsReducer }),
     EffectsModule.forRoot([CardsEffects]),
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
+    ServiceWorkerModule.register("ngsw-worker.js", {
+      enabled: environment.production,
+    }),
   ],
   providers: [
     { provide: LOCALE_ID, useValue: "de" },
-
+    { provide: HTTP_INTERCEPTORS, useClass: CachingInterceptor, multi: true },
     {
       provide: HAMMER_GESTURE_CONFIG,
       useClass: MyHammerConfig,
