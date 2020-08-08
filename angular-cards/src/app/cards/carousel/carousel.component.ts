@@ -15,9 +15,10 @@ import {
   shakeAnimation,
   fadeOutOnLeaveAnimation,
 } from "angular-animations";
-import { combineLatest } from "rxjs/index";
+
 import { Store } from "@ngrx/store";
 import { AppState } from "src/app/store/reducer";
+import { resetFilter } from "../../store/actions/actions";
 import {
   updateCard,
   setActiveCardIndex,
@@ -25,12 +26,7 @@ import {
 import { setFormMode } from "src/app/store/actions/actions";
 import { map, share, startWith, delay } from "rxjs/operators";
 
-import {
-  selectUserId,
-  selectFilteredCards,
-  lastCardChange,
-  newCards,
-} from "src/app/store/selector";
+import { selectUserId, newCards } from "src/app/store/selector";
 import { state } from "@angular/animations";
 
 @Component({
@@ -46,12 +42,10 @@ import { state } from "@angular/animations";
 export class CarouselComponent implements OnInit, OnDestroy {
   private inTypingField: boolean;
 
-  private data$: Observable<AppState> = this.store
-    .select(
-      //holds cards data from store
-      "cardsData"
-    )
-    .pipe(share());
+  private data$: Observable<AppState> = this.store.select(
+    //holds cards data from store
+    "cardsData"
+  );
 
   loading: boolean;
   private uid: string = "";

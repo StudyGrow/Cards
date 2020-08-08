@@ -35,7 +35,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use((req, res, next) => {
-  if (process.env.NODE_ENV == "development") {
+  if (process.env.NODE_ENV && process.env.NODE_ENV.indexOf("development") > -1) {
     console.log("Request: ", req.originalUrl);
   }
   next();

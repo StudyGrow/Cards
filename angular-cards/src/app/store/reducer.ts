@@ -168,6 +168,7 @@ const _cardsReducer = createReducer(
   on(StateActions.resetFilter, (state) => ({
     ...state,
     tags: [],
+
     filteredCardsChanged: new Date(),
   })),
   on(Actions.goNext, (state) => ({
@@ -178,6 +179,7 @@ const _cardsReducer = createReducer(
     ...state,
     activeIndex: state.activeIndex - 1,
   })),
+
   on(Actions.LoadFailure, (state) => state) //on failure don't update state
 );
 

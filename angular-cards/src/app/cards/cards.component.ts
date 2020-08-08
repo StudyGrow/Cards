@@ -17,7 +17,7 @@ import { Store } from "@ngrx/store";
 import { Observable, Subscription } from "rxjs";
 
 import { map, tap, share } from "rxjs/operators";
-import { fetchCards } from "../store/actions/cardActions";
+import { fetchCards, clearCardData } from "../store/actions/cardActions";
 import { fadeInOnEnterAnimation } from "angular-animations";
 import { setSuggestionsMode } from "../store/actions/actions";
 import { getCardsData, selectUserId } from "../store/selector";
