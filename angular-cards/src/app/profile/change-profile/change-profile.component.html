@@ -85,7 +85,12 @@
 
 <hr />
 <h2>Passwort ändern</h2>
-<form #pwform="ngForm" (ngSubmit)="changePassword(pwform)" novalidate>
+<form
+  #pwform="ngForm"
+  (ngSubmit)="changePassword(pwform)"
+  novalidate
+  class="mb-2"
+>
   <div class="form-group">
     <label for="password">Neues Passwort</label>
     <input
@@ -120,3 +125,7 @@
     Ändern
   </button>
 </form>
+<h2>Account löschen</h2>
+<button class="btn btn-danger mb-2" (click)="delete()">
+  Account löschen
+</button>

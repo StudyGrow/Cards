@@ -4,6 +4,7 @@ const Card = require("../models/Card");
 const bcrypt = require("bcryptjs"); //used to encrypt and decrypt passwords
 const mail = require("./mailService");
 const crypto = require("crypto-random-string");
+const { findByIdAndDelete } = require("../models/User");
 
 module.exports = function userService() {
   //create a new Account for the site
@@ -57,7 +58,14 @@ module.exports = function userService() {
       }
     });
   };
-
+  userService.deleAccount = async (req, callback) => {
+    try {
+      await User.findByIdAndDelete(req.user._id);
+      callback(null);
+    } catch (error) {
+      callback(error);
+    }
+  };
   userService.updateAccount = async (user, form, callback) => {
     try {
       if (user.username != form.username && user.email != form.email) {

@@ -67,6 +67,7 @@ import { environment } from "../environments/environment";
 import { HTTP_INTERCEPTORS } from "@angular/common/http";
 import { RequestCache } from "./cache/request-cache.service";
 import { CachingInterceptor } from "./cache/caching-interceptor.service";
+import { ModalComponent } from './components/modal/modal.component';
 
 declare var Hammer: any;
 //Config to allow swipe gestures on carousel
@@ -115,6 +116,7 @@ export class MyHammerConfig extends HammerGestureConfig {
     ConfirmationComponent,
     NavListComponent,
     ViewContainerComponent,
+    ModalComponent,
   ],
   imports: [
     BrowserModule,

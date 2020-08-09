@@ -32,12 +32,6 @@ export class LecturesService {
           observe: "response",
         })
         .pipe(
-          tap(
-            (res) => {},
-            (error) => {
-              this.notifications.handleErrors(error);
-            }
-          ),
           map((res) => res.body),
           shareReplay({ bufferSize: 1, refCount: true })
         );
@@ -56,16 +50,6 @@ export class LecturesService {
           observe: "response",
         }
       )
-      .pipe(
-        tap(
-          (res) => {
-            //add the new lecture to the lectures subject
-          },
-          (error) => {
-            this.notifications.handleErrors(error);
-          }
-        ),
-        map((res) => res.body)
-      );
+      .pipe(map((res) => res.body));
   }
 }

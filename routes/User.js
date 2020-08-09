@@ -120,6 +120,17 @@ router.put(
     }
   }
 );
+router.put("/delete", auth, (req, res) => {
+  req.services.user.deleAccount(req, (err) => {
+    if (err) {
+      console.log(err);
+      res.status(501).send(err.message);
+    } else {
+      res.send(true);
+    }
+  });
+});
+
 router.get("/auth", (req, res) => {
   if (req.isAuthenticated()) {
     res.status(200).send(true);

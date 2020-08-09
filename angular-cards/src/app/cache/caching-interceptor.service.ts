@@ -11,10 +11,15 @@ import { tap } from "rxjs/operators";
 import { RequestCache } from "./request-cache.service";
 import { Store } from "@ngrx/store";
 import { incrementLoading, decrementLoading } from "../store/actions/actions";
+import { NotificationsService } from "../services/notifications.service";
 
 @Injectable()
 export class CachingInterceptor implements HttpInterceptor {
-  constructor(private cache: RequestCache, private store: Store) {}
+  constructor(
+    private cache: RequestCache,
+    private store: Store,
+    private notifs: NotificationsService
+  ) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler) {
     const cachedResponse = this.cache.get(req);
@@ -30,12 +35,18 @@ export class CachingInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<any>> {
     this.store.dispatch(incrementLoading());
     return next.handle(req).pipe(
-      tap((event) => {
-        if (event instanceof HttpResponse) {
+      tap(
+        (event) => {
+          if (event instanceof HttpResponse) {
+            this.store.dispatch(decrementLoading());
+            cache.put(req, event);
+          }
+        },
+        (error) => {
+          this.notifs.handleErrors(error);
           this.store.dispatch(decrementLoading());
-          cache.put(req, event);
         }
-      })
+      )
     );
   }
 }

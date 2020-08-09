@@ -8,6 +8,8 @@ import { Store } from "@ngrx/store";
 import { map } from "rxjs/operators";
 import { selectUserInfo, selectUser } from "src/app/store/selector";
 import { updateUserData } from "src/app/store/actions/UserActions";
+import { ModalComponent } from "src/app/components/modal/modal.component";
+import { MatDialog } from "@angular/material/dialog";
 @Component({
   selector: "app-change-profile",
   templateUrl: "./change-profile.component.html",
@@ -18,7 +20,11 @@ export class ChangeProfileComponent implements OnInit, OnDestroy {
   subscriptions$: Subscription[] = [];
   public user = new User();
   fileToUpload: File = null;
-  constructor(private userService: UserService, private store: Store<any>) {}
+  constructor(
+    private userService: UserService,
+    private store: Store<any>,
+    public dialog: MatDialog
+  ) {}
 
   ngOnInit(): void {
     this.user.name = "";
@@ -86,5 +92,10 @@ export class ChangeProfileComponent implements OnInit, OnDestroy {
     }
 
     return false;
+  }
+  delete() {
+    const dialogRef = this.dialog.open(ModalComponent, {
+      width: "400px",
+    });
   }
 }

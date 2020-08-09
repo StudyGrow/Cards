@@ -108,6 +108,26 @@ export class UserService implements CanActivate {
       this.accountInfo$.next(null);
     }
   }
+
+  removeAcc(): Observable<any> {
+    return this.http
+      .put(this.config.urlBase + "user/delete", null, {
+        headers: this.config.headers,
+        observe: "response",
+      })
+      .pipe(
+        tap(
+          (res) => {
+            console.log(res);
+          },
+          (error) => {
+            this.notifications.handleErrors(error);
+          }
+        ),
+        map((res) => res.body)
+      );
+  }
+
   uploadFile(file: FormData): Observable<boolean> {
     console.log(file);
     //this.statesService.setLoadingState(true);
@@ -165,34 +185,19 @@ export class UserService implements CanActivate {
         observe: "response",
       })
       .pipe(
-        tap(
-          (res) => {
-            this.notifications.addNotification(
-              new SuccessMessage("Dein Passwort wurde erfolgreich aktualisiert")
-            );
-          },
-          (error) => {
-            this.notifications.handleErrors(error);
-          }
-        )
+        tap((res) => {
+          this.notifications.addNotification(
+            new SuccessMessage("Dein Passwort wurde erfolgreich aktualisiert")
+          );
+        })
       );
   }
   logoutServer(): Observable<any> {
     return this.http
       .get<any>(this.config.urlBase + "user/logout", { observe: "response" })
       .pipe(
-        tap(
-          () => {},
-          (error) => {
-            this.notifications.handleErrors(error);
-          }
-        ),
         map((res) => res.body),
         share()
       );
-  }
-
-  deleteAccount() {
-    console.log("not yet implemented");
   }
 }

@@ -51,15 +51,7 @@ export class CardsService {
           observe: "response",
         }
       )
-      .pipe(
-        tap(
-          (resp) => {},
-          (error) => {
-            this.notifications.handleErrors(error);
-          }
-        ),
-        map((res) => card)
-      );
+      .pipe(map((res) => card));
   }
 
   addCard(card: Card): Observable<Card> {
@@ -73,14 +65,6 @@ export class CardsService {
           observe: "response",
         }
       )
-      .pipe(
-        tap(
-          () => {},
-          (error) => {
-            this.notifications.handleErrors(error);
-          }
-        ),
-        map((res) => ({ ...card, _id: res.body.id }))
-      );
+      .pipe(map((res) => ({ ...card, _id: res.body.id })));
   }
 }

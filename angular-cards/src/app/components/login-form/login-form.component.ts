@@ -7,6 +7,7 @@ import { Store } from "@ngrx/store";
 import { login } from "src/app/store/actions/UserActions";
 import { CardsEffects } from "src/app/store/effects/effects";
 import { Subscription } from "rxjs";
+import { LoadFailure } from "src/app/store/actions/cardActions";
 @Component({
   selector: "app-login-form",
   templateUrl: "./login-form.component.html",
@@ -26,8 +27,12 @@ export class LoginFormComponent implements OnInit {
     this.store.dispatch(login(form.value));
     let sub = this.actionState.login$.subscribe(
       (res) => {
-        sub.unsubscribe();
-        this.router.navigateByUrl("/");
+        console.log(res);
+        if (res.type == "[Cards] Load failure") {
+        } else {
+          sub.unsubscribe();
+          this.router.navigateByUrl("/");
+        }
       },
       (err) => {}
     );
