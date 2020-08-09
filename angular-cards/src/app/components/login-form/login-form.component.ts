@@ -27,7 +27,6 @@ export class LoginFormComponent implements OnInit {
     this.store.dispatch(login(form.value));
     let sub = this.actionState.login$.subscribe(
       (res) => {
-        console.log(res);
         if (res.type == "[Cards] Load failure") {
         } else {
           sub.unsubscribe();

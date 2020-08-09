@@ -27,7 +27,6 @@ export class ModalComponent {
   deleteAcc(): void {
     this.user.removeAcc().subscribe((val) => {
       if (!val) {
-        console.log("error");
       } else {
         this.router.navigateByUrl("/");
         setTimeout(() => {
@@ -38,7 +37,7 @@ export class ModalComponent {
         }, 100);
       }
     });
-    console.log("del");
+
     this.dialogRef.close();
   }
 }

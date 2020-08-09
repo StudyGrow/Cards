@@ -50,17 +50,12 @@ export class UserService implements CanActivate {
         observe: "response",
       })
       .pipe(
-        tap(
-          (res) => {
-            this.notifications.clearNotifications("success");
-            this.notifications.addNotification(
-              new SuccessMessage(`Herzlich willkommen ${res.body.username}`)
-            );
-          },
-          (error) => {
-            this.notifications.handleErrors(error);
-          }
-        ),
+        tap((res) => {
+          this.notifications.clearNotifications("success");
+          this.notifications.addNotification(
+            new SuccessMessage(`Herzlich willkommen ${res.body.username}`)
+          );
+        }),
         map((res) => res.body)
       );
   }
@@ -70,14 +65,9 @@ export class UserService implements CanActivate {
         headers: this.config.headers,
         observe: "response",
       })
-      .subscribe(
-        (res) => {
-          this.router.navigateByUrl("/login");
-        },
-        (error) => {
-          this.notifications.handleErrors(error);
-        }
-      );
+      .subscribe((res) => {
+        this.router.navigateByUrl("/login");
+      });
   }
 
   getUserInfo(): Observable<UserInfo> {
@@ -97,7 +87,6 @@ export class UserService implements CanActivate {
           },
           (error) => {
             this.router.navigateByUrl("/login");
-            this.notifications.handleErrors(error);
           }
         ),
         map((res) => res.body)
@@ -115,17 +104,7 @@ export class UserService implements CanActivate {
         headers: this.config.headers,
         observe: "response",
       })
-      .pipe(
-        tap(
-          (res) => {
-            console.log(res);
-          },
-          (error) => {
-            this.notifications.handleErrors(error);
-          }
-        ),
-        map((res) => res.body)
-      );
+      .pipe(map((res) => res.body));
   }
 
   uploadFile(file: FormData): Observable<boolean> {
@@ -159,19 +138,13 @@ export class UserService implements CanActivate {
         observe: "response",
       })
       .pipe(
-        tap(
-          (res) => {
-            console.log(res);
-            this.notifications.addNotification(
-              new SuccessMessage(
-                "Deine Informationen wurden erfolgreich aktualisiert"
-              )
-            );
-          },
-          (error) => {
-            this.notifications.handleErrors(error);
-          }
-        ),
+        tap((res) => {
+          this.notifications.addNotification(
+            new SuccessMessage(
+              "Deine Informationen wurden erfolgreich aktualisiert"
+            )
+          );
+        }),
         map((res) => {
           return form;
         })
