@@ -16,7 +16,7 @@ import {
   resetFilter,
 } from "src/app/store/actions/actions";
 import { map } from "rxjs/operators";
-import { selectCurrentLecture, authenticated } from "src/app/store/selector";
+import { authenticated } from "src/app/store/selector";
 import { clearCardData } from "src/app/store/actions/cardActions";
 import { fetchUserData } from "src/app/store/actions/UserActions";
 
