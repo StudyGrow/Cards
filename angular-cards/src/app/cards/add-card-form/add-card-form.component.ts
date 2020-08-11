@@ -72,11 +72,17 @@ export class AddCardFormComponent implements OnInit, OnDestroy {
     } else {
       abrv = this.router.url.split(/vorlesung\//)[1]; //get the lecture abreviation from the route
     }
+    let tags: string[];
+    if (f.value.tags) {
+      tags = f.value.tags.split("#");
+    } else {
+      tags = [];
+    }
 
     this.newCard = new Card(
       f.value.thema,
       f.value.content,
-      f.value.tags.split("#"),
+      tags,
       abrv,
       0,
       null,
