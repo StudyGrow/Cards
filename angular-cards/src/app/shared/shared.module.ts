@@ -4,6 +4,7 @@ import { NgModule } from "@angular/core";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatExpansionModule } from "@angular/material/expansion";
+import { MatButtonModule } from "@angular/material/button";
 import { MatDialogModule } from "@angular/material/dialog";
 import { MatTooltipModule } from "@angular/material/tooltip";
 import { SafeHtmlPipe } from "./safe-html.pipe";
@@ -35,6 +36,7 @@ import { MatIconModule } from "@angular/material/icon";
     MatExpansionModule,
     MatDialogModule,
     MatTooltipModule,
+    MatButtonModule,
   ],
 })
 export class SharedModule {}

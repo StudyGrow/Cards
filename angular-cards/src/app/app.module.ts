@@ -13,14 +13,10 @@ import { StoreDevtoolsModule } from "@ngrx/store-devtools";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { MatProgressBarModule } from "@angular/material/progress-bar";
 import { MatDialogModule } from "@angular/material/dialog";
-import { MatButtonModule } from "@angular/material/button";
+
 import { MatSelectModule } from "@angular/material/select";
 import { MatFormFieldModule } from "@angular/material/form-field";
-import { MatInputModule } from "@angular/material/input";
 import { MatMenuModule } from "@angular/material/menu";
-import { MatChipsModule } from "@angular/material/chips";
-import { MatAutocompleteModule } from "@angular/material/autocomplete";
-import { MatIconModule } from "@angular/material/icon";
 import { MatSidenavModule } from "@angular/material/sidenav";
 import { MatListModule } from "@angular/material/list";
 import { MatDividerModule } from "@angular/material/divider";
@@ -67,7 +63,7 @@ import { environment } from "../environments/environment";
 import { HTTP_INTERCEPTORS } from "@angular/common/http";
 import { RequestCache } from "./cache/request-cache.service";
 import { CachingInterceptor } from "./cache/caching-interceptor.service";
-import { ModalComponent } from './components/modal/modal.component';
+import { ModalComponent } from "./components/modal/modal.component";
 
 declare var Hammer: any;
 //Config to allow swipe gestures on carousel
@@ -124,7 +120,7 @@ export class MyHammerConfig extends HammerGestureConfig {
     HttpClientModule,
     BrowserAnimationsModule,
     MatProgressBarModule,
-    MatButtonModule,
+
     MatListModule,
     MatDialogModule,
     MatSidenavModule,

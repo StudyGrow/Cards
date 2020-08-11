@@ -3,5 +3,7 @@ export class Vorlesung {
     public name?: string,
     public abrv?: string,
     public tagList?: string[]
-  ) {}
+  ) {
+    this.tagList = tagList || [];
+  }
 }

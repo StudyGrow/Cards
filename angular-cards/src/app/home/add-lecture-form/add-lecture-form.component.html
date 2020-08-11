@@ -1,49 +1,54 @@
 <h2 class="mb-3">Vorlesung hinzufügen</h2>
 
 <div id="addLecture" class="">
-  <form #f="ngForm" (ngSubmit)="onSubmit(f)" novalidate>
-    <div class="form-group">
-      <label for="name">Vorlesungsname</label>
+  <form #f="ngForm" (ngSubmit)="onSubmit(f)" novalidate autocomplete="off">
+    <mat-form-field class="example-full-width">
+      <mat-label>Vorlesungsname</mat-label>
       <input
-        class="form-control"
+        autocomplete="false"
+        matInput
         id="name"
-        name="name"
+        name="vlname"
         type="text"
         placeholder="Datenstrukturen und Algorithmen"
         minlength="3"
-        required
-        #name="ngModel"
+        #vlname="ngModel"
         ngModel
       />
-      <small
-        class="form-text float-right"
-        [ngStyle]="setCharIndicatorStyle(name, 500)"
-        >{{ getLength(name) }}/500
-      </small>
-    </div>
-    <div class="form-group">
-      <label for="abrv">Abkürzung</label>
+      <mat-hint align="end">{{ vlname.value?.length || 0 }}/500</mat-hint>
+      <mat-error *ngIf="vlname.value && vlname.value?.length < 3"
+        >Der Vorlesungsname muss mind. 3 Zeichen enthalten</mat-error
+      >
+    </mat-form-field>
+    <br />
+    <mat-form-field class="example-full-width">
+      <mat-label>Abkürzung</mat-label>
       <input
-        class="form-control"
+        autocomplete="false"
+        matInput
         id="abrv"
         name="abrv"
-        required
         #abrv="ngModel"
         ngModel
         placeholder="Dsal"
+        minlength="3"
+        maxlength="7"
       />
-      <small
-        class="form-text float-right"
-        [ngStyle]="setCharIndicatorStyle(abrv, 7)"
-        >{{ getLength(abrv) }}/7
-      </small>
-    </div>
-    <input
-      class="btn btn-primary mb-2"
+      <mat-hint align="end">{{ abrv.value?.length || 0 }}/7</mat-hint>
+      <mat-error
+        *ngIf="abrv.value && (abrv.value?.length < 3 || abrv.value?.length > 7)"
+        >Die Abkürzung muss zwischen 3 und 7 Zeichen enthalten</mat-error
+      >
+    </mat-form-field>
+    <br />
+    <button
+      mat-raised-button
+      color="primary"
       id="addBtn"
       type="submit"
-      value="Hinzufügen"
-      [disabled]="isDisabled(name, abrv)"
-    />
+      [disabled]="isDisabled(vlname, abrv)"
+    >
+      Hinzufügen
+    </button>
   </form>
 </div>

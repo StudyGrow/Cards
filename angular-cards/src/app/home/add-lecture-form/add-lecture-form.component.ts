@@ -21,13 +21,13 @@ export class AddLectureFormComponent implements OnInit {
     });
   }
   onSubmit(f) {
-    let newLecture = new Vorlesung(f.value.name, f.value.abrv.toLowerCase());
+    let newLecture = new Vorlesung(
+      f.value.vlname,
+      f.value.abrv.toLowerCase(),
+      []
+    );
     localStorage.setItem("vl", JSON.stringify(newLecture));
     this.router.navigateByUrl("/vorlesung/neu");
-    // let sub = this.lecture.addLecture(newLecture).subscribe((response) => {
-    //   f.reset();
-    //   sub.unsubscribe();
-    // });
   }
 
   setCharIndicatorStyle(field, max: number) {
@@ -51,10 +51,9 @@ export class AddLectureFormComponent implements OnInit {
       return true;
     } else {
       return (
-        abrv.value.length == 0 ||
         abrv.value.length < 3 ||
         abrv.value.length > 7 ||
-        name.value.length == 0 ||
+        name.value.length < 3 ||
         name.value.length > 500
       );
     }

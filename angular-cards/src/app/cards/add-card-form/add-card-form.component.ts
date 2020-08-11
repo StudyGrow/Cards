@@ -66,7 +66,7 @@ export class AddCardFormComponent implements OnInit, OnDestroy {
   }
   setStyle() {}
   onSubmit(f) {
-    let abrv;
+    let abrv: string;
     if (this.neu) {
       abrv = this.lecture.abrv; //get the lecture abreviation stored lecture
     } else {
