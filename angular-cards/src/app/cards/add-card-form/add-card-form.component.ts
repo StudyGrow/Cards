@@ -39,10 +39,7 @@ export class AddCardFormComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     let sub: Subscription;
-    sub = this.actionState.addCard$.subscribe((res) => {
-      this.form.reset();
-    });
-    this.subscriptions$.push(sub);
+
     sub = this.store
       .select("cardsData")
       .pipe(map(selectUser))
@@ -66,6 +63,10 @@ export class AddCardFormComponent implements OnInit, OnDestroy {
   }
   setStyle() {}
   onSubmit(f) {
+    let sub = this.actionState.addCard$.subscribe((res) => {
+      this.form.reset();
+      sub.unsubscribe();
+    });
     let abrv: string;
     if (this.neu) {
       abrv = this.lecture.abrv; //get the lecture abreviation stored lecture

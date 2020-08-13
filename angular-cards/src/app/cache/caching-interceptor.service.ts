@@ -22,10 +22,14 @@ export class CachingInterceptor implements HttpInterceptor {
   ) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler) {
-    const cachedResponse = this.cache.get(req);
-    return cachedResponse
-      ? of(cachedResponse)
-      : this.sendRequest(req, next, this.cache);
+    if (req.method == "POST" || req.method == "PUT") {
+      return this.sendRequest(req, next, this.cache);
+    } else {
+      const cachedResponse = this.cache.get(req);
+      return cachedResponse
+        ? of(cachedResponse)
+        : this.sendRequest(req, next, this.cache);
+    }
   }
 
   sendRequest(
@@ -38,6 +42,7 @@ export class CachingInterceptor implements HttpInterceptor {
       tap(
         (event) => {
           if (event instanceof HttpResponse) {
+            console.log(event);
             this.store.dispatch(decrementLoading());
             cache.put(req, event);
           }
