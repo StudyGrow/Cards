@@ -22,8 +22,8 @@ export class AddLectureFormComponent implements OnInit {
   }
   onSubmit(f) {
     let newLecture = new Vorlesung(
-      f.value.vlname,
-      f.value.abrv.toLowerCase(),
+      f.value.vlname.trim(),
+      f.value.abrv.toLowerCase().trim(),
       []
     );
     localStorage.setItem("vl", JSON.stringify(newLecture));
@@ -51,10 +51,10 @@ export class AddLectureFormComponent implements OnInit {
       return true;
     } else {
       return (
-        abrv.value.length < 3 ||
-        abrv.value.length > 7 ||
-        name.value.length < 3 ||
-        name.value.length > 500
+        abrv.value.trim().length < 3 ||
+        abrv.value.trim().length > 7 ||
+        name.value.trim().length < 3 ||
+        name.value.trim().length > 500
       );
     }
   }
