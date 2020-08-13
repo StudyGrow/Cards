@@ -42,7 +42,6 @@ export class CachingInterceptor implements HttpInterceptor {
       tap(
         (event) => {
           if (event instanceof HttpResponse) {
-            console.log(event);
             this.store.dispatch(decrementLoading());
             cache.put(req, event);
           }
