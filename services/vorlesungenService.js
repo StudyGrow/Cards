@@ -33,8 +33,8 @@ module.exports = function vlService() {
   vlService.addLecture = async (lecture, callback) => {
     try {
       const vl = new Lecture();
-      vl.name = lecture.name;
-      vl.abrv = lecture.abrv.toLowerCase();
+      vl.name = lecture.name.trim();
+      vl.abrv = lecture.abrv.trim().toLowerCase();
 
       await vl.save();
       callback(null);
