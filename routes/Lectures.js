@@ -57,11 +57,14 @@ router.post(
   "/new",
   [
     check("lecture.abrv")
+      .trim()
       .isLength({ min: 3, max: 7 })
       .withMessage(
         "Please provide a valid lecture abreviation (must be between 3 and 7 characters)"
       ),
+
     check("lecture.name")
+      .trim()
       .isLength({ min: 1, max: 500 })
       .withMessage("Lecture name must be between between 1 and 500 characters"),
   ],
