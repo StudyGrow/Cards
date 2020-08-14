@@ -72,7 +72,8 @@ export class FilterTagsComponent implements OnInit, OnDestroy {
       startWith(null),
       map((tag: string | null) => {
         return tag ? this._filter(tag) : this.options.slice();
-      })
+      }),
+      map((l) => l.sort())
     );
   }
 

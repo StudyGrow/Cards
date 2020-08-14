@@ -1,16 +1,16 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed } from "@angular/core/testing";
 
-import { CachingInterceptorService } from './caching-interceptor.service';
+import { CachingInterceptor } from "./caching-interceptor.service";
 
-describe('CachingInterceptorService', () => {
-  let service: CachingInterceptorService;
+describe("CachingInterceptorService", () => {
+  let service: CachingInterceptor;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(CachingInterceptorService);
+    service = TestBed.inject(CachingInterceptor);
   });
 
-  it('should be created', () => {
+  it("should be created", () => {
     expect(service).toBeTruthy();
   });
 });
