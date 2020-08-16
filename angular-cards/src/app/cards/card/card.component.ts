@@ -43,8 +43,10 @@ export class CardComponent implements OnInit, OnDestroy {
   ) {
     if (!this.inTypingField && this.activeIndex == this.index) {
       if (event.key == "ArrowDown") {
+        event.preventDefault();
         this.content.toggle();
       } else if (event.key == "ArrowUp") {
+        event.preventDefault();
         this.content.toggle();
       }
     }
