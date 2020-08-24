@@ -168,9 +168,9 @@ export class CarouselComponent implements OnInit, OnDestroy {
   }
 
   selectSlide(n: number) {
-    if (this.carousel && this.cards && n >= 0 && n < this.cards.length) {
+    if (this.carousel && this.cards && n >= 0 && n < this.cardCount) {
       //only update if n is index inside the cards array
-      if (this.cardCount > 1 && this.formMode != "edit") {
+      if (this.formMode != "edit") {
         this.carousel.selectSlide(n);
       } else {
         this.notallowed = true;
