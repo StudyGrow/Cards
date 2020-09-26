@@ -21,11 +21,11 @@ module.exports = function userService() {
   userService.login = async (passport, req, res, next) => {
     passport.authenticate("local", { session: req.body.remember === true }, (error, user, info) => {
       //authenticate the user using the local strategy for passport
-      if (error) res.status(422).send(error.message);
+      if (error) res.status(401).send(error.message);
       else
         req.login(user._id, function (error) {
           if (error) {
-            res.status(422).send(error.message);
+            res.status(401).send(error.message);
           } else {
             res.status(200).send({ _id: user._id, username: user.username, email: user.email });
           }
