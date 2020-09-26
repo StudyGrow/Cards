@@ -131,6 +131,7 @@ router.put("/delete", auth, (req, res) => {
   });
 });
 
+  // response body contains "true" when authenticated else "false"
 router.get("/auth", (req, res) => {
   if (req.isAuthenticated()) {
     res.status(200).send(true);
