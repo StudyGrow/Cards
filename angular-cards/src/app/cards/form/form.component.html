@@ -1,0 +1,86 @@
+<h4>{{ formTitle$ | async }}</h4>
+
+<form
+  [formGroup]="form"
+  (ngSubmit)="submitForm()"
+  novalidate
+  autocomplete="off"
+>
+  <mat-form-field appearance="outline" class="mb-1 w-100">
+    <mat-label>Frage</mat-label>
+    <input
+      autocomplete="off"
+      matInput
+      id="frage"
+      name="thema"
+      type="text"
+      placeholder="Was ist eine Karteikarte?"
+      minlength="3"
+      #thema
+      formControlName="thema"
+    />
+    <mat-hint align="end">{{ thema.value?.trim().length || 0 }}/500</mat-hint>
+    <mat-error *ngIf="thema.value && thema.value?.trim().length < 3"
+      >Die Frage muss mind. 3 Zeichen enthalten</mat-error
+    >
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="mb-1 w-100">
+    <mat-label>Antwort</mat-label>
+    <textarea
+      autocomplete="off"
+      matInput
+      id="content"
+      name="content"
+      #content
+      formControlName="content"
+      maxlength="1000"
+      rows="7"
+    >
+    </textarea>
+    <mat-hint align="end"
+      >{{ content.value?.trim().length || 0 }}/1000</mat-hint
+    >
+    <mat-error
+      *ngIf="
+        content.value?.trim().length < 1 || content.value?.trim().length > 1000
+      "
+      >Die Antwort muss zwischen 1 und 1000 Zeichen enthalten
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="mb-1 w-100">
+    <mat-label>Tags</mat-label>
+    <mat-chip-list #chipList aria-label="Tag selection">
+      <mat-chip
+        *ngFor="let tag of selectedTags"
+        [selectable]="true"
+        [removable]="true"
+        (removed)="removeChip(tag)"
+      >
+        {{ tag }}
+        <mat-icon matChipRemove>cancel</mat-icon>
+      </mat-chip>
+      <input
+        #TagsList
+        [matAutocomplete]="auto"
+        [matChipInputFor]="chipList"
+        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+        (matChipInputTokenEnd)="addChip($event)"
+        (focus)="inField()"
+        (blur)="resetNav()"
+      />
+    </mat-chip-list>
+    <mat-autocomplete
+      #auto="matAutocomplete"
+      (optionSelected)="onSelectOption($event)"
+    >
+      <mat-option
+        *ngFor="let option of tagsSuggestions$ | async"
+        [value]="option"
+      >
+        {{ option }}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+</form>

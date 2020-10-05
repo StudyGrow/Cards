@@ -10,6 +10,7 @@ import { FilterTagsComponent } from "./filter-tags/filter-tags.component";
 import { UpdateCardFormComponent } from "./update-card-form/update-card-form.component";
 import { CarouselModule, WavesModule } from "angular-bootstrap-md";
 import { NewVlComponent } from "./new-vl/new-vl.component";
+import { FormComponent } from "../cards/form/form.component";
 
 //Pipes
 
@@ -22,6 +23,7 @@ import { NewVlComponent } from "./new-vl/new-vl.component";
     FilterTagsComponent,
     UpdateCardFormComponent,
     NewVlComponent,
+    FormComponent,
   ],
   imports: [CardsRoutingModule, SharedModule, CarouselModule, WavesModule],
 })
