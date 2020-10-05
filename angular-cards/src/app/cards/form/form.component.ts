@@ -5,8 +5,8 @@ import { MatAutocompleteSelectedEvent } from "@angular/material/autocomplete";
 import { MatChipInputEvent } from "@angular/material/chips";
 import { Router } from "@angular/router";
 import { Store } from "@ngrx/store";
-import { Observable, of, Subscription } from "rxjs";
-import { map } from "rxjs/operators";
+import { merge, Observable, of, Subscription } from "rxjs";
+import { filter, map, startWith, tap, withLatestFrom } from "rxjs/operators";
 import { Card } from "src/app/models/Card";
 import { User } from "src/app/models/User";
 import { Vorlesung } from "src/app/models/Vorlesung";
@@ -21,10 +21,10 @@ import {
   selectUser,
 } from "src/app/store/selector";
 
-class CardForm {
+class CardFormData {
   thema: string;
   content: string;
-  tags: string[];
+  tag: string;
 }
 
 @Component({
@@ -34,36 +34,40 @@ class CardForm {
 })
 export class FormComponent implements OnInit, OnDestroy {
   @Input() neu: boolean = false;
-  form: FormGroup;
-  formTitle$: Observable<string> = of("Karteikarte hinzufügen");
 
+  //Form
+  form: FormGroup;
+  formTitle$: Observable<string>;
+  formMode$: Observable<string>;
+
+  //Card data
   lecture: Vorlesung;
   newCard: Card;
-  hidden: boolean;
-  Contentlength: number;
-  themaLength: number;
   author: User;
-  TagsLists = new FormControl("");
+  //Tags that were selected
+  selectedTags = [];
+
+  //Autocomplete
   separatorKeysCodes: number[] = [ENTER];
 
-  selectedTags = [];
+  //List of available Tags displayed as suggestions with autocomplete
   tagsSuggestions$: Observable<string[]>;
 
   subscriptions$: Subscription[] = [];
 
   constructor(
     private router: Router,
-
     private store: Store<any>,
     private actionState: CardsEffects
   ) {
     this.form = this.createFormGroup();
   }
+
   createFormGroup() {
     return new FormGroup({
       thema: new FormControl(""),
       content: new FormControl(""),
-      tagList: new FormControl([]),
+      tag: new FormControl(""),
     });
   }
 
@@ -72,7 +76,7 @@ export class FormComponent implements OnInit, OnDestroy {
 
     sub = this.store
       .select("cardsData")
-      .pipe(map(selectUser))
+      .pipe(map(selectUser)) //get user
       .subscribe((user) => {
         if (user && this.author !== user) {
           this.author = user;
@@ -80,6 +84,9 @@ export class FormComponent implements OnInit, OnDestroy {
       });
     this.subscriptions$.push(sub);
 
+    //FormMode
+    this.formMode$ = this.store.select("cardsData").pipe(map(selectFormMode));
+    //Title for Form
     this.formTitle$ = this.store.select("cardsData").pipe(map(selectFormTitle));
 
     if (this.neu) {
@@ -90,9 +97,21 @@ export class FormComponent implements OnInit, OnDestroy {
       this.subscriptions$.push(sub);
     }
 
-    this.tagsSuggestions$ = this.store
-      .select("cardsData")
-      .pipe(map(selectAllTags));
+    //input from tagfield
+    let tagInput$ = this.form.valueChanges.pipe(
+      map((val: CardFormData) => val.tag)
+    );
+
+    this.tagsSuggestions$ = this.store.select("cardsData").pipe(
+      map(selectAllTags), //get all tags
+      withLatestFrom(tagInput$), //get current user input from tag field
+      map(([tags, input]) => {
+        console.log(tags, input);
+        return input && input.trim().length > 0
+          ? this._filter(tags, input)
+          : tags;
+      })
+    );
   }
   ngOnDestroy() {
     this.subscriptions$.forEach((sub) => {
@@ -186,7 +205,6 @@ export class FormComponent implements OnInit, OnDestroy {
     if (!this.selectedTags.includes(newTag)) {
       this.selectedTags.push(newTag);
     }
-    this.TagsLists.setValue(null);
   }
   onSelectOption(event: MatAutocompleteSelectedEvent) {
     let newTag = event.option.viewValue;
@@ -194,5 +212,11 @@ export class FormComponent implements OnInit, OnDestroy {
       this.selectedTags.push(newTag);
     }
     this.form.value;
+  }
+  private _filter(tags: string[], value: string): string[] {
+    if (!value) return tags;
+    const filterValue = value.toLowerCase();
+
+    return tags.filter((item) => item.toLowerCase().indexOf(filterValue) === 0);
   }
 }
