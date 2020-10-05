@@ -102,11 +102,10 @@ export class FormComponent implements OnInit, OnDestroy {
       map((val: CardFormData) => val.tag)
     );
 
-    this.tagsSuggestions$ = this.store.select("cardsData").pipe(
-      map(selectAllTags), //get all tags
-      withLatestFrom(tagInput$), //get current user input from tag field
-      map(([tags, input]) => {
-        console.log(tags, input);
+    let allTags$ = this.store.select("cardsData").pipe(map(selectAllTags)); //get all tags
+    this.tagsSuggestions$ = tagInput$.pipe(
+      withLatestFrom(allTags$), //get current user input from tag field
+      map(([input, tags]) => {
         return input && input.trim().length > 0
           ? this._filter(tags, input)
           : tags;
