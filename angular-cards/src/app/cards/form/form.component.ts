@@ -3,10 +3,12 @@ import { Component, Input, OnDestroy, OnInit, ViewChild } from "@angular/core";
 import { FormControl, FormGroup, NgForm } from "@angular/forms";
 import { MatAutocompleteSelectedEvent } from "@angular/material/autocomplete";
 import { MatChipInputEvent } from "@angular/material/chips";
+import { MatDialog } from "@angular/material/dialog";
 import { Router } from "@angular/router";
 import { Store } from "@ngrx/store";
 import { merge, Observable, of, Subscription } from "rxjs";
 import { filter, map, startWith, tap, withLatestFrom } from "rxjs/operators";
+import { DialogueComponent } from "src/app/components/dialogue/dialogue.component";
 import { Card } from "src/app/models/Card";
 import { User } from "src/app/models/User";
 import { Vorlesung } from "src/app/models/Vorlesung";
@@ -56,6 +58,7 @@ export class FormComponent implements OnInit, OnDestroy {
 
   constructor(
     private router: Router,
+    public dialog: MatDialog,
     private store: Store<any>,
     private actionState: CardsEffects
   ) {
@@ -140,14 +143,14 @@ export class FormComponent implements OnInit, OnDestroy {
   submitForm() {
     this.selectedTags.push(this.form.value.tag?.trim());
     //Create Card from form
-    let card = new Card(
-      this.form.value.thema,
-      this.form.value.content,
-      this.selectedTags,
-      this.lecture.abrv
-    );
 
     if (this.formMode === "add") {
+      let card = new Card(
+        this.form.value.thema,
+        this.form.value.content,
+        this.selectedTags,
+        this.lecture.abrv
+      );
       this.addCard(card);
       let sub = this.actionState.addCard$.subscribe((res) => {
         this.form.reset();
@@ -155,7 +158,11 @@ export class FormComponent implements OnInit, OnDestroy {
         sub.unsubscribe();
       });
     } else if (this.formMode === "edit") {
-      this.updateCard(card);
+      this.updateCard(
+        this.form.value.thema,
+        this.form.value.content,
+        this.selectedTags
+      );
     }
   }
 
@@ -171,7 +178,9 @@ export class FormComponent implements OnInit, OnDestroy {
     this.store.dispatch(addCard({ card: card }));
   }
 
-  updateCard(card: Card) {}
+  updateCard(thema: string, content: string, tags: string[]) {
+    console.log("update Crda");
+  }
 
   inField() {
     this.store.dispatch(setTypingMode({ typing: true }));
@@ -219,8 +228,15 @@ export class FormComponent implements OnInit, OnDestroy {
     return tags.filter((item) => item.toLowerCase().indexOf(filterValue) === 0);
   }
   cancelEdit() {
-    // const dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
-    //   width: "400px",
-    // });
+    this.dialog.open(DialogueComponent, {
+      width: "400px",
+      data: {
+        title: "Abbruch",
+        content:
+          "Bist du sicher, dass du das Bearbeiten dieser Karte abbrechen möchtest?",
+        abortText: "Nein, zurück",
+        proceedText: "Ja",
+      },
+    });
   }
 }

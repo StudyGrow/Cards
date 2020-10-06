@@ -12,7 +12,7 @@ import { MatInputModule } from "@angular/material/input";
 import { MatAutocompleteModule } from "@angular/material/autocomplete";
 import { MatChipsModule } from "@angular/material/chips";
 import { MatIconModule } from "@angular/material/icon";
-
+import { DialogueComponent } from "../components/dialogue/dialogue.component";
 @NgModule({
   imports: [
     MatExpansionModule,
@@ -20,7 +20,7 @@ import { MatIconModule } from "@angular/material/icon";
     MatDialogModule,
     MatTooltipModule,
   ],
-  declarations: [SafeHtmlPipe],
+  declarations: [SafeHtmlPipe, DialogueComponent],
   providers: [DatePipe, AsyncPipe],
   exports: [
     CommonModule,
