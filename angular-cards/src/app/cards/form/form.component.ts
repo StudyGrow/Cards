@@ -106,7 +106,7 @@ export class FormComponent implements OnInit, OnDestroy {
     let allTags$ = this.store.select("cardsData").pipe(map(selectAllTags)); //get all tags
     this.tagsSuggestions$ = tagInput$.pipe(
       withLatestFrom(allTags$),
-      map(([input, tags]) => this._filter(tags, input))
+      map(([input, tags]) => this._filter([...tags], input))
     );
 
     sub = this.formMode$.subscribe((mode) => {
@@ -143,7 +143,7 @@ export class FormComponent implements OnInit, OnDestroy {
               //got new card
               this.cardCopy = { ...this.cardCopy, ...card }; //overwrite cardCopy
               this.form.reset({ ...this.cardCopy });
-              this.selectedTags = this.cardCopy.tags;
+              this.selectedTags = [...this.cardCopy.tags];
             }
           });
         this.subscriptions$.push(sub);

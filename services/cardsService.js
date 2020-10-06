@@ -50,10 +50,12 @@ module.exports = function cardsService() {
         //The user is not the author of the card
         throw new Error("Fehler: Du bist nicht der Author dieser Karte.");
       }
+      updateTags(card.vorlesung, card.tags);
       await Card.findByIdAndUpdate(card._id, {
         thema: card.thema,
         content: card.content,
         latex: card.latex,
+        tags: card.tags,
       });
       callback(null);
     } catch (error) {
