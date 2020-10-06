@@ -32,18 +32,6 @@ export const authenticated = (state: AppState) => state.userData.authenticated;
 
 export const lastCardChange = (state: AppState) => state.filteredCardsChanged;
 
-export const selectFormTitle = createSelector(selectFormMode, (mode) => {
-  switch (mode) {
-    case "add":
-      return "Karteikarte hinzufügen";
-    case "edit":
-      return "Karteikarte bearbeiten";
-
-    default:
-      return mode.toUpperCase();
-  }
-});
-
 export const selectTagOptions = createSelector(
   selectAllTags,
   selectTags,

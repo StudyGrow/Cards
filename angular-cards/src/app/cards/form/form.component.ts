@@ -17,8 +17,8 @@ import { CardsEffects } from "src/app/store/effects/effects";
 import {
   selectAllTags,
   selectFormMode,
-  selectFormTitle,
   selectUser,
+  selectCurrentLecture,
 } from "src/app/store/selector";
 
 class CardFormData {
@@ -37,12 +37,11 @@ export class FormComponent implements OnInit, OnDestroy {
 
   //Form
   form: FormGroup;
-  formTitle$: Observable<string>;
   formMode$: Observable<string>;
+  formMode: string;
 
   //Card data
   lecture: Vorlesung;
-  newCard: Card;
   author: User;
   //Tags that were selected
   selectedTags = [];
@@ -63,11 +62,18 @@ export class FormComponent implements OnInit, OnDestroy {
     this.form = this.createFormGroup();
   }
 
-  createFormGroup() {
+  createFormGroup(...args: string[]) {
+    if (!args || args.length !== 3)
+      return new FormGroup({
+        thema: new FormControl(""),
+        content: new FormControl(""),
+        tag: new FormControl(""),
+      });
+
     return new FormGroup({
-      thema: new FormControl(""),
-      content: new FormControl(""),
-      tag: new FormControl(""),
+      thema: new FormControl(args[0]),
+      content: new FormControl(args[1]),
+      tag: new FormControl(args[2]),
     });
   }
 
@@ -84,19 +90,6 @@ export class FormComponent implements OnInit, OnDestroy {
       });
     this.subscriptions$.push(sub);
 
-    //FormMode
-    this.formMode$ = this.store.select("cardsData").pipe(map(selectFormMode));
-    //Title for Form
-    this.formTitle$ = this.store.select("cardsData").pipe(map(selectFormTitle));
-
-    if (this.neu) {
-      this.lecture = JSON.parse(localStorage.getItem("vl"));
-      sub = this.actionState.addLecture$.subscribe((res) =>
-        this.router.navigateByUrl(`vorlesung/${this.lecture.abrv}`)
-      );
-      this.subscriptions$.push(sub);
-    }
-
     //input from tagfield
     let tagInput$ = this.form.valueChanges.pipe(
       map((val: CardFormData) => val.tag)
@@ -104,13 +97,39 @@ export class FormComponent implements OnInit, OnDestroy {
 
     let allTags$ = this.store.select("cardsData").pipe(map(selectAllTags)); //get all tags
     this.tagsSuggestions$ = tagInput$.pipe(
-      withLatestFrom(allTags$), //get current user input from tag field
+      withLatestFrom(allTags$),
       map(([input, tags]) => {
         return input && input.trim().length > 0
           ? this._filter(tags, input)
           : tags;
       })
     );
+
+    //FormMode
+    this.formMode$ = this.store.select("cardsData").pipe(map(selectFormMode));
+
+    sub = this.formMode$.subscribe((mode) => {
+      this.formMode = mode;
+      if (mode === "add") {
+        if (this.neu) {
+          this.lecture = JSON.parse(localStorage.getItem("vl"));
+          sub = this.actionState.addLecture$.subscribe((res) =>
+            this.router.navigateByUrl(`vorlesung/${this.lecture.abrv}`)
+          );
+          this.subscriptions$.push(sub);
+        } else {
+          sub = this.store
+            .select("cardsData")
+            .pipe(map(selectCurrentLecture))
+            .subscribe((lect) => {
+              if (lect) this.lecture = lect;
+            });
+          this.subscriptions$.push(sub);
+        }
+      } else if (mode === "edit") {
+      }
+    });
+    this.subscriptions$.push(sub);
   }
   ngOnDestroy() {
     this.subscriptions$.forEach((sub) => {
@@ -119,74 +138,57 @@ export class FormComponent implements OnInit, OnDestroy {
   }
 
   submitForm() {
-    let sub = this.actionState.addCard$.subscribe((res) => {
-      this.form.reset();
-      sub.unsubscribe();
-    });
-    let abrv: string;
-    if (this.neu) {
-      abrv = this.lecture.abrv; //get the lecture abreviation stored lecture
-    } else {
-      abrv = this.router.url.split(/vorlesung\//)[1]; //get the lecture abreviation from the route
+    this.selectedTags.push(this.form.value.tag?.trim());
+    //Create Card from form
+    let card = new Card(
+      this.form.value.thema,
+      this.form.value.content,
+      this.selectedTags,
+      this.lecture.abrv
+    );
+
+    if (this.formMode === "add") {
+      this.addCard(card);
+      let sub = this.actionState.addCard$.subscribe((res) => {
+        this.form.reset();
+        this.selectedTags = [];
+        sub.unsubscribe();
+      });
+    } else if (this.formMode === "edit") {
+      this.updateCard(card);
     }
-    let tags: string[];
-    // if (f.value.tags) {
-    //   tags = f.value.tags.split("#");
-    // } else {
-    //   tags = [];
-    // }
+  }
 
-    // this.newCard = new Card(this.form.value., f.value.content, tags, abrv, 0);
-
+  addCard(card: Card) {
     if (this.author) {
-      this.newCard.authorId = this.author._id;
-      this.newCard.authorName = this.author.name;
+      card.authorId = this.author._id;
+      card.authorName = this.author.name;
     }
     if (this.neu) {
       this.store.dispatch(addLercture({ lecture: this.lecture }));
     }
-    this.store.dispatch(addCard({ card: this.newCard }));
+
+    this.store.dispatch(addCard({ card: card }));
   }
+
+  updateCard(card: Card) {}
+
   inField() {
     this.store.dispatch(setTypingMode({ typing: true }));
   }
   resetNav() {
     this.store.dispatch(setTypingMode({ typing: false }));
   }
-  //Function to set style of small character indicator
-  setThemaCharIndicatorStyle(thema) {
-    if (thema.value) {
-      return {
-        color:
-          (thema.value && thema.value.length > 0 && thema.value.length < 3) ||
-          thema.value.length > 500
-            ? "#ff0000"
-            : "#000000",
-      };
-    } else {
-      return { color: "#000000" };
-    }
-  }
-  //Function to set style of small character indicator
-  setContentCharIndicatorStyle(content) {
-    if (content.value) {
-      return {
-        color:
-          content.value && content.value.length > 1000 ? "#ff0000" : "#000000",
-      };
-    } else {
-      return { color: "#000000" };
-    }
-  }
 
   isDisabled(content, thema) {
     if (!content.value || !thema.value) {
       return true;
     }
+
     return (
-      content.value.length > 1000 ||
-      (thema.value.length > 0 && thema.value.length < 3) ||
-      thema.value.length > 500
+      thema.value.trim().length < 3 ||
+      thema.value.trim().length > 500 ||
+      content.value.trim().length > 1000
     );
   }
   removeChip(tag: string): void {
@@ -198,24 +200,27 @@ export class FormComponent implements OnInit, OnDestroy {
   }
 
   addChip(event: MatChipInputEvent): void {
-    //add tag to the filters
-    console.log(event);
     let newTag = event.value;
     if (!this.selectedTags.includes(newTag)) {
       this.selectedTags.push(newTag);
     }
+    event.input.value = ""; //reset field
   }
   onSelectOption(event: MatAutocompleteSelectedEvent) {
     let newTag = event.option.viewValue;
     if (!this.selectedTags.includes(newTag)) {
       this.selectedTags.push(newTag);
     }
-    this.form.value;
   }
   private _filter(tags: string[], value: string): string[] {
     if (!value) return tags;
     const filterValue = value.toLowerCase();
 
     return tags.filter((item) => item.toLowerCase().indexOf(filterValue) === 0);
+  }
+  cancelEdit() {
+    // const dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
+    //   width: "400px",
+    // });
   }
 }
