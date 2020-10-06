@@ -142,7 +142,7 @@ export class FormComponent implements OnInit, OnDestroy {
                 //got new card
                 this.cardCopy = { ...this.cardCopy, ...card }; //overwrite cardCopy
                 this.form.reset({ ...this.cardCopy });
-                this.selectedTags = [...this.cardCopy.tags];
+                this.selectedTags = [...this.cardCopy?.tags];
               }
             });
           this.subscriptions$.push(sub);

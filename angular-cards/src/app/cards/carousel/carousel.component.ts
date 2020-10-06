@@ -226,17 +226,13 @@ export class CarouselComponent implements OnInit, OnDestroy {
   }
 
   isDisabled() {
-    if (this.formMode == "edit" || this.uid == "") {
-      return true;
-    } else {
-      let currCard = this.cards[this.activeSlide]; //get the card that is currently showing
+    if (this.formMode == "edit" || this.uid == "") return true;
 
-      if (currCard && currCard.authorId && currCard.authorId !== this.uid) {
-        //there is an author and it is not the current user
-        return true;
-      }
-    }
-    return false;
+    let currCard = this.cards[this.activeSlide]; //get the card that is currently showing
+
+    if (currCard && currCard.authorId && currCard.authorId !== this.uid)
+      //there is an author and it is not the current user
+      return true;
   }
   //toggle the state of the add card component
   toggleAddView(): void {
@@ -254,10 +250,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
       this.store.dispatch(setFormMode({ mode: "edit" }));
     }
   }
-  //sets the class for the add button depending on the current formmode
-  setClass() {
-    return this.formMode == "add" ? "btn btn-info" : "btn btn-light";
-  }
+
   toggleLatex() {
     let currCard = this.cards[this.activeSlide]; // current card being shown
     this.store.dispatch(
