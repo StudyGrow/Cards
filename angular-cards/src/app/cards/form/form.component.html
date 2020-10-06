@@ -93,7 +93,7 @@
     <ng-container [ngSwitch]="mode">
       <ng-container *ngSwitchCase="'edit'">
         <button
-          mat-flat-button
+          mat-raised-button
           color="primary"
           class="mr-1"
           type="submit"
@@ -101,18 +101,11 @@
         >
           Speichern
         </button>
-        <button
-          mat-flat-button
-          color="warn"
-          type="button"
-          (click)="cancelEdit()"
-        >
-          Abbruch
-        </button>
+        <button mat-button type="button" (click)="cancelEdit()">Abbruch</button>
       </ng-container>
       <ng-container *ngSwitchCase="'add'">
         <button
-          mat-flat-button
+          mat-raised-button
           color="primary"
           type="submit"
           [disabled]="isDisabled(content, thema)"

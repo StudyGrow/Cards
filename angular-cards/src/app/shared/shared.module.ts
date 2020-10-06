@@ -13,12 +13,14 @@ import { MatAutocompleteModule } from "@angular/material/autocomplete";
 import { MatChipsModule } from "@angular/material/chips";
 import { MatIconModule } from "@angular/material/icon";
 import { DialogueComponent } from "../components/dialogue/dialogue.component";
+import { MatButtonToggleModule } from "@angular/material/button-toggle";
 @NgModule({
   imports: [
     MatExpansionModule,
     MatInputModule,
     MatDialogModule,
     MatTooltipModule,
+    MatButtonModule,
   ],
   declarations: [SafeHtmlPipe, DialogueComponent],
   providers: [DatePipe, AsyncPipe],
@@ -37,6 +39,7 @@ import { DialogueComponent } from "../components/dialogue/dialogue.component";
     MatDialogModule,
     MatTooltipModule,
     MatButtonModule,
+    MatButtonToggleModule,
   ],
 })
 export class SharedModule {}

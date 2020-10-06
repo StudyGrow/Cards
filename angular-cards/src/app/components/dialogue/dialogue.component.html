@@ -2,12 +2,12 @@
 <div mat-dialog-content>
   <p>{{ data?.content || "Content" }}</p>
 </div>
-<hr class="mt-0" />
-<div mat-dialog-actions class="d-flex justify-content-end mb-1">
-  <button class="btn btn-secondary mr-2" mat-button (click)="onNoClick()">
+
+<div mat-dialog-actions class="d-flex justify-content-end">
+  <button mat-button class="mr-2" (click)="onNoClick()">
     {{ data?.abortText || "Abbruch" }}
   </button>
-  <button class="btn btn-danger" mat-button (click)="cancel()">
+  <button mat-button color="warn" (click)="cancel()">
     {{ data?.proceedText || "Ok" }}
   </button>
 </div>

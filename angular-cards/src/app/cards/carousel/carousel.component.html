@@ -5,50 +5,48 @@
   <div class="col-md-3 col-xs-12 mb-2 text-right" id="bntcol">
     <div class="btn-group" *ngIf="cards" id="btnDiv" role="group">
       <button
-        class="btn btn-light"
-        id="rand"
+        mat-icon-button
         placement="top"
         matTooltip="Zufall"
         matTooltipPosition="above"
         (click)="showRandomCard()"
         [disabled]="formMode == 'edit' || !cards || cards.length == 0"
       >
-        <div class="fas fa-random"></div>
+        <mat-icon>shuffle</mat-icon>
       </button>
+
       <button
-        class="btn btn-light"
-        id="editCard"
+        mat-icon-button
         type="button"
         [disabled]="isDisabled()"
         (click)="enableEdit()"
         matTooltip="Bearbeiten"
         matTooltipPosition="above"
       >
-        <div class="fas fa-pen"></div>
+        <mat-icon>edit</mat-icon>
       </button>
       <button
-        [ngClass]="checkLatexState()"
+        mat-icon-button
+        [color]="checkLatexState()"
         id="toggleLatex"
         type="button"
-        (click)="toggleLatex(latex)"
+        (click)="toggleLatex()"
         matTooltip="Latex"
         matTooltipPosition="above"
-        #latex
+        [disabled]="isDisabled()"
       >
-        <div class="fas fa-superscript"></div>
+        <mat-icon>functions</mat-icon>
       </button>
-
       <button
-        [ngClass]="setClass()"
-        id="toggleAdd"
+        mat-icon-button
         type="button"
-        data-toggle="button"
         (click)="toggleAddView()"
         [matTooltip]="formMode == 'add' ? 'Verstecken' : 'Hinzufügen'"
         matTooltipPosition="above"
         [disabled]="formMode == 'edit'"
       >
-        <div [class]="formMode == 'add' ? 'fas fa-minus' : 'fas fa-plus'"></div>
+        <mat-icon *ngIf="formMode !== 'add'">add</mat-icon>
+        <mat-icon *ngIf="formMode == 'add'">block</mat-icon>
       </button>
     </div>
   </div>

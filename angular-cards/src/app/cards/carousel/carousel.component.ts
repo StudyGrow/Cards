@@ -66,8 +66,6 @@ export class CarouselComponent implements OnInit, OnDestroy {
 
   subscriptions$: Subscription[] = [];
 
-  public cardCopy: Card = new Card();
-
   @ViewChild("mycarousel", { static: false }) public carousel: any;
 
   @HostListener("window:keyup", ["$event"]) handleKeyDown(
@@ -260,35 +258,16 @@ export class CarouselComponent implements OnInit, OnDestroy {
   setClass() {
     return this.formMode == "add" ? "btn btn-info" : "btn btn-light";
   }
-  toggleLatex(latex: HTMLElement) {
-    var currCard = this.cards[this.activeSlide]; // current card being shown
-    this.cardCopy = { ...currCard };
-
-    if (latex.classList.contains("btn-info") == true) {
-      this.cardCopy.latex = 0;
-      latex.classList.remove("btn-info");
-      latex.classList.add("btn-light");
-      this.store.dispatch(updateCard({ card: this.cardCopy }));
-    } else {
-      this.cardCopy.latex = 1;
-      latex.classList.remove("btn-light");
-      latex.classList.add("btn-info");
-      this.store.dispatch(updateCard({ card: this.cardCopy }));
-    }
-    this.checkLatexState();
+  toggleLatex() {
+    let currCard = this.cards[this.activeSlide]; // current card being shown
+    this.store.dispatch(
+      updateCard({ card: { ...currCard, latex: 1 - currCard.latex } })
+    );
   }
 
   checkLatexState() {
-    if (!this.cards || this.cardCount == 0) {
-      return "btn btn-light";
-    }
+    if (this.cards?.length === 0) return;
     let currCard = this.cards[this.activeSlide]; // current card being shown
-    if (!currCard) {
-      return "btn btn-light";
-    } else if (currCard.latex == 1) {
-      return "btn btn-info";
-    } else {
-      return "btn btn-light";
-    }
+    if (currCard?.latex === 1) return "primary";
   }
 }
