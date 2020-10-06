@@ -3,7 +3,7 @@
 
   <div id="addLecture" class="">
     <form #f="ngForm" (ngSubmit)="onSubmit(f)" novalidate autocomplete="off">
-      <mat-form-field class="example-full-width">
+      <mat-form-field>
         <mat-label>Vorlesungsname</mat-label>
         <input
           autocomplete="false"
@@ -24,7 +24,7 @@
         >
       </mat-form-field>
       <br />
-      <mat-form-field class="example-full-width mb-1">
+      <mat-form-field>
         <mat-label>Abkürzung</mat-label>
         <input
           autocomplete="false"
@@ -46,7 +46,7 @@
           >Die Abkürzung muss zwischen 3 und 7 Zeichen enthalten</mat-error
         >
       </mat-form-field>
-      <br />
+
       <button
         mat-raised-button
         color="primary"

@@ -14,6 +14,11 @@ import { MatChipsModule } from "@angular/material/chips";
 import { MatIconModule } from "@angular/material/icon";
 import { DialogueComponent } from "../components/dialogue/dialogue.component";
 import { MatButtonToggleModule } from "@angular/material/button-toggle";
+import {
+  MatPaginatorIntl,
+  MatPaginatorModule,
+} from "@angular/material/paginator";
+import { getGermanPaginatorIntl } from "../profile/cards-overview/paginator.options";
 @NgModule({
   imports: [
     MatExpansionModule,
@@ -23,7 +28,11 @@ import { MatButtonToggleModule } from "@angular/material/button-toggle";
     MatButtonModule,
   ],
   declarations: [SafeHtmlPipe, DialogueComponent],
-  providers: [DatePipe, AsyncPipe],
+  providers: [
+    DatePipe,
+    AsyncPipe,
+    { provide: MatPaginatorIntl, useValue: getGermanPaginatorIntl() },
+  ],
   exports: [
     CommonModule,
     SafeHtmlPipe,
@@ -38,6 +47,7 @@ import { MatButtonToggleModule } from "@angular/material/button-toggle";
     MatExpansionModule,
     MatDialogModule,
     MatTooltipModule,
+    MatPaginatorModule,
     MatButtonModule,
     MatButtonToggleModule,
   ],

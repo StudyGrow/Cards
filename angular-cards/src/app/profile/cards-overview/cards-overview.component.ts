@@ -6,15 +6,27 @@ import { map } from "rxjs/operators";
 import { Store } from "@ngrx/store";
 import { selectUserInfo } from "src/app/store/selector";
 import { fetchUserData } from "src/app/store/actions/UserActions";
+import { PageEvent } from "@angular/material/paginator";
+import {
+  fadeInOnEnterAnimation,
+  fadeOutOnLeaveAnimation,
+} from "angular-animations";
 
 @Component({
   selector: "app-cards-overview",
   templateUrl: "./cards-overview.component.html",
   styleUrls: ["./cards-overview.component.scss"],
+  animations: [
+    fadeInOnEnterAnimation({ duration: 500 }),
+    fadeOutOnLeaveAnimation({ duration: 100 }),
+  ],
 })
 export class CardsOverviewComponent implements OnInit {
   subscriptions$: Subscription[] = [];
-  public cards: Card[] = [];
+  cardCount: number;
+  start: number = 0;
+  end: number = 3;
+  pageSizeOptions = [3, 10, 15];
   cards$: Observable<Card[]>;
   constructor(private store: Store<any>) {}
 
@@ -23,5 +35,15 @@ export class CardsOverviewComponent implements OnInit {
       map(selectUserInfo),
       map((info) => info.cards)
     );
+    this.cards$.subscribe((cards) => (this.cardCount = cards?.length));
+  }
+  incrementSlice(event: PageEvent) {
+    this.start = event.pageIndex * event.pageSize;
+
+    if (this.start + event.pageSize > this.cardCount) {
+      this.end = this.cardCount;
+    } else {
+      this.end = this.start + event.pageSize;
+    }
   }
 }
