@@ -47,7 +47,6 @@ export class FormComponent implements OnInit, OnDestroy {
   //Card data
   lecture: Vorlesung;
   author: User;
-  private activeCardIndex: number;
   cardCopy: Card = new Card("", "");
   //Tags that were selected
   selectedTags = [];
@@ -94,16 +93,19 @@ export class FormComponent implements OnInit, OnDestroy {
         }
       });
     this.subscriptions$.push(sub);
+
     //FormMode
     this.formMode$ = this.store.select("cardsData").pipe(map(selectFormMode));
 
     this.form = this.createFormGroup();
-    //input from tagfield
+
     let tagInput$ = this.form.valueChanges.pipe(
+      //input from tagfield
       map((val: CardFormData) => val.tag)
     );
 
     let allTags$ = this.store.select("cardsData").pipe(map(selectAllTags)); //get all tags
+
     this.tagsSuggestions$ = tagInput$.pipe(
       withLatestFrom(allTags$),
       map(([input, tags]) => this._filter([...tags], input)),
@@ -132,13 +134,6 @@ export class FormComponent implements OnInit, OnDestroy {
             this.subscriptions$.push(sub);
           }
         } else if (mode === "edit") {
-          sub = this.store
-            .select("cardsData")
-            .pipe(map(selectActiveIndex))
-            .subscribe((index) => {
-              this.activeCardIndex = index;
-            });
-          this.subscriptions$.push(sub);
           sub = this.store
             .select("cardsData")
             .pipe(map(selectCurrentCard))
