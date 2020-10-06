@@ -12,8 +12,8 @@ import { DialogueComponent } from "src/app/components/dialogue/dialogue.componen
 import { Card } from "src/app/models/Card";
 import { User } from "src/app/models/User";
 import { Vorlesung } from "src/app/models/Vorlesung";
-import { setTypingMode } from "src/app/store/actions/actions";
-import { addCard } from "src/app/store/actions/cardActions";
+import { setFormMode, setTypingMode } from "src/app/store/actions/actions";
+import { addCard, updateCard } from "src/app/store/actions/cardActions";
 import { addLercture } from "src/app/store/actions/LectureActions";
 import { CardsEffects } from "src/app/store/effects/effects";
 import {
@@ -21,6 +21,8 @@ import {
   selectFormMode,
   selectUser,
   selectCurrentLecture,
+  selectCurrentCard,
+  selectActiveIndex,
 } from "src/app/store/selector";
 
 class CardFormData {
@@ -45,6 +47,8 @@ export class FormComponent implements OnInit, OnDestroy {
   //Card data
   lecture: Vorlesung;
   author: User;
+  private activeCardIndex: number;
+  cardCopy: Card = new Card("", "");
   //Tags that were selected
   selectedTags = [];
 
@@ -61,9 +65,7 @@ export class FormComponent implements OnInit, OnDestroy {
     public dialog: MatDialog,
     private store: Store<any>,
     private actionState: CardsEffects
-  ) {
-    this.form = this.createFormGroup();
-  }
+  ) {}
 
   createFormGroup(...args: string[]) {
     if (!args || args.length !== 3)
@@ -92,7 +94,10 @@ export class FormComponent implements OnInit, OnDestroy {
         }
       });
     this.subscriptions$.push(sub);
+    //FormMode
+    this.formMode$ = this.store.select("cardsData").pipe(map(selectFormMode));
 
+    this.form = this.createFormGroup();
     //input from tagfield
     let tagInput$ = this.form.valueChanges.pipe(
       map((val: CardFormData) => val.tag)
@@ -101,15 +106,8 @@ export class FormComponent implements OnInit, OnDestroy {
     let allTags$ = this.store.select("cardsData").pipe(map(selectAllTags)); //get all tags
     this.tagsSuggestions$ = tagInput$.pipe(
       withLatestFrom(allTags$),
-      map(([input, tags]) => {
-        return input && input.trim().length > 0
-          ? this._filter(tags, input)
-          : tags;
-      })
+      map(([input, tags]) => this._filter(tags, input))
     );
-
-    //FormMode
-    this.formMode$ = this.store.select("cardsData").pipe(map(selectFormMode));
 
     sub = this.formMode$.subscribe((mode) => {
       this.formMode = mode;
@@ -130,6 +128,25 @@ export class FormComponent implements OnInit, OnDestroy {
           this.subscriptions$.push(sub);
         }
       } else if (mode === "edit") {
+        sub = this.store
+          .select("cardsData")
+          .pipe(map(selectActiveIndex))
+          .subscribe((index) => {
+            this.activeCardIndex = index;
+          });
+        this.subscriptions$.push(sub);
+        sub = this.store
+          .select("cardsData")
+          .pipe(map(selectCurrentCard))
+          .subscribe((card) => {
+            if (card._id != this.cardCopy._id) {
+              //got new card
+              this.cardCopy = { ...this.cardCopy, ...card }; //overwrite cardCopy
+              this.form.reset({ ...this.cardCopy });
+              this.selectedTags = this.cardCopy.tags;
+            }
+          });
+        this.subscriptions$.push(sub);
       }
     });
     this.subscriptions$.push(sub);
@@ -141,10 +158,13 @@ export class FormComponent implements OnInit, OnDestroy {
   }
 
   submitForm() {
-    this.selectedTags.push(this.form.value.tag?.trim());
-    //Create Card from form
+    let uinput = this.form.value.tag?.trim();
+    if (uinput && !this.selectedTags.includes(uinput)) {
+      this.selectedTags.push(uinput); //add last user input in case user forgot to add chip
+    }
 
     if (this.formMode === "add") {
+      //Create Card from form
       let card = new Card(
         this.form.value.thema,
         this.form.value.content,
@@ -163,6 +183,11 @@ export class FormComponent implements OnInit, OnDestroy {
         this.form.value.content,
         this.selectedTags
       );
+      let sub = this.actionState.updateCard$.subscribe(() => {
+        this.store.dispatch(setFormMode({ mode: "reset" }));
+        this.form.reset();
+        sub.unsubscribe();
+      });
     }
   }
 
@@ -179,7 +204,12 @@ export class FormComponent implements OnInit, OnDestroy {
   }
 
   updateCard(thema: string, content: string, tags: string[]) {
-    console.log("update Crda");
+    //dispatch update by overwriting the fields of cardCopy
+    this.store.dispatch(
+      updateCard({
+        card: { ...this.cardCopy, thema: thema, content: content, tags: tags },
+      })
+    );
   }
 
   inField() {
@@ -222,7 +252,7 @@ export class FormComponent implements OnInit, OnDestroy {
     }
   }
   private _filter(tags: string[], value: string): string[] {
-    if (!value) return tags;
+    if (!value || value.trim().length == 0) return tags;
     const filterValue = value.toLowerCase();
 
     return tags.filter((item) => item.toLowerCase().indexOf(filterValue) === 0);
