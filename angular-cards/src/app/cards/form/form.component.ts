@@ -111,44 +111,47 @@ export class FormComponent implements OnInit, OnDestroy {
     );
 
     sub = this.formMode$.subscribe((mode) => {
-      this.formMode = mode;
-      if (mode === "add") {
-        this.resetForm();
-        if (this.neu) {
-          this.lecture = JSON.parse(localStorage.getItem("vl"));
-          sub = this.actionState.addLecture$.subscribe((res) =>
-            this.router.navigateByUrl(`vorlesung/${this.lecture.abrv}`)
-          );
-          this.subscriptions$.push(sub);
-        } else {
+      if (this.formMode !== mode) {
+        this.formMode = mode;
+
+        if (mode === "add") {
+          this.resetForm();
+          if (this.neu) {
+            this.lecture = JSON.parse(localStorage.getItem("vl"));
+            sub = this.actionState.addLecture$.subscribe((res) =>
+              this.router.navigateByUrl(`vorlesung/${this.lecture.abrv}`)
+            );
+            this.subscriptions$.push(sub);
+          } else {
+            sub = this.store
+              .select("cardsData")
+              .pipe(map(selectCurrentLecture))
+              .subscribe((lect) => {
+                if (lect) this.lecture = lect;
+              });
+            this.subscriptions$.push(sub);
+          }
+        } else if (mode === "edit") {
           sub = this.store
             .select("cardsData")
-            .pipe(map(selectCurrentLecture))
-            .subscribe((lect) => {
-              if (lect) this.lecture = lect;
+            .pipe(map(selectActiveIndex))
+            .subscribe((index) => {
+              this.activeCardIndex = index;
+            });
+          this.subscriptions$.push(sub);
+          sub = this.store
+            .select("cardsData")
+            .pipe(map(selectCurrentCard))
+            .subscribe((card) => {
+              if (card._id != this.cardCopy._id) {
+                //got new card
+                this.cardCopy = { ...this.cardCopy, ...card }; //overwrite cardCopy
+                this.form.reset({ ...this.cardCopy });
+                this.selectedTags = [...this.cardCopy.tags];
+              }
             });
           this.subscriptions$.push(sub);
         }
-      } else if (mode === "edit") {
-        sub = this.store
-          .select("cardsData")
-          .pipe(map(selectActiveIndex))
-          .subscribe((index) => {
-            this.activeCardIndex = index;
-          });
-        this.subscriptions$.push(sub);
-        sub = this.store
-          .select("cardsData")
-          .pipe(map(selectCurrentCard))
-          .subscribe((card) => {
-            if (card._id != this.cardCopy._id) {
-              //got new card
-              this.cardCopy = { ...this.cardCopy, ...card }; //overwrite cardCopy
-              this.form.reset({ ...this.cardCopy });
-              this.selectedTags = [...this.cardCopy.tags];
-            }
-          });
-        this.subscriptions$.push(sub);
       }
     });
     this.subscriptions$.push(sub);
