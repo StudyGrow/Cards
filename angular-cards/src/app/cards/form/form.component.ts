@@ -106,12 +106,14 @@ export class FormComponent implements OnInit, OnDestroy {
     let allTags$ = this.store.select("cardsData").pipe(map(selectAllTags)); //get all tags
     this.tagsSuggestions$ = tagInput$.pipe(
       withLatestFrom(allTags$),
-      map(([input, tags]) => this._filter([...tags], input))
+      map(([input, tags]) => this._filter([...tags], input)),
+      map((list) => list.sort())
     );
 
     sub = this.formMode$.subscribe((mode) => {
       this.formMode = mode;
       if (mode === "add") {
+        this.resetForm();
         if (this.neu) {
           this.lecture = JSON.parse(localStorage.getItem("vl"));
           sub = this.actionState.addLecture$.subscribe((res) =>
@@ -172,22 +174,12 @@ export class FormComponent implements OnInit, OnDestroy {
         this.lecture.abrv
       );
       this.addCard(card);
-      let sub = this.actionState.addCard$.subscribe((res) => {
-        this.form.reset();
-        this.selectedTags = [];
-        sub.unsubscribe();
-      });
     } else if (this.formMode === "edit") {
       this.updateCard(
         this.form.value.thema,
         this.form.value.content,
         this.selectedTags
       );
-      let sub = this.actionState.updateCard$.subscribe(() => {
-        this.store.dispatch(setFormMode({ mode: "reset" }));
-        this.form.reset();
-        sub.unsubscribe();
-      });
     }
   }
 
@@ -201,6 +193,10 @@ export class FormComponent implements OnInit, OnDestroy {
     }
 
     this.store.dispatch(addCard({ card: card }));
+    let sub = this.actionState.addCard$.subscribe(() => {
+      this.resetForm();
+      sub.unsubscribe();
+    });
   }
 
   updateCard(thema: string, content: string, tags: string[]) {
@@ -210,6 +206,11 @@ export class FormComponent implements OnInit, OnDestroy {
         card: { ...this.cardCopy, thema: thema, content: content, tags: tags },
       })
     );
+    let sub = this.actionState.updateCard$.subscribe(() => {
+      this.store.dispatch(setFormMode({ mode: "reset" }));
+      this.resetForm();
+      sub.unsubscribe();
+    });
   }
 
   inField() {
@@ -218,7 +219,14 @@ export class FormComponent implements OnInit, OnDestroy {
   resetNav() {
     this.store.dispatch(setTypingMode({ typing: false }));
   }
+  resetForm() {
+    this.selectedTags = [];
 
+    this.form.reset();
+    Object.keys(this.form.controls).forEach((key) => {
+      this.form.get(key).setErrors(null);
+    });
+  }
   isDisabled(content, thema) {
     if (!content.value || !thema.value) {
       return true;

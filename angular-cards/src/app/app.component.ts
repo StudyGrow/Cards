@@ -12,6 +12,9 @@ import { auth } from "./store/actions/UserActions";
 export class AppComponent {
   public constructor(private titleService: Title, private store: Store<any>) {
     this.store.dispatch(auth());
+    // this.store
+    //   .select("cardsData")
+    //   .subscribe((data) => console.log(data.formMode));
     this.titleService.setTitle("Home");
   }
 }
