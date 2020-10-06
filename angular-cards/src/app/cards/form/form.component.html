@@ -1,0 +1,125 @@
+<ng-container *ngIf="formMode$ | async as mode">
+  <h4 *ngIf="mode == 'add'">Karteikarte hinzufügen</h4>
+  <h4 *ngIf="mode == 'edit'">Karteikarte bearbeiten</h4>
+
+  <form
+    [formGroup]="form"
+    (ngSubmit)="submitForm()"
+    novalidate
+    autocomplete="off"
+  >
+    <mat-form-field appearance="outline" class="mb-1 w-100">
+      <mat-label>Frage</mat-label>
+      <input
+        autocomplete="off"
+        matInput
+        type="text"
+        placeholder="Was ist eine Karteikarte?"
+        required
+        minlength="3"
+        #thema
+        formControlName="thema"
+        (focus)="inField()"
+        (blur)="resetNav()"
+      />
+      <mat-hint align="end">{{ thema.value?.trim().length || 0 }}/500</mat-hint>
+      <mat-error *ngIf="thema.value?.trim().length < 3"
+        >Die Frage muss mind. 3 Zeichen enthalten</mat-error
+      >
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="mb-1 w-100">
+      <mat-label>Antwort</mat-label>
+      <textarea
+        autocomplete="off"
+        matInput
+        #content
+        formControlName="content"
+        maxlength="1000"
+        required
+        rows="7"
+        (focus)="inField()"
+        (blur)="resetNav()"
+      >
+      </textarea>
+      <mat-hint align="end"
+        >{{ content.value?.trim().length || 0 }}/1000</mat-hint
+      >
+      <mat-error
+        *ngIf="
+          content.value?.trim().length < 1 ||
+          content.value?.trim().length > 1000
+        "
+        >Die Antwort muss zwischen 1 und 1000 Zeichen enthalten</mat-error
+      >
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="mb-1 w-100">
+      <mat-label>Tags</mat-label>
+      <mat-chip-list #chipList aria-label="Tag selection">
+        <mat-chip
+          *ngFor="let tag of selectedTags"
+          [selectable]="true"
+          [removable]="true"
+          (removed)="removeChip(tag)"
+        >
+          {{ tag }}
+          <mat-icon matChipRemove>cancel</mat-icon>
+        </mat-chip>
+        <input
+          #TagsList
+          formControlName="tag"
+          [matAutocomplete]="auto"
+          [matChipInputFor]="chipList"
+          [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+          (matChipInputTokenEnd)="addChip($event)"
+          (focus)="inField()"
+          (blur)="resetNav()"
+        />
+      </mat-chip-list>
+      <mat-autocomplete
+        #auto="matAutocomplete"
+        (optionSelected)="onSelectOption($event)"
+      >
+        <mat-option
+          *ngFor="let option of tagsSuggestions$ | async"
+          [value]="option"
+        >
+          {{ option }}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+
+    <ng-container [ngSwitch]="mode">
+      <ng-container *ngSwitchCase="'edit'">
+        <button
+          mat-flat-button
+          color="primary"
+          class="mr-1"
+          type="submit"
+          [disabled]="isDisabled(content, thema)"
+        >
+          Speichern
+        </button>
+        <button
+          mat-flat-button
+          color="warn"
+          type="button"
+          (click)="cancelEdit()"
+        >
+          Abbruch
+        </button>
+      </ng-container>
+      <ng-container *ngSwitchCase="'add'">
+        <button
+          mat-flat-button
+          color="primary"
+          type="submit"
+          [disabled]="isDisabled(content, thema)"
+        >
+          Hinzufügen
+        </button>
+      </ng-container>
+    </ng-container>
+  </form>
+</ng-container>

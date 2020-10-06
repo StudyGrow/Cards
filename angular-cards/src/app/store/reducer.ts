@@ -44,7 +44,7 @@ export const initialState: AppState = {
   tags: [],
   filteredCardsChanged: new Date(),
 };
-
+var oldMode = "none";
 //Reducer which will dispatch changes to the store
 const _cardsReducer = createReducer(
   initialState,

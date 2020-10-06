@@ -12,6 +12,8 @@ export const selectAllTags = (state: AppState) => state.currLecture.tagList;
 
 export const selectActiveIndex = (state: AppState) => state.activeIndex;
 
+export const selectFormMode = (state: AppState) => state.formMode;
+
 export const selectCurrentLecture = (state: AppState) => state.currLecture;
 
 export const selectUserId = (state: AppState) => state.userData.user?._id;
