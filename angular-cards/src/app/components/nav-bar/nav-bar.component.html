@@ -1,22 +1,21 @@
-<nav class="navbar navbar-light bg-light">
-  <div class="row">
-    <div class="col-6" id="col">
-      <button
-        id="toggle"
-        class="align-middle"
-        mat-button
-        (click)="drawerToggle()"
-        aria-label="navigation-sidebar-toggler"
-      >
-        <mat-icon>menu</mat-icon>
-      </button>
-    </div>
-
-    <div *ngIf="showCards" id="searchbar">
-      <app-search-bar></app-search-bar>
-    </div>
+<mat-toolbar color="primary">
+  <button
+    mat-icon-button
+    (click)="drawerToggle()"
+    aria-label="navigation-sidebar-toggler"
+  >
+    <mat-icon>menu</mat-icon>
+  </button>
+  <span class="spacer"></span>
+  <div *ngIf="showCards">
+    <app-search-bar></app-search-bar>
   </div>
-</nav>
+</mat-toolbar>
+
 <div id="progress">
-  <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
+  <mat-progress-bar
+    *ngIf="loading"
+    mode="indeterminate"
+    color="accent"
+  ></mat-progress-bar>
 </div>

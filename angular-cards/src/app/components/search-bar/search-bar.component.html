@@ -1,50 +1,84 @@
-<mat-form-field>
-  <input
-    autocomplete="off"
-    matInput
-    [(ngModel)]="uInput"
-    [ngModelOptions]="{ standalone: true }"
-    (input)="findMatches($event)"
-    id="search"
-    type="search"
-    placeholder="Frage"
-    (focus)="inField()"
-    (blur)="resetNav()"
-  />
-  <mat-icon matSuffix>search</mat-icon>
-</mat-form-field>
-<div
-  *ngIf="uInput && (suggestions.length > 0 || allSuggestions.length > 0)"
-  id="matches"
-  class="shadow w-100"
->
-  <mat-list>
-    <div
-      *ngIf="suggestions.length > 0 && allSuggestions.length > 0"
-      mat-subheader
-    >
-      Aktuell angezeigt
-    </div>
-    <mat-list-item *ngFor="let suggestion of suggestions">
-      <a
-        href="#"
-        mat-list-item
+<form novalidate autocomplete="off">
+  <mat-form-field color="primary" class="mb-1">
+    <input
+      type="text"
+      placeholder="Frage"
+      aria-label="Number"
+      matInput
+      [formControl]="uInput"
+      [matAutocomplete]="auto"
+      (focus)="inField()"
+      (blur)="resetNav()"
+    />
+    <mat-icon matSuffix>search</mat-icon>
+    <mat-autocomplete #auto="matAutocomplete">
+      <div
+        *ngIf="
+          (suggestions$ | async)?.length > 0 &&
+          (allSuggestions$ | async)?.length > 0
+        "
+        mat-subheader
+      >
+        Aktuell angezeigt
+      </div>
+      <mat-option
+        *ngFor="let suggestion of suggestions$ | async"
         (click)="navigateTo($event, suggestion.index, false)"
-        class="sugg"
-        (mouseover)="beginScroll(paragraph)" (mouseleave)="endScroll(paragraph)"
-        ><div #paragraph>{{ suggestion.title }}</div></a
+        (mouseover)="beginScroll(paragraph)"
+        (mouseleave)="endScroll(paragraph)"
       >
-    </mat-list-item>
-    <mat-divider></mat-divider>
-    <div *ngIf="allSuggestions.length > 0" mat-subheader>Alle Karten</div>
-    <mat-list-item *ngFor="let suggestion of allSuggestions">
-      <a
-        href="#"
-        mat-list-item
+        <div #paragraph>{{ suggestion.title }}</div>
+      </mat-option>
+      <mat-divider></mat-divider>
+
+      <div *ngIf="(allSuggestions$ | async)?.length > 0" mat-subheader>
+        Alle Karten
+      </div>
+      <mat-option
+        *ngFor="let suggestion of allSuggestions$ | async"
+        (mouseover)="beginScroll(paragraph)"
+        (mouseleave)="endScroll(paragraph)"
         (click)="navigateTo($event, suggestion.index, true)"
-        class="sugg"
-        >{{ suggestion.title }}</a
       >
-    </mat-list-item>
-  </mat-list>
-</div>
+        <div #paragraph>{{ suggestion.title }}</div>
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+</form>
+<!--
+  <div
+    *ngIf="uInput && (suggestions.length > 0 || allSuggestions.length > 0)"
+    id="matches"
+    class="shadow w-100"
+  >
+    <mat-list>
+      <div
+        *ngIf="suggestions.length > 0 && allSuggestions.length > 0"
+        mat-subheader
+      >
+        Aktuell angezeigt
+      </div>
+      <mat-list-item *ngFor="let suggestion of suggestions">
+        <a
+          href="#"
+          mat-list-item
+          (click)="navigateTo($event, suggestion.index, false)"
+          class="sugg"
+          (mouseover)="beginScroll(paragraph)"
+          (mouseleave)="endScroll(paragraph)"
+          ><div #paragraph>{{ suggestion.title }}</div></a
+        >
+      </mat-list-item>
+      <mat-divider></mat-divider>
+      <div *ngIf="allSuggestions.length > 0" mat-subheader>Alle Karten</div>
+      <mat-list-item *ngFor="let suggestion of allSuggestions">
+        <a
+          href="#"
+          mat-list-item
+          (click)="navigateTo($event, suggestion.index, true)"
+          class="sugg"
+          >{{ suggestion.title }}</a
+        >
+      </mat-list-item>
+    </mat-list>
+  </div>-->

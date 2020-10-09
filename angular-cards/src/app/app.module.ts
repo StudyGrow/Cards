@@ -13,9 +13,9 @@ import { StoreDevtoolsModule } from "@ngrx/store-devtools";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { MatProgressBarModule } from "@angular/material/progress-bar";
 import { MatDialogModule } from "@angular/material/dialog";
-
+import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatSelectModule } from "@angular/material/select";
-import { MatFormFieldModule } from "@angular/material/form-field";
+
 import { MatMenuModule } from "@angular/material/menu";
 import { MatSidenavModule } from "@angular/material/sidenav";
 import { MatListModule } from "@angular/material/list";
@@ -129,7 +129,6 @@ export class MyHammerConfig extends HammerGestureConfig {
 
     MatMenuModule,
     SharedModule,
-    MatFormFieldModule,
 
     MatSelectModule,
     HammerModule,

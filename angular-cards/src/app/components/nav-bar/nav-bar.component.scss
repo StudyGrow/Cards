@@ -1,12 +1,3 @@
-.row {
-  width: 100%;
-}
-nav {
-  position: relative;
-}
-.navbar {
-  padding: 8px;
-}
 #progress {
   position: relative;
 }
@@ -16,24 +7,10 @@ mat-progress-bar {
   height: 5px;
   z-index: 1000;
 }
-.alert {
-  width: 90%;
-  margin: auto;
-  margin-top: 5px;
-}
-#searchbar {
-  top: 2px;
-  right: 2px;
-  position: absolute;
-}
 
-#toggle {
+.spacer {
+  flex: 1 1 auto;
+}
+button {
   outline: none;
-}
-.row {
-  margin-right: auto;
-  margin-left: auto;
-}
-#col {
-  padding: 0;
 }

@@ -36,9 +36,19 @@
       <mat-icon>style</mat-icon> Meine Karten</a
     >
   </div>
+  <div mat-subheader>Über uns</div>
+  <a mat-list-item routerLink="/about" class=" {{ isActive('/about') }}">
+    <mat-icon>contacts</mat-icon> Infos
+  </a>
   <mat-divider></mat-divider>
 
-  <a mat-list-item (click)="logout()" id="logout" *ngIf="loggedIn$ | async">
+  <a
+    mat-list-item
+    (click)="logout()"
+    class="mb-0"
+    id="logout"
+    *ngIf="loggedIn$ | async"
+  >
     <mat-icon>exit_to_app</mat-icon> Logout
   </a>
 </mat-nav-list>

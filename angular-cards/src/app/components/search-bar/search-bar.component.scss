@@ -1,32 +1,16 @@
 #matches {
   z-index: 1000;
-  position: absolute;
-  top: 40px;
   background-color: white;
   max-height: 200px;
-  overflow-y: auto;
+
   overflow-x: hidden;
 }
-.sugg {
-  text-overflow: ellipsis;
-  overflow: hidden;
-  width: 200px;
-  white-space: nowrap;
-}
+
 ::ng-deep .mat-list,
 .mat-subheader {
   width: 200px;
 }
 
-button {
-  padding: 0;
-  width: 2px;
-  box-sizing: border-box;
-  text-align: right;
-}
-form {
-  font-size: 15px;
-}
 .textToScroll {
   font-size: 1.2em;
   font-weight: bold;
@@ -36,19 +20,22 @@ form {
   transform-origin: left center;
 
   -webkit-animation-name: first-scroll, second-scroll;
-  -webkit-animation-duration: calc(var(--time) * 1s), calc(calc(var(--time) * 1s) * 2);
+  -webkit-animation-duration: calc(var(--time) * 1s),
+    calc(calc(var(--time) * 1s) * 2);
   -webkit-animation-delay: 0ms, calc(var(--time) * 1s);
   -webkit-animation-timing-function: linear;
   -webkit-animation-iteration-count: 1, infinite;
 
   -moz-animation-name: first-scroll, second-scroll;
-  -moz-animation-duration: calc(var(--time) * 1s), calc(calc(var(--time) * 1s) * 2);
+  -moz-animation-duration: calc(var(--time) * 1s),
+    calc(calc(var(--time) * 1s) * 2);
   -moz-animation-delay: 0ms, calc(var(--time) * 1s);
   -moz-animation-timing-function: linear;
   -moz-animation-iteration-count: 1, infinite;
 
   -o-animation-name: first-scroll, second-scroll;
-  -o-animation-duration: calc(var(--time) * 1s), calc(calc(var(--time) * 1s) * 2);
+  -o-animation-duration: calc(var(--time) * 1s),
+    calc(calc(var(--time) * 1s) * 2);
   -o-animation-delay: 0ms, calc(var(--time) * 1s);
   -o-animation-timing-function: linear;
   -o-animation-iteration-count: 1, infinite;
@@ -126,5 +113,3 @@ form {
     transform: translateX(-100%);
   }
 }
-
-

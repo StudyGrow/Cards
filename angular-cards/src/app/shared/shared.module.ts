@@ -8,12 +8,14 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatDialogModule } from "@angular/material/dialog";
 import { MatTooltipModule } from "@angular/material/tooltip";
 import { SafeHtmlPipe } from "./safe-html.pipe";
+
 import { MatInputModule } from "@angular/material/input";
 import { MatAutocompleteModule } from "@angular/material/autocomplete";
 import { MatChipsModule } from "@angular/material/chips";
 import { MatIconModule } from "@angular/material/icon";
 import { DialogueComponent } from "../components/dialogue/dialogue.component";
 import { MatButtonToggleModule } from "@angular/material/button-toggle";
+import { MatToolbarModule } from "@angular/material/toolbar";
 import {
   MatPaginatorIntl,
   MatPaginatorModule,
@@ -37,6 +39,7 @@ import { getGermanPaginatorIntl } from "../profile/cards-overview/paginator.opti
     CommonModule,
     SafeHtmlPipe,
     MatInputModule,
+    MatToolbarModule,
     MatChipsModule,
     MatIconModule,
     FormsModule,

@@ -1,13 +1,10 @@
-import { Component, OnInit, Input, OnDestroy, ViewChild } from "@angular/core";
+import { Component, OnInit, Input, OnDestroy } from "@angular/core";
 
-import { CardsService } from "../../services/cards.service";
-
-import { MatFormFieldModule } from "@angular/material/form-field";
 import { Card } from "../../models/Card";
 import { SearchSuggestion } from "../../models/SearchSuggestion";
-import { Subscription, Observable, pipe } from "rxjs";
+import { Subscription, Observable } from "rxjs";
 import { Store } from "@ngrx/store";
-import { map, share } from "rxjs/operators";
+import { map, share, withLatestFrom } from "rxjs/operators";
 import {
   setTypingMode,
   setSuggestionsMode,
@@ -25,49 +22,56 @@ import { FormControl } from "@angular/forms";
   styleUrls: ["./search-bar.component.scss"],
 })
 export class SearchBarComponent implements OnInit, OnDestroy {
+  uInput = new FormControl();
+
   constructor(private store: Store<any>) {}
   currentSelection: Card[]; //Cards which are currently shown
   subscriptions$: Subscription[] = []; //holds all subscriptions from observables to later unsub
   cards: Card[]; //all cards
-  suggestions: SearchSuggestion[]; //search suggestions
-  allSuggestions: SearchSuggestion[]; //search suggestions
-  uInput: string; //userInput
+  suggestions$: Observable<SearchSuggestion[]>; //search suggestions
+
+  allSuggestions$: Observable<SearchSuggestion[]>; //search suggestions
+
   data$: Observable<AppState> = this.store.select("cardsData").pipe(share()); //state of the store
   clearSuggestions: boolean; //wether to clear search suggestions
 
   form = new FormControl();
 
   ngOnInit(): void {
-    this.form.valueChanges.subscribe((input) => this.findMatches(input));
     let sub = this.data$
       .pipe(map((state) => state.hideSearchResults))
-      .subscribe((value) => {
-        this.clearSuggestions = value;
-        if (value) {
-          this.suggestions = [];
-          this.allSuggestions = [];
+      .subscribe((hide) => {
+        this.clearSuggestions = hide;
+        if (hide) {
+          this.uInput.reset();
         }
       });
     this.subscriptions$.push(sub);
-
-    sub = this.data$.pipe(map(selectAllCards)).subscribe((cards) => {
+    let allCards$ = this.data$.pipe(map(selectAllCards));
+    sub = allCards$.subscribe((cards) => {
       this.cards = cards;
-      cards.forEach((card) => {
-        if (card.thema == null) {
-          card.thema = "";
-        }
-        if (card.content == null) {
-          card.content = "";
-        }
-      });
     });
     this.subscriptions$.push(sub);
-    sub = this.data$.pipe(map(selectFilteredCards)).subscribe((filtered) => {
-      if (this.currentSelection !== filtered) {
-        this.currentSelection = filtered;
-      }
+    let filteredCards$ = this.data$.pipe(map(selectFilteredCards));
+    sub = filteredCards$.subscribe((filtered) => {
+      this.currentSelection = filtered;
     });
-    this.subscriptions$.push(sub);
+    let filteredSuggestions = this.uInput.valueChanges.pipe(
+      withLatestFrom(allCards$, filteredCards$),
+      map(
+        ([input, allCards, filteredCards]) =>
+          this.findMatches(input, allCards, filteredCards) || {
+            suggestions: [],
+            allSuggestions: [],
+          }
+      )
+    );
+    this.suggestions$ = filteredSuggestions.pipe(
+      map((res) => res?.suggestions)
+    );
+    this.allSuggestions$ = filteredSuggestions.pipe(
+      map((res) => res?.allSuggestions)
+    );
   }
 
   ngOnDestroy() {
@@ -80,42 +84,46 @@ export class SearchBarComponent implements OnInit, OnDestroy {
   }
   resetNav() {
     setTimeout(() => {
-      this.uInput = "";
+      this.uInput.reset();
     }, 120);
 
     this.store.dispatch(setTypingMode({ typing: false }));
   }
-  findMatches(e: Event) {
+  findMatches(
+    input: string,
+    allCards: Card[],
+    filteredCards: Card[]
+  ): { suggestions: SearchSuggestion[]; allSuggestions: SearchSuggestion[] } {
     this.store.dispatch(setSuggestionsMode({ hide: false })); //show suggestions
-    this.suggestions = [];
-    this.allSuggestions = [];
+    let suggestions = [];
+    let allSuggestions = [];
 
-    if (this.uInput && this.uInput.length > 2) {
-      const regex = new RegExp(`${this.uInput}`, "gi");
+    if (input?.length > 1) {
+      const regex = new RegExp(`${input}`, "gi");
+
       let i = 0;
       while (i < this.cards.length) {
-        if (
-          i < this.currentSelection.length &&
-          this.currentSelection[i].thema.match(regex)
-        ) {
-          this.suggestions.push({
-            title: this.currentSelection[i].thema,
+        if (i < filteredCards.length && filteredCards[i].thema.match(regex)) {
+          suggestions.push({
+            title: filteredCards[i].thema,
             index: i,
           });
-        } else if (this.cards[i].thema.match(regex)) {
-          this.allSuggestions.push({
-            title: this.cards[i].thema,
+        } else if (allCards[i].thema.match(regex)) {
+          allSuggestions.push({
+            title: allCards[i].thema,
             index: i,
           });
         }
         i++;
       }
+
+      return { suggestions: suggestions, allSuggestions: allSuggestions };
     }
   }
 
   navigateTo(e: Event, index: number, all: boolean) {
     e.preventDefault();
-    this.uInput = "";
+    this.uInput.reset();
     if (!all) {
       //call from current selection
       this.store.dispatch(setActiveCardIndex({ index: index }));
