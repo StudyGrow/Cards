@@ -31,7 +31,7 @@ export class CardsData {
 }
 //initial state of the app
 export const initialState: AppState = {
-  cards: [],
+  cards: undefined,
   currLecture: new Vorlesung(),
   activeIndex: 0,
   lectures: [],
