@@ -1,8 +1,9 @@
+@import "~@angular/material/theming";
 a {
   outline: none;
 }
 .active {
-  color: #007bff;
+  color: #4a148c;
   background-color: rgba(230, 230, 230, 0.411);
 }
 mat-icon {

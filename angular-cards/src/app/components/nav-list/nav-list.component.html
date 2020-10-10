@@ -1,10 +1,11 @@
-<mat-nav-list class="p-0">
-  <a mat-list-item class="{{ isActive('/') }}" routerLink="/"
+<mat-nav-list class="p-0 default-theme">
+  <a mat-list-item color="primary" class="{{ isActive('/') }}" routerLink="/"
     ><mat-icon>home</mat-icon> Vorlesungen</a
   >
 
   <a
     mat-list-item
+    mat-ripple
     *ngIf="(loggedIn$ | async) == false"
     class=" {{ isActive('/login') }}"
     routerLink="/login"

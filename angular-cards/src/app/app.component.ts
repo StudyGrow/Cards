@@ -10,8 +10,10 @@ import { auth } from "./store/actions/UserActions";
   styleUrls: ["./app.component.scss"],
 })
 export class AppComponent {
+  theme: string = "dark-theme";
   public constructor(private titleService: Title, private store: Store<any>) {
     this.store.dispatch(auth());
+
     // this.store
     //   .select("cardsData")
     //   .subscribe((data) => console.log(data.formMode));

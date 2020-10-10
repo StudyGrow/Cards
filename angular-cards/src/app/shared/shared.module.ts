@@ -8,7 +8,7 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatDialogModule } from "@angular/material/dialog";
 import { MatTooltipModule } from "@angular/material/tooltip";
 import { SafeHtmlPipe } from "./safe-html.pipe";
-
+import { MatRippleModule } from "@angular/material/core";
 import { MatInputModule } from "@angular/material/input";
 import { MatAutocompleteModule } from "@angular/material/autocomplete";
 import { MatChipsModule } from "@angular/material/chips";
@@ -41,6 +41,7 @@ import { getGermanPaginatorIntl } from "../profile/cards-overview/paginator.opti
     MatInputModule,
     MatToolbarModule,
     MatChipsModule,
+    MatRippleModule,
     MatIconModule,
     FormsModule,
     MatInputModule,

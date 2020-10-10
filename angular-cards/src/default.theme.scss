@@ -17,5 +17,6 @@ $dark-theme: mat-dark-theme($dark-primary, $dark-accent, $dark-warn);
 // `.unicorn-dark-theme` will be affected by this alternate dark theme instead of the default theme.
 
 .dark-theme {
+  background-color: #424242;
   @include angular-material-theme($dark-theme);
 }
