@@ -33,12 +33,12 @@ export class CardsData {
 export const initialState: AppState = {
   cards: undefined,
   currLecture: new Vorlesung(),
-  activeIndex: 0,
-  lectures: [],
+  activeIndex: undefined,
+  lectures: undefined,
   formMode: "none",
   typingMode: false,
   hideSearchResults: true,
-  userData: new UserInfo(null, new User()),
+  userData: new UserInfo(null, new User(), false),
   showDrawer: false,
   loading: 0,
   tags: [],
@@ -135,13 +135,14 @@ const _cardsReducer = createReducer(
     ...state,
     userData: { ...state.userData, authenticated: auth },
   })),
-  on(UserActions.login, (state, user) => ({
+  on(UserActions.loginSuccess, (state, user) => ({
     ...state,
     userData: { ...state.userData, user: user, authenticated: true },
   })),
   on(UserActions.logoutSuccess, (state) => ({
     ...state,
-    userData: { ...state.userData, user: new User(), authenticated: false },
+    userData: initialState.userData,
+    showDrawer: false,
   })),
   on(Actions.clearCardData, (state) => ({
     ...state,

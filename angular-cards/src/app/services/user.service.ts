@@ -92,11 +92,6 @@ export class UserService implements CanActivate {
         map((res) => res.body)
       );
   }
-  clearAccountInfo() {
-    if (this.accountInfo$ && !this.router.url.match(/account/)) {
-      this.accountInfo$.next(null);
-    }
-  }
 
   removeAcc(): Observable<any> {
     return this.http

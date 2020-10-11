@@ -21,21 +21,23 @@ export class NotificationsService {
     this.notifications$.next(notifications);
   }
 
-  //remove notifations by type
+  //remove notifations by type, if no type is provided, all notifications are removed
   clearNotifications(...types: string[]) {
     let notifs = this.notifications$.getValue();
-    types.forEach((type) => {
-      for (let i = 0; i < notifs.length; i++) {
-        if (notifs[i].type === type) {
-          this.removeNotification(i);
+    if (types.length == 0) notifs = [];
+    else
+      types.forEach((type) => {
+        for (let i = 0; i < notifs.length; i++) {
+          if (notifs[i].type === type) {
+            this.removeNotification(i);
+          }
         }
-      }
-    });
+      });
 
     this.notifications$.next(notifs);
   }
 
-  notifications(): Observable<Notification[]> {
+  get notifications(): Observable<Notification[]> {
     return this.notifications$.asObservable();
   }
 

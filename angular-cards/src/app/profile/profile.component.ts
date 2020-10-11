@@ -3,7 +3,6 @@ import { Component, OnInit, OnDestroy } from "@angular/core";
 import { Store } from "@ngrx/store";
 import { map } from "rxjs/operators";
 import { selectUserInfo } from "../store/selector";
-import { fetchUserData } from "../store/actions/UserActions";
 import { Subscription } from "rxjs";
 
 @Component({
@@ -32,7 +31,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
         }
       });
     this.subs.push(sub);
-    this.store.dispatch(fetchUserData());
   }
   ngOnDestroy() {
     this.subs.forEach((sub) => sub.unsubscribe());

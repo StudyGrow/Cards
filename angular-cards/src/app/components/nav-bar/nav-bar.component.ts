@@ -18,7 +18,6 @@ import {
 import { map } from "rxjs/operators";
 import { authenticated } from "src/app/store/selector";
 import { clearCardData } from "src/app/store/actions/cardActions";
-import { fetchUserData } from "src/app/store/actions/UserActions";
 
 @Component({
   selector: "app-nav-bar",
@@ -28,7 +27,7 @@ import { fetchUserData } from "src/app/store/actions/UserActions";
 export class NavBarComponent implements OnInit, OnDestroy {
   public loggedIn: boolean;
   public cards: Card[] = [];
-  public notifications: Notification[];
+
   subscriptions$: Subscription[] = [];
   showCards: boolean;
   public loading: boolean;
@@ -55,23 +54,6 @@ export class NavBarComponent implements OnInit, OnDestroy {
           this.cdr.detectChanges();
         });
       this.subscriptions$.push(sub);
-      sub = this.store
-        .select("cardsData")
-        .pipe(map(authenticated))
-        .subscribe((val) => {
-          if (this.loggedIn != val) {
-            //this will only be the case the first time this function gets called
-
-            this.loggedIn = val;
-
-            if (val === true) {
-              setTimeout(() => {
-                this.store.dispatch(fetchUserData()); //if user is logged in fetch userdata
-              }, 1000);
-            }
-          }
-        });
-      this.subscriptions$.push(sub);
 
       sub = this.router.events.subscribe((e) => {
         if (e instanceof NavigationEnd) {
@@ -79,18 +61,12 @@ export class NavBarComponent implements OnInit, OnDestroy {
         }
       });
       this.subscriptions$.push(sub);
-      sub = this.notification
-        .notifications()
-        .subscribe((notifs) => (this.notifications = notifs));
-      this.subscriptions$.push(sub);
     }, 1);
   }
   handleRouteChanges() {
-    this.store.dispatch(setDrawerState({ show: false }));
+    this.store.dispatch(setDrawerState({ show: false })); //hide drawer when changing route
     if (this.router.url.match(/account/)) {
       this.titleService.setTitle("Account");
-    } else {
-      this.userService.clearAccountInfo();
     }
     if (this.router.url.match(/vorlesung/)) {
       this.showCards = true;

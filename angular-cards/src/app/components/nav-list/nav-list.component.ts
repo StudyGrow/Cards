@@ -8,6 +8,8 @@ import { map } from "rxjs/operators";
 import { authenticated } from "src/app/store/selector";
 import { Observable, Subscription } from "rxjs";
 import { logout as logoutUser } from "src/app/store/actions/UserActions";
+import { NotificationsService } from "src/app/services/notifications.service";
+import { Notification, SuccessMessage } from "src/app/models/Notification";
 
 @Component({
   selector: "app-nav-list",
@@ -20,8 +22,7 @@ export class NavListComponent implements OnInit, OnDestroy {
   loggedIn$: Observable<boolean>;
   private subs: Subscription[] = [];
   constructor(
-    private userService: UserService,
-    private cardsService: CardsService,
+    private notifications: NotificationsService,
     private router: Router,
     private store: Store<any>
   ) {}
@@ -36,7 +37,6 @@ export class NavListComponent implements OnInit, OnDestroy {
         } else {
           this.onCardRoute = false;
         }
-        this.userService.clearAccountInfo();
       }
     });
     this.subs.push(sub);
@@ -47,6 +47,10 @@ export class NavListComponent implements OnInit, OnDestroy {
   }
   logout() {
     this.store.dispatch(logoutUser());
+    this.notifications.clearNotifications();
+    this.notifications.addNotification(
+      new SuccessMessage("Erfolgreich abgemeldet")
+    );
     this.router.navigateByUrl("/");
   }
   isActive(path: string): string {

@@ -172,7 +172,13 @@ export class CardsEffects {
       ofType(auth),
       mergeMap(() =>
         this.user.authentication().pipe(
-          map((val) => authenticated({ auth: val })),
+          map((val) => {
+            if (val) {
+              this.store.dispatch(fetchUserData()); //get userData if authorization was sucessfull
+            }
+            return authenticated({ auth: val });
+          }),
+
           catchError((reason) => of(LoadFailure({ reason: reason })))
         )
       ),

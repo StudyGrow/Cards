@@ -55,7 +55,7 @@ export class ViewContainerComponent implements OnInit {
     this.show$.subscribe((val) => {
       this.cdr.detectChanges();
     });
-    this.notifications$ = this.notifService.notifications();
+    this.notifications$ = this.notifService.notifications;
     this.store
       .select("cardsData")
       .pipe(map(selectDrawerState))

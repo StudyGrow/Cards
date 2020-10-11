@@ -14,9 +14,7 @@ export class AppComponent {
   public constructor(private titleService: Title, private store: Store<any>) {
     this.store.dispatch(auth());
 
-    // this.store
-    //   .select("cardsData")
-    //   .subscribe((data) => console.log(data.formMode));
+    this.store.select("cardsData").subscribe((data) => console.log(data));
     this.titleService.setTitle("Home");
   }
 }

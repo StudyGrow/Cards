@@ -5,7 +5,7 @@ import { Subscription, Observable } from "rxjs";
 import { map } from "rxjs/operators";
 import { Store } from "@ngrx/store";
 import { selectUserInfo } from "src/app/store/selector";
-import { fetchUserData } from "src/app/store/actions/UserActions";
+
 import { PageEvent } from "@angular/material/paginator";
 import {
   fadeInOnEnterAnimation,
