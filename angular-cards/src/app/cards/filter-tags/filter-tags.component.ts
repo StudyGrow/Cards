@@ -12,7 +12,14 @@ import {
 } from "@angular/material/autocomplete";
 import { MatChipInputEvent } from "@angular/material/chips";
 
-import { map, startWith, share, filter, tap } from "rxjs/operators";
+import {
+  map,
+  startWith,
+  share,
+  filter,
+  tap,
+  withLatestFrom,
+} from "rxjs/operators";
 
 import { Store } from "@ngrx/store";
 import {
@@ -23,9 +30,10 @@ import {
 } from "src/app/store/actions/actions";
 import {
   selectDrawerState,
-  selectTags,
+  selectActiveTags,
   selectAllTags,
   selectTagOptions,
+  selectCurrentLecture,
 } from "src/app/store/selector";
 
 @Component({
@@ -40,12 +48,12 @@ export class FilterTagsComponent implements OnInit, OnDestroy {
   );
 
   public lecture$: Observable<Vorlesung> = this.data$.pipe(
-    map((state) => state.currLecture)
+    map(selectCurrentLecture)
   );
-  selected = []; //active tags
+  selected$: Observable<string[]>; //active tags
   subs: Subscription[] = [];
   separatorKeysCodes: number[] = [ENTER, COMMA];
-  formCtrl = new FormControl();
+  formCtrl = new FormControl("");
   options: string[] = [];
   filteredTags$: Observable<string[]>;
   selectedChanged: boolean = false;
@@ -56,22 +64,13 @@ export class FilterTagsComponent implements OnInit, OnDestroy {
   constructor(private store: Store<any>) {}
 
   ngOnInit(): void {
-    let sub = this.data$.pipe(map(selectTags)).subscribe((tags) => {
-      if (tags != this.selected) {
-        this.selected = tags; //currently selected tags in the filter
-      }
-    });
-    this.subs.push(sub);
-    sub = this.data$.pipe(map(selectTagOptions)).subscribe((tags) => {
-      if (tags != this.options) {
-        this.options = tags; //get all available tags
-      }
-    });
+    this.selected$ = this.data$.pipe(map(selectActiveTags));
     this.filteredTags$ = this.formCtrl.valueChanges.pipe(
       //autocomplete
-      startWith(null),
-      map((tag: string | null) => {
-        return tag ? this._filter(tag) : this.options.slice();
+      startWith(""),
+      withLatestFrom(this.data$.pipe(map(selectTagOptions))),
+      map(([input, tags]: [string, string[]]) => {
+        return input?.length > 0 ? this._filter(input, tags) : tags;
       }),
       map((list) => list.sort())
     );
@@ -80,14 +79,13 @@ export class FilterTagsComponent implements OnInit, OnDestroy {
   remove(tag: string): void {
     //remove tag from the filters
     this.store.dispatch(removeTag({ tag: tag }));
+    this.formCtrl.reset({ ...this.formCtrl.value });
   }
 
-  add(event: MatAutocompleteSelectedEvent): void {
-    //add tag to the filters
-    let newTag = event.option.value;
-    if (!this.selected.includes(newTag)) {
-      this.store.dispatch(addTag({ tag: newTag }));
-    }
+  select(event: MatAutocompleteSelectedEvent): void {
+    let tag = event.option.viewValue;
+
+    this.store.dispatch(addTag({ tag: tag }));
     this.formCtrl.setValue(null);
   }
   inField() {
@@ -96,12 +94,10 @@ export class FilterTagsComponent implements OnInit, OnDestroy {
   resetNav() {
     this.store.dispatch(setTypingMode({ typing: false }));
   }
-  private _filter(value: string): string[] {
+  private _filter(value: string, tags: string[]): string[] {
     const filterValue = value.toLowerCase();
 
-    return this.options.filter(
-      (item) => item.toLowerCase().indexOf(filterValue) === 0
-    );
+    return tags.filter((item) => item.toLowerCase().indexOf(filterValue) === 0);
   }
 
   ngOnDestroy() {

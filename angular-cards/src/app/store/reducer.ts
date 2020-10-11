@@ -151,11 +151,7 @@ const _cardsReducer = createReducer(
     cards: initialState.cards,
     filteredCardsChanged: new Date(),
   })),
-  on(StateActions.applyFilter, (state, { tags }) => ({
-    ...state,
-    tags: addTags([...state.tags], tags),
-    filteredCardsChanged: new Date(),
-  })),
+
   on(StateActions.addTag, (state, { tag }) => ({
     ...state,
     tags: addTag(state.tags, tag),
@@ -204,29 +200,25 @@ function updateObjectInArray(cards: Card[], card: Card) {
 }
 
 function removeInArray(items: string[], item: string) {
-  if (items.length == 1 && items[0] == item) {
-    return [];
-  } else {
-    const filterValue = item.toLowerCase();
+  if (items.length <= 1 && items[0] == item) return [];
 
-    return items.filter(
-      (item) => item.toLowerCase().indexOf(filterValue) === 0
-    );
-  }
+  const filterValue = item.toLowerCase();
+
+  return items.filter((item) => !item.toLowerCase().includes(filterValue));
 }
 
 function addTags(origin: string[], tags: string[]) {
-  tags.forEach((tag) => {
+  //adds a list of tags to the original array without duplicates
+  for (const tag of tags) {
     if (!origin.includes(tag)) {
       origin.push(tag);
     }
-  });
+  }
   return origin;
 }
 
 function addTag(origin: string[], tag: string) {
-  if (!origin.includes(tag)) {
-    return [...origin, tag];
-  }
-  return origin;
+  //adds one tag to the original array without duplicates
+  if (origin.includes(tag)) return origin;
+  return [...origin, tag];
 }

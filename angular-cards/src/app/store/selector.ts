@@ -6,7 +6,7 @@ import { Vorlesung } from "../models/Vorlesung";
 
 export const selectAllCards = (state: AppState) => state.cards;
 
-export const selectTags = (state: AppState) => state.tags;
+export const selectActiveTags = (state: AppState) => state.tags;
 
 export const selectAllTags = (state: AppState) => state.currLecture.tagList;
 
@@ -34,13 +34,13 @@ export const lastCardChange = (state: AppState) => state.filteredCardsChanged;
 
 export const selectTagOptions = createSelector(
   selectAllTags,
-  selectTags,
+  selectActiveTags,
   (all, selected) => _filter(all, selected)
 );
 
 export const selectFilteredCards = createSelector(
   selectAllCards,
-  selectTags,
+  selectActiveTags,
   (cards, filter) => applyFilter(cards, filter)
 );
 
@@ -90,11 +90,6 @@ function applyFilter(cards: Card[], filters: string[]): Card[] {
   return res;
 }
 function _filter(all: any[], selected: any[]) {
-  if (!selected) {
-    return all;
-  } else if (!all) {
-    return all;
-  } else {
-    return all.filter((tag) => !selected.includes(tag));
-  }
+  if (!selected) return [];
+  return all.filter((tag) => !selected?.includes(tag));
 }

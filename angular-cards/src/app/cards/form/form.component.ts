@@ -1,9 +1,20 @@
 import { COMMA, ENTER, BACKSLASH } from "@angular/cdk/keycodes";
-import { Component, Input, OnDestroy, OnInit, ViewChild } from "@angular/core";
+import {
+  Component,
+  ElementRef,
+  Input,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from "@angular/core";
 import { FormControl, FormGroup, NgForm } from "@angular/forms";
-import { MatAutocompleteSelectedEvent } from "@angular/material/autocomplete";
+import {
+  MatAutocomplete,
+  MatAutocompleteSelectedEvent,
+} from "@angular/material/autocomplete";
 import { MatChipInputEvent } from "@angular/material/chips";
 import { MatDialog } from "@angular/material/dialog";
+import { MatInput } from "@angular/material/input";
 import { Router } from "@angular/router";
 import { Store } from "@ngrx/store";
 import { merge, Observable, of, Subscription } from "rxjs";
@@ -57,6 +68,7 @@ export class FormComponent implements OnInit, OnDestroy {
   //List of available Tags displayed as suggestions with autocomplete
   tagsSuggestions$: Observable<string[]>;
 
+  tagRef: FormControl;
   subscriptions$: Subscription[] = [];
 
   constructor(
@@ -67,11 +79,12 @@ export class FormComponent implements OnInit, OnDestroy {
   ) {}
 
   createFormGroup(...args: string[]) {
+    this.tagRef = new FormControl("");
     if (!args || args.length !== 3)
       return new FormGroup({
         thema: new FormControl(""),
         content: new FormControl(""),
-        tag: new FormControl(""),
+        tag: this.tagRef,
       });
 
     return new FormGroup({
@@ -107,6 +120,7 @@ export class FormComponent implements OnInit, OnDestroy {
     let allTags$ = this.store.select("cardsData").pipe(map(selectAllTags)); //get all tags
 
     this.tagsSuggestions$ = tagInput$.pipe(
+      startWith(""),
       withLatestFrom(allTags$),
       map(([input, tags]) => this._filter([...tags], input)),
       map((list) => list.sort())
@@ -256,6 +270,7 @@ export class FormComponent implements OnInit, OnDestroy {
     if (!this.selectedTags.includes(newTag)) {
       this.selectedTags.push(newTag);
     }
+    this.form.reset({ ...this.form.value, tag: "" });
   }
   private _filter(tags: string[], value: string): string[] {
     if (!value || value.trim().length == 0) return tags;

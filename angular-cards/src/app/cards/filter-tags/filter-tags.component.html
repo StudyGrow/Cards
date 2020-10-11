@@ -5,7 +5,7 @@
   >
     <mat-chip-list #chipList aria-label="Tag selection">
       <mat-chip
-        *ngFor="let tag of selected"
+        *ngFor="let tag of selected$ | async"
         [selectable]="true"
         [removable]="true"
         (removed)="remove(tag)"
@@ -25,7 +25,7 @@
       />
       <mat-icon matSuffix>filter_list</mat-icon>
     </mat-chip-list>
-    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="add($event)">
+    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="select($event)">
       <mat-option *ngFor="let option of filteredTags$ | async" [value]="option">
         {{ option }}
       </mat-option>
