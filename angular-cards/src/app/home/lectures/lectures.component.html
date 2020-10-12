@@ -1,12 +1,10 @@
 <h2 *ngIf="lectures$">Vorlesungen</h2>
-<ul
-  class="list list-group list-group-flush"
-  *ngIf="lectures$ | async as lectures"
->
+<mat-nav-list *ngIf="lectures$ | async as lectures">
   <a
+    mat-list-item
     *ngFor="let lecture of lectures"
-    class="list-group-item list-group-item-action px-1"
     [routerLink]="setLink(lecture)"
-    >{{ lecture.name }}</a
   >
-</ul>
+    {{ lecture.name }}
+  </a>
+</mat-nav-list>

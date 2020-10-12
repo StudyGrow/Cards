@@ -7,6 +7,7 @@ import { MatExpansionModule } from "@angular/material/expansion";
 import { MatButtonModule } from "@angular/material/button";
 import { MatDialogModule } from "@angular/material/dialog";
 import { MatTooltipModule } from "@angular/material/tooltip";
+import { MatListModule } from "@angular/material/list";
 import { SafeHtmlPipe } from "./safe-html.pipe";
 import { MatRippleModule } from "@angular/material/core";
 import { MatInputModule } from "@angular/material/input";
@@ -44,6 +45,7 @@ import { getGermanPaginatorIntl } from "../profile/cards-overview/paginator.opti
     MatRippleModule,
     MatIconModule,
     FormsModule,
+    MatListModule,
     MatInputModule,
     MatFormFieldModule,
     ReactiveFormsModule,
