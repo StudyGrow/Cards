@@ -20,9 +20,10 @@ $dark-theme: mat-dark-theme($dark-primary, $dark-accent, $dark-warn);
   background-color: #5e35b1;
   border: none;
 }
-mat-drawer-content {
-  background-color: white;
+.mat-paginator {
+  background: none;
 }
+
 .dark-theme {
   background-color: #424242;
   @include angular-material-theme($dark-theme);
