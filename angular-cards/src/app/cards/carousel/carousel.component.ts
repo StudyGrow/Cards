@@ -261,6 +261,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
   checkLatexState() {
     if (this.cards?.length === 0) return;
     let currCard = this.cards[this.activeSlide]; // current card being shown
+
     if (currCard?.latex === 1) return "primary";
   }
 }

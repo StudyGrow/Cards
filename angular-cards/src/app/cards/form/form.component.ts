@@ -185,6 +185,11 @@ export class FormComponent implements OnInit, OnDestroy {
         this.selectedTags,
         this.lecture.abrv
       );
+      if (this.form.value.content.includes("$")) {
+        card.latex = 1;
+      } else {
+        card.latex = 0;
+      }
       this.addCard(card);
     } else if (this.formMode === "edit") {
       this.updateCard(
