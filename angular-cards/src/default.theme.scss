@@ -2,7 +2,7 @@
 @include mat-core();
 
 $primary: mat-palette($mat-deep-purple, 600, 900);
-$my-app-accent: mat-palette($mat-deep-orange, 50, 200, A100);
+$my-app-accent: mat-palette($mat-amber, 50, 200, A100);
 
 $my-app-theme: mat-light-theme($primary, $my-app-accent, $mat-red);
 @include angular-material-theme($my-app-theme);

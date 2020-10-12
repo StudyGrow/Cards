@@ -1,14 +1,16 @@
-<div *ngIf="authenticated$ | async" class="row">
-  <div class="col-md-6 col-xs-12 mb-2">
+<div class="container">
+  <div *ngIf="authenticated$ | async" class="row">
+    <div class="col-md-6 col-xs-12 mb-2">
+      <app-lectures></app-lectures>
+      <br />
+    </div>
+
+    <div class="col-md-6 col-xs-12">
+      <app-add-lecture-form></app-add-lecture-form>
+    </div>
+  </div>
+
+  <div *ngIf="!(authenticated$ | async)">
     <app-lectures></app-lectures>
-    <br />
   </div>
-
-  <div class="col-md-6 col-xs-12">
-    <app-add-lecture-form></app-add-lecture-form>
-  </div>
-</div>
-
-<div *ngIf="!(authenticated$ | async)">
-  <app-lectures></app-lectures>
 </div>
