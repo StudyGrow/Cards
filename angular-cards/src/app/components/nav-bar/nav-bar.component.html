@@ -7,9 +7,8 @@
     <mat-icon>menu</mat-icon>
   </button>
   <span class="spacer"></span>
-  <div *ngIf="showCards">
-    <app-search-bar></app-search-bar>
-  </div>
+
+  <app-search-bar *ngIf="showCards"></app-search-bar>
 </mat-toolbar>
 
 <div id="progress">
