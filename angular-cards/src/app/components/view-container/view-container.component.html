@@ -3,29 +3,27 @@
     <app-nav-list></app-nav-list>
   </mat-drawer>
   <mat-drawer-content fixedBottomGap="true" #mainContent cdkScrollable>
-    <div class="container-md">
-      <div class="" *ngIf="notifications$ | async as notifications">
-        <div
-          #alert
-          *ngFor="let notif of notifications; index as i"
-          [@pulseOnEnter]
-          [@fadeOutOnLeave]
-          [class]="setAlertClass(notif)"
-          role="alert"
+    <div class="" *ngIf="notifications$ | async as notifications">
+      <div
+        #alert
+        *ngFor="let notif of notifications; index as i"
+        [@pulseOnEnter]
+        [@fadeOutOnLeave]
+        [class]="setAlertClass(notif)"
+        role="alert"
+      >
+        <button
+          type="button"
+          class="close"
+          aria-label="Close"
+          (click)="closeAlert(i)"
         >
-          <button
-            type="button"
-            class="close"
-            aria-label="Close"
-            (click)="closeAlert(i)"
-          >
-            <span aria-hidden="true">&times;</span>
-          </button>
-          {{ notif.message }}
-        </div>
+          <span aria-hidden="true">&times;</span>
+        </button>
+        {{ notif.message }}
       </div>
-      <router-outlet></router-outlet>
     </div>
+    <router-outlet></router-outlet>
 
     <div *ngIf="show$ | async" id="up">
       <button id="btn" mat-fab color="primary" (click)="backToTop()">
