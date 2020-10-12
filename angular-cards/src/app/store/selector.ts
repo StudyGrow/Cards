@@ -57,7 +57,7 @@ export const selectLastCardIndex = createSelector(
 export const selectCurrentCard = createSelector(
   selectFilteredCards,
   selectActiveIndex,
-  (cards, index) => cards[index]
+  (cards, index) => (index ? cards[index] : cards[0])
 );
 
 export const getCardsData = createSelector(

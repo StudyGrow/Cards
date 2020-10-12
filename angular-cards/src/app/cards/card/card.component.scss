@@ -31,6 +31,10 @@ pre {
 ::ng-deep .mat-expansion-panel-body {
   padding-bottom: 0 !important;
 }
+mat-card-title {
+  padding: 7px 24px;
+  font-size: 1.2em;
+}
 
 .text-muted {
   position: sticky;

@@ -1,8 +1,7 @@
-<div class="card shadow border-0" id="`{{ card._id }}`">
-  <div class="card-header">
+<mat-card class="p-0 shadow" id="`{{ card._id }}`"
+  ><mat-card-title>
     {{ card.thema }}
-  </div>
-
+  </mat-card-title>
   <mat-expansion-panel #answer class="mat-elevation-z0 p-0">
     <mat-expansion-panel-header>
       <mat-panel-title> Antwort</mat-panel-title>
@@ -14,9 +13,7 @@
     </pre>
     </ng-template>
   </mat-expansion-panel>
-  <p *ngIf="card.authorName" class="card-text">
-    <small class="text-muted float-right"
-      >Ersteller: {{ card.authorName }}</small
-    >
-  </p>
-</div>
+</mat-card>
+<p *ngIf="card.authorName" class="card-text">
+  <small class="text-muted float-right">Ersteller: {{ card.authorName }}</small>
+</p>

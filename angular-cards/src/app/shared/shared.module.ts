@@ -17,6 +17,7 @@ import { MatIconModule } from "@angular/material/icon";
 import { DialogueComponent } from "../components/dialogue/dialogue.component";
 import { MatButtonToggleModule } from "@angular/material/button-toggle";
 import { MatToolbarModule } from "@angular/material/toolbar";
+import { MatCardModule } from "@angular/material/card";
 import {
   MatPaginatorIntl,
   MatPaginatorModule,
@@ -41,6 +42,7 @@ import { getGermanPaginatorIntl } from "../profile/cards-overview/paginator.opti
     SafeHtmlPipe,
     MatInputModule,
     MatToolbarModule,
+    MatCardModule,
     MatChipsModule,
     MatRippleModule,
     MatIconModule,

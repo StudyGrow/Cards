@@ -12,13 +12,12 @@ import { StoreDevtoolsModule } from "@ngrx/store-devtools";
 //Material Modules
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { MatProgressBarModule } from "@angular/material/progress-bar";
-import { MatDialogModule } from "@angular/material/dialog";
-import { MatToolbarModule } from "@angular/material/toolbar";
+
 import { MatSelectModule } from "@angular/material/select";
 
 import { MatMenuModule } from "@angular/material/menu";
 import { MatSidenavModule } from "@angular/material/sidenav";
-import { MatListModule } from "@angular/material/list";
+
 import { MatDividerModule } from "@angular/material/divider";
 //Gestures
 import {
@@ -121,7 +120,6 @@ export class MyHammerConfig extends HammerGestureConfig {
     BrowserAnimationsModule,
     MatProgressBarModule,
 
-    MatDialogModule,
     MatSidenavModule,
 
     MatDividerModule,
