@@ -9,6 +9,7 @@ import {
   setTypingMode,
   setSuggestionsMode,
   resetFilter,
+  changeTab,
 } from "src/app/store/actions/actions";
 import { setActiveCardIndex } from "src/app/store/actions/cardActions";
 import { selectAllCards, selectFilteredCards } from "src/app/store/selector";
@@ -124,6 +125,7 @@ export class SearchBarComponent implements OnInit, OnDestroy {
   navigateTo(e: Event, index: number, all: boolean) {
     e.preventDefault();
     this.uInput.reset();
+    setTimeout(() => this.store.dispatch(changeTab({ tab: 1 })), 400);
     if (!all) {
       //call from current selection
       this.store.dispatch(setActiveCardIndex({ index: index }));

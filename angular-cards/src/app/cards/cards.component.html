@@ -1,5 +1,5 @@
 <mat-tab-group
-  [selectedIndex]="(selectedTab$ | async) || 1"
+  [selectedIndex]="selectedTab$ | async"
   mat-align-tabs="center"
   (selectedIndexChange)="setActiveTab($event)"
 >

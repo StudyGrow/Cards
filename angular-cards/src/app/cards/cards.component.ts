@@ -14,9 +14,9 @@ import { Card } from "../models/Card";
 
 import { Store } from "@ngrx/store";
 
-import { Observable, Subscription } from "rxjs";
+import { Observable, of, Subscription } from "rxjs";
 
-import { map, tap, share } from "rxjs/operators";
+import { map, tap, share, startWith } from "rxjs/operators";
 import { fetchCards, clearCardData } from "../store/actions/cardActions";
 import { fadeInOnEnterAnimation } from "angular-animations";
 import { changeTab, setSuggestionsMode } from "../store/actions/actions";
@@ -31,9 +31,7 @@ import { AppState } from "../store/reducer";
 })
 export class CardsComponent implements OnInit, OnDestroy {
   formMode: string;
-  selectedTab$: Observable<number> = this.store
-    .select("cardsData")
-    .pipe(map(selectCurrentTab));
+  selectedTab$: Observable<number>;
   vlName: string;
   private subscriptions$: Subscription[] = [];
   @ViewChild("alert", { static: false }) alert: ElementRef;
@@ -56,7 +54,9 @@ export class CardsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.title.setTitle("Cards");
     this.store.dispatch(fetchCards());
-
+    this.selectedTab$ = this.store
+      .select("cardsData")
+      .pipe(map(selectCurrentTab));
     let sub = this.store.select("cardsData").subscribe((state) => {
       if (state.formMode !== this.formMode) {
         this.formMode = state.formMode;

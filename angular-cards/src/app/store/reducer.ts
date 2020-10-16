@@ -43,7 +43,7 @@ export const initialState: AppState = {
   showDrawer: false,
   loading: 0,
   tags: [],
-  currTab: undefined,
+  currTab: 1,
   filteredCardsChanged: new Date(),
 };
 var oldMode = "none";
