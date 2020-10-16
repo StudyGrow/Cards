@@ -226,7 +226,8 @@ export class CarouselComponent implements OnInit, OnDestroy {
   }
 
   isDisabled() {
-    if (this.formMode == "edit" || this.uid == "") return true;
+    if (this.formMode == "edit" || this.uid == "" || this.cards?.length === 0)
+      return true;
 
     let currCard = this.cards[this.activeSlide]; //get the card that is currently showing
 

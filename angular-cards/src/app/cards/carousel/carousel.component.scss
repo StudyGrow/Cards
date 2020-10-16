@@ -13,7 +13,7 @@ button {
   outline: none;
 }
 #carousel {
-  width: 100%;
+  width: 100% !important;
 }
 .carousel-item {
   min-height: 150px;
@@ -52,7 +52,7 @@ app-card {
   margin: auto;
 }
 #controls {
-  width: 90%;
+  width: 90% !important;
   margin: auto;
   position: relative;
 }
