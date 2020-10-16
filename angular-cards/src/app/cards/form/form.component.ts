@@ -23,7 +23,11 @@ import { DialogueComponent } from "src/app/components/dialogue/dialogue.componen
 import { Card } from "src/app/models/Card";
 import { User } from "src/app/models/User";
 import { Vorlesung } from "src/app/models/Vorlesung";
-import { setFormMode, setTypingMode } from "src/app/store/actions/actions";
+import {
+  changeTab,
+  setFormMode,
+  setTypingMode,
+} from "src/app/store/actions/actions";
 import { addCard, updateCard } from "src/app/store/actions/cardActions";
 import { addLercture } from "src/app/store/actions/LectureActions";
 import { CardsEffects } from "src/app/store/effects/effects";
@@ -224,7 +228,8 @@ export class FormComponent implements OnInit, OnDestroy {
       })
     );
     let sub = this.actionState.updateCard$.subscribe(() => {
-      this.store.dispatch(setFormMode({ mode: "reset" }));
+      this.store.dispatch(setFormMode({ mode: "add" }));
+      this.store.dispatch(changeTab({ tab: 1 }));
       this.resetForm();
       sub.unsubscribe();
     });

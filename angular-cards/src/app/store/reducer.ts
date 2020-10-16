@@ -23,6 +23,7 @@ export interface AppState {
   loading: number;
   tags: string[];
   filteredCardsChanged: Date;
+  currTab: number;
 }
 export class CardsData {
   cards: Card[];
@@ -35,19 +36,21 @@ export const initialState: AppState = {
   currLecture: new Vorlesung(),
   activeIndex: undefined,
   lectures: undefined,
-  formMode: "none",
+  formMode: "add",
   typingMode: false,
   hideSearchResults: true,
   userData: new UserInfo(null, new User(), false),
   showDrawer: false,
   loading: 0,
   tags: [],
+  currTab: undefined,
   filteredCardsChanged: new Date(),
 };
 var oldMode = "none";
 //Reducer which will dispatch changes to the store
 const _cardsReducer = createReducer(
   initialState,
+  on(StateActions.changeTab, (state, { tab }) => ({ ...state, currTab: tab })),
   on(Actions.addCardSuccess, (state, { card }) => ({
     ...state,
     cards: [

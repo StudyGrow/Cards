@@ -19,8 +19,8 @@ import { Observable, Subscription } from "rxjs";
 import { map, tap, share } from "rxjs/operators";
 import { fetchCards, clearCardData } from "../store/actions/cardActions";
 import { fadeInOnEnterAnimation } from "angular-animations";
-import { setSuggestionsMode } from "../store/actions/actions";
-import { getCardsData, selectUserId } from "../store/selector";
+import { changeTab, setSuggestionsMode } from "../store/actions/actions";
+import { getCardsData, selectCurrentTab } from "../store/selector";
 import { AppState } from "../store/reducer";
 
 @Component({
@@ -30,7 +30,10 @@ import { AppState } from "../store/reducer";
   animations: [fadeInOnEnterAnimation()],
 })
 export class CardsComponent implements OnInit, OnDestroy {
-  public formMode: string;
+  formMode: string;
+  selectedTab$: Observable<number> = this.store
+    .select("cardsData")
+    .pipe(map(selectCurrentTab));
   vlName: string;
   private subscriptions$: Subscription[] = [];
   @ViewChild("alert", { static: false }) alert: ElementRef;
@@ -40,11 +43,9 @@ export class CardsComponent implements OnInit, OnDestroy {
     this.store.dispatch(setSuggestionsMode({ hide: true }));
   }
   //holds data from store
-  public data$: Observable<any> = this.store.select("cardsData").pipe(
-    map(getCardsData),
-
-    share()
-  );
+  public data$: Observable<any> = this.store
+    .select("cardsData")
+    .pipe(map(getCardsData), share());
 
   public lecture$: Observable<Vorlesung> = this.data$.pipe(
     map((data) => data.currLecture)
@@ -57,7 +58,9 @@ export class CardsComponent implements OnInit, OnDestroy {
     this.store.dispatch(fetchCards());
 
     let sub = this.store.select("cardsData").subscribe((state) => {
-      this.formMode = state.formMode;
+      if (state.formMode !== this.formMode) {
+        this.formMode = state.formMode;
+      }
       if (this.vlName !== state.currLecture.name) {
         this.vlName = state.currLecture.name;
 
@@ -68,6 +71,11 @@ export class CardsComponent implements OnInit, OnDestroy {
     });
     this.subscriptions$.push(sub);
   }
+
+  setActiveTab(index: number) {
+    this.store.dispatch(changeTab({ tab: index }));
+  }
+
   titleCase(str: string) {
     return str
       .toLowerCase()

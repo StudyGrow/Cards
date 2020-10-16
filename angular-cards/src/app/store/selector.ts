@@ -18,6 +18,8 @@ export const selectCurrentLecture = (state: AppState) => state.currLecture;
 
 export const selectUserId = (state: AppState) => state.userData.user?._id;
 
+export const selectCurrentTab = (state: AppState) => state.currTab;
+
 export const selectDrawerState = (state: AppState) => state.showDrawer;
 
 export const isLoading = (state: AppState) => state.loading > 0;

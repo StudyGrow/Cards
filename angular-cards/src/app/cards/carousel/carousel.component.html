@@ -37,17 +37,6 @@
       >
         <mat-icon>functions</mat-icon>
       </button>
-      <button
-        mat-icon-button
-        type="button"
-        (click)="toggleAddView()"
-        [matTooltip]="formMode == 'add' ? 'Verstecken' : 'Hinzufügen'"
-        matTooltipPosition="above"
-        [disabled]="formMode == 'edit'"
-      >
-        <mat-icon *ngIf="formMode !== 'add'">add</mat-icon>
-        <mat-icon *ngIf="formMode == 'add'">block</mat-icon>
-      </button>
     </div>
   </div>
 </div>

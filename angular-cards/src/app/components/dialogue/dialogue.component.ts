@@ -2,7 +2,7 @@ import { Component, Inject, Input, OnInit } from "@angular/core";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { Store } from "@ngrx/store";
 import { DialogData } from "src/app/models/DialogueData";
-import { setFormMode } from "src/app/store/actions/actions";
+import { changeTab, setFormMode } from "src/app/store/actions/actions";
 
 @Component({
   selector: "app-dialogue",
@@ -17,7 +17,8 @@ export class DialogueComponent implements OnInit {
   ) {}
   ngOnInit() {}
   cancel() {
-    this.store.dispatch(setFormMode({ mode: "reset" }));
+    this.store.dispatch(setFormMode({ mode: "add" }));
+    this.store.dispatch(changeTab({ tab: 1 }));
     this.dialogRef.close();
   }
   onNoClick(): void {

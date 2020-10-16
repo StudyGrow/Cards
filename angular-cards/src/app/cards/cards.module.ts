@@ -7,7 +7,7 @@ import { CardComponent } from "./card/card.component";
 import { AddCardFormComponent } from "./add-card-form/add-card-form.component";
 import { CarouselComponent } from "./carousel/carousel.component";
 import { FilterTagsComponent } from "./filter-tags/filter-tags.component";
-import { UpdateCardFormComponent } from "./update-card-form/update-card-form.component";
+
 import { CarouselModule, WavesModule } from "angular-bootstrap-md";
 import { NewVlComponent } from "./new-vl/new-vl.component";
 import { FormComponent } from "../cards/form/form.component";
@@ -21,7 +21,6 @@ import { FormComponent } from "../cards/form/form.component";
     AddCardFormComponent,
     CarouselComponent,
     FilterTagsComponent,
-    UpdateCardFormComponent,
     NewVlComponent,
     FormComponent,
   ],

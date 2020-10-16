@@ -12,8 +12,13 @@ enum ActionTypes {
   RESET_FILTER = "[Filter] reset the filter to show all cards",
   REMOVE_TAG = "[Filter] remove tag from the filter",
   ADD_TAG = "[Filter] add tag to the filter",
+  CHANGE_TAB = "[Tab] change the tab on cards view",
 }
 
+export const changeTab = createAction(
+  ActionTypes.CHANGE_TAB,
+  props<{ tab: number }>()
+);
 export const applyFilter = createAction(
   ActionTypes.APPLY_FILTER,
   props<{ tags: string[] }>()

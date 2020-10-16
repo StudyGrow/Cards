@@ -23,7 +23,7 @@ import {
   updateCard,
   setActiveCardIndex,
 } from "../../store/actions/cardActions";
-import { setFormMode } from "src/app/store/actions/actions";
+import { setFormMode, changeTab } from "src/app/store/actions/actions";
 import { map, share, startWith, delay } from "rxjs/operators";
 
 import { selectUserId, newCards } from "src/app/store/selector";
@@ -235,19 +235,11 @@ export class CarouselComponent implements OnInit, OnDestroy {
       return true;
   }
   //toggle the state of the add card component
-  toggleAddView(): void {
-    if (this.formMode != "edit") {
-      //we can only toggle it if we are not editing
-      if (this.formMode === "add") {
-        this.store.dispatch(setFormMode({ mode: "none" }));
-      } else {
-        this.store.dispatch(setFormMode({ mode: "add" }));
-      }
-    }
-  }
+  toggleAddView(): void {}
   enableEdit() {
     if (this.formMode != "edit") {
       this.store.dispatch(setFormMode({ mode: "edit" }));
+      this.store.dispatch(changeTab({ tab: 2 }));
     }
   }
 
