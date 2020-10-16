@@ -65,7 +65,7 @@ export class CardsComponent implements OnInit, OnDestroy {
         this.vlName = state.currLecture.name;
 
         if (this.vlName) {
-          this.title.setTitle("Cards · " + this.titleCase(this.vlName));
+          this.title.setTitle("Cards · " + this.vlName);
         }
       }
     });
