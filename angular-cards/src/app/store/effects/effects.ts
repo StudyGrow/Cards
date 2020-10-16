@@ -27,9 +27,13 @@ import {
   logout,
   authenticated,
   logoutSuccess,
+  createAccount,
 } from "../actions/UserActions";
 import { UserService } from "src/app/services/user.service";
 import { selectActiveIndex, selectLastCardIndex } from "../selector";
+import { Router } from "@angular/router";
+import { NotificationsService } from "src/app/services/notifications.service";
+import { SuccessMessage } from "src/app/models/Notification";
 
 @Injectable()
 export class CardsEffects {
@@ -38,7 +42,9 @@ export class CardsEffects {
     private cs: CardsService,
     private user: UserService,
     private lectures: LecturesService,
-    private store: Store<any>
+    private store: Store<any>,
+    private router: Router,
+    private notifications: NotificationsService
   ) {}
   data$ = this.store.select("cardsData").pipe(share());
   @Effect()
@@ -159,6 +165,27 @@ export class CardsEffects {
       exhaustMap((user) =>
         this.user.login(user).pipe(
           map((user) => loginSuccess(user)),
+          catchError((reason) => of(LoadFailure({ reason: reason })))
+        )
+      ),
+      share()
+    )
+  );
+
+  @Effect()
+  registerAccount$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(createAccount),
+      exhaustMap((user) =>
+        this.user.createAccount(user).pipe(
+          map((user) => {
+            this.router.navigateByUrl("/");
+            this.notifications.clearNotifications("success");
+            this.notifications.addNotification(
+              new SuccessMessage(`Herzlich willkommen ${user.username}`)
+            );
+            return auth();
+          }),
           catchError((reason) => of(LoadFailure({ reason: reason })))
         )
       ),

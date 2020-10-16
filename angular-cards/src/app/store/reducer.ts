@@ -46,7 +46,7 @@ export const initialState: AppState = {
   currTab: 1,
   filteredCardsChanged: new Date(),
 };
-var oldMode = "none";
+
 //Reducer which will dispatch changes to the store
 const _cardsReducer = createReducer(
   initialState,
@@ -149,7 +149,7 @@ const _cardsReducer = createReducer(
   })),
   on(Actions.clearCardData, (state) => ({
     ...state,
-    formMode: "none",
+    formMode: initialState.formMode,
     currLecture: initialState.currLecture,
     cards: initialState.cards,
     filteredCardsChanged: new Date(),

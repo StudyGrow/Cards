@@ -59,15 +59,13 @@ export class UserService implements CanActivate {
         map((res) => res.body)
       );
   }
-  createAccount(form) {
-    this.http
+  createAccount(form: User): Observable<User> {
+    return this.http
       .post<User>(this.config.urlBase + "user/new", form, {
         headers: this.config.headers,
         observe: "response",
       })
-      .subscribe((res) => {
-        this.router.navigateByUrl("/login");
-      });
+      .pipe(map((res) => res.body));
   }
 
   getUserInfo(): Observable<UserInfo> {

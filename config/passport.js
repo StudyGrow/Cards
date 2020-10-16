@@ -26,7 +26,7 @@ module.exports = function (passport) {
 
   passport.serializeUser(function (user, done) {
     if (user) done(null, user);
-    else console.log("errrr");
+    else console.log("error on serializing user");
   });
 
   passport.deserializeUser(function (user, done) {

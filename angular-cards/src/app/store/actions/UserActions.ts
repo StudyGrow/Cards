@@ -13,12 +13,19 @@ enum ActionTypes {
   LOGIN_USER_SUCCESS = "[User] login success",
   AUTHENTICATE = "[User] check if user is authenticated",
   AUTHENTICATED = "[User]  user is authenticated",
+  REGISTER = "[User] register user account on server",
+  REGISTRY_SUCCESS = "[User] Account registry was successfull",
 }
 
 export const login = createAction(ActionTypes.LOGIN_USER, props<User>());
 
 export const loginSuccess = createAction(
   ActionTypes.LOGIN_USER_SUCCESS,
+  props<User>()
+);
+export const createAccount = createAction(ActionTypes.REGISTER, props<User>());
+export const createAccountSuccess = createAction(
+  ActionTypes.REGISTRY_SUCCESS,
   props<User>()
 );
 

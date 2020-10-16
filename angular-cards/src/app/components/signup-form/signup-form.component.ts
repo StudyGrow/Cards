@@ -2,19 +2,21 @@ import { Component, OnInit } from "@angular/core";
 import { NgForm } from "@angular/forms";
 
 import { Router } from "@angular/router";
+import { Store } from "@ngrx/store";
 import { UserService } from "src/app/services/user.service";
+import { createAccount } from "src/app/store/actions/UserActions";
 @Component({
   selector: "app-signup-form",
   templateUrl: "./signup-form.component.html",
   styleUrls: ["./signup-form.component.scss"],
 })
 export class SignupFormComponent implements OnInit {
-  constructor(private userService: UserService, private router: Router) {}
+  constructor(private store: Store) {}
   errors;
 
   ngOnInit(): void {}
   submit(form: NgForm) {
-    this.userService.createAccount(form.value);
+    this.store.dispatch(createAccount(form.value));
   }
   setStyle(password, password2) {
     if (
