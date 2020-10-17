@@ -3,6 +3,7 @@ import { CommonModule, DatePipe, AsyncPipe } from "@angular/common";
 import { NgModule } from "@angular/core";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { MatExpansionModule } from "@angular/material/expansion";
 import { MatButtonModule } from "@angular/material/button";
 import { MatDialogModule } from "@angular/material/dialog";
@@ -42,6 +43,7 @@ import { getGermanPaginatorIntl } from "../profile/cards-overview/paginator.opti
     CommonModule,
     SafeHtmlPipe,
     MatInputModule,
+    MatSnackBarModule,
     MatTabsModule,
     MatToolbarModule,
     MatCardModule,

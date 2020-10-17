@@ -8,7 +8,7 @@ export const selectAllCards = (state: AppState) => state.cards;
 
 export const selectActiveTags = (state: AppState) => state.tags;
 
-export const selectAllTags = (state: AppState) => state.currLecture.tagList;
+export const selectAllTags = (state: AppState) => state.currLecture?.tagList;
 
 export const selectActiveIndex = (state: AppState) => state.activeIndex;
 

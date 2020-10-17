@@ -7,7 +7,7 @@
       <mat-panel-title> Antwort</mat-panel-title>
     </mat-expansion-panel-header>
     <ng-template matExpansionPanelContent>
-      <pre lang="de" [innerHtml]="parsed[0] | safeHtml"></pre>
+      <pre lang="de" class="mb-1" [innerHtml]="parsed[0] | safeHtml"></pre>
     </ng-template>
   </mat-expansion-panel>
   <p *ngIf="card.authorName" class="card-text">

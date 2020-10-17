@@ -22,6 +22,7 @@ import { Store } from "@ngrx/store";
 import { selectDrawerState } from "src/app/store/selector";
 import { setDrawerState } from "src/app/store/actions/actions";
 import { Router } from "@angular/router";
+import { MatSnackBar } from "@angular/material/snack-bar";
 @Component({
   selector: "app-view-container",
   templateUrl: "./view-container.component.html",
@@ -44,7 +45,7 @@ export class ViewContainerComponent implements OnInit {
     private cdr: ChangeDetectorRef,
     private store: Store<any>,
     private notifService: NotificationsService,
-    private router: Router
+    private _snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -56,11 +57,19 @@ export class ViewContainerComponent implements OnInit {
       this.cdr.detectChanges();
     });
     this.notifications$ = this.notifService.notifications;
+    this.notifications$.subscribe((notifs) => {
+      notifs.forEach((notif) => {
+        this._snackBar.open(notif.message, null, {
+          duration: notif.type === "warning" ? 10000 : 3000,
+          verticalPosition: "top",
+        });
+      });
+    });
     this.store
       .select("cardsData")
       .pipe(map(selectDrawerState))
       .subscribe((val) => {
-        if (val === true) {
+        if (val) {
           this.drawer.open();
         } else {
           this.drawer.close();

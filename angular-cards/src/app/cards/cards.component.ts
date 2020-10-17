@@ -65,7 +65,7 @@ export class CardsComponent implements OnInit, OnDestroy {
       if (state.formMode !== this.formMode) {
         this.formMode = state.formMode;
       }
-      if (this.vlName !== state.currLecture.name) {
+      if (this.vlName !== state.currLecture?.name) {
         this.vlName = state.currLecture.name;
 
         if (this.vlName) {
