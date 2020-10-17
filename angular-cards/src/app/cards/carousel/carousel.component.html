@@ -11,7 +11,7 @@
       matTooltipPosition="above"
       aria-label="zufall"
       (click)="showRandomCard()"
-      [disabled]="isDisabled()"
+      [disabled]="formMode == 'edit' || !cards || cards.length == 0"
     >
       <mat-icon>shuffle</mat-icon>
     </button>

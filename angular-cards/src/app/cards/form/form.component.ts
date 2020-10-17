@@ -129,45 +129,34 @@ export class FormComponent implements OnInit, OnDestroy {
       map(([input, tags]) => this._filter([...tags], input)),
       map((list) => list.sort())
     );
+    sub = this.store
+      .select("cardsData")
+      .pipe(map(selectCurrentCard))
+      .subscribe((card) => {
+        if (card && card._id != this.cardCopy._id) {
+          //got new card
+          this.cardCopy = { ...this.cardCopy, ...card }; //overwrite cardCopy
 
+          this.selectedTags = [...this.cardCopy?.tags];
+        }
+      });
+    this.subscriptions$.push(sub);
+
+    sub = this.store
+      .select("cardsData")
+      .pipe(map(selectCurrentLecture))
+      .subscribe((lect) => {
+        if (lect) this.lecture = lect;
+      });
+    this.subscriptions$.push(sub);
     sub = this.formMode$.subscribe((mode) => {
+      console.log(this.subscriptions$.length);
       if (this.formMode !== mode) {
         this.formMode = mode;
-
-        if (mode === "add") {
-          this.resetForm();
-          if (this.neu) {
-            this.lecture = JSON.parse(localStorage.getItem("vl"));
-            sub = this.actionState.addLecture$.subscribe((res) =>
-              this.router.navigateByUrl(`vorlesung/${this.lecture.abrv}`)
-            );
-            this.subscriptions$.push(sub);
-          } else {
-            sub = this.store
-              .select("cardsData")
-              .pipe(map(selectCurrentLecture))
-              .subscribe((lect) => {
-                if (lect) this.lecture = lect;
-              });
-            this.subscriptions$.push(sub);
-          }
-        } else if (mode === "edit") {
-          sub = this.store
-            .select("cardsData")
-            .pipe(map(selectCurrentCard))
-            .subscribe((card) => {
-              if (card._id != this.cardCopy._id) {
-                //got new card
-                this.cardCopy = { ...this.cardCopy, ...card }; //overwrite cardCopy
-                this.form.reset({ ...this.cardCopy });
-                this.selectedTags = [...this.cardCopy?.tags];
-              }
-            });
-          this.subscriptions$.push(sub);
-        }
+        if (mode == "edit") this.form.reset({ ...this.cardCopy });
+        else this.form.reset();
       }
     });
-    this.subscriptions$.push(sub);
   }
   ngOnDestroy() {
     this.subscriptions$.forEach((sub) => {

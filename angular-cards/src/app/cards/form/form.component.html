@@ -1,7 +1,6 @@
-<br />
 <ng-container *ngIf="formMode$ | async as mode">
-  <h4 *ngIf="mode == 'add'">Karteikarte hinzufügen</h4>
-  <h4 *ngIf="mode == 'edit'">Karteikarte bearbeiten</h4>
+  <h4 *ngIf="mode == 'add'" class="mt-2">Karteikarte hinzufügen</h4>
+  <h4 *ngIf="mode == 'edit'" class="mt-2">Karteikarte bearbeiten</h4>
 
   <form
     [formGroup]="form"

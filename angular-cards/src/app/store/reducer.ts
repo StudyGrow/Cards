@@ -34,7 +34,7 @@ export class CardsData {
 export const initialState: AppState = {
   cards: undefined,
   currLecture: new Vorlesung(),
-  activeIndex: undefined,
+  activeIndex: 0,
   lectures: undefined,
   formMode: "add",
   typingMode: false,
