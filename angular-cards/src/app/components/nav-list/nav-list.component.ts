@@ -16,11 +16,9 @@ import { Notification, SuccessMessage } from "src/app/models/Notification";
   templateUrl: "./nav-list.component.html",
   styleUrls: ["./nav-list.component.scss"],
 })
-export class NavListComponent implements OnInit, OnDestroy {
-  loggedIn: boolean;
-  onCardRoute: boolean;
+export class NavListComponent implements OnInit {
   loggedIn$: Observable<boolean>;
-  private subs: Subscription[] = [];
+
   constructor(
     private notifications: NotificationsService,
     private router: Router,
@@ -29,22 +27,8 @@ export class NavListComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.loggedIn$ = this.store.select("cardsData").pipe(map(authenticated));
-
-    let sub = this.router.events.subscribe((e) => {
-      if (e instanceof NavigationEnd) {
-        if (this.router.url.match(/vorlesung/)) {
-          this.onCardRoute = true;
-        } else {
-          this.onCardRoute = false;
-        }
-      }
-    });
-    this.subs.push(sub);
   }
 
-  ngOnDestroy() {
-    this.subs.forEach((sub) => sub.unsubscribe());
-  }
   logout() {
     this.store.dispatch(logoutUser());
     this.notifications.clearNotifications();

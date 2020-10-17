@@ -8,7 +8,7 @@ import { Store } from "@ngrx/store";
 import { map } from "rxjs/operators";
 import { selectUserInfo, selectUser } from "src/app/store/selector";
 import { updateUserData } from "src/app/store/actions/UserActions";
-import { ModalComponent } from "src/app/components/modal/modal.component";
+import { DialogueComponent } from "src/app/components/dialogue/dialogue.component";
 import { MatDialog } from "@angular/material/dialog";
 @Component({
   selector: "app-change-profile",
@@ -94,8 +94,15 @@ export class ChangeProfileComponent implements OnInit, OnDestroy {
     return false;
   }
   delete() {
-    const dialogRef = this.dialog.open(ModalComponent, {
+    this.dialog.open(DialogueComponent, {
       width: "400px",
+      data: {
+        title: "Account löschen",
+        content:
+          "Bist du sicher, dass du deinen Account unwiderruflich löschen möchtest?",
+        abortText: "Nein, zurück",
+        proceedText: "Ja",
+      },
     });
   }
 }

@@ -38,7 +38,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
     private titleService: Title,
 
     private notification: NotificationsService,
-    private userService: UserService,
+
     private cdr: ChangeDetectorRef,
     private store: Store<any>
   ) {}

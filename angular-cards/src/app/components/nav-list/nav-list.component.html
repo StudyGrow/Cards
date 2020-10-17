@@ -2,23 +2,19 @@
   <a mat-list-item color="primary" class="{{ isActive('/') }}" routerLink="/"
     ><mat-icon>home</mat-icon> Vorlesungen</a
   >
+  <ng-container *ngIf="(loggedIn$ | async) == false">
+    <a
+      mat-list-item
+      mat-ripple
+      class=" {{ isActive('/login') }}"
+      routerLink="/login"
+      ><mat-icon>person</mat-icon>Login</a
+    >
 
-  <a
-    mat-list-item
-    mat-ripple
-    *ngIf="(loggedIn$ | async) == false"
-    class=" {{ isActive('/login') }}"
-    routerLink="/login"
-    ><mat-icon>person</mat-icon>Login</a
-  >
-
-  <a
-    mat-list-item
-    *ngIf="(loggedIn$ | async) == false"
-    class="{{ isActive('/signup') }}"
-    routerLink="/signup"
-    ><mat-icon>add_box</mat-icon> Registrieren</a
-  >
+    <a mat-list-item class="{{ isActive('/signup') }}" routerLink="/signup"
+      ><mat-icon>add_box</mat-icon> Registrieren</a
+    >
+  </ng-container>
   <div *ngIf="loggedIn$ | async">
     <div mat-subheader>Account</div>
 

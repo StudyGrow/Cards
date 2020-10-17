@@ -1,9 +1,9 @@
 <form novalidate autocomplete="off">
-  <mat-form-field floatLabel="never" color="primary" class="mb-1">
+  <mat-form-field floatLabel="never" color="primary">
     <input
       type="text"
       placeholder="Frage"
-      aria-label="Number"
+      aria-label="Frage"
       matInput
       [formControl]="uInput"
       [matAutocomplete]="auto"
@@ -45,40 +45,3 @@
     </mat-autocomplete>
   </mat-form-field>
 </form>
-<!--
-  <div
-    *ngIf="uInput && (suggestions.length > 0 || allSuggestions.length > 0)"
-    id="matches"
-    class="shadow w-100"
-  >
-    <mat-list>
-      <div
-        *ngIf="suggestions.length > 0 && allSuggestions.length > 0"
-        mat-subheader
-      >
-        Aktuell angezeigt
-      </div>
-      <mat-list-item *ngFor="let suggestion of suggestions">
-        <a
-          href="#"
-          mat-list-item
-          (click)="navigateTo($event, suggestion.index, false)"
-          class="sugg"
-          (mouseover)="beginScroll(paragraph)"
-          (mouseleave)="endScroll(paragraph)"
-          ><div #paragraph>{{ suggestion.title }}</div></a
-        >
-      </mat-list-item>
-      <mat-divider></mat-divider>
-      <div *ngIf="allSuggestions.length > 0" mat-subheader>Alle Karten</div>
-      <mat-list-item *ngFor="let suggestion of allSuggestions">
-        <a
-          href="#"
-          mat-list-item
-          (click)="navigateTo($event, suggestion.index, true)"
-          class="sugg"
-          >{{ suggestion.title }}</a
-        >
-      </mat-list-item>
-    </mat-list>
-  </div>-->
