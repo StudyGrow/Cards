@@ -1,22 +1,18 @@
-#spinner {
-  position: absolute;
-  width: 100%;
-}
-.spinner-border {
-  margin-right: auto;
-  margin-left: auto;
-}
-::ng-deep .mat-form-field-wrapper {
-  margin-bottom: -1.25em;
+/*first row controls*/
+#controls {
+  width: 90%;
+  margin: auto;
 }
 button {
   outline: none;
 }
+
+/*carousel*/
 #carousel {
   width: 100% !important;
 }
-.carousel-item {
-  min-height: 150px;
+mdb-carousel-item.carousel-item {
+  padding: 0;
 }
 
 .navig {
@@ -49,10 +45,5 @@ span {
 }
 app-card {
   width: 90%;
-  margin: auto;
-}
-#controls {
-  width: 90% !important;
-  margin: auto;
-  position: relative;
+  margin: 0 auto 0 auto;
 }

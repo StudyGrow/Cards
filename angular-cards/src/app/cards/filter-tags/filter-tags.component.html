@@ -1,7 +1,7 @@
 <div *ngIf="lecture$ | async as lecture">
   <mat-form-field
-    class="example-chip-list"
     *ngIf="lecture.tagList && lecture.tagList.length > 0"
+    id="formfield"
   >
     <mat-chip-list #chipList aria-label="Tag selection">
       <mat-chip

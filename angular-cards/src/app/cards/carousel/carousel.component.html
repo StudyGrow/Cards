@@ -1,50 +1,53 @@
-<div class="row no-gutters" id="controls">
-  <div class="col-md-9 col-xs-12 p-1 mb-2">
+<div class="row no-gutters" id="controls" *ngIf="cards">
+  <div class="col pr-1">
     <app-filter-tags></app-filter-tags>
   </div>
-  <div class="col-md-3 col-xs-12 mb-2 text-right" id="bntcol">
-    <div class="btn-group" *ngIf="cards" id="btnDiv" role="group">
-      <button
-        mat-icon-button
-        placement="top"
-        matTooltip="Zufall"
-        matTooltipPosition="above"
-        (click)="showRandomCard()"
-        [disabled]="formMode == 'edit' || !cards || cards.length == 0"
-      >
-        <mat-icon>shuffle</mat-icon>
-      </button>
 
-      <button
-        mat-icon-button
-        type="button"
-        [disabled]="isDisabled()"
-        (click)="enableEdit()"
-        matTooltip="Bearbeiten"
-        matTooltipPosition="above"
-      >
-        <mat-icon>edit</mat-icon>
-      </button>
-      <button
-        mat-icon-button
-        [color]="checkLatexState()"
-        id="toggleLatex"
-        type="button"
-        (click)="toggleLatex()"
-        matTooltip="Latex"
-        matTooltipPosition="above"
-        [disabled]="isDisabled()"
-      >
-        <mat-icon>functions</mat-icon>
-      </button>
-    </div>
+  <div class="col-auto">
+    <button
+      mat-icon-button
+      placement="top"
+      matTooltip="Zufall"
+      matTooltipPosition="above"
+      aria-label="zufall"
+      (click)="showRandomCard()"
+      [disabled]="isDisabled()"
+    >
+      <mat-icon>shuffle</mat-icon>
+    </button>
+
+    <button
+      mat-icon-button
+      type="button"
+      aria-label="bearbeiten"
+      [disabled]="isDisabled()"
+      (click)="enableEdit()"
+      matTooltip="Bearbeiten"
+      matTooltipPosition="above"
+    >
+      <mat-icon>edit</mat-icon>
+    </button>
+    <button
+      mat-icon-button
+      [color]="checkLatexState()"
+      id="toggleLatex"
+      aria-label="latex einstellen"
+      type="button"
+      (click)="toggleLatex()"
+      matTooltip="Latex"
+      matTooltipPosition="above"
+      [disabled]="isDisabled()"
+    >
+      <mat-icon>functions</mat-icon>
+    </button>
   </div>
 </div>
 
-<div class="row" *ngIf="cards" [@fadeInOnEnter] [@fadeOutOnLeave]>
+<div class="row" *ngIf="cards?.length > 0" [@fadeInOnEnter] [@fadeOutOnLeave]>
   <a
     id="left"
     class="navig col"
+    aria-label="vorherige karte"
     *ngIf="cardCount > 1"
     [@fadeInOnEnter]
     (click)="goToPrev()"
@@ -62,7 +65,6 @@
       [interval]="'0'"
     >
       <mdb-carousel-item
-        class="py-3"
         *ngFor="let card of cards; index as i"
         [id]="i.toString()"
       >
@@ -76,6 +78,7 @@
     *ngIf="cardCount > 1"
     [@fadeInOnEnter]
     (click)="goToNext()"
+    aria-label="nächste karte"
   >
     <span class="fas fa-chevron-right"></span>
   </a>
