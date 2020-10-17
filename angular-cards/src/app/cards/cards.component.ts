@@ -31,6 +31,7 @@ import { AppState } from "../store/reducer";
 })
 export class CardsComponent implements OnInit, OnDestroy {
   formMode: string;
+  hideSuggestion: boolean;
   selectedTab$: Observable<number>;
   vlName: string;
   private subscriptions$: Subscription[] = [];
@@ -38,7 +39,9 @@ export class CardsComponent implements OnInit, OnDestroy {
 
   @HostListener("click", ["$event.target"])
   onClick() {
-    this.store.dispatch(setSuggestionsMode({ hide: true }));
+    if (!this.hideSuggestion) {
+      this.store.dispatch(setSuggestionsMode({ hide: true }));
+    }
   }
   //holds data from store
   public data$: Observable<any> = this.store
@@ -57,6 +60,7 @@ export class CardsComponent implements OnInit, OnDestroy {
     this.selectedTab$ = this.store
       .select("cardsData")
       .pipe(map(selectCurrentTab));
+
     let sub = this.store.select("cardsData").subscribe((state) => {
       if (state.formMode !== this.formMode) {
         this.formMode = state.formMode;
@@ -68,6 +72,8 @@ export class CardsComponent implements OnInit, OnDestroy {
           this.title.setTitle("Cards · " + this.vlName);
         }
       }
+
+      this.hideSuggestion = state.hideSearchResults;
     });
     this.subscriptions$.push(sub);
   }

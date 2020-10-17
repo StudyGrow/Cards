@@ -102,14 +102,22 @@ const _cardsReducer = createReducer(
     ...state,
     activeIndex: index,
   })),
-  on(StateActions.setTypingMode, (state, { typing }) => ({
-    ...state,
-    typingMode: typing,
-  })),
-  on(StateActions.setSuggestionsMode, (state, { hide }) => ({
-    ...state,
-    hideSearchResults: hide,
-  })),
+  on(StateActions.setTypingMode, (state, { typing }) =>
+    typing === state.typingMode
+      ? state
+      : {
+          ...state,
+          typingMode: typing,
+        }
+  ),
+  on(StateActions.setSuggestionsMode, (state, { hide }) =>
+    hide === state.hideSearchResults
+      ? state
+      : {
+          ...state,
+          hideSearchResults: hide,
+        }
+  ),
   on(StateActions.setDrawerState, (state, { show }) => ({
     ...state,
     showDrawer: show,

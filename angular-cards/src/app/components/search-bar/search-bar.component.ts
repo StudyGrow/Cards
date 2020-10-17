@@ -42,9 +42,10 @@ export class SearchBarComponent implements OnInit, OnDestroy {
     let sub = this.data$
       .pipe(map((state) => state.hideSearchResults))
       .subscribe((hide) => {
-        this.clearSuggestions = hide;
-        if (hide) {
-          this.uInput.reset();
+        if (hide !== this.clearSuggestions) {
+          //only reset
+          this.clearSuggestions = hide;
+          // this.uInput.reset();
         }
       });
     this.subscriptions$.push(sub);
@@ -57,6 +58,7 @@ export class SearchBarComponent implements OnInit, OnDestroy {
     sub = filteredCards$.subscribe((filtered) => {
       this.currentSelection = filtered;
     });
+
     let filteredSuggestions = this.uInput.valueChanges.pipe(
       withLatestFrom(allCards$, filteredCards$),
       map(
@@ -84,10 +86,6 @@ export class SearchBarComponent implements OnInit, OnDestroy {
     this.store.dispatch(setTypingMode({ typing: true }));
   }
   resetNav() {
-    setTimeout(() => {
-      this.uInput.reset();
-    }, 120);
-
     this.store.dispatch(setTypingMode({ typing: false }));
   }
   findMatches(
@@ -129,20 +127,20 @@ export class SearchBarComponent implements OnInit, OnDestroy {
     if (!all) {
       //call from current selection
       this.store.dispatch(setActiveCardIndex({ index: index }));
-      this.store.dispatch(setSuggestionsMode({ hide: true }));
     } else if (!this.currentSelection.includes(this.cards[index])) {
       //call from all cards and current selction does not inlude the suggestion
       this.store.dispatch(resetFilter());
-      this.store.dispatch(setSuggestionsMode({ hide: true }));
+
       setTimeout(() => {
         this.store.dispatch(setActiveCardIndex({ index: index }));
       }, 700);
     } else {
       //call from all cards and current selction inludes the suggestion
       this.store.dispatch(setActiveCardIndex({ index: index }));
-      this.store.dispatch(setSuggestionsMode({ hide: true }));
     }
+    this.store.dispatch(setSuggestionsMode({ hide: true }));
   }
+
   enabled = false;
   size = 0;
 

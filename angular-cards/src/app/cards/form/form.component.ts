@@ -99,6 +99,8 @@ export class FormComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.form = this.createFormGroup();
+
     let sub: Subscription;
 
     sub = this.store
@@ -114,8 +116,6 @@ export class FormComponent implements OnInit, OnDestroy {
     //FormMode
     this.formMode$ = this.store.select("cardsData").pipe(map(selectFormMode));
 
-    this.form = this.createFormGroup();
-
     let tagInput$ = this.form.valueChanges.pipe(
       //input from tagfield
       map((val: CardFormData) => val.tag)
@@ -129,6 +129,7 @@ export class FormComponent implements OnInit, OnDestroy {
       map(([input, tags]) => this._filter([...tags], input)),
       map((list) => list.sort())
     );
+
     sub = this.store
       .select("cardsData")
       .pipe(map(selectCurrentCard))
@@ -136,7 +137,6 @@ export class FormComponent implements OnInit, OnDestroy {
         if (card && card._id != this.cardCopy._id) {
           //got new card
           this.cardCopy = { ...this.cardCopy, ...card }; //overwrite cardCopy
-
           this.selectedTags = [...this.cardCopy?.tags];
         }
       });
@@ -149,12 +149,14 @@ export class FormComponent implements OnInit, OnDestroy {
         if (lect) this.lecture = lect;
       });
     this.subscriptions$.push(sub);
+
     sub = this.formMode$.subscribe((mode) => {
-      console.log(this.subscriptions$.length);
       if (this.formMode !== mode) {
+        //formmode has changed
         this.formMode = mode;
         if (mode == "edit") this.form.reset({ ...this.cardCopy });
-        else this.form.reset();
+        //load content of card into form
+        else this.resetForm(); //clear data from form
       }
     });
   }
@@ -193,7 +195,7 @@ export class FormComponent implements OnInit, OnDestroy {
     }
   }
 
-  addCard(card: Card) {
+  private addCard(card: Card) {
     if (this.author) {
       card.authorId = this.author._id;
       card.authorName = this.author.name;
@@ -209,7 +211,7 @@ export class FormComponent implements OnInit, OnDestroy {
     });
   }
 
-  updateCard(thema: string, content: string, tags: string[]) {
+  private updateCard(thema: string, content: string, tags: string[]) {
     //dispatch update by overwriting the fields of cardCopy
     this.store.dispatch(
       updateCard({
@@ -259,16 +261,12 @@ export class FormComponent implements OnInit, OnDestroy {
 
   addChip(event: MatChipInputEvent): void {
     let newTag = event.value;
-    if (!this.selectedTags.includes(newTag)) {
-      this.selectedTags.push(newTag);
-    }
+    if (!this.selectedTags.includes(newTag)) this.selectedTags.push(newTag);
     event.input.value = ""; //reset field
   }
   onSelectOption(event: MatAutocompleteSelectedEvent) {
     let newTag = event.option.viewValue;
-    if (!this.selectedTags.includes(newTag)) {
-      this.selectedTags.push(newTag);
-    }
+    if (!this.selectedTags.includes(newTag)) this.selectedTags.push(newTag);
     this.form.reset({ ...this.form.value, tag: "" });
   }
   private _filter(tags: string[], value: string): string[] {
