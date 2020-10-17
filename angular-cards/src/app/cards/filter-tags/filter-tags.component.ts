@@ -41,22 +41,18 @@ import {
   templateUrl: "./filter-tags.component.html",
   styleUrls: ["./filter-tags.component.scss"],
 })
-export class FilterTagsComponent implements OnInit, OnDestroy {
+export class FilterTagsComponent implements OnInit {
   private data$: Observable<any> = this.store.select(
     //holds cards data from store
     "cardsData"
   );
 
-  public lecture$: Observable<Vorlesung> = this.data$.pipe(
-    map(selectCurrentLecture)
-  );
-  selected$: Observable<string[]>; //active tags
-  subs: Subscription[] = [];
+  lecture$: Observable<Vorlesung> = this.data$.pipe(map(selectCurrentLecture));
+  selected$: Observable<string[]>; //actively selected tags
   separatorKeysCodes: number[] = [ENTER, COMMA];
   formCtrl = new FormControl("");
   options: string[] = [];
-  filteredTags$: Observable<string[]>;
-  selectedChanged: boolean = false;
+  filteredTags$: Observable<string[]>; //tags filtered by userinput
 
   @ViewChild("Input") input: ElementRef<HTMLInputElement>;
   @ViewChild("auto") matAutocomplete: MatAutocomplete;
@@ -68,7 +64,7 @@ export class FilterTagsComponent implements OnInit, OnDestroy {
     this.filteredTags$ = this.formCtrl.valueChanges.pipe(
       //autocomplete
       startWith(""),
-      withLatestFrom(this.data$.pipe(map(selectTagOptions))),
+      withLatestFrom(this.data$.pipe(map(selectTagOptions))), //get all available tags
       map(([input, tags]: [string, string[]]) => {
         return input?.length > 0 ? this._filter(input, tags) : tags;
       }),
@@ -98,9 +94,5 @@ export class FilterTagsComponent implements OnInit, OnDestroy {
     const filterValue = value.toLowerCase();
 
     return tags.filter((item) => item.toLowerCase().indexOf(filterValue) === 0);
-  }
-
-  ngOnDestroy() {
-    this.subs.forEach((sub) => sub.unsubscribe());
   }
 }

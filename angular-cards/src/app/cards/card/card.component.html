@@ -1,4 +1,4 @@
-<mat-card class="p-1 my-4 shadow w-100" id="`{{ card._id }}`"
+<mat-card class="p-0 my-4 shadow w-100" id="`{{ card._id }}`"
   ><mat-card-title>
     {{ card.thema }}
   </mat-card-title>
@@ -7,13 +7,12 @@
       <mat-panel-title> Antwort</mat-panel-title>
     </mat-expansion-panel-header>
     <ng-template matExpansionPanelContent>
-      <hr class="m-0" />
-      <pre lang="de">
-        <div  [innerHtml]="parsed[0] | safeHtml"></div>
-    </pre>
+      <pre lang="de" [innerHtml]="parsed[0] | safeHtml"></pre>
     </ng-template>
   </mat-expansion-panel>
+  <p *ngIf="card.authorName" class="card-text">
+    <small class="text-muted float-right"
+      >Ersteller: {{ card.authorName }}</small
+    >
+  </p>
 </mat-card>
-<p *ngIf="card.authorName" class="card-text">
-  <small class="text-muted float-right">Ersteller: {{ card.authorName }}</small>
-</p>
