@@ -43,7 +43,13 @@
   </div>
 </div>
 
-<div class="row" *ngIf="cards?.length > 0" [@fadeInOnEnter] [@fadeOutOnLeave]>
+<div
+  class="row"
+  id="carousel-row"
+  *ngIf="cards?.length > 0"
+  [@fadeInOnEnter]
+  [@fadeOutOnLeave]
+>
   <a
     id="left"
     class="navig col"

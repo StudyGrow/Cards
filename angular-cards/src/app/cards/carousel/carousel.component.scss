@@ -1,3 +1,6 @@
+.row {
+  max-width: 900px;
+}
 /*first row controls*/
 #controls {
   width: 90%;
@@ -6,7 +9,32 @@
 button {
   outline: none;
 }
-
+/*carousel row*/
+#carousel-row {
+  position: relative;
+  margin: 0;
+}
+/*navigation*/
+#right {
+  right: 0;
+}
+#left {
+  left: 0;
+}
+span {
+  text-align: center;
+  width: 100%;
+}
+.navig {
+  color: black;
+  display: inline-flex;
+  align-items: center;
+  width: 5%;
+  position: absolute;
+  padding: 0;
+  height: 100%;
+  z-index: 1000;
+}
 /*carousel*/
 #carousel {
   width: 100% !important;
@@ -15,34 +43,7 @@ mdb-carousel-item.carousel-item {
   padding: 0;
 }
 
-.navig {
-  color: black;
-  display: inline-flex;
-  align-items: center;
-  width: 5%;
-  position: absolute;
-  padding: 0;
-}
-#right {
-  right: 0;
-  height: 100%;
-  z-index: 1000;
-}
-#left {
-  left: 0;
-  height: 100%;
-  z-index: 1000;
-}
-span {
-  text-align: center;
-  width: 100%;
-}
-
-.row {
-  position: relative;
-  max-width: 900px;
-  margin: 0;
-}
+/*card*/
 app-card {
   width: 90%;
   margin: 0 auto 0 auto;
