@@ -164,6 +164,14 @@ export class CardsEffects {
       ofType(login),
       exhaustMap((user) =>
         this.user.login(user).pipe(
+          tap((success) => {
+            if (success) {
+              this.router.navigateByUrl("/");
+              this.notifications.addNotification(
+                new SuccessMessage(`Willkommen ${user.username}`)
+              );
+            }
+          }),
           map((user) => loginSuccess(user)),
           catchError((reason) => of(LoadFailure({ reason: reason })))
         )
@@ -179,11 +187,6 @@ export class CardsEffects {
       exhaustMap((user) =>
         this.user.createAccount(user).pipe(
           map((user) => {
-            this.router.navigateByUrl("/");
-            this.notifications.clearNotifications("success");
-            this.notifications.addNotification(
-              new SuccessMessage(`Herzlich willkommen ${user.username}`)
-            );
             return auth();
           }),
           catchError((reason) => of(LoadFailure({ reason: reason })))
@@ -219,7 +222,13 @@ export class CardsEffects {
       ofType(logout),
       mergeMap(() =>
         this.user.logoutServer().pipe(
-          tap(() => setDrawerState({ show: false })),
+          tap((success) => {
+            this.router.navigateByUrl("/");
+            if (success)
+              this.notifications.addNotification(
+                new SuccessMessage("Erfolgreich abgemeldet")
+              );
+          }),
           map(() => logoutSuccess()),
           catchError((reason) => of(LoadFailure({ reason: reason })))
         )

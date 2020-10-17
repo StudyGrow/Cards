@@ -77,10 +77,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
     }
     //clear messages on route change
     if (this.router.url == "/") {
-      this.notification.clearNotifications("alert"); //prevent successfull login message from being removed on home
       this.titleService.setTitle("Home");
-    } else {
-      this.notification.clearNotifications("alert", "success");
     }
   }
 

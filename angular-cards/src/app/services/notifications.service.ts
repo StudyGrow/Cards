@@ -12,6 +12,7 @@ export class NotificationsService {
   addNotification(n: Notification) {
     let notifications = this.notifications$.getValue();
     notifications.push(n);
+    this.notifications$.next(notifications);
   }
 
   //removes a specific notification
@@ -43,7 +44,6 @@ export class NotificationsService {
 
   //because errors suck and we dont have a unified error handling system in the backend
   handleErrors(error) {
-    this.clearNotifications("warning", "success", "info");
     let err = error.error;
     console.log(error);
     if (error.status == 400) {

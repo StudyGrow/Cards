@@ -1,7 +1,7 @@
 <div id="con">
   <h2 class="mb-3">Vorlesung hinzufügen</h2>
 
-  <div id="addLecture" class="">
+  <div id="addLecture">
     <form #f="ngForm" (ngSubmit)="onSubmit(f)" novalidate autocomplete="off">
       <mat-form-field class="mb-1 w-100">
         <mat-label>Vorlesungsname</mat-label>
@@ -20,7 +20,8 @@
           >{{ vlname.value?.trim().length || 0 }}/500</mat-hint
         >
         <mat-error *ngIf="vlname.value?.trim().length < 3"
-          >Der Vorlesungsname muss mind. 3 Zeichen enthalten</mat-error
+          >Der Vorlesungsname muss zwischen 3 und 500 Zeichen
+          enthalten</mat-error
         >
       </mat-form-field>
 

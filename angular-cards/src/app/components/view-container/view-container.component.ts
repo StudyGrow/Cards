@@ -58,11 +58,14 @@ export class ViewContainerComponent implements OnInit {
     });
     this.notifications$ = this.notifService.notifications;
     this.notifications$.subscribe((notifs) => {
-      notifs.forEach((notif) => {
+      console.log("Notifs: ", notifs);
+      notifs.forEach((notif, index) => {
         this._snackBar.open(notif.message, null, {
           duration: notif.type === "warning" ? 10000 : 3000,
-          verticalPosition: "top",
+          verticalPosition: "bottom",
         });
+
+        this.notifService.removeNotification(index);
       });
     });
     this.store

@@ -44,20 +44,9 @@ export class UserService implements CanActivate {
   }
   //used to login the user
   login(form: User): Observable<User> {
-    return this.http
-      .post<User>(this.config.urlBase + "login", form, {
-        headers: this.config.headers,
-        observe: "response",
-      })
-      .pipe(
-        tap((res) => {
-          this.notifications.clearNotifications("success");
-          this.notifications.addNotification(
-            new SuccessMessage(`Herzlich willkommen ${res.body.username}`)
-          );
-        }),
-        map((res) => res.body)
-      );
+    return this.http.post<User>(this.config.urlBase + "login", form, {
+      headers: this.config.headers,
+    });
   }
   createAccount(form: User): Observable<User> {
     return this.http
@@ -161,9 +150,6 @@ export class UserService implements CanActivate {
   logoutServer(): Observable<any> {
     return this.http
       .get<any>(this.config.urlBase + "user/logout", { observe: "response" })
-      .pipe(
-        map((res) => res.body),
-        share()
-      );
+      .pipe(map((res) => res.body));
   }
 }

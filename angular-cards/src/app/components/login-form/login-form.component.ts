@@ -8,6 +8,8 @@ import { login } from "src/app/store/actions/UserActions";
 import { CardsEffects } from "src/app/store/effects/effects";
 import { Subscription } from "rxjs";
 import { LoadFailure } from "src/app/store/actions/cardActions";
+import { NotificationsService } from "src/app/services/notifications.service";
+import { SuccessMessage } from "src/app/models/Notification";
 @Component({
   selector: "app-login-form",
   templateUrl: "./login-form.component.html",
@@ -17,7 +19,8 @@ export class LoginFormComponent implements OnInit {
   constructor(
     private store: Store<any>,
     private router: Router,
-    private actionState: CardsEffects
+    private actionState: CardsEffects,
+    private notifications: NotificationsService
   ) {}
 
   public check = true;
@@ -25,16 +28,6 @@ export class LoginFormComponent implements OnInit {
   ngOnInit(): void {}
   submit(form: NgForm) {
     this.store.dispatch(login(form.value));
-    let sub = this.actionState.login$.subscribe(
-      (res) => {
-        if (res.type == "[Cards] Load failure") {
-        } else {
-          sub.unsubscribe();
-          this.router.navigateByUrl("/");
-        }
-      },
-      (err) => {}
-    );
   }
 
   isDisabled(username, password) {
