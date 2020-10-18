@@ -30,10 +30,6 @@ export class NavListComponent implements OnInit {
   }
 
   logout() {
-    this.notifications.addNotification(
-      new SuccessMessage("Erfolgreich abgemeldet")
-    );
-    this.router.navigateByUrl("/");
     this.store.dispatch(logoutUser());
   }
   isActive(path: string): string {

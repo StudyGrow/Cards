@@ -48,6 +48,13 @@ export class UserService implements CanActivate {
       headers: this.config.headers,
     });
   }
+  logoutServer(): Observable<boolean> {
+    return this.http.get<boolean>(this.config.urlBase + "user/logout").pipe(
+      tap((res) => {
+        console.log(res);
+      })
+    );
+  }
   createAccount(form: User): Observable<User> {
     return this.http
       .post<User>(this.config.urlBase + "user/new", form, {
@@ -146,10 +153,5 @@ export class UserService implements CanActivate {
           );
         })
       );
-  }
-  logoutServer(): Observable<any> {
-    return this.http
-      .get<any>(this.config.urlBase + "user/logout", { observe: "response" })
-      .pipe(map((res) => res.body));
   }
 }

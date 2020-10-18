@@ -180,6 +180,26 @@ export class CardsEffects {
       share()
     )
   );
+  @Effect()
+  logout$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(logout),
+      mergeMap(() =>
+        this.user.logoutServer().pipe(
+          tap((success) => {
+            this.router.navigateByUrl("/");
+            if (success)
+              this.notifications.addNotification(
+                new SuccessMessage("Erfolgreich abgemeldet")
+              );
+          }),
+          map(() => logoutSuccess()),
+          catchError((reason) => of(LoadFailure({ reason: reason })))
+        )
+      ),
+      share()
+    )
+  );
 
   @Effect()
   registerAccount$ = createEffect(() =>
@@ -214,26 +234,6 @@ export class CardsEffects {
         )
       ),
       share()
-    )
-  );
-
-  @Effect()
-  logout$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(logout),
-      mergeMap(() =>
-        this.user.logoutServer().pipe(
-          tap((success) => {
-            this.router.navigateByUrl("/");
-            if (success)
-              this.notifications.addNotification(
-                new SuccessMessage("Erfolgreich abgemeldet")
-              );
-          }),
-          map(() => logoutSuccess()),
-          catchError((reason) => of(LoadFailure({ reason: reason })))
-        )
-      )
     )
   );
 }
