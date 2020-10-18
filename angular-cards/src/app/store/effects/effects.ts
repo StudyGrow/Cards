@@ -62,7 +62,8 @@ export class CardsEffects {
       mergeMap(() => {
         return this.cards.fetchCardsData().pipe(
           map((data) => FetchCardsActions.LoadSuccess({ data: data })),
-          catchError((reason) => of(LoadFailure({ reason: reason })))
+          catchError((reason) => of(LoadFailure({ reason: reason }))),
+          share()
         );
       })
     )
@@ -73,13 +74,12 @@ export class CardsEffects {
     this.actions$.pipe(
       ofType(LectureActions.fetchLectures),
       mergeMap(() => {
-        return this.lectures
-          .getAllLectures()
-          .pipe(
-            map((data) =>
-              LectureActions.fetchLecturesSuccess({ lectures: data })
-            )
-          );
+        return this.lectures.getAllLectures().pipe(
+          map((data) =>
+            LectureActions.fetchLecturesSuccess({ lectures: data })
+          ),
+          share()
+        );
       })
     )
   );
