@@ -16,10 +16,20 @@ $dark-theme: mat-dark-theme($dark-primary, $dark-accent, $dark-warn);
 // CSS class whatever you want. In this example, any component inside of an element with
 // `.unicorn-dark-theme` will be affected by this alternate dark theme instead of the default theme.
 .btn-primary,
-.btn-primary:disabled {
-  background-color: #5e35b1;
+.btn-primary:disabled,
+.btn-primary:hover,
+.btn-primary:active,
+.btn-primary:focus {
+  background-color: #5e35b1 !important;
   border: none;
+  box-shadow: none;
 }
+snack-bar-container.success {
+  color: #155724;
+  background-color: #d4edda;
+  border-color: #c3e6cb;
+}
+
 .mat-paginator {
   background: none;
 }
