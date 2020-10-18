@@ -56,6 +56,7 @@ export class CardsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.title.setTitle("Cards");
+
     this.store.dispatch(fetchCards());
     this.selectedTab$ = this.store
       .select("cardsData")
@@ -82,7 +83,7 @@ export class CardsComponent implements OnInit, OnDestroy {
     this.store.dispatch(changeTab({ tab: index }));
   }
 
-  titleCase(str: string) {
+  private titleCase(str: string) {
     return str
       .toLowerCase()
       .split(" ")

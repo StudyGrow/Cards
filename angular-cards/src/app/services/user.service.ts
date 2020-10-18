@@ -75,7 +75,7 @@ export class UserService implements CanActivate {
               res.body.user.creationDate = new Date(res.body.user.creationDate);
             }
           },
-          (error) => {
+          () => {
             this.router.navigateByUrl("/login");
           }
         ),

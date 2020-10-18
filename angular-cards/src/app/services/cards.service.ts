@@ -29,15 +29,12 @@ export class CardsService {
   //This loads all cards specific data which is needed on the route of a specific lecture
   fetchCardsData(): Observable<CardsData> {
     let abrv = this.router.url.split(/vorlesung\//)[1]; //get the lecture abreviation from the route
-    if (abrv === this.save && this.chache) {
-      return this.chache;
-    } else {
-      this.save = abrv;
-      this.chache = this.http
-        .get<CardsData>(this.config.urlBase + "cards/a?abrv=" + abrv)
-        .pipe(share());
-      return this.chache;
-    }
+
+    return this.http
+      .get<CardsData>(this.config.urlBase + "cards/a?abrv=" + abrv, {
+        observe: "response",
+      })
+      .pipe(map((res) => res.body));
   }
 
   updateCard2(card: Card): Observable<any> {

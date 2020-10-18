@@ -1,7 +1,14 @@
 import { Injectable } from "@angular/core";
 import { Actions, Effect, ofType, createEffect } from "@ngrx/effects";
 import { of, Observable } from "rxjs";
-import { share, tap, startWith, withLatestFrom, filter } from "rxjs/operators";
+import {
+  share,
+  tap,
+  startWith,
+  withLatestFrom,
+  filter,
+  shareReplay,
+} from "rxjs/operators";
 
 import { catchError, map, mergeMap, exhaustMap } from "rxjs/operators";
 import {
@@ -52,12 +59,12 @@ export class CardsEffects {
   loadCards$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FetchCardsActions.fetchCards),
-      mergeMap(() =>
-        this.cards.fetchCardsData().pipe(
+      mergeMap(() => {
+        return this.cards.fetchCardsData().pipe(
           map((data) => FetchCardsActions.LoadSuccess({ data: data })),
           catchError((reason) => of(LoadFailure({ reason: reason })))
-        )
-      )
+        );
+      })
     )
   );
 
@@ -65,15 +72,15 @@ export class CardsEffects {
   fetchLectures$ = createEffect(() =>
     this.actions$.pipe(
       ofType(LectureActions.fetchLectures),
-      mergeMap(() =>
-        this.lectures.getAllLectures().pipe(
-          map((data) =>
-            LectureActions.fetchLecturesSuccess({ lectures: data })
-          ),
-          catchError((reason) => of(LoadFailure({ reason: reason }))),
-          share()
-        )
-      )
+      mergeMap(() => {
+        return this.lectures
+          .getAllLectures()
+          .pipe(
+            map((data) =>
+              LectureActions.fetchLecturesSuccess({ lectures: data })
+            )
+          );
+      })
     )
   );
 

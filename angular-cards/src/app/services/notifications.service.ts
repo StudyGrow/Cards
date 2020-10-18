@@ -46,7 +46,7 @@ export class NotificationsService {
   handleErrors(error) {
     let err = error.error;
     console.log(error);
-    if (error.status == 400) {
+    if (error.status == 403) {
       this.addNotification(
         new HttpError("Du musst dich einloggen, um diese Seite zu besuchen")
       );

@@ -5,9 +5,10 @@ import {
   HttpResponse,
   HttpInterceptor,
   HttpHandler,
+  HttpErrorResponse,
 } from "@angular/common/http";
-import { Observable, of } from "rxjs";
-import { tap } from "rxjs/operators";
+import { combineLatest, from, Observable, of, throwError } from "rxjs";
+import { catchError, map, tap } from "rxjs/operators";
 import { RequestCache } from "./request-cache.service";
 import { Store } from "@ngrx/store";
 import { incrementLoading, decrementLoading } from "../store/actions/actions";
@@ -21,36 +22,65 @@ export class CachingInterceptor implements HttpInterceptor {
     private notifs: NotificationsService
   ) {}
 
-  intercept(req: HttpRequest<any>, next: HttpHandler) {
+  intercept(
+    req: HttpRequest<any>,
+    next: HttpHandler
+  ): Observable<HttpEvent<any>> {
     if (req.method == "POST" || req.method == "PUT") {
-      return this.sendRequest(req, next, this.cache);
+      return next.handle(req); //put and post requests are not cached
     } else {
       const cachedResponse = this.cache.get(req);
-      return cachedResponse
-        ? of(cachedResponse)
-        : this.sendRequest(req, next, this.cache);
+      if (cachedResponse && !cachedResponse.expired) {
+        console.log("loading from cache");
+        return of(cachedResponse.response);
+      } else {
+        //no cached response or response expired
+        return this.sendRequest(
+          req,
+          next,
+          this.cache,
+          cachedResponse?.response
+        );
+      }
     }
   }
 
   sendRequest(
     req: HttpRequest<any>,
     next: HttpHandler,
-    cache: RequestCache
+    cache: RequestCache,
+    cachedResp?: HttpResponse<any>
   ): Observable<HttpEvent<any>> {
     this.store.dispatch(incrementLoading());
     return next.handle(req).pipe(
-      tap(
-        (event) => {
-          if (event instanceof HttpResponse) {
-            this.store.dispatch(decrementLoading());
-            cache.put(req, event);
-          }
-        },
-        (error) => {
-          this.notifs.handleErrors(error);
+      tap((event) => {
+        if (event instanceof HttpResponse) {
           this.store.dispatch(decrementLoading());
+          if (req.method == "GET") cache.put(req, event); //only cache get requests
         }
-      )
+      }),
+
+      catchError((err) => this.handleError(err, cachedResp))
     );
+  }
+
+  private handleError(
+    error: HttpErrorResponse,
+    cachedResp: HttpResponse<any>
+  ): Observable<HttpEvent<any>> {
+    this.store.dispatch(decrementLoading());
+    this.notifs.handleErrors(error);
+    if (error.error instanceof ErrorEvent) {
+      // A client-side or network error occurred. Handle it accordingly.
+      //console.error("An error occurred:", error.error.message);
+    } else {
+      // The backend returned an unsuccessful response code.
+      // The response body may contain clues as to what went wrong.
+      if (error.status >= 500) {
+        return of(cachedResp);
+      }
+    }
+    // Return an observable with a user-facing error message.
+    return throwError("Ein unbekannter Fehler ist aufgetreten");
   }
 }
