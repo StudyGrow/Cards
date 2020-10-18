@@ -8,7 +8,7 @@ import {
   HttpErrorResponse,
 } from "@angular/common/http";
 import { combineLatest, from, Observable, of, throwError } from "rxjs";
-import { catchError, map, tap } from "rxjs/operators";
+import { catchError, map, shareReplay, tap } from "rxjs/operators";
 import { RequestCache } from "./request-cache.service";
 import { Store } from "@ngrx/store";
 import { incrementLoading, decrementLoading } from "../store/actions/actions";
@@ -31,12 +31,12 @@ export class CachingInterceptor implements HttpInterceptor {
     } else {
       const cachedResponse = this.cache.get(req); //get the cached response
       let res: HttpResponse<any>;
-      res = cachedResponse.response;
+      res = cachedResponse?.response;
       if (res && !cachedResponse.expired) {
-        return of(res);
+        return of(res).pipe(shareReplay(1));
       } else {
         //no cached response or response expired
-        return this.sendRequest(req, next, res);
+        return this.sendRequest(req, next, res).pipe(shareReplay(1));
       }
     }
   }

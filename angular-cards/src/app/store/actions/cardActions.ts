@@ -5,7 +5,7 @@ import { Vorlesung } from "../../models/Vorlesung";
 
 //Types of Actions
 enum ActionTypes {
-  FETCH_CARDS = "[Cards] Fetch from server",
+  FETCH_CARDS = "[Cards] Fetch from server, also loads current lecture and user.id",
   LOAD_SUCCESS = "[Cards] Load success",
   LOAD_FAILURE = "[Cards] Load failure",
   ADD_CARD = "[Card] Add new card to the collection",

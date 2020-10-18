@@ -8,6 +8,7 @@ import {
   withLatestFrom,
   filter,
   shareReplay,
+  switchMap,
 } from "rxjs/operators";
 
 import { catchError, map, mergeMap, exhaustMap } from "rxjs/operators";
@@ -59,13 +60,13 @@ export class CardsEffects {
   loadCards$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FetchCardsActions.fetchCards),
-      mergeMap(() => {
+      switchMap(() => {
         return this.cards.fetchCardsData().pipe(
           map((data) => FetchCardsActions.LoadSuccess({ data: data })),
-          catchError((reason) => of(LoadFailure({ reason: reason }))),
-          share()
+          catchError((reason) => of(LoadFailure({ reason: reason })))
         );
-      })
+      }),
+      share()
     )
   );
 
@@ -73,14 +74,16 @@ export class CardsEffects {
   fetchLectures$ = createEffect(() =>
     this.actions$.pipe(
       ofType(LectureActions.fetchLectures),
-      mergeMap(() => {
-        return this.lectures.getAllLectures().pipe(
-          map((data) =>
-            LectureActions.fetchLecturesSuccess({ lectures: data })
-          ),
-          share()
-        );
-      })
+      switchMap(() => {
+        return this.lectures
+          .getAllLectures()
+          .pipe(
+            map((data) =>
+              LectureActions.fetchLecturesSuccess({ lectures: data })
+            )
+          );
+      }),
+      share()
     )
   );
 

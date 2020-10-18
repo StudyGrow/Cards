@@ -58,6 +58,7 @@ export class CardsComponent implements OnInit, OnDestroy {
     this.title.setTitle("Cards");
 
     this.store.dispatch(fetchCards());
+
     this.selectedTab$ = this.store
       .select("cardsData")
       .pipe(map(selectCurrentTab));

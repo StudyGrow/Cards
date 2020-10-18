@@ -5,6 +5,7 @@ import {
   NavigationEnd,
   RouterEvent,
   NavigationStart,
+  RoutesRecognized,
 } from "@angular/router";
 import { Title } from "@angular/platform-browser";
 
@@ -68,11 +69,12 @@ export class NavBarComponent implements OnInit, OnDestroy {
     }, 1);
   }
   private handleRouteChanges(e: RouterEvent) {
-    if (e instanceof NavigationStart) {
+    if (e instanceof RoutesRecognized) {
       this.store.dispatch(setDrawerState({ show: false })); //hide drawer when changing route
       this.setPageTitle(e);
       if (e.url.match(/vorlesung/)) {
         this.showSearch = true;
+        //this.store.dispatch(fetchCards());
       } else {
         this.showSearch = false;
       }
