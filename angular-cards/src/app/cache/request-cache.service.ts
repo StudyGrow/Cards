@@ -11,7 +11,11 @@ export class RequestCache {
     const url = req.urlWithParams;
     if (url.match(/cards/) || url.match(/lectures/)) {
       const entry = { url, response, fetched: Date.now() };
-      localStorage.setItem(url, JSON.stringify(entry));
+      try {
+        localStorage.setItem(url, JSON.stringify(entry));
+      } catch (error) {
+        console.log(error);
+      }
     }
   }
   get(
@@ -23,7 +27,7 @@ export class RequestCache {
     if (!cached) return undefined;
     let cacheObject = JSON.parse(cached);
 
-    const isExpired = cacheObject.fetched < Date.now() - maxAge;
+    const isExpired = cacheObject.fetched > Date.now() - maxAge;
 
     return { response: cacheObject.response, expired: isExpired };
   }
