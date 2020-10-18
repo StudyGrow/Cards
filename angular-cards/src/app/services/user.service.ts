@@ -49,11 +49,7 @@ export class UserService implements CanActivate {
     });
   }
   logoutServer(): Observable<boolean> {
-    return this.http.get<boolean>(this.config.urlBase + "user/logout").pipe(
-      tap((res) => {
-        console.log(res);
-      })
-    );
+    return this.http.get<boolean>(this.config.urlBase + "user/logout");
   }
   createAccount(form: User): Observable<User> {
     return this.http
