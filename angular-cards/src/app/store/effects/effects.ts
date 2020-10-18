@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Actions, Effect, ofType, createEffect } from "@ngrx/effects";
 import { of, Observable } from "rxjs";
-import { share, tap, startWith, withLatestFrom } from "rxjs/operators";
+import { share, tap, startWith, withLatestFrom, filter } from "rxjs/operators";
 
 import { catchError, map, mergeMap, exhaustMap } from "rxjs/operators";
 import {
@@ -39,7 +39,7 @@ import { SuccessMessage } from "src/app/models/Notification";
 export class CardsEffects {
   constructor(
     private actions$: Actions,
-    private cs: CardsService,
+    private cards: CardsService,
     private user: UserService,
     private lectures: LecturesService,
     private store: Store<any>,
@@ -47,18 +47,19 @@ export class CardsEffects {
     private notifications: NotificationsService
   ) {}
   data$ = this.store.select("cardsData").pipe(share());
+
   @Effect()
-  loadCards$ = createEffect(() => {
-    return this.actions$.pipe(
+  loadCards$ = createEffect(() =>
+    this.actions$.pipe(
       ofType(FetchCardsActions.fetchCards),
       mergeMap(() =>
-        this.cs.fetchCardsData().pipe(
+        this.cards.fetchCardsData().pipe(
           map((data) => FetchCardsActions.LoadSuccess({ data: data })),
           catchError((reason) => of(LoadFailure({ reason: reason })))
         )
       )
-    );
-  });
+    )
+  );
 
   @Effect()
   fetchLectures$ = createEffect(() =>
@@ -94,8 +95,8 @@ export class CardsEffects {
   addCard$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AddCardActions.addCard),
-      exhaustMap((action) =>
-        this.cs.addCard(action.card).pipe(
+      exhaustMap((cardAction) =>
+        this.cards.addCard(cardAction.card).pipe(
           tap(() => {
             setTimeout(() => {
               this.store.dispatch(setActiveCardIndex({ index: -1 })); //go to last card
@@ -116,7 +117,7 @@ export class CardsEffects {
       ofType(UpdateCardActions.updateCard),
       withLatestFrom(this.data$.pipe(map(selectActiveIndex))),
       exhaustMap(([action, activeIndex]) =>
-        this.cs.updateCard2(action.card).pipe(
+        this.cards.updateCard2(action.card).pipe(
           tap(() => {
             setTimeout(() => {
               this.store.dispatch(setActiveCardIndex({ index: activeIndex }));
@@ -164,8 +165,8 @@ export class CardsEffects {
       ofType(login),
       exhaustMap((user) =>
         this.user.login(user).pipe(
-          tap((success) => {
-            if (success) {
+          tap((user) => {
+            if (user) {
               this.router.navigateByUrl("/");
               this.notifications.addNotification(
                 new SuccessMessage(`Willkommen ${user.username}`)

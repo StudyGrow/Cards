@@ -76,7 +76,6 @@ export class FormComponent implements OnInit, OnDestroy {
   subscriptions$: Subscription[] = [];
 
   constructor(
-    private router: Router,
     public dialog: MatDialog,
     private store: Store<any>,
     private actionState: CardsEffects
@@ -137,7 +136,6 @@ export class FormComponent implements OnInit, OnDestroy {
         if (card && card._id != this.cardCopy._id) {
           //got new card
           this.cardCopy = { ...this.cardCopy, ...card }; //overwrite cardCopy
-          this.selectedTags = [...this.cardCopy?.tags];
         }
       });
     this.subscriptions$.push(sub);
@@ -146,7 +144,10 @@ export class FormComponent implements OnInit, OnDestroy {
       .select("cardsData")
       .pipe(map(selectCurrentLecture))
       .subscribe((lect) => {
-        if (lect) this.lecture = lect;
+        if (lect) {
+          this.lecture = lect;
+          sub.unsubscribe;
+        }
       });
     this.subscriptions$.push(sub);
 
@@ -154,7 +155,10 @@ export class FormComponent implements OnInit, OnDestroy {
       if (this.formMode !== mode) {
         //formmode has changed
         this.formMode = mode;
-        if (mode == "edit") this.form.reset({ ...this.cardCopy });
+        if (mode == "edit") {
+          this.form.reset({ ...this.cardCopy });
+          this.selectedTags = [...this.cardCopy?.tags];
+        }
         //load content of card into form
         else this.resetForm(); //clear data from form
       }
@@ -200,13 +204,13 @@ export class FormComponent implements OnInit, OnDestroy {
       card.authorId = this.author._id;
       card.authorName = this.author.name;
     }
-    if (this.neu) {
-      this.store.dispatch(addLercture({ lecture: this.lecture }));
-    }
 
     this.store.dispatch(addCard({ card: card }));
-    let sub = this.actionState.addCard$.subscribe(() => {
-      this.resetForm();
+    let sub = this.actionState.addCard$.subscribe((card) => {
+      if (card) {
+        this.resetForm();
+        this.store.dispatch(changeTab({ tab: 1 }));
+      }
       sub.unsubscribe();
     });
   }
@@ -218,10 +222,13 @@ export class FormComponent implements OnInit, OnDestroy {
         card: { ...this.cardCopy, thema: thema, content: content, tags: tags },
       })
     );
-    let sub = this.actionState.updateCard$.subscribe(() => {
-      this.store.dispatch(setFormMode({ mode: "add" }));
-      this.store.dispatch(changeTab({ tab: 1 }));
-      this.resetForm();
+    let sub = this.actionState.updateCard$.subscribe((card) => {
+      if (card) {
+        this.store.dispatch(setFormMode({ mode: "add" }));
+        this.store.dispatch(changeTab({ tab: 1 }));
+        this.resetForm();
+      }
+
       sub.unsubscribe();
     });
   }

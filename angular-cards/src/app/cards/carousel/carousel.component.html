@@ -58,7 +58,7 @@
     [@fadeInOnEnter]
     (click)="goToPrev()"
   >
-    <span class="fas fa-chevron-left"></span>
+    <mat-icon>keyboard_arrow_left</mat-icon>
   </a>
   <div id="carousel">
     <mdb-carousel
@@ -86,7 +86,7 @@
     (click)="goToNext()"
     aria-label="nächste karte"
   >
-    <span class="fas fa-chevron-right"></span>
+    <mat-icon>keyboard_arrow_right</mat-icon>
   </a>
 </div>
 <div class="row" *ngIf="cards?.length === 0">
