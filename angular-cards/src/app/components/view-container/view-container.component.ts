@@ -59,23 +59,30 @@ export class ViewContainerComponent implements OnInit {
     this.notifications$ = this.notifService.notifications;
     this.notifications$.subscribe((notifs) => {
       notifs.forEach((notif, index) => {
-        this._snackBar.open(notif.message, null, {
-          duration: notif.type === "warning" ? 10000 : 3000,
-          verticalPosition: "bottom",
-        });
-
-        this.notifService.removeNotification(index);
+        let ref;
+        if (notif.type === "success") {
+          ref = this._snackBar.open(notif.message, null, {
+            duration: 2000,
+            verticalPosition: "bottom",
+            panelClass: "success",
+          });
+        } else {
+          ref = this._snackBar.open(notif.message, "Schließen", {
+            verticalPosition: "bottom",
+            panelClass: notif.type,
+          });
+        }
+        ref
+          .afterDismissed()
+          .subscribe(() => this.notifService.removeNotification(index));
       });
     });
+
     this.store
       .select("cardsData")
       .pipe(map(selectDrawerState))
       .subscribe((val) => {
-        if (val) {
-          this.drawer.open();
-        } else {
-          this.drawer.close();
-        }
+        val ? this.drawer.open() : this.drawer.close();
       });
   }
   closeAlert(i: number) {
