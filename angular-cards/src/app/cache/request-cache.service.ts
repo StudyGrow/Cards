@@ -6,10 +6,12 @@ const maxAge = 180000; //3min
   providedIn: "root",
 })
 export class RequestCache {
+  //puts new request into the cache
   put(req: HttpRequest<any>, response: HttpResponse<any>): void {
     const url = req.urlWithParams;
-    if (url.match(/cards/) || url.match(/lectures/)) {
-      const entry = { url, response, fetched: Date.now() };
+    if (url.includes("cards") || url.includes("lecture")) {
+      //only cache cards and lectures requests
+      const entry = { response, fetched: Date.now() };
       try {
         localStorage.setItem(url, JSON.stringify(entry));
       } catch (error) {
@@ -24,14 +26,14 @@ export class RequestCache {
   ): { response: HttpResponse<any>; expired: boolean } | undefined {
     const url = req.urlWithParams;
 
-    if (!url.includes("lectures") && !url.includes("cards")) {
+    if (!url.includes("lecture") && !url.includes("cards")) {
       //only cards and lectures are cached
       return;
     }
-    let cached = localStorage.getItem(url);
+    let cached = localStorage.getItem(url); //get item as string from localstorage
 
-    if (!cached) return;
-    let cacheObject = JSON.parse(cached);
+    if (!cached) return; //no item found
+    let cacheObject = JSON.parse(cached); //parse the string into json
 
     const isExpired = cacheObject.fetched < Date.now() - maxAge;
 

@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Observable, BehaviorSubject } from "rxjs";
-import { Notification, HttpError, InfoMessage } from "../models/Notification";
+import { Notification, WarnMessage, InfoMessage } from "../models/Notification";
 import { Router } from "@angular/router";
 @Injectable({
   providedIn: "root",
@@ -48,14 +48,14 @@ export class NotificationsService {
     console.log(error);
     if (error.status == 403) {
       this.addNotification(
-        new HttpError("Du musst dich einloggen, um diese Seite zu besuchen")
+        new WarnMessage("Du musst dich einloggen, um diese Seite zu besuchen")
       );
     } else if (error.status == 422) {
       if (typeof err == "string") {
-        this.addNotification(new HttpError(err, error.status));
+        this.addNotification(new WarnMessage(err, error.status));
       } else if (typeof err == "object") {
         this.addNotification(
-          new HttpError(
+          new WarnMessage(
             "Ein unbekannter Fehler ist aufgetreten. Versuche es später erneut.",
             error.status
           )
@@ -63,19 +63,19 @@ export class NotificationsService {
         console.log(err);
       } else {
         for (const e of err) {
-          this.addNotification(new HttpError(e, error.status));
+          this.addNotification(new WarnMessage(e, error.status));
         }
       }
     } else if (error.status >= 500) {
       this.addNotification(
-        new HttpError(
+        new WarnMessage(
           "Der Server scheint offline zu sein. Versuche es später erneut.",
           error.status
         )
       );
     } else {
       this.addNotification(
-        new HttpError(
+        new WarnMessage(
           "Ein unbekannter Fehler ist aufgetreten. Versuche es später erneut.",
           error.status
         )
