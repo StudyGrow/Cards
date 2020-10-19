@@ -19,11 +19,7 @@ import { Notification, SuccessMessage } from "src/app/models/Notification";
 export class NavListComponent implements OnInit {
   loggedIn$: Observable<boolean>;
 
-  constructor(
-    private notifications: NotificationsService,
-    private router: Router,
-    private store: Store<any>
-  ) {}
+  constructor(private router: Router, private store: Store<any>) {}
 
   ngOnInit(): void {
     this.loggedIn$ = this.store.select("cardsData").pipe(map(authenticated));

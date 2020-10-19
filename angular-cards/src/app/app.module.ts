@@ -138,8 +138,9 @@ export class MyHammerConfig extends HammerGestureConfig {
     }),
   ],
   providers: [
-    { provide: LOCALE_ID, useValue: "de" },
     { provide: HTTP_INTERCEPTORS, useClass: CachingInterceptor, multi: true },
+    { provide: LOCALE_ID, useValue: "de" },
+
     {
       provide: HAMMER_GESTURE_CONFIG,
       useClass: MyHammerConfig,

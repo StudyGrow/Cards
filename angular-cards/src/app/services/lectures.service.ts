@@ -27,8 +27,16 @@ export class LecturesService {
       .get<Vorlesung[]>(this.config.urlBase + "lectures", {
         observe: "response",
       })
-      .pipe(map((res) => res.body));
+      .pipe(
+        tap((res) => {
+          console.log("lectures response: ", res);
+        }),
+        map((res) => res.body)
+      );
 
+    call.subscribe((res) => {
+      console.log("lectures response: ", res);
+    });
     return call;
   }
 

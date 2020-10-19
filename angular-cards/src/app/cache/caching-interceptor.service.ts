@@ -9,7 +9,14 @@ import {
 } from "@angular/common/http";
 import { WarnMessage } from "../models/Notification";
 import { combineLatest, from, Observable, of, throwError } from "rxjs";
-import { catchError, delay, map, shareReplay, tap } from "rxjs/operators";
+import {
+  catchError,
+  delay,
+  map,
+  share,
+  shareReplay,
+  tap,
+} from "rxjs/operators";
 import { RequestCache } from "./request-cache.service";
 import { Store } from "@ngrx/store";
 import { incrementLoading, decrementLoading } from "../store/actions/actions";
@@ -23,7 +30,7 @@ export class CachingInterceptor implements HttpInterceptor {
     private notifs: NotificationsService
   ) {}
   //intercepts the current http call to check if the request has already been cached
-  intercept(
+  public intercept(
     req: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
@@ -31,9 +38,18 @@ export class CachingInterceptor implements HttpInterceptor {
       return next.handle(req); //put and post requests are not cached
     } else {
       const cachedObject = this.cache.get(req); //get the cached response
-      let response: HttpResponse<any>;
-      response = cachedObject?.response; //get the response from the cachedObject
-      if (response && !cachedObject.expired) return of(response); //return observable of response
+      const response: HttpResponse<any> = cachedObject?.response; //get the response from the cachedObject
+
+      of(response).subscribe((res) => {
+        console.log(
+          "response for " + req.url + ":",
+          res,
+          !res ? ". Send new request" : ""
+        );
+      });
+      if (response && !cachedObject.expired) {
+        return of(response).pipe(share());
+      } //return observable of response
 
       //no cached response or response expired
       return this.sendRequest(req, next, response);

@@ -15,14 +15,10 @@ import { CardsData } from "../store/reducer";
   providedIn: "root",
 })
 export class CardsService {
-  private save: string; //save the abrv call so we dont make a new call if the lecture hasnt changed
-  private chache: Observable<CardsData>;
   private config = new HttpConfig(); //configuration for http communication with the server
 
   constructor(
-    private notifications: NotificationsService, //display errors to user
     private http: HttpClient, //to make calls to the server
-
     private router: Router //used to get the lecture abreviation from the route
   ) {}
 
@@ -37,7 +33,7 @@ export class CardsService {
       .pipe(map((res) => res.body));
   }
 
-  updateCard2(card: Card): Observable<any> {
+  updateCard(card: Card): Observable<any> {
     //send update to server using http service
     return this.http
       .put<any>(

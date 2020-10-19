@@ -127,7 +127,7 @@ export class CardsEffects {
       ofType(UpdateCardActions.updateCard),
       withLatestFrom(this.data$.pipe(map(selectActiveIndex))),
       exhaustMap(([action, activeIndex]) =>
-        this.cards.updateCard2(action.card).pipe(
+        this.cards.updateCard(action.card).pipe(
           tap(() => {
             setTimeout(() => {
               this.store.dispatch(setActiveCardIndex({ index: activeIndex }));

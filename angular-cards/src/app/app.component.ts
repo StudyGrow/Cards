@@ -14,9 +14,9 @@ export class AppComponent {
   public constructor(private titleService: Title, private store: Store<any>) {
     this.store.dispatch(auth());
 
-    if (isDevMode())
-      //log state only in development mode
-      this.store.select("cardsData").subscribe((data) => console.log(data));
+    //if (isDevMode())this.store.select("cardsData").subscribe((data) => console.log(data));
+    //log state only in development mode
+
     this.titleService.setTitle("Home");
   }
 }
