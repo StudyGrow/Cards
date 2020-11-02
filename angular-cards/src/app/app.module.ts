@@ -1,7 +1,7 @@
 //Core Modules
 import { BrowserModule } from "@angular/platform-browser";
 import { NgModule, Injectable, LOCALE_ID } from "@angular/core";
-import { HttpClientModule } from "@angular/common/http";
+import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { SharedModule } from "./shared/shared.module";
 import { AppRoutingModule } from "./app-routing.module";
 import { StoreModule } from "@ngrx/store";
@@ -58,11 +58,7 @@ import { ViewContainerComponent } from "./components/view-container/view-contain
 import { HomeModule } from "./home/home.module";
 import { ServiceWorkerModule } from "@angular/service-worker";
 import { environment } from "../environments/environment";
-
-import { HTTP_INTERCEPTORS } from "@angular/common/http";
-import { RequestCache } from "./cache/request-cache.service";
 import { CachingInterceptor } from "./cache/caching-interceptor.service";
-import { ModalComponent } from "./components/modal/modal.component";
 
 declare var Hammer: any;
 //Config to allow swipe gestures on carousel
@@ -97,7 +93,6 @@ export class MyHammerConfig extends HammerGestureConfig {
     AppComponent,
     NavBarComponent,
     SearchBarComponent,
-
     LoginPageComponent,
     LoginFormComponent,
     SignupPageComponent,
@@ -105,28 +100,20 @@ export class MyHammerConfig extends HammerGestureConfig {
     FooterComponent,
     AboutComponent,
     ErrorPageComponent,
-
     ConfirmationPageComponent,
-
     ConfirmationComponent,
     NavListComponent,
     ViewContainerComponent,
-    ModalComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule,
     BrowserAnimationsModule,
-    MatProgressBarModule,
-
-    MatSidenavModule,
-
-    MatDividerModule,
-
-    MatMenuModule,
+    HttpClientModule,
     SharedModule,
-
+    MatProgressBarModule,
+    MatSidenavModule,
+    MatMenuModule,
     MatSelectModule,
     HammerModule,
     HomeModule,
@@ -138,7 +125,7 @@ export class MyHammerConfig extends HammerGestureConfig {
     }),
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: CachingInterceptor, multi: true },
+    // { provide: HTTP_INTERCEPTORS, useClass: CachingInterceptor, multi: true },
     { provide: LOCALE_ID, useValue: "de" },
 
     {

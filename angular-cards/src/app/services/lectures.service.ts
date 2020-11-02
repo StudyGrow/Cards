@@ -23,21 +23,11 @@ export class LecturesService {
   getAllLectures(): Observable<Vorlesung[]> {
     //load lectures from the server
 
-    let call = this.http
+    return this.http
       .get<Vorlesung[]>(this.config.urlBase + "lectures", {
         observe: "response",
       })
-      .pipe(
-        tap((res) => {
-          console.log("lectures response: ", res);
-        }),
-        map((res) => res.body)
-      );
-
-    call.subscribe((res) => {
-      console.log("lectures response: ", res);
-    });
-    return call;
+      .pipe(map((res) => res.body));
   }
 
   //add a lecture to the database on the server

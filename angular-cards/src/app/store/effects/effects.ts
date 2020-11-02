@@ -60,12 +60,12 @@ export class CardsEffects {
   loadCards$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FetchCardsActions.fetchCards),
-      switchMap(() => {
-        return this.cards.fetchCardsData().pipe(
+      switchMap(() =>
+        this.cards.fetchCardsData().pipe(
           map((data) => FetchCardsActions.LoadSuccess({ data: data })),
           catchError((reason) => of(LoadFailure({ reason: reason })))
-        );
-      }),
+        )
+      ),
       share()
     )
   );
@@ -74,15 +74,13 @@ export class CardsEffects {
   fetchLectures$ = createEffect(() =>
     this.actions$.pipe(
       ofType(LectureActions.fetchLectures),
-      switchMap(() => {
-        return this.lectures
-          .getAllLectures()
-          .pipe(
-            map((data) =>
-              LectureActions.fetchLecturesSuccess({ lectures: data })
-            )
-          );
-      }),
+      switchMap(() =>
+        this.lectures.getAllLectures().pipe(
+          map((data) => {
+            return LectureActions.fetchLecturesSuccess({ lectures: data });
+          })
+        )
+      ),
       share()
     )
   );
