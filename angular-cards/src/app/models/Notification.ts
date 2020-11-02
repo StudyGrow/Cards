@@ -8,7 +8,7 @@ export abstract class Notification {
   }
 }
 
-export class HttpError extends Notification {
+export class WarnMessage extends Notification {
   code: number;
   constructor(m: string, c?: number) {
     super("warning", m);

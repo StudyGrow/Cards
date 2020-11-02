@@ -1,6 +1,12 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from "@angular/core";
 import { Card } from "../../models/Card";
-import { Router, NavigationEnd } from "@angular/router";
+import {
+  Router,
+  NavigationEnd,
+  RouterEvent,
+  NavigationStart,
+  RoutesRecognized,
+} from "@angular/router";
 import { Title } from "@angular/platform-browser";
 
 import { NotificationsService } from "../../services/notifications.service";
@@ -15,9 +21,9 @@ import {
   setDrawerState,
   resetFilter,
 } from "src/app/store/actions/actions";
-import { map } from "rxjs/operators";
-import { authenticated } from "src/app/store/selector";
-import { clearCardData } from "src/app/store/actions/cardActions";
+import { filter, map } from "rxjs/operators";
+import { authenticated, getCardsData } from "src/app/store/selector";
+import { clearCardData, fetchCards } from "src/app/store/actions/cardActions";
 
 @Component({
   selector: "app-nav-bar",
@@ -29,7 +35,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
   public cards: Card[] = [];
 
   subscriptions$: Subscription[] = [];
-  showCards: boolean;
+  showSearch: boolean;
   public loading: boolean;
   public loading$: Observable<boolean>;
 
@@ -45,7 +51,6 @@ export class NavBarComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     setTimeout(() => {
-      this.setPageTitle();
       let sub = this.store
         .select("cardsData")
         .pipe(map((state) => state.loading))
@@ -55,28 +60,32 @@ export class NavBarComponent implements OnInit, OnDestroy {
         });
       this.subscriptions$.push(sub);
 
-      sub = this.router.events.subscribe((e) => {
-        if (e instanceof NavigationEnd) {
-          this.handleRouteChanges();
-        }
-      });
+      sub = this.router.events
+        .pipe(filter((e): e is RouterEvent => e instanceof RouterEvent))
+        .subscribe((e) => {
+          this.handleRouteChanges(e);
+        });
       this.subscriptions$.push(sub);
     }, 1);
   }
-  handleRouteChanges() {
-    this.store.dispatch(setDrawerState({ show: false })); //hide drawer when changing route
+  private handleRouteChanges(e: RouterEvent) {
+    if (e instanceof RoutesRecognized) {
+      this.store.dispatch(setDrawerState({ show: false })); //hide drawer when changing route
+      this.setPageTitle(e);
+      if (e.url.match(/vorlesung/)) {
+        this.showSearch = true;
+        //this.store.dispatch(fetchCards());
+      } else {
+        this.showSearch = false;
+      }
+    } else if (e instanceof NavigationEnd) {
+      if (!e.url.match(/vorlesung/)) this.store.dispatch(clearCardData()); //clear card data on store when leaving lecture route
+    }
+  }
+  private updateTitle() {
     if (this.router.url.match(/account/)) {
       this.titleService.setTitle("Account");
-    }
-    if (this.router.url.match(/vorlesung/)) {
-      this.showCards = true;
-    } else {
-      this.store.dispatch(clearCardData());
-      this.store.dispatch(resetFilter());
-      this.showCards = false;
-    }
-    //clear messages on route change
-    if (this.router.url == "/") {
+    } else if (this.router.url == "/") {
       this.titleService.setTitle("Home");
     }
   }
@@ -91,9 +100,10 @@ export class NavBarComponent implements OnInit, OnDestroy {
     return path === this.router.url ? "active" : "";
   }
 
-  setPageTitle(): void {
-    let currentTitle: string;
-    switch (this.router.url) {
+  setPageTitle(e: RouterEvent): void {
+    let currentTitle = "Cards";
+
+    switch (e.url) {
       case "/login":
         currentTitle = "Login";
         break;
@@ -103,11 +113,12 @@ export class NavBarComponent implements OnInit, OnDestroy {
       case "/":
         currentTitle = "Home";
         break;
+
       default:
-        currentTitle = "Cards";
         if (this.router.url.match(/account/)) {
           currentTitle = "Account";
         }
+        break;
     }
     this.titleService.setTitle(currentTitle);
   }

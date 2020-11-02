@@ -3,7 +3,11 @@ import { UserInfo } from "../models/UserInfo";
 import { Observable, BehaviorSubject, of, Subject, Subscription } from "rxjs";
 import { Router, CanActivate } from "@angular/router";
 import { tap, map, share } from "rxjs/operators";
-import { InfoMessage, HttpError, SuccessMessage } from "../models/Notification";
+import {
+  InfoMessage,
+  WarnMessage,
+  SuccessMessage,
+} from "../models/Notification";
 import { NotificationsService } from "./notifications.service";
 import { HttpConfig } from "./config";
 import { HttpClient } from "@angular/common/http";
@@ -17,8 +21,6 @@ import { authenticated } from "../store/selector";
   providedIn: "root",
 })
 export class UserService implements CanActivate {
-  private accountInfo$: BehaviorSubject<UserInfo>; //stores account info of the user
-
   private config = new HttpConfig();
 
   constructor(
@@ -75,7 +77,7 @@ export class UserService implements CanActivate {
               res.body.user.creationDate = new Date(res.body.user.creationDate);
             }
           },
-          (error) => {
+          () => {
             this.router.navigateByUrl("/login");
           }
         ),

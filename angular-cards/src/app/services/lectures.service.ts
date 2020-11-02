@@ -14,29 +14,20 @@ import { Vorlesung } from "../models/Vorlesung";
 })
 export class LecturesService {
   private config = new HttpConfig();
-  private cache: Observable<Vorlesung[]>;
 
   constructor(
-    private notifications: NotificationsService,
     private http: HttpClient //for sending http requests
   ) {}
 
   //get an array of all lectures
   getAllLectures(): Observable<Vorlesung[]> {
     //load lectures from the server
-    if (this.cache) {
-      return this.cache;
-    } else {
-      this.cache = this.http
-        .get<Vorlesung[]>(this.config.urlBase + "lectures", {
-          observe: "response",
-        })
-        .pipe(
-          map((res) => res.body),
-          shareReplay({ bufferSize: 1, refCount: true })
-        );
-      return this.cache;
-    }
+
+    return this.http
+      .get<Vorlesung[]>(this.config.urlBase + "lectures", {
+        observe: "response",
+      })
+      .pipe(map((res) => res.body));
   }
 
   //add a lecture to the database on the server

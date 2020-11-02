@@ -70,7 +70,7 @@ const _cardsReducer = createReducer(
   })),
   on(LectureActions.fetchLecturesSuccess, (state, { lectures }) => ({
     ...state,
-    lectures: lectures,
+    lectures: [...lectures],
   })),
   on(StateActions.setFormMode, (state, { mode }) => ({
     ...state,
@@ -160,6 +160,7 @@ const _cardsReducer = createReducer(
     formMode: initialState.formMode,
     currLecture: initialState.currLecture,
     cards: initialState.cards,
+    tags: initialState.tags,
     filteredCardsChanged: new Date(),
   })),
 
@@ -175,7 +176,7 @@ const _cardsReducer = createReducer(
   })),
   on(StateActions.resetFilter, (state) => ({
     ...state,
-    tags: [],
+    tags: initialState.tags,
 
     filteredCardsChanged: new Date(),
   })),

@@ -25,6 +25,9 @@ import {
   MatPaginatorModule,
 } from "@angular/material/paginator";
 import { getGermanPaginatorIntl } from "../profile/cards-overview/paginator.options";
+import { HTTP_INTERCEPTORS } from "@angular/common/http";
+import { CachingInterceptor } from "../cache/caching-interceptor.service";
+import { MatDividerModule } from "@angular/material/divider";
 @NgModule({
   imports: [
     MatExpansionModule,
@@ -48,6 +51,7 @@ import { getGermanPaginatorIntl } from "../profile/cards-overview/paginator.opti
     MatToolbarModule,
     MatCardModule,
     MatChipsModule,
+    MatDividerModule,
     MatRippleModule,
     MatIconModule,
     FormsModule,
