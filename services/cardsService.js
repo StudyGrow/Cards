@@ -38,6 +38,27 @@ module.exports = function cardsService() {
     }
   };
 
+  //used to migrate data
+  cardsService.renew = async () => {
+    let cards = await Card.find({ vorlesung: "mal" });
+    cards.forEach((card) => {
+      // Card.findOneAndDelete({ content: card.content });
+      cardsService.addCard(
+        {
+          content: card.content,
+          thema: card.thema,
+          abrv: "MaLo",
+          tags: ["Definitionen"],
+        },
+        null,
+        (err, id) => {
+          if (err) {
+            console.error(err);
+          } else console.log(id);
+        }
+      );
+    });
+  };
   //updates a card in the database
   cardsService.updateCard = async (card, user, callback) => {
     try {

@@ -28,7 +28,6 @@ require("./models/Card");
 require("./models/Lecture");
 require("./models/User");
 const app = require("./app");
-app.use(helmet());
 
 app.use(helmet());
 

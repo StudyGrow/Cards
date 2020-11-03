@@ -102,6 +102,11 @@ router.post(
   }
 );
 
+// router.get("/renew", (req, res) => {
+//   req.services.cards.renew();
+//   res.send();
+// });
+
 //Update Card in the database
 router.put(
   "/update",
