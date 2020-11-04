@@ -71,11 +71,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
       this.subscriptions$.push(sub);
     }, 1);
   }
-  toggleDarkMode(e: MatSlideToggleChange) {
-    this.store.dispatch(
-      changeTheme({ theme: e.checked ? "dark-theme" : "default" })
-    );
-  }
+
   private handleRouteChanges(e: RouterEvent) {
     if (e instanceof RoutesRecognized) {
       this.store.dispatch(setDrawerState({ show: false })); //hide drawer when changing route

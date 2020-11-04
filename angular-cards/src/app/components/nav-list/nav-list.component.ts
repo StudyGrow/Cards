@@ -10,6 +10,8 @@ import { Observable, Subscription } from "rxjs";
 import { logout as logoutUser } from "src/app/store/actions/UserActions";
 import { NotificationsService } from "src/app/services/notifications.service";
 import { Notification, SuccessMessage } from "src/app/models/Notification";
+import { changeTheme } from "src/app/store/actions/actions";
+import { MatSlideToggleChange } from "@angular/material/slide-toggle";
 
 @Component({
   selector: "app-nav-list",
@@ -20,7 +22,11 @@ export class NavListComponent implements OnInit {
   loggedIn$: Observable<boolean>;
 
   constructor(private router: Router, private store: Store<any>) {}
-
+  toggleDarkMode(e: MatSlideToggleChange) {
+    this.store.dispatch(
+      changeTheme({ theme: e.checked ? "dark-theme" : "default" })
+    );
+  }
   ngOnInit(): void {
     this.loggedIn$ = this.store.select("cardsData").pipe(map(authenticated));
   }
