@@ -4,7 +4,7 @@ import { SharedModule } from "../shared/shared.module";
 import { CardsRoutingModule } from "./cards-routing.module";
 import { CardsComponent } from "./cards.component";
 import { CardComponent } from "./card/card.component";
-import { AddCardFormComponent } from "./add-card-form/add-card-form.component";
+
 import { CarouselComponent } from "./carousel/carousel.component";
 import { FilterTagsComponent } from "./filter-tags/filter-tags.component";
 
@@ -18,7 +18,7 @@ import { FormComponent } from "../cards/form/form.component";
   declarations: [
     CardsComponent,
     CardComponent,
-    AddCardFormComponent,
+
     CarouselComponent,
     FilterTagsComponent,
     NewVlComponent,
