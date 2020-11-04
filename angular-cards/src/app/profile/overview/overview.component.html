@@ -1,52 +1,51 @@
 <div *ngIf="(user$ | async).confirmed == false" class="alert alert-info">
   Überprüfe dein Email Postfach, um deinen Account zu bestätigen
 </div>
-<div class="card" *ngIf="user$ | async as user">
-  <div class="card-body">
-    <h2 class="card-title">
-      <img src="assets/profile.svg" alt="Profile picture" /> {{ user.username }}
-    </h2>
-  </div>
-  <ul class="list-group list-group-flush">
-    <li class="list-group-item">
-      <div class="row">
-        <div class="col-6">
-          Email
-        </div>
-        <div class="col-6 text-right">
-          {{ user.email }}
-        </div>
-      </div>
-    </li>
-    <li *ngIf="user.name" class="list-group-item">
-      <div class="row">
-        <div class="col-6">
-          Vorname
-        </div>
-        <div class="col-6 text-right">
-          {{ user.name }}
-        </div>
-      </div>
-    </li>
-    <li *ngIf="user.surname" class="list-group-item">
-      <div class="row">
-        <div class="col-6">
-          Nachname
-        </div>
-        <div class="col-6 text-right">
-          {{ user.surname }}
-        </div>
-      </div>
-    </li>
-    <li *ngIf="user.creationDate" class="list-group-item">
-      <div class="row">
-        <div class="col-6">
-          Mitglied seit
-        </div>
-        <div class="col-6 text-right">
-          {{ user.creationDate | date: "longDate":"de" }}
-        </div>
-      </div>
-    </li>
-  </ul>
-</div>
+<mat-card *ngIf="user$ | async as user">
+  <mat-card-header>
+    <div mat-card-avatar class="example-header-image">
+      <img src="assets/profile.svg" alt="Profile picture" />
+    </div>
+    <mat-card-title *ngIf="user.name">
+      {{ user.name }} {{ user.surname }}</mat-card-title
+    >
+    <mat-card-subtitle>@{{ user.username }}</mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content>
+    <mat-list role="list">
+      <mat-list-item role="listitem"
+        ><div class="row w-100">
+          <div class="col">Email</div>
+          <div class="col">
+            {{ user.email }}
+          </div>
+        </div></mat-list-item
+      >
+      <mat-list-item role="listitem" *ngIf="user.name"
+        ><div class="row w-100">
+          <div class="col">Vorname</div>
+          <div class="col">
+            {{ user.name }}
+          </div>
+        </div></mat-list-item
+      >
+      <mat-list-item role="listitem" *ngIf="user.surname">
+        <div class="row w-100">
+          <div class="col">Nachname</div>
+          <div class="col">
+            {{ user.surname }}
+          </div>
+        </div></mat-list-item
+      >
+      <mat-list-item role="listitem" *ngIf="user.creationDate">
+        <div class="row w-100">
+          <div class="col">Mitglied seit</div>
+          <div class="col">
+            {{ user.creationDate | date: "longDate":"de" }}
+          </div>
+        </div></mat-list-item
+      >
+    </mat-list>
+  </mat-card-content>
+</mat-card>

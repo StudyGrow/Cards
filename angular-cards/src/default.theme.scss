@@ -33,8 +33,11 @@ snack-bar-container.success {
 .mat-paginator {
   background: none;
 }
-
+pre.dark-theme {
+  color: white !important;
+}
 .dark-theme {
   background-color: #424242;
+
   @include angular-material-theme($dark-theme);
 }

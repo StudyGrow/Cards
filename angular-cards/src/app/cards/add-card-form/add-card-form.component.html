@@ -1,10 +1,10 @@
 <div id="addCard">
   <form #f="ngForm" (ngSubmit)="onSubmit(f)" novalidate>
     <h4>Karteikarte hinzufügen</h4>
-    <div class="form-group">
-      <label for="thema">Frage</label>
+    <mat-form-field appearance="standard" class="w-100">
+      <mat-label>Frage</mat-label>
       <input
-        class="form-control"
+        matInput
         id="thema"
         name="thema"
         type="text"
@@ -13,38 +13,23 @@
         required
         #thema="ngModel"
         ngModel
-        (focus)="inField()"
-        (blur)="resetNav()"
       />
-      <small
-        class="form-text float-right"
-        [ngStyle]="setThemaCharIndicatorStyle(thema)"
-        >{{ getLength(thema) }}/500
-      </small>
-    </div>
-    <div class="form-group">
-      <label for="content">Antwort</label>
+    </mat-form-field>
+    <mat-form-field appearance="standard" class="w-100">
+      <mat-label>Antwort</mat-label>
       <textarea
-        class="form-control"
         id="content"
         name="content"
         rows="5"
         required
         #content="ngModel"
         ngModel
-        (focus)="inField()"
-        (blur)="resetNav()"
       ></textarea>
-      <small
-        class="form-text float-right"
-        [ngStyle]="setContentCharIndicatorStyle(content)"
-        >{{ getLength(content) }}/1000
-      </small>
-    </div>
-    <div class="form-group">
-      <label for="thema">Tags</label>
+    </mat-form-field>
+    <mat-form-field appearance="standard" class="w-100">
+      <mat-label>Tags</mat-label>
       <input
-        class="form-control"
+        matInput
         id="tags"
         name="tags"
         type="text"
@@ -52,13 +37,12 @@
         minlength="3"
         #tags="ngModel"
         ngModel
-        (focus)="inField()"
-        (blur)="resetNav()"
       />
-      <small class="form-text text-muted">Trenne Tags mit einem # </small>
-    </div>
+    </mat-form-field>
+
     <input
-      class="btn btn-primary mb-2"
+      mat-flat-button
+      color="primary"
       id="addBtn"
       type="submit"
       value="Hinzufügen"

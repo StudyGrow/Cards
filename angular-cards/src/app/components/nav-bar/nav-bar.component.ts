@@ -20,10 +20,12 @@ import {
   toggleDrawerState,
   setDrawerState,
   resetFilter,
+  changeTheme,
 } from "src/app/store/actions/actions";
 import { filter, map } from "rxjs/operators";
 import { authenticated, getCardsData } from "src/app/store/selector";
 import { clearCardData, fetchCards } from "src/app/store/actions/cardActions";
+import { MatSlideToggleChange } from "@angular/material/slide-toggle";
 
 @Component({
   selector: "app-nav-bar",
@@ -34,6 +36,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
   public loggedIn: boolean;
   public cards: Card[] = [];
 
+  experiment: boolean = false;
   subscriptions$: Subscription[] = [];
   showSearch: boolean;
   public loading: boolean;
@@ -68,6 +71,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
       this.subscriptions$.push(sub);
     }, 1);
   }
+
   private handleRouteChanges(e: RouterEvent) {
     if (e instanceof RoutesRecognized) {
       this.store.dispatch(setDrawerState({ show: false })); //hide drawer when changing route

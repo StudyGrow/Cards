@@ -13,6 +13,7 @@ enum ActionTypes {
   REMOVE_TAG = "[Filter] remove tag from the filter",
   ADD_TAG = "[Filter] add tag to the filter",
   CHANGE_TAB = "[Tab] change the tab on cards view",
+  CHABGE_THEME = "[Theme] change theme",
 }
 
 export const changeTab = createAction(
@@ -23,7 +24,10 @@ export const applyFilter = createAction(
   ActionTypes.APPLY_FILTER,
   props<{ tags: string[] }>()
 );
-
+export const changeTheme = createAction(
+  ActionTypes.CHABGE_THEME,
+  props<{ theme: string }>()
+);
 export const addTag = createAction(
   ActionTypes.ADD_TAG,
   props<{ tag: string }>()
