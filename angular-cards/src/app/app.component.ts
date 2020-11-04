@@ -23,9 +23,7 @@ export class AppComponent {
   ) {
     this.store.dispatch(auth());
     this.cachedTheme = localStorage.getItem("theme");
-    this.store.dispatch(
-      changeTheme({ theme: this.cachedTheme ? this.cachedTheme : "default" })
-    );
+
     this.theme$ = this.store
       .select("cardsData")
       .pipe(map((data) => data.theme));

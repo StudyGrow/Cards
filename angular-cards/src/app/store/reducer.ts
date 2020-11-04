@@ -45,7 +45,9 @@ export const initialState: AppState = {
   loading: 0,
   tags: [],
   currTab: 1,
-  theme: "default",
+  theme: localStorage.getItem("theme")
+    ? localStorage.getItem("theme")
+    : "default",
   filteredCardsChanged: new Date(),
 };
 

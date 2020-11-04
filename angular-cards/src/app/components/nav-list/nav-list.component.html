@@ -38,7 +38,10 @@
     <mat-icon>contacts</mat-icon> Infos
   </a>
   <mat-divider></mat-divider>
-  <mat-slide-toggle class="ml-2 mb.0" (change)="toggleDarkMode($event)"
+  <mat-slide-toggle
+    #darkmode
+    class="ml-3 mb.0 mt-1"
+    (change)="toggleDarkMode($event)"
     >Darkmode</mat-slide-toggle
   >
   <a
