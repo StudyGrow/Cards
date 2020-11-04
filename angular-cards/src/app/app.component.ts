@@ -5,6 +5,7 @@ import { Store } from "@ngrx/store";
 import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
 import { LecturesService } from "./services/lectures.service";
+import { changeTheme } from "./store/actions/actions";
 import { auth } from "./store/actions/UserActions";
 
 @Component({
@@ -14,12 +15,17 @@ import { auth } from "./store/actions/UserActions";
 })
 export class AppComponent {
   theme$: Observable<string>;
+  cachedTheme: string;
   public constructor(
     private titleService: Title,
     private store: Store<any>,
     private lect: LecturesService
   ) {
     this.store.dispatch(auth());
+    this.cachedTheme = localStorage.getItem("theme");
+    this.store.dispatch(
+      changeTheme({ theme: this.cachedTheme ? this.cachedTheme : "default" })
+    );
     this.theme$ = this.store
       .select("cardsData")
       .pipe(map((data) => data.theme));

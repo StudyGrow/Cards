@@ -23,6 +23,7 @@ export class NavListComponent implements OnInit {
 
   constructor(private router: Router, private store: Store<any>) {}
   toggleDarkMode(e: MatSlideToggleChange) {
+    localStorage.setItem("theme", e.checked ? "dark-theme" : "default");
     this.store.dispatch(
       changeTheme({ theme: e.checked ? "dark-theme" : "default" })
     );
