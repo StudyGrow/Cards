@@ -61,15 +61,24 @@ const _cardsReducer = createReducer(
   on(StateActions.changeTab, (state, { tab }) => ({ ...state, currTab: tab })),
   on(Actions.addCardSuccess, (state, { card }) => ({
     ...state,
-    cards: [
-      ...state.cards,
-      {
-        //add card
-        ...card,
-        authorId: state.userData.user._id, //add user id
-        authorName: state.userData.user.username, //add username
-      },
-    ],
+    cards: state.cards
+      ? [
+          ...state.cards,
+          {
+            //add card
+            ...card,
+            authorId: state.userData.user._id, //add user id
+            authorName: state.userData.user.username, //add username
+          },
+        ]
+      : [
+          {
+            //add card
+            ...card,
+            authorId: state.userData.user._id, //add user id
+            authorName: state.userData.user.username, //add username
+          },
+        ],
     currLecture: {
       ...state.currLecture,
       tagList: addTags([...state.currLecture.tagList], card.tags),
@@ -86,7 +95,7 @@ const _cardsReducer = createReducer(
   })),
   on(LectureActions.addLercture, (state, { lecture }) => ({
     ...state,
-    lectures: [...state.lectures, lecture],
+    lectures: state.lectures ? [...state.lectures, lecture] : [lecture],
   })),
   on(Actions.updateCardSuccess, (state, { card }) => ({
     ...state,

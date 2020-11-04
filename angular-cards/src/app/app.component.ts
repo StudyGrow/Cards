@@ -33,9 +33,7 @@ export class AppComponent {
       this.renderer.addClass(document.body, "dark-theme");
     }
     if (isDevMode())
-      this.store
-        .select("cardsData")
-        .subscribe((data) => console.log(data.currLecture));
+      this.store.select("cardsData").subscribe((data) => console.log(data));
     //log state only in development mode
 
     this.titleService.setTitle("Home");

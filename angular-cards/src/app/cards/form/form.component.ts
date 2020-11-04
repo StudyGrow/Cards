@@ -78,7 +78,8 @@ export class FormComponent implements OnInit, OnDestroy {
   constructor(
     public dialog: MatDialog,
     private store: Store<any>,
-    private actionState: CardsEffects
+    private actionState: CardsEffects,
+    private router: Router
   ) {}
 
   createFormGroup(...args: string[]) {
@@ -163,6 +164,17 @@ export class FormComponent implements OnInit, OnDestroy {
         else this.resetForm(); //clear data from form
       }
     });
+    this.subscriptions$.push(sub);
+
+    if (this.neu) {
+      this.lecture = JSON.parse(localStorage.getItem("vl"));
+      sub = this.actionState.addLecture$.subscribe(() =>
+        this.router.navigateByUrl(
+          `vorlesung/${JSON.parse(localStorage.getItem("vl")).abrv}`
+        )
+      );
+      this.subscriptions$.push(sub);
+    }
   }
   ngOnDestroy() {
     this.subscriptions$.forEach((sub) => {
@@ -182,7 +194,9 @@ export class FormComponent implements OnInit, OnDestroy {
         this.form.value.thema,
         this.form.value.content,
         this.selectedTags,
-        this.lecture.abrv
+        this.neu
+          ? JSON.parse(localStorage.getItem("vl")).abrv
+          : this.lecture.abrv
       );
       if (this.form.value.content.includes("$")) {
         card.latex = 1;
@@ -204,7 +218,11 @@ export class FormComponent implements OnInit, OnDestroy {
       card.authorId = this.author._id;
       card.authorName = this.author.name;
     }
-
+    if (this.neu) {
+      this.store.dispatch(
+        addLercture({ lecture: JSON.parse(localStorage.getItem("vl")) })
+      );
+    }
     this.store.dispatch(addCard({ card: card }));
     let sub = this.actionState.addCard$.subscribe((card) => {
       if (card) {
