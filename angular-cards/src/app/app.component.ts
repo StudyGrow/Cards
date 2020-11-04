@@ -1,4 +1,10 @@
-import { Component, ViewChild, ElementRef, isDevMode } from "@angular/core";
+import {
+  Component,
+  ViewChild,
+  ElementRef,
+  isDevMode,
+  Renderer2,
+} from "@angular/core";
 import { Title } from "@angular/platform-browser";
 import { Router } from "@angular/router";
 import { Store } from "@ngrx/store";
@@ -19,14 +25,13 @@ export class AppComponent {
   public constructor(
     private titleService: Title,
     private store: Store<any>,
-    private lect: LecturesService
+    private renderer: Renderer2
   ) {
     this.store.dispatch(auth());
-    this.cachedTheme = localStorage.getItem("theme");
-
-    this.theme$ = this.store
-      .select("cardsData")
-      .pipe(map((data) => data.theme));
+    let theme = localStorage.getItem("theme");
+    if (theme === "dark-theme") {
+      this.renderer.addClass(document.body, "dark-theme");
+    }
     if (isDevMode())
       this.store
         .select("cardsData")
