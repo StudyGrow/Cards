@@ -11,6 +11,7 @@ import { MatTooltipModule } from "@angular/material/tooltip";
 import { MatListModule } from "@angular/material/list";
 import { MatTabsModule } from "@angular/material/tabs";
 import { SafeHtmlPipe } from "./safe-html.pipe";
+import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 import { MatRippleModule } from "@angular/material/core";
 import { MatInputModule } from "@angular/material/input";
 import { MatAutocompleteModule } from "@angular/material/autocomplete";
@@ -53,6 +54,7 @@ import { MatDividerModule } from "@angular/material/divider";
     MatChipsModule,
     MatDividerModule,
     MatRippleModule,
+    MatSlideToggleModule,
     MatIconModule,
     FormsModule,
     MatListModule,

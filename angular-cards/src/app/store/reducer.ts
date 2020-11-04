@@ -24,6 +24,7 @@ export interface AppState {
   tags: string[];
   filteredCardsChanged: Date;
   currTab: number;
+  theme: string;
 }
 export class CardsData {
   cards: Card[];
@@ -44,12 +45,17 @@ export const initialState: AppState = {
   loading: 0,
   tags: [],
   currTab: 1,
+  theme: "default",
   filteredCardsChanged: new Date(),
 };
 
 //Reducer which will dispatch changes to the store
 const _cardsReducer = createReducer(
   initialState,
+  on(StateActions.changeTheme, (state, { theme }) => ({
+    ...state,
+    theme: theme,
+  })),
   on(StateActions.changeTab, (state, { tab }) => ({ ...state, currTab: tab })),
   on(Actions.addCardSuccess, (state, { card }) => ({
     ...state,
