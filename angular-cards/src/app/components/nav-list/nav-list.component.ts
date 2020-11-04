@@ -62,7 +62,6 @@ export class NavListComponent implements OnInit {
     this.sub = this.theme$.subscribe((theme) => {
       if (theme === "dark-theme" && this.toggle && !this.toggle.checked) {
         this.toggle.toggle();
-
         this.sub.unsubscribe();
       }
     });

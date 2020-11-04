@@ -1,4 +1,4 @@
-<div class="list-group" *ngIf="cards$ | async as cards">
+<div *ngIf="cards$ | async as cards">
   <div class="d-flex justify-content-center">
     <mat-paginator
       [length]="cardCount || 0"
@@ -8,17 +8,26 @@
     >
     </mat-paginator>
   </div>
-  <a
-    *ngFor="let card of cards.slice(start, end)"
-    [@fadeInOnEnter]
-    class="list-group-item list-group-item-action rounded"
-  >
-    <div class="d-flex w-100 justify-content-between">
-      <h5 class="mb-1">{{ card.thema }}</h5>
-      <small>{{ card.date | date: "longDate":"de" }}</small>
-    </div>
-    <p class="mb-1">
-      {{ card.content }}
-    </p>
-  </a>
+
+  <mat-list>
+    <mat-list-item
+      class="h-100 mb-2"
+      *ngFor="let card of cards.slice(start, end)"
+      [@fadeInOnEnter]
+    >
+      <mat-card class="w-100">
+        <mat-card-header>
+          <mat-card-title>
+            {{ card.thema }}
+          </mat-card-title>
+          <mat-card-subtitle>
+            {{ card.date | date: "longDate":"de" }}
+          </mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <p>{{ card.content }}</p>
+        </mat-card-content>
+      </mat-card>
+    </mat-list-item>
+  </mat-list>
 </div>

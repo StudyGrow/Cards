@@ -38,5 +38,6 @@ pre.dark-theme {
 }
 .dark-theme {
   background-color: #424242;
+
   @include angular-material-theme($dark-theme);
 }
