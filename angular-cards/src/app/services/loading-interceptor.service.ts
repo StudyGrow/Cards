@@ -10,12 +10,13 @@ import { Observable } from "rxjs";
 import { map, filter, tap, timeout } from "rxjs/operators";
 import { Store } from "@ngrx/store";
 import { decrementLoading, incrementLoading } from "../store/actions/actions";
+import { NotificationsService } from "./notifications.service";
 
 @Injectable({
   providedIn: "root",
 })
 export class LoadingInterceptorService implements HttpInterceptor {
-  constructor(private store: Store) {}
+  constructor(private store: Store, private notifs: NotificationsService) {}
 
   intercept(
     req: HttpRequest<any>,
@@ -32,7 +33,8 @@ export class LoadingInterceptorService implements HttpInterceptor {
           }
         },
         (err) => {
-          console.error("loading interceptorerror: ", err);
+          this.notifs.handleErrors(err);
+
           this.store.dispatch(decrementLoading());
         }
       )
