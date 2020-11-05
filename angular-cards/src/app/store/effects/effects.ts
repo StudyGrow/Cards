@@ -179,6 +179,7 @@ export class CardsEffects {
               this.notifications.addNotification(
                 new SuccessMessage(`Willkommen ${user.username}`)
               );
+              this.store.dispatch(fetchUserData());
             }
           }),
           map((user) => loginSuccess(user)),
