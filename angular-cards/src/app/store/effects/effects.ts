@@ -81,7 +81,7 @@ export class CardsEffects {
           })
         )
       ),
-      share()
+      shareReplay(1)
     )
   );
 

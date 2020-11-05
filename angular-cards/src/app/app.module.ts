@@ -59,6 +59,7 @@ import { HomeModule } from "./home/home.module";
 import { ServiceWorkerModule } from "@angular/service-worker";
 import { environment } from "../environments/environment";
 import { CachingInterceptor } from "./cache/caching-interceptor.service";
+import { LoadingInterceptorService } from "./services/loading-interceptor.service";
 
 declare var Hammer: any;
 //Config to allow swipe gestures on carousel
@@ -125,7 +126,11 @@ export class MyHammerConfig extends HammerGestureConfig {
     }),
   ],
   providers: [
-    // { provide: HTTP_INTERCEPTORS, useClass: CachingInterceptor, multi: true },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: LoadingInterceptorService,
+      multi: true,
+    },
     { provide: LOCALE_ID, useValue: "de" },
 
     {

@@ -27,7 +27,8 @@ export class CachingInterceptor implements HttpInterceptor {
     req: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    if (req.method == "POST" || req.method == "PUT") return next.handle(req); //put and post requests are not cached
+    //if (req.method == "POST" || req.method == "PUT") //put and post requests are not cached
+    return next.handle(req); //skip interception cos not work
 
     let cachedObject = this.cache.get(req); //get the cached response
     const response: HttpResponse<any> = cachedObject?.response; //get the response from the cachedObject

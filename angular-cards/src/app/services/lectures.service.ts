@@ -27,7 +27,10 @@ export class LecturesService {
       .get<Vorlesung[]>(this.config.urlBase + "lectures", {
         observe: "response",
       })
-      .pipe(map((res) => res.body));
+      .pipe(
+        map((res) => res.body),
+        shareReplay(1)
+      );
   }
 
   //add a lecture to the database on the server
