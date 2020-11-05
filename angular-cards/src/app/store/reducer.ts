@@ -180,6 +180,7 @@ const _cardsReducer = createReducer(
     tags: initialState.tags,
     filteredCardsChanged: new Date(),
     currTab: initialState.currTab,
+    activeIndex: initialState.activeIndex,
   })),
 
   on(StateActions.addTag, (state, { tag }) => ({
