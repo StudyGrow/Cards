@@ -28,11 +28,11 @@ export class SignupFormComponent implements OnInit {
     }
     return "";
   }
-  checkEmail(email) {
+  checkEmail(email: string) {
     if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
       return true;
     }
-
+    console.log("not email");
     return false;
   }
   getLength(elem) {
