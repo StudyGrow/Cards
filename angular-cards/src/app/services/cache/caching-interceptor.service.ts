@@ -7,13 +7,17 @@ import {
   HttpHandler,
   HttpErrorResponse,
 } from "@angular/common/http";
-import { WarnMessage } from "../models/Notification";
+
 import { Observable, of, throwError } from "rxjs";
 import { catchError, map, tap, timeout } from "rxjs/operators";
 import { RequestCache } from "./request-cache.service";
 import { Store } from "@ngrx/store";
-import { incrementLoading, decrementLoading } from "../store/actions/actions";
-import { NotificationsService } from "../services/notifications.service";
+import { NotificationsService } from "../notifications.service";
+import {
+  decrementLoading,
+  incrementLoading,
+} from "src/app/store/actions/actions";
+import { WarnMessage } from "src/app/models/Notification";
 
 @Injectable()
 export class CachingInterceptor implements HttpInterceptor {
@@ -27,8 +31,8 @@ export class CachingInterceptor implements HttpInterceptor {
     req: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    //if (req.method == "POST" || req.method == "PUT") //put and post requests are not cached
-    return next.handle(req); //skip interception cos not work
+    //if (req.method == "POST" || req.method == "PUT") return next.handle(req); //put and post requests are not cached
+    return this.sendRequest(req, next, this.cache); //skip interception cos not work
 
     let cachedObject = this.cache.get(req); //get the cached response
     const response: HttpResponse<any> = cachedObject?.response; //get the response from the cachedObject

@@ -58,7 +58,7 @@ import { ViewContainerComponent } from "./components/view-container/view-contain
 import { HomeModule } from "./home/home.module";
 import { ServiceWorkerModule } from "@angular/service-worker";
 import { environment } from "../environments/environment";
-import { CachingInterceptor } from "./cache/caching-interceptor.service";
+
 import { LoadingInterceptorService } from "./services/loading-interceptor.service";
 
 declare var Hammer: any;

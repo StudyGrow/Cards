@@ -14,6 +14,7 @@ export class ThemesService {
   currTheme: string = localStorage.getItem("theme");
 
   changeTheme(theme?: string) {
+    if (theme === this.currTheme) return;
     let t = theme;
     if (!t) {
       t = this.currTheme;
