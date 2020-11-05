@@ -2,7 +2,7 @@
 @include mat-core();
 
 $primary: mat-palette($mat-deep-purple, 600, 900);
-$my-app-accent: mat-palette($mat-amber, 50, 200, A100);
+$my-app-accent: mat-palette($mat-amber, 400, 200, 900);
 
 $my-app-theme: mat-light-theme($primary, $my-app-accent, $mat-red);
 @include angular-material-theme($my-app-theme);
@@ -12,18 +12,6 @@ $dark-accent: mat-palette($mat-amber, A200, A100, A400);
 $dark-warn: mat-palette($mat-deep-orange);
 $dark-theme: mat-dark-theme($dark-primary, $dark-accent, $dark-warn);
 
-// Include the alternative theme styles inside of a block with a CSS class. You can make this
-// CSS class whatever you want. In this example, any component inside of an element with
-// `.unicorn-dark-theme` will be affected by this alternate dark theme instead of the default theme.
-.btn-primary,
-.btn-primary:disabled,
-.btn-primary:hover,
-.btn-primary:active,
-.btn-primary:focus {
-  background-color: #5e35b1 !important;
-  border: none;
-  box-shadow: none;
-}
 snack-bar-container.success {
   color: #155724;
   background-color: #d4edda;
@@ -36,8 +24,8 @@ snack-bar-container.success {
 pre.dark-theme {
   color: white !important;
 }
+
 .dark-theme {
   background-color: #424242;
-
   @include angular-material-theme($dark-theme);
 }
