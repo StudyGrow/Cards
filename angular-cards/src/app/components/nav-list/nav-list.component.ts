@@ -1,10 +1,4 @@
-import {
-  Component,
-  OnInit,
-  OnDestroy,
-  ViewChild,
-  Renderer2,
-} from "@angular/core";
+import { Component, OnInit, OnDestroy, ViewChild } from "@angular/core";
 import { UserService } from "src/app/services/user.service";
 import { Router, NavigationEnd } from "@angular/router";
 import { CardsService } from "src/app/services/cards.service";
@@ -22,6 +16,7 @@ import {
   MatSlideToggleChange,
 } from "@angular/material/slide-toggle";
 import { ToggleAction } from "@ngrx/store-devtools/src/actions";
+import { ThemesService } from "src/app/services/themes.service";
 
 @Component({
   selector: "app-nav-list",
@@ -37,22 +32,13 @@ export class NavListComponent implements OnInit {
   constructor(
     private router: Router,
     private store: Store<any>,
-    private renderer: Renderer2
+
+    private themeManager: ThemesService
   ) {}
 
   toggleDarkMode(e: MatSlideToggleChange) {
     let theme = e.checked ? "dark-theme" : "default"; //theme which should be switched
-    localStorage.setItem("theme", theme);
-
-    this.store.dispatch(
-      changeTheme({ theme: e.checked ? "dark-theme" : "default" })
-    );
-
-    this.renderer.removeClass(
-      document.body,
-      theme === "dark-theme" ? "default" : "dark-theme"
-    ); //remove the old theme
-    this.renderer.addClass(document.body, theme); //add the new theme
+    this.themeManager.changeTheme(theme);
   }
   ngOnInit(): void {
     this.theme$ = this.store
@@ -60,6 +46,7 @@ export class NavListComponent implements OnInit {
       .pipe(map((data) => data.theme));
 
     this.sub = this.theme$.subscribe((theme) => {
+      //initially set the toggle state
       if (theme === "dark-theme" && this.toggle && !this.toggle.checked) {
         this.toggle.toggle();
         this.sub.unsubscribe();

@@ -1,6 +1,6 @@
 //Core Modules
 import { BrowserModule } from "@angular/platform-browser";
-import { NgModule, Injectable, LOCALE_ID } from "@angular/core";
+import { NgModule, Injectable, LOCALE_ID, Renderer2 } from "@angular/core";
 import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { SharedModule } from "./shared/shared.module";
 import { AppRoutingModule } from "./app-routing.module";
@@ -132,7 +132,6 @@ export class MyHammerConfig extends HammerGestureConfig {
       multi: true,
     },
     { provide: LOCALE_ID, useValue: "de" },
-
     {
       provide: HAMMER_GESTURE_CONFIG,
       useClass: MyHammerConfig,
