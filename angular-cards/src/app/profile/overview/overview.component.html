@@ -16,32 +16,32 @@
     <mat-list role="list">
       <mat-list-item role="listitem"
         ><div class="row w-100">
-          <div class="col">Email</div>
-          <div class="col">
+          <div class="col col-sm-3">Email</div>
+          <div class="col col-sm-9">
             {{ user.email }}
           </div>
         </div></mat-list-item
       >
       <mat-list-item role="listitem" *ngIf="user.name"
         ><div class="row w-100">
-          <div class="col">Vorname</div>
-          <div class="col">
+          <div class="col col-sm-3">Vorname</div>
+          <div class="col col-sm-9">
             {{ user.name }}
           </div>
         </div></mat-list-item
       >
       <mat-list-item role="listitem" *ngIf="user.surname">
         <div class="row w-100">
-          <div class="col">Nachname</div>
-          <div class="col">
+          <div class="col col-sm-3">Nachname</div>
+          <div class="col col-sm-9">
             {{ user.surname }}
           </div>
         </div></mat-list-item
       >
       <mat-list-item role="listitem" *ngIf="user.creationDate">
         <div class="row w-100">
-          <div class="col">Mitglied seit</div>
-          <div class="col">
+          <div class="col col-sm-3">Mitglied seit</div>
+          <div class="col col-sm-9">
             {{ user.creationDate | date: "longDate":"de" }}
           </div>
         </div></mat-list-item
