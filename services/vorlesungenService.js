@@ -5,7 +5,7 @@ module.exports = function vlService() {
   //returns all lectures in the database
   vlService.getLectures = async (callback) => {
     try {
-      let lectures = await Lecture.find().sort("name");
+      let lectures = await Lecture.find().select("abrv name").sort("name");
       callback(null, lectures);
     } catch (error) {
       callback(error, null);
@@ -14,7 +14,7 @@ module.exports = function vlService() {
 
   vlService.findByAbrv = async (abrv) => {
     try {
-      return await Lecture.findOne({ abrv: abrv }).sort("name");
+      return await Lecture.findOne({ abrv: abrv }).select("abrv name tagList");
     } finally {
     }
   };
