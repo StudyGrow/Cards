@@ -1,7 +1,7 @@
 <div *ngIf="(user$ | async).confirmed == false" class="alert alert-info">
   Überprüfe dein Email Postfach, um deinen Account zu bestätigen
 </div>
-<mat-card *ngIf="user$ | async as user">
+<mat-card *ngIf="user$ | async as user" class="mb-2">
   <mat-card-header>
     <div mat-card-avatar class="example-header-image">
       <img src="assets/profile.svg" alt="Profile picture" />
