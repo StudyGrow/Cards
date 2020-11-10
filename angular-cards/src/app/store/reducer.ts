@@ -44,7 +44,7 @@ export const initialState: AppState = {
   showDrawer: false,
   loading: 0,
   tags: [],
-  currTab: 1,
+  currTab: 0,
   theme: localStorage.getItem("theme")
     ? localStorage.getItem("theme")
     : "default",

@@ -3,11 +3,6 @@
   mat-align-tabs="center"
   (selectedIndexChange)="setActiveTab($event)"
 >
-  <mat-tab label="Übersicht">
-    <h3 class="text-center mt-2" *ngIf="lecture$ | async as lecture">
-      {{ lecture.name }}
-    </h3>
-  </mat-tab>
   <mat-tab label="Karteikarten">
     <div class="container my-1" id="carousel-container">
       <app-carousel></app-carousel>
@@ -16,4 +11,9 @@
   <mat-tab [label]="formMode === 'edit' ? 'Bearbeiten' : 'Hinzufügen'"
     ><app-form></app-form
   ></mat-tab>
+  <mat-tab label="Übersicht">
+    <h3 class="text-center mt-2" *ngIf="lecture$ | async as lecture">
+      {{ lecture.name }}
+    </h3>
+  </mat-tab>
 </mat-tab-group>
