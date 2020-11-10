@@ -15,14 +15,17 @@ import {
 import { MatChipInputEvent } from "@angular/material/chips";
 import { MatDialog } from "@angular/material/dialog";
 import { MatInput } from "@angular/material/input";
+import { MatSlideToggle } from "@angular/material/slide-toggle";
 import { Router } from "@angular/router";
 import { Store } from "@ngrx/store";
 import { merge, Observable, of, Subscription } from "rxjs";
 import { filter, map, startWith, tap, withLatestFrom } from "rxjs/operators";
 import { DialogueComponent } from "src/app/components/dialogue/dialogue.component";
 import { Card } from "src/app/models/Card";
+import { WarnMessage } from "src/app/models/Notification";
 import { User } from "src/app/models/User";
 import { Vorlesung } from "src/app/models/Vorlesung";
+import { NotificationsService } from "src/app/services/notifications.service";
 import {
   changeTab,
   setFormMode,
@@ -53,6 +56,7 @@ class CardFormData {
 })
 export class FormComponent implements OnInit, OnDestroy {
   @Input() neu: boolean = false;
+  @ViewChild("latex") toggle: MatSlideToggle;
 
   //Form
   form: FormGroup;
@@ -79,7 +83,8 @@ export class FormComponent implements OnInit, OnDestroy {
     public dialog: MatDialog,
     private store: Store<any>,
     private actionState: CardsEffects,
-    private router: Router
+    private router: Router,
+    private notifs: NotificationsService
   ) {}
 
   createFormGroup(...args: string[]) {
@@ -97,7 +102,11 @@ export class FormComponent implements OnInit, OnDestroy {
       tag: new FormControl(args[2]),
     });
   }
-
+  ngOnDestroy() {
+    this.subscriptions$.forEach((sub) => {
+      sub.unsubscribe();
+    });
+  }
   ngOnInit(): void {
     this.form = this.createFormGroup();
 
@@ -132,11 +141,21 @@ export class FormComponent implements OnInit, OnDestroy {
 
     sub = this.store
       .select("cardsData")
-      .pipe(map(selectCurrentCard))
-      .subscribe((card) => {
+      .pipe(map(selectCurrentCard), withLatestFrom(this.formMode$))
+      .subscribe(([card, mode]) => {
         if (card && card._id != this.cardCopy._id) {
-          //got new card
           this.cardCopy = { ...this.cardCopy, ...card }; //overwrite cardCopy
+        }
+
+        if (
+          this.toggle &&
+          !this.toggle.checked &&
+          mode === "edit" &&
+          card?.latex === 1
+        ) {
+          this.toggle.toggle();
+        } else if (this.toggle?.checked && mode === "add") {
+          this.toggle.toggle();
         }
       });
     this.subscriptions$.push(sub);
@@ -158,7 +177,10 @@ export class FormComponent implements OnInit, OnDestroy {
         this.formMode = mode;
         if (mode == "edit") {
           this.form.reset({ ...this.cardCopy });
-          this.selectedTags = [...this.cardCopy?.tags];
+
+          this.selectedTags = this.cardCopy?.tags
+            ? [...this.cardCopy.tags]
+            : [];
         }
         //load content of card into form
         else this.resetForm(); //clear data from form
@@ -176,16 +198,25 @@ export class FormComponent implements OnInit, OnDestroy {
       this.subscriptions$.push(sub);
     }
   }
-  ngOnDestroy() {
-    this.subscriptions$.forEach((sub) => {
-      sub.unsubscribe();
-    });
-  }
 
   submitForm() {
     let uinput = this.form.value.tag?.trim();
     if (uinput && !this.selectedTags.includes(uinput)) {
       this.selectedTags.push(uinput); //add last user input in case user forgot to add chip
+    }
+    let latexState: number;
+
+    if (this.toggle.checked) {
+      let dollarcount = this.form.value.content.split("$").length - 1; //count occurences of $ in content
+      if (this.form.value.content.includes("$$") || dollarcount % 2 !== 0) {
+        this.notifs.addNotification(
+          new WarnMessage("Der Latex content ist nicht korrekt mit $ umhüllt")
+        );
+        return;
+      }
+      latexState = 1;
+    } else {
+      latexState = 0;
     }
 
     if (this.formMode === "add") {
@@ -198,17 +229,15 @@ export class FormComponent implements OnInit, OnDestroy {
           ? JSON.parse(localStorage.getItem("vl")).abrv
           : this.lecture.abrv
       );
-      if (this.form.value.content.includes("$")) {
-        card.latex = 1;
-      } else {
-        card.latex = 0;
-      }
+      card.latex = latexState;
+
       this.addCard(card);
     } else if (this.formMode === "edit") {
       this.updateCard(
         this.form.value.thema,
         this.form.value.content,
-        this.selectedTags
+        this.selectedTags,
+        latexState
       );
     }
   }
@@ -233,11 +262,22 @@ export class FormComponent implements OnInit, OnDestroy {
     });
   }
 
-  private updateCard(thema: string, content: string, tags: string[]) {
+  private updateCard(
+    thema: string,
+    content: string,
+    tags: string[],
+    latex: number
+  ) {
     //dispatch update by overwriting the fields of cardCopy
     this.store.dispatch(
       updateCard({
-        card: { ...this.cardCopy, thema: thema, content: content, tags: tags },
+        card: {
+          ...this.cardCopy,
+          thema: thema,
+          content: content,
+          tags: tags,
+          latex: latex,
+        },
       })
     );
     let sub = this.actionState.updateCard$.subscribe((card) => {
