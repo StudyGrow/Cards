@@ -56,13 +56,14 @@ class CardFormData {
   styleUrls: ["./form.component.css"],
 })
 export class FormComponent implements OnInit, OnDestroy {
-  @Input() neu: boolean = false;
   @ViewChild("latex") toggle: MatSlideToggle;
+
+  @Input() neu: boolean = false; //true if we are adding a card for a new lecture
 
   //Form
   form: FormGroup;
   formMode$: Observable<string>;
-  formMode: string;
+  formMode: string; //variable which holds the old formode
 
   //Card data
   lecture: Vorlesung;
@@ -126,22 +127,25 @@ export class FormComponent implements OnInit, OnDestroy {
     //FormMode
     this.formMode$ = this.store.select("cardsData").pipe(map(selectFormMode));
 
+    //input from tagfield
     let tagInput$ = this.form.valueChanges.pipe(
-      //input from tagfield
       map((val: CardFormData) => val.tag)
     );
 
     let allTags$ = this.store.select("cardsData").pipe(map(selectAllTags)); //get all tags
 
+    //suggestions for autocomplete
     this.tagsSuggestions$ = tagInput$.pipe(
-      startWith(""),
+      startWith(""), //show all suggestions if input is null
       withLatestFrom(allTags$),
-      map(([input, tags]) => this._filter([...tags], input)),
+      map(([input, tags]) => this._filter([...tags], input)), //filter tags with input
       map((list) => list.sort())
     );
+    //current Tab
     let tab$ = this.store
       .select("cardsData")
       .pipe(map((state: AppState) => state.currTab));
+
     sub = this.store
       .select("cardsData")
       .pipe(
@@ -154,6 +158,7 @@ export class FormComponent implements OnInit, OnDestroy {
           this.cardCopy = { ...this.cardCopy, ...card }; //overwrite cardCopy
         }
         if (tab === 0 && this.toggle) {
+          //set the toggle to the right state
           if (!this.toggle.checked && mode === "edit" && card?.latex === 1) {
             this.toggle.toggle();
           } else if (this.toggle.checked && mode === "add") {
@@ -169,7 +174,6 @@ export class FormComponent implements OnInit, OnDestroy {
       .subscribe((lect) => {
         if (lect) {
           this.lecture = lect;
-          sub.unsubscribe;
         }
       });
     this.subscriptions$.push(sub);
@@ -179,14 +183,12 @@ export class FormComponent implements OnInit, OnDestroy {
         //formmode has changed
         this.formMode = mode;
         if (mode == "edit") {
-          this.form.reset({ ...this.cardCopy });
+          this.form.reset({ ...this.cardCopy }); //overwrite form with content of the card
 
-          this.selectedTags = this.cardCopy?.tags
+          this.selectedTags = this.cardCopy?.tags //load the selecteed tags for the current card
             ? [...this.cardCopy.tags]
             : [];
-        }
-        //load content of card into form
-        else this.resetForm(); //clear data from form
+        } else this.resetForm(); //clear data from form when mode is "add"
       }
     });
     this.subscriptions$.push(sub);
@@ -294,9 +296,11 @@ export class FormComponent implements OnInit, OnDestroy {
     });
   }
 
+  //disables the casousel navigation by arrow
   inField() {
     this.store.dispatch(setTypingMode({ typing: true }));
   }
+  //enables the casousel navigation by arrow
   resetNav() {
     this.store.dispatch(setTypingMode({ typing: false }));
   }
@@ -308,6 +312,7 @@ export class FormComponent implements OnInit, OnDestroy {
       this.form.get(key).setErrors(null);
     });
   }
+
   isDisabled(content, thema) {
     if (!content.value || !thema.value) {
       return true;
