@@ -7,7 +7,6 @@ import { Vorlesung } from "../models/Vorlesung";
 import { User } from "../models/User";
 import { UserInfo } from "../models/UserInfo";
 import * as UserActions from "./actions/UserActions";
-import { state } from "@angular/animations";
 
 //defines the state of our app
 export interface AppState {

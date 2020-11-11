@@ -18,7 +18,7 @@ export class DialogueComponent implements OnInit {
   ngOnInit() {}
   cancel() {
     this.store.dispatch(setFormMode({ mode: "add" }));
-    this.store.dispatch(changeTab({ tab: 1 }));
+    this.store.dispatch(changeTab({ tab: 0 }));
     this.dialogRef.close();
   }
   onNoClick(): void {

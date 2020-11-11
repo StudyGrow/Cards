@@ -123,7 +123,7 @@ export class SearchBarComponent implements OnInit, OnDestroy {
   navigateTo(e: Event, index: number, all: boolean) {
     e.preventDefault();
     this.uInput.reset();
-    setTimeout(() => this.store.dispatch(changeTab({ tab: 1 })), 400);
+    setTimeout(() => this.store.dispatch(changeTab({ tab: 0 })), 400);
     if (!all) {
       //call from current selection
       this.store.dispatch(setActiveCardIndex({ index: index }));

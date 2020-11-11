@@ -240,7 +240,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
   enableEdit() {
     if (this.formMode != "edit") {
       this.store.dispatch(setFormMode({ mode: "edit" }));
-      this.store.dispatch(changeTab({ tab: 2 }));
+      this.store.dispatch(changeTab({ tab: 1 }));
     }
   }
 

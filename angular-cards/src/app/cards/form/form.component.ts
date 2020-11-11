@@ -34,6 +34,7 @@ import {
 import { addCard, updateCard } from "src/app/store/actions/cardActions";
 import { addLercture } from "src/app/store/actions/LectureActions";
 import { CardsEffects } from "src/app/store/effects/effects";
+import { AppState } from "src/app/store/reducer";
 import {
   selectAllTags,
   selectFormMode,
@@ -138,24 +139,26 @@ export class FormComponent implements OnInit, OnDestroy {
       map(([input, tags]) => this._filter([...tags], input)),
       map((list) => list.sort())
     );
-
+    let tab$ = this.store
+      .select("cardsData")
+      .pipe(map((state: AppState) => state.currTab));
     sub = this.store
       .select("cardsData")
-      .pipe(map(selectCurrentCard), withLatestFrom(this.formMode$))
-      .subscribe(([card, mode]) => {
+      .pipe(
+        map(selectCurrentCard),
+        withLatestFrom(this.formMode$),
+        withLatestFrom(tab$)
+      )
+      .subscribe(([[card, mode], tab]) => {
         if (card && card._id != this.cardCopy._id) {
           this.cardCopy = { ...this.cardCopy, ...card }; //overwrite cardCopy
         }
-
-        if (
-          this.toggle &&
-          !this.toggle.checked &&
-          mode === "edit" &&
-          card?.latex === 1
-        ) {
-          this.toggle.toggle();
-        } else if (this.toggle?.checked && mode === "add") {
-          this.toggle.toggle();
+        if (tab === 0 && this.toggle) {
+          if (!this.toggle.checked && mode === "edit" && card?.latex === 1) {
+            this.toggle.toggle();
+          } else if (this.toggle.checked && mode === "add") {
+            this.toggle.toggle();
+          }
         }
       });
     this.subscriptions$.push(sub);
@@ -256,7 +259,7 @@ export class FormComponent implements OnInit, OnDestroy {
     let sub = this.actionState.addCard$.subscribe((card) => {
       if (card) {
         this.resetForm();
-        this.store.dispatch(changeTab({ tab: 1 }));
+        this.store.dispatch(changeTab({ tab: 0 }));
       }
       sub.unsubscribe();
     });
@@ -283,7 +286,7 @@ export class FormComponent implements OnInit, OnDestroy {
     let sub = this.actionState.updateCard$.subscribe((card) => {
       if (card) {
         this.store.dispatch(setFormMode({ mode: "add" }));
-        this.store.dispatch(changeTab({ tab: 1 }));
+        this.store.dispatch(changeTab({ tab: 0 }));
         this.resetForm();
       }
 
