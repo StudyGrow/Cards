@@ -60,6 +60,7 @@ import { ServiceWorkerModule } from "@angular/service-worker";
 import { environment } from "../environments/environment";
 
 import { LoadingInterceptorService } from "./services/loading-interceptor.service";
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 declare var Hammer: any;
 //Config to allow swipe gestures on carousel
@@ -124,6 +125,7 @@ export class MyHammerConfig extends HammerGestureConfig {
     ServiceWorkerModule.register("ngsw-worker.js", {
       enabled: environment.production,
     }),
+    NgbModule,
   ],
   providers: [
     {

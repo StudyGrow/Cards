@@ -28,6 +28,7 @@ import { map, share, startWith, delay } from "rxjs/operators";
 
 import { selectUserId, newCards } from "src/app/store/selector";
 import { state } from "@angular/animations";
+import { NgbCarousel } from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: "app-carousel",
@@ -66,7 +67,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
 
   subscriptions$: Subscription[] = [];
 
-  @ViewChild("mycarousel", { static: false }) public carousel: any;
+  @ViewChild("mycarousel", { static: false }) public carousel: NgbCarousel;
 
   @HostListener("window:keyup", ["$event"]) handleKeyDown(
     event: KeyboardEvent
@@ -127,11 +128,12 @@ export class CarouselComponent implements OnInit, OnDestroy {
         //cards have changed
         this.lastRefresh = obj.date; //update the last refresh
         this.cardCount = obj.cards.length;
+        this.activeSlide = 0;
+        this.selectSlide(0);
 
         this.cards = null; //set null to explicitely refresh carousel view
         setTimeout(() => {
           this.cards = obj.cards;
-          this.activeSlide = 0;
         }, 100);
       }
     });
@@ -159,8 +161,8 @@ export class CarouselComponent implements OnInit, OnDestroy {
   }
   //this function updates the current slide index in the store and for the component
   onSlide(slideEvent) {
-    if (this.activeSlide != slideEvent.relatedTarget) {
-      this.activeSlide = slideEvent.relatedTarget; //update active slide
+    if (this.activeSlide != slideEvent.current) {
+      this.activeSlide = slideEvent.current; //update active slide
       this.store.dispatch(setActiveCardIndex({ index: this.activeSlide })); //update in store
     }
   }
@@ -169,7 +171,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
     if (this.carousel && this.cards && n >= 0 && n < this.cardCount) {
       //only update if n is index inside the cards array
       if (this.formMode != "edit") {
-        this.carousel.selectSlide(n);
+        this.carousel.select(n.toString());
       } else {
         this.notallowed = true;
         setTimeout(() => {
@@ -199,7 +201,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
       this.cardCount > 1 &&
       this.formMode != "edit"
     ) {
-      this.carousel.previousSlide();
+      this.carousel.prev();
     } else {
       this.notallowed = true;
       setTimeout(() => {
@@ -216,7 +218,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
       this.cardCount > 1 &&
       this.formMode != "edit"
     ) {
-      this.carousel.nextSlide();
+      this.carousel.next();
     } else {
       this.notallowed = true;
       setTimeout(() => {
@@ -226,12 +228,11 @@ export class CarouselComponent implements OnInit, OnDestroy {
   }
 
   isDisabled() {
-    if (this.formMode == "edit" || this.uid == "" || this.cards?.length === 0)
-      return true;
+    if (this.formMode == "edit" || this.cards?.length === 0) return true;
 
-    let currCard = this.cards[this.activeSlide]; //get the card that is currently showing
+    let currCard = this.cards ? this.cards[this.activeSlide] : new Card(); //get the card that is currently showing
 
-    if (currCard && currCard.authorId && currCard.authorId !== this.uid)
+    if (currCard && currCard?.authorId && currCard.authorId !== this.uid)
       //there is an author and it is not the current user
       return true;
   }

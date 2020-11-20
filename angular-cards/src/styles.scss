@@ -55,3 +55,6 @@ body {
   /* Support for IE. */
   font-feature-settings: "liga";
 }
+
+/* Importing Bootstrap SCSS file. */
+@import '~bootstrap/scss/bootstrap';

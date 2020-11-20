@@ -1,4 +1,4 @@
-<div class="row" id="controls" *ngIf="cards">
+<div class="row" id="controls">
   <div class="col pr-1">
     <app-filter-tags></app-filter-tags>
   </div>
@@ -6,9 +6,8 @@
   <div class="col-auto">
     <button
       mat-icon-button
-      placement="top"
       matTooltip="Zufall"
-      matTooltipPosition="above"
+      matTooltipPosition="below"
       aria-label="zufall"
       (click)="showRandomCard()"
       [disabled]="formMode == 'edit' || !cards || cards.length == 0"
@@ -23,7 +22,7 @@
       [disabled]="isDisabled()"
       (click)="enableEdit()"
       matTooltip="Bearbeiten"
-      matTooltipPosition="above"
+      matTooltipPosition="below"
     >
       <mat-icon>edit</mat-icon>
     </button>
@@ -42,34 +41,34 @@
     class="navig col"
     aria-label="vorherige karte"
     *ngIf="cardCount > 1"
-    [@fadeInOnEnter]
     (click)="goToPrev()"
   >
     <mat-icon>keyboard_arrow_left</mat-icon>
   </a>
   <div id="carousel">
-    <mdb-carousel
-      (activeSlideChange)="onSlide($event)"
+    <ngb-carousel
+      (slid)="onSlide($event)"
       #mycarousel
-      [(activeSlideIndex)]="this.activeSlide"
-      [animation]="'slide'"
-      [isControls]="false"
-      [allowSwipe]="false"
+      [activeId]="this.activeSlide"
+      [animation]="true"
+      [keyboard]="false"
+      [showNavigationArrows]="false"
       [interval]="'0'"
+      [showNavigationIndicators]="false"
     >
-      <mdb-carousel-item
+      <ng-template
+        ngbSlide
         *ngFor="let card of cards; index as i"
         [id]="i.toString()"
       >
         <app-card [@shake]="notallowed" [card]="card" [index]="i"></app-card>
-      </mdb-carousel-item>
-    </mdb-carousel>
+      </ng-template>
+    </ngb-carousel>
   </div>
   <a
     id="right"
     class="navig col"
     *ngIf="cardCount > 1"
-    [@fadeInOnEnter]
     (click)="goToNext()"
     aria-label="nächste karte"
   >

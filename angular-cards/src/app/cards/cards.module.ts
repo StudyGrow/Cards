@@ -7,8 +7,7 @@ import { CardComponent } from "./card/card.component";
 
 import { CarouselComponent } from "./carousel/carousel.component";
 import { FilterTagsComponent } from "./filter-tags/filter-tags.component";
-
-import { CarouselModule, WavesModule } from "angular-bootstrap-md";
+import { NgbCarouselModule } from "@ng-bootstrap/ng-bootstrap";
 import { NewVlComponent } from "./new-vl/new-vl.component";
 import { FormComponent } from "../cards/form/form.component";
 
@@ -18,12 +17,11 @@ import { FormComponent } from "../cards/form/form.component";
   declarations: [
     CardsComponent,
     CardComponent,
-
     CarouselComponent,
     FilterTagsComponent,
     NewVlComponent,
     FormComponent,
   ],
-  imports: [CardsRoutingModule, SharedModule, CarouselModule, WavesModule],
+  imports: [CardsRoutingModule, SharedModule, NgbCarouselModule],
 })
 export class CardsModule {}
