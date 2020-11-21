@@ -1,82 +1,161 @@
 import { Component, OnInit, Input, OnDestroy } from "@angular/core";
 
-import { CardsService } from "../../services/cards.service";
-import { StatesService } from "../../services/states.service";
-import { MatFormFieldModule } from "@angular/material/form-field";
 import { Card } from "../../models/Card";
 import { SearchSuggestion } from "../../models/SearchSuggestion";
-import { Subscription } from "rxjs";
+import { Subscription, Observable } from "rxjs";
+import { Store } from "@ngrx/store";
+import { map, share, withLatestFrom } from "rxjs/operators";
+import {
+  setTypingMode,
+  setSuggestionsMode,
+  resetFilter,
+  changeTab,
+} from "src/app/store/actions/actions";
+import { setActiveCardIndex } from "src/app/store/actions/cardActions";
+import { selectAllCards, selectFilteredCards } from "src/app/store/selector";
+import { AppState } from "src/app/store/reducer";
+import { MatAutocomplete } from "@angular/material/autocomplete";
+import { FormControl } from "@angular/forms";
 
 @Component({
   selector: "app-search-bar",
   templateUrl: "./search-bar.component.html",
-  styleUrls: ["./search-bar.component.css"],
+  styleUrls: ["./search-bar.component.scss"],
 })
 export class SearchBarComponent implements OnInit, OnDestroy {
-  constructor(
-    private cardsService: CardsService,
-    private stateService: StatesService
-  ) {}
-  subscriptions$: Subscription[] = [];
-  cards: Card[];
-  suggestions: SearchSuggestion[];
-  uInput: string;
-  clearSuggestions: boolean;
+  uInput = new FormControl();
+
+  constructor(private store: Store<any>) {}
+  currentSelection: Card[]; //Cards which are currently shown
+  subscriptions$: Subscription[] = []; //holds all subscriptions from observables to later unsub
+  cards: Card[]; //all cards
+  suggestions$: Observable<SearchSuggestion[]>; //search suggestions
+
+  allSuggestions$: Observable<SearchSuggestion[]>; //search suggestions
+
+  data$: Observable<AppState> = this.store.select("cardsData").pipe(share()); //state of the store
+  clearSuggestions: boolean; //wether to clear search suggestions
+
+  form = new FormControl();
 
   ngOnInit(): void {
-    let sub = this.stateService.getHideSuggestions().subscribe((value) => {
-      this.clearSuggestions = value;
-      if (value) {
-        this.suggestions = [];
-      }
-    });
-    this.subscriptions$.push(sub);
-    sub = this.cardsService.getCards().subscribe((cards) => {
-      this.cards = cards;
-      cards.forEach((card) => {
-        if (card.thema == null) {
-          card.thema = "";
-        }
-        if (card.content == null) {
-          card.content = "";
+    let sub = this.data$
+      .pipe(map((state) => state.hideSearchResults))
+      .subscribe((hide) => {
+        if (hide !== this.clearSuggestions) {
+          //only reset
+          this.clearSuggestions = hide;
+          // this.uInput.reset();
         }
       });
+    this.subscriptions$.push(sub);
+    let allCards$ = this.data$.pipe(map(selectAllCards));
+    sub = allCards$.subscribe((cards) => {
+      this.cards = cards;
     });
     this.subscriptions$.push(sub);
+    let filteredCards$ = this.data$.pipe(map(selectFilteredCards));
+    sub = filteredCards$.subscribe((filtered) => {
+      this.currentSelection = filtered;
+    });
+
+    let filteredSuggestions = this.uInput.valueChanges.pipe(
+      withLatestFrom(allCards$, filteredCards$),
+      map(
+        ([input, allCards, filteredCards]) =>
+          this.findMatches(input, allCards, filteredCards) || {
+            suggestions: [],
+            allSuggestions: [],
+          }
+      )
+    );
+    this.suggestions$ = filteredSuggestions.pipe(
+      map((res) => res?.suggestions)
+    );
+    this.allSuggestions$ = filteredSuggestions.pipe(
+      map((res) => res?.allSuggestions)
+    );
   }
+
   ngOnDestroy() {
     this.subscriptions$.forEach((sub) => {
       sub.unsubscribe();
     });
   }
   inField() {
-    this.stateService.setTyping(true);
+    this.store.dispatch(setTypingMode({ typing: true }));
   }
   resetNav() {
-    setTimeout(() => {
-      this.uInput = "";
-    }, 120);
-
-    this.stateService.setTyping(false);
+    this.store.dispatch(setTypingMode({ typing: false }));
   }
-  findMatches(e: Event) {
-    this.stateService.setHideSuggestions(false); //show suggestions
+  findMatches(
+    input: string,
+    allCards: Card[],
+    filteredCards: Card[]
+  ): { suggestions: SearchSuggestion[]; allSuggestions: SearchSuggestion[] } {
+    this.store.dispatch(setSuggestionsMode({ hide: false })); //show suggestions
+    let suggestions = [];
+    let allSuggestions = [];
 
-    if (this.uInput && this.uInput.length > 2) {
-      this.suggestions = [];
-      const regex = new RegExp(`${this.uInput}`, "gi");
+    if (input?.length > 1) {
+      const regex = new RegExp(`${input}`, "gi");
 
-      for (let i = 0; i < this.cards.length; i++) {
-        if (this.cards[i].thema.match(regex)) {
-          this.suggestions.push({ title: this.cards[i].thema, index: i });
+      let i = 0;
+      while (i < this.cards.length) {
+        if (i < filteredCards.length && filteredCards[i].thema.match(regex)) {
+          suggestions.push({
+            title: filteredCards[i].thema,
+            index: i,
+          });
+        } else if (allCards[i].thema.match(regex)) {
+          allSuggestions.push({
+            title: allCards[i].thema,
+            index: i,
+          });
         }
+        i++;
       }
+
+      return { suggestions: suggestions, allSuggestions: allSuggestions };
     }
   }
-  navigateTo(e: Event, index: number) {
+
+  navigateTo(e: Event, index: number, all: boolean) {
     e.preventDefault();
-    this.uInput = "";
-    this.cardsService.setNewCardIndex(index);
-    this.stateService.setHideSuggestions(true);
+    this.uInput.reset();
+    setTimeout(() => this.store.dispatch(changeTab({ tab: 0 })), 400);
+    if (!all) {
+      //call from current selection
+      this.store.dispatch(setActiveCardIndex({ index: index }));
+    } else if (!this.currentSelection.includes(this.cards[index])) {
+      //call from all cards and current selction does not inlude the suggestion
+      this.store.dispatch(resetFilter());
+
+      setTimeout(() => {
+        this.store.dispatch(setActiveCardIndex({ index: index }));
+      }, 700);
+    } else {
+      //call from all cards and current selction inludes the suggestion
+      this.store.dispatch(setActiveCardIndex({ index: index }));
+    }
+    this.store.dispatch(setSuggestionsMode({ hide: true }));
+  }
+
+  enabled = false;
+  size = 0;
+
+  beginScroll(paragraph: HTMLElement) {
+    if (this.enabled == true && this.size < paragraph.offsetWidth) {
+      this.size = paragraph.offsetWidth;
+    }
+    this.size = paragraph.offsetWidth;
+    this.enabled = true;
+    var time = this.size * 0.02;
+    paragraph.classList.add("textToScroll");
+    paragraph.style.setProperty("--time", time.toString());
+  }
+  endScroll(paragraph: HTMLElement) {
+    this.enabled = false;
+    paragraph.classList.remove("textToScroll");
   }
 }

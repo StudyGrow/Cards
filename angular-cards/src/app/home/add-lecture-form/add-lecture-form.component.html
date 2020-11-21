@@ -1,49 +1,62 @@
-<h4>Vorlesung hinzufügen</h4>
-<hr />
-<div id="addLecture" class="">
-  <form #f="ngForm" (ngSubmit)="onSubmit(f)" novalidate>
-    <div class="form-group">
-      <label for="name">Vorlesungsname</label>
-      <input
-        class="form-control"
-        id="name"
-        name="name"
-        type="text"
-        placeholder="Datenstrukturen und Algorithmen"
-        minlength="3"
-        required
-        #name="ngModel"
-        ngModel
-      />
-      <small
-        class="form-text float-right"
-        [ngStyle]="setCharIndicatorStyle(name, 60)"
-        >{{ getLength(name) }}/60
-      </small>
-    </div>
-    <div class="form-group">
-      <label for="abrv">Abkürzung</label>
-      <input
-        class="form-control"
-        id="abrv"
-        name="abrv"
-        required
-        #abrv="ngModel"
-        ngModel
-        placeholder="Dsal"
-      />
-      <small
-        class="form-text float-right"
-        [ngStyle]="setCharIndicatorStyle(abrv, 7)"
-        >{{ getLength(abrv) }}/7
-      </small>
-    </div>
-    <input
-      class="btn btn-primary mb-2"
-      id="addBtn"
-      type="submit"
-      value="Hinzufügen"
-      [disabled]="isDisabled(name, abrv)"
-    />
-  </form>
+<div id="con">
+  <h2 class="mb-3">Vorlesung hinzufügen</h2>
+
+  <div id="addLecture">
+    <form #f="ngForm" (ngSubmit)="onSubmit(f)" novalidate autocomplete="off">
+      <mat-form-field class="mb-1 w-100">
+        <mat-label>Vorlesungsname</mat-label>
+        <input
+          autocomplete="off"
+          matInput
+          id="name"
+          name="vlname"
+          type="text"
+          placeholder="Datenstrukturen und Algorithmen"
+          minlength="3"
+          #vlname="ngModel"
+          ngModel
+        />
+        <mat-hint align="end"
+          >{{ vlname.value?.trim().length || 0 }}/500</mat-hint
+        >
+        <mat-error *ngIf="vlname.value?.trim().length < 3"
+          >Der Vorlesungsname muss zwischen 3 und 500 Zeichen
+          enthalten</mat-error
+        >
+      </mat-form-field>
+
+      <mat-form-field class="mb-1 w-100">
+        <mat-label>Abkürzung</mat-label>
+        <input
+          autocomplete="off"
+          matInput
+          id="abrv"
+          name="abrv"
+          #abrv="ngModel"
+          ngModel
+          placeholder="Dsal"
+          minlength="3"
+          maxlength="7"
+        />
+        <mat-hint align="end">{{ abrv.value?.trim().length || 0 }}/7</mat-hint>
+        <mat-error
+          *ngIf="
+            abrv.value &&
+            (abrv.value?.trim().length < 3 || abrv.value?.trim().length > 7)
+          "
+          >Die Abkürzung muss zwischen 3 und 7 Zeichen enthalten</mat-error
+        >
+      </mat-form-field>
+
+      <button
+        mat-raised-button
+        color="primary"
+        id="addBtn"
+        type="submit"
+        [disabled]="isDisabled(vlname, abrv)"
+      >
+        Hinzufügen
+      </button>
+    </form>
+  </div>
 </div>

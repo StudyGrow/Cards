@@ -8,70 +8,75 @@ import {
 import { Card } from "../../models/Card";
 import { ViewChild } from "@angular/core";
 import { CardsService } from "../../services/cards.service";
-import { Subscription, Observable } from "rxjs";
+import { Subscription } from "rxjs";
 import { parse, HtmlGenerator } from "latex.js/dist/latex.js";
-import { StatesService } from "src/app/services/states.service";
-import { UserService } from "src/app/services/user.service";
 
+import { SafeHtmlPipe } from "../../shared/safe-html.pipe";
+
+import { Store } from "@ngrx/store";
+import { map, share } from "rxjs/operators";
+import {
+  setActiveCardIndex,
+  goNext,
+  goPrev,
+} from "src/app/store/actions/cardActions";
 @Component({
   selector: "app-card",
   templateUrl: "./card.component.html",
-  styleUrls: ["./card.component.css"],
+  styleUrls: ["./card.component.scss"],
 })
 export class CardComponent implements OnInit, OnDestroy {
-  @Input() card: Card;
-  @Input() index: number;
-  auth$: Observable<boolean>;
+  constructor(private store: Store<any>) {}
 
   inTypingField: boolean = false;
   activeIndex: number;
-  @HostListener("swipeleft", ["$event"]) public swipePrev(event: any) {
-    this.cs.goNext();
-  }
-  @HostListener("swiperight", ["$event"]) public swipeNext(event: any) {
-    this.cs.goPrev();
-  }
+
+  parsed: any = [];
+
+  public isCollapsed = true;
+
+  @Input() card: Card;
+  @Input() index: number;
 
   @HostListener("window:keyup", ["$event"]) handleKeyDown(
     event: KeyboardEvent
   ) {
     if (!this.inTypingField && this.activeIndex == this.index) {
       if (event.key == "ArrowDown") {
-        this.content.open();
+        event.preventDefault();
+        this.content.toggle();
       } else if (event.key == "ArrowUp") {
-        this.content.close();
+        event.preventDefault();
+        this.content.toggle();
       }
     }
   }
+
   @ViewChild("answer", { static: true }) content;
   subscriptions$: Subscription[] = [];
 
-  styleAppend = `<link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/latex.js@0.12.1/dist/css/katex.css"><link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/latex.js@0.12.1/dist/css/article.css"><script src="https://cdn.jsdelivr.net/npm/latex.js@0.12.1/dist/dist/js/base.js"></script>`;
-  parsed: any = [];
-
-  constructor(
-    private cs: CardsService,
-    private states: StatesService,
-    private user: UserService
-  ) {}
-  public isCollapsed = true;
   ngOnInit(): void {
-    let sub = this.cs.activeCard().subscribe((card) => {
-      //hides te card content when carousel slides
-      this.activeIndex = card.positionIndex || 0;
-      this.content.close();
-    });
+    let data$ = this.store.select("cardsData").pipe(share());
+    let sub = data$
+      .pipe(map((state) => state.activeIndex))
+      .subscribe((index) => {
+        //hides the card content when carousel slides
+        if (this.activeIndex != index) {
+          this.content.close();
+        }
+        this.activeIndex = index;
+      });
+    this.subscriptions$.push(sub);
     if (this.card.latex != 0) {
       this.parse(this.card.content);
     } else {
       this.parsed.push(this.card.content);
     }
+
+    sub = data$.pipe(map((state) => state.typingMode)).subscribe((val) => {
+      this.inTypingField = val;
+    });
     this.subscriptions$.push(sub);
-    sub = this.states
-      .getTyping()
-      .subscribe((val) => (this.inTypingField = val));
-    this.subscriptions$.push(sub);
-    this.auth$ = this.user.authentication();
   }
 
   ngOnDestroy() {
@@ -84,7 +89,7 @@ export class CardComponent implements OnInit, OnDestroy {
     var latex = cardContent;
     let generator = new HtmlGenerator({ hyphenate: false });
     let doc = parse(latex, { generator: generator }).htmlDocument();
-    latex = this.styleAppend + doc.body.innerHTML;
+    latex = doc.body.innerHTML;
     this.parsed.push(latex);
   }
 }

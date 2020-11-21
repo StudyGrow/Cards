@@ -4,12 +4,12 @@ import { SharedModule } from "../shared/shared.module";
 import { CardsRoutingModule } from "./cards-routing.module";
 import { CardsComponent } from "./cards.component";
 import { CardComponent } from "./card/card.component";
-import { AddCardFormComponent } from "./add-card-form/add-card-form.component";
+
 import { CarouselComponent } from "./carousel/carousel.component";
-import { LectureHeaderComponent } from "./lecture-header/lecture-header.component";
-import { UpdateCardFormComponent } from "./update-card-form/update-card-form.component";
-import { CarouselModule, WavesModule } from "angular-bootstrap-md";
-import { VoteComponent } from "./vote/vote.component";
+import { FilterTagsComponent } from "./filter-tags/filter-tags.component";
+import { NgbCarouselModule } from "@ng-bootstrap/ng-bootstrap";
+import { NewVlComponent } from "./new-vl/new-vl.component";
+import { FormComponent } from "../cards/form/form.component";
 
 //Pipes
 
@@ -17,12 +17,11 @@ import { VoteComponent } from "./vote/vote.component";
   declarations: [
     CardsComponent,
     CardComponent,
-    AddCardFormComponent,
     CarouselComponent,
-    LectureHeaderComponent,
-    UpdateCardFormComponent,
-    VoteComponent,
+    FilterTagsComponent,
+    NewVlComponent,
+    FormComponent,
   ],
-  imports: [CardsRoutingModule, SharedModule, CarouselModule, WavesModule],
+  imports: [CardsRoutingModule, SharedModule, NgbCarouselModule],
 })
 export class CardsModule {}

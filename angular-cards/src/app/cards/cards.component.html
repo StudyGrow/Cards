@@ -1,6 +1,19 @@
-<div class="container" *ngIf="formMode$ | async as formMode">
-  <app-carousel *ngIf="cards$ | async"></app-carousel>
-  <br />
-  <app-add-card-form *ngIf="formMode == 'add'"></app-add-card-form>
-  <app-update-card-form *ngIf="formMode == 'edit'"></app-update-card-form>
-</div>
+<mat-tab-group
+  [selectedIndex]="selectedTab$ | async"
+  mat-align-tabs="center"
+  (selectedIndexChange)="setActiveTab($event)"
+>
+  <mat-tab label="Karteikarten">
+    <div class="container my-1" id="carousel-container">
+      <app-carousel></app-carousel>
+    </div>
+  </mat-tab>
+  <mat-tab [label]="formMode === 'edit' ? 'Bearbeiten' : 'Hinzufügen'"
+    ><app-form></app-form
+  ></mat-tab>
+  <mat-tab label="Übersicht">
+    <h3 class="text-center mt-2" *ngIf="lecture$ | async as lecture">
+      {{ lecture.name }}
+    </h3>
+  </mat-tab>
+</mat-tab-group>

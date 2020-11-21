@@ -1,0 +1,35 @@
+<div *ngIf="lecture$ | async as lecture">
+  <mat-form-field
+    floatLabel="never"
+    *ngIf="lecture.tagList?.length > 0"
+    id="formfield"
+  >
+    <mat-chip-list #chipList aria-label="Tag selection">
+      <mat-chip
+        *ngFor="let tag of selected$ | async"
+        [selectable]="true"
+        [removable]="true"
+        (removed)="remove(tag)"
+      >
+        {{ tag }}
+        <mat-icon matChipRemove>cancel</mat-icon>
+      </mat-chip>
+      <input
+        placeholder="Filter"
+        #Input
+        [formControl]="formCtrl"
+        [matAutocomplete]="auto"
+        [matChipInputFor]="chipList"
+        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+        (focus)="inField()"
+        (blur)="resetNav()"
+      />
+      <mat-icon matSuffix>filter_list</mat-icon>
+    </mat-chip-list>
+    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="select($event)">
+      <mat-option *ngFor="let option of filteredTags$ | async" [value]="option">
+        {{ option }}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+</div>

@@ -1,0 +1,40 @@
+.row {
+  max-width: 900px;
+}
+/*first row controls*/
+#controls {
+  width: 90%;
+  margin: auto;
+}
+button {
+  outline: none;
+}
+/*carousel row*/
+#carousel-row {
+  position: relative;
+  margin: 0;
+}
+/*navigation*/
+#right {
+  right: 0;
+}
+#left {
+  left: 0;
+}
+mat-icon {
+  text-align: center;
+  width: 100%;
+}
+.navig {
+  display: inline-flex;
+  align-items: center;
+  width: 5%;
+  position: absolute;
+  padding: 0;
+  height: 100%;
+  z-index: 1000;
+}
+/*carousel*/
+#carousel {
+  width: 100% !important;
+}

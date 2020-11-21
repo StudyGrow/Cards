@@ -3,7 +3,8 @@ const User = require("../models/User");
 const Card = require("../models/Card");
 const bcrypt = require("bcryptjs"); //used to encrypt and decrypt passwords
 const mail = require("./mailService");
-const crypto = require("crypto-random-string")
+const crypto = require("crypto-random-string");
+const { findByIdAndDelete } = require("../models/User");
 
 module.exports = function userService() {
   //create a new Account for the site
@@ -20,11 +21,11 @@ module.exports = function userService() {
   userService.login = async (passport, req, res, next) => {
     passport.authenticate("local", { session: req.body.remember === true }, (error, user, info) => {
       //authenticate the user using the local strategy for passport
-      if (error) res.status(422).send(error.message);
+      if (error) res.status(401).send(error.message);
       else
         req.login(user._id, function (error) {
           if (error) {
-            res.status(422).send(error.message);
+            res.status(401).send(error.message);
           } else {
             res.status(200).send({ _id: user._id, username: user.username, email: user.email });
           }
@@ -39,6 +40,8 @@ module.exports = function userService() {
         throw new Error("Bitte logge dich erst ein");
       }
       let info = new Object();
+      info.user = { ...user._doc, password: null };
+
       let cards = await Card.find({ authorId: user._id });
       info.cards = cards;
       callback(null, info);
@@ -57,18 +60,24 @@ module.exports = function userService() {
       }
     });
   };
-
+  userService.deleAccount = async (req, callback) => {
+    try {
+      await User.findByIdAndDelete(req.user._id);
+      callback(null);
+    } catch (error) {
+      callback(error);
+    }
+  };
   userService.updateAccount = async (user, form, callback) => {
     try {
-      if (user.username == form.username && user.email == form.email) {
-        callback(null);
-        return;
-      } else if (user.email == form.email && user.username != form.username) {
-        await checkUnique(null, form.username);
-      } else if (user.email != form.email && user.username == form.username) {
-        await checkUnique(form.email, null);
-      } else {
-        await checkUnique(form.email, form.username);
+      if (user.username != form.username && user.email != form.email) {
+        if (user.email == form.email && user.username != form.username) {
+          await checkUnique(null, form.username);
+        } else if (user.email != form.email && user.username == form.username) {
+          await checkUnique(form.email, null);
+        } else {
+          await checkUnique(form.email, form.username);
+        }
       }
       await User.findByIdAndUpdate(user._id, {
         username: form.username,
@@ -109,7 +118,7 @@ function addAccount(form, callback) {
     email: form.email,
     creationDate: new Date(),
     confirmed: false,
-    token: crypto(32)
+    token: crypto(32),
   });
   hashPassword(form.password, (err, password) => {
     if (password) {
@@ -118,7 +127,7 @@ function addAccount(form, callback) {
         if (err) {
           callback(err, false);
         } else {
-          mail.sendConfirmationMail(user)
+          mail.sendConfirmationMail(user);
           callback(false, user);
         }
       });

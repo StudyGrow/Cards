@@ -6,6 +6,13 @@ const session = require("express-session");
 const MongoStore = require("connect-mongo")(session); //store session on MongoDb
 const app = express();
 const mongoose = require("mongoose");
+const swaggerUI = require("swagger-ui-express");
+const swaggerJsDoc = require("swagger-jsdoc");
+const swaggerOptions = require("./config/swagger");
+const swaggerDocs = swaggerJsDoc(swaggerOptions);
+
+app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocs));
+
 app.use(helmet());
 app.use(require("./middleware/serviceMiddleware")());
 
@@ -18,7 +25,10 @@ app.use(
     resave: false,
     saveUninitialized: false,
     proxy: true,
-    cookie: { secure: false }, //secure needs to be set to true here
+    cookie: {
+      secure:
+        process.env.NODE_ENV && process.env.NODE_ENV.indexOf("development") > -1 ? false : true,
+    }, //secure needs to be set to true for production here
 
     store: new MongoStore({ mongooseConnection: mongoose.connection }),
   })
@@ -30,6 +40,13 @@ require("./config/passport")(passport);
 
 app.use(passport.initialize());
 app.use(passport.session());
+
+app.use((req, res, next) => {
+  if (process.env.NODE_ENV && process.env.NODE_ENV.indexOf("development") > -1) {
+    console.log("Request: ", req.originalUrl);
+  }
+  next();
+});
 
 app.post("/api/login", (req, res, next) => {
   req.services.user.login(passport, req, res, next);

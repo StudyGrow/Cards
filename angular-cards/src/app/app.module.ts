@@ -1,25 +1,23 @@
-//Modules
+//Core Modules
 import { BrowserModule } from "@angular/platform-browser";
-import { NgModule, Injectable, LOCALE_ID } from "@angular/core";
-import { HttpClientModule } from "@angular/common/http";
+import { NgModule, Injectable, LOCALE_ID, Renderer2 } from "@angular/core";
+import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { SharedModule } from "./shared/shared.module";
 import { AppRoutingModule } from "./app-routing.module";
+import { StoreModule } from "@ngrx/store";
+
+//Dev Module
+import { StoreDevtoolsModule } from "@ngrx/store-devtools";
 
 //Material Modules
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { MatProgressBarModule } from "@angular/material/progress-bar";
-import { MatDialogModule } from "@angular/material/dialog";
-import { MatButtonModule } from "@angular/material/button";
+
 import { MatSelectModule } from "@angular/material/select";
-import { MatToolbarModule } from "@angular/material/toolbar";
-import { MatFormFieldModule } from "@angular/material/form-field";
-import { MatInputModule } from "@angular/material/input";
+
 import { MatMenuModule } from "@angular/material/menu";
-import { MatChipsModule } from "@angular/material/chips";
-import { MatAutocompleteModule } from "@angular/material/autocomplete";
-import { MatIconModule } from "@angular/material/icon";
 import { MatSidenavModule } from "@angular/material/sidenav";
-import { MatListModule } from "@angular/material/list";
+
 import { MatDividerModule } from "@angular/material/divider";
 //Gestures
 import {
@@ -27,6 +25,12 @@ import {
   HammerGestureConfig,
   HAMMER_GESTURE_CONFIG,
 } from "@angular/platform-browser";
+
+//Reducers
+import { cardsReducer } from "./store/reducer";
+//Effects
+import { EffectsModule } from "@ngrx/effects";
+import { CardsEffects } from "./store/effects/effects";
 
 //Localization
 import { registerLocaleData } from "@angular/common";
@@ -47,12 +51,16 @@ import { AboutComponent } from "./routes/about/about.component";
 
 import { ErrorPageComponent } from "./routes/error-page/error-page.component";
 
-import { FilterTagsComponent } from "./components/filter-tags/filter-tags.component";
 import { ConfirmationPageComponent } from "./routes/confirmation-page/confirmation-page.component";
 import { ConfirmationComponent } from "./components/confirmation/confirmation.component";
 import { NavListComponent } from "./components/nav-list/nav-list.component";
 import { ViewContainerComponent } from "./components/view-container/view-container.component";
 import { HomeModule } from "./home/home.module";
+import { ServiceWorkerModule } from "@angular/service-worker";
+import { environment } from "../environments/environment";
+
+import { LoadingInterceptorService } from "./services/loading-interceptor.service";
+import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 
 declare var Hammer: any;
 //Config to allow swipe gestures on carousel
@@ -94,7 +102,6 @@ export class MyHammerConfig extends HammerGestureConfig {
     FooterComponent,
     AboutComponent,
     ErrorPageComponent,
-    FilterTagsComponent,
     ConfirmationPageComponent,
     ConfirmationComponent,
     NavListComponent,
@@ -103,29 +110,30 @@ export class MyHammerConfig extends HammerGestureConfig {
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule,
     BrowserAnimationsModule,
-    MatProgressBarModule,
-    MatButtonModule,
-    MatListModule,
-    MatToolbarModule,
-    MatDialogModule,
-    MatSidenavModule,
-    MatChipsModule,
-    MatDividerModule,
-    MatInputModule,
-    MatMenuModule,
+    HttpClientModule,
     SharedModule,
-    MatFormFieldModule,
-    MatAutocompleteModule,
-    MatIconModule,
+    MatProgressBarModule,
+    MatSidenavModule,
+    MatMenuModule,
     MatSelectModule,
     HammerModule,
     HomeModule,
+    StoreDevtoolsModule.instrument({ maxAge: 10 }),
+    StoreModule.forRoot({ cardsData: cardsReducer }),
+    EffectsModule.forRoot([CardsEffects]),
+    ServiceWorkerModule.register("ngsw-worker.js", {
+      enabled: environment.production,
+    }),
+    NgbModule,
   ],
   providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: LoadingInterceptorService,
+      multi: true,
+    },
     { provide: LOCALE_ID, useValue: "de" },
-
     {
       provide: HAMMER_GESTURE_CONFIG,
       useClass: MyHammerConfig,

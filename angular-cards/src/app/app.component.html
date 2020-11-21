@@ -1,3 +1,5 @@
-<app-nav-bar></app-nav-bar>
-<app-view-container></app-view-container>
-<app-footer></app-footer>
+<div [class]="theme$ | async">
+  <app-nav-bar></app-nav-bar>
+
+  <app-view-container></app-view-container>
+</div>

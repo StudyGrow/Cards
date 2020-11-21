@@ -1,0 +1,110 @@
+#matches {
+  z-index: 1000;
+  background-color: white;
+  max-height: 200px;
+
+  overflow-x: hidden;
+}
+
+.textToScroll {
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #0099cc;
+  -webkit-transform-origin: left center;
+  -ms-transform-origin: left center;
+  transform-origin: left center;
+
+  -webkit-animation-name: first-scroll, second-scroll;
+  -webkit-animation-duration: calc(var(--time) * 1s),
+    calc(calc(var(--time) * 1s) * 2);
+  -webkit-animation-delay: 0ms, calc(var(--time) * 1s);
+  -webkit-animation-timing-function: linear;
+  -webkit-animation-iteration-count: 1, infinite;
+
+  -moz-animation-name: first-scroll, second-scroll;
+  -moz-animation-duration: calc(var(--time) * 1s),
+    calc(calc(var(--time) * 1s) * 2);
+  -moz-animation-delay: 0ms, calc(var(--time) * 1s);
+  -moz-animation-timing-function: linear;
+  -moz-animation-iteration-count: 1, infinite;
+
+  -o-animation-name: first-scroll, second-scroll;
+  -o-animation-duration: calc(var(--time) * 1s),
+    calc(calc(var(--time) * 1s) * 2);
+  -o-animation-delay: 0ms, calc(var(--time) * 1s);
+  -o-animation-timing-function: linear;
+  -o-animation-iteration-count: 1, infinite;
+
+  animation-name: first-scroll, second-scroll;
+  animation-duration: calc(var(--time) * 1s), calc(calc(var(--time) * 1s) * 2);
+  animation-delay: 0ms, calc(var(--time) * 1s);
+  animation-timing-function: linear;
+  animation-iteration-count: 1, infinite;
+}
+
+@-webkit-keyframes first-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+@-moz-keyframes first-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+@-o-keyframes first-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes first-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+@-webkit-keyframes second-scroll {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+@-moz-keyframes second-scroll {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+@-o-keyframes second-scroll {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes second-scroll {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}

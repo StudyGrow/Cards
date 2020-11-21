@@ -14,6 +14,10 @@ module.exports = function cardsService() {
     }
   };
 
+  cardsService.findByAbrv = async (abrv) => {
+    return await Card.find({ vorlesung: abrv });
+  };
+
   //creates a new card and adds it to the database
   cardsService.addCard = async (form, user, callback) => {
     try {
@@ -25,9 +29,7 @@ module.exports = function cardsService() {
         card.authorId = user._id; //add user as author of card
         card.authorName = user.username;
       }
-      if (form.tags) {
-        card.tags = form.tags.split("#", 10);
-      }
+
       updateTags(card.vorlesung, card.tags);
       await card.save();
       callback(null, card._id);
@@ -36,6 +38,27 @@ module.exports = function cardsService() {
     }
   };
 
+  //used to migrate data
+  cardsService.renew = async () => {
+    let cards = await Card.find({ vorlesung: "mal" });
+    cards.forEach((card) => {
+      // Card.findOneAndDelete({ content: card.content });
+      cardsService.addCard(
+        {
+          content: card.content,
+          thema: card.thema,
+          abrv: "MaLo",
+          tags: ["Definitionen"],
+        },
+        null,
+        (err, id) => {
+          if (err) {
+            console.error(err);
+          } else console.log(id);
+        }
+      );
+    });
+  };
   //updates a card in the database
   cardsService.updateCard = async (card, user, callback) => {
     try {
@@ -48,9 +71,12 @@ module.exports = function cardsService() {
         //The user is not the author of the card
         throw new Error("Fehler: Du bist nicht der Author dieser Karte.");
       }
+      updateTags(card.vorlesung, card.tags);
       await Card.findByIdAndUpdate(card._id, {
         thema: card.thema,
         content: card.content,
+        latex: card.latex,
+        tags: card.tags,
       });
       callback(null);
     } catch (error) {
@@ -63,9 +89,13 @@ module.exports = function cardsService() {
 };
 
 function updateTags(vlabrv, tags) {
-  tags.forEach((tag) => {
-    if (tag.length > 0) {
-      Lecture.updateOne({ abrv: vlabrv }, { $addToSet: { tagList: [tag] } }, () => {});
-    }
-  });
+  if (tags) {
+    tags.forEach((tag) => {
+      if (tag.length > 0) {
+        Lecture.updateOne({ abrv: vlabrv }, { $addToSet: { tagList: [tag] } }, (err, res) => {
+          console.log(res);
+        });
+      }
+    });
+  }
 }

@@ -4,27 +4,41 @@ import { User } from "src/app/models/User";
 import { UserInfo } from "src/app/models/UserInfo";
 import { UserService } from "src/app/services/user.service";
 import { Subscription } from "rxjs";
+import { Store } from "@ngrx/store";
+import { map } from "rxjs/operators";
+import { selectUserInfo, selectUser } from "src/app/store/selector";
+import { updateUserData } from "src/app/store/actions/UserActions";
+import { DialogueComponent } from "src/app/components/dialogue/dialogue.component";
+import { MatDialog } from "@angular/material/dialog";
 @Component({
   selector: "app-change-profile",
   templateUrl: "./change-profile.component.html",
-  styleUrls: ["./change-profile.component.css"],
+  styleUrls: ["./change-profile.component.scss"],
 })
 export class ChangeProfileComponent implements OnInit, OnDestroy {
   public userInfo: UserInfo;
   subscriptions$: Subscription[] = [];
-  public user = new User("", "");
+  public user = new User();
   fileToUpload: File = null;
-  constructor(private userService: UserService) {}
+  constructor(
+    private userService: UserService,
+    private store: Store<any>,
+    public dialog: MatDialog
+  ) {}
 
   ngOnInit(): void {
     this.user.name = "";
     this.user.surname = "";
-    let sub = this.userService.getUserInfo().subscribe((info) => {
-      this.userInfo = info;
-      if (info && info.user) {
-        this.user = info.user;
-      }
-    });
+
+    let sub = this.store
+      .select("cardsData")
+      .pipe(map(selectUserInfo))
+      .subscribe((info) => {
+        this.userInfo = info;
+        if (info && info.user) {
+          this.user = { ...info.user };
+        }
+      });
     this.subscriptions$.push(sub);
   }
   ngOnDestroy() {
@@ -34,7 +48,7 @@ export class ChangeProfileComponent implements OnInit, OnDestroy {
   }
 
   changeAccount(form: NgForm) {
-    this.userService.updateAccount(form.value);
+    this.store.dispatch(updateUserData(form.value));
   }
   changePassword(form: NgForm) {
     let sub = this.userService.updatePassword(form.value).subscribe((res) => {
@@ -78,5 +92,17 @@ export class ChangeProfileComponent implements OnInit, OnDestroy {
     }
 
     return false;
+  }
+  delete() {
+    this.dialog.open(DialogueComponent, {
+      width: "400px",
+      data: {
+        title: "Account löschen",
+        content:
+          "Bist du sicher, dass du deinen Account unwiderruflich löschen möchtest?",
+        abortText: "Nein, zurück",
+        proceedText: "Ja",
+      },
+    });
   }
 }

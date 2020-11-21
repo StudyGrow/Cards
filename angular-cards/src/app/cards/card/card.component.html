@@ -1,21 +1,19 @@
-<div class="card" id="`{{ card._id }}`">
-  <div class="card-header">
+<mat-card class="p-0 my-4 shadow" id="`{{ card._id }}`"
+  ><mat-card-title>
     {{ card.thema }}
-  </div>
-
-  <mat-expansion-panel #answer>
+  </mat-card-title>
+  <mat-expansion-panel #answer class="mat-elevation-z0 p-0">
     <mat-expansion-panel-header>
       <mat-panel-title> Antwort</mat-panel-title>
     </mat-expansion-panel-header>
-    <mat-panel-description> </mat-panel-description>
-    <pre lang="de">
-        <div  [innerHtml]="parsed[0] | safeHtml"></div>
-    </pre>
+    <ng-template matExpansionPanelContent>
+      <pre lang="de" class="mb-1" [innerHtml]="parsed[0] | safeHtml"></pre>
+    </ng-template>
     <app-vote *ngIf="auth$ | async" [id]="card._id"></app-vote>
   </mat-expansion-panel>
-  <p *ngIf="card.authorName" class="card-text" id="author">
+  <p *ngIf="card.authorName" class="card-text">
     <small class="text-muted float-right"
       >Ersteller: {{ card.authorName }}</small
     >
   </p>
-</div>
+</mat-card>

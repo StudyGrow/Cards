@@ -1,0 +1,11 @@
+h4,
+form {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 90%;
+  max-width: 900px;
+}
+mat-error {
+  color: red !important;
+}

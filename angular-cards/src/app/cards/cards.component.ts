@@ -4,49 +4,96 @@ import {
   HostListener,
   ViewChild,
   ElementRef,
+  OnDestroy,
 } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
 
 import { Vorlesung } from "src/app/models/Vorlesung";
-import { CardsService } from "src/app/services/cards.service";
 
 import { Title } from "@angular/platform-browser";
 import { Card } from "../models/Card";
-import { StatesService } from "../services/states.service";
-import { Observable } from "rxjs";
+
+import { Store } from "@ngrx/store";
+
+import { Observable, of, Subscription } from "rxjs";
+
+import { map, tap, share, startWith } from "rxjs/operators";
+import { fetchCards, clearCardData } from "../store/actions/cardActions";
+import { fadeInOnEnterAnimation } from "angular-animations";
+import { changeTab, setSuggestionsMode } from "../store/actions/actions";
+import { getCardsData, selectCurrentTab } from "../store/selector";
+import { AppState } from "../store/reducer";
 
 @Component({
   selector: "app-cards",
   templateUrl: "./cards.component.html",
-  styleUrls: ["./cards.component.css"],
+  styleUrls: ["./cards.component.scss"],
+  animations: [fadeInOnEnterAnimation()],
 })
-export class CardsComponent implements OnInit {
-  public vlAbrv: string;
-  public lecture: Vorlesung;
-  public loading: boolean = true;
-  public formMode: string = "none";
-
-  private inTypingField: boolean;
+export class CardsComponent implements OnInit, OnDestroy {
+  formMode: string;
+  hideSuggestion: boolean;
+  selectedTab$: Observable<number>;
+  vlName: string;
+  private subscriptions$: Subscription[] = [];
   @ViewChild("alert", { static: false }) alert: ElementRef;
 
   @HostListener("click", ["$event.target"])
   onClick() {
-    this.stateServie.setHideSuggestions(true);
+    if (!this.hideSuggestion) {
+      this.store.dispatch(setSuggestionsMode({ hide: true }));
+    }
   }
-  cards$: Observable<Card[]>;
-  formMode$: Observable<string>;
-  constructor(
-    private route: ActivatedRoute,
-    private stateServie: StatesService,
-    private cardsService: CardsService,
+  //holds data from store
+  public data$: Observable<any> = this.store
+    .select("cardsData")
+    .pipe(map(getCardsData), share());
 
-    private title: Title
-  ) {}
+  public lecture$: Observable<Vorlesung> = this.data$.pipe(
+    map((data) => data.currLecture)
+  );
+
+  constructor(private store: Store<any>, private title: Title) {}
 
   ngOnInit(): void {
     this.title.setTitle("Cards");
-    this.cards$ = this.cardsService.getCards();
 
-    this.formMode$ = this.stateServie.getFormMode();
+    this.store.dispatch(fetchCards());
+
+    this.selectedTab$ = this.store
+      .select("cardsData")
+      .pipe(map(selectCurrentTab));
+
+    let sub = this.store.select("cardsData").subscribe((state) => {
+      if (state.formMode !== this.formMode) {
+        this.formMode = state.formMode;
+      }
+      if (this.vlName !== state.currLecture?.name) {
+        this.vlName = state.currLecture.name;
+
+        if (this.vlName) {
+          this.title.setTitle("Cards · " + this.vlName);
+        }
+      }
+
+      this.hideSuggestion = state.hideSearchResults;
+    });
+    this.subscriptions$.push(sub);
+  }
+
+  setActiveTab(index: number) {
+    this.store.dispatch(changeTab({ tab: index }));
+  }
+
+  private titleCase(str: string) {
+    return str
+      .toLowerCase()
+      .split(" ")
+      .map(function (word) {
+        return word.replace(word[0], word[0].toUpperCase());
+      })
+      .join(" ");
+  }
+  ngOnDestroy() {
+    this.subscriptions$.forEach((sub) => sub.unsubscribe());
   }
 }

@@ -1,13 +1,11 @@
 export class User {
-  username: string;
-  email: string;
-  _id: string;
-  name: string;
-  surname: string;
-  creationDate?: Date;
-  confirmed?: boolean;
-  constructor(name: string, email: string) {
-    this.username = name;
-    this.email = email;
-  }
+  constructor(
+    public username?: string,
+    public email?: string,
+    public name?: string,
+    public surname?: string,
+    public _id?: string,
+    public creationDate?: Date,
+    public confirmed?: boolean
+  ) {}
 }

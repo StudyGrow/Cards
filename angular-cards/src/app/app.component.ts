@@ -1,25 +1,36 @@
-import { Component, ViewChild, ElementRef } from "@angular/core";
+import { Component, ViewChild, ElementRef, isDevMode } from "@angular/core";
 import { Title } from "@angular/platform-browser";
 import { Router } from "@angular/router";
-import { StatesService } from "./services/states.service";
+import { Store } from "@ngrx/store";
+import { Observable } from "rxjs";
+import { map } from "rxjs/operators";
+import { LecturesService } from "./services/lectures.service";
+import { ThemesService } from "./services/themes.service";
+import { changeTheme } from "./store/actions/actions";
+import { auth } from "./store/actions/UserActions";
 
 @Component({
   selector: "app-root",
   templateUrl: "./app.component.html",
-  styleUrls: ["./app.component.css"],
+  styleUrls: ["./app.component.scss"],
 })
 export class AppComponent {
-  public constructor(private titleService: Title) {
+  theme$: Observable<string>;
+  cachedTheme: string;
+  public constructor(
+    private titleService: Title,
+    private store: Store<any>,
+
+    private themeManager: ThemesService
+  ) {
+    this.store.dispatch(auth());
+
+    this.themeManager.initTheme(); //initialize theme
+
+    if (isDevMode())
+      this.store.select("cardsData").subscribe((data) => console.log(data));
+    //log state only in development mode
+
     this.titleService.setTitle("Home");
-  }
-  BackToTop() {
-    let scrollToTop = window.setInterval(() => {
-      let pos = window.pageYOffset;
-      if (pos > 0) {
-        window.scrollTo(0, pos - 20); // how far to scroll on each step
-      } else {
-        window.clearInterval(scrollToTop);
-      }
-    }, 16);
   }
 }

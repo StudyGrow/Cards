@@ -1,9 +1,9 @@
 export class Vorlesung {
-  name: string;
-  abrv: string;
-  tagList: string[];
-  constructor(name, abrv) {
-    this.name = name;
-    this.abrv = abrv;
+  constructor(
+    public name?: string,
+    public abrv?: string,
+    public tagList?: string[]
+  ) {
+    this.tagList = tagList || [];
   }
 }

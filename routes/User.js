@@ -31,7 +31,12 @@ router.post(
           res.status(422).send(err.message);
         } else {
           req.login(user._id, () => {});
-          res.status(200).send({ _id: user._id, username: user.username, email: user.email, confirmed: user.confirmed});
+          res.status(200).send({
+            _id: user._id,
+            username: user.username,
+            email: user.email,
+            confirmed: user.confirmed,
+          });
         }
       });
     }
@@ -45,9 +50,6 @@ router.get("/info", auth, (req, res) => {
     if (err) {
       res.status(400).send(err.message);
     } else {
-      let user = req.user;
-      user.password = null;
-      info.user = user;
       res.status(200).send(info);
     }
   });
@@ -115,6 +117,18 @@ router.put(
     }
   }
 );
+router.put("/delete", auth, (req, res) => {
+  req.services.user.deleAccount(req, (err) => {
+    if (err) {
+      console.log(err);
+      res.status(501).send(err.message);
+    } else {
+      res.send(true);
+    }
+  });
+});
+
+// response body contains "true" when authenticated else "false"
 router.get("/auth", (req, res) => {
   if (req.isAuthenticated()) {
     res.status(200).send(true);
@@ -125,7 +139,7 @@ router.get("/auth", (req, res) => {
 //logout the user
 router.get("/logout", (req, res) => {
   req.logout();
-  res.status(200).send();
+  res.send(true);
 });
 
 module.exports = router;

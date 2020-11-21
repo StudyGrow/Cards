@@ -1,69 +1,80 @@
-<app-lecture-header></app-lecture-header>
+<div class="row" id="controls">
+  <div class="col pr-1">
+    <app-filter-tags></app-filter-tags>
+  </div>
 
-<div class="btn-group" id="btnDiv" role="group">
-  <button
-    class="btn btn-light"
-    id="rand"
-    placement="top"
-    matTooltip="Zufall"
-    matTooltipPosition="above"
-    (click)="showRandomCard()"
-    [disabled]="formMode == 'edit' || !cards || cards.length == 0"
-  >
-    <div class="fas fa-random"></div>
-  </button>
-  <button
-    class="btn btn-light"
-    id="editCard"
-    type="button"
-    [disabled]="isDisabled()"
-    (click)="enableEdit()"
-    matTooltip="Bearbeiten"
-    matTooltipPosition="above"
-  >
-    <div class="fas fa-pen"></div>
-  </button>
+  <div class="col-auto">
+    <button
+      mat-icon-button
+      matTooltip="Zufall"
+      matTooltipPosition="below"
+      aria-label="zufall"
+      (click)="showRandomCard()"
+      [disabled]="formMode == 'edit' || !cards || cards.length == 0"
+    >
+      <mat-icon>shuffle</mat-icon>
+    </button>
 
-  <button
-    [ngClass]="setClass()"
-    id="toggleAdd"
-    type="button"
-    data-toggle="button"
-    (click)="toggleAddView()"
-    [matTooltip]="formMode == 'add' ? 'Verstecken' : 'Hinzufügen'"
-    matTooltipPosition="above"
-    [disabled]="formMode == 'edit'"
-  >
-    <div [class]="formMode == 'add' ? 'fas fa-minus' : 'fas fa-plus'"></div>
-  </button>
+    <button
+      mat-icon-button
+      type="button"
+      aria-label="bearbeiten"
+      [disabled]="isDisabled()"
+      (click)="enableEdit()"
+      matTooltip="Bearbeiten"
+      matTooltipPosition="below"
+    >
+      <mat-icon>edit</mat-icon>
+    </button>
+  </div>
 </div>
+
 <div
   class="row"
-  *ngIf="cards && cards.length > 0"
-  [style]="this.loading ? 'display: none' : ''"
+  id="carousel-row"
+  *ngIf="cards?.length > 0"
+  [@fadeInOnEnter]
+  [@fadeOutOnLeave]
 >
-  <a id="left" class="navig col" *ngIf="cards.length > 0" (click)="goToPrev()">
-    <span class="fas fa-chevron-left"></span>
+  <a
+    id="left"
+    class="navig col"
+    aria-label="vorherige karte"
+    *ngIf="cardCount > 1"
+    (click)="goToPrev()"
+  >
+    <mat-icon>keyboard_arrow_left</mat-icon>
   </a>
-  <div id="carousel" (swipeleft)="goToPrev()" (swiperight)="goToNext()">
-    <mdb-carousel
-      (activeSlideChange)="onSlide($event)"
+  <div id="carousel">
+    <ngb-carousel
+      (slid)="onSlide($event)"
       #mycarousel
-      [activeSlideIndex]="0"
-      [animation]="'slide'"
-      [isControls]="false"
-      [allowSwipe]="true"
+      [activeId]="this.activeSlide"
+      [animation]="true"
+      [keyboard]="false"
+      [showNavigationArrows]="false"
       [interval]="'0'"
+      [showNavigationIndicators]="false"
     >
-      <mdb-carousel-item
+      <ng-template
+        ngbSlide
         *ngFor="let card of cards; index as i"
         [id]="i.toString()"
       >
-        <app-card [card]="card" [index]="i"></app-card>
-      </mdb-carousel-item>
-    </mdb-carousel>
+        <app-card [@shake]="notallowed" [card]="card" [index]="i"></app-card>
+      </ng-template>
+    </ngb-carousel>
   </div>
-  <a id="right" class="navig col" *ngIf="cards.length > 0" (click)="goToNext()">
-    <span class="fas fa-chevron-right"></span>
+  <a
+    id="right"
+    class="navig col"
+    *ngIf="cardCount > 1"
+    (click)="goToNext()"
+    aria-label="nächste karte"
+  >
+    <mat-icon>keyboard_arrow_right</mat-icon>
   </a>
+</div>
+<div class="row" *ngIf="cards?.length === 0">
+  <p class="text-muted text-center w-100 mt-2">Keine Karten gefunden</p>
 </div>

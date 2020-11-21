@@ -5,10 +5,20 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "Launch Chrome",
+      "request": "launch",
+      "type": "pwa-chrome",
+      "url": "http://localhost:4200",
+      "webRoot": "${workspaceFolder}/angular-cards"
+    },
+    {
       "type": "node",
       "request": "launch",
       "name": "nodemon",
-      "runtimeExecutable": "nodemon",
+      "env": {
+        "NODE_ENV": "development"
+      },
+      "runtimeExecutable": " nodemon",
       "program": "${workspaceFolder}/start.js",
       "restart": true,
       "console": "integratedTerminal",
