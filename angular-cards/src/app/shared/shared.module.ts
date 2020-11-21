@@ -22,7 +22,7 @@ import { MatButtonToggleModule } from "@angular/material/button-toggle";
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatCheckboxModule } from "@angular/material/checkbox";
 import { MatCardModule } from "@angular/material/card";
-
+import { MatMenuModule } from "@angular/material/menu";
 import {
   MatPaginatorIntl,
   MatPaginatorModule,
@@ -51,7 +51,7 @@ import { MatDividerModule } from "@angular/material/divider";
     MatSnackBarModule,
     MatTabsModule,
     MatToolbarModule,
-
+    MatMenuModule,
     MatCardModule,
     MatCheckboxModule,
     MatChipsModule,

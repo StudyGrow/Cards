@@ -30,6 +30,11 @@ import { selectUserId, newCards } from "src/app/store/selector";
 import { state } from "@angular/animations";
 import { NgbCarousel } from "@ng-bootstrap/ng-bootstrap";
 
+enum sortType {
+  Date_Asc = "dat.up",
+  Date_Des = "dat.down",
+  Author = "auth",
+}
 @Component({
   selector: "app-carousel",
   templateUrl: "./carousel.component.html",
@@ -129,11 +134,13 @@ export class CarouselComponent implements OnInit, OnDestroy {
         this.lastRefresh = obj.date; //update the last refresh
         this.cardCount = obj.cards.length;
         this.activeSlide = 0;
-        this.selectSlide(0);
 
         this.cards = null; //set null to explicitely refresh carousel view
         setTimeout(() => {
           this.cards = obj.cards;
+          setTimeout(() => {
+            this.selectSlide(0);
+          }, 100);
         }, 100);
       }
     });
@@ -225,6 +232,19 @@ export class CarouselComponent implements OnInit, OnDestroy {
         this.notallowed = false;
       }, 100);
     }
+  }
+
+  sortCards(t: sortType) {
+    // switch (t) {
+    //   case sortType.Date_Asc:
+    //     this.cards.sort((a, b) => a.date?.getTime() - b.date?.getTime());
+    //     break;
+    //   case sortType.Date_Des:
+    //     this.cards.sort((a, b) => b.date?.getTime() - a.date?.getTime());
+    //     break;
+    //   default:
+    //     break;
+    // }
   }
 
   isDisabled() {
