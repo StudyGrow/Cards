@@ -4,11 +4,19 @@
     id="fav"
     [color]="this.vote === 1 ? 'warn' : ''"
     mat-icon-button
+    matTooltip="Like"
+    matTooltipPosition="above"
     (click)="toggleVote(1)"
   >
     <mat-icon>favorite</mat-icon>
   </button>
-  <button type="button" id="report" mat-icon-button>
+  <button
+    matTooltip="Melden"
+    matTooltipPosition="above"
+    type="button"
+    id="report"
+    mat-icon-button
+  >
     <mat-icon>flag</mat-icon>
   </button>
 </div>
