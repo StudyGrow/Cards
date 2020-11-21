@@ -1,8 +1,14 @@
-<div class="d-flex flex-row-reverse" role="group">
-  <button type="button" [class]="setBtnClass('down')" (click)="toggleVote(-1)">
-    <i class="fas fa-arrow-down"></i>
+<div class="d-flex justify-content-end mb-2" role="group">
+  <button
+    type="button"
+    id="fav"
+    [color]="this.vote === 1 ? 'warn' : ''"
+    mat-icon-button
+    (click)="toggleVote(1)"
+  >
+    <mat-icon>favorite</mat-icon>
   </button>
-  <button type="button" [class]="setBtnClass('up')" (click)="toggleVote(1)">
-    <i class="fas fa-arrow-up"></i>
+  <button type="button" id="report" mat-icon-button>
+    <mat-icon>flag</mat-icon>
   </button>
 </div>

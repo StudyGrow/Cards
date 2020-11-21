@@ -8,7 +8,7 @@ import {
 import { Card } from "../../models/Card";
 import { ViewChild } from "@angular/core";
 import { CardsService } from "../../services/cards.service";
-import { Subscription } from "rxjs";
+import { Observable, Subscription } from "rxjs";
 import { parse, HtmlGenerator } from "latex.js/dist/latex.js";
 
 import { SafeHtmlPipe } from "../../shared/safe-html.pipe";
@@ -20,6 +20,7 @@ import {
   goNext,
   goPrev,
 } from "src/app/store/actions/cardActions";
+import { authenticated } from "../../store/selector";
 @Component({
   selector: "app-card",
   templateUrl: "./card.component.html",
@@ -30,6 +31,7 @@ export class CardComponent implements OnInit, OnDestroy {
 
   inTypingField: boolean = false;
   activeIndex: number;
+  auth$: Observable<boolean>;
 
   parsed: any = [];
 
@@ -57,6 +59,8 @@ export class CardComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     let data$ = this.store.select("cardsData").pipe(share());
+    this.auth$ = data$.pipe(map(authenticated));
+
     let sub = data$
       .pipe(map((state) => state.activeIndex))
       .subscribe((index) => {

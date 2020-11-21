@@ -15,10 +15,8 @@ import { MatProgressBarModule } from "@angular/material/progress-bar";
 
 import { MatSelectModule } from "@angular/material/select";
 
-import { MatMenuModule } from "@angular/material/menu";
 import { MatSidenavModule } from "@angular/material/sidenav";
 
-import { MatDividerModule } from "@angular/material/divider";
 //Gestures
 import {
   HammerModule,
@@ -115,7 +113,7 @@ export class MyHammerConfig extends HammerGestureConfig {
     SharedModule,
     MatProgressBarModule,
     MatSidenavModule,
-    MatMenuModule,
+
     MatSelectModule,
     HammerModule,
     HomeModule,

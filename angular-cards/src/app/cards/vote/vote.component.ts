@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, Input } from "@angular/core";
 import { Subscription } from "rxjs";
-import { CardsService } from "src/app/services/cards.service";
+
 import { VotesService } from "src/app/services/votes.service";
 
 @Component({
@@ -9,8 +9,8 @@ import { VotesService } from "src/app/services/votes.service";
   styleUrls: ["./vote.component.css"],
 })
 export class VoteComponent implements OnInit, OnDestroy {
-  private vote: number = 0;
-  @Input() id: string; //cardIndex in card array that the vote belongs to
+  vote: number = 0;
+  @Input() id: string; //id of card that the vote belongs to
 
   private subscriptions$: Subscription[] = [];
   constructor(private votes: VotesService) {}
@@ -28,12 +28,10 @@ export class VoteComponent implements OnInit, OnDestroy {
     });
   }
 
-  setBtnClass(s: string) {
+  setBtnColor(s: string) {
     if (s === "up" && this.vote === 1) {
-      return "btn up";
-    } else if (s === "down" && this.vote === -1) {
-      return "btn down";
-    } else return "btn ";
+      return "primary";
+    }
   }
 
   toggleVote(n: number) {

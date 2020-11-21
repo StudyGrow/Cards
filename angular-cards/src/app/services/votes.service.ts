@@ -50,24 +50,14 @@ export class VotesService {
 
   castVote(cardId: string, vote: number) {
     if (cardId) {
-      this.http
-        .post<Vote>(
-          this.config.urlBase + "cards/vote",
-          { value: vote, id: cardId },
-          {
-            headers: this.config.headers,
-            observe: "response",
-          }
-        )
-        .subscribe(
-          (resp) => {
-            console.log("server respone: ", resp.body);
-            //handle local votes here on successfull response
-          },
-          (error) => {
-            this.notifications.handleErrors(error);
-          }
-        );
+      this.http.post<Vote>(
+        this.config.urlBase + "cards/vote",
+        { value: vote, id: cardId },
+        {
+          headers: this.config.headers,
+          observe: "response",
+        }
+      );
     }
   }
 }
