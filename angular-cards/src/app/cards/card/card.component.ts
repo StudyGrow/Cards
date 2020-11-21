@@ -58,7 +58,7 @@ export class CardComponent implements OnInit, OnDestroy {
   subscriptions$: Subscription[] = [];
 
   ngOnInit(): void {
-    let data$ = this.store.select("cardsData").pipe(share());
+    let data$ = this.store.select("cardsData");
     this.auth$ = data$.pipe(map(authenticated));
 
     let sub = data$
