@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, Input } from "@angular/core";
 import { Store } from "@ngrx/store";
 import { Subscription } from "rxjs";
-import { map } from "rxjs/operators";
+import { delay, map } from "rxjs/operators";
 import { Vote } from "src/app/models/Vote";
 
 import { VotesService } from "src/app/services/votes.service";
@@ -27,7 +27,8 @@ export class VoteComponent implements OnInit, OnDestroy {
       .select("cardsData")
       .pipe(map((state: AppState) => selectVote(state, this.id)))
       .subscribe((init) => {
-        this.vote = init;
+        if (init && this.vote && this.vote.value != init.value)
+          this.vote = { ...init };
       });
     this.subscriptions$.push(sub);
   }
@@ -42,5 +43,6 @@ export class VoteComponent implements OnInit, OnDestroy {
     let newVote: Vote = { ...this.vote, value: this.vote?.value === 1 ? 0 : 1 };
     if (!newVote.cardId) newVote.cardId = this.id;
     this.store.dispatch(changeVote({ vote: newVote }));
+    this.vote.value = newVote.value;
   }
 }
