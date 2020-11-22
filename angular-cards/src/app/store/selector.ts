@@ -32,6 +32,9 @@ export const selectUser = (state: AppState) => state.userData.user;
 
 export const authenticated = (state: AppState) => state.userData.authenticated;
 
+export const selectVote = (state: AppState, cardId: string) =>
+  state.votes?.find((vote) => vote.cardId == cardId);
+
 export const lastCardChange = (state: AppState) => state.filteredCardsChanged;
 
 export const selectTagOptions = createSelector(

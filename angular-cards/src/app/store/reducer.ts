@@ -7,10 +7,12 @@ import { Vorlesung } from "../models/Vorlesung";
 import { User } from "../models/User";
 import { UserInfo } from "../models/UserInfo";
 import * as UserActions from "./actions/UserActions";
+import { Vote } from "../models/Vote";
 
 //defines the state of our app
 export interface AppState {
   cards: Card[];
+  votes: Vote[];
   currLecture: Vorlesung;
   activeIndex: number;
   lectures: Vorlesung[];
@@ -33,6 +35,7 @@ export class CardsData {
 //initial state of the app
 export const initialState: AppState = {
   cards: undefined,
+  votes: undefined,
   currLecture: new Vorlesung(),
   activeIndex: 0,
   lectures: undefined,
@@ -83,6 +86,14 @@ const _cardsReducer = createReducer(
       tagList: addTags([...state.currLecture.tagList], card.tags),
     }, //add new tags to the lectures taglist
     filteredCardsChanged: new Date(),
+  })),
+  on(Actions.fetchVotesSuccess, (state, { votes }) => ({
+    ...state,
+    votes: [...votes],
+  })),
+  on(Actions.changeVoteSuccess, (state, { vote }) => ({
+    ...state,
+    votes: updateVote([...state.votes], vote),
   })),
   on(LectureActions.fetchLecturesSuccess, (state, { lectures }) => ({
     ...state,
@@ -173,6 +184,7 @@ const _cardsReducer = createReducer(
   })),
   on(Actions.clearCardData, (state) => ({
     ...state,
+    votes: initialState.votes,
     formMode: initialState.formMode,
     currLecture: initialState.currLecture,
     cards: initialState.cards,
@@ -212,6 +224,20 @@ const _cardsReducer = createReducer(
 
 export function cardsReducer(state: AppState, action: Action) {
   return _cardsReducer(state, action);
+}
+function updateVote(votes: Vote[], vote: Vote) {
+  return votes.map((item, index) => {
+    if (item.cardId !== vote.cardId) {
+      // This isn't the item we care about - keep it as-is
+      return item;
+    }
+
+    // Otherwise, this is the one we want - return an updated value
+    return {
+      ...item,
+      ...vote,
+    };
+  });
 }
 
 function updateObjectInArray(cards: Card[], card: Card) {

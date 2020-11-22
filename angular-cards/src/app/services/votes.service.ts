@@ -21,24 +21,15 @@ export class VotesService {
   ) {}
 
   //called once by the cardsservice every time the route changes to a new lecture
-  fetchVotes(abrv: string) {
-    this.http
+  fetchVotes(abrv?: string): Observable<Vote[]> {
+    if (!abrv) {
+      abrv = this.router.url.split(/vorlesung\//)[1]; //get the lecture abreviation from the route
+    }
+    return this.http
       .get<Vote[]>(this.config.urlBase + "cards/votes?abrv=" + abrv, {
         observe: "response",
       })
-      .subscribe(
-        (response) => {
-          if (response.body) {
-            this.votes$.next(response.body);
-            console.log(response.body);
-          } else {
-            console.log("got empy response");
-          }
-        },
-        (error) => {
-          this.notifications.handleErrors(error);
-        }
-      );
+      .pipe(map((res) => res.body));
   }
 
   //used for vote component to load the initial value of the respective vote
@@ -48,16 +39,16 @@ export class VotesService {
     );
   }
 
-  castVote(cardId: string, vote: number) {
-    if (cardId) {
-      this.http.post<Vote>(
+  castVote(vote: Vote): Observable<Vote> {
+    return this.http
+      .put<Vote>(
         this.config.urlBase + "cards/vote",
-        { value: vote, id: cardId },
+        { value: vote.value, id: vote.cardId },
         {
           headers: this.config.headers,
           observe: "response",
         }
-      );
-    }
+      )
+      .pipe(map((res) => res.body));
   }
 }

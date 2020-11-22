@@ -70,8 +70,8 @@ function deleteVote(req) {
 }
 
 function checkVote(vote) {
-  if (vote !== 1 && vote !== -1) {
-    throw new Error("Vote muss entweder 1 oder -1 sein");
+  if (vote !== 1 && vote !== 0) {
+    throw new Error("Vote muss entweder 1 oder 0 sein");
   }
 }
 

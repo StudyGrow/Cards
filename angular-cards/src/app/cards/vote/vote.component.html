@@ -2,11 +2,11 @@
   <button
     type="button"
     id="fav"
-    [color]="this.vote === 1 ? 'warn' : ''"
+    [color]="this.vote?.value === 1 ? 'warn' : ''"
     mat-icon-button
     matTooltip="Like"
     matTooltipPosition="above"
-    (click)="toggleVote(1)"
+    (click)="toggleVote()"
   >
     <mat-icon>favorite</mat-icon>
   </button>

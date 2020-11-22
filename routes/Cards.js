@@ -147,30 +147,25 @@ router.put(
     }
   }
 );
-router.post(
-  "/vote",
-
-  check("id").not().isEmpty().withMessage("Karten Id benötigt"),
-  (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      res.status(422).json({
-        errors: errors.array(),
-      });
-    }
-
-    let vote = parseInt(req.body.value);
-    req.services.votes.castVote(req, (err) => {
-      if (err) {
-        res.status(422).send(err.message);
-      } else {
-        res.status(200).json({
-          vote: vote,
-        });
-      }
+router.put("/vote", check("id").not().isEmpty().withMessage("Karten Id benötigt"), (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    res.status(422).json({
+      errors: errors.array(),
     });
   }
-);
+
+  let vote = parseInt(req.body.value);
+  req.services.votes.castVote(req, (err) => {
+    if (err) {
+      res.status(422).send(err.message);
+    } else {
+      res.status(200).json({
+        vote: vote,
+      });
+    }
+  });
+});
 
 router.get(
   "/votes",
