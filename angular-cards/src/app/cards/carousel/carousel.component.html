@@ -6,6 +6,7 @@
   <div class="col-auto">
     <button
       mat-icon-button
+      i18n-matTooltip
       matTooltip="Zufall"
       matTooltipPosition="below"
       aria-label="zufall"
@@ -22,6 +23,7 @@
       [disabled]="isDisabled()"
       (click)="enableEdit()"
       matTooltip="Bearbeiten"
+      i18n-matTooltip
       matTooltipPosition="below"
     >
       <mat-icon>edit</mat-icon>
