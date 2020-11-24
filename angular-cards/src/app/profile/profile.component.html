@@ -3,10 +3,10 @@
     <div class="col-md-4 col-xs-12">
       <mat-card class="p-0" id="list">
         <mat-nav-list class="pt-0">
-          <a mat-list-item routerLinkActive="active" routerLink="overview">
+          <a mat-list-item routerLinkActive="active" routerLink="overview" i18n>
             Übersicht
           </a>
-          <a mat-list-item routerLinkActive="active" routerLink="manage">
+          <a mat-list-item routerLinkActive="active" routerLink="manage" i18n>
             Profildaten ändern
           </a>
           <a
@@ -14,6 +14,7 @@
             *ngIf="cardCount > 0"
             routerLink="cards"
             routerLinkActive="active"
+            i18n
           >
             Karteikarten
           </a>

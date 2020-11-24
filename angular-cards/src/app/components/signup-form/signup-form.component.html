@@ -4,7 +4,7 @@
 <mat-card class="m-auto">
   <form #form="ngForm" (ngSubmit)="submit(form)" novalidate>
     <mat-form-field appearance="standard" class="w-100">
-      <mat-label>Benutzername</mat-label>
+      <mat-label i18n>Benutzername</mat-label>
       <input
         matInput
         type="text"
@@ -16,11 +16,13 @@
         #username="ngModel"
         ngModel
       />
-      <mat-hint>Wenigstens 5 Zeichen</mat-hint>
-      <mat-error>Dein Nutzername muss mindestens 5 Zeichen enthalten</mat-error>
+      <mat-hint i18n>Wenigstens 5 Zeichen</mat-hint>
+      <mat-error i18n
+        >Dein Nutzername muss mindestens 5 Zeichen enthalten</mat-error
+      >
     </mat-form-field>
     <mat-form-field appearance="standard" class="w-100">
-      <mat-label>Email Adresse</mat-label>
+      <mat-label i18n>Email Adresse</mat-label>
       <input
         matInput
         type="email"
@@ -31,10 +33,10 @@
         #email="ngModel"
         ngModel
       />
-      <mat-error>Bitte überprüfe deine Email Adresse</mat-error>
+      <mat-error i18n>Bitte überprüfe deine Email Adresse</mat-error>
     </mat-form-field>
     <mat-form-field appearance="standard" class="w-100">
-      <mat-label>Passwort</mat-label>
+      <mat-label i18n>Passwort</mat-label>
       <input
         matInput
         type="password"
@@ -44,10 +46,10 @@
         ngModel
         minlength="7"
       />
-      <mat-hint>Wenigstens 7 Zeichen</mat-hint>
+      <mat-hint i18n>Wenigstens 7 Zeichen</mat-hint>
     </mat-form-field>
     <mat-form-field appearance="standard" class="w-100">
-      <mat-label>Passwort wiederholen</mat-label>
+      <mat-label i18n>Passwort wiederholen</mat-label>
       <input
         matInput
         type="password"
@@ -64,6 +66,7 @@
       color="primary"
       type="submit"
       [disabled]="isDisabled(username, email, password, password2)"
+      i18n
     >
       Account erstellen
     </button>

@@ -4,14 +4,14 @@
   </mat-card-title>
   <mat-expansion-panel #answer class="mat-elevation-z0 p-0">
     <mat-expansion-panel-header>
-      <mat-panel-title> Antwort</mat-panel-title>
+      <mat-panel-title i18n> Antwort</mat-panel-title>
     </mat-expansion-panel-header>
     <ng-template matExpansionPanelContent>
       <pre lang="de" class="mb-1" [innerHtml]="parsed[0] | safeHtml"></pre>
     </ng-template>
   </mat-expansion-panel>
   <p *ngIf="card.authorName" class="card-text">
-    <small class="text-muted float-right"
+    <small i18n class="text-muted float-right"
       >Ersteller: {{ card.authorName }}</small
     >
   </p>

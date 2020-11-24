@@ -1,6 +1,6 @@
 <ng-container *ngIf="formMode$ | async as mode">
-  <h4 *ngIf="mode == 'add'" class="mt-2">Karteikarte hinzufügen</h4>
-  <h4 *ngIf="mode == 'edit'" class="mt-2">Karteikarte bearbeiten</h4>
+  <h4 *ngIf="mode == 'add'" class="mt-2" i18n>Karteikarte hinzufügen</h4>
+  <h4 *ngIf="mode == 'edit'" class="mt-2" i18n>Karteikarte bearbeiten</h4>
 
   <form
     [formGroup]="form"
@@ -9,7 +9,7 @@
     autocomplete="off"
   >
     <mat-form-field appearance="outline" class="mb-1 w-100">
-      <mat-label>Frage</mat-label>
+      <mat-label i18n>Frage</mat-label>
       <input
         autocomplete="off"
         matInput
@@ -23,13 +23,13 @@
         (blur)="resetNav()"
       />
       <mat-hint align="end">{{ thema.value?.trim().length || 0 }}/500</mat-hint>
-      <mat-error *ngIf="thema.value?.trim().length < 3"
+      <mat-error *ngIf="thema.value?.trim().length < 3" i18n
         >Die Frage muss mind. 3 Zeichen enthalten</mat-error
       >
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="mb-1 w-100">
-      <mat-label>Antwort</mat-label>
+      <mat-label i18n>Antwort</mat-label>
       <textarea
         autocomplete="off"
         matInput
@@ -50,6 +50,7 @@
           content.value?.trim().length < 1 ||
           content.value?.trim().length > 1000
         "
+        i18n
         >Die Antwort muss zwischen 1 und 1000 Zeichen enthalten</mat-error
       >
     </mat-form-field>
@@ -90,7 +91,7 @@
     </mat-form-field>
     <mat-slide-toggle #latex class="mb-1 w-100">Latex</mat-slide-toggle>
     <small>
-      <mat-hint class="mb-4">Aktiviere die Latex Formattierung</mat-hint>
+      <mat-hint class="mb-4" i18n>Aktiviere die Latex Formattierung</mat-hint>
     </small>
 
     <div class="m-3"></div>
@@ -101,10 +102,13 @@
           color="primary"
           type="submit"
           [disabled]="isDisabled(content, thema)"
+          i18n
         >
           Speichern
         </button>
-        <button mat-button type="button" (click)="cancelEdit()">Abbruch</button>
+        <button mat-button type="button" (click)="cancelEdit()" i18n>
+          Abbruch
+        </button>
       </ng-container>
       <ng-container *ngSwitchCase="'add'">
         <button
@@ -112,6 +116,7 @@
           color="primary"
           type="submit"
           [disabled]="isDisabled(content, thema)"
+          i18n
         >
           Hinzufügen
         </button>

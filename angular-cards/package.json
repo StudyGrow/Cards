@@ -4,10 +4,13 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --proxy-config proxy.conf.json",
+    "start:en": "ng serve --proxy-config proxy.conf.json --configuration=en",
     "build": "ng build",
+    "build:en": "ng build --configuration=en",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "int:extract": "ng xi18n --output-path locale"
   },
   "private": true,
   "dependencies": {

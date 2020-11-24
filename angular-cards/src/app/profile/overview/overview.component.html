@@ -1,4 +1,4 @@
-<div *ngIf="(user$ | async).confirmed == false" class="alert alert-info">
+<div *ngIf="(user$ | async).confirmed == false" class="alert alert-info" i18n>
   Überprüfe dein Email Postfach, um deinen Account zu bestätigen
 </div>
 <mat-card *ngIf="user$ | async as user" class="mb-2">
@@ -24,7 +24,7 @@
       >
       <mat-list-item role="listitem" *ngIf="user.name"
         ><div class="row w-100">
-          <div class="col col-sm-3">Vorname</div>
+          <div class="col col-sm-3" i18n>Vorname</div>
           <div class="col col-sm-9">
             {{ user.name }}
           </div>
@@ -32,7 +32,7 @@
       >
       <mat-list-item role="listitem" *ngIf="user.surname">
         <div class="row w-100">
-          <div class="col col-sm-3">Nachname</div>
+          <div class="col col-sm-3" i18n>Nachname</div>
           <div class="col col-sm-9">
             {{ user.surname }}
           </div>
@@ -40,7 +40,7 @@
       >
       <mat-list-item role="listitem" *ngIf="user.creationDate">
         <div class="row w-100">
-          <div class="col col-sm-3">Mitglied seit</div>
+          <div class="col col-sm-3" i18n>Mitglied seit</div>
           <div class="col col-sm-9">
             {{ user.creationDate | date: "longDate":"de" }}
           </div>

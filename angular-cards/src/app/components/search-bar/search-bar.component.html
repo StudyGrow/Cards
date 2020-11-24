@@ -18,6 +18,7 @@
           (allSuggestions$ | async)?.length > 0
         "
         mat-subheader
+        i18n
       >
         Aktuell angezeigt
       </div>
@@ -31,7 +32,7 @@
       </mat-option>
       <mat-divider></mat-divider>
 
-      <div *ngIf="(allSuggestions$ | async)?.length > 0" mat-subheader>
+      <div *ngIf="(allSuggestions$ | async)?.length > 0" mat-subheader i18n>
         Alle Karten
       </div>
       <mat-option

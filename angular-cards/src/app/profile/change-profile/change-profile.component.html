@@ -1,7 +1,7 @@
-<h2>Accountdaten ändern</h2>
+<h2 i18n>Accountdaten ändern</h2>
 <form #form="ngForm" (ngSubmit)="changeAccount(form)" novalidate>
   <mat-form-field appearance="standard" class="w-100">
-    <mat-label>Vorname</mat-label>
+    <mat-label i18n>Vorname</mat-label>
     <input
       matInput
       type="text"
@@ -13,7 +13,7 @@
     />
   </mat-form-field>
   <mat-form-field appearance="standard" class="w-100">
-    <mat-label>Nachname</mat-label>
+    <mat-label i18n>Nachname</mat-label>
     <input
       matInput
       type="text"
@@ -25,7 +25,7 @@
     />
   </mat-form-field>
   <mat-form-field appearance="standard" class="w-100">
-    <mat-label>Benutzername</mat-label>
+    <mat-label i18n>Benutzername</mat-label>
     <input
       matInput
       type="text"
@@ -38,10 +38,10 @@
       [(ngModel)]="user.username"
     />
 
-    <mat-hint>Maximal 20 Zeichen</mat-hint>
+    <mat-hint i18n>Maximal 20 Zeichen</mat-hint>
   </mat-form-field>
   <mat-form-field appearance="standard" class="w-100">
-    <mat-label>Email Adresse</mat-label>
+    <mat-label i18n>Email Adresse</mat-label>
     <input
       matInput
       type="email"
@@ -59,6 +59,7 @@
     mat-flat-button
     color="primary"
     [disabled]="!validate(form)"
+    i18n
   >
     Aktualisieren
   </button>
@@ -73,7 +74,7 @@
   class="mb-2"
 >
   <mat-form-field appearance="standard" class="w-100">
-    <mat-label>Neues Passwort</mat-label>
+    <mat-label i18n>Neues Passwort</mat-label>
     <input
       matInput
       type="password"
@@ -84,10 +85,10 @@
       minlength="7"
     />
 
-    <mat-hint>Wenigstens 7 Zeichen</mat-hint>
+    <mat-hint i18n>Wenigstens 7 Zeichen</mat-hint>
   </mat-form-field>
   <mat-form-field appearance="standard" class="w-100">
-    <mat-label>Neues Passwort wiederholen</mat-label>
+    <mat-label i18n>Neues Passwort wiederholen</mat-label>
     <input
       matInput
       type="password"
@@ -104,9 +105,12 @@
     mat-flat-button
     color="primary"
     [disabled]="!match(password.value, password2.value)"
+    i18n
   >
     Ändern
   </button>
 </form>
-<h2>Account löschen</h2>
-<button mat-flat-button color="warn" (click)="delete()">Account löschen</button>
+<h2 i18n>Account löschen</h2>
+<button mat-flat-button color="warn" (click)="delete()" i18n>
+  Account löschen
+</button>

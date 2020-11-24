@@ -1,0 +1,842 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="en-US" datatype="plaintext" original="ng2.template">
+    <body>
+      <trans-unit id="6c791d8cf0860d009c5a72bb170d657aa22ae8d2" datatype="html">
+        <source> Aktuell angezeigt </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/search-bar/search-bar.component.html</context>
+          <context context-type="linenumber">23,24</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8a5e4d42be95ef55fc8da4941309f599c4cb9bd6" datatype="html">
+        <source> Alle Karten </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/search-bar/search-bar.component.html</context>
+          <context context-type="linenumber">36,37</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7dc6c96ef237eb87de4d5a542abbf05d10031425" datatype="html">
+        <source>Benutzername</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/login-form/login-form.component.html</context>
+          <context context-type="linenumber">4</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/signup-form/signup-form.component.html</context>
+          <context context-type="linenumber">7</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/profile/change-profile/change-profile.component.html</context>
+          <context context-type="linenumber">28</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2070ebb54f893c60114f49f46d7e1a6f27b66610" datatype="html">
+        <source>Passwort</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/login-form/login-form.component.html</context>
+          <context context-type="linenumber">17</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/signup-form/signup-form.component.html</context>
+          <context context-type="linenumber">39</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="b7e1ce8783c011f0874593e6c226b47c5b4a917c" datatype="html">
+        <source>Eingeloggt bleiben</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/login-form/login-form.component.html</context>
+          <context context-type="linenumber">28</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3472e07c2c71430fca2252e24011ba52e7425203" datatype="html">
+        <source> Login </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/login-form/login-form.component.html</context>
+          <context context-type="linenumber">37,38</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3da642b74f2447d0fd86a2a9f25a9afb1f313990" datatype="html">
+        <source>Wenigstens 5 Zeichen</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/signup-form/signup-form.component.html</context>
+          <context context-type="linenumber">19</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4bb076e328e82668af9d12bcf4330e4b0589c920" datatype="html">
+        <source>Dein Nutzername muss mindestens 5 Zeichen enthalten</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/signup-form/signup-form.component.html</context>
+          <context context-type="linenumber">21</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="93a2f8937281aaf1e58d21b259aa29624c60adf8" datatype="html">
+        <source>Email Adresse</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/signup-form/signup-form.component.html</context>
+          <context context-type="linenumber">25</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/profile/change-profile/change-profile.component.html</context>
+          <context context-type="linenumber">44</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="af03abb467be9096415f027fde6567990119df39" datatype="html">
+        <source>Bitte überprüfe deine Email Adresse</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/signup-form/signup-form.component.html</context>
+          <context context-type="linenumber">36</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="d45a824face8e8d45b6b9aa71401af1386f6e3d0" datatype="html">
+        <source>Wenigstens 7 Zeichen</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/signup-form/signup-form.component.html</context>
+          <context context-type="linenumber">49</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/profile/change-profile/change-profile.component.html</context>
+          <context context-type="linenumber">88</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="55de98c522f30988612c529201c4f9b94fa4bb86" datatype="html">
+        <source>Passwort wiederholen</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/signup-form/signup-form.component.html</context>
+          <context context-type="linenumber">52</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="90b90b15a978b09d6f3cbdc14931dcd64acf1a9b" datatype="html">
+        <source> Account erstellen </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/signup-form/signup-form.component.html</context>
+          <context context-type="linenumber">71,72</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="0154f38348ec2a3e4e86d1f923ef44109f752afe" datatype="html">
+        <source><x id="START_TAG_MAT_ICON" ctype="x-mat_icon" equiv-text="&lt;mat-icon&gt;"/>home<x id="CLOSE_TAG_MAT_ICON" ctype="x-mat_icon" equiv-text="&lt;/mat-icon&gt; "/> Vorlesungen</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/nav-list/nav-list.component.html</context>
+          <context context-type="linenumber">8</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4cb8ea83779e3d378b66d44b8fd01723ef980606" datatype="html">
+        <source><x id="START_TAG_MAT_ICON" ctype="x-mat_icon" equiv-text="&lt;mat-icon&gt;"/>contacts<x id="CLOSE_TAG_MAT_ICON" ctype="x-mat_icon" equiv-text="&lt;/mat-icon&gt; "/> Infos </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/nav-list/nav-list.component.html</context>
+          <context context-type="linenumber">46,47</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="527635117f7350314db9f481bade87a28c167ff8" datatype="html">
+        <source>Darkmode</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/nav-list/nav-list.component.html</context>
+          <context context-type="linenumber">54</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="f483459e52d811a17ccd095a34db765dd15fc315" datatype="html">
+        <source><x id="START_TAG_MAT_ICON" ctype="x-mat_icon" equiv-text="&lt;mat-icon&gt;"/>person<x id="CLOSE_TAG_MAT_ICON" ctype="x-mat_icon" equiv-text="&lt;/mat-icon&gt;"/>Login</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/nav-list/nav-list.component.html</context>
+          <context context-type="linenumber">17</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="13acb57da0b78ed6b8d0b08a4518bb24aa8b4ac2" datatype="html">
+        <source><x id="START_TAG_MAT_ICON" ctype="x-mat_icon" equiv-text="&lt;mat-icon&gt;"/>add_box<x id="CLOSE_TAG_MAT_ICON" ctype="x-mat_icon" equiv-text="&lt;/mat-icon&gt; "/> Registrieren</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/nav-list/nav-list.component.html</context>
+          <context context-type="linenumber">21</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="29881a45dafbe5aa05cd9d0441a4c0c2fb06df92" datatype="html">
+        <source>Account</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/nav-list/nav-list.component.html</context>
+          <context context-type="linenumber">25</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8f297b785cf01cff32b0e0e13fe1f526cff1061e" datatype="html">
+        <source><x id="START_TAG_MAT_ICON" ctype="x-mat_icon" equiv-text="&lt;mat-icon&gt;"/>account_box<x id="CLOSE_TAG_MAT_ICON" ctype="x-mat_icon" equiv-text="&lt;/mat-icon&gt; "/> Übersicht</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/nav-list/nav-list.component.html</context>
+          <context context-type="linenumber">33</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="513954f3846a250ec0c8d73609d32036ea8286c1" datatype="html">
+        <source><x id="START_TAG_MAT_ICON" ctype="x-mat_icon" equiv-text="&lt;mat-icon&gt;"/>style<x id="CLOSE_TAG_MAT_ICON" ctype="x-mat_icon" equiv-text="&lt;/mat-icon&gt; "/> Meine Karten</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/nav-list/nav-list.component.html</context>
+          <context context-type="linenumber">41</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3d4d5062647fce4235d2008dd8f1906d9afb4e70" datatype="html">
+        <source><x id="START_TAG_MAT_ICON" ctype="x-mat_icon" equiv-text="&lt;mat-icon&gt;"/>exit_to_app<x id="CLOSE_TAG_MAT_ICON" ctype="x-mat_icon" equiv-text="&lt;/mat-icon&gt; "/> Logout </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/nav-list/nav-list.component.html</context>
+          <context context-type="linenumber">64,65</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="f324a6867b1d23a56912d6bec936ce1de123f351" datatype="html">
+        <source>Cards</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/routes/about/about.component.html</context>
+          <context context-type="linenumber">3</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="52b8b794cdf76d1d6cf06cb23cdd9cee06f021e0" datatype="html">
+        <source> Cards ist eine Webseite, die dir dabei helfen soll dich auf deine Klausuren und Prüfungen vorzubereiten. Das Konzept von Cards beruht auf den klassischen Karteikarten. Anders als die klassischen Karteikarten brauchst du jedoch nicht deinen Stapel an Karten überall mitzuschleppen. Unsere Webseite eignet sich vor allem auch für Smartphones, somit kannst du dir deine Karteikarten auch unterwegs anschauen. Sie richtet sich vor allem an Studenten. </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/routes/about/about.component.html</context>
+          <context context-type="linenumber">6,13</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="04b4d6634089b3ab30a64b56890c433c22df6c75" datatype="html">
+        <source>Sharing is Caring</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/routes/about/about.component.html</context>
+          <context context-type="linenumber">18</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="f489fe00768bb089efe997f2e2f06e04322a622c" datatype="html">
+        <source> Karteikarten, die du auf unserer Webseite hinzufügst, sind automatisch für alle anderen Nutzer sichtbar. Andererseits kannst du dir auch Karten von anderen Nutzern anschauen.Dies sorgt dafür, dass du optimal auf deine Klausur vorbereitet bist. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br /&gt;
+      "/> Wenn du mit einer Karte nicht zufrieden bist, oder du glaubst ihr Inhalt wäre falsch oder unvollständig, kannst du sie bearbeiten. Karten, welche von registrierten Nutzern erstellt worden sind, kannst du leider nicht bearbeiten. In einer späteren Version wird es möglich sein für diese Karte einen Verberungsvorschlag an den Ertseller der Karte zu senden. </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/routes/about/about.component.html</context>
+          <context context-type="linenumber">20,29</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4dc2e21dceeb5d04875158a154463eca0947be1b" datatype="html">
+        <source>Wir freuen uns über Feedback</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/routes/about/about.component.html</context>
+          <context context-type="linenumber">30</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="71c8da27720a9def3c3c6276855f43b8883a23e1" datatype="html">
+        <source> Wir bemühen uns, die Seite fehlerfrei zu gestalten. Trotzdem kann es sein, dass sich der ein oder andere Fehler eingeschlichen hat. Diesen kannst du uns gerne melden indem du <x id="START_LINK" ctype="x-a" equiv-text="&lt;a
+        href=&quot;https://git.rwth-aachen.de/jungerjunge2/cards/-/issues&quot;
+        rel=&quot;noopener&quot;
+        target=&quot;_blank&quot;
+        &gt;"/>hier<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a
+      &gt;
+      "/> ein Issue erstellst. Wir versuchen den Fehler, dann so schnell wie möglich zu beheben. Du kannst uns dort auch gerne Feedback hinterlassen </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/routes/about/about.component.html</context>
+          <context context-type="linenumber">32,43</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4b6dbf2d92858e82bcf6ae5dbc8dfb4b29d82ad0" datatype="html">
+        <source>FAQ</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/routes/about/about.component.html</context>
+          <context context-type="linenumber">46</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="f69f8c29bd73d6471777619ac150e9a037ec8ce0" datatype="html">
+        <source>Wo finde ich die Karteikarten zu meiner Vorlesung?</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/routes/about/about.component.html</context>
+          <context context-type="linenumber">47</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="eb1d017cd732b98643abadb6bbd948ad652830dc" datatype="html">
+        <source> Meine Vorlesung ist nicht in der Liste. Wie kann ich sie hinzufügen? </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/routes/about/about.component.html</context>
+          <context context-type="linenumber">68,69</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7d4309d9a9df6393b2051c35fb381c2bbb0aab66" datatype="html">
+        <source>Wie erstelle ich eine Karte?</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/routes/about/about.component.html</context>
+          <context context-type="linenumber">82</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="c44429dd46c7115cd2d6fef653ec55b6a0588cf3" datatype="html">
+        <source>Wie bearbeite ich eine Karte?</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/routes/about/about.component.html</context>
+          <context context-type="linenumber">106</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7ec957baabf09209d5484ca23ccf0bbb1c7758a6" datatype="html">
+        <source> Wähle zuerst die Karteikarte aus die du bearbeiten möchtest. Drücke auf das &quot;Bleistift&quot; Symbol. Bearbeite deine Karte im Formular und drücke auf &quot;Sichern&quot;. Bitte beachte, dass du nur öffentliche und deine eigenen Karten bearbeiten kannst. Karten, die von anderen registrierten Nutzern erstellt worden sind kannst du leider nicht bearbeit. In einer späteren Version wird es möglich sein für diese Karte einen Verbessungsvorschlag an den Ertseller der Karte zu senden. </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/routes/about/about.component.html</context>
+          <context context-type="linenumber">108,115</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6b576ca04e9640686c4e2535ca8f8a2d35c464be" datatype="html">
+        <source>Wie kann ich Latex verwenden?</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/routes/about/about.component.html</context>
+          <context context-type="linenumber">117</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="dabeed16ae08ca315a205ea3530c8afcdfd16dd9" datatype="html">
+        <source> Mithilfe von Latex kannst du Formeln in Karten besser darstellen. Umhülle den Latex Teil dazu mit $-Zeichen und aktiviere den Latex Switch. Karten können nur abgesendet werden, wenn die Latex Formatierung korrekt ist. Mehr zu den Latex Befehlen findest du <x id="START_LINK" ctype="x-a" equiv-text="&lt;a href=&quot;https://en.wikibooks.org/wiki/LaTeX/Mathematics&quot; rel=&quot;noopener&quot;
+        &gt;"/>hier<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a
+      &gt;"/>. </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/routes/about/about.component.html</context>
+          <context context-type="linenumber">119,126</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="48b9298c39cfa04e69378f5cc040ff2d1e709427" datatype="html">
+        <source><x id="START_LINK" ctype="x-a" equiv-text="&lt;a routerLink=&quot;/signup&quot;&gt;"/>Erstelle einen Account<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;"/>, um alle Vorteile unserer Webseite zu nutzen. </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/routes/about/about.component.html</context>
+          <context context-type="linenumber">15,17</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ba987e80b079f18ba9414971271577fe0240abca" datatype="html">
+        <source> Auf unserer <x id="START_LINK" ctype="x-a" equiv-text="&lt;a routerLink=&quot;/&quot;&gt;"/>Startseite<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;"/> findest du eine Liste aller Vorlesungen, für die bisher Karten hinzugefügt wurden. Wähle deine Vorlesung aus. Falls du die Vorlesung nich in der Liste findest, dann kannst du sie hinzufügen. <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span *ngIf=&quot;!loggedIn&quot;&gt;
+        "/> Dafür musst du dich jedoch <x id="START_LINK_1" equiv-text="&lt;a routerLink=&quot;/login&quot;&gt;"/>einloggen<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;"/> oder einen <x id="START_LINK_2" equiv-text="&lt;a routerLink=&quot;/signup&quot;&gt; "/> Account erstellen<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;"/>. <x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/><x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br /&gt;
+      "/> Nachdem du auf die Vorlesung gedrückt hast kommst du auf eine neue Seite, auf der du dir alle Karteikarten, die zu der Vorlesung bereits hinzugefügt wurden, anschauen. Nutze die Pfeiltasten oder wische horizontal über die Karte, um dir weitere Karten anzuschauen. Du kannst den Inhalt der Karte aufklappen indem du auf &quot;Mehr dazu&quot; drückst. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br /&gt;
+      "/> Du kannst auch die Suchfunktion in der Navigationsleiste nutzen, um nach bestimmten Karten zu suchen. </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/routes/about/about.component.html</context>
+          <context context-type="linenumber">49,66</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7a0f2d0b859251b703f63852d9d2c0425348c3bc" datatype="html">
+        <source> Falls du die Vorlesung nich in der Liste findest, dann kannst du sie hinzufügen indem du das Formular ausfüllst und auf &quot;Hinzufügen&quot; drückst. <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span *ngIf=&quot;!loggedIn&quot;&gt;
+        "/> Dafür musst du dich jedoch <x id="START_LINK" ctype="x-a" equiv-text="&lt;a routerLink=&quot;/login&quot;&gt;"/>einloggen<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;"/> oder einen <x id="START_LINK_1" equiv-text="&lt;a routerLink=&quot;/signup&quot;&gt; "/> Account erstellen<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;"/>. <x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/><x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br /&gt;
+      "/> Nachdem du auf hinzufügen gedrückt hast kommst du auf eine neue Seite, auf der du deine erste Karte hinzufügen kannst </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/routes/about/about.component.html</context>
+          <context context-type="linenumber">71,81</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="c1848d72345a836561552b5de27dfb10accad220" datatype="html">
+        <source> Auf unserer <x id="START_LINK" ctype="x-a" equiv-text="&lt;a routerLink=&quot;/&quot;&gt;"/>Startseite<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a
+      &gt;"/> siehst du eine Liste von Vorlesungen. Wähle die Vorlesung aus zu der du eine Karteikarte hinzufügen möchtest. Falls deine Vorlesung nicht findest, kannst du sie über das Formular hinzufügen. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br /&gt;
+      "/> Nachdem du auf die Seite der Vorlesung navigiert bist kannst du eine neue Karte hinzufügen indem du auf den &quot;Hinzufügen&quot; Tab drückst. Nun kannst du deine Karteikarte hinzufügen indem du das Formular ausfüllst und auf den &quot;Hinzufügen&quot; Knopf drückst. <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span *ngIf=&quot;!loggedIn&quot;&gt;
+        "/> Erstelle am Besten einen <x id="START_LINK_1" equiv-text="&lt;a routerLink=&quot;/signup&quot;&gt; "/> Account<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a
+      &gt;"/>, oder <x id="START_LINK_2" equiv-text="&lt;a routerLink=&quot;/login&quot;&gt;"/>logge dich ein<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a
+      &gt;"/>, damit du Ertseller dieser Karte wirst und nur du diese bearbeiten kannst. <x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;
+      "/> Pro-Tip: du kannst auch mathematische Symbole schreiben indem du Latex Befehle verwendest und diese mit $ Zeichen umhüllst. Mehr zu den Latex Befehlen findest du <x id="START_LINK_3" equiv-text="&lt;a href=&quot;https://en.wikibooks.org/wiki/LaTeX/Mathematics&quot; rel=&quot;noopener&quot;
+        &gt;"/>hier<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a
+      &gt;"/>. </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/routes/about/about.component.html</context>
+          <context context-type="linenumber">84,104</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="220ef94c51e5ae6be54dcf7bce36037fe5a89028" datatype="html">
+        <source>Whoops, diese Seite existiert nicht</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/routes/error-page/error-page.component.html</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="d67d41141fce7b733404e900b6f7dac3f2a6a692" datatype="html">
+        <source>Zurück zur Startseite</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/routes/error-page/error-page.component.html</context>
+          <context context-type="linenumber">2</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="f05af945b7816928ace6d457aa3ccd7b7aeaf70c" datatype="html">
+        <source>Vorlesungen</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/home/lectures/lectures.component.html</context>
+          <context context-type="linenumber">2</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ad09e035bdcde47ce8afa1bfa607750641442980" datatype="html">
+        <source>Vorlesung hinzufügen</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/home/add-lecture-form/add-lecture-form.component.html</context>
+          <context context-type="linenumber">2</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2058334e5f82a3b2d91de9d954228edf3eef362d" datatype="html">
+        <source>Vorlesungsname</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/home/add-lecture-form/add-lecture-form.component.html</context>
+          <context context-type="linenumber">7</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="f338a352f4df378ebe9a87356a495c7c9a08763c" datatype="html">
+        <source>Abkürzung</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/home/add-lecture-form/add-lecture-form.component.html</context>
+          <context context-type="linenumber">29</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="cabe7b11305c49240f1958e04779c902afb14127" datatype="html">
+        <source> Hinzufügen </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/home/add-lecture-form/add-lecture-form.component.html</context>
+          <context context-type="linenumber">60,61</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ace707da2b9e342a541430f86907230aafa8ec61" datatype="html">
+        <source>Der Vorlesungsname muss zwischen 3 und 500 Zeichen enthalten</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/home/add-lecture-form/add-lecture-form.component.html</context>
+          <context context-type="linenumber">23,24</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="36b428fbf41084cfd30ef817e84aee5d3aef910f" datatype="html">
+        <source>Die Abkürzung muss zwischen 3 und 7 Zeichen enthalten</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/home/add-lecture-form/add-lecture-form.component.html</context>
+          <context context-type="linenumber">48</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ngb.alert.close" datatype="html">
+        <source>Close</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">node_modules/@ng-bootstrap/src/alert/alert.ts</context>
+          <context context-type="linenumber">55,58</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ngb.carousel.slide-number" datatype="html">
+        <source> Slide <x id="INTERPOLATION" equiv-text="ate _pauseOnHov"/> of <x id="INTERPOLATION_1" equiv-text="ect(false);
+  p"/> </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">node_modules/@ng-bootstrap/src/carousel/carousel.ts</context>
+          <context context-type="linenumber">114,118</context>
+        </context-group>
+        <note priority="1" from="description">Currently selected slide number read by screen reader</note>
+      </trans-unit>
+      <trans-unit id="ngb.carousel.previous" datatype="html">
+        <source>Previous</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">node_modules/@ng-bootstrap/src/carousel/carousel.ts</context>
+          <context context-type="linenumber">132,134</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ngb.carousel.next" datatype="html">
+        <source>Next</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">node_modules/@ng-bootstrap/src/carousel/carousel.ts</context>
+          <context context-type="linenumber">147,151</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ngb.datepicker.previous-month" datatype="html">
+        <source>Previous month</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">node_modules/@ng-bootstrap/src/datepicker/datepicker-navigation.ts</context>
+          <context context-type="linenumber">24,27</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">node_modules/@ng-bootstrap/src/datepicker/datepicker-navigation.ts</context>
+          <context context-type="linenumber">34,35</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ngb.datepicker.next-month" datatype="html">
+        <source>Next month</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">node_modules/@ng-bootstrap/src/datepicker/datepicker-navigation.ts</context>
+          <context context-type="linenumber">44,48</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">node_modules/@ng-bootstrap/src/datepicker/datepicker-navigation.ts</context>
+          <context context-type="linenumber">57,61</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ngb.datepicker.select-month" datatype="html">
+        <source>Select month</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">node_modules/@ng-bootstrap/src/datepicker/datepicker-navigation-select.ts</context>
+          <context context-type="linenumber">44,49</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">node_modules/@ng-bootstrap/src/datepicker/datepicker-navigation-select.ts</context>
+          <context context-type="linenumber">49,50</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ngb.datepicker.select-year" datatype="html">
+        <source>Select year</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">node_modules/@ng-bootstrap/src/datepicker/datepicker-navigation-select.ts</context>
+          <context context-type="linenumber">59,63</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">node_modules/@ng-bootstrap/src/datepicker/datepicker-navigation-select.ts</context>
+          <context context-type="linenumber">72,74</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ngb.pagination.first" datatype="html">
+        <source>««</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">node_modules/@ng-bootstrap/src/pagination/pagination.ts</context>
+          <context context-type="linenumber">147,148</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ngb.pagination.previous" datatype="html">
+        <source>«</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">node_modules/@ng-bootstrap/src/pagination/pagination.ts</context>
+          <context context-type="linenumber">153,154</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ngb.pagination.next" datatype="html">
+        <source>»</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">node_modules/@ng-bootstrap/src/pagination/pagination.ts</context>
+          <context context-type="linenumber">158,159</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ngb.pagination.last" datatype="html">
+        <source>»»</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">node_modules/@ng-bootstrap/src/pagination/pagination.ts</context>
+          <context context-type="linenumber">164,165</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ngb.pagination.first-aria" datatype="html">
+        <source>First</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">node_modules/@ng-bootstrap/src/pagination/pagination.ts</context>
+          <context context-type="linenumber">168,172</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ngb.pagination.previous-aria" datatype="html">
+        <source>Previous</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">node_modules/@ng-bootstrap/src/pagination/pagination.ts</context>
+          <context context-type="linenumber">176,177</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ngb.pagination.next-aria" datatype="html">
+        <source>Next</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">node_modules/@ng-bootstrap/src/pagination/pagination.ts</context>
+          <context context-type="linenumber">188,189</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ngb.pagination.last-aria" datatype="html">
+        <source>Last</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">node_modules/@ng-bootstrap/src/pagination/pagination.ts</context>
+          <context context-type="linenumber">195,200</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ngb.progressbar.value" datatype="html">
+        <source><x id="INTERPOLATION" equiv-text="turn this._max;"/></source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">node_modules/@ng-bootstrap/src/progressbar/progressbar.ts</context>
+          <context context-type="linenumber">31,38</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ngb.timepicker.HH" datatype="html">
+        <source>HH</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">node_modules/@ng-bootstrap/src/timepicker/timepicker.ts</context>
+          <context context-type="linenumber">46,47</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ngb.timepicker.hours" datatype="html">
+        <source>Hours</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">node_modules/@ng-bootstrap/src/timepicker/timepicker.ts</context>
+          <context context-type="linenumber">50,51</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ngb.timepicker.MM" datatype="html">
+        <source>MM</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">node_modules/@ng-bootstrap/src/timepicker/timepicker.ts</context>
+          <context context-type="linenumber">55,58</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ngb.timepicker.minutes" datatype="html">
+        <source>Minutes</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">node_modules/@ng-bootstrap/src/timepicker/timepicker.ts</context>
+          <context context-type="linenumber">62,64</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ngb.timepicker.increment-hours" datatype="html">
+        <source>Increment hours</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">node_modules/@ng-bootstrap/src/timepicker/timepicker.ts</context>
+          <context context-type="linenumber">68,69</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ngb.timepicker.decrement-hours" datatype="html">
+        <source>Decrement hours</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">node_modules/@ng-bootstrap/src/timepicker/timepicker.ts</context>
+          <context context-type="linenumber">73,74</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ngb.timepicker.increment-minutes" datatype="html">
+        <source>Increment minutes</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">node_modules/@ng-bootstrap/src/timepicker/timepicker.ts</context>
+          <context context-type="linenumber">80,82</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ngb.timepicker.decrement-minutes" datatype="html">
+        <source>Decrement minutes</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">node_modules/@ng-bootstrap/src/timepicker/timepicker.ts</context>
+          <context context-type="linenumber">86,88</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ngb.timepicker.SS" datatype="html">
+        <source>SS</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">node_modules/@ng-bootstrap/src/timepicker/timepicker.ts</context>
+          <context context-type="linenumber">91,92</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ngb.timepicker.seconds" datatype="html">
+        <source>Seconds</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">node_modules/@ng-bootstrap/src/timepicker/timepicker.ts</context>
+          <context context-type="linenumber">96</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ngb.timepicker.increment-seconds" datatype="html">
+        <source>Increment seconds</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">node_modules/@ng-bootstrap/src/timepicker/timepicker.ts</context>
+          <context context-type="linenumber">103,104</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ngb.timepicker.decrement-seconds" datatype="html">
+        <source>Decrement seconds</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">node_modules/@ng-bootstrap/src/timepicker/timepicker.ts</context>
+          <context context-type="linenumber">109,115</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ngb.timepicker.PM" datatype="html">
+        <source><x id="INTERPOLATION" equiv-text="sible.
+   */
+  "/></source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">node_modules/@ng-bootstrap/src/timepicker/timepicker.ts</context>
+          <context context-type="linenumber">131,136</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ngb.timepicker.AM" datatype="html">
+        <source><x id="INTERPOLATION" equiv-text="nts ControlValu"/></source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">node_modules/@ng-bootstrap/src/timepicker/timepicker.ts</context>
+          <context context-type="linenumber">154,118</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ngb.toast.close-aria" datatype="html">
+        <source>Close</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">node_modules/@ng-bootstrap/src/toast/toast.ts</context>
+          <context context-type="linenumber">78,85</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="d3058069f29c65a092566d84e83c4556a1dc7b2e" datatype="html">
+        <source> Übersicht </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/profile/profile.component.html</context>
+          <context context-type="linenumber">7,8</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="15947b550b2f35aef41c3612f3db418dc8249da3" datatype="html">
+        <source> Profildaten ändern </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/profile/profile.component.html</context>
+          <context context-type="linenumber">10,11</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1a1d4b627fee54d305c5c20d52383070e8f9a4c5" datatype="html">
+        <source> Karteikarten </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/profile/profile.component.html</context>
+          <context context-type="linenumber">19,20</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="264d61cd680d1c28ac09524713c0209bdc012b7b" datatype="html">
+        <source>Frage</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/cards/form/form.component.html</context>
+          <context context-type="linenumber">12</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2da7dbf7614607fd29931ed73a258fb7b81d83ea" datatype="html">
+        <source>Antwort</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/cards/form/form.component.html</context>
+          <context context-type="linenumber">32</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="c04b4a58b97693cff4d161252175bcceabb0ce1e" datatype="html">
+        <source>Aktiviere die Latex Formattierung</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/cards/form/form.component.html</context>
+          <context context-type="linenumber">94</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2d57ac7735be1b163bf5cc2939c1cdfa987a9b08" datatype="html">
+        <source>Karteikarte hinzufügen</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/cards/form/form.component.html</context>
+          <context context-type="linenumber">2</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3f6b2f73de82ef3e96884ebbbb2ba350ff466dac" datatype="html">
+        <source>Karteikarte bearbeiten</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/cards/form/form.component.html</context>
+          <context context-type="linenumber">3</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="973a044eab6d5e71ed9acfb8b01da354679ab3f0" datatype="html">
+        <source>Die Frage muss mind. 3 Zeichen enthalten</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/cards/form/form.component.html</context>
+          <context context-type="linenumber">27</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="a9320b15a8f031bc9731824feae912de4cb2ca05" datatype="html">
+        <source>Die Antwort muss zwischen 1 und 1000 Zeichen enthalten</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/cards/form/form.component.html</context>
+          <context context-type="linenumber">54</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="75a7f108bb1ccd4cf3e98d5f554b61d28112dcf4" datatype="html">
+        <source> Speichern </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/cards/form/form.component.html</context>
+          <context context-type="linenumber">107,108</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="e6982b82d804acf808e28f0cf79905bb2cdb91e2" datatype="html">
+        <source> Abbruch </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/cards/form/form.component.html</context>
+          <context context-type="linenumber">110,111</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="e79111ba58040c22870ff32ba32b08499caa75d5" datatype="html">
+        <source> Hinzufügen </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/cards/form/form.component.html</context>
+          <context context-type="linenumber">121,122</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1b9acb047f2cb72b73ffdace0643749249c594eb" datatype="html">
+        <source>Keine Karten gefunden</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/cards/carousel/carousel.component.html</context>
+          <context context-type="linenumber">79</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="641f36f294eee042a01e788cb9588254cc1104ae" datatype="html">
+        <source> Antwort</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/cards/card/card.component.html</context>
+          <context context-type="linenumber">7</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5c07588e18b4b41f0793f5601170fc4f24de80d9" datatype="html">
+        <source>Ersteller: <x id="INTERPOLATION" equiv-text="  &gt;Ersteller: {{ card"/></source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/cards/card/card.component.html</context>
+          <context context-type="linenumber">15</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="381d5aefd0350bcdfe25c6595a2e35685c683cd6" datatype="html">
+        <source>Accountdaten ändern</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/profile/change-profile/change-profile.component.html</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="d6507e7b5ae51f1734f3e169ef4cf6ef56f0001f" datatype="html">
+        <source>Vorname</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/profile/change-profile/change-profile.component.html</context>
+          <context context-type="linenumber">4</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/profile/overview/overview.component.html</context>
+          <context context-type="linenumber">27</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="074a550816cde9894e6c6d3bafcbc7be199f059b" datatype="html">
+        <source>Nachname</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/profile/change-profile/change-profile.component.html</context>
+          <context context-type="linenumber">16</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/profile/overview/overview.component.html</context>
+          <context context-type="linenumber">35</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6be7b19b6bd1beedc7fa8e1a2d71fb2179b47653" datatype="html">
+        <source>Maximal 20 Zeichen</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/profile/change-profile/change-profile.component.html</context>
+          <context context-type="linenumber">41</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="41ec2200eed16cee45ef5a0251c4d09982428c4c" datatype="html">
+        <source> Aktualisieren </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/profile/change-profile/change-profile.component.html</context>
+          <context context-type="linenumber">64,65</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8f087641d4307253746877465bdcadce1adc83c4" datatype="html">
+        <source>Neues Passwort</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/profile/change-profile/change-profile.component.html</context>
+          <context context-type="linenumber">77</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6c619195f9ab72af6ad2146c43a2e2b7fe1d268d" datatype="html">
+        <source>Neues Passwort wiederholen</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/profile/change-profile/change-profile.component.html</context>
+          <context context-type="linenumber">91</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3848c1363fe67ddb8d6d7dd4e6ad1b6c02bcd8d0" datatype="html">
+        <source> Ändern </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/profile/change-profile/change-profile.component.html</context>
+          <context context-type="linenumber">110,111</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="26fd790707f741b48ee0ea2310d3ab67cc66761f" datatype="html">
+        <source>Account löschen</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/profile/change-profile/change-profile.component.html</context>
+          <context context-type="linenumber">113</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="b182f209de7a23df0ddf9b8a39405ef040546beb" datatype="html">
+        <source> Account löschen
+</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/profile/change-profile/change-profile.component.html</context>
+          <context context-type="linenumber">115,116</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ca0c67609601bba406e4781136fb5249e10c8f52" datatype="html">
+        <source> Überprüfe dein Email Postfach, um deinen Account zu bestätigen
+</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/profile/overview/overview.component.html</context>
+          <context context-type="linenumber">2,3</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="26f3fe169976d3c67fe90541ded2492dcb12fadc" datatype="html">
+        <source>Mitglied seit</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/profile/overview/overview.component.html</context>
+          <context context-type="linenumber">43</context>
+        </context-group>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

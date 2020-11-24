@@ -1,7 +1,7 @@
 <mat-card class="m-auto">
   <form #form="ngForm" (ngSubmit)="submit(form)" novalidate>
     <mat-form-field appearance="standard" class="w-100">
-      <mat-label>Benutzername</mat-label>
+      <mat-label i18n>Benutzername</mat-label>
       <input
         matInput
         type="text"
@@ -14,7 +14,7 @@
       />
     </mat-form-field>
     <mat-form-field appearance="standard" class="w-100">
-      <mat-label>Passwort</mat-label>
+      <mat-label i18n>Passwort</mat-label>
       <input
         matInput
         type="password"
@@ -25,13 +25,14 @@
       />
     </mat-form-field>
 
-    <mat-checkbox checked="true">Eingeloggt bleiben</mat-checkbox>
+    <mat-checkbox checked="true" i18n>Eingeloggt bleiben</mat-checkbox>
     <br />
     <button
       type="submit"
       mat-flat-button
       color="primary"
       [disabled]="isDisabled(username, password)"
+      i18n
     >
       Login
     </button>
