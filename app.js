@@ -60,7 +60,9 @@ app.use(express.static(path.join(__dirname, "./angular-cards/dist/angular-cards/
 
 //angular index.html file to always serve after client uses browser navigation
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "./angular-cards/dist/angular-cards/index.html"));
+  req.baseUrl == "/en"
+    ? res.sendFile(path.join(__dirname, "./angular-cards/dist/angular-cards-en/index.html"))
+    : res.sendFile(path.join(__dirname, "./angular-cards/dist/angular-cards/index.html"));
 });
 
 module.exports = app;

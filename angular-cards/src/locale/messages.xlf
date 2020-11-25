@@ -149,7 +149,7 @@
         <source>Darkmode</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/nav-list/nav-list.component.html</context>
-          <context context-type="linenumber">62</context>
+          <context context-type="linenumber">96</context>
         </context-group>
       </trans-unit>
       <trans-unit id="f483459e52d811a17ccd095a34db765dd15fc315" datatype="html">
@@ -191,7 +191,7 @@
         <source><x id="START_TAG_MAT_ICON" ctype="x-mat_icon" equiv-text="&lt;mat-icon&gt;"/>exit_to_app<x id="CLOSE_TAG_MAT_ICON" ctype="x-mat_icon" equiv-text="&lt;/mat-icon&gt; "/> Logout </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/nav-list/nav-list.component.html</context>
-          <context context-type="linenumber">73,74</context>
+          <context context-type="linenumber">107,108</context>
         </context-group>
       </trans-unit>
       <trans-unit id="f324a6867b1d23a56912d6bec936ce1de123f351" datatype="html">

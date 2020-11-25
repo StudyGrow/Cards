@@ -59,14 +59,16 @@
                 }
               ],
               "serviceWorker": true,
-              "ngswConfigPath": "ngsw-config.json"
+              "ngswConfigPath": "ngsw-config.json",
+              "baseHref": "/de"
             },
             "en": {
               "aot": true,
               "outputPath": "dist/angular-cards-en/",
               "i18nFile": "src/locale/messages.en.xlf",
               "i18nFormat": "xlf",
-              "i18nLocale": "en"
+              "i18nLocale": "en",
+              "baseHref": "/en"
             }
           }
         },
@@ -77,10 +79,12 @@
           },
           "configurations": {
             "production": {
-              "browserTarget": "angular-cards:build:production"
+              "browserTarget": "angular-cards:build:production",
+              "baseHref": "/de"
             },
             "en": {
-              "browserTarget": "angular-cards:build:en"
+              "browserTarget": "angular-cards:build:en",
+              "baseHref": "/en"
             }
           }
         },
