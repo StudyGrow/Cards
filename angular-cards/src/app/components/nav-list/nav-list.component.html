@@ -51,8 +51,42 @@
     ><mat-icon>language</mat-icon> Sprache</a
   >
   <mat-menu #language="matMenu">
-    <button mat-menu-item>Deutsch</button>
-    <button mat-menu-item>Englisch</button>
+    <button mat-menu-item>
+      <span class="m-auto text-center">
+        Deutsch
+        <img src="assets/germany.svg" alt="German flag" />
+      </span>
+      <span class="attribution_text"
+        ><div>
+          Icons made by
+          <a href="https://www.flaticon.com/authors/freepik" title="Freepik"
+            >Freepik</a
+          >
+          from
+          <a href="https://www.flaticon.com/" title="Flaticon"
+            >www.flaticon.com</a
+          >
+        </div></span
+      >
+    </button>
+    <button mat-menu-item>
+      <span>
+        Englisch
+        <img class="img-fluid" src="assets/united-states.svg" alt="U.S. flag" />
+      </span>
+      <span class="attribution_text"
+        ><div>
+          Icons made by
+          <a href="https://www.flaticon.com/authors/freepik" title="Freepik"
+            >Freepik</a
+          >
+          from
+          <a href="https://www.flaticon.com/" title="Flaticon"
+            >www.flaticon.com</a
+          >
+        </div></span
+      >
+    </button>
   </mat-menu>
   <mat-slide-toggle
     #darkmode

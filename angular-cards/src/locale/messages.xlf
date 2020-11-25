@@ -138,11 +138,18 @@
           <context context-type="linenumber">46,47</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="0a9894e6479acd204e1682c7065ee5f510c3b18a" datatype="html">
+        <source><x id="START_TAG_MAT_ICON" ctype="x-mat_icon" equiv-text="&lt;mat-icon&gt;"/>language<x id="CLOSE_TAG_MAT_ICON" ctype="x-mat_icon" equiv-text="&lt;/mat-icon&gt; "/> Sprache</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/nav-list/nav-list.component.html</context>
+          <context context-type="linenumber">51</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="527635117f7350314db9f481bade87a28c167ff8" datatype="html">
         <source>Darkmode</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/nav-list/nav-list.component.html</context>
-          <context context-type="linenumber">54</context>
+          <context context-type="linenumber">62</context>
         </context-group>
       </trans-unit>
       <trans-unit id="f483459e52d811a17ccd095a34db765dd15fc315" datatype="html">
@@ -184,7 +191,7 @@
         <source><x id="START_TAG_MAT_ICON" ctype="x-mat_icon" equiv-text="&lt;mat-icon&gt;"/>exit_to_app<x id="CLOSE_TAG_MAT_ICON" ctype="x-mat_icon" equiv-text="&lt;/mat-icon&gt; "/> Logout </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/nav-list/nav-list.component.html</context>
-          <context context-type="linenumber">64,65</context>
+          <context context-type="linenumber">73,74</context>
         </context-group>
       </trans-unit>
       <trans-unit id="f324a6867b1d23a56912d6bec936ce1de123f351" datatype="html">
