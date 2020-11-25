@@ -823,27 +823,31 @@ here<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a
 </context-group>
 </trans-unit>
 <trans-unit id="9ed85b02e86b59b8248a0b34c9c665d72ca3340f" datatype="html">
-<source>Cards</source>
+<source>Karteikarten</source>
+<target>Cards</target>
 <context-group purpose="location">
 <context context-type="sourcefile">src/app/cards/cards.component.html</context>
 <context context-type="linenumber">6</context>
 </context-group>
 </trans-unit>
 <trans-unit id="3429fc92395f38a5334be81250393b9a44c7032c" datatype="html">
-<source>Overview</source>
+<source>Übersicht</source>
+<target>Overview</target>
 <context-group purpose="location">
 <context context-type="sourcefile">src/app/cards/cards.component.html</context>
 <context context-type="linenumber">14</context>
 </context-group>
 <trans-unit id="44acc544801f2b1110a908e757031c73bacc8556" datatype="html">
-<source>Random</source>
+<source>Zufall</source>
+<target>Random</target>
 <context-group purpose="location">
 <context context-type="sourcefile">src/app/cards/carousel/carousel.component.html</context>
 <context context-type="linenumber">10</context>
 </context-group>
 </trans-unit>
 <trans-unit id="03b870eddca16101be4dccda9cbfc79cccab94f2" datatype="html">
-<source>Edit</source>
+<source>Bearbeiten</source>
+<target>Edit</target>
 <context-group purpose="location">
 <context context-type="sourcefile">src/app/cards/carousel/carousel.component.html</context>
 <context context-type="linenumber">25</context>
@@ -858,6 +862,14 @@ here<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a
 <context context-type="linenumber">7,8</context>
 </context-group>
 </trans-unit>
+<trans-unit id="3429fc92395f38a5334be81250393b9a44c7032c" datatype="html">
+<source>Übersicht</source>
+<target>Overview</target>
+<context-group purpose="location">
+<context context-type="sourcefile">src/app/cards/cards.component.html</context>
+<context context-type="linenumber">14</context>
+</context-group>
+</trans-unit>
 <trans-unit id="15947b550b2f35aef41c3612f3db418dc8249da3" datatype="html">
 <source> Profildaten ändern </source>
 <target>Change profile</target>
@@ -866,7 +878,7 @@ here<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a
 <context context-type="linenumber">10,11</context>
 </context-group>
 </trans-unit>
-<trans-unit id="1a1d4b627fee54d305c5c20d52383070e8f9a4c5" datatype="html">
+<trans-unit id="9ed85b02e86b59b8248a0b34c9c665d72ca3340f" datatype="html">
 <source> Karteikarten </source>
 <target>Your cards</target>
 <context-group purpose="location">
