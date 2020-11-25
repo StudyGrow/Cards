@@ -46,13 +46,22 @@
     <mat-icon>contacts</mat-icon> Infos
   </a>
   <mat-divider></mat-divider>
+  <div mat-subheader>Einstellungen</div>
+  <a mat-list-item [matMenuTriggerFor]="language" i18n
+    ><mat-icon>language</mat-icon> Sprache</a
+  >
+  <mat-menu #language="matMenu">
+    <button mat-menu-item>Deutsch</button>
+    <button mat-menu-item>Englisch</button>
+  </mat-menu>
   <mat-slide-toggle
     #darkmode
     i18n
-    class="ml-3 mb.0 mt-1"
+    class="ml-3 mb.0 mt-3"
     (change)="toggleDarkMode($event)"
     >Darkmode</mat-slide-toggle
   >
+
   <a
     mat-list-item
     (click)="logout()"
