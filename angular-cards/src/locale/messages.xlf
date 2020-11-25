@@ -2,18 +2,29 @@
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
   <file source-language="en-US" datatype="plaintext" original="ng2.template">
     <body>
+      <trans-unit id="264d61cd680d1c28ac09524713c0209bdc012b7b" datatype="html">
+        <source>Frage</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/search-bar/search-bar.component.html</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/cards/form/form.component.html</context>
+          <context context-type="linenumber">12</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="6c791d8cf0860d009c5a72bb170d657aa22ae8d2" datatype="html">
         <source> Aktuell angezeigt </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/search-bar/search-bar.component.html</context>
-          <context context-type="linenumber">23,24</context>
+          <context context-type="linenumber">24,25</context>
         </context-group>
       </trans-unit>
       <trans-unit id="8a5e4d42be95ef55fc8da4941309f599c4cb9bd6" datatype="html">
         <source> Alle Karten </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/search-bar/search-bar.component.html</context>
-          <context context-type="linenumber">36,37</context>
+          <context context-type="linenumber">37,38</context>
         </context-group>
       </trans-unit>
       <trans-unit id="7dc6c96ef237eb87de4d5a542abbf05d10031425" datatype="html">
@@ -631,6 +642,20 @@
           <context context-type="linenumber">78,85</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="9ed85b02e86b59b8248a0b34c9c665d72ca3340f" datatype="html">
+        <source>Karteikarten</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/cards/cards.component.html</context>
+          <context context-type="linenumber">6</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3429fc92395f38a5334be81250393b9a44c7032c" datatype="html">
+        <source>Übersicht</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/cards/cards.component.html</context>
+          <context context-type="linenumber">14</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="d3058069f29c65a092566d84e83c4556a1dc7b2e" datatype="html">
         <source> Übersicht </source>
         <context-group purpose="location">
@@ -650,13 +675,6 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/profile/profile.component.html</context>
           <context context-type="linenumber">19,20</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="264d61cd680d1c28ac09524713c0209bdc012b7b" datatype="html">
-        <source>Frage</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/cards/form/form.component.html</context>
-          <context context-type="linenumber">12</context>
         </context-group>
       </trans-unit>
       <trans-unit id="2da7dbf7614607fd29931ed73a258fb7b81d83ea" datatype="html">
@@ -722,11 +740,25 @@
           <context context-type="linenumber">121,122</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="44acc544801f2b1110a908e757031c73bacc8556" datatype="html">
+        <source>Zufall</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/cards/carousel/carousel.component.html</context>
+          <context context-type="linenumber">10</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="03b870eddca16101be4dccda9cbfc79cccab94f2" datatype="html">
+        <source>Bearbeiten</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/cards/carousel/carousel.component.html</context>
+          <context context-type="linenumber">25</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="1b9acb047f2cb72b73ffdace0643749249c594eb" datatype="html">
         <source>Keine Karten gefunden</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/cards/carousel/carousel.component.html</context>
-          <context context-type="linenumber">79</context>
+          <context context-type="linenumber">81</context>
         </context-group>
       </trans-unit>
       <trans-unit id="641f36f294eee042a01e788cb9588254cc1104ae" datatype="html">

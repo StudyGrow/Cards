@@ -322,7 +322,7 @@ by following this link<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a
   </trans-unit>
   <trans-unit id="eb1d017cd732b98643abadb6bbd948ad652830dc" datatype="html">
     <source> Meine Vorlesung ist nicht in der Liste. Wie kann ich sie hinzufügen? </source>
-    <source> My lecture is not contained in the list. How can I add it? </source>
+    <target> My lecture is not contained in the list. How can I add it? </target>
     <context-group purpose="location">
       <context context-type="sourcefile">src/app/routes/about/about.component.html</context>
       <context context-type="linenumber">68,69</context>
@@ -354,7 +354,7 @@ by following this link<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a
   </trans-unit>
   <trans-unit id="6b576ca04e9640686c4e2535ca8f8a2d35c464be" datatype="html">
     <source>Wie kann ich Latex verwenden?</source>
-    <source>How can I use latex?</source>
+    <target>How can I use latex?</target>
     <context-group purpose="location">
       <context context-type="sourcefile">src/app/routes/about/about.component.html</context>
       <context context-type="linenumber">117</context>
@@ -381,6 +381,10 @@ here<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a
   <x id="START_LINK" ctype="x-a" equiv-text="&lt;a routerLink=&quot;/signup&quot;&gt;"/>
 Erstelle einen Account<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;"/>
 , um alle Vorteile unserer Webseite zu nutzen. </source>
+<target>
+  <x id="START_LINK" ctype="x-a" equiv-text="&lt;a routerLink=&quot;/signup&quot;&gt;"/>
+Sign up now<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;"/>
+, to use all features. </target>
 <context-group purpose="location">
   <context context-type="sourcefile">src/app/routes/about/about.component.html</context>
   <context context-type="linenumber">15,17</context>
@@ -432,6 +436,17 @@ einloggen<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;"/>
 <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br /&gt;
       "/>
  Nachdem du auf hinzufügen gedrückt hast kommst du auf eine neue Seite, auf der du deine erste Karte hinzufügen kannst </source>
+<target> If you can't find your lecture in the list, you can add it by submitting the form (&quot;Add lecture&quot;)  <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span *ngIf=&quot;!loggedIn&quot;&gt;
+        "/>
+ You need to be   <x id="START_LINK" ctype="x-a" equiv-text="&lt;a routerLink=&quot;/login&quot;&gt;"/>
+signed in<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;"/>
+ or <x id="START_LINK_1" equiv-text="&lt;a routerLink=&quot;/signup&quot;&gt; "/>
+ create an account<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;"/>
+<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/>
+,to use this feature.
+<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br /&gt;
+      "/>
+ After adding the lecture, you will be redirected to a new page where you can add your first card </target>
 <context-group purpose="location">
 <context context-type="sourcefile">src/app/routes/about/about.component.html</context>
 <context context-type="linenumber">71,81</context>
@@ -458,6 +473,26 @@ logge dich ein<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a
 hier<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a
       &gt;"/>
 . </source>
+<target> On our  <x id="START_LINK" ctype="x-a" equiv-text="&lt;a routerLink=&quot;/&quot;&gt;"/>
+Homepage<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a
+      &gt;"/>
+ a list of lectures is displayed. Choose your lecture. If you can't find your lecture, you can add it by using the form. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br /&gt;
+      "/>
+ After navigating to the lecture page, you can add a new card, by navigating to the  &quot;Add&quot; tab. Fill out the form and submit it. <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span *ngIf=&quot;!loggedIn&quot;&gt;
+        "/>
+ Create an  <x id="START_LINK_1" equiv-text="&lt;a routerLink=&quot;/signup&quot;&gt; "/>
+ account<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a
+      &gt;"/>
+, or <x id="START_LINK_2" equiv-text="&lt;a routerLink=&quot;/login&quot;&gt;"/>
+log in <x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a
+      &gt;"/>
+, to be become the author of the card. Cards with authors can only be editet by their authors  <x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;
+      "/>
+ You can add latex formiulas, by wrapping them around $ signs. More information about latex can be found  <x id="START_LINK_3" equiv-text="&lt;a href=&quot;https://en.wikibooks.org/wiki/LaTeX/Mathematics&quot; rel=&quot;noopener&quot;
+        &gt;"/>
+here<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a
+      &gt;"/>
+. </target>
 <context-group purpose="location">
 <context context-type="sourcefile">src/app/routes/about/about.component.html</context>
 <context context-type="linenumber">84,104</context>
@@ -786,6 +821,34 @@ hier<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a
 <context context-type="sourcefile">node_modules/@ng-bootstrap/src/toast/toast.ts</context>
 <context context-type="linenumber">78,85</context>
 </context-group>
+</trans-unit>
+<trans-unit id="9ed85b02e86b59b8248a0b34c9c665d72ca3340f" datatype="html">
+<source>Cards</source>
+<context-group purpose="location">
+<context context-type="sourcefile">src/app/cards/cards.component.html</context>
+<context context-type="linenumber">6</context>
+</context-group>
+</trans-unit>
+<trans-unit id="3429fc92395f38a5334be81250393b9a44c7032c" datatype="html">
+<source>Overview</source>
+<context-group purpose="location">
+<context context-type="sourcefile">src/app/cards/cards.component.html</context>
+<context context-type="linenumber">14</context>
+</context-group>
+<trans-unit id="44acc544801f2b1110a908e757031c73bacc8556" datatype="html">
+<source>Random</source>
+<context-group purpose="location">
+<context context-type="sourcefile">src/app/cards/carousel/carousel.component.html</context>
+<context context-type="linenumber">10</context>
+</context-group>
+</trans-unit>
+<trans-unit id="03b870eddca16101be4dccda9cbfc79cccab94f2" datatype="html">
+<source>Edit</source>
+<context-group purpose="location">
+<context context-type="sourcefile">src/app/cards/carousel/carousel.component.html</context>
+<context context-type="linenumber">25</context>
+</context-group>
+</trans-unit>
 </trans-unit>
 <trans-unit id="d3058069f29c65a092566d84e83c4556a1dc7b2e" datatype="html">
 <source> Übersicht </source>
