@@ -60,9 +60,12 @@ app.use(express.static(path.join(__dirname, "./angular-cards/dist/angular-cards/
 
 //angular index.html file to always serve after client uses browser navigation
 app.get("*", (req, res) => {
-  req.baseUrl == "/en"
-    ? res.sendFile(path.join(__dirname, "./angular-cards/dist/angular-cards-en/index.html"))
-    : res.sendFile(path.join(__dirname, "./angular-cards/dist/angular-cards/index.html"));
+  if (req.baseUrl == "/en") {
+    res.sendFile(path.join(__dirname, "./angular-cards/dist/angular-cards-en/index.html"));
+    console.log("englsich");
+  } else {
+    res.sendFile(path.join(__dirname, "./angular-cards/dist/angular-cards/index.html"));
+  }
 });
 
 module.exports = app;
