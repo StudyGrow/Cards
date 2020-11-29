@@ -55,14 +55,25 @@ app.post("/api/login", (req, res, next) => {
 //api route
 app.use("/api", require("./routes/api"));
 
+app.get("/", (req, res) => {
+  if (req.headers["accept-language"].includes("en-US")) {
+    res.sendFile(path.join(__dirname, "./angular-cards/dist/angular-cards-en/index.html"));
+    console.log("englsich");
+  } else {
+    res.sendFile(path.join(__dirname, "./angular-cards/dist/angular-cards/index.html"));
+  }
+});
+
 //built angular files
-app.use(express.static(path.join(__dirname, "./angular-cards/dist/angular-cards/")));
+
+app.use("/en", express.static(path.join(__dirname, "./angular-cards/dist/angular-cards-en/")));
+
+app.use("/de", express.static(path.join(__dirname, "./angular-cards/dist/angular-cards/")));
 
 //angular index.html file to always serve after client uses browser navigation
 app.get("*", (req, res) => {
-  if (req.baseUrl == "/en") {
+  if (req.headers["accept-language"].includes("en-US")) {
     res.sendFile(path.join(__dirname, "./angular-cards/dist/angular-cards-en/index.html"));
-    console.log("englsich");
   } else {
     res.sendFile(path.join(__dirname, "./angular-cards/dist/angular-cards/index.html"));
   }

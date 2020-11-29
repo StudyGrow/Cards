@@ -649,20 +649,6 @@
           <context context-type="linenumber">78,85</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="9ed85b02e86b59b8248a0b34c9c665d72ca3340f" datatype="html">
-        <source>Karteikarten</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/cards/cards.component.html</context>
-          <context context-type="linenumber">6</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="3429fc92395f38a5334be81250393b9a44c7032c" datatype="html">
-        <source>Übersicht</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/cards/cards.component.html</context>
-          <context context-type="linenumber">14</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="d3058069f29c65a092566d84e83c4556a1dc7b2e" datatype="html">
         <source> Übersicht </source>
         <context-group purpose="location">
@@ -677,11 +663,116 @@
           <context context-type="linenumber">10,11</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="1a1d4b627fee54d305c5c20d52383070e8f9a4c5" datatype="html">
-        <source> Karteikarten </source>
+      <trans-unit id="9ed85b02e86b59b8248a0b34c9c665d72ca3340f" datatype="html">
+        <source>Karteikarten</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/profile/profile.component.html</context>
-          <context context-type="linenumber">19,20</context>
+          <context context-type="linenumber">18</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/cards/cards.component.html</context>
+          <context context-type="linenumber">6</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3429fc92395f38a5334be81250393b9a44c7032c" datatype="html">
+        <source>Übersicht</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/cards/cards.component.html</context>
+          <context context-type="linenumber">14</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="381d5aefd0350bcdfe25c6595a2e35685c683cd6" datatype="html">
+        <source>Accountdaten ändern</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/profile/change-profile/change-profile.component.html</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="d6507e7b5ae51f1734f3e169ef4cf6ef56f0001f" datatype="html">
+        <source>Vorname</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/profile/change-profile/change-profile.component.html</context>
+          <context context-type="linenumber">4</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/profile/overview/overview.component.html</context>
+          <context context-type="linenumber">27</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="074a550816cde9894e6c6d3bafcbc7be199f059b" datatype="html">
+        <source>Nachname</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/profile/change-profile/change-profile.component.html</context>
+          <context context-type="linenumber">16</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/profile/overview/overview.component.html</context>
+          <context context-type="linenumber">35</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6be7b19b6bd1beedc7fa8e1a2d71fb2179b47653" datatype="html">
+        <source>Maximal 20 Zeichen</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/profile/change-profile/change-profile.component.html</context>
+          <context context-type="linenumber">41</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="41ec2200eed16cee45ef5a0251c4d09982428c4c" datatype="html">
+        <source> Aktualisieren </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/profile/change-profile/change-profile.component.html</context>
+          <context context-type="linenumber">64,65</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8f087641d4307253746877465bdcadce1adc83c4" datatype="html">
+        <source>Neues Passwort</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/profile/change-profile/change-profile.component.html</context>
+          <context context-type="linenumber">77</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6c619195f9ab72af6ad2146c43a2e2b7fe1d268d" datatype="html">
+        <source>Neues Passwort wiederholen</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/profile/change-profile/change-profile.component.html</context>
+          <context context-type="linenumber">91</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3848c1363fe67ddb8d6d7dd4e6ad1b6c02bcd8d0" datatype="html">
+        <source> Ändern </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/profile/change-profile/change-profile.component.html</context>
+          <context context-type="linenumber">110,111</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="26fd790707f741b48ee0ea2310d3ab67cc66761f" datatype="html">
+        <source>Account löschen</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/profile/change-profile/change-profile.component.html</context>
+          <context context-type="linenumber">113</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="b182f209de7a23df0ddf9b8a39405ef040546beb" datatype="html">
+        <source> Account löschen
+</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/profile/change-profile/change-profile.component.html</context>
+          <context context-type="linenumber">115,116</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ca0c67609601bba406e4781136fb5249e10c8f52" datatype="html">
+        <source> Überprüfe dein Email Postfach, um deinen Account zu bestätigen
+</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/profile/overview/overview.component.html</context>
+          <context context-type="linenumber">2,3</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="26f3fe169976d3c67fe90541ded2492dcb12fadc" datatype="html">
+        <source>Mitglied seit</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/profile/overview/overview.component.html</context>
+          <context context-type="linenumber">43</context>
         </context-group>
       </trans-unit>
       <trans-unit id="2da7dbf7614607fd29931ed73a258fb7b81d83ea" datatype="html">
@@ -780,100 +871,6 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/cards/card/card.component.html</context>
           <context context-type="linenumber">15</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="381d5aefd0350bcdfe25c6595a2e35685c683cd6" datatype="html">
-        <source>Accountdaten ändern</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/profile/change-profile/change-profile.component.html</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="d6507e7b5ae51f1734f3e169ef4cf6ef56f0001f" datatype="html">
-        <source>Vorname</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/profile/change-profile/change-profile.component.html</context>
-          <context context-type="linenumber">4</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/profile/overview/overview.component.html</context>
-          <context context-type="linenumber">27</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="074a550816cde9894e6c6d3bafcbc7be199f059b" datatype="html">
-        <source>Nachname</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/profile/change-profile/change-profile.component.html</context>
-          <context context-type="linenumber">16</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/profile/overview/overview.component.html</context>
-          <context context-type="linenumber">35</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="6be7b19b6bd1beedc7fa8e1a2d71fb2179b47653" datatype="html">
-        <source>Maximal 20 Zeichen</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/profile/change-profile/change-profile.component.html</context>
-          <context context-type="linenumber">41</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="41ec2200eed16cee45ef5a0251c4d09982428c4c" datatype="html">
-        <source> Aktualisieren </source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/profile/change-profile/change-profile.component.html</context>
-          <context context-type="linenumber">64,65</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="8f087641d4307253746877465bdcadce1adc83c4" datatype="html">
-        <source>Neues Passwort</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/profile/change-profile/change-profile.component.html</context>
-          <context context-type="linenumber">77</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="6c619195f9ab72af6ad2146c43a2e2b7fe1d268d" datatype="html">
-        <source>Neues Passwort wiederholen</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/profile/change-profile/change-profile.component.html</context>
-          <context context-type="linenumber">91</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="3848c1363fe67ddb8d6d7dd4e6ad1b6c02bcd8d0" datatype="html">
-        <source> Ändern </source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/profile/change-profile/change-profile.component.html</context>
-          <context context-type="linenumber">110,111</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="26fd790707f741b48ee0ea2310d3ab67cc66761f" datatype="html">
-        <source>Account löschen</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/profile/change-profile/change-profile.component.html</context>
-          <context context-type="linenumber">113</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="b182f209de7a23df0ddf9b8a39405ef040546beb" datatype="html">
-        <source> Account löschen
-</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/profile/change-profile/change-profile.component.html</context>
-          <context context-type="linenumber">115,116</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="ca0c67609601bba406e4781136fb5249e10c8f52" datatype="html">
-        <source> Überprüfe dein Email Postfach, um deinen Account zu bestätigen
-</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/profile/overview/overview.component.html</context>
-          <context context-type="linenumber">2,3</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="26f3fe169976d3c67fe90541ded2492dcb12fadc" datatype="html">
-        <source>Mitglied seit</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/profile/overview/overview.component.html</context>
-          <context context-type="linenumber">43</context>
         </context-group>
       </trans-unit>
     </body>
