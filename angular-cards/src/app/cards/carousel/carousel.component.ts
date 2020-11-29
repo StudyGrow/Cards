@@ -29,6 +29,8 @@ import { map, share, startWith, delay } from "rxjs/operators";
 import { selectUserId, newCards } from "src/app/store/selector";
 import { state } from "@angular/animations";
 import { NgbCarousel } from "@ng-bootstrap/ng-bootstrap";
+import { NotificationsService } from "src/app/services/notifications.service";
+import { WarnMessage } from "src/app/models/Notification";
 
 @Component({
   selector: "app-carousel",
@@ -86,7 +88,10 @@ export class CarouselComponent implements OnInit, OnDestroy {
   @HostListener("swiperight", ["$event"]) public swipeNext(event: any) {
     this.goToPrev();
   }
-  constructor(private store: Store<any>) {}
+  constructor(
+    private store: Store<any>,
+    private notifs: NotificationsService
+  ) {}
 
   ngOnInit(): void {
     //Form Mode, depending on the mode we show different forms (add, edit,none)
@@ -174,6 +179,12 @@ export class CarouselComponent implements OnInit, OnDestroy {
         this.carousel.select(n.toString());
       } else {
         this.notallowed = true;
+
+        this.notifs.addNotification(
+          new WarnMessage(
+            "Du musst erst die Bearbeitung der Karteikarte abschließen"
+          )
+        );
         setTimeout(() => {
           this.notallowed = false;
         }, 100);
