@@ -154,7 +154,7 @@ export class FormComponent implements OnInit, OnDestroy {
         withLatestFrom(tab$)
       )
       .subscribe(([[card, mode], tab]) => {
-        if (card && card._id != this.cardCopy._id) {
+        if (card) {
           this.cardCopy = { ...this.cardCopy, ...card }; //overwrite cardCopy
         }
         if (tab === 0 && this.toggle) {

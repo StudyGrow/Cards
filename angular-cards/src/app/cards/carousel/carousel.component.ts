@@ -221,6 +221,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
       this.carousel.next();
     } else {
       this.notallowed = true;
+      console.log(this.notallowed);
       setTimeout(() => {
         this.notallowed = false;
       }, 100);
