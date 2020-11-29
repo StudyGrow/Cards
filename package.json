@@ -43,6 +43,7 @@
     "@angular/cli": "^9.1.12",
     "@angular/compiler": "^9.1.12",
     "@angular/compiler-cli": "^9.1.12",
-    "nodemon": "^2.0.4"
+    "nodemon": "^2.0.4",
+    "openapi-types": "^7.0.1"
   }
 }
