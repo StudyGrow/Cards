@@ -17,21 +17,26 @@ import {
 } from "angular-animations";
 
 import { Store } from "@ngrx/store";
-import { AppState } from "src/app/store/reducer";
+
 import { resetFilter } from "../../store/actions/actions";
 import {
   updateCard,
   setActiveCardIndex,
 } from "../../store/actions/cardActions";
 import { setFormMode, changeTab } from "src/app/store/actions/actions";
-import { map, share, startWith, delay } from "rxjs/operators";
+import { map, share, startWith, delay, withLatestFrom } from "rxjs/operators";
 
-import { selectUserId } from "src/app/store/selector";
+import {
+  filter,
+  lastFilterChange,
+  selectAllCards,
+  selectUserId,
+} from "src/app/store/selector";
 import { state } from "@angular/animations";
 import { NgbCarousel } from "@ng-bootstrap/ng-bootstrap";
 import { NotificationsService } from "src/app/services/notifications.service";
 import { WarnMessage } from "src/app/models/Notification";
-import { Data, Mode } from "src/app/models/state";
+import { AppState, Data, Mode } from "src/app/models/state";
 
 @Component({
   selector: "app-carousel",
@@ -94,7 +99,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
     this.goToPrev();
   }
   constructor(
-    private store: Store<any>,
+    private store: Store<AppState>,
     private notifs: NotificationsService
   ) {}
 
@@ -122,31 +127,40 @@ export class CarouselComponent implements OnInit, OnDestroy {
     this.subscriptions$.push(sub);
 
     //get The user id to check if user has rigths to edit the card
-    sub = this.data$.pipe(map(selectUserId)).subscribe((id) => {
+    sub = this.store.pipe(map(selectUserId)).subscribe((id) => {
       if (this.uid !== id) {
         this.uid = id;
       }
     });
     this.subscriptions$.push(sub);
-
+    let filter$ = this.mode$.pipe(map(filter));
     //get new cards, either if on new route, or filter is applied
-    sub = this.data$.pipe(map(newCards)).subscribe((obj) => {
-      if (
-        this.cards != obj.cards && //object reference has changed
-        (!this.lastRefresh || this.lastRefresh < obj.date) //modified time stamp is more recent than last refresh
-      ) {
-        //cards have changed
-        this.lastRefresh = obj.date; //update the last refresh
-        this.cardCount = obj.cards.length;
-        this.activeSlide = 0;
-        this.selectSlide(0);
+    sub = this.data$
+      .pipe(
+        map((state) => state.cardData),
+        withLatestFrom(filter$)
+      )
+      .subscribe(([data, filter]) => {
+        let earliest = Math.min(
+          data.lastUpdated.getTime(),
+          filter.date.getTime()
+        );
+        if (!this.lastRefresh || this.lastRefresh.getTime() < earliest) {
+          //modified time stamp is more recent than last refresh need to update carousel
+          this.lastRefresh = new Date(); //update the last refresh
 
-        this.cards = null; //set null to explicitely refresh carousel view
-        setTimeout(() => {
-          this.cards = obj.cards;
-        }, 100);
-      }
-    });
+          let filteredCards = filterCards(data.cards, filter.tags);
+
+          this.cardCount = filteredCards.length;
+          this.activeSlide = 0;
+          this.selectSlide(0);
+
+          this.cards = null; //set null to explicitely refresh carousel view
+          setTimeout(() => {
+            this.cards = filteredCards;
+          }, 100);
+        }
+      });
     this.subscriptions$.push(sub);
   }
 
@@ -298,4 +312,13 @@ export class CarouselComponent implements OnInit, OnDestroy {
 
     if (currCard?.latex === 1) return "primary";
   }
+}
+
+function filterCards(cards: Card[], tags: string[]) {
+  return cards.filter((card) => {
+    for (const tag of tags) {
+      if (card.tags.includes(tag)) return true;
+    }
+    return false;
+  });
 }

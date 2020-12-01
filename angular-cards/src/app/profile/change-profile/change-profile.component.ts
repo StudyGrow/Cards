@@ -31,7 +31,7 @@ export class ChangeProfileComponent implements OnInit, OnDestroy {
     this.user.surname = "";
 
     let sub = this.store
-      .select("cardsData")
+      .select("data")
       .pipe(map(selectUserInfo))
       .subscribe((info) => {
         this.userInfo = info;

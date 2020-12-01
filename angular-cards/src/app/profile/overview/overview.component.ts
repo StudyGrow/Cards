@@ -20,7 +20,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
   constructor(private userService: UserService, private store: Store<any>) {}
   public user$: Observable<User>;
   ngOnInit(): void {
-    this.user$ = this.store.select("cardsData").pipe(map(selectUser));
+    this.user$ = this.store.select("data").pipe(map(selectUser));
   }
   ngOnDestroy() {
     this.subscriptions$.forEach((sub) => {

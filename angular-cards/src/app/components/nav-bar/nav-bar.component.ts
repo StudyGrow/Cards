@@ -31,6 +31,7 @@ import {
 } from "src/app/store/selector";
 import { clearCardData, fetchCards } from "src/app/store/actions/cardActions";
 import { MatSlideToggleChange } from "@angular/material/slide-toggle";
+import { AppState, Data, Mode } from "src/app/models/state";
 
 @Component({
   selector: "app-nav-bar",
@@ -38,6 +39,9 @@ import { MatSlideToggleChange } from "@angular/material/slide-toggle";
   styleUrls: ["./nav-bar.component.scss"],
 })
 export class NavBarComponent implements OnInit, OnDestroy {
+  private data$: Observable<Data> = this.store.select("data");
+  private mode$: Observable<Mode> = this.store.select("mode");
+
   loggedIn: boolean;
   cards: Card[] = [];
 
@@ -51,30 +55,26 @@ export class NavBarComponent implements OnInit, OnDestroy {
   public constructor(
     private router: Router,
     private titleService: Title,
-
-    private notification: NotificationsService,
-
     private cdr: ChangeDetectorRef,
-    private store: Store<any>
+    private store: Store<AppState>
   ) {}
 
   ngOnInit(): void {
     setTimeout(() => {
-      let sub = this.store
-        .select("cardsData")
+      let sub = this.mode$
         .pipe(map((state) => state.loading))
         .subscribe((val) => {
-          this.loading = val;
+          this.loading = val > 0;
           this.cdr.detectChanges();
         });
       this.subscriptions$.push(sub);
 
-      let cardCount$ = this.store.select("cardsData").pipe(
+      let cardCount$ = this.store.pipe(
         map(selectAllCards),
         map((cards) => cards?.length)
       );
       //progress of carousel. will be undefined if there are no cards
-      this.progress$ = this.store.select("cardsData").pipe(
+      this.progress$ = this.mode$.pipe(
         map(selectActiveIndex),
         withLatestFrom(cardCount$),
         map(([curr, all]) => (all ? (100 * curr) / all : undefined))

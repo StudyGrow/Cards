@@ -18,7 +18,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     let sub = this.store
-      .select("cardsData")
+      .select("data")
       .pipe(
         map(selectUserInfo),
         map((info) => info.cards)

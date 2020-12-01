@@ -4,7 +4,6 @@ import { Vorlesung } from "../../models/Vorlesung";
 import { Subscription, Observable } from "rxjs";
 import { LecturesService } from "src/app/services/lectures.service";
 import { Store } from "@ngrx/store";
-import { AppState } from "src/app/store/reducer";
 import { fetchLectures } from "src/app/store/actions/LectureActions";
 import { tap, map } from "rxjs/operators";
 import { selectLectures } from "src/app/store/selector";
@@ -20,7 +19,7 @@ export class LecturesComponent implements OnInit {
 
   ngOnInit(): void {
     this.store.dispatch(fetchLectures());
-    this.lectures$ = this.store.select("cardsData").pipe(map(selectLectures));
+    this.lectures$ = this.store.select("data").pipe(map(selectLectures));
   }
 
   setLink(lecture: Vorlesung) {

@@ -42,6 +42,8 @@ import { selectActiveIndex, selectLastCardIndex } from "../selector";
 import { Router } from "@angular/router";
 import { NotificationsService } from "src/app/services/notifications.service";
 import { SuccessMessage } from "src/app/models/Notification";
+import { Data, Mode } from "src/app/models/state";
+import { CardsData } from "src/app/models/Card";
 
 @Injectable()
 export class CardsEffects {
@@ -54,7 +56,8 @@ export class CardsEffects {
     private router: Router,
     private notifications: NotificationsService
   ) {}
-  data$ = this.store.select("cardsData").pipe(share());
+  private data$: Observable<Data> = this.store.select("data");
+  private mode$: Observable<Mode> = this.store.select("mode");
 
   @Effect()
   loadCards$ = createEffect(() =>
@@ -62,7 +65,9 @@ export class CardsEffects {
       ofType(FetchCardsActions.fetchCards),
       switchMap(() =>
         this.cards.fetchCardsData().pipe(
-          map((data) => FetchCardsActions.LoadSuccess({ data: data })),
+          map((data: CardsData) =>
+            FetchCardsActions.LoadSuccess({ data: data })
+          ),
           catchError((reason) => of(LoadFailure({ reason: reason })))
         )
       ),
@@ -123,7 +128,7 @@ export class CardsEffects {
   updateCard$ = createEffect(() =>
     this.actions$.pipe(
       ofType(UpdateCardActions.updateCard),
-      withLatestFrom(this.data$.pipe(map(selectActiveIndex))),
+      withLatestFrom(this.mode$.pipe(map(selectActiveIndex))),
       exhaustMap(([action, activeIndex]) =>
         this.cards.updateCard(action.card).pipe(
           tap(() => {

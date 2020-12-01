@@ -17,8 +17,6 @@ export class HomeComponent implements OnInit {
   constructor(private store: Store<any>) {}
 
   ngOnInit(): void {
-    this.authenticated$ = this.store
-      .select("cardsData")
-      .pipe(map(authenticated));
+    this.authenticated$ = this.store.select("data").pipe(map(authenticated));
   }
 }

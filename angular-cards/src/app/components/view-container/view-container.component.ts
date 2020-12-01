@@ -23,6 +23,7 @@ import { selectDrawerState } from "src/app/store/selector";
 import { setDrawerState } from "src/app/store/actions/actions";
 import { Router } from "@angular/router";
 import { MatSnackBar } from "@angular/material/snack-bar";
+import { AppState, Data, Mode } from "src/app/models/state";
 @Component({
   selector: "app-view-container",
   templateUrl: "./view-container.component.html",
@@ -34,6 +35,9 @@ import { MatSnackBar } from "@angular/material/snack-bar";
   ],
 })
 export class ViewContainerComponent implements OnInit {
+  private data$: Observable<Data> = this.store.select("data");
+  private mode$: Observable<Mode> = this.store.select("mode");
+
   public pageOffset: number = 0;
   public subj$ = new BehaviorSubject<boolean>(false);
   public show$: Observable<boolean>;
@@ -43,7 +47,7 @@ export class ViewContainerComponent implements OnInit {
   notifications$: Observable<Notification[]>;
   constructor(
     private cdr: ChangeDetectorRef,
-    private store: Store<any>,
+    private store: Store<AppState>,
     private notifService: NotificationsService,
     private _snackBar: MatSnackBar
   ) {}
@@ -53,7 +57,7 @@ export class ViewContainerComponent implements OnInit {
       startWith(false),
       map(() => this.content.measureScrollOffset("top") > 50)
     );
-    this.show$.subscribe((val) => {
+    this.show$.subscribe(() => {
       this.cdr.detectChanges();
     });
     this.notifications$ = this.notifService.notifications;
@@ -78,12 +82,9 @@ export class ViewContainerComponent implements OnInit {
       });
     });
 
-    this.store
-      .select("cardsData")
-      .pipe(map(selectDrawerState))
-      .subscribe((val) => {
-        val ? this.drawer.open() : this.drawer.close();
-      });
+    this.mode$.pipe(map(selectDrawerState)).subscribe((val) => {
+      val ? this.drawer.open() : this.drawer.close();
+    });
   }
   closeAlert(i: number) {
     this.notifService.removeNotification(i);

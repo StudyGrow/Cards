@@ -31,7 +31,7 @@ export class CardsOverviewComponent implements OnInit {
   constructor(private store: Store<any>) {}
 
   ngOnInit(): void {
-    this.cards$ = this.store.select("cardsData").pipe(
+    this.cards$ = this.store.select("data").pipe(
       map(selectUserInfo),
       map((info) => info.cards)
     );

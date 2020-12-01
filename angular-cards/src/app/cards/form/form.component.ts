@@ -17,12 +17,13 @@ import { MatDialog } from "@angular/material/dialog";
 import { MatInput } from "@angular/material/input";
 import { MatSlideToggle } from "@angular/material/slide-toggle";
 import { Router } from "@angular/router";
-import { Store } from "@ngrx/store";
+import { State, Store } from "@ngrx/store";
 import { merge, Observable, of, Subscription } from "rxjs";
 import { filter, map, startWith, tap, withLatestFrom } from "rxjs/operators";
 import { DialogueComponent } from "src/app/components/dialogue/dialogue.component";
 import { Card } from "src/app/models/Card";
 import { WarnMessage } from "src/app/models/Notification";
+import { Data, Mode } from "src/app/models/state";
 import { User } from "src/app/models/User";
 import { Vorlesung } from "src/app/models/Vorlesung";
 import { NotificationsService } from "src/app/services/notifications.service";
@@ -34,7 +35,7 @@ import {
 import { addCard, updateCard } from "src/app/store/actions/cardActions";
 import { addLercture } from "src/app/store/actions/LectureActions";
 import { CardsEffects } from "src/app/store/effects/effects";
-import { AppState } from "src/app/store/reducer";
+import { AppState } from "../../models/state";
 import {
   selectAllTags,
   selectFormMode,
@@ -56,6 +57,9 @@ class CardFormData {
   styleUrls: ["./form.component.css"],
 })
 export class FormComponent implements OnInit, OnDestroy {
+  private data$: Observable<Data> = this.store.select("data");
+  private mode$: Observable<Mode> = this.store.select("mode");
+
   @ViewChild("latex") toggle: MatSlideToggle;
 
   @Input() neu: boolean = false; //true if we are adding a card for a new lecture
@@ -83,7 +87,7 @@ export class FormComponent implements OnInit, OnDestroy {
 
   constructor(
     public dialog: MatDialog,
-    private store: Store<any>,
+    private store: Store<AppState>,
     private actionState: CardsEffects,
     private router: Router,
     private notifs: NotificationsService
@@ -114,8 +118,7 @@ export class FormComponent implements OnInit, OnDestroy {
 
     let sub: Subscription;
 
-    sub = this.store
-      .select("cardsData")
+    sub = this.data$
       .pipe(map(selectUser)) //get user
       .subscribe((user) => {
         if (user && this.author !== user) {
@@ -125,30 +128,28 @@ export class FormComponent implements OnInit, OnDestroy {
     this.subscriptions$.push(sub);
 
     //FormMode
-    this.formMode$ = this.store.select("cardsData").pipe(map(selectFormMode));
+    this.formMode$ = this.mode$.pipe(map(selectFormMode));
 
     //input from tagfield
     let tagInput$ = this.form.valueChanges.pipe(
       map((val: CardFormData) => val.tag)
     );
 
-    let allTags$ = this.store.select("cardsData").pipe(map(selectAllTags)); //get all tags
+    let allTags$ = this.data$.pipe(map(selectAllTags)); //get all tags
 
     //suggestions for autocomplete
     this.tagsSuggestions$ = tagInput$.pipe(
       startWith(""), //show all suggestions if input is null
       withLatestFrom(allTags$),
-      map(([input, tags]) => this._filter([...tags], input)), //filter tags with input
-      map((list) => list.sort())
+      map(([input, tags]) => this._filter(tags, input)), //filter tags with input
+      map((list) => list?.sort())
     );
     //current Tab
-    let tab$ = this.store
-      .select("cardsData")
-      .pipe(map((state: AppState) => state.currTab));
+    let tab$ = this.mode$.pipe(map((state: Mode) => state.currTab));
 
     sub = this.store
-      .select("cardsData")
       .pipe(
+        //create new global state interface
         map(selectCurrentCard),
         withLatestFrom(this.formMode$),
         withLatestFrom(tab$)
@@ -168,14 +169,11 @@ export class FormComponent implements OnInit, OnDestroy {
       });
     this.subscriptions$.push(sub);
 
-    sub = this.store
-      .select("cardsData")
-      .pipe(map(selectCurrentLecture))
-      .subscribe((lect) => {
-        if (lect) {
-          this.lecture = lect;
-        }
-      });
+    sub = this.store.pipe(map(selectCurrentLecture)).subscribe((lect) => {
+      if (lect) {
+        this.lecture = lect;
+      }
+    });
     this.subscriptions$.push(sub);
 
     sub = this.formMode$.subscribe((mode) => {

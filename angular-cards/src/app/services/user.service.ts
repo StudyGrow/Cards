@@ -33,7 +33,7 @@ export class UserService implements CanActivate {
   //checks wheter page can be accessed. returns the authentication subject while redirecting
   //to login page if the result is false
   canActivate(): Observable<boolean> {
-    return this.store.select("cardsData").pipe(map(authenticated));
+    return this.store.select("data").pipe(map(authenticated));
   }
 
   //central function to handle authentication

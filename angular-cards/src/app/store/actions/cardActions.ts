@@ -1,6 +1,6 @@
 import { Action, createAction, props, union } from "@ngrx/store";
-import { Card } from "../../models/Card";
-import { CardsData } from "../reducer";
+
+import { Card, CardsData } from "../../models/Card";
 import { Vorlesung } from "../../models/Vorlesung";
 
 //Types of Actions

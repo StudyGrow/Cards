@@ -42,10 +42,8 @@ import {
   styleUrls: ["./filter-tags.component.scss"],
 })
 export class FilterTagsComponent implements OnInit {
-  private data$: Observable<any> = this.store.select(
-    //holds cards data from store
-    "cardsData"
-  );
+  private data$ = this.store.select("data");
+  private mode$ = this.store.select("mode");
 
   lecture$: Observable<Vorlesung> = this.data$.pipe(map(selectCurrentLecture));
   selected$: Observable<string[]>; //actively selected tags
@@ -60,11 +58,11 @@ export class FilterTagsComponent implements OnInit {
   constructor(private store: Store<any>) {}
 
   ngOnInit(): void {
-    this.selected$ = this.data$.pipe(map(selectActiveTags));
+    this.selected$ = this.mode$.pipe(map(selectActiveTags));
     this.filteredTags$ = this.formCtrl.valueChanges.pipe(
       //autocomplete
       startWith(""),
-      withLatestFrom(this.data$.pipe(map(selectTagOptions))), //get all available tags
+      withLatestFrom(this.mode$.pipe(map(selectTagOptions))), //get all available tags
       map(([input, tags]: [string, string[]]) => {
         return input?.length > 0 ? this._filter(input, tags) : tags;
       }),

@@ -13,9 +13,10 @@ import {
 } from "src/app/store/actions/actions";
 import { setActiveCardIndex } from "src/app/store/actions/cardActions";
 import { selectAllCards, selectFilteredCards } from "src/app/store/selector";
-import { AppState } from "src/app/store/reducer";
+
 import { MatAutocomplete } from "@angular/material/autocomplete";
 import { FormControl } from "@angular/forms";
+import { AppState, Data, Mode } from "src/app/models/state";
 
 @Component({
   selector: "app-search-bar",
@@ -25,7 +26,7 @@ import { FormControl } from "@angular/forms";
 export class SearchBarComponent implements OnInit, OnDestroy {
   uInput = new FormControl();
 
-  constructor(private store: Store<any>) {}
+  constructor(private store: Store<AppState>) {}
   currentSelection: Card[]; //Cards which are currently shown
   subscriptions$: Subscription[] = []; //holds all subscriptions from observables to later unsub
   cards: Card[]; //all cards
@@ -33,14 +34,16 @@ export class SearchBarComponent implements OnInit, OnDestroy {
 
   allSuggestions$: Observable<SearchSuggestion[]>; //search suggestions
 
-  data$: Observable<AppState> = this.store.select("cardsData").pipe(share()); //state of the store
+  private data$: Observable<Data> = this.store.select("data");
+  private mode$: Observable<Mode> = this.store.select("mode");
+
   clearSuggestions: boolean; //wether to clear search suggestions
 
   form = new FormControl();
 
   ngOnInit(): void {
-    let sub = this.data$
-      .pipe(map((state) => state.hideSearchResults))
+    let sub = this.store
+      .pipe(map((state) => state.mode.hideSearchResults))
       .subscribe((hide) => {
         if (hide !== this.clearSuggestions) {
           //only reset
@@ -49,7 +52,7 @@ export class SearchBarComponent implements OnInit, OnDestroy {
         }
       });
     this.subscriptions$.push(sub);
-    let allCards$ = this.data$.pipe(map(selectAllCards));
+    let allCards$ = this.store.pipe(map(selectAllCards));
     sub = allCards$.subscribe((cards) => {
       this.cards = cards;
     });

@@ -1,24 +1,25 @@
 import { createSelector } from "@ngrx/store";
 
-import { AppState } from "./reducer";
 import { Card } from "../models/Card";
 import { Vorlesung } from "../models/Vorlesung";
-import { Data, Mode } from "../models/state";
+import { AppState, Data, Mode } from "../models/state";
 
-export const selectAllCards = (state: Data) => state.cardData.cards;
+export const selectAllCards = (state: AppState) => state.data?.cardData?.cards;
 
-export const selectActiveTags = (state: Mode) => state.tags;
+export const selectActiveTags = (state) => state.tags;
 
 export const selectAllTags = (state: Data) =>
   state.cardData.currLecture?.tagList;
 
-export const selectActiveIndex = (state: Mode) => state.activeIndex;
+export const selectActiveIndex = (state: Mode) => state?.activeIndex;
 
 export const selectFormMode = (state: Mode) => state.formMode;
 
-export const selectCurrentLecture = (state: Data) => state.cardData.currLecture;
+export const selectCurrentLecture = (state: AppState) =>
+  state.data?.cardData?.currLecture;
 
-export const selectUserId = (state: Data) => state.userData.user?._id;
+export const selectUserId = (state: AppState) =>
+  state.data?.userData?.user?._id;
 
 export const selectCurrentTab = (state: Mode) => state.currTab;
 
@@ -36,6 +37,34 @@ export const authenticated = (state: Data) => state.userData.authenticated;
 
 export const lastFilterChange = (state: Mode) => state.filterChanged;
 
+export const filter = createSelector(
+  lastFilterChange,
+  selectActiveTags,
+  (date, tags) => ({ date, tags })
+);
+
+export const selectTagOptions = createSelector(
+  selectAllTags,
+  selectActiveTags,
+  (all, selected) => _filter(all, selected)
+);
+
+export const selectFilteredCards = createSelector(
+  selectAllCards,
+  selectActiveTags,
+  (cards, filter) => applyFilter(cards, filter)
+);
+
+export const selectLastCardIndex = createSelector(
+  selectFilteredCards,
+  (cards) => cards.length - 1
+);
+
+export const selectCurrentCard = createSelector(
+  selectFilteredCards,
+  selectActiveIndex,
+  (cards, index) => (cards ? cards[index] : undefined)
+);
 export const getCardsData = createSelector(
   selectAllCards,
   selectCurrentLecture,

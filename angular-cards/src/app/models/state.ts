@@ -4,13 +4,8 @@ import { UserInfo } from "./UserInfo";
 import { Vorlesung } from "./Vorlesung";
 
 export interface AppState {
-  formMode: string;
-  typingMode: boolean;
-  hideSearchResults: boolean;
-  showDrawer: boolean;
-  loading: number;
-  currTab: number;
-  theme: string;
+  data: Data;
+  mode: Mode;
 }
 
 export interface CardsData {
