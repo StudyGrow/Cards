@@ -9,7 +9,7 @@ import {
 
 import { Card } from "../../models/Card";
 
-import { Subscription, Observable, of } from "rxjs";
+import { Subscription, Observable, of, combineLatest } from "rxjs";
 import {
   fadeInOnEnterAnimation,
   shakeAnimation,
@@ -17,20 +17,27 @@ import {
 } from "angular-animations";
 
 import { Store } from "@ngrx/store";
-import { AppState } from "src/app/store/reducer";
+
 import { resetFilter } from "../../store/actions/actions";
 import {
   updateCard,
   setActiveCardIndex,
 } from "../../store/actions/cardActions";
 import { setFormMode, changeTab } from "src/app/store/actions/actions";
-import { map, share, startWith, delay } from "rxjs/operators";
+import { map, share, startWith, delay, withLatestFrom } from "rxjs/operators";
 
-import { selectUserId, newCards } from "src/app/store/selector";
+import {
+  filter,
+  lastFilterChange,
+  selectAllCards,
+  selectFilteredCards,
+  selectUserId,
+} from "src/app/store/selector";
 import { state } from "@angular/animations";
 import { NgbCarousel } from "@ng-bootstrap/ng-bootstrap";
 import { NotificationsService } from "src/app/services/notifications.service";
 import { WarnMessage } from "src/app/models/Notification";
+import { AppState, Data, Mode } from "src/app/models/state";
 
 @Component({
   selector: "app-carousel",
@@ -45,17 +52,21 @@ import { WarnMessage } from "src/app/models/Notification";
 export class CarouselComponent implements OnInit, OnDestroy {
   private inTypingField: boolean;
 
-  private data$: Observable<AppState> = this.store.select(
+  private data$: Observable<Data> = this.store.select(
     //holds cards data from store
-    "cardsData"
+    "data"
+  );
+  private mode$: Observable<Mode> = this.store.select(
+    //holds cards data from store
+    "mode"
   );
 
   loading: boolean;
   private uid: string = "";
-  public cards$: Observable<Card[]> = this.store.select(
-    (state) => state.cardsData.cards
+  public cards$: Observable<Card[]> = this.data$.pipe(
+    map((data) => data.cardData.cards)
   );
-  filters$: Observable<string[]> = this.data$.pipe(map((state) => state.tags));
+  filters$: Observable<string[]> = this.mode$.pipe(map((mode) => mode.tags));
   filters: string[];
   cards: Card[]; //array of all the cards
   cardCount = 0;
@@ -89,13 +100,13 @@ export class CarouselComponent implements OnInit, OnDestroy {
     this.goToPrev();
   }
   constructor(
-    private store: Store<any>,
+    private store: Store<AppState>,
     private notifs: NotificationsService
   ) {}
 
   ngOnInit(): void {
     //Form Mode, depending on the mode we show different forms (add, edit,none)
-    let sub = this.data$
+    let sub = this.mode$
       .pipe(map((state) => state.formMode))
       .subscribe((mode) => {
         this.formMode = mode;
@@ -103,13 +114,13 @@ export class CarouselComponent implements OnInit, OnDestroy {
     this.subscriptions$.push(sub);
 
     //see if user is in a typing field, If so we disable carousel navigation with arrows
-    sub = this.data$.pipe(map((state) => state.typingMode)).subscribe((val) => {
+    sub = this.mode$.pipe(map((state) => state.typingMode)).subscribe((val) => {
       this.inTypingField = val;
     });
     this.subscriptions$.push(sub);
 
     //gets new slide indexes
-    sub = this.data$
+    sub = this.mode$
       .pipe(map((state) => state.activeIndex))
       .subscribe((val) => {
         this.hanldeNewIndex(val);
@@ -117,31 +128,40 @@ export class CarouselComponent implements OnInit, OnDestroy {
     this.subscriptions$.push(sub);
 
     //get The user id to check if user has rigths to edit the card
-    sub = this.data$.pipe(map(selectUserId)).subscribe((id) => {
+    sub = this.store.pipe(map(selectUserId)).subscribe((id) => {
       if (this.uid !== id) {
         this.uid = id;
       }
     });
     this.subscriptions$.push(sub);
-
+    let filtered$ = this.mode$.pipe(map((state) => state.filterChanged));
+    let added$ = this.data$.pipe(map((state) => state.cardData.lastUpdated));
     //get new cards, either if on new route, or filter is applied
-    sub = this.data$.pipe(map(newCards)).subscribe((obj) => {
-      if (
-        this.cards != obj.cards && //object reference has changed
-        (!this.lastRefresh || this.lastRefresh < obj.date) //modified time stamp is more recent than last refresh
-      ) {
-        //cards have changed
-        this.lastRefresh = obj.date; //update the last refresh
-        this.cardCount = obj.cards.length;
-        this.activeSlide = 0;
-        this.selectSlide(0);
+    let lastChanges$ = combineLatest([filtered$, added$]).pipe(
+      map(([d1, d2]) =>
+        !d1 && !d2 ? 0 : Math.max(d1?.getTime() || 0, d2?.getTime())
+      )
+    );
+    sub = this.store
+      .pipe(map(selectFilteredCards), withLatestFrom(lastChanges$))
+      .subscribe(([cards, lastChanges]) => {
+        if (
+          lastChanges > 0 &&
+          cards.length > 0 &&
+          (!this.lastRefresh || this.lastRefresh.getTime() < lastChanges)
+        ) {
+          //modified time stamp is more recent than last refresh need to update carousel
+          this.lastRefresh = new Date(); //update the last refresh
 
-        this.cards = null; //set null to explicitely refresh carousel view
-        setTimeout(() => {
-          this.cards = obj.cards;
-        }, 100);
-      }
-    });
+          this.cardCount = cards.length;
+          this.store.dispatch(setActiveCardIndex({ index: 0 }));
+
+          this.cards = null; //set null to explicitely refresh carousel view
+          setTimeout(() => {
+            this.cards = cards;
+          }, 200);
+        }
+      });
     this.subscriptions$.push(sub);
   }
 
@@ -166,6 +186,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
   }
   //this function updates the current slide index in the store and for the component
   onSlide(slideEvent) {
+    console.log(slideEvent);
     if (this.activeSlide != slideEvent.current) {
       this.activeSlide = slideEvent.current; //update active slide
       this.store.dispatch(setActiveCardIndex({ index: this.activeSlide })); //update in store
@@ -293,4 +314,13 @@ export class CarouselComponent implements OnInit, OnDestroy {
 
     if (currCard?.latex === 1) return "primary";
   }
+}
+
+function filterCards(cards: Card[], tags: string[]) {
+  return cards.filter((card) => {
+    for (const tag of tags) {
+      if (card.tags.includes(tag)) return true;
+    }
+    return false;
+  });
 }

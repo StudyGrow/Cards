@@ -35,6 +35,7 @@ import {
   selectTagOptions,
   selectCurrentLecture,
 } from "src/app/store/selector";
+import { AppState } from "src/app/models/state";
 
 @Component({
   selector: "app-filter-tags",
@@ -42,12 +43,10 @@ import {
   styleUrls: ["./filter-tags.component.scss"],
 })
 export class FilterTagsComponent implements OnInit {
-  private data$: Observable<any> = this.store.select(
-    //holds cards data from store
-    "cardsData"
-  );
+  private data$ = this.store.select("data");
+  private mode$ = this.store.select("mode");
 
-  lecture$: Observable<Vorlesung> = this.data$.pipe(map(selectCurrentLecture));
+  lecture$: Observable<Vorlesung> = this.store.pipe(map(selectCurrentLecture));
   selected$: Observable<string[]>; //actively selected tags
   separatorKeysCodes: number[] = [ENTER, COMMA];
   formCtrl = new FormControl("");
@@ -57,14 +56,14 @@ export class FilterTagsComponent implements OnInit {
   @ViewChild("Input") input: ElementRef<HTMLInputElement>;
   @ViewChild("auto") matAutocomplete: MatAutocomplete;
 
-  constructor(private store: Store<any>) {}
+  constructor(private store: Store<AppState>) {}
 
   ngOnInit(): void {
-    this.selected$ = this.data$.pipe(map(selectActiveTags));
+    this.selected$ = this.store.pipe(map(selectActiveTags));
     this.filteredTags$ = this.formCtrl.valueChanges.pipe(
       //autocomplete
       startWith(""),
-      withLatestFrom(this.data$.pipe(map(selectTagOptions))), //get all available tags
+      withLatestFrom(this.store.pipe(map(selectTagOptions))), //get all available tags
       map(([input, tags]: [string, string[]]) => {
         return input?.length > 0 ? this._filter(input, tags) : tags;
       }),

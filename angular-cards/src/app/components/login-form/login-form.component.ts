@@ -10,6 +10,7 @@ import { Subscription } from "rxjs";
 import { LoadFailure } from "src/app/store/actions/cardActions";
 import { NotificationsService } from "src/app/services/notifications.service";
 import { SuccessMessage } from "src/app/models/Notification";
+import { AppState } from "src/app/models/state";
 @Component({
   selector: "app-login-form",
   templateUrl: "./login-form.component.html",
@@ -17,7 +18,7 @@ import { SuccessMessage } from "src/app/models/Notification";
 })
 export class LoginFormComponent implements OnInit {
   constructor(
-    private store: Store<any>,
+    private store: Store<AppState>,
     private router: Router,
     private actionState: CardsEffects,
     private notifications: NotificationsService

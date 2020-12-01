@@ -20,16 +20,20 @@ import {
   goNext,
   goPrev,
 } from "src/app/store/actions/cardActions";
+import { AppState } from "src/app/models/state";
 @Component({
   selector: "app-card",
   templateUrl: "./card.component.html",
   styleUrls: ["./card.component.scss"],
 })
 export class CardComponent implements OnInit, OnDestroy {
-  constructor(private store: Store<any>) {}
+  constructor(private store: Store<AppState>) {}
 
   inTypingField: boolean = false;
   activeIndex: number;
+
+  private data$ = this.store.select("data");
+  private mode$ = this.store.select("mode");
 
   parsed: any = [];
 
@@ -56,8 +60,7 @@ export class CardComponent implements OnInit, OnDestroy {
   subscriptions$: Subscription[] = [];
 
   ngOnInit(): void {
-    let data$ = this.store.select("cardsData").pipe(share());
-    let sub = data$
+    let sub = this.mode$
       .pipe(map((state) => state.activeIndex))
       .subscribe((index) => {
         //hides the card content when carousel slides
@@ -67,13 +70,14 @@ export class CardComponent implements OnInit, OnDestroy {
         this.activeIndex = index;
       });
     this.subscriptions$.push(sub);
+
     if (this.card.latex != 0) {
       this.parse(this.card.content);
     } else {
       this.parsed.push(this.card.content);
     }
 
-    sub = data$.pipe(map((state) => state.typingMode)).subscribe((val) => {
+    sub = this.mode$.pipe(map((state) => state.typingMode)).subscribe((val) => {
       this.inTypingField = val;
     });
     this.subscriptions$.push(sub);

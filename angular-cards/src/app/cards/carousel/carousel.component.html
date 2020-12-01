@@ -28,7 +28,6 @@
     </button>
   </div>
 </div>
-
 <div
   class="row"
   id="carousel-row"
@@ -50,7 +49,7 @@
       (slide)="onSlide($event)"
       #mycarousel
       [@shake]="notallowed"
-      [activeId]="this.activeSlide"
+      activeId="0"
       [animation]="true"
       [keyboard]="false"
       [showNavigationArrows]="false"

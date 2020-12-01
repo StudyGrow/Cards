@@ -21,7 +21,7 @@ import { fetchCards, clearCardData } from "../store/actions/cardActions";
 import { fadeInOnEnterAnimation } from "angular-animations";
 import { changeTab, setSuggestionsMode } from "../store/actions/actions";
 import { getCardsData, selectCurrentTab } from "../store/selector";
-import { AppState } from "../store/reducer";
+import { AppState } from "../models/state";
 
 @Component({
   selector: "app-cards",
@@ -44,29 +44,30 @@ export class CardsComponent implements OnInit, OnDestroy {
     }
   }
   //holds data from store
-  public data$: Observable<any> = this.store
-    .select("cardsData")
-    .pipe(map(getCardsData), share());
+  public data$: Observable<any> = this.store.pipe(map(getCardsData), share());
 
   public lecture$: Observable<Vorlesung> = this.data$.pipe(
     map((data) => data.currLecture)
   );
 
-  constructor(private store: Store<any>, private title: Title) {}
+  constructor(private store: Store<AppState>, private title: Title) {}
 
   ngOnInit(): void {
     this.title.setTitle("Cards");
 
     this.store.dispatch(fetchCards());
 
-    this.selectedTab$ = this.store
-      .select("cardsData")
-      .pipe(map(selectCurrentTab));
+    this.selectedTab$ = this.store.pipe(map(selectCurrentTab));
 
-    let sub = this.store.select("cardsData").subscribe((state) => {
+    let sub = this.store.select("mode").subscribe((state) => {
       if (state.formMode !== this.formMode) {
         this.formMode = state.formMode;
       }
+
+      this.hideSuggestion = state.hideSearchResults;
+    });
+    this.subscriptions$.push(sub);
+    sub = this.data$.subscribe((state) => {
       if (this.vlName !== state.currLecture?.name) {
         this.vlName = state.currLecture.name;
 
@@ -74,8 +75,6 @@ export class CardsComponent implements OnInit, OnDestroy {
           this.title.setTitle("Cards · " + this.vlName);
         }
       }
-
-      this.hideSuggestion = state.hideSearchResults;
     });
     this.subscriptions$.push(sub);
   }
