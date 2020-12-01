@@ -139,10 +139,12 @@ export class CarouselComponent implements OnInit, OnDestroy {
     //get new cards, either if on new route, or filter is applied
     let lastChanges$ = combineLatest([filtered$, added$]).pipe(
       map(([d1, d2]) =>
-        Math.min(
-          d1?.getTime() || Number.MAX_SAFE_INTEGER,
-          d2?.getTime() || Number.MAX_SAFE_INTEGER
-        )
+        !d1 && !d2
+          ? 0
+          : Math.min(
+              d1?.getTime() || Number.MAX_SAFE_INTEGER,
+              d2?.getTime() || Number.MAX_SAFE_INTEGER
+            )
       )
     );
     sub = this.store
@@ -150,9 +152,10 @@ export class CarouselComponent implements OnInit, OnDestroy {
       .subscribe(([cards, lastChanges]) => {
         console.log(lastChanges);
         if (
-          cards.length > 0 ||
-          !this.lastRefresh ||
-          this.lastRefresh.getTime() < lastChanges
+          lastChanges > 0 &&
+          (cards.length > 0 ||
+            !this.lastRefresh ||
+            this.lastRefresh.getTime() < lastChanges)
         ) {
           //modified time stamp is more recent than last refresh need to update carousel
           this.lastRefresh = new Date(); //update the last refresh

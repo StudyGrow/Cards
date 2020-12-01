@@ -342,7 +342,9 @@ export class FormComponent implements OnInit, OnDestroy {
     if (!value || value.trim().length == 0) return tags;
     const filterValue = value.toLowerCase();
 
-    return tags.filter((item) => item.toLowerCase().indexOf(filterValue) === 0);
+    return [...tags].filter(
+      (item) => item.toLowerCase().indexOf(filterValue) === 0
+    );
   }
   cancelEdit() {
     this.dialog.open(DialogueComponent, {
