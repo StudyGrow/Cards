@@ -26,12 +26,12 @@ import {
 import { setFormMode, changeTab } from "src/app/store/actions/actions";
 import { map, share, startWith, delay } from "rxjs/operators";
 
-import { selectUserId, newCards } from "src/app/store/selector";
+import { selectUserId } from "src/app/store/selector";
 import { state } from "@angular/animations";
 import { NgbCarousel } from "@ng-bootstrap/ng-bootstrap";
 import { NotificationsService } from "src/app/services/notifications.service";
 import { WarnMessage } from "src/app/models/Notification";
-import { setTimeout } from "timers";
+import { Data, Mode } from "src/app/models/state";
 
 @Component({
   selector: "app-carousel",
@@ -46,17 +46,21 @@ import { setTimeout } from "timers";
 export class CarouselComponent implements OnInit, OnDestroy {
   private inTypingField: boolean;
 
-  private data$: Observable<AppState> = this.store.select(
+  private data$: Observable<Data> = this.store.select(
     //holds cards data from store
-    "cardsData"
+    "data"
+  );
+  private mode$: Observable<Mode> = this.store.select(
+    //holds cards data from store
+    "mode"
   );
 
   loading: boolean;
   private uid: string = "";
-  public cards$: Observable<Card[]> = this.store.select(
-    (state) => state.cardsData.cards
+  public cards$: Observable<Card[]> = this.data$.pipe(
+    map((data) => data.cardData.cards)
   );
-  filters$: Observable<string[]> = this.data$.pipe(map((state) => state.tags));
+  filters$: Observable<string[]> = this.mode$.pipe(map((mode) => mode.tags));
   filters: string[];
   cards: Card[]; //array of all the cards
   cardCount = 0;
@@ -96,7 +100,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     //Form Mode, depending on the mode we show different forms (add, edit,none)
-    let sub = this.data$
+    let sub = this.mode$
       .pipe(map((state) => state.formMode))
       .subscribe((mode) => {
         this.formMode = mode;
@@ -104,13 +108,13 @@ export class CarouselComponent implements OnInit, OnDestroy {
     this.subscriptions$.push(sub);
 
     //see if user is in a typing field, If so we disable carousel navigation with arrows
-    sub = this.data$.pipe(map((state) => state.typingMode)).subscribe((val) => {
+    sub = this.mode$.pipe(map((state) => state.typingMode)).subscribe((val) => {
       this.inTypingField = val;
     });
     this.subscriptions$.push(sub);
 
     //gets new slide indexes
-    sub = this.data$
+    sub = this.mode$
       .pipe(map((state) => state.activeIndex))
       .subscribe((val) => {
         this.hanldeNewIndex(val);

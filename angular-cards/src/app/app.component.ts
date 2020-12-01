@@ -27,8 +27,7 @@ export class AppComponent {
 
     this.themeManager.initTheme(); //initialize theme
 
-    if (isDevMode())
-      this.store.select("cardsData").subscribe((data) => console.log(data));
+    if (isDevMode()) this.store.subscribe((data) => console.log(data));
     //log state only in development mode
 
     this.titleService.setTitle("Home");
