@@ -4,35 +4,22 @@ import {
   Router,
   NavigationEnd,
   RouterEvent,
-  NavigationStart,
   RoutesRecognized,
 } from "@angular/router";
 import { Title } from "@angular/platform-browser";
-
-import { NotificationsService } from "../../services/notifications.service";
-
-import { Notification } from "../../models/Notification";
-import { UserService } from "../../services/user.service";
-
 import { Subscription, Observable } from "rxjs";
 import { Store } from "@ngrx/store";
 import {
   toggleDrawerState,
   setDrawerState,
-  resetFilter,
-  changeTheme,
 } from "src/app/store/actions/actions";
 import { filter, map, withLatestFrom } from "rxjs/operators";
 import {
-  authenticated,
-  getCardsData,
   isLoading,
   selectActiveIndex,
-  selectAllCards,
   selectFilteredCards,
 } from "src/app/store/selector";
-import { clearCardData, fetchCards } from "src/app/store/actions/cardActions";
-import { MatSlideToggleChange } from "@angular/material/slide-toggle";
+import { clearCardData } from "src/app/store/actions/cardActions";
 import { AppState, Data, Mode } from "src/app/models/state";
 
 @Component({

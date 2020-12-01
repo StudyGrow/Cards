@@ -1,25 +1,15 @@
-import { COMMA, ENTER, BACKSLASH } from "@angular/cdk/keycodes";
-import {
-  Component,
-  ElementRef,
-  Input,
-  OnDestroy,
-  OnInit,
-  ViewChild,
-} from "@angular/core";
-import { FormControl, FormGroup, NgForm } from "@angular/forms";
-import {
-  MatAutocomplete,
-  MatAutocompleteSelectedEvent,
-} from "@angular/material/autocomplete";
+import { ENTER } from "@angular/cdk/keycodes";
+import { Component, Input, OnDestroy, OnInit, ViewChild } from "@angular/core";
+import { FormControl, FormGroup } from "@angular/forms";
+import { MatAutocompleteSelectedEvent } from "@angular/material/autocomplete";
 import { MatChipInputEvent } from "@angular/material/chips";
 import { MatDialog } from "@angular/material/dialog";
-import { MatInput } from "@angular/material/input";
+
 import { MatSlideToggle } from "@angular/material/slide-toggle";
 import { Router } from "@angular/router";
-import { State, Store } from "@ngrx/store";
-import { merge, Observable, of, Subscription } from "rxjs";
-import { filter, map, startWith, tap, withLatestFrom } from "rxjs/operators";
+import { Store } from "@ngrx/store";
+import { Observable, Subscription } from "rxjs";
+import { map, startWith, withLatestFrom } from "rxjs/operators";
 import { DialogueComponent } from "src/app/components/dialogue/dialogue.component";
 import { Card } from "src/app/models/Card";
 import { WarnMessage } from "src/app/models/Notification";
@@ -42,7 +32,6 @@ import {
   selectUser,
   selectCurrentLecture,
   selectCurrentCard,
-  selectActiveIndex,
 } from "src/app/store/selector";
 
 class CardFormData {

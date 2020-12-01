@@ -1,5 +1,4 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
-
 import { Store } from "@ngrx/store";
 import { map } from "rxjs/operators";
 import { selectUserInfo } from "../store/selector";

@@ -6,18 +6,12 @@ import {
   ElementRef,
   OnDestroy,
 } from "@angular/core";
-
 import { Vorlesung } from "src/app/models/Vorlesung";
-
 import { Title } from "@angular/platform-browser";
-import { Card } from "../models/Card";
-
 import { Store } from "@ngrx/store";
-
-import { Observable, of, Subscription } from "rxjs";
-
-import { map, tap, share, startWith } from "rxjs/operators";
-import { fetchCards, clearCardData } from "../store/actions/cardActions";
+import { Observable, Subscription } from "rxjs";
+import { map, share } from "rxjs/operators";
+import { fetchCards } from "../store/actions/cardActions";
 import { fadeInOnEnterAnimation } from "angular-animations";
 import { changeTab, setSuggestionsMode } from "../store/actions/actions";
 import { getCardsData, selectCurrentTab } from "../store/selector";

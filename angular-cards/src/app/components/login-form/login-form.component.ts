@@ -1,15 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { NgForm } from "@angular/forms";
-
-import { UserService } from "../../services/user.service";
-import { Router } from "@angular/router";
 import { Store } from "@ngrx/store";
 import { login } from "src/app/store/actions/UserActions";
-import { CardsEffects } from "src/app/store/effects/effects";
-import { Subscription } from "rxjs";
-import { LoadFailure } from "src/app/store/actions/cardActions";
-import { NotificationsService } from "src/app/services/notifications.service";
-import { SuccessMessage } from "src/app/models/Notification";
 import { AppState } from "src/app/models/state";
 @Component({
   selector: "app-login-form",
@@ -17,12 +9,7 @@ import { AppState } from "src/app/models/state";
   styleUrls: ["./login-form.component.scss"],
 })
 export class LoginFormComponent implements OnInit {
-  constructor(
-    private store: Store<AppState>,
-    private router: Router,
-    private actionState: CardsEffects,
-    private notifications: NotificationsService
-  ) {}
+  constructor(private store: Store<AppState>) {}
 
   public check = true;
 

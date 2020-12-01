@@ -7,19 +7,10 @@ import {
 } from "@angular/core";
 import { Card } from "../../models/Card";
 import { ViewChild } from "@angular/core";
-import { CardsService } from "../../services/cards.service";
 import { Subscription } from "rxjs";
 import { parse, HtmlGenerator } from "latex.js/dist/latex.js";
-
-import { SafeHtmlPipe } from "../../shared/safe-html.pipe";
-
 import { Store } from "@ngrx/store";
-import { map, share } from "rxjs/operators";
-import {
-  setActiveCardIndex,
-  goNext,
-  goPrev,
-} from "src/app/store/actions/cardActions";
+import { map } from "rxjs/operators";
 import { AppState } from "src/app/models/state";
 @Component({
   selector: "app-card",

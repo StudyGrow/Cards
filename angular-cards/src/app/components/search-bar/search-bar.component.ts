@@ -1,10 +1,9 @@
-import { Component, OnInit, Input, OnDestroy } from "@angular/core";
-
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { Card } from "../../models/Card";
 import { SearchSuggestion } from "../../models/SearchSuggestion";
 import { Subscription, Observable } from "rxjs";
 import { Store } from "@ngrx/store";
-import { map, share, withLatestFrom } from "rxjs/operators";
+import { map, withLatestFrom } from "rxjs/operators";
 import {
   setTypingMode,
   setSuggestionsMode,
@@ -13,10 +12,8 @@ import {
 } from "src/app/store/actions/actions";
 import { setActiveCardIndex } from "src/app/store/actions/cardActions";
 import { selectAllCards, selectFilteredCards } from "src/app/store/selector";
-
-import { MatAutocomplete } from "@angular/material/autocomplete";
 import { FormControl } from "@angular/forms";
-import { AppState, Data, Mode } from "src/app/models/state";
+import { AppState } from "src/app/models/state";
 
 @Component({
   selector: "app-search-bar",
@@ -33,10 +30,6 @@ export class SearchBarComponent implements OnInit, OnDestroy {
   suggestions$: Observable<SearchSuggestion[]>; //search suggestions
 
   allSuggestions$: Observable<SearchSuggestion[]>; //search suggestions
-
-  private data$: Observable<Data> = this.store.select("data");
-  private mode$: Observable<Mode> = this.store.select("mode");
-
   clearSuggestions: boolean; //wether to clear search suggestions
 
   form = new FormControl();

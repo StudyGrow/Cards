@@ -1,11 +1,9 @@
 import { Component, OnInit } from "@angular/core";
-import { UserService } from "src/app/services/user.service";
 import { Card } from "src/app/models/Card";
 import { Subscription, Observable } from "rxjs";
 import { map } from "rxjs/operators";
 import { Store } from "@ngrx/store";
-import { selectUserCards, selectUserInfo } from "src/app/store/selector";
-
+import { selectUserCards } from "src/app/store/selector";
 import { PageEvent } from "@angular/material/paginator";
 import {
   fadeInOnEnterAnimation,

@@ -1,8 +1,6 @@
 import { Component, OnInit } from "@angular/core";
-import { UserService } from "../services/user.service";
 import { Observable } from "rxjs";
 import { Store } from "@ngrx/store";
-import { auth } from "../store/actions/UserActions";
 import { map } from "rxjs/operators";
 import { authenticated } from "../store/selector";
 import { AppState } from "../models/state";

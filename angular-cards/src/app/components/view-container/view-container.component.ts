@@ -1,27 +1,18 @@
-import {
-  Component,
-  OnInit,
-  ViewChild,
-  HostListener,
-  ElementRef,
-  ChangeDetectorRef,
-} from "@angular/core";
+import { Component, OnInit, ViewChild, ChangeDetectorRef } from "@angular/core";
 
 import { NotificationsService } from "src/app/services/notifications.service";
-import { Observable, of, BehaviorSubject } from "rxjs";
+import { Observable, BehaviorSubject } from "rxjs";
 import { Notification } from "../../models/Notification";
 import {
   pulseOnEnterAnimation,
   fadeOutOnLeaveAnimation,
   fadeInOnEnterAnimation,
 } from "angular-animations";
-import { ScrollDispatcher, CdkScrollable } from "@angular/cdk/overlay";
 import { MatDrawerContent, MatDrawer } from "@angular/material/sidenav";
 import { map, startWith } from "rxjs/operators";
 import { Store } from "@ngrx/store";
 import { selectDrawerState } from "src/app/store/selector";
 import { setDrawerState } from "src/app/store/actions/actions";
-import { Router } from "@angular/router";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { AppState, Data, Mode } from "src/app/models/state";
 @Component({
@@ -35,12 +26,9 @@ import { AppState, Data, Mode } from "src/app/models/state";
   ],
 })
 export class ViewContainerComponent implements OnInit {
-  private data$: Observable<Data> = this.store.select("data");
-  private mode$: Observable<Mode> = this.store.select("mode");
-
-  public pageOffset: number = 0;
-  public subj$ = new BehaviorSubject<boolean>(false);
-  public show$: Observable<boolean>;
+  pageOffset: number = 0;
+  subj$ = new BehaviorSubject<boolean>(false);
+  show$: Observable<boolean>;
 
   @ViewChild("drawer", { static: true }) drawer: MatDrawer;
   @ViewChild("mainContent", { static: true }) content: MatDrawerContent;

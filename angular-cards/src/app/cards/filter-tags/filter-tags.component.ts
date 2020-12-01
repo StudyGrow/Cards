@@ -1,8 +1,6 @@
-import { Component, OnInit, Output, OnDestroy } from "@angular/core";
-import { Observable, Subscription } from "rxjs";
+import { Component, OnInit } from "@angular/core";
+import { Observable } from "rxjs";
 import { Vorlesung } from "src/app/models/Vorlesung";
-import { LecturesService } from "src/app/services/lectures.service";
-
 import { COMMA, ENTER } from "@angular/cdk/keycodes";
 import { ElementRef, ViewChild } from "@angular/core";
 import { FormControl } from "@angular/forms";
@@ -10,28 +8,15 @@ import {
   MatAutocompleteSelectedEvent,
   MatAutocomplete,
 } from "@angular/material/autocomplete";
-import { MatChipInputEvent } from "@angular/material/chips";
-
-import {
-  map,
-  startWith,
-  share,
-  filter,
-  tap,
-  withLatestFrom,
-} from "rxjs/operators";
-
+import { map, startWith, withLatestFrom } from "rxjs/operators";
 import { Store } from "@ngrx/store";
 import {
   setTypingMode,
-  resetFilter,
   removeTag,
   addTag,
 } from "src/app/store/actions/actions";
 import {
-  selectDrawerState,
   selectActiveTags,
-  selectAllTags,
   selectTagOptions,
   selectCurrentLecture,
 } from "src/app/store/selector";
@@ -43,9 +28,6 @@ import { AppState } from "src/app/models/state";
   styleUrls: ["./filter-tags.component.scss"],
 })
 export class FilterTagsComponent implements OnInit {
-  private data$ = this.store.select("data");
-  private mode$ = this.store.select("mode");
-
   lecture$: Observable<Vorlesung> = this.store.pipe(map(selectCurrentLecture));
   selected$: Observable<string[]>; //actively selected tags
   separatorKeysCodes: number[] = [ENTER, COMMA];

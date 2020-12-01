@@ -6,7 +6,7 @@ import { UserService } from "src/app/services/user.service";
 import { Subscription } from "rxjs";
 import { Store } from "@ngrx/store";
 import { map } from "rxjs/operators";
-import { selectUserInfo, selectUser } from "src/app/store/selector";
+import { selectUserInfo } from "src/app/store/selector";
 import { updateUserData } from "src/app/store/actions/UserActions";
 import { DialogueComponent } from "src/app/components/dialogue/dialogue.component";
 import { MatDialog } from "@angular/material/dialog";

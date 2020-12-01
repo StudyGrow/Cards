@@ -1,11 +1,10 @@
 import { Component, OnInit } from "@angular/core";
 import { Vorlesung } from "../../models/Vorlesung";
 
-import { Subscription, Observable } from "rxjs";
-import { LecturesService } from "src/app/services/lectures.service";
+import { Observable } from "rxjs";
 import { Store } from "@ngrx/store";
 import { fetchLectures } from "src/app/store/actions/LectureActions";
-import { tap, map } from "rxjs/operators";
+import { map } from "rxjs/operators";
 import { selectLectures } from "src/app/store/selector";
 import { AppState } from "src/app/models/state";
 @Component({

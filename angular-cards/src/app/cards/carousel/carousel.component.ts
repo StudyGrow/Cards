@@ -4,36 +4,22 @@ import {
   ViewChild,
   OnDestroy,
   HostListener,
-  NgZone,
 } from "@angular/core";
-
 import { Card } from "../../models/Card";
-
 import { Subscription, Observable, of, combineLatest } from "rxjs";
 import {
   fadeInOnEnterAnimation,
   shakeAnimation,
   fadeOutOnLeaveAnimation,
 } from "angular-animations";
-
 import { Store } from "@ngrx/store";
-
-import { resetFilter } from "../../store/actions/actions";
 import {
   updateCard,
   setActiveCardIndex,
 } from "../../store/actions/cardActions";
 import { setFormMode, changeTab } from "src/app/store/actions/actions";
-import { map, share, startWith, delay, withLatestFrom } from "rxjs/operators";
-
-import {
-  filter,
-  lastFilterChange,
-  selectAllCards,
-  selectFilteredCards,
-  selectUserId,
-} from "src/app/store/selector";
-import { state } from "@angular/animations";
+import { map, withLatestFrom } from "rxjs/operators";
+import { selectFilteredCards, selectUserId } from "src/app/store/selector";
 import { NgbCarousel } from "@ng-bootstrap/ng-bootstrap";
 import { NotificationsService } from "src/app/services/notifications.service";
 import { WarnMessage } from "src/app/models/Notification";
