@@ -31,7 +31,6 @@ import { state } from "@angular/animations";
 import { NgbCarousel } from "@ng-bootstrap/ng-bootstrap";
 import { NotificationsService } from "src/app/services/notifications.service";
 import { WarnMessage } from "src/app/models/Notification";
-import { setTimeout } from "timers";
 
 @Component({
   selector: "app-carousel",
