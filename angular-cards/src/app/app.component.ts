@@ -9,6 +9,7 @@ import { LecturesService } from "./services/lectures.service";
 import { ThemesService } from "./services/themes.service";
 import { changeTheme } from "./store/actions/actions";
 import { auth } from "./store/actions/UserActions";
+import { selectFilteredCards } from "./store/selector";
 
 @Component({
   selector: "app-root",
@@ -28,7 +29,12 @@ export class AppComponent {
 
     this.themeManager.initTheme(); //initialize theme
 
-    if (isDevMode()) this.store.subscribe((data) => console.log(data));
+    if (isDevMode()) {
+      this.store.subscribe((state) => console.log(state.data.cardData.cards));
+      this.store
+        .pipe(map(selectFilteredCards))
+        .subscribe((cards) => console.log(cards));
+    }
     //log state only in development mode
 
     this.titleService.setTitle("Home");

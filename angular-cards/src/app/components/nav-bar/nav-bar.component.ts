@@ -26,8 +26,10 @@ import { filter, map, withLatestFrom } from "rxjs/operators";
 import {
   authenticated,
   getCardsData,
+  isLoading,
   selectActiveIndex,
   selectAllCards,
+  selectFilteredCards,
 } from "src/app/store/selector";
 import { clearCardData, fetchCards } from "src/app/store/actions/cardActions";
 import { MatSlideToggleChange } from "@angular/material/slide-toggle";
@@ -61,16 +63,14 @@ export class NavBarComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     setTimeout(() => {
-      let sub = this.mode$
-        .pipe(map((state) => state.loading))
-        .subscribe((val) => {
-          this.loading = val > 0;
-          this.cdr.detectChanges();
-        });
+      let sub = this.store.pipe(map(isLoading)).subscribe((val) => {
+        this.loading = val;
+        this.cdr.detectChanges();
+      });
       this.subscriptions$.push(sub);
 
       let cardCount$ = this.store.pipe(
-        map(selectAllCards),
+        map(selectFilteredCards),
         map((cards) => cards?.length)
       );
       //progress of carousel. will be undefined if there are no cards

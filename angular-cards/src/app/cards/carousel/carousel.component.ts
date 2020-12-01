@@ -139,12 +139,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
     //get new cards, either if on new route, or filter is applied
     let lastChanges$ = combineLatest([filtered$, added$]).pipe(
       map(([d1, d2]) =>
-        !d1 && !d2
-          ? 0
-          : Math.min(
-              d1?.getTime() || Number.MAX_SAFE_INTEGER,
-              d2?.getTime() || Number.MAX_SAFE_INTEGER
-            )
+        !d1 && !d2 ? 0 : Math.max(d1?.getTime() || 0, d2?.getTime())
       )
     );
     sub = this.store
@@ -159,8 +154,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
           this.lastRefresh = new Date(); //update the last refresh
 
           this.cardCount = cards.length;
-          this.activeSlide = 0;
-          this.selectSlide(0);
+          this.store.dispatch(setActiveCardIndex({ index: 0 }));
 
           this.cards = null; //set null to explicitely refresh carousel view
           setTimeout(() => {
@@ -192,6 +186,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
   }
   //this function updates the current slide index in the store and for the component
   onSlide(slideEvent) {
+    console.log(slideEvent);
     if (this.activeSlide != slideEvent.current) {
       this.activeSlide = slideEvent.current; //update active slide
       this.store.dispatch(setActiveCardIndex({ index: this.activeSlide })); //update in store
