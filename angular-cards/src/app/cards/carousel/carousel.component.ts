@@ -31,6 +31,7 @@ import { state } from "@angular/animations";
 import { NgbCarousel } from "@ng-bootstrap/ng-bootstrap";
 import { NotificationsService } from "src/app/services/notifications.service";
 import { WarnMessage } from "src/app/models/Notification";
+import { setTimeout } from "timers";
 
 @Component({
   selector: "app-carousel",
@@ -178,15 +179,19 @@ export class CarouselComponent implements OnInit, OnDestroy {
       if (this.formMode != "edit") {
         this.carousel.select(n.toString());
       } else {
-        this.notallowed = true;
-
-        this.notifs.addNotification(
-          new WarnMessage(
-            "Du musst erst die Bearbeitung der Karteikarte abschließen"
-          )
-        );
         setTimeout(() => {
-          this.notallowed = false;
+          if (this.formMode == "edit") {
+            this.notallowed = true;
+
+            this.notifs.addNotification(
+              new WarnMessage(
+                "Du musst erst die Bearbeitung der Karteikarte abschließen"
+              )
+            );
+            setTimeout(() => {
+              this.notallowed = false;
+            }, 100);
+          }
         }, 100);
       }
     }
@@ -214,9 +219,19 @@ export class CarouselComponent implements OnInit, OnDestroy {
     ) {
       this.carousel.prev();
     } else {
-      this.notallowed = true;
       setTimeout(() => {
-        this.notallowed = false;
+        if (this.formMode == "edit") {
+          this.notallowed = true;
+
+          this.notifs.addNotification(
+            new WarnMessage(
+              "Du musst erst die Bearbeitung der Karteikarte abschließen"
+            )
+          );
+          setTimeout(() => {
+            this.notallowed = false;
+          }, 100);
+        }
       }, 100);
     }
   }
@@ -231,10 +246,19 @@ export class CarouselComponent implements OnInit, OnDestroy {
     ) {
       this.carousel.next();
     } else {
-      this.notallowed = true;
-      console.log(this.notallowed);
       setTimeout(() => {
-        this.notallowed = false;
+        if (this.formMode == "edit") {
+          this.notallowed = true;
+
+          this.notifs.addNotification(
+            new WarnMessage(
+              "Du musst erst die Bearbeitung der Karteikarte abschließen"
+            )
+          );
+          setTimeout(() => {
+            this.notallowed = false;
+          }, 100);
+        }
       }, 100);
     }
   }
