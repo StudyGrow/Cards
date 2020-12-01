@@ -22,8 +22,13 @@ import {
   resetFilter,
   changeTheme,
 } from "src/app/store/actions/actions";
-import { filter, map } from "rxjs/operators";
-import { authenticated, getCardsData } from "src/app/store/selector";
+import { filter, map, withLatestFrom } from "rxjs/operators";
+import {
+  authenticated,
+  getCardsData,
+  selectActiveIndex,
+  selectAllCards,
+} from "src/app/store/selector";
 import { clearCardData, fetchCards } from "src/app/store/actions/cardActions";
 import { MatSlideToggleChange } from "@angular/material/slide-toggle";
 
@@ -33,14 +38,15 @@ import { MatSlideToggleChange } from "@angular/material/slide-toggle";
   styleUrls: ["./nav-bar.component.scss"],
 })
 export class NavBarComponent implements OnInit, OnDestroy {
-  public loggedIn: boolean;
-  public cards: Card[] = [];
+  loggedIn: boolean;
+  cards: Card[] = [];
 
   experiment: boolean = false;
   subscriptions$: Subscription[] = [];
   showSearch: boolean;
-  public loading: boolean;
-  public loading$: Observable<boolean>;
+  loading: boolean;
+  loading$: Observable<boolean>;
+  progress$: Observable<number>;
 
   public constructor(
     private router: Router,
@@ -62,6 +68,17 @@ export class NavBarComponent implements OnInit, OnDestroy {
           this.cdr.detectChanges();
         });
       this.subscriptions$.push(sub);
+
+      let cardCount$ = this.store.select("cardsData").pipe(
+        map(selectAllCards),
+        map((cards) => cards?.length)
+      );
+      //progress of carousel. will be undefined if there are no cards
+      this.progress$ = this.store.select("cardsData").pipe(
+        map(selectActiveIndex),
+        withLatestFrom(cardCount$),
+        map(([curr, all]) => (all ? (100 * curr) / all : undefined))
+      );
 
       sub = this.router.events
         .pipe(filter((e): e is RouterEvent => e instanceof RouterEvent))
