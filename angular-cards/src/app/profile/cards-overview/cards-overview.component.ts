@@ -11,6 +11,7 @@ import {
   fadeInOnEnterAnimation,
   fadeOutOnLeaveAnimation,
 } from "angular-animations";
+import { AppState } from "src/app/models/state";
 
 @Component({
   selector: "app-cards-overview",
@@ -28,7 +29,7 @@ export class CardsOverviewComponent implements OnInit {
   end: number = 3;
   pageSizeOptions = [3, 10, 15];
   cards$: Observable<Card[]>;
-  constructor(private store: Store<any>) {}
+  constructor(private store: Store<AppState>) {}
 
   ngOnInit(): void {
     this.cards$ = this.store.select("data").pipe(

@@ -74,7 +74,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
         map((cards) => cards?.length)
       );
       //progress of carousel. will be undefined if there are no cards
-      this.progress$ = this.mode$.pipe(
+      this.progress$ = this.store.pipe(
         map(selectActiveIndex),
         withLatestFrom(cardCount$),
         map(([curr, all]) => (all ? (100 * curr) / all : undefined))

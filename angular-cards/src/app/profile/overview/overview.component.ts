@@ -17,7 +17,10 @@ export class OverviewComponent implements OnInit, OnDestroy {
   public user = new User("", "");
   subscriptions$: Subscription[] = [];
 
-  constructor(private userService: UserService, private store: Store<any>) {}
+  constructor(
+    private userService: UserService,
+    private store: Store<AppState>
+  ) {}
   public user$: Observable<User>;
   ngOnInit(): void {
     this.user$ = this.store.select("data").pipe(map(selectUser));

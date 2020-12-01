@@ -16,6 +16,7 @@ import { User } from "../models/User";
 import { Store } from "@ngrx/store";
 
 import { authenticated } from "../store/selector";
+import { AppState } from "../models/state";
 
 @Injectable({
   providedIn: "root",
@@ -25,7 +26,7 @@ export class UserService implements CanActivate {
 
   constructor(
     private http: HttpClient, //for sending http requests
-    private store: Store<any>,
+    private store: Store<AppState>,
     private router: Router, //to redirect
     private notifications: NotificationsService //to show notifications
   ) {}

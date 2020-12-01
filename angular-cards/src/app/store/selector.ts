@@ -6,12 +6,12 @@ import { AppState, Data, Mode } from "../models/state";
 
 export const selectAllCards = (state: AppState) => state.data?.cardData?.cards;
 
-export const selectActiveTags = (state) => state.tags;
+export const selectActiveTags = (state: AppState) => state.mode.tags;
 
-export const selectAllTags = (state: Data) =>
-  state.cardData.currLecture?.tagList;
+export const selectAllTags = (state: AppState) =>
+  state.data.cardData?.currLecture?.tagList;
 
-export const selectActiveIndex = (state: Mode) => state?.activeIndex;
+export const selectActiveIndex = (state: AppState) => state.mode.activeIndex;
 
 export const selectFormMode = (state: Mode) => state.formMode;
 
@@ -35,7 +35,7 @@ export const selectUser = (state: Data) => state.userData.user;
 
 export const authenticated = (state: Data) => state.userData.authenticated;
 
-export const lastFilterChange = (state: Mode) => state.filterChanged;
+export const lastFilterChange = (state: AppState) => state.mode.filterChanged;
 
 export const filter = createSelector(
   lastFilterChange,

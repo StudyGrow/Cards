@@ -4,6 +4,7 @@ import { Router } from "@angular/router";
 import { Store } from "@ngrx/store";
 import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
+import { AppState } from "./models/state";
 import { LecturesService } from "./services/lectures.service";
 import { ThemesService } from "./services/themes.service";
 import { changeTheme } from "./store/actions/actions";
@@ -19,7 +20,7 @@ export class AppComponent {
   cachedTheme: string;
   public constructor(
     private titleService: Title,
-    private store: Store<any>,
+    private store: Store<AppState>,
 
     private themeManager: ThemesService
   ) {

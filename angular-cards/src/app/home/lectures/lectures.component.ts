@@ -7,6 +7,7 @@ import { Store } from "@ngrx/store";
 import { fetchLectures } from "src/app/store/actions/LectureActions";
 import { tap, map } from "rxjs/operators";
 import { selectLectures } from "src/app/store/selector";
+import { AppState } from "src/app/models/state";
 @Component({
   selector: "app-lectures",
   templateUrl: "./lectures.component.html",
@@ -15,7 +16,7 @@ import { selectLectures } from "src/app/store/selector";
 export class LecturesComponent implements OnInit {
   lectures$: Observable<Vorlesung[]>;
 
-  constructor(private store: Store<any>) {}
+  constructor(private store: Store<AppState>) {}
 
   ngOnInit(): void {
     this.store.dispatch(fetchLectures());

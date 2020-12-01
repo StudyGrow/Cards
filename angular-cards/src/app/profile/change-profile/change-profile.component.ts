@@ -10,6 +10,7 @@ import { selectUserInfo, selectUser } from "src/app/store/selector";
 import { updateUserData } from "src/app/store/actions/UserActions";
 import { DialogueComponent } from "src/app/components/dialogue/dialogue.component";
 import { MatDialog } from "@angular/material/dialog";
+import { AppState } from "src/app/models/state";
 @Component({
   selector: "app-change-profile",
   templateUrl: "./change-profile.component.html",
@@ -22,7 +23,7 @@ export class ChangeProfileComponent implements OnInit, OnDestroy {
   fileToUpload: File = null;
   constructor(
     private userService: UserService,
-    private store: Store<any>,
+    private store: Store<AppState>,
     public dialog: MatDialog
   ) {}
 

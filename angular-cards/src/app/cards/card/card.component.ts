@@ -20,13 +20,14 @@ import {
   goNext,
   goPrev,
 } from "src/app/store/actions/cardActions";
+import { AppState } from "src/app/models/state";
 @Component({
   selector: "app-card",
   templateUrl: "./card.component.html",
   styleUrls: ["./card.component.scss"],
 })
 export class CardComponent implements OnInit, OnDestroy {
-  constructor(private store: Store<any>) {}
+  constructor(private store: Store<AppState>) {}
 
   inTypingField: boolean = false;
   activeIndex: number;

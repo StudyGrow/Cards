@@ -5,6 +5,7 @@ import { Store } from "@ngrx/store";
 import { auth } from "../store/actions/UserActions";
 import { map } from "rxjs/operators";
 import { authenticated } from "../store/selector";
+import { AppState } from "../models/state";
 
 @Component({
   selector: "app-home",
@@ -14,7 +15,7 @@ import { authenticated } from "../store/selector";
 export class HomeComponent implements OnInit {
   authenticated$: Observable<boolean>;
 
-  constructor(private store: Store<any>) {}
+  constructor(private store: Store<AppState>) {}
 
   ngOnInit(): void {
     this.authenticated$ = this.store.select("data").pipe(map(authenticated));

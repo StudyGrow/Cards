@@ -135,7 +135,7 @@ export class FormComponent implements OnInit, OnDestroy {
       map((val: CardFormData) => val.tag)
     );
 
-    let allTags$ = this.data$.pipe(map(selectAllTags)); //get all tags
+    let allTags$ = this.store.pipe(map(selectAllTags)); //get all tags
 
     //suggestions for autocomplete
     this.tagsSuggestions$ = tagInput$.pipe(

@@ -57,7 +57,7 @@ export class SearchBarComponent implements OnInit, OnDestroy {
       this.cards = cards;
     });
     this.subscriptions$.push(sub);
-    let filteredCards$ = this.data$.pipe(map(selectFilteredCards));
+    let filteredCards$ = this.store.pipe(map(selectFilteredCards));
     sub = filteredCards$.subscribe((filtered) => {
       this.currentSelection = filtered;
     });

@@ -42,7 +42,7 @@ import { selectActiveIndex, selectLastCardIndex } from "../selector";
 import { Router } from "@angular/router";
 import { NotificationsService } from "src/app/services/notifications.service";
 import { SuccessMessage } from "src/app/models/Notification";
-import { Data, Mode } from "src/app/models/state";
+import { AppState, Data, Mode } from "src/app/models/state";
 import { CardsData } from "src/app/models/Card";
 
 @Injectable()
@@ -52,12 +52,10 @@ export class CardsEffects {
     private cards: CardsService,
     private user: UserService,
     private lectures: LecturesService,
-    private store: Store<any>,
+    private store: Store<AppState>,
     private router: Router,
     private notifications: NotificationsService
   ) {}
-  private data$: Observable<Data> = this.store.select("data");
-  private mode$: Observable<Mode> = this.store.select("mode");
 
   @Effect()
   loadCards$ = createEffect(() =>
@@ -128,7 +126,7 @@ export class CardsEffects {
   updateCard$ = createEffect(() =>
     this.actions$.pipe(
       ofType(UpdateCardActions.updateCard),
-      withLatestFrom(this.mode$.pipe(map(selectActiveIndex))),
+      withLatestFrom(this.store.pipe(map(selectActiveIndex))),
       exhaustMap(([action, activeIndex]) =>
         this.cards.updateCard(action.card).pipe(
           tap(() => {

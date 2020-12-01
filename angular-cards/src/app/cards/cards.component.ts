@@ -21,6 +21,7 @@ import { fetchCards, clearCardData } from "../store/actions/cardActions";
 import { fadeInOnEnterAnimation } from "angular-animations";
 import { changeTab, setSuggestionsMode } from "../store/actions/actions";
 import { getCardsData, selectCurrentTab } from "../store/selector";
+import { AppState } from "../models/state";
 
 @Component({
   selector: "app-cards",
@@ -43,15 +44,13 @@ export class CardsComponent implements OnInit, OnDestroy {
     }
   }
   //holds data from store
-  public data$: Observable<any> = this.store
-    .select("data")
-    .pipe(map(getCardsData), share());
+  public data$: Observable<any> = this.store.pipe(map(getCardsData), share());
 
   public lecture$: Observable<Vorlesung> = this.data$.pipe(
     map((data) => data.currLecture)
   );
 
-  constructor(private store: Store<any>, private title: Title) {}
+  constructor(private store: Store<AppState>, private title: Title) {}
 
   ngOnInit(): void {
     this.title.setTitle("Cards");
