@@ -24,7 +24,7 @@ export const initialState: Mode = {
 };
 
 //Reducer which will dispatch changes to the store
-const _cardsReducer = createReducer(
+const _modeReducer = createReducer(
   initialState,
 
   on(StateActions.changeTheme, (state, { theme }) =>
@@ -127,7 +127,7 @@ const _cardsReducer = createReducer(
 );
 
 export function cardsReducer(state: Mode, action: Action) {
-  return _cardsReducer(state, action);
+  return _modeReducer(state, action);
 }
 
 function removeInArray(items: string[], item: string) {

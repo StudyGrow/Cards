@@ -24,7 +24,7 @@ const initialState: Data = {
   },
 };
 
-const _cardsReducer = createReducer(
+const _dataReducer = createReducer(
   initialState,
 
   on(CardActions.addCardSuccess, (state, { card }) => ({
@@ -142,8 +142,8 @@ const _cardsReducer = createReducer(
   }))
 );
 
-export function cardsReducer(state: Data, action: Action) {
-  return _cardsReducer(state, action);
+export function dataReducer(state: Data, action: Action) {
+  return _dataReducer(state, action);
 }
 
 function updateObjectInArray(cards: Card[], card: Card) {
@@ -165,12 +165,4 @@ function addTags(origin: string[], tags: string[]) {
     }
   }
   return origin;
-}
-
-function removeInArray(items: string[], item: string) {
-  if (items.length <= 1 && items[0] == item) return [];
-
-  const filterValue = item.toLowerCase();
-
-  return items.filter((item) => !item.toLowerCase().includes(filterValue));
 }
