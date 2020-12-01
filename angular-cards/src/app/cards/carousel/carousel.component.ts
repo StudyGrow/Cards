@@ -9,7 +9,7 @@ import {
 
 import { Card } from "../../models/Card";
 
-import { Subscription, Observable, of } from "rxjs";
+import { Subscription, Observable, of, combineLatest } from "rxjs";
 import {
   fadeInOnEnterAnimation,
   shakeAnimation,
@@ -30,6 +30,7 @@ import {
   filter,
   lastFilterChange,
   selectAllCards,
+  selectFilteredCards,
   selectUserId,
 } from "src/app/store/selector";
 import { state } from "@angular/animations";
@@ -133,31 +134,36 @@ export class CarouselComponent implements OnInit, OnDestroy {
       }
     });
     this.subscriptions$.push(sub);
-    let filter$ = this.mode$.pipe(map(filter));
+    let filtered$ = this.mode$.pipe(map((state) => state.filterChanged));
+    let added$ = this.data$.pipe(map((state) => state.cardData.lastUpdated));
     //get new cards, either if on new route, or filter is applied
-    sub = this.data$
-      .pipe(
-        map((state) => state.cardData),
-        withLatestFrom(filter$)
+    let lastChanges$ = combineLatest([filtered$, added$]).pipe(
+      map(([d1, d2]) =>
+        Math.min(
+          d1?.getTime() || Number.MAX_SAFE_INTEGER,
+          d2?.getTime() || Number.MAX_SAFE_INTEGER
+        )
       )
-      .subscribe(([data, filter]) => {
-        let earliest = Math.min(
-          data.lastUpdated.getTime(),
-          filter.date.getTime()
-        );
-        if (!this.lastRefresh || this.lastRefresh.getTime() < earliest) {
+    );
+    sub = this.store
+      .pipe(map(selectFilteredCards), withLatestFrom(lastChanges$))
+      .subscribe(([cards, lastChanges]) => {
+        console.log(lastChanges);
+        if (
+          cards.length > 0 ||
+          !this.lastRefresh ||
+          this.lastRefresh.getTime() < lastChanges
+        ) {
           //modified time stamp is more recent than last refresh need to update carousel
           this.lastRefresh = new Date(); //update the last refresh
 
-          let filteredCards = filterCards(data.cards, filter.tags);
-
-          this.cardCount = filteredCards.length;
+          this.cardCount = cards.length;
           this.activeSlide = 0;
           this.selectSlide(0);
 
           this.cards = null; //set null to explicitely refresh carousel view
           setTimeout(() => {
-            this.cards = filteredCards;
+            this.cards = cards;
           }, 100);
         }
       });

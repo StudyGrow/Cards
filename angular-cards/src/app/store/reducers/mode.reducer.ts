@@ -20,7 +20,7 @@ export const initialState: Mode = {
   tags: [],
   currTab: 0,
   theme: localStorage.getItem("theme"),
-  filterChanged: new Date(),
+  filterChanged: undefined,
 };
 
 //Reducer which will dispatch changes to the store

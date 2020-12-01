@@ -9,18 +9,18 @@ import * as UserActions from "../actions/UserActions";
 const initialState: Data = {
   cardData: {
     cards: [],
-    lastUpdated: new Date(),
+    lastUpdated: undefined,
     currLecture: undefined,
   },
   userData: {
-    cards: [],
+    cards: undefined,
     authenticated: false,
     user: new User(),
-    lastUpdated: new Date(),
+    lastUpdated: undefined,
   },
   lectureData: {
     lectures: [],
-    lastUpdated: new Date(),
+    lastUpdated: undefined,
   },
 };
 
