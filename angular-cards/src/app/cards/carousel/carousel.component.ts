@@ -150,12 +150,10 @@ export class CarouselComponent implements OnInit, OnDestroy {
     sub = this.store
       .pipe(map(selectFilteredCards), withLatestFrom(lastChanges$))
       .subscribe(([cards, lastChanges]) => {
-        console.log(lastChanges);
         if (
           lastChanges > 0 &&
-          (cards.length > 0 ||
-            !this.lastRefresh ||
-            this.lastRefresh.getTime() < lastChanges)
+          cards.length > 0 &&
+          (!this.lastRefresh || this.lastRefresh.getTime() < lastChanges)
         ) {
           //modified time stamp is more recent than last refresh need to update carousel
           this.lastRefresh = new Date(); //update the last refresh

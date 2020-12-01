@@ -137,7 +137,7 @@ const _dataReducer = createReducer(
       ...state.cardData,
       cards: initialState.cardData.cards,
       currLecture: initialState.cardData.currLecture,
-      lastUpdated: new Date(),
+      lastUpdated: initialState.cardData.lastUpdated,
     },
   }))
 );
