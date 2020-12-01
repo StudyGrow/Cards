@@ -18,6 +18,6 @@ export class HomeComponent implements OnInit {
   constructor(private store: Store<AppState>) {}
 
   ngOnInit(): void {
-    this.authenticated$ = this.store.select("data").pipe(map(authenticated));
+    this.authenticated$ = this.store.pipe(map(authenticated));
   }
 }

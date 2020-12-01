@@ -57,7 +57,7 @@ export class CardsComponent implements OnInit, OnDestroy {
 
     this.store.dispatch(fetchCards());
 
-    this.selectedTab$ = this.store.select("mode").pipe(map(selectCurrentTab));
+    this.selectedTab$ = this.store.pipe(map(selectCurrentTab));
 
     let sub = this.store.select("mode").subscribe((state) => {
       if (state.formMode !== this.formMode) {

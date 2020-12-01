@@ -118,7 +118,7 @@ export class FormComponent implements OnInit, OnDestroy {
 
     let sub: Subscription;
 
-    sub = this.data$
+    sub = this.store
       .pipe(map(selectUser)) //get user
       .subscribe((user) => {
         if (user && this.author !== user) {
@@ -128,7 +128,7 @@ export class FormComponent implements OnInit, OnDestroy {
     this.subscriptions$.push(sub);
 
     //FormMode
-    this.formMode$ = this.mode$.pipe(map(selectFormMode));
+    this.formMode$ = this.store.pipe(map(selectFormMode));
 
     //input from tagfield
     let tagInput$ = this.form.valueChanges.pipe(

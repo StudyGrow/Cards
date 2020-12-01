@@ -31,15 +31,12 @@ export class ChangeProfileComponent implements OnInit, OnDestroy {
     this.user.name = "";
     this.user.surname = "";
 
-    let sub = this.store
-      .select("data")
-      .pipe(map(selectUserInfo))
-      .subscribe((info) => {
-        this.userInfo = info;
-        if (info && info.user) {
-          this.user = { ...info.user };
-        }
-      });
+    let sub = this.store.pipe(map(selectUserInfo)).subscribe((info) => {
+      this.userInfo = info;
+      if (info && info.user) {
+        this.user = { ...info.user };
+      }
+    });
     this.subscriptions$.push(sub);
   }
   ngOnDestroy() {

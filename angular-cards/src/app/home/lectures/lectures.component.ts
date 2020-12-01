@@ -20,7 +20,7 @@ export class LecturesComponent implements OnInit {
 
   ngOnInit(): void {
     this.store.dispatch(fetchLectures());
-    this.lectures$ = this.store.select("data").pipe(map(selectLectures));
+    this.lectures$ = this.store.pipe(map(selectLectures));
   }
 
   setLink(lecture: Vorlesung) {

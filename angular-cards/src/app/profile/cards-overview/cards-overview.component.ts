@@ -4,7 +4,7 @@ import { Card } from "src/app/models/Card";
 import { Subscription, Observable } from "rxjs";
 import { map } from "rxjs/operators";
 import { Store } from "@ngrx/store";
-import { selectUserInfo } from "src/app/store/selector";
+import { selectUserCards, selectUserInfo } from "src/app/store/selector";
 
 import { PageEvent } from "@angular/material/paginator";
 import {
@@ -32,10 +32,7 @@ export class CardsOverviewComponent implements OnInit {
   constructor(private store: Store<AppState>) {}
 
   ngOnInit(): void {
-    this.cards$ = this.store.select("data").pipe(
-      map(selectUserInfo),
-      map((info) => info.cards)
-    );
+    this.cards$ = this.store.pipe(map(selectUserCards));
     this.cards$.subscribe((cards) => (this.cardCount = cards?.length));
   }
   incrementSlice(event: PageEvent) {

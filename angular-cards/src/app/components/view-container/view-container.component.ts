@@ -82,7 +82,7 @@ export class ViewContainerComponent implements OnInit {
       });
     });
 
-    this.mode$.pipe(map(selectDrawerState)).subscribe((val) => {
+    this.store.pipe(map(selectDrawerState)).subscribe((val) => {
       val ? this.drawer.open() : this.drawer.close();
     });
   }
