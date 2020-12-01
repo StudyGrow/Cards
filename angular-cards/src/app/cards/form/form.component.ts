@@ -261,7 +261,6 @@ export class FormComponent implements OnInit, OnDestroy {
     let sub = this.actionState.addCard$.subscribe((card) => {
       if (card) {
         this.resetForm();
-        this.store.dispatch(changeTab({ tab: 0 }));
       }
       sub.unsubscribe();
     });
@@ -306,7 +305,6 @@ export class FormComponent implements OnInit, OnDestroy {
   }
   resetForm() {
     this.selectedTags = [];
-
     this.form.reset();
     Object.keys(this.form.controls).forEach((key) => {
       this.form.get(key).setErrors(null);
