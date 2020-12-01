@@ -96,83 +96,38 @@ const _cardsReducer = createReducer(
     ...state,
     loading: state.loading - 1 < 0 ? 0 : state.loading - 1,
   })),
-  on(UserActions.fetchUserDataSuccess, (state, info) => ({
-    ...state,
-    userData: { ...state.userData, cards: info.cards, user: info.user },
-  })),
-  on(UserActions.updateUserDataSuccess, (state, user) => ({
-    ...state,
-    userData: { ...state.userData, user: user },
-  })),
-  on(UserActions.authenticated, (state, { auth }) => ({
-    ...state,
-    userData: { ...state.userData, authenticated: auth },
-  })),
-  on(UserActions.loginSuccess, (state, user) => ({
-    ...state,
-    userData: { ...state.userData, user: user, authenticated: true },
-  })),
-  on(UserActions.logoutSuccess, (state) => ({
-    ...state,
-    userData: initialState.userData,
-    showDrawer: false,
-  })),
-  on(Actions.clearCardData, (state) => ({
-    ...state,
-    formMode: initialState.formMode,
-    currLecture: initialState.currLecture,
-    cards: initialState.cards,
-    tags: initialState.tags,
-    filteredCardsChanged: new Date(),
-    currTab: initialState.currTab,
-    activeIndex: initialState.activeIndex,
-  })),
 
   on(StateActions.addTag, (state, { tag }) => ({
     ...state,
     tags: addTag(state.tags, tag),
-    filteredCardsChanged: new Date(),
+    filterChanged: new Date(),
   })),
+
   on(StateActions.removeTag, (state, { tag }) => ({
     ...state,
     tags: removeInArray([...state.tags], tag),
-    filteredCardsChanged: new Date(),
+    filterChanged: new Date(),
   })),
+
   on(StateActions.resetFilter, (state) => ({
     ...state,
     tags: initialState.tags,
-
-    filteredCardsChanged: new Date(),
+    filterChanged: new Date(),
   })),
+
   on(Actions.goNext, (state) => ({
     ...state,
     activeIndex: state.activeIndex + 1,
   })),
+
   on(Actions.goNext, (state) => ({
     ...state,
     activeIndex: state.activeIndex - 1,
-  })),
-
-  on(Actions.LoadFailure, (state) => state) //on failure don't update state
+  }))
 );
 
 export function cardsReducer(state: Mode, action: Action) {
   return _cardsReducer(state, action);
-}
-
-function updateObjectInArray(cards: Card[], card: Card) {
-  return cards.map((item, index) => {
-    if (item._id !== card._id) {
-      // This isn't the item we care about - keep it as-is
-      return item;
-    }
-
-    // Otherwise, this is the one we want - return an updated value
-    return {
-      ...item,
-      ...card,
-    };
-  });
 }
 
 function removeInArray(items: string[], item: string) {
@@ -181,16 +136,6 @@ function removeInArray(items: string[], item: string) {
   const filterValue = item.toLowerCase();
 
   return items.filter((item) => !item.toLowerCase().includes(filterValue));
-}
-
-function addTags(origin: string[], tags: string[]) {
-  //adds a list of tags to the original array without duplicates
-  for (const tag of tags) {
-    if (!origin.includes(tag)) {
-      origin.push(tag);
-    }
-  }
-  return origin;
 }
 
 function addTag(origin: string[], tag: string) {

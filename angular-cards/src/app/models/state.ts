@@ -30,3 +30,26 @@ export interface LecturesData {
   lectures: Vorlesung[];
   lastUpdated: Date;
 }
+
+export interface Data {
+  cardData: CardsData;
+  userData: UserData;
+  lectureData: LecturesData;
+}
+
+export interface Mode {
+  activeIndex: number;
+  formMode: formMode;
+  typingMode: boolean;
+  hideSearchResults: boolean;
+  showDrawer: boolean;
+  loading: number;
+  tags: string[];
+  filterChanged: Date;
+  currTab: number;
+  theme: string;
+}
+export enum formMode {
+  ADD = "add",
+  EDIT = "edit",
+}
