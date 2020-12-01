@@ -126,7 +126,7 @@ const _modeReducer = createReducer(
   }))
 );
 
-export function cardsReducer(state: Mode, action: Action) {
+export function modeReducer(state: Mode, action: Action) {
   return _modeReducer(state, action);
 }
 
