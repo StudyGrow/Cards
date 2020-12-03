@@ -11,10 +11,14 @@ import {
 import { MatDrawerContent, MatDrawer } from "@angular/material/sidenav";
 import { map, startWith } from "rxjs/operators";
 import { Store } from "@ngrx/store";
-import { selectDrawerState } from "src/app/store/selector";
-import { setDrawerState } from "src/app/store/actions/actions";
-import { MatSnackBar } from "@angular/material/snack-bar";
+
+import {
+  MatSnackBar,
+  MatSnackBarRef,
+  TextOnlySnackBar,
+} from "@angular/material/snack-bar";
 import { AppState, Data, Mode } from "src/app/models/state";
+import { NavbarToggleService } from "src/app/services/navbar-toggle.service";
 @Component({
   selector: "app-view-container",
   templateUrl: "./view-container.component.html",
@@ -37,7 +41,8 @@ export class ViewContainerComponent implements OnInit {
     private cdr: ChangeDetectorRef,
     private store: Store<AppState>,
     private notifService: NotificationsService,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    private nav: NavbarToggleService
   ) {}
 
   ngOnInit(): void {
@@ -51,7 +56,7 @@ export class ViewContainerComponent implements OnInit {
     this.notifications$ = this.notifService.notifications;
     this.notifications$.subscribe((notifs) => {
       notifs.forEach((notif, index) => {
-        let ref;
+        let ref: MatSnackBarRef<TextOnlySnackBar>;
         if (notif.type === "success") {
           ref = this._snackBar.open(notif.message, null, {
             duration: 2000,
@@ -70,7 +75,7 @@ export class ViewContainerComponent implements OnInit {
       });
     });
 
-    this.store.pipe(map(selectDrawerState)).subscribe((val) => {
+    this.nav.state.subscribe((val) => {
       val ? this.drawer.open() : this.drawer.close();
     });
   }
@@ -81,7 +86,7 @@ export class ViewContainerComponent implements OnInit {
     return `alert alert-${notif.type} alert-dismissible fade show shadow`;
   }
   closing() {
-    this.store.dispatch(setDrawerState({ show: false }));
+    this.nav.close();
   }
   backToTop() {
     this.content.scrollTo({ top: 0, behavior: "smooth" }); // how far to scroll on each step

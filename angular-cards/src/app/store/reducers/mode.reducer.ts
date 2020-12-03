@@ -15,7 +15,6 @@ export const initialState: Mode = {
   formMode: formMode.ADD,
   typingMode: false,
   hideSearchResults: true,
-  showDrawer: false,
   loading: 0,
   tags: [],
   currTab: 0,
@@ -74,19 +73,6 @@ const _modeReducer = createReducer(
           hideSearchResults: hide,
         }
   ),
-  on(StateActions.setDrawerState, (state, { show }) =>
-    show === state.showDrawer
-      ? state
-      : {
-          ...state,
-          showDrawer: show,
-        }
-  ),
-
-  on(StateActions.toggleDrawerState, (state) => ({
-    ...state,
-    showDrawer: !state.showDrawer,
-  })),
 
   on(StateActions.incrementLoading, (state) => ({
     ...state,

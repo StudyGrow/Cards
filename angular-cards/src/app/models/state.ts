@@ -37,7 +37,6 @@ export interface Mode {
   formMode: formMode;
   typingMode: boolean;
   hideSearchResults: boolean;
-  showDrawer: boolean;
   loading: number;
   tags: string[];
   filterChanged: Date;

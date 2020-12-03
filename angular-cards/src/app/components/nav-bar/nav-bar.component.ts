@@ -9,10 +9,7 @@ import {
 import { Title } from "@angular/platform-browser";
 import { Subscription, Observable } from "rxjs";
 import { Store } from "@ngrx/store";
-import {
-  toggleDrawerState,
-  setDrawerState,
-} from "src/app/store/actions/actions";
+
 import { filter, map, withLatestFrom } from "rxjs/operators";
 import {
   isLoading,
@@ -21,6 +18,7 @@ import {
 } from "src/app/store/selector";
 import { clearCardData } from "src/app/store/actions/cardActions";
 import { AppState, Data, Mode } from "src/app/models/state";
+import { NavbarToggleService } from "src/app/services/navbar-toggle.service";
 
 @Component({
   selector: "app-nav-bar",
@@ -45,7 +43,8 @@ export class NavBarComponent implements OnInit, OnDestroy {
     private router: Router,
     private titleService: Title,
     private cdr: ChangeDetectorRef,
-    private store: Store<AppState>
+    private store: Store<AppState>,
+    private nav: NavbarToggleService
   ) {}
 
   ngOnInit(): void {
@@ -78,7 +77,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
 
   private handleRouteChanges(e: RouterEvent) {
     if (e instanceof RoutesRecognized) {
-      this.store.dispatch(setDrawerState({ show: false })); //hide drawer when changing route
+      this.nav.close(); //hide drawer when changing route
       this.setPageTitle(e);
       if (e.url.match(/vorlesung/)) {
         this.showSearch = true;
@@ -131,6 +130,6 @@ export class NavBarComponent implements OnInit, OnDestroy {
     this.titleService.setTitle(currentTitle);
   }
   drawerToggle() {
-    this.store.dispatch(toggleDrawerState());
+    this.nav.toggle();
   }
 }

@@ -22,7 +22,7 @@ import {
 import * as LectureActions from "../actions/LectureActions";
 import { CardsService } from "../../services/cards.service";
 import { LecturesService } from "../../services/lectures.service";
-import { setDrawerState } from "../actions/actions";
+
 import { Store } from "@ngrx/store";
 import {
   fetchUserData,
