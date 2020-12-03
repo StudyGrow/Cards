@@ -30,10 +30,7 @@ export class AppComponent {
     this.themeManager.initTheme(); //initialize theme
 
     if (isDevMode()) {
-      this.store.subscribe((state) => console.log(state.data.cardData.cards));
-      this.store
-        .pipe(map(selectFilteredCards))
-        .subscribe((cards) => console.log(cards));
+      this.store.subscribe((state) => console.log(state.data));
     }
     //log state only in development mode
 

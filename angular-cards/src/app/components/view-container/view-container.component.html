@@ -1,8 +1,8 @@
-<mat-drawer-container class="example-container" [hasBackdrop]="true">
-  <mat-drawer #drawer mode="over" (closedStart)="closing()">
+<mat-sidenav-container class="example-container" [hasBackdrop]="true">
+  <mat-sidenav #drawer mode="over" (closedStart)="closing()">
     <app-nav-list></app-nav-list>
-  </mat-drawer>
-  <mat-drawer-content fixedBottomGap="true" #mainContent cdkScrollable>
+  </mat-sidenav>
+  <mat-sidenav-content fixedBottomGap="true" #mainContent cdkScrollable>
     <router-outlet></router-outlet>
     <br />
     <div *ngIf="show$ | async" id="up">
@@ -10,5 +10,5 @@
         <mat-icon matSuffix>arrow_upward</mat-icon>
       </button>
     </div>
-  </mat-drawer-content>
-</mat-drawer-container>
+  </mat-sidenav-content>
+</mat-sidenav-container>

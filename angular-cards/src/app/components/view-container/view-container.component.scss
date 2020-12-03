@@ -1,11 +1,8 @@
 .example-container {
-  height: 90%;
+  height: inherit;
 }
-mat-drawer-content {
-  padding: 0;
-}
-mat-drawer {
-  min-width: 200px;
+app-nav-list {
+  height: inherit;
 }
 #up {
   position: fixed;

@@ -16,6 +16,6 @@ mat-icon {
   margin-bottom: 10px;
 }
 mat-nav-list {
-  height: 100%;
+  height: inherit !important;
   position: relative;
 }
