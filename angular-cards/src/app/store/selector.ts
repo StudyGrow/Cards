@@ -2,7 +2,7 @@ import { createSelector } from "@ngrx/store";
 
 import { Card } from "../models/Card";
 import { Vorlesung } from "../models/Vorlesung";
-import { AppState, Data, Mode } from "../models/state";
+import { AppState } from "../models/state";
 
 export const selectAllCards = (state: AppState) => state.data?.cardData?.cards;
 
@@ -22,8 +22,6 @@ export const selectUserId = (state: AppState) =>
   state.data?.userData?.user?._id;
 
 export const selectCurrentTab = (state: AppState) => state.mode.currTab;
-
-export const selectDrawerState = (state: AppState) => state.mode.showDrawer;
 
 export const isLoading = (state: AppState) => state.mode.loading > 0;
 
