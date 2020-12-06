@@ -2,9 +2,10 @@
   <mat-sidenav #drawer mode="over" (closedStart)="closing()">
     <app-nav-list></app-nav-list>
   </mat-sidenav>
-  <mat-sidenav-content fixedBottomGap="true" #mainContent cdkScrollable>
-    <router-outlet></router-outlet>
-    <br />
+  <mat-sidenav-content #mainContent cdkScrollable>
+    <div class="my-3">
+      <router-outlet></router-outlet>
+    </div>
     <div *ngIf="show$ | async" id="up">
       <button id="btn" mat-fab color="primary" (click)="backToTop()">
         <mat-icon matSuffix>arrow_upward</mat-icon>
