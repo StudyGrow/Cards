@@ -131,7 +131,7 @@ export class FormComponent implements OnInit, OnDestroy {
       startWith(""), //show all suggestions if input is null
       withLatestFrom(allTags$),
       map(([input, tags]) => this._filter(tags, input)), //filter tags with input
-      map((list) => list?.sort())
+      map((list) => (list ? [...list].sort() : list))
     );
     //current Tab
     let tab$ = this.mode$.pipe(map((state: Mode) => state.currTab));

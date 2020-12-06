@@ -30,7 +30,9 @@ export class AppComponent {
     this.themeManager.initTheme(); //initialize theme
 
     if (isDevMode()) {
-      this.store.subscribe((state) => console.log(state.data));
+      this.store.subscribe((state) => {
+        console.log(state);
+      });
     }
     //log state only in development mode
 

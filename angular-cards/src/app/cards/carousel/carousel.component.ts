@@ -184,20 +184,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
       if (this.formMode != "edit") {
         this.carousel.select(n.toString());
       } else {
-        setTimeout(() => {
-          if (this.formMode == "edit") {
-            this.notallowed = true;
-
-            this.notifs.addNotification(
-              new WarnMessage(
-                "Du musst erst die Bearbeitung der Karteikarte abschließen"
-              )
-            );
-            setTimeout(() => {
-              this.notallowed = false;
-            }, 100);
-          }
-        }, 100);
+        this.showRejection();
       }
     }
   }
@@ -224,21 +211,25 @@ export class CarouselComponent implements OnInit, OnDestroy {
     ) {
       this.carousel.prev();
     } else {
-      setTimeout(() => {
-        if (this.formMode == "edit") {
-          this.notallowed = true;
-
-          this.notifs.addNotification(
-            new WarnMessage(
-              "Du musst erst die Bearbeitung der Karteikarte abschließen"
-            )
-          );
-          setTimeout(() => {
-            this.notallowed = false;
-          }, 100);
-        }
-      }, 100);
+      this.showRejection();
     }
+  }
+
+  showRejection() {
+    setTimeout(() => {
+      this.notallowed = true;
+      if (this.formMode == "edit") {
+        this.store.dispatch(changeTab({ tab: 1 }));
+        this.notifs.addNotification(
+          new WarnMessage(
+            "Du musst erst die Bearbeitung der Karteikarte abschließen"
+          )
+        );
+      }
+      setTimeout(() => {
+        this.notallowed = false;
+      }, 100);
+    }, 100);
   }
 
   //select the next slide
@@ -251,20 +242,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
     ) {
       this.carousel.next();
     } else {
-      setTimeout(() => {
-        if (this.formMode == "edit") {
-          this.notallowed = true;
-
-          this.notifs.addNotification(
-            new WarnMessage(
-              "Du musst erst die Bearbeitung der Karteikarte abschließen"
-            )
-          );
-          setTimeout(() => {
-            this.notallowed = false;
-          }, 100);
-        }
-      }, 100);
+      this.showRejection();
     }
   }
 

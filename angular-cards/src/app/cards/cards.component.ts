@@ -16,6 +16,8 @@ import { fadeInOnEnterAnimation } from "angular-animations";
 import { changeTab, setSuggestionsMode } from "../store/actions/actions";
 import { getCardsData, selectCurrentTab } from "../store/selector";
 import { AppState } from "../models/state";
+import { NotificationsService } from "../services/notifications.service";
+import { WarnMessage } from "../models/Notification";
 
 @Component({
   selector: "app-cards",
@@ -44,7 +46,11 @@ export class CardsComponent implements OnInit, OnDestroy {
     map((data) => data.currLecture)
   );
 
-  constructor(private store: Store<AppState>, private title: Title) {}
+  constructor(
+    private store: Store<AppState>,
+    private title: Title,
+    private notifs: NotificationsService
+  ) {}
 
   ngOnInit(): void {
     this.title.setTitle("Cards");
@@ -77,15 +83,6 @@ export class CardsComponent implements OnInit, OnDestroy {
     this.store.dispatch(changeTab({ tab: index }));
   }
 
-  private titleCase(str: string) {
-    return str
-      .toLowerCase()
-      .split(" ")
-      .map(function (word) {
-        return word.replace(word[0], word[0].toUpperCase());
-      })
-      .join(" ");
-  }
   ngOnDestroy() {
     this.subscriptions$.forEach((sub) => sub.unsubscribe());
   }
