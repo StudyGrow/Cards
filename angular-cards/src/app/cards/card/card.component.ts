@@ -23,7 +23,6 @@ export class CardComponent implements OnInit, OnDestroy {
   inTypingField: boolean = false;
   activeIndex: number;
 
-  private data$ = this.store.select("data");
   private mode$ = this.store.select("mode");
 
   parsed: any = [];
@@ -62,12 +61,6 @@ export class CardComponent implements OnInit, OnDestroy {
       });
     this.subscriptions$.push(sub);
 
-    if (this.card.latex != 0) {
-      this.parse(this.card.content);
-    } else {
-      this.parsed.push(this.card.content);
-    }
-
     sub = this.mode$.pipe(map((state) => state.typingMode)).subscribe((val) => {
       this.inTypingField = val;
     });
@@ -80,11 +73,10 @@ export class CardComponent implements OnInit, OnDestroy {
     });
   }
 
-  parse(cardContent: any) {
-    var latex = cardContent;
+  parse(cardContent: string) {
+    if (this.card.latex == 0) return cardContent;
     let generator = new HtmlGenerator({ hyphenate: false });
-    let doc = parse(latex, { generator: generator }).htmlDocument();
-    latex = doc.body.innerHTML;
-    this.parsed.push(latex);
+    let doc = parse(cardContent, { generator: generator }).htmlDocument();
+    return doc.body.innerHTML;
   }
 }
