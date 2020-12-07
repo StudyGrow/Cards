@@ -26,6 +26,7 @@ import { addCard, updateCard } from "src/app/store/actions/cardActions";
 import { addLercture } from "src/app/store/actions/LectureActions";
 import { CardsEffects } from "src/app/store/effects/effects";
 import { AppState } from "../../models/state";
+import { parse, HtmlGenerator } from "latex.js/dist/latex.js";
 import {
   selectAllTags,
   selectFormMode,
@@ -46,7 +47,6 @@ class CardFormData {
   styleUrls: ["./form.component.css"],
 })
 export class FormComponent implements OnInit, OnDestroy {
-  private data$: Observable<Data> = this.store.select("data");
   private mode$: Observable<Mode> = this.store.select("mode");
 
   @ViewChild("latex") toggle: MatSlideToggle;
@@ -64,6 +64,8 @@ export class FormComponent implements OnInit, OnDestroy {
   cardCopy: Card = new Card("", "");
   //Tags that were selected
   selectedTags = [];
+
+  generator: HtmlGenerator;
 
   //Autocomplete
   separatorKeysCodes: number[] = [ENTER];
@@ -199,13 +201,20 @@ export class FormComponent implements OnInit, OnDestroy {
     let latexState: number;
 
     if (this.toggle.checked) {
-      let dollarcount = this.form.value.content.split("$").length - 1; //count occurences of $ in content
-      if (this.form.value.content.includes("$$") || dollarcount % 2 !== 0) {
+      try {
+        this.generator = new HtmlGenerator({ hyphenate: false });
+        let doc = parse(this.form.value.content, {
+          generator: this.generator,
+        });
+        doc.htmlDocument().body;
+      } catch (e) {
+        console.log(e);
         this.notifs.addNotification(
           new WarnMessage("Der Latex content ist nicht korrekt mit $ umhüllt")
         );
         return;
       }
+
       latexState = 1;
     } else {
       latexState = 0;
