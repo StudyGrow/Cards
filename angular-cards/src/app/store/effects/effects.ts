@@ -26,7 +26,7 @@ import {
 import * as LectureActions from "../actions/LectureActions";
 import { CardsService } from "../../services/cards.service";
 import { LecturesService } from "../../services/lectures.service";
-import { setDrawerState } from "../actions/actions";
+
 import { Store } from "@ngrx/store";
 import {
   fetchUserData,
@@ -47,6 +47,8 @@ import { Router } from "@angular/router";
 import { NotificationsService } from "src/app/services/notifications.service";
 import { SuccessMessage } from "src/app/models/Notification";
 import { VotesService } from "src/app/services/votes.service";
+import { AppState, Data, Mode } from "src/app/models/state";
+import { CardsData } from "src/app/models/Card";
 
 @Injectable()
 export class CardsEffects {
@@ -56,11 +58,10 @@ export class CardsEffects {
     private user: UserService,
     private votes: VotesService,
     private lectures: LecturesService,
-    private store: Store<any>,
+    private store: Store<AppState>,
     private router: Router,
     private notifications: NotificationsService
   ) {}
-  data$ = this.store.select("cardsData").pipe(share());
 
   @Effect()
   loadCards$ = createEffect(() =>
@@ -69,7 +70,9 @@ export class CardsEffects {
       switchMap(() => {
         this.store.dispatch(fetchVotes());
         return this.cards.fetchCardsData().pipe(
-          map((data) => FetchCardsActions.LoadSuccess({ data: data })),
+          map((data: CardsData) =>
+            FetchCardsActions.LoadSuccess({ data: data })
+          ),
           catchError((reason) => of(LoadFailure({ reason: reason })))
         );
       }),
@@ -156,7 +159,7 @@ export class CardsEffects {
   updateCard$ = createEffect(() =>
     this.actions$.pipe(
       ofType(UpdateCardActions.updateCard),
-      withLatestFrom(this.data$.pipe(map(selectActiveIndex))),
+      withLatestFrom(this.store.pipe(map(selectActiveIndex))),
       exhaustMap(([action, activeIndex]) =>
         this.cards.updateCard(action.card).pipe(
           tap(() => {

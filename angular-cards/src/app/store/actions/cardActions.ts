@@ -1,6 +1,6 @@
 import { Action, createAction, props, union } from "@ngrx/store";
-import { Card } from "../../models/Card";
-import { CardsData } from "../reducer";
+
+import { Card, CardsData } from "../../models/Card";
 import { Vorlesung } from "../../models/Vorlesung";
 
 import { Vote } from "src/app/models/Vote";
@@ -22,6 +22,10 @@ enum ActionTypes {
   CHANGE_VOTE_SUCCESS = "[Vote] Change vote successfull on server",
   FETCH_VOTES = "[Votes] Fetch votes from server",
   FETCH_VOTES_SUCCESS = "[Votes] Fetch votes from server success",
+  APPLY_FILTER = "[Filter] change the current cards filter for carousel cards",
+  RESET_FILTER = "[Filter] reset the filter to show all cards",
+  REMOVE_TAG = "[Filter] remove tag from the filter",
+  ADD_TAG = "[Filter] add tag to the filter",
 }
 
 //Concrete Actions for each type
@@ -35,6 +39,21 @@ export const fetchVotesSuccess = createAction(
 export const goNext = createAction(ActionTypes.GO_NEXT);
 export const goPrev = createAction(ActionTypes.GO_PREV);
 export const clearCardData = createAction(ActionTypes.CLEAR_CARD_DATA);
+export const applyFilter = createAction(
+  ActionTypes.APPLY_FILTER,
+  props<{ tags: string[] }>()
+);
+export const addTag = createAction(
+  ActionTypes.ADD_TAG,
+  props<{ tag: string }>()
+);
+
+export const removeTag = createAction(
+  ActionTypes.REMOVE_TAG,
+  props<{ tag: string }>()
+);
+
+export const resetFilter = createAction(ActionTypes.RESET_FILTER);
 
 export const setActiveCardIndex = createAction(
   ActionTypes.SET_ACITVE_CARD_INDEX,

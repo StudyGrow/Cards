@@ -1,4 +1,4 @@
-<mat-nav-list class="p-0 default-theme">
+<mat-nav-list class="p-0">
   <a mat-list-item color="primary" class="{{ isActive('/') }}" routerLink="/"
     ><mat-icon>home</mat-icon> Vorlesungen</a
   >
@@ -40,17 +40,19 @@
   <mat-divider></mat-divider>
   <mat-slide-toggle
     #darkmode
-    class="ml-3 mb.0 mt-1"
+    class="ml-3 mb.0 mt-2"
     (change)="toggleDarkMode($event)"
     >Darkmode</mat-slide-toggle
   >
-  <a
-    mat-list-item
-    (click)="logout()"
-    class="mb-0"
-    id="logout"
-    *ngIf="loggedIn$ | async"
-  >
-    <mat-icon>exit_to_app</mat-icon> Logout
-  </a>
+  <div class="bottom">
+    <a
+      mat-list-item
+      (click)="logout()"
+      class="mb-0"
+      id="logout"
+      *ngIf="loggedIn$ | async"
+    >
+      <mat-icon>exit_to_app</mat-icon> Logout
+    </a>
+  </div>
 </mat-nav-list>

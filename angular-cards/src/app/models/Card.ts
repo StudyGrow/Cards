@@ -1,3 +1,5 @@
+import { Vorlesung } from "./Vorlesung";
+
 export class Card {
   constructor(
     public thema?: string,
@@ -11,4 +13,10 @@ export class Card {
     public authorName?: string,
     public date?: Date
   ) {}
+}
+
+export interface CardsData {
+  cards: Card[];
+  lecture: Vorlesung;
+  uid: string;
 }

@@ -1,9 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { NgForm } from "@angular/forms";
-
-import { Router } from "@angular/router";
 import { Store } from "@ngrx/store";
-import { UserService } from "src/app/services/user.service";
 import { createAccount } from "src/app/store/actions/UserActions";
 @Component({
   selector: "app-signup-form",
@@ -12,7 +9,6 @@ import { createAccount } from "src/app/store/actions/UserActions";
 })
 export class SignupFormComponent implements OnInit {
   constructor(private store: Store) {}
-  errors;
 
   ngOnInit(): void {}
   submit(form: NgForm) {

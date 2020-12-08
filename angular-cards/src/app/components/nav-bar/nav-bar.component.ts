@@ -4,28 +4,21 @@ import {
   Router,
   NavigationEnd,
   RouterEvent,
-  NavigationStart,
   RoutesRecognized,
 } from "@angular/router";
 import { Title } from "@angular/platform-browser";
-
-import { NotificationsService } from "../../services/notifications.service";
-
-import { Notification } from "../../models/Notification";
-import { UserService } from "../../services/user.service";
-
 import { Subscription, Observable } from "rxjs";
 import { Store } from "@ngrx/store";
+
+import { filter, map, withLatestFrom } from "rxjs/operators";
 import {
-  toggleDrawerState,
-  setDrawerState,
-  resetFilter,
-  changeTheme,
-} from "src/app/store/actions/actions";
-import { filter, map } from "rxjs/operators";
-import { authenticated, getCardsData } from "src/app/store/selector";
-import { clearCardData, fetchCards } from "src/app/store/actions/cardActions";
-import { MatSlideToggleChange } from "@angular/material/slide-toggle";
+  isLoading,
+  selectActiveIndex,
+  selectFilteredCards,
+} from "src/app/store/selector";
+import { clearCardData } from "src/app/store/actions/cardActions";
+import { AppState, Data, Mode } from "src/app/models/state";
+import { NavbarToggleService } from "src/app/services/navbar-toggle.service";
 
 @Component({
   selector: "app-nav-bar",
@@ -33,35 +26,45 @@ import { MatSlideToggleChange } from "@angular/material/slide-toggle";
   styleUrls: ["./nav-bar.component.scss"],
 })
 export class NavBarComponent implements OnInit, OnDestroy {
-  public loggedIn: boolean;
-  public cards: Card[] = [];
+  private data$: Observable<Data> = this.store.select("data");
+  private mode$: Observable<Mode> = this.store.select("mode");
+
+  loggedIn: boolean;
+  cards: Card[] = [];
 
   experiment: boolean = false;
   subscriptions$: Subscription[] = [];
   showSearch: boolean;
-  public loading: boolean;
-  public loading$: Observable<boolean>;
+  loading: boolean;
+  loading$: Observable<boolean>;
+  progress$: Observable<number>;
 
   public constructor(
     private router: Router,
     private titleService: Title,
-
-    private notification: NotificationsService,
-
     private cdr: ChangeDetectorRef,
-    private store: Store<any>
+    private store: Store<AppState>,
+    private nav: NavbarToggleService
   ) {}
 
   ngOnInit(): void {
     setTimeout(() => {
-      let sub = this.store
-        .select("cardsData")
-        .pipe(map((state) => state.loading))
-        .subscribe((val) => {
-          this.loading = val;
-          this.cdr.detectChanges();
-        });
+      let sub = this.store.pipe(map(isLoading)).subscribe((val) => {
+        this.loading = val;
+        this.cdr.detectChanges();
+      });
       this.subscriptions$.push(sub);
+
+      let cardCount$ = this.store.pipe(
+        map(selectFilteredCards),
+        map((cards) => cards?.length)
+      );
+      //progress of carousel. will be undefined if there are no cards
+      this.progress$ = this.store.pipe(
+        map(selectActiveIndex),
+        withLatestFrom(cardCount$),
+        map(([curr, all]) => (all ? (100 * curr) / all : undefined))
+      );
 
       sub = this.router.events
         .pipe(filter((e): e is RouterEvent => e instanceof RouterEvent))
@@ -74,7 +77,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
 
   private handleRouteChanges(e: RouterEvent) {
     if (e instanceof RoutesRecognized) {
-      this.store.dispatch(setDrawerState({ show: false })); //hide drawer when changing route
+      this.nav.close(); //hide drawer when changing route
       this.setPageTitle(e);
       if (e.url.match(/vorlesung/)) {
         this.showSearch = true;
@@ -127,6 +130,6 @@ export class NavBarComponent implements OnInit, OnDestroy {
     this.titleService.setTitle(currentTitle);
   }
   drawerToggle() {
-    this.store.dispatch(toggleDrawerState());
+    this.nav.toggle();
   }
 }

@@ -4,10 +4,10 @@
   </mat-card-title>
   <mat-expansion-panel #answer class="mat-elevation-z0 p-0">
     <mat-expansion-panel-header>
-      <mat-panel-title> Antwort</mat-panel-title>
+      <mat-panel-title>Antwort</mat-panel-title>
     </mat-expansion-panel-header>
     <ng-template matExpansionPanelContent>
-      <pre lang="de" class="mb-1" [innerHtml]="parsed[0] | safeHtml"></pre>
+      <pre class="mb-1" [innerHtml]="this.parse(card.content) | safeHtml"></pre>
       <app-vote *ngIf="auth$ | async" [id]="card._id"></app-vote>
     </ng-template>
   </mat-expansion-panel>

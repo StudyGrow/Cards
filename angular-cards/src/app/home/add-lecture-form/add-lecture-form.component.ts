@@ -1,8 +1,5 @@
-import { Component, OnInit, Output, EventEmitter } from "@angular/core";
-
+import { Component, OnInit } from "@angular/core";
 import { Vorlesung } from "../../models/Vorlesung";
-import { LecturesService } from "../../services/lectures.service";
-
 import { Subscription } from "rxjs";
 import { Router } from "@angular/router";
 @Component({

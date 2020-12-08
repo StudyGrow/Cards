@@ -23,6 +23,10 @@ import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatCheckboxModule } from "@angular/material/checkbox";
 import { MatCardModule } from "@angular/material/card";
 
+import { MatSelectModule } from "@angular/material/select";
+
+import { MatMenuModule } from "@angular/material/menu";
+import { MatBottomSheetModule } from "@angular/material/bottom-sheet";
 import {
   MatPaginatorIntl,
   MatPaginatorModule,
@@ -36,6 +40,7 @@ import { MatDividerModule } from "@angular/material/divider";
     MatInputModule,
     MatDialogModule,
     MatTooltipModule,
+    MatListModule,
     MatButtonModule,
   ],
   declarations: [SafeHtmlPipe, DialogueComponent],
@@ -49,9 +54,11 @@ import { MatDividerModule } from "@angular/material/divider";
     SafeHtmlPipe,
     MatInputModule,
     MatSnackBarModule,
+    MatSelectModule,
     MatTabsModule,
+    MatBottomSheetModule,
     MatToolbarModule,
-
+    MatMenuModule,
     MatCardModule,
     MatCheckboxModule,
     MatChipsModule,

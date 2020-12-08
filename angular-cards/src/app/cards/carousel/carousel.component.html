@@ -6,8 +6,18 @@
   <div class="col-auto">
     <button
       mat-icon-button
+      matTooltip="Sortieren"
+      matTooltipPosition="above"
+      aria-label="sortieren"
+      (click)="openBottomSheet()"
+    >
+      <mat-icon>sort</mat-icon>
+    </button>
+
+    <button
+      mat-icon-button
       matTooltip="Zufall"
-      matTooltipPosition="below"
+      matTooltipPosition="above"
       aria-label="zufall"
       (click)="showRandomCard()"
       [disabled]="formMode == 'edit' || !cards || cards.length == 0"
@@ -22,13 +32,12 @@
       [disabled]="isDisabled()"
       (click)="enableEdit()"
       matTooltip="Bearbeiten"
-      matTooltipPosition="below"
+      matTooltipPosition="above"
     >
       <mat-icon>edit</mat-icon>
     </button>
   </div>
 </div>
-
 <div
   class="row"
   id="carousel-row"
@@ -47,9 +56,10 @@
   </a>
   <div id="carousel">
     <ngb-carousel
-      (slid)="onSlide($event)"
+      (slide)="onSlide($event)"
       #mycarousel
-      [activeId]="this.activeSlide"
+      [@shake]="notallowed"
+      activeId="0"
       [animation]="true"
       [keyboard]="false"
       [showNavigationArrows]="false"
@@ -61,7 +71,7 @@
         *ngFor="let card of cards; index as i"
         [id]="i.toString()"
       >
-        <app-card [@shake]="notallowed" [card]="card" [index]="i"></app-card>
+        <app-card [card]="card" [index]="i"></app-card>
       </ng-template>
     </ngb-carousel>
   </div>
