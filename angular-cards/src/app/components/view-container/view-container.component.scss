@@ -1,6 +1,7 @@
 .example-container {
   height: inherit;
 }
+
 app-nav-list {
   height: inherit;
 }
@@ -8,7 +9,7 @@ app-nav-list {
   position: fixed;
   z-index: 1000;
   bottom: 50px;
-  right: 15px;
+  right: 25px;
   margin: 0;
 }
 #btn {
