@@ -38,7 +38,6 @@
     </button>
   </div>
 </div>
-
 <div
   class="row"
   id="carousel-row"
@@ -57,9 +56,10 @@
   </a>
   <div id="carousel">
     <ngb-carousel
-      (slid)="onSlide($event)"
+      (slide)="onSlide($event)"
       #mycarousel
-      [activeId]="this.activeSlide"
+      [@shake]="notallowed"
+      activeId="0"
       [animation]="true"
       [keyboard]="false"
       [showNavigationArrows]="false"
@@ -71,7 +71,7 @@
         *ngFor="let card of cards; index as i"
         [id]="i.toString()"
       >
-        <app-card [@shake]="notallowed" [card]="card" [index]="i"></app-card>
+        <app-card [card]="card" [index]="i"></app-card>
       </ng-template>
     </ngb-carousel>
   </div>

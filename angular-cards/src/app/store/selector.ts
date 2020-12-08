@@ -1,40 +1,52 @@
 import { createSelector } from "@ngrx/store";
 
-import { AppState } from "./reducer";
 import { Card } from "../models/Card";
 import { Vorlesung } from "../models/Vorlesung";
+import { AppState } from "../models/state";
 
-export const selectAllCards = (state: AppState) => state.cards;
+export const selectAllCards = (state: AppState) => state.data?.cardData?.cards;
 
-export const selectActiveTags = (state: AppState) => state.tags;
+export const selectActiveTags = (state: AppState) => state.mode.tags;
 
-export const selectAllTags = (state: AppState) => state.currLecture?.tagList;
+export const selectAllTags = (state: AppState) =>
+  state.data.cardData?.currLecture?.tagList;
 
-export const selectActiveIndex = (state: AppState) => state.activeIndex;
+export const selectActiveIndex = (state: AppState) => state.mode.activeIndex;
 
-export const selectFormMode = (state: AppState) => state.formMode;
+export const selectFormMode = (state: AppState) => state.mode.formMode;
 
-export const selectCurrentLecture = (state: AppState) => state.currLecture;
+export const selectCurrentLecture = (state: AppState) =>
+  state.data?.cardData?.currLecture;
 
-export const selectUserId = (state: AppState) => state.userData.user?._id;
+export const selectUserId = (state: AppState) =>
+  state.data?.userData?.user?._id;
 
-export const selectCurrentTab = (state: AppState) => state.currTab;
+export const selectCurrentTab = (state: AppState) => state.mode.currTab;
 
-export const selectDrawerState = (state: AppState) => state.showDrawer;
+export const isLoading = (state: AppState) => state.mode.loading > 0;
 
-export const isLoading = (state: AppState) => state.loading > 0;
+export const selectLectures = (state: AppState) =>
+  state.data.lectureData.lectures;
 
-export const selectLectures = (state: AppState) => state.lectures;
+export const selectUserInfo = (state: AppState) => state.data.userData;
 
-export const selectUserInfo = (state: AppState) => state.userData;
+export const selectUser = (state: AppState) => state.data.userData.user;
 
-export const selectUser = (state: AppState) => state.userData.user;
+export const authenticated = (state: AppState) =>
+  state.data.userData.authenticated;
 
-export const selectUserCards = (state: AppState) => state.userData.cards;
+export const lastFilterChange = (state: AppState) => state.mode.filterChanged;
 
-export const authenticated = (state: AppState) => state.userData.authenticated;
+export const selectUserCards = createSelector(
+  selectUserInfo,
+  (info) => info.cards
+);
 
-export const lastCardChange = (state: AppState) => state.filteredCardsChanged;
+export const filter = createSelector(
+  lastFilterChange,
+  selectActiveTags,
+  (date, tags) => ({ date, tags })
+);
 
 export const selectTagOptions = createSelector(
   selectAllTags,
@@ -48,11 +60,6 @@ export const selectFilteredCards = createSelector(
   (cards, filter) => applyFilter(cards, filter)
 );
 
-export const newCards = createSelector(
-  selectFilteredCards,
-  lastCardChange,
-  (cards, date) => ({ cards, date })
-);
 export const selectLastCardIndex = createSelector(
   selectFilteredCards,
   (cards) => cards.length - 1
@@ -63,7 +70,6 @@ export const selectCurrentCard = createSelector(
   selectActiveIndex,
   (cards, index) => (cards ? cards[index] : undefined)
 );
-
 export const getCardsData = createSelector(
   selectAllCards,
   selectCurrentLecture,

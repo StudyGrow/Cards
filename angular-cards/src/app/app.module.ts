@@ -23,7 +23,9 @@ import {
 } from "@angular/platform-browser";
 
 //Reducers
-import { cardsReducer } from "./store/reducer";
+import { dataReducer } from "./store/reducers/data.reducer";
+import { modeReducer } from "./store/reducers/mode.reducer";
+
 //Effects
 import { EffectsModule } from "@ngrx/effects";
 import { CardsEffects } from "./store/effects/effects";
@@ -114,7 +116,7 @@ export class MyHammerConfig extends HammerGestureConfig {
     HammerModule,
     HomeModule,
     StoreDevtoolsModule.instrument({ maxAge: 10 }),
-    StoreModule.forRoot({ cardsData: cardsReducer }),
+    StoreModule.forRoot({ data: dataReducer, mode: modeReducer }),
     EffectsModule.forRoot([CardsEffects]),
     ServiceWorkerModule.register("ngsw-worker.js", {
       enabled: environment.production,

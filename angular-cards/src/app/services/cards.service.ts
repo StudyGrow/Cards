@@ -1,15 +1,13 @@
 import { Injectable } from "@angular/core";
 
 import { Observable } from "rxjs";
-import { Card } from "../models/Card";
+import { Card, CardsData } from "../models/Card";
 
 import { tap, map, share } from "rxjs/operators";
 import { Router } from "@angular/router";
 import { HttpConfig } from "./config";
 import { HttpClient } from "@angular/common/http";
 import { NotificationsService } from "./notifications.service";
-
-import { CardsData } from "../store/reducer";
 
 @Injectable({
   providedIn: "root",
