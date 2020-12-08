@@ -13,12 +13,8 @@ import { StoreDevtoolsModule } from "@ngrx/store-devtools";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { MatProgressBarModule } from "@angular/material/progress-bar";
 
-import { MatSelectModule } from "@angular/material/select";
-
-import { MatMenuModule } from "@angular/material/menu";
 import { MatSidenavModule } from "@angular/material/sidenav";
 
-import { MatDividerModule } from "@angular/material/divider";
 //Gestures
 import {
   HammerModule,
@@ -60,7 +56,7 @@ import { ServiceWorkerModule } from "@angular/service-worker";
 import { environment } from "../environments/environment";
 
 import { LoadingInterceptorService } from "./services/loading-interceptor.service";
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 
 declare var Hammer: any;
 //Config to allow swipe gestures on carousel
@@ -115,8 +111,6 @@ export class MyHammerConfig extends HammerGestureConfig {
     SharedModule,
     MatProgressBarModule,
     MatSidenavModule,
-    MatMenuModule,
-    MatSelectModule,
     HammerModule,
     HomeModule,
     StoreDevtoolsModule.instrument({ maxAge: 10 }),

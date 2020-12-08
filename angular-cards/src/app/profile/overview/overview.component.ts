@@ -5,7 +5,8 @@ import { UserService } from "src/app/services/user.service";
 import { Subscription, Observable } from "rxjs";
 import { map } from "rxjs/operators";
 import { Store } from "@ngrx/store";
-import { selectUser } from "src/app/store/selector";
+import { selectUser, selectUserCards } from "src/app/store/selector";
+import { AppState } from "src/app/store/reducer";
 
 @Component({
   selector: "app-overview",
@@ -13,18 +14,13 @@ import { selectUser } from "src/app/store/selector";
   styleUrls: ["./overview.component.scss"],
 })
 export class OverviewComponent implements OnInit, OnDestroy {
-  public userInfo: UserInfo;
-  public user = new User("", "");
-  subscriptions$: Subscription[] = [];
+  user$ = this.store.pipe(map(selectUser));
+  cardCount$ = this.store.pipe(
+    map(selectUserCards),
+    map((cards) => cards?.length)
+  );
+  constructor(private store: Store<AppState>) {}
 
-  constructor(private userService: UserService, private store: Store<any>) {}
-  public user$: Observable<User>;
-  ngOnInit(): void {
-    this.user$ = this.store.select("cardsData").pipe(map(selectUser));
-  }
-  ngOnDestroy() {
-    this.subscriptions$.forEach((sub) => {
-      sub.unsubscribe();
-    });
-  }
+  ngOnInit(): void {}
+  ngOnDestroy() {}
 }

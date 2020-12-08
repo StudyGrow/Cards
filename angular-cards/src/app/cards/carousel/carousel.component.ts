@@ -9,7 +9,13 @@ import {
 
 import { Card } from "../../models/Card";
 
-import { Subscription, Observable, of } from "rxjs";
+import {
+  Subscription,
+  Observable,
+  of,
+  combineLatest,
+  BehaviorSubject,
+} from "rxjs";
 import {
   fadeInOnEnterAnimation,
   shakeAnimation,
@@ -24,17 +30,44 @@ import {
   setActiveCardIndex,
 } from "../../store/actions/cardActions";
 import { setFormMode, changeTab } from "src/app/store/actions/actions";
-import { map, share, startWith, delay } from "rxjs/operators";
+import { map, share, startWith, delay, withLatestFrom } from "rxjs/operators";
 
 import { selectUserId, newCards } from "src/app/store/selector";
 import { state } from "@angular/animations";
 import { NgbCarousel } from "@ng-bootstrap/ng-bootstrap";
+import {
+  MatBottomSheet,
+  MatBottomSheetRef,
+} from "@angular/material/bottom-sheet";
+import { MatSelectionListChange } from "@angular/material/list";
 
 enum sortType {
-  Date_Asc = "dat.up",
-  Date_Des = "dat.down",
-  Author = "auth",
+  DATE_ASC = "dat.up",
+  DATE_DSC = "dat.down",
+  AUTHOR_ASC = "auth.up",
+  AUTHOR_DSC = "auth.down",
 }
+
+@Component({
+  selector: "app-bottom-sheet",
+  templateUrl: "./bottom-sheet.component.html",
+})
+export class BottomSheetComponent {
+  options: { key: string; value: string }[] = [
+    { key: "dat.up", value: "Datum aufst." },
+    { key: "dat.down", value: "Datum abst." },
+    { key: "auth.up", value: "Author aufst." },
+    { key: "auth.down", value: "Author abst." },
+  ];
+
+  constructor(
+    private _bottomSheetRef: MatBottomSheetRef<BottomSheetComponent>
+  ) {}
+  sort(e: MatSelectionListChange) {
+    this._bottomSheetRef.dismiss(e.options[0]?.value);
+  }
+}
+
 @Component({
   selector: "app-carousel",
   templateUrl: "./carousel.component.html",
@@ -55,9 +88,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
 
   loading: boolean;
   private uid: string = "";
-  public cards$: Observable<Card[]> = this.store.select(
-    (state) => state.cardsData.cards
-  );
+
   filters$: Observable<string[]> = this.data$.pipe(map((state) => state.tags));
   filters: string[];
   cards: Card[]; //array of all the cards
@@ -71,6 +102,8 @@ export class CarouselComponent implements OnInit, OnDestroy {
   notallowed: boolean = false;
 
   subscriptions$: Subscription[] = [];
+
+  sortOption$ = new BehaviorSubject(undefined);
 
   @ViewChild("mycarousel", { static: false }) public carousel: NgbCarousel;
 
@@ -91,7 +124,11 @@ export class CarouselComponent implements OnInit, OnDestroy {
   @HostListener("swiperight", ["$event"]) public swipeNext(event: any) {
     this.goToPrev();
   }
-  constructor(private store: Store<any>) {}
+
+  constructor(
+    private store: Store<any>,
+    private _bottomSheet: MatBottomSheet
+  ) {}
 
   ngOnInit(): void {
     //Form Mode, depending on the mode we show different forms (add, edit,none)
@@ -125,25 +162,31 @@ export class CarouselComponent implements OnInit, OnDestroy {
     this.subscriptions$.push(sub);
 
     //get new cards, either if on new route, or filter is applied
-    sub = this.data$.pipe(map(newCards)).subscribe((obj) => {
-      if (
-        this.cards != obj.cards && //object reference has changed
-        (!this.lastRefresh || this.lastRefresh < obj.date) //modified time stamp is more recent than last refresh
-      ) {
-        //cards have changed
-        this.lastRefresh = obj.date; //update the last refresh
-        this.cardCount = obj.cards.length;
-        this.activeSlide = 0;
 
-        this.cards = null; //set null to explicitely refresh carousel view
-        setTimeout(() => {
-          this.cards = obj.cards;
+    sub = combineLatest(
+      this.sortOption$.asObservable(),
+      this.data$.pipe(map(newCards))
+    )
+      .pipe(map(([sortType, obj]) => this.sortCards(obj, sortType)))
+      .subscribe((obj) => {
+        if (
+          this.cards != obj.cards && //object reference has changed
+          (!this.lastRefresh || this.lastRefresh < obj.date) //modified time stamp is more recent than last refresh
+        ) {
+          //cards have changed
+          this.lastRefresh = obj.date; //update the last refresh
+          this.cardCount = obj.cards.length;
+          this.activeSlide = 0;
+
+          this.cards = null; //set null to explicitely refresh carousel view
           setTimeout(() => {
-            this.selectSlide(0);
+            this.cards = [...obj.cards];
+            setTimeout(() => {
+              this.selectSlide(0);
+            }, 100);
           }, 100);
-        }, 100);
-      }
-    });
+        }
+      });
     this.subscriptions$.push(sub);
   }
 
@@ -234,17 +277,58 @@ export class CarouselComponent implements OnInit, OnDestroy {
     }
   }
 
-  sortCards(t: sortType) {
-    // switch (t) {
-    //   case sortType.Date_Asc:
-    //     this.cards.sort((a, b) => a.date?.getTime() - b.date?.getTime());
-    //     break;
-    //   case sortType.Date_Des:
-    //     this.cards.sort((a, b) => b.date?.getTime() - a.date?.getTime());
-    //     break;
-    //   default:
-    //     break;
-    // }
+  sortCards(
+    obj: { date: Date; cards: Card[] },
+    type: string
+  ): { date: Date; cards: Card[] } {
+    let cards = obj.cards ? [...obj.cards] : [];
+    switch (type) {
+      case sortType.DATE_ASC:
+        obj.date = new Date();
+        cards.sort((a, b) => {
+          if (new Date(a.date).getTime() < new Date(b.date).getTime())
+            return -1;
+          if (new Date(a.date).getTime() > new Date(b.date).getTime()) return 1;
+          return 0;
+        });
+        break;
+      case sortType.DATE_DSC:
+        obj.date = new Date();
+        cards.sort((a, b) => {
+          if (new Date(a.date).getTime() > new Date(b.date).getTime())
+            return -1;
+          if (new Date(a.date).getTime() < new Date(b.date).getTime()) return 1;
+          return 0;
+        });
+        break;
+      case sortType.AUTHOR_ASC:
+        obj.date = new Date();
+        cards.sort((a, b) => {
+          if (a.authorName < b.authorName) return -1;
+          if (a.authorName > b.authorName) return 1;
+          return 0;
+        });
+        break;
+      case sortType.AUTHOR_DSC:
+        obj.date = new Date();
+        cards.sort((a, b) => {
+          if (a.authorName > b.authorName) return -1;
+          if (a.authorName < b.authorName) return 1;
+          return 0;
+        });
+        break;
+    }
+    obj.cards = cards;
+
+    return obj;
+  }
+
+  openBottomSheet(): void {
+    let ref = this._bottomSheet.open(BottomSheetComponent);
+    ref.afterDismissed().subscribe((value) => {
+      console.log(value);
+      this.sortOption$.next(value);
+    });
   }
 
   isDisabled() {

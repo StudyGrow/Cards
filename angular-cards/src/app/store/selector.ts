@@ -30,6 +30,8 @@ export const selectUserInfo = (state: AppState) => state.userData;
 
 export const selectUser = (state: AppState) => state.userData.user;
 
+export const selectUserCards = (state: AppState) => state.userData.cards;
+
 export const authenticated = (state: AppState) => state.userData.authenticated;
 
 export const lastCardChange = (state: AppState) => state.filteredCardsChanged;

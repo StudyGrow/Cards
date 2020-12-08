@@ -9,15 +9,11 @@
       matTooltip="Sortieren"
       matTooltipPosition="above"
       aria-label="sortieren"
-      [matMenuTriggerFor]="sortMenu"
+      (click)="openBottomSheet()"
     >
       <mat-icon>sort</mat-icon>
     </button>
-    <mat-menu #sortMenu="matMenu">
-      <button mat-menu-item (click)="sortCards('dat.up')">Datum aufst.</button>
-      <button mat-menu-item (click)="sortCards('dat.down')">Datum abst.</button>
-      <button mat-menu-item (click)="sortCards('auth')">Author</button>
-    </mat-menu>
+
     <button
       mat-icon-button
       matTooltip="Zufall"
