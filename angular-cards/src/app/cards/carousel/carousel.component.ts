@@ -347,7 +347,6 @@ export class CarouselComponent implements OnInit, OnDestroy {
         break;
     }
     obj.cards = cards;
-
     return obj;
   }
 
@@ -356,6 +355,9 @@ export class CarouselComponent implements OnInit, OnDestroy {
     ref.afterDismissed().subscribe((value) => {
       console.log(value);
       this.sortOption$.next(value);
+      setTimeout(() => {
+        this.sortOption$.next(null);
+      }, 100);
     });
   }
 
