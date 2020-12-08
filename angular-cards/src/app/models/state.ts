@@ -2,6 +2,7 @@ import { Card } from "./Card";
 import { User } from "./User";
 import { UserInfo } from "./UserInfo";
 import { Vorlesung } from "./Vorlesung";
+import { Vote } from "./Vote";
 
 export interface AppState {
   data: Data;
@@ -9,6 +10,7 @@ export interface AppState {
 }
 
 export interface CardsData {
+  votes: Vote[];
   cards: Card[];
   currLecture: Vorlesung;
   lastUpdated: Date;

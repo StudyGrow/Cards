@@ -2,10 +2,10 @@ import { Component, OnInit, OnDestroy, Input } from "@angular/core";
 import { Store } from "@ngrx/store";
 import { Subscription } from "rxjs";
 import { delay, map } from "rxjs/operators";
+import { AppState } from "src/app/models/state";
 import { Vote } from "src/app/models/Vote";
 
 import { VotesService } from "src/app/services/votes.service";
-import { AppState } from "src/app/store/reducer";
 import { selectVote } from "src/app/store/selector";
 import { changeVote } from "../../store/actions/cardActions";
 
@@ -24,7 +24,6 @@ export class VoteComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     let sub = this.store
-      .select("cardsData")
       .pipe(map((state: AppState) => selectVote(state, this.id)))
       .subscribe((init) => {
         if (init && this.vote && this.vote.value != init.value)

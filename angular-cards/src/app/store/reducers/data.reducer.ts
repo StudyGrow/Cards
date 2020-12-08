@@ -2,6 +2,7 @@ import { Action, createReducer, on } from "@ngrx/store";
 import { Card } from "src/app/models/Card";
 import { CardsData, Data, LecturesData, UserData } from "src/app/models/state";
 import { User } from "src/app/models/User";
+import { Vote } from "src/app/models/Vote";
 import * as CardActions from "../actions/cardActions";
 import * as LectureActions from "../actions/LectureActions";
 import * as UserActions from "../actions/UserActions";
@@ -9,6 +10,7 @@ import * as UserActions from "../actions/UserActions";
 const initialState: Data = {
   cardData: {
     cards: [],
+    votes: [],
     lastUpdated: undefined,
     currLecture: undefined,
   },
@@ -47,7 +49,20 @@ const _dataReducer = createReducer(
       lastUpdated: new Date(),
     },
   })),
-
+  on(CardActions.fetchVotesSuccess, (state, { votes }) => ({
+    ...state,
+    cardData: {
+      ...state.cardData,
+      votes: [...votes],
+    },
+  })),
+  on(CardActions.changeVoteSuccess, (state, { vote }) => ({
+    ...state,
+    cardData: {
+      ...state.cardData,
+      votes: updateVote([...state.cardData.votes], vote),
+    },
+  })),
   on(LectureActions.fetchLecturesSuccess, (state, { lectures }) => ({
     ...state,
     lectureData: {
@@ -135,6 +150,7 @@ const _dataReducer = createReducer(
     ...state,
     cardData: {
       ...state.cardData,
+      votes: initialState.cardData.votes,
       cards: initialState.cardData.cards,
       currLecture: initialState.cardData.currLecture,
       lastUpdated: initialState.cardData.lastUpdated,
@@ -156,7 +172,20 @@ function updateObjectInArray(cards: Card[], card: Card) {
         }
   );
 }
+function updateVote(votes: Vote[], vote: Vote) {
+  return votes.map((item, index) => {
+    if (item.cardId !== vote.cardId) {
+      // This isn't the item we care about - keep it as-is
+      return item;
+    }
 
+    // Otherwise, this is the one we want - return an updated value
+    return {
+      ...item,
+      ...vote,
+    };
+  });
+}
 function addTags(origin: string[], tags: string[]) {
   //adds a list of tags to the original array without duplicates
   for (const tag of tags) {

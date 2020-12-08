@@ -3,8 +3,10 @@ import { createSelector } from "@ngrx/store";
 import { Card } from "../models/Card";
 import { Vorlesung } from "../models/Vorlesung";
 import { AppState } from "../models/state";
-
 export const selectAllCards = (state: AppState) => state.data?.cardData?.cards;
+
+export const selectVote = (state: AppState, cardId: string) =>
+  state.data.cardData.votes?.find((vote) => vote.cardId == cardId);
 
 export const selectActiveTags = (state: AppState) => state.mode.tags;
 
