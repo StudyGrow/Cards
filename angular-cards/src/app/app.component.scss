@@ -3,7 +3,17 @@ $nav-height: $full-height * 0.068;
 
 app-nav-bar {
   height: $nav-height;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
 }
+
 app-view-container {
+  position: fixed;
+  top: $nav-height;
+  left: 0;
+  right: 0;
   height: $full-height - $nav-height;
 }
