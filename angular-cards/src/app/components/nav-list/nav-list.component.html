@@ -32,6 +32,15 @@
     >
       <mat-icon>style</mat-icon> Meine Karten</a
     >
+    <a
+      mat-list-item
+      (click)="logout()"
+      class="mb-0"
+      id="logout"
+      *ngIf="loggedIn$ | async"
+    >
+      <mat-icon>exit_to_app</mat-icon> Logout
+    </a>
   </div>
   <div mat-subheader>Über uns</div>
   <a mat-list-item routerLink="/about" class=" {{ isActive('/about') }}">
@@ -44,15 +53,4 @@
     (change)="toggleDarkMode($event)"
     >Darkmode</mat-slide-toggle
   >
-  <div class="bottom">
-    <a
-      mat-list-item
-      (click)="logout()"
-      class="mb-0"
-      id="logout"
-      *ngIf="loggedIn$ | async"
-    >
-      <mat-icon>exit_to_app</mat-icon> Logout
-    </a>
-  </div>
 </mat-nav-list>

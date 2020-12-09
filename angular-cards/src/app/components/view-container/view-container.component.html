@@ -1,5 +1,10 @@
-<mat-sidenav-container class="example-container" [hasBackdrop]="true">
-  <mat-sidenav #drawer mode="push" (closedStart)="closing()">
+<mat-sidenav-container class="example-container" [hasBackdrop]="false">
+  <mat-sidenav
+    [fixedInViewport]="false"
+    #drawer
+    mode="push"
+    (closedStart)="closing()"
+  >
     <app-nav-list></app-nav-list>
   </mat-sidenav>
   <mat-sidenav-content #mainContent>
