@@ -24,7 +24,7 @@ app-nav-list {
     padding-bottom: 2 * $nav-height;
   }
   ::ng-deep.mat-drawer-inner-container {
-    height: inherit;
+    height: $full-height - 2 * $nav-height;
     overflow-y: hidden !important;
 
     display: block;
