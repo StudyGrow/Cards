@@ -21,3 +21,8 @@ app-nav-list {
 #btn {
   outline: none;
 }
+@supports (-webkit-touch-callout: none) {
+  .example-container {
+    padding-bottom: 2 * $nav-height;
+  }
+}

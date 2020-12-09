@@ -11,10 +11,9 @@ mat-icon {
 }
 
 .bottom {
-  position: absolute;
+  position: fixed;
   bottom: 0;
 }
 mat-nav-list {
-  height: 100%;
-  position: relative;
+  height: inherit;
 }
