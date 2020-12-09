@@ -1,22 +1,9 @@
 $full-height: 100vh;
 $nav-height: $full-height * 0.068;
-#body {
-  position: absolute;
-  width: 100%;
-  top: 0;
-}
 
 app-nav-bar {
-  position: absolute;
-  width: 100%;
-  top: 0;
-  z-index: 1;
   height: $nav-height;
 }
 app-view-container {
-  position: absolute;
-  top: $nav-height;
-  width: 100%;
   height: $full-height - $nav-height;
-  overflow-y: hidden;
 }
