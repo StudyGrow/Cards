@@ -12,6 +12,7 @@ button {
 /*carousel row*/
 #carousel-row {
   position: relative;
+  overflow-y: hidden !important;
   margin: 0;
 }
 /*navigation*/
