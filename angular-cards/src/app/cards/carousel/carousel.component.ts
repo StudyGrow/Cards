@@ -145,7 +145,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
           this.cards = null; //set null to explicitely refresh carousel view
           setTimeout(() => {
             this.cards = cards;
-          }, 200);
+          }, 500);
         }
       });
     this.subscriptions$.push(sub);
