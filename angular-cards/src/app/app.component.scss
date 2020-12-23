@@ -1,12 +1,20 @@
-.container {
-  padding: 15px;
-}
+$full-height: 100vh;
+$nav-height: $full-height * 0.068;
+
 app-nav-bar {
-  height: 10%;
+  height: $nav-height;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
 }
+
 app-view-container {
-  height: 100vh;
-}
-div {
-  height: 100vh;
+  position: fixed;
+  top: $nav-height;
+  left: 0;
+  right: 0;
+
+  height: $full-height - $nav-height;
 }

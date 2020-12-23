@@ -8,10 +8,15 @@ import { HttpErrorResponse } from "@angular/common/http";
 })
 export class NotificationsService {
   private notifications$ = new BehaviorSubject<Notification[]>([]);
-  constructor(private router: Router) {}
+  constructor() {}
 
   addNotification(n: Notification) {
     let notifications = this.notifications$.getValue();
+    for (const notif of notifications) {
+      if (notif.message == n.message) {
+        return;
+      }
+    }
     notifications.push(n);
     this.notifications$.next(notifications);
   }

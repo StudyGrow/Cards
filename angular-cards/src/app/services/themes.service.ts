@@ -18,6 +18,7 @@ export class ThemesService {
     let t = theme;
     if (!t) {
       t = this.currTheme;
+      if (!t) return;
     }
 
     this.renderer.removeClass(document.body, this.currTheme); //remove the old theme

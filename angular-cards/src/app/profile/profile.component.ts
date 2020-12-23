@@ -1,9 +1,9 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
-
 import { Store } from "@ngrx/store";
 import { map } from "rxjs/operators";
 import { selectUserInfo } from "../store/selector";
 import { Subscription } from "rxjs";
+import { AppState } from "../models/state";
 
 @Component({
   selector: "app-profile",
@@ -14,11 +14,11 @@ export class ProfileComponent implements OnInit, OnDestroy {
   public page: string;
   public cardCount = 0;
   private subs: Subscription[] = [];
-  constructor(private store: Store<any>) {}
+  constructor(private store: Store<AppState>) {}
 
   ngOnInit(): void {
     let sub = this.store
-      .select("cardsData")
+
       .pipe(
         map(selectUserInfo),
         map((info) => info.cards)

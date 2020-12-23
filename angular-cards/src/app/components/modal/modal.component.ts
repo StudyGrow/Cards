@@ -1,11 +1,11 @@
-import { Component, OnInit } from "@angular/core";
+import { Component } from "@angular/core";
 import { MatDialogRef } from "@angular/material/dialog";
 import { UserService } from "src/app/services/user.service";
 import { Store } from "@ngrx/store";
 import { logout } from "src/app/store/actions/UserActions";
 import { Router } from "@angular/router";
 import { NotificationsService } from "src/app/services/notifications.service";
-import { Notification, SuccessMessage } from "src/app/models/Notification";
+import { SuccessMessage } from "src/app/models/Notification";
 
 @Component({
   selector: "app-modal",

@@ -1,28 +1,19 @@
-import { COMMA, ENTER, BACKSLASH } from "@angular/cdk/keycodes";
-import {
-  Component,
-  ElementRef,
-  Input,
-  OnDestroy,
-  OnInit,
-  ViewChild,
-} from "@angular/core";
-import { FormControl, FormGroup, NgForm } from "@angular/forms";
-import {
-  MatAutocomplete,
-  MatAutocompleteSelectedEvent,
-} from "@angular/material/autocomplete";
+import { ENTER } from "@angular/cdk/keycodes";
+import { Component, Input, OnDestroy, OnInit, ViewChild } from "@angular/core";
+import { FormControl, FormGroup } from "@angular/forms";
+import { MatAutocompleteSelectedEvent } from "@angular/material/autocomplete";
 import { MatChipInputEvent } from "@angular/material/chips";
 import { MatDialog } from "@angular/material/dialog";
-import { MatInput } from "@angular/material/input";
+
 import { MatSlideToggle } from "@angular/material/slide-toggle";
 import { Router } from "@angular/router";
 import { Store } from "@ngrx/store";
-import { merge, Observable, of, Subscription } from "rxjs";
-import { filter, map, startWith, tap, withLatestFrom } from "rxjs/operators";
+import { Observable, Subscription } from "rxjs";
+import { map, startWith, withLatestFrom } from "rxjs/operators";
 import { DialogueComponent } from "src/app/components/dialogue/dialogue.component";
 import { Card } from "src/app/models/Card";
 import { WarnMessage } from "src/app/models/Notification";
+import { Data, Mode } from "src/app/models/state";
 import { User } from "src/app/models/User";
 import { Vorlesung } from "src/app/models/Vorlesung";
 import { NotificationsService } from "src/app/services/notifications.service";
@@ -34,14 +25,14 @@ import {
 import { addCard, updateCard } from "src/app/store/actions/cardActions";
 import { addLercture } from "src/app/store/actions/LectureActions";
 import { CardsEffects } from "src/app/store/effects/effects";
-import { AppState } from "src/app/store/reducer";
+import { AppState } from "../../models/state";
+import { parse, HtmlGenerator } from "latex.js/dist/latex.js";
 import {
   selectAllTags,
   selectFormMode,
   selectUser,
   selectCurrentLecture,
   selectCurrentCard,
-  selectActiveIndex,
 } from "src/app/store/selector";
 
 class CardFormData {
@@ -56,6 +47,8 @@ class CardFormData {
   styleUrls: ["./form.component.css"],
 })
 export class FormComponent implements OnInit, OnDestroy {
+  private mode$: Observable<Mode> = this.store.select("mode");
+
   @ViewChild("latex") toggle: MatSlideToggle;
 
   @Input() neu: boolean = false; //true if we are adding a card for a new lecture
@@ -72,6 +65,8 @@ export class FormComponent implements OnInit, OnDestroy {
   //Tags that were selected
   selectedTags = [];
 
+  generator: HtmlGenerator;
+
   //Autocomplete
   separatorKeysCodes: number[] = [ENTER];
 
@@ -83,7 +78,7 @@ export class FormComponent implements OnInit, OnDestroy {
 
   constructor(
     public dialog: MatDialog,
-    private store: Store<any>,
+    private store: Store<AppState>,
     private actionState: CardsEffects,
     private router: Router,
     private notifs: NotificationsService
@@ -115,7 +110,6 @@ export class FormComponent implements OnInit, OnDestroy {
     let sub: Subscription;
 
     sub = this.store
-      .select("cardsData")
       .pipe(map(selectUser)) //get user
       .subscribe((user) => {
         if (user && this.author !== user) {
@@ -125,36 +119,34 @@ export class FormComponent implements OnInit, OnDestroy {
     this.subscriptions$.push(sub);
 
     //FormMode
-    this.formMode$ = this.store.select("cardsData").pipe(map(selectFormMode));
+    this.formMode$ = this.store.pipe(map(selectFormMode));
 
     //input from tagfield
     let tagInput$ = this.form.valueChanges.pipe(
       map((val: CardFormData) => val.tag)
     );
 
-    let allTags$ = this.store.select("cardsData").pipe(map(selectAllTags)); //get all tags
+    let allTags$ = this.store.pipe(map(selectAllTags)); //get all tags
 
     //suggestions for autocomplete
     this.tagsSuggestions$ = tagInput$.pipe(
       startWith(""), //show all suggestions if input is null
       withLatestFrom(allTags$),
-      map(([input, tags]) => this._filter([...tags], input)), //filter tags with input
-      map((list) => list.sort())
+      map(([input, tags]) => this._filter(tags, input)), //filter tags with input
+      map((list) => (list ? [...list].sort() : list))
     );
     //current Tab
-    let tab$ = this.store
-      .select("cardsData")
-      .pipe(map((state: AppState) => state.currTab));
+    let tab$ = this.mode$.pipe(map((state: Mode) => state.currTab));
 
     sub = this.store
-      .select("cardsData")
       .pipe(
+        //create new global state interface
         map(selectCurrentCard),
         withLatestFrom(this.formMode$),
         withLatestFrom(tab$)
       )
       .subscribe(([[card, mode], tab]) => {
-        if (card && card._id != this.cardCopy._id) {
+        if (card) {
           this.cardCopy = { ...this.cardCopy, ...card }; //overwrite cardCopy
         }
         if (tab === 0 && this.toggle) {
@@ -168,14 +160,11 @@ export class FormComponent implements OnInit, OnDestroy {
       });
     this.subscriptions$.push(sub);
 
-    sub = this.store
-      .select("cardsData")
-      .pipe(map(selectCurrentLecture))
-      .subscribe((lect) => {
-        if (lect) {
-          this.lecture = lect;
-        }
-      });
+    sub = this.store.pipe(map(selectCurrentLecture)).subscribe((lect) => {
+      if (lect) {
+        this.lecture = lect;
+      }
+    });
     this.subscriptions$.push(sub);
 
     sub = this.formMode$.subscribe((mode) => {
@@ -212,13 +201,20 @@ export class FormComponent implements OnInit, OnDestroy {
     let latexState: number;
 
     if (this.toggle.checked) {
-      let dollarcount = this.form.value.content.split("$").length - 1; //count occurences of $ in content
-      if (this.form.value.content.includes("$$") || dollarcount % 2 !== 0) {
+      try {
+        this.generator = new HtmlGenerator({ hyphenate: false });
+        let doc = parse(this.form.value.content, {
+          generator: this.generator,
+        });
+        doc.htmlDocument().body;
+      } catch (e) {
+        console.log(e);
         this.notifs.addNotification(
           new WarnMessage("Der Latex content ist nicht korrekt mit $ umhüllt")
         );
         return;
       }
+
       latexState = 1;
     } else {
       latexState = 0;
@@ -261,7 +257,6 @@ export class FormComponent implements OnInit, OnDestroy {
     let sub = this.actionState.addCard$.subscribe((card) => {
       if (card) {
         this.resetForm();
-        this.store.dispatch(changeTab({ tab: 0 }));
       }
       sub.unsubscribe();
     });
@@ -306,7 +301,6 @@ export class FormComponent implements OnInit, OnDestroy {
   }
   resetForm() {
     this.selectedTags = [];
-
     this.form.reset();
     Object.keys(this.form.controls).forEach((key) => {
       this.form.get(key).setErrors(null);
@@ -346,7 +340,9 @@ export class FormComponent implements OnInit, OnDestroy {
     if (!value || value.trim().length == 0) return tags;
     const filterValue = value.toLowerCase();
 
-    return tags.filter((item) => item.toLowerCase().indexOf(filterValue) === 0);
+    return [...tags].filter(
+      (item) => item.toLowerCase().indexOf(filterValue) === 0
+    );
   }
   cancelEdit() {
     this.dialog.open(DialogueComponent, {

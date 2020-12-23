@@ -30,14 +30,7 @@
     </button>
   </div>
 </div>
-
-<div
-  class="row"
-  id="carousel-row"
-  *ngIf="cards?.length > 0"
-  [@fadeInOnEnter]
-  [@fadeOutOnLeave]
->
+<div class="row" id="carousel-row" *ngIf="cards?.length > 0" [@fadeInOnEnter]>
   <a
     id="left"
     class="navig col"
@@ -49,9 +42,10 @@
   </a>
   <div id="carousel">
     <ngb-carousel
-      (slid)="onSlide($event)"
+      (slide)="onSlide($event)"
       #mycarousel
-      [activeId]="this.activeSlide"
+      [@shake]="notallowed"
+      activeId="0"
       [animation]="true"
       [keyboard]="false"
       [showNavigationArrows]="false"
@@ -63,7 +57,7 @@
         *ngFor="let card of cards; index as i"
         [id]="i.toString()"
       >
-        <app-card [@shake]="notallowed" [card]="card" [index]="i"></app-card>
+        <app-card [card]="card" [index]="i"></app-card>
       </ng-template>
     </ngb-carousel>
   </div>
@@ -77,6 +71,10 @@
     <mat-icon>keyboard_arrow_right</mat-icon>
   </a>
 </div>
+<div class="row" id="progress" *ngIf="!cards">
+  <mat-spinner></mat-spinner>
+</div>
+
 <div class="row" *ngIf="cards?.length === 0">
   <p class="text-muted text-center w-100 mt-2" i18n>Keine Karten gefunden</p>
 </div>

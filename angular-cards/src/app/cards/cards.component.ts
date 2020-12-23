@@ -6,22 +6,18 @@ import {
   ElementRef,
   OnDestroy,
 } from "@angular/core";
-
 import { Vorlesung } from "src/app/models/Vorlesung";
-
 import { Title } from "@angular/platform-browser";
-import { Card } from "../models/Card";
-
 import { Store } from "@ngrx/store";
-
-import { Observable, of, Subscription } from "rxjs";
-
-import { map, tap, share, startWith } from "rxjs/operators";
-import { fetchCards, clearCardData } from "../store/actions/cardActions";
+import { Observable, Subscription } from "rxjs";
+import { map, share } from "rxjs/operators";
+import { fetchCards } from "../store/actions/cardActions";
 import { fadeInOnEnterAnimation } from "angular-animations";
 import { changeTab, setSuggestionsMode } from "../store/actions/actions";
 import { getCardsData, selectCurrentTab } from "../store/selector";
-import { AppState } from "../store/reducer";
+import { AppState } from "../models/state";
+import { NotificationsService } from "../services/notifications.service";
+import { WarnMessage } from "../models/Notification";
 
 @Component({
   selector: "app-cards",
@@ -44,29 +40,34 @@ export class CardsComponent implements OnInit, OnDestroy {
     }
   }
   //holds data from store
-  public data$: Observable<any> = this.store
-    .select("cardsData")
-    .pipe(map(getCardsData), share());
+  public data$: Observable<any> = this.store.pipe(map(getCardsData), share());
 
   public lecture$: Observable<Vorlesung> = this.data$.pipe(
     map((data) => data.currLecture)
   );
 
-  constructor(private store: Store<any>, private title: Title) {}
+  constructor(
+    private store: Store<AppState>,
+    private title: Title,
+    private notifs: NotificationsService
+  ) {}
 
   ngOnInit(): void {
     this.title.setTitle("Cards");
 
     this.store.dispatch(fetchCards());
 
-    this.selectedTab$ = this.store
-      .select("cardsData")
-      .pipe(map(selectCurrentTab));
+    this.selectedTab$ = this.store.pipe(map(selectCurrentTab));
 
-    let sub = this.store.select("cardsData").subscribe((state) => {
+    let sub = this.store.select("mode").subscribe((state) => {
       if (state.formMode !== this.formMode) {
         this.formMode = state.formMode;
       }
+
+      this.hideSuggestion = state.hideSearchResults;
+    });
+    this.subscriptions$.push(sub);
+    sub = this.data$.subscribe((state) => {
       if (this.vlName !== state.currLecture?.name) {
         this.vlName = state.currLecture.name;
 
@@ -74,8 +75,6 @@ export class CardsComponent implements OnInit, OnDestroy {
           this.title.setTitle("Cards · " + this.vlName);
         }
       }
-
-      this.hideSuggestion = state.hideSearchResults;
     });
     this.subscriptions$.push(sub);
   }
@@ -84,15 +83,6 @@ export class CardsComponent implements OnInit, OnDestroy {
     this.store.dispatch(changeTab({ tab: index }));
   }
 
-  private titleCase(str: string) {
-    return str
-      .toLowerCase()
-      .split(" ")
-      .map(function (word) {
-        return word.replace(word[0], word[0].toUpperCase());
-      })
-      .join(" ");
-  }
   ngOnDestroy() {
     this.subscriptions$.forEach((sub) => sub.unsubscribe());
   }

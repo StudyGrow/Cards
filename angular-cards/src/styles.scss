@@ -1,19 +1,26 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~katex/dist/katex.css";
 
-html,
-body {
-  height: 100%;
-}
 .spacer {
   flex: 1 1 auto;
+}
+
+html {
+  height: 100vh;
 }
 
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
-  overflow-x: hidden;
+  overflow-y: hidden;
 }
+@supports (-webkit-touch-callout: none) {
+  html,
+  body {
+    overflow-y: hidden;
+  }
+}
+
 /*
 .btn-primary {
   background-color: #6610f2;
@@ -57,4 +64,4 @@ body {
 }
 
 /* Importing Bootstrap SCSS file. */
-@import '~bootstrap/scss/bootstrap';
+@import "~bootstrap/scss/bootstrap";

@@ -1,5 +1,7 @@
 .row {
   max-width: 900px;
+  min-height: 0.9vh;
+  overflow: hidden;
 }
 /*first row controls*/
 #controls {
@@ -12,6 +14,7 @@ button {
 /*carousel row*/
 #carousel-row {
   position: relative;
+  overflow: hidden !important;
   margin: 0;
 }
 /*navigation*/
@@ -37,4 +40,9 @@ mat-icon {
 /*carousel*/
 #carousel {
   width: 100% !important;
+}
+#progress {
+}
+mat-spinner {
+  margin: auto;
 }
