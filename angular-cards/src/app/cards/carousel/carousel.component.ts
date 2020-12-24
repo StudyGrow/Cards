@@ -184,7 +184,11 @@ export class CarouselComponent implements OnInit, OnDestroy {
       .pipe(
         map(([sortType, lastChanges, cards]) => {
           if (sortType.date && sortType.date > this.lastRefresh) {
-            return this.sortCards(sortType.type, new Date(lastChanges), cards);
+            return CarouselComponent.sortCards(
+              sortType.type,
+              new Date(lastChanges),
+              cards
+            );
           } else {
             return { date: lastChanges, cards: cards };
           }
@@ -324,7 +328,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
     }
   }
 
-  private sortCards(
+  private static sortCards(
     type: sortType,
     date: Date,
     cards: Card[]
