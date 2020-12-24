@@ -14,6 +14,10 @@ body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
   overflow-x: hidden;
 }
+
+.mat-bottom-sheet-container {
+  min-width: max-content !important;
+}
 /*
 .btn-primary {
   background-color: #6610f2;
@@ -57,4 +61,4 @@ body {
 }
 
 /* Importing Bootstrap SCSS file. */
-@import '~bootstrap/scss/bootstrap';
+@import "~bootstrap/scss/bootstrap";
