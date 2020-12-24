@@ -55,10 +55,10 @@ enum sortType {
 })
 export class BottomSheetComponent {
   options: { key: sortType; value: string }[] = [
-    { key: sortType.DATE_ASC, value: "Datum aufst." },
-    { key: sortType.DATE_DSC, value: "Datum abst." },
-    { key: sortType.AUTHOR_ASC, value: "Author aufst." },
-    { key: sortType.AUTHOR_DSC, value: "Author abst." },
+    { key: sortType.DATE_ASC, value: "Datum aufsteigend" },
+    { key: sortType.DATE_DSC, value: "Datum absteigend" },
+    { key: sortType.AUTHOR_ASC, value: "Author aufsteigend" },
+    { key: sortType.AUTHOR_DSC, value: "Author absteigend" },
   ];
 
   constructor(
@@ -335,6 +335,9 @@ export class CarouselComponent implements OnInit, OnDestroy {
       case sortType.DATE_ASC:
         result.date = new Date();
         result.cards = [...cards].sort((a, b) => {
+          if (!a.date && !b.date) return 0;
+          if (!a.date) return 1;
+          if (!b.date) return -1;
           if (new Date(a.date).getTime() < new Date(b.date).getTime())
             return -1;
           if (new Date(a.date).getTime() > new Date(b.date).getTime()) return 1;
@@ -344,6 +347,9 @@ export class CarouselComponent implements OnInit, OnDestroy {
       case sortType.DATE_DSC:
         result.date = new Date();
         result.cards = [...cards].sort((a, b) => {
+          if (!a.date && !b.date) return 0;
+          if (!a.date) return 1;
+          if (!b.date) return -1;
           if (new Date(a.date).getTime() > new Date(b.date).getTime())
             return -1;
           if (new Date(a.date).getTime() < new Date(b.date).getTime()) return 1;

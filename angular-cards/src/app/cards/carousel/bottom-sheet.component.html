@@ -1,8 +1,3 @@
-<div>
-  <button mat-icon-button>
-    <mat-icon>swap_vert</mat-icon>
-  </button>
-</div>
 <mat-selection-list [multiple]="false" (selectionChange)="sort($event)">
   <mat-list-option *ngFor="let option of options" [value]="option.key">
     {{ option.value }}
