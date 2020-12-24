@@ -337,10 +337,9 @@ export class CarouselComponent implements OnInit, OnDestroy {
     cards: Card[]
   ): { date: Date; cards: Card[] } {
     let result = { cards: cards, date: date };
-
+    result.date = new Date(); //will be overwritten by initial date if no change is made
     switch (type) {
       case sortType.DATE_ASC:
-        result.date = new Date();
         result.cards = [...cards].sort((a, b) => {
           if (!a.date && !b.date) return 0;
           if (!a.date) return 1;
@@ -352,7 +351,6 @@ export class CarouselComponent implements OnInit, OnDestroy {
         });
         break;
       case sortType.DATE_DSC:
-        result.date = new Date();
         result.cards = [...cards].sort((a, b) => {
           if (!a.date && !b.date) return 0;
           if (!a.date) return 1;
@@ -364,7 +362,6 @@ export class CarouselComponent implements OnInit, OnDestroy {
         });
         break;
       case sortType.AUTHOR_ASC:
-        result.date = new Date();
         result.cards = [...cards].sort((a, b) => {
           if (!a.authorName && !b.authorName) return 0;
           if (!a.authorName) return 1;
@@ -375,7 +372,6 @@ export class CarouselComponent implements OnInit, OnDestroy {
         });
         break;
       case sortType.AUTHOR_DSC:
-        result.date = new Date();
         result.cards = [...cards].sort((a, b) => {
           if (!a.authorName && !b.authorName) return 0;
           if (!a.authorName) return 1;
@@ -386,7 +382,6 @@ export class CarouselComponent implements OnInit, OnDestroy {
         });
         break;
       case sortType.TAGS_ASC:
-        result.date = new Date();
         result.cards = [...cards].sort((a, b) => {
           if (!a.tags && !b.tags) return 0;
           if (!a.tags) return 1;
@@ -397,7 +392,6 @@ export class CarouselComponent implements OnInit, OnDestroy {
         });
         break;
       case sortType.TAGS_DSC:
-        result.date = new Date();
         result.cards = [...cards].sort((a, b) => {
           if (!a.tags && !b.tags) return 0;
           if (!a.tags) return 1;
@@ -406,6 +400,9 @@ export class CarouselComponent implements OnInit, OnDestroy {
           if (a.tags[0] < b.tags[0]) return 1;
           return 0;
         });
+        break;
+      default:
+        result.date = date; //no changes were made so reset to initial date
         break;
     }
 
