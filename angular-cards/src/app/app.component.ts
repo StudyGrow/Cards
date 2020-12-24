@@ -30,9 +30,13 @@ export class AppComponent {
     this.themeManager.initTheme(); //initialize theme
 
     if (isDevMode()) {
-      this.store.subscribe((state) => {
-        console.log(state, state.data.cardData.cards.length);
-      });
+      // this.store.subscribe((state) => {
+      //   console.log(
+      //     state.mode.startIndex,
+      //     state.mode.endIndex,
+      //     state.mode.activeIndex
+      //   );
+      // });
     }
     //log state only in development mode
 

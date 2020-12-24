@@ -13,7 +13,13 @@ enum ActionTypes {
   ADD_TAG = "[Filter] add tag to the filter",
   CHANGE_TAB = "[Tab] change the tab on cards view",
   CHABGE_THEME = "[Theme] change theme",
+  ADJUST_INDECES = "[startInex,endIndex] adjust the start and end indeces",
 }
+
+export const adustIndeces = createAction(
+  ActionTypes.ADJUST_INDECES,
+  props<{ totalCardCount: number; newIndex: number }>() //number of total cards for lecture
+);
 
 export const changeTab = createAction(
   ActionTypes.CHANGE_TAB,

@@ -42,6 +42,8 @@ export interface Mode {
   filterChanged: Date;
   currTab: number;
   theme: string;
+  startIndex: number;
+  endIndex: number;
 }
 export enum formMode {
   ADD = "add",

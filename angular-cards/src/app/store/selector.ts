@@ -4,6 +4,8 @@ import { Card } from "../models/Card";
 import { Vorlesung } from "../models/Vorlesung";
 import { AppState } from "../models/state";
 
+const maxCards = 50; //maximum amount of cards which should be displayed in carousel
+
 export const selectAllCards = (state: AppState) => state.data?.cardData?.cards;
 
 export const selectActiveTags = (state: AppState) => state.mode.tags;
@@ -32,6 +34,12 @@ export const selectUserInfo = (state: AppState) => state.data.userData;
 
 export const selectUser = (state: AppState) => state.data.userData.user;
 
+const selectIndices = (state: AppState) => [
+  state.mode.startIndex,
+  state.mode.endIndex,
+  state.mode.activeIndex,
+];
+
 export const authenticated = (state: AppState) =>
   state.data.userData.authenticated;
 
@@ -54,8 +62,14 @@ export const selectTagOptions = createSelector(
   (all, selected) => _filter(all, selected)
 );
 
-export const selectFilteredCards = createSelector(
+const selectCurrentCards = createSelector(
   selectAllCards,
+  selectIndices,
+  (cards, [start, end, curr]) => cards.slice(start, end)
+);
+
+export const selectFilteredCards = createSelector(
+  selectCurrentCards,
   selectActiveTags,
   (cards, filter) => applyFilter(cards, filter)
 );

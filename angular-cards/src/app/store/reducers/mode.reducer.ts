@@ -9,6 +9,7 @@ import { User } from "../../models/User";
 import { UserInfo } from "../../models/UserInfo";
 import { formMode, Mode } from "src/app/models/state";
 
+export const pageSize = 3;
 //initial state of the app
 export const initialState: Mode = {
   activeIndex: 0,
@@ -20,12 +21,41 @@ export const initialState: Mode = {
   currTab: 0,
   theme: localStorage.getItem("theme"),
   filterChanged: undefined,
+  startIndex: 0,
+  endIndex: pageSize,
 };
 
 //Reducer which will dispatch changes to the store
 const _modeReducer = createReducer(
   initialState,
-
+  on(StateActions.adustIndeces, (state, { totalCardCount, newIndex }) => {
+    newIndex = newIndex + state.startIndex;
+    let actualIndex = state.startIndex + state.activeIndex; // actual index considering all cards
+    console.log(
+      "actual index: " + actualIndex,
+      "Index to be: " + newIndex,
+      "Left Boundary: " + state.startIndex,
+      "Right Boundary: " + state.endIndex
+    );
+    if (newIndex >= state.startIndex && newIndex < state.endIndex) return state;
+    if (newIndex < state.startIndex && state.startIndex > 0)
+      //There is a page to the left
+      return {
+        ...state,
+        startIndex: state.startIndex - pageSize,
+        endIndex: state.endIndex - pageSize,
+        filterChanged: new Date(), //semantically incorrect but gets the desired result, which is refresh carousel
+      };
+    if (newIndex == state.endIndex && newIndex < totalCardCount)
+      //there is a page to the right
+      return {
+        ...state,
+        startIndex: state.startIndex + pageSize,
+        endIndex: state.endIndex + pageSize,
+        filterChanged: new Date(),
+      };
+    return state;
+  }),
   on(StateActions.changeTheme, (state, { theme }) =>
     theme === state.theme
       ? state
