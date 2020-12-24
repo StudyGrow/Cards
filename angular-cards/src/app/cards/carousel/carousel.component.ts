@@ -54,18 +54,18 @@ enum sortType {
   templateUrl: "./bottom-sheet.component.html",
 })
 export class BottomSheetComponent {
-  options: { key: sortType; value: string }[] = [
-    { key: sortType.DATE_ASC, value: "Datum aufsteigend" },
-    { key: sortType.DATE_DSC, value: "Datum absteigend" },
-    { key: sortType.AUTHOR_ASC, value: "Author aufsteigend" },
-    { key: sortType.AUTHOR_DSC, value: "Author absteigend" },
+  options: { key: sortType; value: string; icon?: string }[] = [
+    { key: sortType.DATE_ASC, value: "Datum aufsteigend", icon: "today" },
+    { key: sortType.DATE_DSC, value: "Datum absteigend", icon: "today" },
+    { key: sortType.AUTHOR_ASC, value: "Author aufsteigend", icon: "person" },
+    { key: sortType.AUTHOR_DSC, value: "Author absteigend", icon: "person" },
   ];
 
   constructor(
     private _bottomSheetRef: MatBottomSheetRef<BottomSheetComponent>
   ) {}
-  sort(e: MatSelectionListChange) {
-    this._bottomSheetRef.dismiss(e.options[0]?.value);
+  sort(key: sortType) {
+    this._bottomSheetRef.dismiss(key);
   }
 }
 
