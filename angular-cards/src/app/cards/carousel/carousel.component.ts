@@ -330,6 +330,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
     cards: Card[]
   ): { date: Date; cards: Card[] } {
     let result = { cards: cards, date: date };
+
     switch (type) {
       case sortType.DATE_ASC:
         result.date = new Date();
@@ -352,6 +353,9 @@ export class CarouselComponent implements OnInit, OnDestroy {
       case sortType.AUTHOR_ASC:
         result.date = new Date();
         result.cards = [...cards].sort((a, b) => {
+          if (!a.authorName && !b.authorName) return 0;
+          if (!a.authorName) return 1;
+          if (!b.authorName) return -1;
           if (a.authorName < b.authorName) return -1;
           if (a.authorName > b.authorName) return 1;
           return 0;
@@ -360,12 +364,16 @@ export class CarouselComponent implements OnInit, OnDestroy {
       case sortType.AUTHOR_DSC:
         result.date = new Date();
         result.cards = [...cards].sort((a, b) => {
+          if (!a.authorName && !b.authorName) return 0;
+          if (!a.authorName) return 1;
+          if (!b.authorName) return -1;
           if (a.authorName > b.authorName) return -1;
           if (a.authorName < b.authorName) return 1;
           return 0;
         });
         break;
     }
+
     return result;
   }
 
