@@ -40,13 +40,14 @@ import {
   MatBottomSheet,
   MatBottomSheetRef,
 } from "@angular/material/bottom-sheet";
-import { MatSelectionListChange } from "@angular/material/list";
 
 enum sortType {
   DATE_ASC = "dat.up",
   DATE_DSC = "dat.down",
   AUTHOR_ASC = "auth.up",
   AUTHOR_DSC = "auth.down",
+  TAGS_ASC = "tags.up",
+  TAGS_DSC = "tags.down",
 }
 
 @Component({
@@ -59,6 +60,8 @@ export class BottomSheetComponent {
     { key: sortType.DATE_DSC, value: "Datum absteigend", icon: "today" },
     { key: sortType.AUTHOR_ASC, value: "Author aufsteigend", icon: "person" },
     { key: sortType.AUTHOR_DSC, value: "Author absteigend", icon: "person" },
+    { key: sortType.TAGS_ASC, value: "Tags aufsteigend", icon: "local_offer" },
+    { key: sortType.TAGS_DSC, value: "Tags absteigend", icon: "local_offer" },
   ];
 
   constructor(
@@ -379,6 +382,28 @@ export class CarouselComponent implements OnInit, OnDestroy {
           if (!b.authorName) return -1;
           if (a.authorName > b.authorName) return -1;
           if (a.authorName < b.authorName) return 1;
+          return 0;
+        });
+        break;
+      case sortType.TAGS_ASC:
+        result.date = new Date();
+        result.cards = [...cards].sort((a, b) => {
+          if (!a.tags && !b.tags) return 0;
+          if (!a.tags) return 1;
+          if (!b.tags) return -1;
+          if (a.tags[0] > b.tags[0]) return 1;
+          if (a.tags[0] < b.tags[0]) return -1;
+          return 0;
+        });
+        break;
+      case sortType.TAGS_DSC:
+        result.date = new Date();
+        result.cards = [...cards].sort((a, b) => {
+          if (!a.tags && !b.tags) return 0;
+          if (!a.tags) return 1;
+          if (!b.tags) return -1;
+          if (a.tags[0] > b.tags[0]) return -1;
+          if (a.tags[0] < b.tags[0]) return 1;
           return 0;
         });
         break;
