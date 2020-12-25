@@ -42,7 +42,12 @@ const _dataReducer = createReducer(
       ],
       currLecture: {
         ...state.cardData.currLecture,
-        tagList: addTags([...state.cardData.currLecture.tagList], card.tags),
+        tagList: addTags(
+          state.cardData.currLecture.tagList
+            ? [...state.cardData.currLecture.tagList]
+            : [],
+          card.tags
+        ),
       }, //add new tags to the lectures taglist
       lastUpdated: new Date(),
     },
