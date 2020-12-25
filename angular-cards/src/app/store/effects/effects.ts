@@ -132,7 +132,7 @@ export class CardsEffects {
           tap(() => {
             setTimeout(() => {
               this.store.dispatch(setActiveCardIndex({ index: activeIndex }));
-            }, 1000);
+            }, 2000);
           }),
           map((card) => UpdateCardActions.updateCardSuccess({ card: card })),
           catchError((reason) => of(LoadFailure({ reason: reason })))

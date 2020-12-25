@@ -24,7 +24,6 @@ module.exports = function cardsService() {
       const card = new Card(form);
       card.date = new Date();
       card.vorlesung = form.abrv;
-      card.latex = 0;
       if (user) {
         card.authorId = user._id; //add user as author of card
         card.authorName = user.username;
@@ -59,7 +58,7 @@ module.exports = function cardsService() {
   //     );
   //   });
   // };
-  
+
   //updates a card in the database
   cardsService.updateCard = async (card, user, callback) => {
     try {
@@ -73,16 +72,22 @@ module.exports = function cardsService() {
         throw new Error("Fehler: Du bist nicht der Author dieser Karte.");
       }
       updateTags(card.vorlesung, card.tags);
-      await Card.findByIdAndUpdate(card._id, {
+      let newCard = {
         thema: card.thema,
         content: card.content,
         latex: card.latex,
         tags: card.tags,
-      });
-      callback(null);
+      };
+      await Card.findByIdAndUpdate(
+        card._id,
+        newCard
+        //returns old content
+      );
+      newCard._id = card._id;
+      callback(null, newCard);
     } catch (error) {
       console.error(error);
-      callback(error);
+      callback(error, null);
     }
   };
 

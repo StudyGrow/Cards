@@ -31,10 +31,10 @@ export class CardsService {
       .pipe(map((res) => res.body));
   }
 
-  updateCard(card: Card): Observable<any> {
+  updateCard(card: Card): Observable<Card> {
     //send update to server using http service
     return this.http
-      .put<any>(
+      .put<Card>(
         this.config.urlBase + "cards/update",
         { card: card },
         {
@@ -42,7 +42,7 @@ export class CardsService {
           observe: "response",
         }
       )
-      .pipe(map((res) => card));
+      .pipe(map((res) => res.body));
   }
 
   addCard(card: Card): Observable<Card> {

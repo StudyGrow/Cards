@@ -136,11 +136,11 @@ router.put(
         errors: errors.array(),
       });
     } else {
-      req.services.cards.updateCard(req.body.card, req.user, (err) => {
+      req.services.cards.updateCard(req.body.card, req.user, (err, card) => {
         if (err) {
           res.status(422).send(err.message);
         } else {
-          res.status(200).send();
+          res.status(200).send(card);
         }
       });
     }
