@@ -40,13 +40,14 @@ import {
   MatBottomSheet,
   MatBottomSheetRef,
 } from "@angular/material/bottom-sheet";
-import { MatSelectionListChange } from "@angular/material/list";
 
 enum sortType {
   DATE_ASC = "dat.up",
   DATE_DSC = "dat.down",
   AUTHOR_ASC = "auth.up",
   AUTHOR_DSC = "auth.down",
+  TAGS_ASC = "tags.up",
+  TAGS_DSC = "tags.down",
 }
 
 @Component({
@@ -54,18 +55,55 @@ enum sortType {
   templateUrl: "./bottom-sheet.component.html",
 })
 export class BottomSheetComponent {
-  options: { key: sortType; value: string }[] = [
-    { key: sortType.DATE_ASC, value: "Datum aufst." },
-    { key: sortType.DATE_DSC, value: "Datum abst." },
-    { key: sortType.AUTHOR_ASC, value: "Author aufst." },
-    { key: sortType.AUTHOR_DSC, value: "Author abst." },
+  options: {
+    key: sortType;
+    value: string;
+    icon?: string;
+    direction?: string;
+  }[] = [
+    {
+      key: sortType.DATE_ASC,
+      value: "Datum aufsteigend",
+      icon: "today",
+      direction: "up",
+    },
+    {
+      key: sortType.DATE_DSC,
+      value: "Datum absteigend",
+      icon: "today",
+      direction: "down",
+    },
+    {
+      key: sortType.AUTHOR_ASC,
+      value: "Author aufsteigend",
+      icon: "person",
+      direction: "up",
+    },
+    {
+      key: sortType.AUTHOR_DSC,
+      value: "Author absteigend",
+      icon: "person",
+      direction: "down",
+    },
+    {
+      key: sortType.TAGS_ASC,
+      value: "Tags aufsteigend",
+      icon: "local_offer",
+      direction: "up",
+    },
+    {
+      key: sortType.TAGS_DSC,
+      value: "Tags absteigend",
+      icon: "local_offer",
+      direction: "down",
+    },
   ];
 
   constructor(
     private _bottomSheetRef: MatBottomSheetRef<BottomSheetComponent>
   ) {}
-  sort(e: MatSelectionListChange) {
-    this._bottomSheetRef.dismiss(e.options[0]?.value);
+  sort(key: sortType) {
+    this._bottomSheetRef.dismiss(key);
   }
 }
 
@@ -184,7 +222,11 @@ export class CarouselComponent implements OnInit, OnDestroy {
       .pipe(
         map(([sortType, lastChanges, cards]) => {
           if (sortType.date && sortType.date > this.lastRefresh) {
-            return this.sortCards(sortType.type, new Date(lastChanges), cards);
+            return CarouselComponent.sortCards(
+              sortType.type,
+              new Date(lastChanges),
+              cards
+            );
           } else {
             return { date: lastChanges, cards: cards };
           }
@@ -324,16 +366,19 @@ export class CarouselComponent implements OnInit, OnDestroy {
     }
   }
 
-  private sortCards(
+  private static sortCards(
     type: sortType,
     date: Date,
     cards: Card[]
   ): { date: Date; cards: Card[] } {
     let result = { cards: cards, date: date };
+    result.date = new Date(); //will be overwritten by initial date if no change is made
     switch (type) {
       case sortType.DATE_ASC:
-        result.date = new Date();
         result.cards = [...cards].sort((a, b) => {
+          if (!a.date && !b.date) return 0;
+          if (!a.date) return 1;
+          if (!b.date) return -1;
           if (new Date(a.date).getTime() < new Date(b.date).getTime())
             return -1;
           if (new Date(a.date).getTime() > new Date(b.date).getTime()) return 1;
@@ -341,8 +386,10 @@ export class CarouselComponent implements OnInit, OnDestroy {
         });
         break;
       case sortType.DATE_DSC:
-        result.date = new Date();
         result.cards = [...cards].sort((a, b) => {
+          if (!a.date && !b.date) return 0;
+          if (!a.date) return 1;
+          if (!b.date) return -1;
           if (new Date(a.date).getTime() > new Date(b.date).getTime())
             return -1;
           if (new Date(a.date).getTime() < new Date(b.date).getTime()) return 1;
@@ -350,22 +397,50 @@ export class CarouselComponent implements OnInit, OnDestroy {
         });
         break;
       case sortType.AUTHOR_ASC:
-        result.date = new Date();
         result.cards = [...cards].sort((a, b) => {
+          if (!a.authorName && !b.authorName) return 0;
+          if (!a.authorName) return 1;
+          if (!b.authorName) return -1;
           if (a.authorName < b.authorName) return -1;
           if (a.authorName > b.authorName) return 1;
           return 0;
         });
         break;
       case sortType.AUTHOR_DSC:
-        result.date = new Date();
         result.cards = [...cards].sort((a, b) => {
+          if (!a.authorName && !b.authorName) return 0;
+          if (!a.authorName) return 1;
+          if (!b.authorName) return -1;
           if (a.authorName > b.authorName) return -1;
           if (a.authorName < b.authorName) return 1;
           return 0;
         });
         break;
+      case sortType.TAGS_ASC:
+        result.cards = [...cards].sort((a, b) => {
+          if (!a.tags && !b.tags) return 0;
+          if (!a.tags) return 1;
+          if (!b.tags) return -1;
+          if (a.tags[0] > b.tags[0]) return 1;
+          if (a.tags[0] < b.tags[0]) return -1;
+          return 0;
+        });
+        break;
+      case sortType.TAGS_DSC:
+        result.cards = [...cards].sort((a, b) => {
+          if (!a.tags && !b.tags) return 0;
+          if (!a.tags) return 1;
+          if (!b.tags) return -1;
+          if (a.tags[0] > b.tags[0]) return -1;
+          if (a.tags[0] < b.tags[0]) return 1;
+          return 0;
+        });
+        break;
+      default:
+        result.date = date; //no changes were made so reset to initial date
+        break;
     }
+
     return result;
   }
 

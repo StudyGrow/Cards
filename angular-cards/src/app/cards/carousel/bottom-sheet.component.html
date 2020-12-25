@@ -1,10 +1,16 @@
-<div>
-  <button mat-icon-button>
-    <mat-icon>swap_vert</mat-icon>
+<mat-action-list style="width: max-content">
+  <button
+    *ngFor="let option of options"
+    [value]="option.key"
+    mat-list-item
+    (click)="sort(option.key)"
+  >
+    <div class="d-flex justify-content-between w-100">
+      <mat-icon *ngIf="option.icon" class="mr-2">{{ option.icon }}</mat-icon>
+
+      {{ option.value }}
+      <mat-icon *ngIf="option.direction == 'up'">expand_less </mat-icon>
+      <mat-icon *ngIf="option.direction == 'down'">expand_more </mat-icon>
+    </div>
   </button>
-</div>
-<mat-selection-list [multiple]="false" (selectionChange)="sort($event)">
-  <mat-list-option *ngFor="let option of options" [value]="option.key">
-    {{ option.value }}
-  </mat-list-option>
-</mat-selection-list>
+</mat-action-list>
