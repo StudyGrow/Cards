@@ -7,7 +7,7 @@ module.exports = function cardsService() {
   //returns all the cards matching the query
   cardsService.getCardsFromQuery = async (query, callback) => {
     try {
-      let cards = await Card.find(query);
+      let cards = await Card.find(query).select("tags thema content vorlesung latex");
       callback(null, cards);
     } catch (error) {
       callback(error, null);
@@ -15,7 +15,7 @@ module.exports = function cardsService() {
   };
 
   cardsService.findByAbrv = async (abrv) => {
-    return await Card.find({ vorlesung: abrv });
+    return await Card.find({ vorlesung: abrv }).select("tags thema content vorlesung latex");
   };
 
   //creates a new card and adds it to the database
