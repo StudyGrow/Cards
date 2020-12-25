@@ -33,8 +33,9 @@ router.get(
   }
 );
 
+//returns cards as well as metadata
 router.get(
-  "/a",
+  "/data",
   [
     query("abrv")
       .isLength({ min: 3, max: 7 })
@@ -55,8 +56,8 @@ router.get(
       userid = req.user._id;
     }
 
-    Promise.all([cards, vl]).then((obj) => {
-      res.json({ cards: obj[0], lecture: obj[1], uid: userid, username: username });
+    Promise.all([cards, vl]).then(([cards, lecture]) => {
+      res.json({ cards: cards, lecture: lecture, uid: userid, username: username });
     });
   }
 );
@@ -90,13 +91,11 @@ router.post(
       return;
     }
 
-    req.services.cards.addCard(req.body.card, req.user, (err, id) => {
+    req.services.cards.addCard(req.body.card, req.user, (err, card) => {
       if (err) {
         res.status(501).send(err.message);
       } else {
-        res.json({
-          id: id, //send id of the card to the client
-        });
+        res.json(card);
       }
     });
   }
