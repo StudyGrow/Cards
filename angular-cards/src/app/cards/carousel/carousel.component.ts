@@ -55,13 +55,48 @@ enum sortType {
   templateUrl: "./bottom-sheet.component.html",
 })
 export class BottomSheetComponent {
-  options: { key: sortType; value: string; icon?: string }[] = [
-    { key: sortType.DATE_ASC, value: "Datum aufsteigend", icon: "today" },
-    { key: sortType.DATE_DSC, value: "Datum absteigend", icon: "today" },
-    { key: sortType.AUTHOR_ASC, value: "Author aufsteigend", icon: "person" },
-    { key: sortType.AUTHOR_DSC, value: "Author absteigend", icon: "person" },
-    { key: sortType.TAGS_ASC, value: "Tags aufsteigend", icon: "local_offer" },
-    { key: sortType.TAGS_DSC, value: "Tags absteigend", icon: "local_offer" },
+  options: {
+    key: sortType;
+    value: string;
+    icon?: string;
+    direction?: string;
+  }[] = [
+    {
+      key: sortType.DATE_ASC,
+      value: "Datum aufsteigend",
+      icon: "today",
+      direction: "up",
+    },
+    {
+      key: sortType.DATE_DSC,
+      value: "Datum absteigend",
+      icon: "today",
+      direction: "down",
+    },
+    {
+      key: sortType.AUTHOR_ASC,
+      value: "Author aufsteigend",
+      icon: "person",
+      direction: "up",
+    },
+    {
+      key: sortType.AUTHOR_DSC,
+      value: "Author absteigend",
+      icon: "person",
+      direction: "down",
+    },
+    {
+      key: sortType.TAGS_ASC,
+      value: "Tags aufsteigend",
+      icon: "local_offer",
+      direction: "up",
+    },
+    {
+      key: sortType.TAGS_DSC,
+      value: "Tags absteigend",
+      icon: "local_offer",
+      direction: "down",
+    },
   ];
 
   constructor(

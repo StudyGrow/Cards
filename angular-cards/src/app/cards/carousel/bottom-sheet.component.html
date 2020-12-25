@@ -5,8 +5,12 @@
     mat-list-item
     (click)="sort(option.key)"
   >
-    <mat-icon class="mr-2">{{ option.icon }}</mat-icon>
+    <div class="d-flex justify-content-between w-100">
+      <mat-icon *ngIf="option.icon" class="mr-2">{{ option.icon }}</mat-icon>
 
-    {{ option.value }}
+      {{ option.value }}
+      <mat-icon *ngIf="option.direction == 'up'">expand_less </mat-icon>
+      <mat-icon *ngIf="option.direction == 'down'">expand_more </mat-icon>
+    </div>
   </button>
 </mat-action-list>
