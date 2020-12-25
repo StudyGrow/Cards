@@ -23,8 +23,8 @@ module.exports = function cardsService() {
     try {
       const card = new Card(form);
       card.date = new Date();
-      card.vorlesung = form.abrv;
-      card.latex = 0;
+      card.vorlesung = form.vorlesung;
+      card.latex = form.latex;
       if (user) {
         card.authorId = user._id; //add user as author of card
         card.authorName = user.username;

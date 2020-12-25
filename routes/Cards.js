@@ -65,7 +65,7 @@ router.get(
 router.post(
   "/new",
   [
-    check("card.abrv")
+    check("card.vorlesung")
       .isLength({ min: 3, max: 7 })
       .withMessage("Vorlesung Abkürzung ugültig (muss zwischen 3 und 7 Zeichen enthalten)"),
     check("card.thema")
