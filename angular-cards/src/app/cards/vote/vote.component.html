@@ -1,4 +1,5 @@
-<div class="d-flex justify-content-end mb-2" role="group">
+<div class="d-flex justify-content-end  mb-2 heart" role="group">
+    <div>Likes: {{this.allVotes}}</div>
   <button
     type="button"
     id="fav"
@@ -9,6 +10,5 @@
     (click)="toggleVote()"
   >
     <mat-icon>favorite</mat-icon>
-    <div>{{this.allVotes}}</div>
   </button>
 </div>

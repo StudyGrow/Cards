@@ -60,6 +60,7 @@ const _dataReducer = createReducer(
     ...state,
     cardData: {
       ...state.cardData,
+      cards: updateTotalVotes([...state.cardData.cards], vote),
       votes: updateVote([...state.cardData.votes], vote),
     },
   })),
@@ -186,6 +187,17 @@ function updateVote(votes: Vote[], vote: Vote) {
     };
   });
 }
+
+function updateTotalVotes(cards:Card[],vote:Vote){
+  console.log(cards[0].allVotes);
+  let res= cards.map(card=>
+    card._id !== vote.cardId ? card: {...card, allVotes: vote.value==1?card.allVotes+1:card.allVotes-1}
+  )
+  
+  console.log(res);
+  return res
+}
+
 function addTags(origin: string[], tags: string[]) {
   //adds a list of tags to the original array without duplicates
   for (const tag of tags) {

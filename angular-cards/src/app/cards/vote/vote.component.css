@@ -17,3 +17,8 @@ button {
 #fav:hover {
   color: #ff5722;
 }
+
+.heart {
+  display: flex;
+  align-items: baseline
+}

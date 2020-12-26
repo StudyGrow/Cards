@@ -102,7 +102,7 @@ export class CardsEffects {
           .castVote(action.vote)
           .pipe(map(() => changeVoteSuccess({ vote: action.vote })))
       ),
-      share()
+      shareReplay(1)
     )
   );
 
