@@ -6,9 +6,6 @@ import { SharedModule } from "./shared/shared.module";
 import { AppRoutingModule } from "./app-routing.module";
 import { StoreModule } from "@ngrx/store";
 
-//Dev Module
-import { StoreDevtoolsModule } from "@ngrx/store-devtools";
-
 //Material Modules
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { MatProgressBarModule } from "@angular/material/progress-bar";
@@ -115,7 +112,6 @@ export class MyHammerConfig extends HammerGestureConfig {
     MatSidenavModule,
     HammerModule,
     HomeModule,
-    StoreDevtoolsModule.instrument({ maxAge: 10 }),
     StoreModule.forRoot({ data: dataReducer, mode: modeReducer }),
     EffectsModule.forRoot([CardsEffects]),
     ServiceWorkerModule.register("ngsw-worker.js", {

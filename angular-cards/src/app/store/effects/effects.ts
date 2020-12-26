@@ -98,9 +98,11 @@ export class CardsEffects {
     this.actions$.pipe(
       ofType(changeVote),
       exhaustMap((action) =>
-        this.votes
-          .castVote(action.vote)
-          .pipe(map(() => changeVoteSuccess({ vote: action.vote })))
+        this.votes.castVote(action.vote).pipe(
+          map(() => {
+            return changeVoteSuccess({ vote: action.vote });
+          })
+        )
       ),
       shareReplay(1)
     )

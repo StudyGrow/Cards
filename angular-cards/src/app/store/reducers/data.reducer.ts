@@ -1,4 +1,5 @@
 import { Action, createReducer, on } from "@ngrx/store";
+import { share } from "rxjs/operators";
 import { Card } from "src/app/models/Card";
 import { CardsData, Data, LecturesData, UserData } from "src/app/models/state";
 import { User } from "src/app/models/User";
@@ -188,14 +189,23 @@ function updateVote(votes: Vote[], vote: Vote) {
   });
 }
 
-function updateTotalVotes(cards:Card[],vote:Vote){
+function updateTotalVotes(cards: Card[], vote: Vote) {
   console.log(cards[0].allVotes);
-  let res= cards.map(card=>
-    card._id !== vote.cardId ? card: {...card, allVotes: vote.value==1?card.allVotes+1:card.allVotes-1}
-  )
-  
-  console.log(res);
-  return res
+  let res = cards.map((card) => {
+    if (card._id !== vote.cardId) {
+      return card;
+    } else {
+      let newCard: Card;
+      if (vote.value == 1) {
+        newCard = { ...card, allVotes: card.allVotes + 1 };
+      } else {
+        newCard = { ...card, allVotes: card.allVotes - 1 };
+      }
+      return newCard;
+    }
+  });
+
+  return res;
 }
 
 function addTags(origin: string[], tags: string[]) {
