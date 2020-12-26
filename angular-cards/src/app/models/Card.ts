@@ -11,7 +11,8 @@ export class Card {
     public _id?: string,
     public authorId?: string,
     public authorName?: string,
-    public date?: Date
+    public date?: Date,
+    public allVotes?: number
   ) {}
 }
 

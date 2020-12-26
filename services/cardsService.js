@@ -15,7 +15,7 @@ module.exports = function cardsService() {
   };
 
   cardsService.findByAbrv = async (abrv) => {
-    return await Card.find({ vorlesung: abrv });
+    return await Card.find({ vorlesung: abrv }).lean().select("name thema vorlesung tags latex authorId authorname content");
   };
 
   //creates a new card and adds it to the database

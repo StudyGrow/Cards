@@ -18,6 +18,7 @@ export class VoteComponent implements OnInit, OnDestroy {
   vote: Vote = new Vote();
 
   @Input() id: string; //id of card that the vote belongs to
+  @Input() allVotes: number; //id of card that the vote belongs to
 
   private subscriptions$: Subscription[] = [];
   constructor(private store: Store<any>) {}

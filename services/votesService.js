@@ -21,6 +21,17 @@ module.exports = function votesService() {
       callback(error, null);
     }
   };
+
+  votesService.getAllVotesByLectureAbrv = async (abrv) => {
+   
+      let lecture = await Lecture.findOne({ abrv: abrv });
+      let allVotes = await Vote.find({ lectureId: lecture.id});
+     return allVotes;
+   
+    
+    
+  };
+
   votesService.castVote = async (req, callback) => {
     try {
       if (!req.isAuthenticated()) {
