@@ -10,19 +10,20 @@ import * as UserActions from "../actions/UserActions";
 
 const initialState: Data = {
   cardData: {
-    cards: [],
-    votes: [],
+    cards: undefined,
+    votes: undefined,
     lastUpdated: undefined,
     currLecture: undefined,
   },
   userData: {
+    votes: undefined,
     cards: undefined,
     authenticated: false,
     user: new User(),
     lastUpdated: undefined,
   },
   lectureData: {
-    lectures: [],
+    lectures: undefined,
     lastUpdated: undefined,
   },
 };
@@ -52,8 +53,9 @@ const _dataReducer = createReducer(
   })),
   on(CardActions.fetchVotesSuccess, (state, { votes }) => ({
     ...state,
-    cardData: {
-      ...state.cardData,
+
+    userData: {
+      ...state.userData,
       votes: [...votes],
     },
   })),
@@ -61,8 +63,11 @@ const _dataReducer = createReducer(
     ...state,
     cardData: {
       ...state.cardData,
-      cards: updateTotalVotes([...state.cardData.cards], vote),
       votes: updateVote([...state.cardData.votes], vote),
+    },
+    userData: {
+      ...state.userData,
+      votes: updateVote([...state.userData.votes], vote),
     },
   })),
   on(LectureActions.fetchLecturesSuccess, (state, { lectures }) => ({
@@ -99,6 +104,7 @@ const _dataReducer = createReducer(
       cards: data.cards,
       lastUpdated: new Date(),
       currLecture: data.lecture,
+      votes: data.votes,
     },
     userData: {
       ...state.userData,
@@ -189,24 +195,24 @@ function updateVote(votes: Vote[], vote: Vote) {
   });
 }
 
-function updateTotalVotes(cards: Card[], vote: Vote) {
-  console.log(cards[0].allVotes);
-  let res = cards.map((card) => {
-    if (card._id !== vote.cardId) {
-      return card;
-    } else {
-      let newCard: Card;
-      if (vote.value == 1) {
-        newCard = { ...card, allVotes: card.allVotes + 1 };
-      } else {
-        newCard = { ...card, allVotes: card.allVotes - 1 };
-      }
-      return newCard;
-    }
-  });
+// function updateTotalVotes(cards: Card[], vote: Vote) {
+//   console.log(cards[0].allVotes);
+//   let res = cards.map((card) => {
+//     if (card._id !== vote.cardId) {
+//       return card;
+//     } else {
+//       let newCard: Card;
+//       if (vote.value == 1) {
+//         newCard = { ...card, allVotes: card.allVotes + 1 };
+//       } else {
+//         newCard = { ...card, allVotes: card.allVotes - 1 };
+//       }
+//       return newCard;
+//     }
+//   });
 
-  return res;
-}
+//   return res;
+// }
 
 function addTags(origin: string[], tags: string[]) {
   //adds a list of tags to the original array without duplicates

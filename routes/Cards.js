@@ -56,11 +56,19 @@ router.get(
       userid = req.user._id;
     }
 
-    Promise.all([cards, vl, allVotes]).then(([cards,lecture,votes]) => 
-     ( res.json({ cards: cards.map(card=>( {...card,allVotes:votes.filter(vote => vote.cardId == card._id).length})), lecture: lecture, uid: userid, username: username }))
-    ).catch(err=>{
-      res.status(500).send(err.message)
-    });
+    Promise.all([cards, vl, allVotes])
+      .then(([cards, lecture, votes]) =>
+        res.json({
+          cards: cards,
+          votes: votes,
+          lecture: lecture,
+          uid: userid,
+          username: username,
+        })
+      )
+      .catch((err) => {
+        res.status(500).send(err.message);
+      });
   }
 );
 

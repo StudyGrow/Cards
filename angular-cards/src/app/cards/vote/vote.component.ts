@@ -1,12 +1,11 @@
 import { Component, OnInit, OnDestroy, Input } from "@angular/core";
 import { Store } from "@ngrx/store";
-import { Subscription } from "rxjs";
+import { Observable, Subscription } from "rxjs";
 import { delay, map } from "rxjs/operators";
 import { AppState } from "src/app/models/state";
 import { Vote } from "src/app/models/Vote";
 
-import { VotesService } from "src/app/services/votes.service";
-import { selectVote } from "src/app/store/selector";
+import { selectUserVote, selectVoteCount } from "src/app/store/selector";
 import { changeVote } from "../../store/actions/cardActions";
 
 @Component({
@@ -16,19 +15,25 @@ import { changeVote } from "../../store/actions/cardActions";
 })
 export class VoteComponent implements OnInit, OnDestroy {
   vote: Vote = new Vote();
+  voteCount: number;
 
   @Input() id: string; //id of card that the vote belongs to
-  @Input() allVotes: number; //id of card that the vote belongs to
 
   private subscriptions$: Subscription[] = [];
   constructor(private store: Store<any>) {}
 
   ngOnInit(): void {
     let sub = this.store
-      .pipe(map((state: AppState) => selectVote(state, this.id)))
+      .pipe(map((state: AppState) => selectUserVote(state, this.id)))
       .subscribe((init) => {
         if (init && this.vote && this.vote.value != init.value)
           this.vote = { ...init };
+      });
+    this.subscriptions$.push(sub);
+    sub = this.store
+      .pipe(map((state) => selectVoteCount(state, this.id)))
+      .subscribe((count) => {
+        this.voteCount = count;
       });
     this.subscriptions$.push(sub);
   }
@@ -44,5 +49,10 @@ export class VoteComponent implements OnInit, OnDestroy {
     if (!newVote.cardId) newVote.cardId = this.id;
     this.store.dispatch(changeVote({ vote: newVote }));
     this.vote.value = newVote.value;
+    if (newVote.value === 1) {
+      this.voteCount++;
+    } else if (newVote.value === 0) {
+      this.voteCount--;
+    }
   }
 }

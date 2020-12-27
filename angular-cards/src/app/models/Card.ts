@@ -1,4 +1,5 @@
 import { Vorlesung } from "./Vorlesung";
+import { Vote } from "./Vote";
 
 export class Card {
   constructor(
@@ -11,8 +12,7 @@ export class Card {
     public _id?: string,
     public authorId?: string,
     public authorName?: string,
-    public date?: Date,
-    public allVotes?: number
+    public date?: Date
   ) {}
 }
 
@@ -20,4 +20,5 @@ export interface CardsData {
   cards: Card[];
   lecture: Vorlesung;
   uid: string;
+  votes: Vote[];
 }

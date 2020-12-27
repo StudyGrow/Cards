@@ -17,6 +17,7 @@ export interface CardsData {
 }
 
 export interface UserData {
+  votes: Vote[];
   cards: Card[];
   user: User;
   authenticated: boolean;

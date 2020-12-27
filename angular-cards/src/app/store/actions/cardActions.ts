@@ -20,7 +20,7 @@ enum ActionTypes {
   GO_PREV = "[Cards] Go to the prev. slide ",
   CHANGE_VOTE = "[Vote] Change the vote on a card",
   CHANGE_VOTE_SUCCESS = "[Vote] Change vote successfull on server",
-  FETCH_VOTES = "[Votes] Fetch votes from server",
+  FETCH_USER_VOTES = "[Votes] Fetch votes made by the current user from server",
   FETCH_VOTES_SUCCESS = "[Votes] Fetch votes from server success",
   APPLY_FILTER = "[Filter] change the current cards filter for carousel cards",
   RESET_FILTER = "[Filter] reset the filter to show all cards",
@@ -31,7 +31,7 @@ enum ActionTypes {
 //Concrete Actions for each type
 
 export const fetchCards = createAction(ActionTypes.FETCH_CARDS);
-export const fetchVotes = createAction(ActionTypes.FETCH_VOTES);
+export const fetchVotes = createAction(ActionTypes.FETCH_USER_VOTES);
 export const fetchVotesSuccess = createAction(
   ActionTypes.FETCH_VOTES_SUCCESS,
   props<{ votes: Vote[] }>()
