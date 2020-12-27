@@ -97,7 +97,7 @@ export class CardsEffects {
   changeVote$ = createEffect(() =>
     this.actions$.pipe(
       ofType(changeVote),
-      exhaustMap((action) =>
+      mergeMap((action) =>
         this.votes.castVote(action.vote).pipe(
           map(() => {
             return changeVoteSuccess({ vote: action.vote });

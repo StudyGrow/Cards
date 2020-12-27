@@ -24,11 +24,9 @@ export class CardsService {
   fetchCardsData(): Observable<CardsData> {
     let abrv = this.router.url.split(/vorlesung\//)[1]; //get the lecture abreviation from the route
 
-    return this.http
-      .get<CardsData>(this.config.urlBase + "cards/a?abrv=" + abrv, {
-        observe: "response",
-      })
-      .pipe(map((res) => res.body));
+    return this.http.get<CardsData>(
+      this.config.urlBase + "cards/a?abrv=" + abrv
+    );
   }
 
   updateCard(card: Card): Observable<any> {
