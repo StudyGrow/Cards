@@ -181,17 +181,18 @@ function updateObjectInArray(cards: Card[], card: Card) {
   );
 }
 function updateVote(votes: Vote[], vote: Vote) {
-  return votes.map((item, index) => {
+  return votes.map((item) => {
     if (item.cardId !== vote.cardId) {
       // This isn't the item we care about - keep it as-is
       return item;
     }
 
     // Otherwise, this is the one we want - return an updated value
-    return {
-      ...item,
-      ...vote,
-    };
+    else
+      return {
+        ...item,
+        ...vote,
+      };
   });
 }
 
