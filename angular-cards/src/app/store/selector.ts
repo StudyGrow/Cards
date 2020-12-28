@@ -3,8 +3,17 @@ import { createSelector } from "@ngrx/store";
 import { Card } from "../models/Card";
 import { Vorlesung } from "../models/Vorlesung";
 import { AppState } from "../models/state";
-
 export const selectAllCards = (state: AppState) => state.data?.cardData?.cards;
+
+export const selectUserVote = (state: AppState, cardId: string) =>
+  state.data.userData.votes?.find((vote) => vote.cardId == cardId);
+
+export const selectVoteCount = (state: AppState, cardId: string) =>
+  state.data.cardData.votes
+    ? state.data.cardData.votes.filter(
+        (vote) => vote.cardId == cardId && vote.value == 1
+      ).length
+    : undefined;
 
 export const selectActiveTags = (state: AppState) => state.mode.tags;
 

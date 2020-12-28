@@ -19,6 +19,7 @@ const schema = new mongoose.Schema({
   authorName: String,
   date: Date,
   latex: Number,
+  rating: Number,
 });
 
 const Card = (module.exports = mongoose.model("Card", schema));

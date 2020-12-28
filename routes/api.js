@@ -20,4 +20,7 @@ router.use("/user", require("./User"));
 
 router.use("/mail", require("./Mail"));
 
+router.get("*",(req, res) => {
+    res.status(500).send("Route not find"); //send message to client
+})
 module.exports = router;

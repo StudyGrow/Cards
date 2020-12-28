@@ -22,6 +22,7 @@ import { MatButtonToggleModule } from "@angular/material/button-toggle";
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatCheckboxModule } from "@angular/material/checkbox";
 import { MatCardModule } from "@angular/material/card";
+import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 
 import { MatSelectModule } from "@angular/material/select";
 
@@ -35,14 +36,7 @@ import { getGermanPaginatorIntl } from "../profile/cards-overview/paginator.opti
 
 import { MatDividerModule } from "@angular/material/divider";
 @NgModule({
-  imports: [
-    MatExpansionModule,
-    MatInputModule,
-    MatDialogModule,
-    MatTooltipModule,
-    MatListModule,
-    MatButtonModule,
-  ],
+  imports: [],
   declarations: [SafeHtmlPipe, DialogueComponent],
   providers: [
     DatePipe,
@@ -58,6 +52,7 @@ import { MatDividerModule } from "@angular/material/divider";
     MatTabsModule,
     MatBottomSheetModule,
     MatToolbarModule,
+    MatProgressSpinnerModule,
     MatMenuModule,
     MatCardModule,
     MatCheckboxModule,

@@ -1,8 +1,13 @@
 <mat-sidenav-container class="example-container" [hasBackdrop]="true">
-  <mat-sidenav #drawer mode="over" (closedStart)="closing()">
+  <mat-sidenav
+    [fixedInViewport]="false"
+    #drawer
+    mode="push"
+    (closedStart)="closing()"
+  >
     <app-nav-list></app-nav-list>
   </mat-sidenav>
-  <mat-sidenav-content #mainContent cdkScrollable>
+  <mat-sidenav-content #mainContent>
     <div class="my-3">
       <router-outlet></router-outlet>
     </div>

@@ -238,7 +238,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
           cards: Card[];
         }) => {
           if (
-            obj.cards.length > 0 &&
+            obj.cards?.length > 0 &&
             (!this.lastRefresh || this.lastRefresh < obj.date)
           ) {
             //cards have changed

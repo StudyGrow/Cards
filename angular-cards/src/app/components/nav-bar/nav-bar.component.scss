@@ -17,4 +17,7 @@ app-search-bar {
 
 mat-toolbar {
   height: inherit;
+  width: 100%;
+  top: 0;
+  z-index: 2;
 }
