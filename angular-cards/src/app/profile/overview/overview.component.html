@@ -14,42 +14,42 @@
 
   <mat-card-content>
     <mat-list role="list">
-      <mat-list-item role="listitem"
+      <mat-list-item role="listitem" class="mb-2"
         ><div class="row w-100">
-          <div class="col col-sm-3">Email</div>
-          <div class="col col-sm-9">
+          <div class="col col-sm-5">Email</div>
+          <div class="col col-sm-7">
             {{ user.email }}
           </div>
         </div></mat-list-item
       >
-      <mat-list-item role="listitem" *ngIf="user.name"
+      <mat-list-item role="listitem" *ngIf="user.name" class="mb-2"
         ><div class="row w-100">
-          <div class="col col-sm-3">Vorname</div>
-          <div class="col col-sm-9">
+          <div class="col col-sm-5">Vorname</div>
+          <div class="col col-sm-7">
             {{ user.name }}
           </div>
         </div></mat-list-item
       >
-      <mat-list-item role="listitem" *ngIf="user.surname">
+      <mat-list-item role="listitem" *ngIf="user.surname" class="mb-2">
         <div class="row w-100">
-          <div class="col col-sm-3">Nachname</div>
-          <div class="col col-sm-9">
+          <div class="col col-sm-5">Nachname</div>
+          <div class="col col-sm-7">
             {{ user.surname }}
           </div>
         </div></mat-list-item
       >
-      <mat-list-item role="listitem" *ngIf="user.creationDate">
+      <mat-list-item role="listitem" *ngIf="user.creationDate" class="mb-2">
         <div class="row w-100">
-          <div class="col col-sm-3">Mitglied seit</div>
-          <div class="col col-sm-9">
+          <div class="col col-sm-5">Mitglied seit</div>
+          <div class="col col-sm-7">
             {{ user.creationDate | date: "longDate":"de" }}
           </div>
         </div></mat-list-item
       ><ng-container *ngIf="cardCount$ | async as count">
-        <mat-list-item role="listitem" *ngIf="count > 0">
+        <mat-list-item role="listitem" *ngIf="count > 0" class="mb-2">
           <div class="row w-100">
-            <div class="col col-sm-3">Anzahl hinzugefügter Karten</div>
-            <div class="col col-sm-9">
+            <div class="col col-sm-5">Anzahl hinzugefügter Karten</div>
+            <div class="col col-sm-7">
               {{ count }}
             </div>
           </div></mat-list-item
