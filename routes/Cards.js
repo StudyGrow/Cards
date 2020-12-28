@@ -171,9 +171,7 @@ router.put("/vote", check("id").not().isEmpty().withMessage("Karten Id benötigt
     if (err) {
       res.status(422).send(err.message);
     } else {
-      res.status(200).json({
-        vote: result,
-      });
+      res.status(200).json(result);
     }
   });
 });

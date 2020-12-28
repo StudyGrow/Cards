@@ -63,11 +63,11 @@ const _dataReducer = createReducer(
     ...state,
     cardData: {
       ...state.cardData,
-      votes: updateVote([...state.cardData.votes], vote),
+      votes: updateVote(state.cardData.votes, vote),
     },
     userData: {
       ...state.userData,
-      votes: updateVote([...state.userData.votes], vote),
+      votes: updateVote(state.userData.votes, vote),
     },
   })),
   on(LectureActions.fetchLecturesSuccess, (state, { lectures }) => ({
@@ -181,19 +181,27 @@ function updateObjectInArray(cards: Card[], card: Card) {
   );
 }
 function updateVote(votes: Vote[], vote: Vote) {
-  return votes.map((item) => {
+  let found: boolean;
+  if (!votes) votes = [];
+  let result = [...votes].map((item) => {
     if (item._id !== vote._id) {
       // This isn't the item we care about - keep it as-is
       return item;
     }
 
     // Otherwise, this is the one we want - return an updated value
-    else
+    else {
+      found = true;
       return {
         ...item,
-        ...vote,
+        value: vote.value,
       };
+    }
   });
+  if (!found) {
+    result.push(vote);
+  }
+  return result;
 }
 
 // function updateTotalVotes(cards: Card[], vote: Vote) {

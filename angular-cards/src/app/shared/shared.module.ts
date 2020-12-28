@@ -35,14 +35,7 @@ import { getGermanPaginatorIntl } from "../profile/cards-overview/paginator.opti
 
 import { MatDividerModule } from "@angular/material/divider";
 @NgModule({
-  imports: [
-    MatExpansionModule,
-    MatInputModule,
-    MatDialogModule,
-    MatTooltipModule,
-    MatListModule,
-    MatButtonModule,
-  ],
+  imports: [],
   declarations: [SafeHtmlPipe, DialogueComponent],
   providers: [
     DatePipe,
