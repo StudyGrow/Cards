@@ -104,7 +104,7 @@ router.post(
 
     req.services.cards.addCard(req.body.card, req.user, (err, card) => {
       if (err) {
-        res.status(501).send(err.message);
+        res.status(500).send(err.message);
       } else {
         res.json(card);
       }

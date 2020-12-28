@@ -25,7 +25,7 @@ export class CardsService {
     let abrv = this.router.url.split(/vorlesung\//)[1]; //get the lecture abreviation from the route
 
     return this.http.get<CardsData>(
-      this.config.urlBase + "cards/a?abrv=" + abrv
+      this.config.urlBase + "cards/data?abrv=" + abrv
     );
   }
 
