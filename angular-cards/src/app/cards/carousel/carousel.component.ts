@@ -62,49 +62,47 @@ export class BottomSheetComponent {
     key: sortType;
     value: string;
     icon?: string;
-    direction?: string;
   }[] = [
     {
-      key: sortType.DATE_ASC,
-      value: "Datum aufsteigend",
-      icon: "today",
-      direction: "up",
-    },
-    {
       key: sortType.DATE_DSC,
-      value: "Datum absteigend",
+      value: "Neueste",
       icon: "today",
-      direction: "down",
-    },
-    {
-      key: sortType.AUTHOR_ASC,
-      value: "Author aufsteigend",
-      icon: "person",
-      direction: "up",
-    },
-    {
-      key: sortType.AUTHOR_DSC,
-      value: "Author absteigend",
-      icon: "person",
-      direction: "down",
-    },
-    {
-      key: sortType.TAGS_ASC,
-      value: "Tags aufsteigend",
-      icon: "local_offer",
-      direction: "up",
-    },
-    {
-      key: sortType.LIKES_ASC,
-      value: "Likes aufsteigend",
-      icon: "favorite",
-      direction: "up",
     },
     {
       key: sortType.LIKES_DSC,
-      value: "Likes absteigend",
+      value: "Meisten Likes",
       icon: "favorite",
-      direction: "down",
+    },
+
+    {
+      key: sortType.AUTHOR_ASC,
+      value: "Author (A-Z)",
+      icon: "person",
+    },
+    {
+      key: sortType.AUTHOR_DSC,
+      value: "Author (Z-A)",
+      icon: "person",
+    },
+    {
+      key: sortType.TAGS_ASC,
+      value: "Tags (A-Z)",
+      icon: "local_offer",
+    },
+    {
+      key: sortType.TAGS_DSC,
+      value: "Tags (Z-A)",
+      icon: "local_offer",
+    },
+    {
+      key: sortType.DATE_ASC,
+      value: "Älteste",
+      icon: "today",
+    },
+    {
+      key: sortType.LIKES_ASC,
+      value: "Wenigsten Likes",
+      icon: "favorite",
     },
   ];
 
