@@ -167,12 +167,12 @@ router.put("/vote", check("id").not().isEmpty().withMessage("Karten Id benötigt
   }
 
   let vote = parseInt(req.body.value);
-  req.services.votes.castVote(req, (err) => {
+  req.services.votes.castVote(req, (err, result) => {
     if (err) {
       res.status(422).send(err.message);
     } else {
       res.status(200).json({
-        vote: vote,
+        vote: result,
       });
     }
   });

@@ -23,13 +23,9 @@ module.exports = function votesService() {
   };
 
   votesService.getAllVotesByLectureAbrv = async (abrv) => {
-   
-      let lecture = await Lecture.findOne({ abrv: abrv });
-      let allVotes = await Vote.find({ lectureId: lecture.id});
-     return allVotes;
-   
-    
-    
+    let lecture = await Lecture.findOne({ abrv: abrv });
+    let allVotes = await Vote.find({ lectureId: lecture.id });
+    return allVotes;
   };
 
   votesService.castVote = async (req, callback) => {
@@ -41,17 +37,12 @@ module.exports = function votesService() {
       if (!card) {
         throw Error("Karte konnte nicht gefunden werden");
       }
-      let vote = await Vote.findOne({ cardId: req.body.id, userId: req.user._id });
+      let vote = await Vote.findOne({ cardId: req.body.id, userId: req.user._id }).lean();
       if (vote) {
-        if (req.body.value === 0) {
-          deleteVote(req);
-        } else {
-          await updateVote(req);
-        }
+        updateVote(vote, req.body.value, callback);
       } else {
-        await createVote(req, card.vorlesung);
+        createVote(req, card.vorlesung, callback);
       }
-      callback(null);
     } catch (error) {
       callback(error);
     }
@@ -60,12 +51,20 @@ module.exports = function votesService() {
   return votesService;
 };
 
-async function updateVote(req) {
-  checkVote(req.body.value);
-  await Vote.updateOne({ cardId: req.body.id, userId: req.user._id }, { value: req.body.value });
+function updateVote(vote, newValue, callback) {
+  checkVote(newValue);
+
+  Vote.updateOne(
+    { _id: vote._id },
+    { value: newValue },
+
+    (err, _) => {
+      callback(err, { ...vote, value: newValue });
+    }
+  );
 }
 
-async function createVote(req, abrv) {
+async function createVote(req, abrv, callback) {
   checkVote(req.body.value);
   let lecture = await Lecture.findOne({ abrv: abrv });
   let vote = new Vote({
@@ -74,10 +73,10 @@ async function createVote(req, abrv) {
     lectureId: lecture._id,
     value: req.body.value,
   });
-  await vote.save();
+  vote.save({ lean: true }, callback);
 }
-function deleteVote(req) {
-  Vote.findOneAndDelete({ cardId: req.body.id, userId: req.user._id }, () => {});
+function deleteVote(req, callback) {
+  Vote.findOneAndDelete({ cardId: req.body.id, userId: req.user._id }, callback);
 }
 
 function checkVote(vote) {
