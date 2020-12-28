@@ -40,6 +40,7 @@ import {
   MatBottomSheet,
   MatBottomSheetRef,
 } from "@angular/material/bottom-sheet";
+import { Vote } from "src/app/models/Vote";
 
 enum sortType {
   DATE_ASC = "dat.up",
@@ -48,6 +49,8 @@ enum sortType {
   AUTHOR_DSC = "auth.down",
   TAGS_ASC = "tags.up",
   TAGS_DSC = "tags.down",
+  LIKES_ASC = "likes.up",
+  LIKES_DSC = "likes.down",
 }
 
 @Component({
@@ -92,9 +95,15 @@ export class BottomSheetComponent {
       direction: "up",
     },
     {
-      key: sortType.TAGS_DSC,
-      value: "Tags absteigend",
-      icon: "local_offer",
+      key: sortType.LIKES_ASC,
+      value: "Likes aufsteigend",
+      icon: "favorite",
+      direction: "up",
+    },
+    {
+      key: sortType.LIKES_DSC,
+      value: "Likes absteigend",
+      icon: "favorite",
       direction: "down",
     },
   ];
@@ -213,19 +222,23 @@ export class CarouselComponent implements OnInit, OnDestroy {
       )
     );
 
+    let votes$ = this.store.pipe(map((state) => state.data.cardData.votes));
+
     //observable which holds the final cards which should be displayed in the carousel (filtered and sorted)
     sub = combineLatest(
       this.sortOption$.asObservable(),
       lastChanges$,
-      this.store.pipe(map(selectFilteredCards))
+      this.store.pipe(map(selectFilteredCards)),
+      votes$
     )
       .pipe(
-        map(([sortType, lastChanges, cards]) => {
+        map(([sortType, lastChanges, cards, votes]) => {
           if (sortType.date && sortType.date > this.lastRefresh) {
             return CarouselComponent.sortCards(
               sortType.type,
               new Date(lastChanges),
-              cards
+              cards,
+              votes
             );
           } else {
             return { date: lastChanges, cards: cards };
@@ -369,7 +382,8 @@ export class CarouselComponent implements OnInit, OnDestroy {
   private static sortCards(
     type: sortType,
     date: Date,
-    cards: Card[]
+    cards: Card[],
+    votes: Vote[]
   ): { date: Date; cards: Card[] } {
     let result = { cards: cards, date: date };
     result.date = new Date(); //will be overwritten by initial date if no change is made
@@ -436,6 +450,16 @@ export class CarouselComponent implements OnInit, OnDestroy {
           return 0;
         });
         break;
+      case sortType.LIKES_ASC:
+        result.cards = [...cards].sort(
+          (a, b) => countVotesForCard(a, votes) - countVotesForCard(b, votes)
+        );
+        break;
+      case sortType.LIKES_DSC:
+        result.cards = [...cards].sort(
+          (a, b) => countVotesForCard(b, votes) - countVotesForCard(a, votes)
+        );
+        break;
       default:
         result.date = date; //no changes were made so reset to initial date
         break;
@@ -467,4 +491,10 @@ export class CarouselComponent implements OnInit, OnDestroy {
       sub.unsubscribe();
     });
   }
+}
+
+function countVotesForCard(card: Card, votes: Vote[]) {
+  let res = votes.filter((vote) => vote.cardId === card._id && vote.value === 1)
+    .length;
+  return res;
 }
