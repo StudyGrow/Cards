@@ -93,7 +93,6 @@ export class CardsEffects {
     )
   );
 
-  @Effect()
   changeVote$ = createEffect(() =>
     this.actions$.pipe(
       ofType(changeVote),
