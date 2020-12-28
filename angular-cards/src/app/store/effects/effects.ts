@@ -47,7 +47,7 @@ import { Router } from "@angular/router";
 import { NotificationsService } from "src/app/services/notifications.service";
 import { SuccessMessage } from "src/app/models/Notification";
 import { VotesService } from "src/app/services/votes.service";
-import { AppState, Data, Mode } from "src/app/models/state";
+
 import { CardsData } from "src/app/models/Card";
 
 @Injectable()
@@ -58,7 +58,7 @@ export class CardsEffects {
     private user: UserService,
     private votes: VotesService,
     private lectures: LecturesService,
-    private store: Store<AppState>,
+    private store: Store,
     private router: Router,
     private notifications: NotificationsService
   ) {}
@@ -97,14 +97,14 @@ export class CardsEffects {
   changeVote$ = createEffect(() =>
     this.actions$.pipe(
       ofType(changeVote),
-      mergeMap((action) =>
+      exhaustMap((action) =>
         this.votes.castVote(action.vote).pipe(
-          map(() => {
-            return changeVoteSuccess({ vote: action.vote });
+          map((vote) => {
+            return changeVoteSuccess({ vote: vote });
           })
         )
       ),
-      shareReplay(1)
+      share()
     )
   );
 
