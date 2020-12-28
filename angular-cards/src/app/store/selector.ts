@@ -6,7 +6,9 @@ import { AppState } from "../models/state";
 export const selectAllCards = (state: AppState) => state.data?.cardData?.cards;
 
 export const selectUserVote = (state: AppState, cardId: string) =>
-  state.data.userData.votes?.find((vote) => vote.cardId == cardId);
+  state.data.userData.authenticated
+    ? state.data.userData.votes?.find((vote) => vote.cardId == cardId)
+    : undefined;
 
 export const selectVoteCount = (state: AppState, cardId: string) =>
   state.data.cardData.votes
