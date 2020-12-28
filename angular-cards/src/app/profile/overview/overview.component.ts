@@ -4,7 +4,7 @@ import { User } from "src/app/models/User";
 import { Subscription, Observable } from "rxjs";
 import { map } from "rxjs/operators";
 import { Store } from "@ngrx/store";
-import { selectUser } from "src/app/store/selector";
+import { selectUser, selectUserCards } from "src/app/store/selector";
 import { AppState } from "src/app/models/state";
 
 @Component({
@@ -12,19 +12,16 @@ import { AppState } from "src/app/models/state";
   templateUrl: "./overview.component.html",
   styleUrls: ["./overview.component.scss"],
 })
-export class OverviewComponent implements OnInit, OnDestroy {
-  public userInfo: UserInfo;
-  public user = new User("", "");
-  subscriptions$: Subscription[] = [];
+export class OverviewComponent implements OnInit {
+  user$ = this.store.pipe(map(selectUser));
+  cardCount$ = this.store.pipe(
+    map(selectUserCards),
+    map((cards) => cards?.length)
+  );
 
   constructor(private store: Store<AppState>) {}
-  public user$: Observable<User>;
+
   ngOnInit(): void {
     this.user$ = this.store.pipe(map(selectUser));
-  }
-  ngOnDestroy() {
-    this.subscriptions$.forEach((sub) => {
-      sub.unsubscribe();
-    });
   }
 }

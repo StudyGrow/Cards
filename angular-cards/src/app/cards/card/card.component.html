@@ -8,6 +8,7 @@
     </mat-expansion-panel-header>
     <ng-template matExpansionPanelContent>
       <pre class="mb-1" [innerHtml]="this.parse(card.content) | safeHtml"></pre>
+      <app-vote *ngIf="auth$ | async" [id]="card._id"></app-vote>
     </ng-template>
   </mat-expansion-panel>
   <p *ngIf="card.authorName" class="card-text">

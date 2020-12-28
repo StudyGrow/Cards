@@ -18,6 +18,10 @@ import {
   AddCardActions,
   UpdateCardActions,
   setActiveCardIndex,
+  fetchVotes,
+  fetchVotesSuccess,
+  changeVote,
+  changeVoteSuccess,
 } from "../actions/cardActions";
 import * as LectureActions from "../actions/LectureActions";
 import { CardsService } from "../../services/cards.service";
@@ -42,7 +46,8 @@ import { selectActiveIndex, selectLastCardIndex } from "../selector";
 import { Router } from "@angular/router";
 import { NotificationsService } from "src/app/services/notifications.service";
 import { SuccessMessage } from "src/app/models/Notification";
-import { AppState, Data, Mode } from "src/app/models/state";
+import { VotesService } from "src/app/services/votes.service";
+
 import { CardsData } from "src/app/models/Card";
 
 @Injectable()
@@ -51,8 +56,9 @@ export class CardsEffects {
     private actions$: Actions,
     private cards: CardsService,
     private user: UserService,
+    private votes: VotesService,
     private lectures: LecturesService,
-    private store: Store<AppState>,
+    private store: Store,
     private router: Router,
     private notifications: NotificationsService
   ) {}
@@ -61,12 +67,40 @@ export class CardsEffects {
   loadCards$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FetchCardsActions.fetchCards),
-      switchMap(() =>
-        this.cards.fetchCardsData().pipe(
+      switchMap(() => {
+        this.store.dispatch(fetchVotes());
+        return this.cards.fetchCardsData().pipe(
           map((data: CardsData) =>
             FetchCardsActions.LoadSuccess({ data: data })
           ),
           catchError((reason) => of(LoadFailure({ reason: reason })))
+        );
+      }),
+      share()
+    )
+  );
+
+  @Effect()
+  fetchVotes$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(fetchVotes),
+      switchMap(() =>
+        this.votes
+          .fetchVotes()
+          .pipe(map((votes) => fetchVotesSuccess({ votes: votes })))
+      ),
+      share()
+    )
+  );
+
+  changeVote$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(changeVote),
+      exhaustMap((action) =>
+        this.votes.castVote(action.vote).pipe(
+          map((vote) => {
+            return changeVoteSuccess({ vote: vote });
+          })
         )
       ),
       share()

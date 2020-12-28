@@ -9,10 +9,14 @@ const voteSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  vote: {
+  lectureId: {
+    type: String,
+    required: true,
+  },
+  value: {
     type: Number,
     required: true,
   },
 });
 
-const User = (module.exports = mongoose.model("User", voteSchema));
+const User = (module.exports = mongoose.model("Vote", voteSchema));

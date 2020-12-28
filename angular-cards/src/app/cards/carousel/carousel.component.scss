@@ -40,6 +40,10 @@ mat-icon {
 /*carousel*/
 #carousel {
   width: 100% !important;
+  overflow-y: hidden;
+}
+:focus {
+  outline: none;
 }
 #progress {
 }

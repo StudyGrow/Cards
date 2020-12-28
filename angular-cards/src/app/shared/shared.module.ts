@@ -24,6 +24,10 @@ import { MatCheckboxModule } from "@angular/material/checkbox";
 import { MatCardModule } from "@angular/material/card";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 
+import { MatSelectModule } from "@angular/material/select";
+
+import { MatMenuModule } from "@angular/material/menu";
+import { MatBottomSheetModule } from "@angular/material/bottom-sheet";
 import {
   MatPaginatorIntl,
   MatPaginatorModule,
@@ -44,9 +48,12 @@ import { MatDividerModule } from "@angular/material/divider";
     SafeHtmlPipe,
     MatInputModule,
     MatSnackBarModule,
+    MatSelectModule,
     MatTabsModule,
+    MatBottomSheetModule,
     MatToolbarModule,
     MatProgressSpinnerModule,
+    MatMenuModule,
     MatCardModule,
     MatCheckboxModule,
     MatChipsModule,
