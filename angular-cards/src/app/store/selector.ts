@@ -77,7 +77,7 @@ export const selectTagOptions = createSelector(
 const selectCurrentCards = createSelector(
   selectAllCards,
   selectIndices,
-  (cards, [start, end, curr]) => cards.slice(start, end)
+  (cards, [start, end, curr]) => cards?.slice(start, end)
 );
 
 export const selectFilteredCards = createSelector(

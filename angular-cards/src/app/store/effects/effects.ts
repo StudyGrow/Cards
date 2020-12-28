@@ -46,9 +46,9 @@ import { selectActiveIndex, selectLastCardIndex } from "../selector";
 import { Router } from "@angular/router";
 import { NotificationsService } from "src/app/services/notifications.service";
 import { SuccessMessage } from "src/app/models/Notification";
-import { VotesService } from "src/app/services/votes.service";
 
 import { CardsData } from "src/app/models/Card";
+import { VotesService } from "src/app/services/votes.service";
 
 @Injectable()
 export class CardsEffects {

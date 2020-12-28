@@ -1,9 +1,8 @@
 import { Action, createAction, props, union } from "@ngrx/store";
+import { Vote } from "src/app/models/Vote";
 
 import { Card, CardsData } from "../../models/Card";
 import { Vorlesung } from "../../models/Vorlesung";
-
-import { Vote } from "src/app/models/Vote";
 
 //Types of Actions
 enum ActionTypes {
