@@ -6,19 +6,12 @@ import { SharedModule } from "./shared/shared.module";
 import { AppRoutingModule } from "./app-routing.module";
 import { StoreModule } from "@ngrx/store";
 
-//Dev Module
-import { StoreDevtoolsModule } from "@ngrx/store-devtools";
-
 //Material Modules
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { MatProgressBarModule } from "@angular/material/progress-bar";
 
-import { MatSelectModule } from "@angular/material/select";
-
-import { MatMenuModule } from "@angular/material/menu";
 import { MatSidenavModule } from "@angular/material/sidenav";
 
-import { MatDividerModule } from "@angular/material/divider";
 //Gestures
 import {
   HammerModule,
@@ -117,11 +110,8 @@ export class MyHammerConfig extends HammerGestureConfig {
     SharedModule,
     MatProgressBarModule,
     MatSidenavModule,
-    MatMenuModule,
-    MatSelectModule,
     HammerModule,
     HomeModule,
-    StoreDevtoolsModule.instrument({ maxAge: 10 }),
     StoreModule.forRoot({ data: dataReducer, mode: modeReducer }),
     EffectsModule.forRoot([CardsEffects]),
     ServiceWorkerModule.register("ngsw-worker.js", {

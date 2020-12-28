@@ -22,20 +22,19 @@ export class LoadingInterceptorService implements HttpInterceptor {
     req: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    // console.log("increment. req: ", req.url);
-    this.store.dispatch(incrementLoading());
+    let showLoading = !req.url.includes("vote");
+    if (showLoading) this.store.dispatch(incrementLoading());
+
     return next.handle(req).pipe(
       tap(
         (event) => {
           if (event instanceof HttpResponse) {
-            // console.log("decrement. req: ", req.url);
-            this.store.dispatch(decrementLoading());
+            if (showLoading) this.store.dispatch(decrementLoading());
           }
         },
         (err) => {
           this.notifs.handleErrors(err);
-
-          this.store.dispatch(decrementLoading());
+          if (showLoading) this.store.dispatch(decrementLoading());
         }
       )
     );

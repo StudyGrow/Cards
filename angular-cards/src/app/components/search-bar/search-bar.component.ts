@@ -11,9 +11,16 @@ import {
   changeTab,
 } from "src/app/store/actions/actions";
 import { setActiveCardIndex } from "src/app/store/actions/cardActions";
-import { selectAllCards, selectFilteredCards } from "src/app/store/selector";
+import {
+  selectAllCards,
+  selectCurrentTab,
+  selectFilteredCards,
+  selectFormMode,
+} from "src/app/store/selector";
 import { FormControl } from "@angular/forms";
 import { AppState } from "src/app/models/state";
+import { WarnMessage } from "src/app/models/Notification";
+import { NotificationsService } from "src/app/services/notifications.service";
 
 @Component({
   selector: "app-search-bar",
@@ -23,11 +30,15 @@ import { AppState } from "src/app/models/state";
 export class SearchBarComponent implements OnInit, OnDestroy {
   uInput = new FormControl();
 
-  constructor(private store: Store<AppState>) {}
+  constructor(
+    private store: Store<AppState>,
+    private notifs: NotificationsService
+  ) {}
   currentSelection: Card[]; //Cards which are currently shown
   subscriptions$: Subscription[] = []; //holds all subscriptions from observables to later unsub
   cards: Card[]; //all cards
   suggestions$: Observable<SearchSuggestion[]>; //search suggestions
+  formMode: string;
 
   allSuggestions$: Observable<SearchSuggestion[]>; //search suggestions
   clearSuggestions: boolean; //wether to clear search suggestions
@@ -71,6 +82,9 @@ export class SearchBarComponent implements OnInit, OnDestroy {
     this.allSuggestions$ = filteredSuggestions.pipe(
       map((res) => res?.allSuggestions)
     );
+    this.store
+      .pipe(map(selectFormMode))
+      .subscribe((mode) => (this.formMode = mode));
   }
 
   ngOnDestroy() {
@@ -119,7 +133,13 @@ export class SearchBarComponent implements OnInit, OnDestroy {
   navigateTo(e: Event, index: number, all: boolean) {
     e.preventDefault();
     this.uInput.reset();
-    setTimeout(() => this.store.dispatch(changeTab({ tab: 0 })), 400);
+    if (this.formMode == "edit") {
+      let message = "Du musst erst die Bearbeitung der Karteikarte abschließen";
+      this.notifs.addNotification(new WarnMessage(message));
+      return;
+    }
+
+    this.store.dispatch(changeTab({ tab: 0 }));
     if (!all) {
       //call from current selection
       this.store.dispatch(setActiveCardIndex({ index: index }));

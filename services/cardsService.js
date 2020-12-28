@@ -7,7 +7,7 @@ module.exports = function cardsService() {
   //returns all the cards matching the query
   cardsService.getCardsFromQuery = async (query, callback) => {
     try {
-      let cards = await Card.find(query);
+      let cards = await Card.find(query).select("tags thema content vorlesung latex");
       callback(null, cards);
     } catch (error) {
       callback(error, null);
@@ -15,7 +15,9 @@ module.exports = function cardsService() {
   };
 
   cardsService.findByAbrv = async (abrv) => {
-    return await Card.find({ vorlesung: abrv });
+    return await Card.find({ vorlesung: abrv })
+      .lean()
+      .select("name thema vorlesung tags latex authorId authorname content date");
   };
 
   //creates a new card and adds it to the database
@@ -24,7 +26,7 @@ module.exports = function cardsService() {
       const card = new Card(form);
       card.date = new Date();
       card.vorlesung = form.abrv;
-      card.latex = 0;
+      card.latex = form.latex;
       if (user) {
         card.authorId = user._id; //add user as author of card
         card.authorName = user.username;
@@ -32,33 +34,34 @@ module.exports = function cardsService() {
 
       updateTags(card.vorlesung, card.tags);
       await card.save();
-      callback(null, card._id);
+      callback(null, card);
     } catch (error) {
       callback(error, null);
     }
   };
 
   //used to migrate data
-  cardsService.renew = async () => {
-    let cards = await Card.find({ vorlesung: "mal" });
-    cards.forEach((card) => {
-      // Card.findOneAndDelete({ content: card.content });
-      cardsService.addCard(
-        {
-          content: card.content,
-          thema: card.thema,
-          abrv: "MaLo",
-          tags: ["Definitionen"],
-        },
-        null,
-        (err, id) => {
-          if (err) {
-            console.error(err);
-          } else console.log(id);
-        }
-      );
-    });
-  };
+  // cardsService.renew = async () => {
+  //   let cards = await Card.find({ vorlesung: "mal" });
+  //   cards.forEach((card) => {
+  //     // Card.findOneAndDelete({ content: card.content });
+  //     cardsService.addCard(
+  //       {
+  //         content: card.content,
+  //         thema: card.thema,
+  //         abrv: "MaLo",
+  //         tags: ["Definitionen"],
+  //       },
+  //       null,
+  //       (err, id) => {
+  //         if (err) {
+  //           console.error(err);
+  //         } else console.log(id);
+  //       }
+  //     );
+  //   });
+  // };
+
   //updates a card in the database
   cardsService.updateCard = async (card, user, callback) => {
     try {
@@ -72,16 +75,22 @@ module.exports = function cardsService() {
         throw new Error("Fehler: Du bist nicht der Author dieser Karte.");
       }
       updateTags(card.vorlesung, card.tags);
-      await Card.findByIdAndUpdate(card._id, {
+      let newCard = {
         thema: card.thema,
         content: card.content,
         latex: card.latex,
         tags: card.tags,
-      });
-      callback(null);
+      };
+      await Card.findByIdAndUpdate(
+        card._id,
+        newCard
+        //returns old content
+      );
+      newCard._id = card._id;
+      callback(null, newCard);
     } catch (error) {
       console.error(error);
-      callback(error);
+      callback(error, null);
     }
   };
 

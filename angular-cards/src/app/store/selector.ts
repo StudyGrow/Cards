@@ -8,6 +8,18 @@ const maxCards = 50; //maximum amount of cards which should be displayed in caro
 
 export const selectAllCards = (state: AppState) => state.data?.cardData?.cards;
 
+export const selectUserVote = (state: AppState, cardId: string) =>
+  state.data.userData.authenticated
+    ? state.data.userData.votes?.find((vote) => vote.cardId == cardId)
+    : undefined;
+
+export const selectVoteCount = (state: AppState, cardId: string) =>
+  state.data.cardData.votes
+    ? state.data.cardData.votes.filter(
+        (vote) => vote.cardId == cardId && vote.value == 1
+      ).length
+    : undefined;
+
 export const selectActiveTags = (state: AppState) => state.mode.tags;
 
 export const selectAllTags = (state: AppState) =>

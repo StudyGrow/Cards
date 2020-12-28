@@ -21,6 +21,9 @@ body {
   }
 }
 
+.mat-bottom-sheet-container {
+  min-width: max-content !important;
+}
 /*
 .btn-primary {
   background-color: #6610f2;

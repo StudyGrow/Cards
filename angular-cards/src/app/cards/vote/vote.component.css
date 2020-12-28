@@ -1,0 +1,24 @@
+.up {
+  color: rgb(101, 231, 26);
+}
+.down {
+  color: red;
+}
+
+.btn {
+  font-size: large;
+}
+button {
+  outline: none;
+}
+#fav {
+  transition: 0.2s;
+}
+#fav:hover {
+  color: #ff5722;
+}
+
+.heart {
+  display: flex;
+  align-items: baseline
+}

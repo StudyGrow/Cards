@@ -24,17 +24,15 @@ export class CardsService {
   fetchCardsData(): Observable<CardsData> {
     let abrv = this.router.url.split(/vorlesung\//)[1]; //get the lecture abreviation from the route
 
-    return this.http
-      .get<CardsData>(this.config.urlBase + "cards/a?abrv=" + abrv, {
-        observe: "response",
-      })
-      .pipe(map((res) => res.body));
+    return this.http.get<CardsData>(
+      this.config.urlBase + "cards/data?abrv=" + abrv
+    );
   }
 
-  updateCard(card: Card): Observable<any> {
+  updateCard(card: Card): Observable<Card> {
     //send update to server using http service
     return this.http
-      .put<any>(
+      .put<Card>(
         this.config.urlBase + "cards/update",
         { card: card },
         {
@@ -42,13 +40,13 @@ export class CardsService {
           observe: "response",
         }
       )
-      .pipe(map((res) => card));
+      .pipe(map((res) => res.body));
   }
 
   addCard(card: Card): Observable<Card> {
     //send new card to server using http service
     return this.http
-      .post<{ id: string }>(
+      .post<Card>(
         this.config.urlBase + "cards/new",
         { card: card },
         {
@@ -56,6 +54,6 @@ export class CardsService {
           observe: "response",
         }
       )
-      .pipe(map((res) => ({ ...card, _id: res.body.id })));
+      .pipe(map((res) => res.body));
   }
 }
