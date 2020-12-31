@@ -1,4 +1,5 @@
 import { createAction, props } from "@ngrx/store";
+import { Card } from "src/app/models/Card";
 
 enum ActionTypes {
   SET_FORM_MODE = "[Form] set display mode of form (edit, add, none, reset)",
@@ -13,7 +14,8 @@ enum ActionTypes {
   ADD_TAG = "[Filter] add tag to the filter",
   CHANGE_TAB = "[Tab] change the tab on cards view",
   CHABGE_THEME = "[Theme] change theme",
-  SET_ACITVE_CARD_INDEX = "[Index] update the index of the card which is currently showing",
+  SET_ACITVE_CARD_INDEX = "[Index] update the index of the card which is currently showing. This should only be dispatched by the carousel",
+  SET_ACITVE_CARD_INDEX_BY_ID = "[Index] set the index of the card which should be shown by providing the id of the card",
   GO_NEXT = "[Cards] Go to the next slide ",
   GO_PREV = "[Cards] Go to the prev. slide ",
 }
@@ -62,6 +64,10 @@ export const goPrev = createAction(ActionTypes.GO_PREV);
 export const setActiveCardIndex = createAction(
   ActionTypes.SET_ACITVE_CARD_INDEX,
   props<{ index: number }>()
+);
+export const setActiveCardIndexById = createAction(
+  ActionTypes.SET_ACITVE_CARD_INDEX_BY_ID,
+  props<{ id: string; cards: Card[] }>()
 );
 
 export const toggleDrawerState = createAction(ActionTypes.TOGGLE_DRAWER);
