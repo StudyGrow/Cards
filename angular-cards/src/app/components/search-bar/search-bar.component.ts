@@ -11,7 +11,7 @@ import {
   changeTab,
   setActiveCard,
 } from "src/app/store/actions/StateActions";
-import { setActiveCardIndex } from "src/app/store/actions/StateActions";
+
 import {
   selectAllCards,
   selectFilteredCards,
