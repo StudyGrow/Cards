@@ -31,7 +31,11 @@ export class AppComponent {
 
     if (isDevMode()) {
       this.store.subscribe((state) => {
-        console.log(state, state.data.cardData.cards?.length);
+        console.log(
+          state,
+          state.data.cardData.cards?.length,
+          state.mode.currentCard?.thema
+        );
       });
     }
     //log state only in development mode

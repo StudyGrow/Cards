@@ -210,13 +210,14 @@ export class CarouselComponent implements OnInit, OnDestroy {
             // this.activeSlide = 0; reset the active index to the first card
 
             this.cards = null; //set null to explicitely refresh carousel view
-            if (this.cards?.length > 0) {
-              let currCard = this.cards[0];
-              this.store.dispatch(setActiveCard({ card: currCard }));
-            }
+
             setTimeout(() => {
               this.cards = [...obj.cards];
               setTimeout(() => {
+                if (this.cards?.length > 0) {
+                  let currCard = this.cards[0];
+                  this.store.dispatch(setActiveCard({ card: currCard }));
+                }
                 this.selectSlide(0);
               }, 100);
             }, 100);
@@ -233,6 +234,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
 
     this.activeSlide = newindex;
     this.store.dispatch(setActiveCardIndex({ index: this.activeSlide }));
+    this.store.dispatch(setActiveCard({ card: this.cards[this.activeSlide] }));
   }
 
   //function to calculate random index and select the slide with that index
