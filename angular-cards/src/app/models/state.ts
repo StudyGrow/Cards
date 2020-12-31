@@ -37,6 +37,7 @@ export interface Data {
 
 export interface Mode {
   activeIndex: number;
+  currentCard: Card; //Card that should be displayed in the carousel
   formMode: formMode;
   typingMode: boolean;
   hideSearchResults: boolean;

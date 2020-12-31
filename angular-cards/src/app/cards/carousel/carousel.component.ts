@@ -26,6 +26,7 @@ import {
   setFormMode,
   changeTab,
   setActiveCardIndex,
+  setActiveCard,
 } from "src/app/store/actions/StateActions";
 
 import { map } from "rxjs/operators";
@@ -147,9 +148,9 @@ export class CarouselComponent implements OnInit, OnDestroy {
 
     //handles new slide indexes received from other components
     sub = this.mode$
-      .pipe(map((state) => state.activeIndex))
-      .subscribe((val) => {
-        this.hanldeNewIndex(val);
+      .pipe(map((state) => state.currentCard))
+      .subscribe((newCard) => {
+        this.hanldeNewIndex(newCard); //adjust the index to show the new card
       });
     this.subscriptions$.push(sub);
 
@@ -174,12 +175,12 @@ export class CarouselComponent implements OnInit, OnDestroy {
     let votes$ = this.store.pipe(map((state) => state.data.cardData.votes));
 
     //observable which holds the final cards which should be displayed in the carousel (filtered and sorted)
-    sub = combineLatest(
+    sub = combineLatest([
       this.sortOption$.asObservable(),
       lastChanges$,
       this.store.pipe(map(selectFilteredCards)),
-      votes$
-    )
+      votes$,
+    ])
       .pipe(
         map(([sortType, lastChanges, cards, votes]) => {
           if (sortType.date && sortType.date > this.lastRefresh) {
@@ -205,15 +206,19 @@ export class CarouselComponent implements OnInit, OnDestroy {
           ) {
             //cards have changed
             this.lastRefresh = obj.date; //update the last refresh time
-            this.cardCount = obj.cards.length;
+            this.cardCount = obj.cards?.length;
             // this.activeSlide = 0; reset the active index to the first card
 
             this.cards = null; //set null to explicitely refresh carousel view
+            if (this.cards?.length > 0) {
+              let currCard = this.cards[0];
+              this.store.dispatch(setActiveCard({ card: currCard }));
+            }
             setTimeout(() => {
               this.cards = [...obj.cards];
-              // setTimeout(() => {
-              //   this.selectSlide(0);
-              // }, 100);
+              setTimeout(() => {
+                this.selectSlide(0);
+              }, 100);
             }, 100);
           }
         }
@@ -303,13 +308,13 @@ export class CarouselComponent implements OnInit, OnDestroy {
   }
 
   //this function does some adjustments if the index is out of bounds of card array
-  private hanldeNewIndex(index: number) {
-    if (this.carousel && index < this.cards?.length) {
+  private hanldeNewIndex(newCard: Card) {
+    if (!newCard?._id) {
+      return;
+    }
+    let index = this.cards?.findIndex((card) => card._id === newCard._id);
+    if (index > 0 && this.carousel && index < this.cards?.length) {
       //prevent setting an invalid index
-      if (index < 0) {
-        //handy if you want to go to the last slide but dont know the number of cards in the component where the action is dispatched
-        index = this.cardCount - 1;
-      }
 
       if (index !== this.activeSlide) {
         //got a new index
