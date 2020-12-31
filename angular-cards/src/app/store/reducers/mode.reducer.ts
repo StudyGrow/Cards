@@ -3,6 +3,7 @@ import * as StateActions from "../actions/StateActions";
 import { createReducer, on, Action } from "@ngrx/store";
 
 import { formMode, Mode } from "src/app/models/state";
+import { Card } from "src/app/models/Card";
 
 //initial state of the app
 export const initialState: Mode = {
@@ -51,6 +52,19 @@ const _modeReducer = createReducer(
           activeIndex: index,
         }
   ),
+  on(StateActions.setActiveCardIndexById, (state, { id, cards }) => ({
+    ...state,
+    activeIndex: findIndex(cards, id),
+  })),
+  on(StateActions.goNext, (state) => ({
+    ...state,
+    activeIndex: state.activeIndex + 1,
+  })),
+
+  on(StateActions.goNext, (state) => ({
+    ...state,
+    activeIndex: state.activeIndex - 1,
+  })),
 
   on(StateActions.setTypingMode, (state, { typing }) =>
     typing === state.typingMode
@@ -94,16 +108,6 @@ const _modeReducer = createReducer(
     ...state,
     tags: initialState.tags,
     filterChanged: new Date(),
-  })),
-
-  on(StateActions.goNext, (state) => ({
-    ...state,
-    activeIndex: state.activeIndex + 1,
-  })),
-
-  on(StateActions.goNext, (state) => ({
-    ...state,
-    activeIndex: state.activeIndex - 1,
   }))
 );
 
@@ -123,4 +127,9 @@ function addTag(origin: string[], tag: string) {
   //adds one tag to the original array without duplicates
   if (origin.includes(tag)) return origin;
   return [...origin, tag];
+}
+
+function findIndex(cards: Card[], id: string) {
+  let res = cards.findIndex((card) => card._id == id);
+  return res >= 0 ? res : 0;
 }
