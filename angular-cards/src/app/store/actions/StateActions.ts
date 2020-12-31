@@ -15,7 +15,7 @@ enum ActionTypes {
   CHANGE_TAB = "[Tab] change the tab on cards view",
   CHABGE_THEME = "[Theme] change theme",
   SET_ACITVE_CARD_INDEX = "[Index] update the index of the card which is currently showing. This should only be dispatched by the carousel",
-  SET_ACITVE_CARD_INDEX_BY_ID = "[Index] set the index of the card which should be shown by providing the id of the card",
+  SET_ACITVE_CARD = "[Card] set the card which should be shown ",
   GO_NEXT = "[Cards] Go to the next slide ",
   GO_PREV = "[Cards] Go to the prev. slide ",
 }
@@ -65,9 +65,9 @@ export const setActiveCardIndex = createAction(
   ActionTypes.SET_ACITVE_CARD_INDEX,
   props<{ index: number }>()
 );
-export const setActiveCardIndexById = createAction(
-  ActionTypes.SET_ACITVE_CARD_INDEX_BY_ID,
-  props<{ id: string; cards: Card[] }>()
+export const setActiveCard = createAction(
+  ActionTypes.SET_ACITVE_CARD,
+  props<{ card: Card }>()
 );
 
 export const toggleDrawerState = createAction(ActionTypes.TOGGLE_DRAWER);

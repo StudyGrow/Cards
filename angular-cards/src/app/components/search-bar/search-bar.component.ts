@@ -9,7 +9,7 @@ import {
   setSuggestionsMode,
   resetFilter,
   changeTab,
-  setActiveCardIndexById,
+  setActiveCard,
 } from "src/app/store/actions/StateActions";
 import { setActiveCardIndex } from "src/app/store/actions/StateActions";
 import {
@@ -103,7 +103,8 @@ export class SearchBarComponent implements OnInit, OnDestroy {
     allCards: Card[], //all cards
     filteredCards: Card[] //cards currently in carousel
   ): { suggestions: SearchSuggestion[]; allSuggestions: SearchSuggestion[] } {
-    this.store.dispatch(setSuggestionsMode({ hide: false })); //show suggestions
+    if (this.clearSuggestions)
+      this.store.dispatch(setSuggestionsMode({ hide: false })); //show suggestions
     let suggestions: SearchSuggestion[] = []; //suggestions from cards currently in the carousel
     let allSuggestions: SearchSuggestion[] = []; //suggestions from all cards, more specifically from cards not in the carousel
 
@@ -135,20 +136,18 @@ export class SearchBarComponent implements OnInit, OnDestroy {
       return;
     }
     this.store.dispatch(changeTab({ tab: 0 }));
-
-    if (this.currentSelection.find((card) => card._id === id)) {
+    let currCard = this.currentSelection.find((card) => card._id === id);
+    if (currCard) {
       //card is in current selection (cards currently in carousel)
-      this.store.dispatch(
-        setActiveCardIndexById({ id: id, cards: this.currentSelection })
-      );
+      this.store.dispatch(setActiveCard({ card: currCard }));
     } else {
       //card is not in the carousel currently
       this.store.dispatch(resetFilter()); //remove all filters
 
+      currCard = this.allCards.find((card) => card._id === id);
+
       setTimeout(() => {
-        this.store.dispatch(
-          setActiveCardIndexById({ id: id, cards: this.allCards })
-        );
+        this.store.dispatch(setActiveCard({ card: currCard }));
       }, 700);
     }
     this.store.dispatch(setSuggestionsMode({ hide: true }));

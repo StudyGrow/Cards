@@ -7,6 +7,7 @@ import { Card } from "src/app/models/Card";
 
 //initial state of the app
 export const initialState: Mode = {
+  currentCard: undefined,
   activeIndex: 0,
   formMode: formMode.ADD,
   typingMode: false,
@@ -52,9 +53,9 @@ const _modeReducer = createReducer(
           activeIndex: index,
         }
   ),
-  on(StateActions.setActiveCardIndexById, (state, { id, cards }) => ({
+  on(StateActions.setActiveCard, (state, { card }) => ({
     ...state,
-    activeIndex: findIndex(cards, id),
+    currentCard: card,
   })),
   on(StateActions.goNext, (state) => ({
     ...state,
