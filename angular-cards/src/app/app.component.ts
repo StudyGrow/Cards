@@ -34,7 +34,7 @@ export class AppComponent {
         console.log(
           state,
           state.data.cardData.cards?.length,
-          state.mode.currentCard?.thema
+          state.mode.currentCard?.authorName
         );
       });
     }
