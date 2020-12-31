@@ -9,11 +9,11 @@ import {
   setSuggestionsMode,
   resetFilter,
   changeTab,
+  setActiveCardIndexById,
 } from "src/app/store/actions/StateActions";
 import { setActiveCardIndex } from "src/app/store/actions/StateActions";
 import {
   selectAllCards,
-  selectCurrentTab,
   selectFilteredCards,
   selectFormMode,
 } from "src/app/store/selector";
@@ -36,7 +36,7 @@ export class SearchBarComponent implements OnInit, OnDestroy {
   ) {}
   currentSelection: Card[]; //Cards which are currently shown
   subscriptions$: Subscription[] = []; //holds all subscriptions from observables to later unsub
-  cards: Card[]; //all cards
+  allCards: Card[]; //all cards
   suggestions$: Observable<SearchSuggestion[]>; //search suggestions
   formMode: string;
 
@@ -57,8 +57,8 @@ export class SearchBarComponent implements OnInit, OnDestroy {
       });
     this.subscriptions$.push(sub);
     let allCards$ = this.store.pipe(map(selectAllCards));
-    sub = allCards$.subscribe((cards) => {
-      this.cards = cards;
+    sub = allCards$.subscribe((allCards) => {
+      this.allCards = allCards;
     });
     this.subscriptions$.push(sub);
     let filteredCards$ = this.store.pipe(map(selectFilteredCards));
@@ -99,38 +99,34 @@ export class SearchBarComponent implements OnInit, OnDestroy {
     this.store.dispatch(setTypingMode({ typing: false }));
   }
   findMatches(
-    input: string,
-    allCards: Card[],
-    filteredCards: Card[]
+    input: string, //user input
+    allCards: Card[], //all cards
+    filteredCards: Card[] //cards currently in carousel
   ): { suggestions: SearchSuggestion[]; allSuggestions: SearchSuggestion[] } {
     this.store.dispatch(setSuggestionsMode({ hide: false })); //show suggestions
-    let suggestions = [];
-    let allSuggestions = [];
+    let suggestions: SearchSuggestion[] = []; //suggestions from cards currently in the carousel
+    let allSuggestions: SearchSuggestion[] = []; //suggestions from all cards, more specifically from cards not in the carousel
 
-    if (input?.length > 1) {
+    if (input?.length > 2) {
       const regex = new RegExp(`${input}`, "gi");
 
-      let i = 0;
-      while (i < this.cards.length) {
+      for (let i = 0; i < this.allCards.length; i++) {
         if (i < filteredCards.length && filteredCards[i].thema.match(regex)) {
-          suggestions.push({
-            title: filteredCards[i].thema,
-            index: i,
-          });
+          suggestions.push(
+            new SearchSuggestion(filteredCards[i].thema, filteredCards[i]._id)
+          );
         } else if (allCards[i].thema.match(regex)) {
-          allSuggestions.push({
-            title: allCards[i].thema,
-            index: i,
-          });
+          allSuggestions.push(
+            new SearchSuggestion(allCards[i].thema, allCards[i]._id)
+          );
         }
-        i++;
       }
 
       return { suggestions: suggestions, allSuggestions: allSuggestions };
     }
   }
 
-  navigateTo(e: Event, index: number, all: boolean) {
+  navigateTo(e: Event, id: string) {
     e.preventDefault();
     this.uInput.reset();
     if (this.formMode == "edit") {
@@ -138,21 +134,22 @@ export class SearchBarComponent implements OnInit, OnDestroy {
       this.notifs.addNotification(new WarnMessage(message));
       return;
     }
-
     this.store.dispatch(changeTab({ tab: 0 }));
-    if (!all) {
-      //call from current selection
-      this.store.dispatch(setActiveCardIndex({ index: index }));
-    } else if (!this.currentSelection.includes(this.cards[index])) {
-      //call from all cards and current selction does not inlude the suggestion
-      this.store.dispatch(resetFilter());
+
+    if (this.currentSelection.find((card) => card._id === id)) {
+      //card is in current selection (cards currently in carousel)
+      this.store.dispatch(
+        setActiveCardIndexById({ id: id, cards: this.currentSelection })
+      );
+    } else {
+      //card is not in the carousel currently
+      this.store.dispatch(resetFilter()); //remove all filters
 
       setTimeout(() => {
-        this.store.dispatch(setActiveCardIndex({ index: index }));
+        this.store.dispatch(
+          setActiveCardIndexById({ id: id, cards: this.allCards })
+        );
       }, 700);
-    } else {
-      //call from all cards and current selction inludes the suggestion
-      this.store.dispatch(setActiveCardIndex({ index: index }));
     }
     this.store.dispatch(setSuggestionsMode({ hide: true }));
   }
