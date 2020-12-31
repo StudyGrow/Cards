@@ -125,8 +125,8 @@ function removeInArray(items: string[], item: string) {
 
 function addTag(origin: string[], tag: string) {
   //adds one tag to the original array without duplicates
-  if (origin.includes(tag)) return origin;
-  return [...origin, tag];
+
+  return origin.includes(tag) ? origin : [...origin, tag];
 }
 
 function findIndex(cards: Card[], id: string) {
