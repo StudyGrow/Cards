@@ -9,8 +9,8 @@ import {
   setSuggestionsMode,
   resetFilter,
   changeTab,
-} from "src/app/store/actions/actions";
-import { setActiveCardIndex } from "src/app/store/actions/cardActions";
+} from "src/app/store/actions/StateActions";
+import { setActiveCardIndex } from "src/app/store/actions/StateActions";
 import {
   selectAllCards,
   selectCurrentTab,

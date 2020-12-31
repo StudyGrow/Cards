@@ -14,7 +14,7 @@ import {
   setTypingMode,
   removeTag,
   addTag,
-} from "src/app/store/actions/actions";
+} from "src/app/store/actions/StateActions";
 import {
   selectActiveTags,
   selectTagOptions,

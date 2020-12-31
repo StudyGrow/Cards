@@ -13,6 +13,9 @@ enum ActionTypes {
   ADD_TAG = "[Filter] add tag to the filter",
   CHANGE_TAB = "[Tab] change the tab on cards view",
   CHABGE_THEME = "[Theme] change theme",
+  SET_ACITVE_CARD_INDEX = "[Index] update the index of the card which is currently showing",
+  GO_NEXT = "[Cards] Go to the next slide ",
+  GO_PREV = "[Cards] Go to the prev. slide ",
 }
 
 export const changeTab = createAction(
@@ -52,6 +55,13 @@ export const setTypingMode = createAction(
 export const setSuggestionsMode = createAction(
   ActionTypes.SET_SUGGESTIONS_VISIBILITY_MODE,
   props<{ hide: boolean }>()
+);
+
+export const goNext = createAction(ActionTypes.GO_NEXT);
+export const goPrev = createAction(ActionTypes.GO_PREV);
+export const setActiveCardIndex = createAction(
+  ActionTypes.SET_ACITVE_CARD_INDEX,
+  props<{ index: number }>()
 );
 
 export const toggleDrawerState = createAction(ActionTypes.TOGGLE_DRAWER);

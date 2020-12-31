@@ -7,7 +7,7 @@ import { map } from "rxjs/operators";
 import { AppState } from "./models/state";
 import { LecturesService } from "./services/lectures.service";
 import { ThemesService } from "./services/themes.service";
-import { changeTheme } from "./store/actions/actions";
+import { changeTheme } from "./store/actions/StateActions";
 import { auth } from "./store/actions/UserActions";
 import { selectFilteredCards } from "./store/selector";
 

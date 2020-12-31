@@ -21,8 +21,8 @@ import {
   changeTab,
   setFormMode,
   setTypingMode,
-} from "src/app/store/actions/actions";
-import { addCard, updateCard } from "src/app/store/actions/cardActions";
+} from "src/app/store/actions/StateActions";
+import { addCard, updateCard } from "src/app/store/actions/CardActions";
 import { addLercture } from "src/app/store/actions/LectureActions";
 import { CardsEffects } from "src/app/store/effects/effects";
 import { AppState } from "../../models/state";

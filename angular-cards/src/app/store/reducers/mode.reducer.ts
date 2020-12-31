@@ -1,12 +1,7 @@
-import * as Actions from "../actions/cardActions";
-import * as LectureActions from "../actions/LectureActions";
-import * as StateActions from "../actions/actions";
-import * as UserActions from "../actions/UserActions";
+import * as StateActions from "../actions/StateActions";
+
 import { createReducer, on, Action } from "@ngrx/store";
-import { Card } from "../../models/Card";
-import { Vorlesung } from "../../models/Vorlesung";
-import { User } from "../../models/User";
-import { UserInfo } from "../../models/UserInfo";
+
 import { formMode, Mode } from "src/app/models/state";
 
 //initial state of the app
@@ -48,7 +43,7 @@ const _modeReducer = createReducer(
         }
   ),
 
-  on(Actions.setActiveCardIndex, (state, { index }) =>
+  on(StateActions.setActiveCardIndex, (state, { index }) =>
     index === state.activeIndex
       ? state
       : {
@@ -101,12 +96,12 @@ const _modeReducer = createReducer(
     filterChanged: new Date(),
   })),
 
-  on(Actions.goNext, (state) => ({
+  on(StateActions.goNext, (state) => ({
     ...state,
     activeIndex: state.activeIndex + 1,
   })),
 
-  on(Actions.goNext, (state) => ({
+  on(StateActions.goNext, (state) => ({
     ...state,
     activeIndex: state.activeIndex - 1,
   }))

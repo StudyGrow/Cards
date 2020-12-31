@@ -16,7 +16,7 @@ import {
   selectActiveIndex,
   selectFilteredCards,
 } from "src/app/store/selector";
-import { clearCardData } from "src/app/store/actions/cardActions";
+import { clearCardData } from "src/app/store/actions/CardActions";
 import { AppState, Data, Mode } from "src/app/models/state";
 import { NavbarToggleService } from "src/app/services/navbar-toggle.service";
 

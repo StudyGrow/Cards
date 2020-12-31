@@ -21,11 +21,12 @@ import {
   fadeOutOnLeaveAnimation,
 } from "angular-animations";
 import { Store } from "@ngrx/store";
+
 import {
-  updateCard,
+  setFormMode,
+  changeTab,
   setActiveCardIndex,
-} from "../../store/actions/cardActions";
-import { setFormMode, changeTab } from "src/app/store/actions/actions";
+} from "src/app/store/actions/StateActions";
 
 import { map } from "rxjs/operators";
 import { selectFilteredCards, selectUserId } from "src/app/store/selector";

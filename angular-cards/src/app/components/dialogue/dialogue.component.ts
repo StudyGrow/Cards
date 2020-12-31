@@ -3,7 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { Store } from "@ngrx/store";
 import { DialogData } from "src/app/models/DialogueData";
 import { AppState } from "src/app/models/state";
-import { changeTab, setFormMode } from "src/app/store/actions/actions";
+import { changeTab, setFormMode } from "src/app/store/actions/StateActions";
 
 @Component({
   selector: "app-dialogue",
