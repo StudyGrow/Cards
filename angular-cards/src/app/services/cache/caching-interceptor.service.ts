@@ -16,7 +16,7 @@ import { NotificationsService } from "../notifications.service";
 import {
   decrementLoading,
   incrementLoading,
-} from "src/app/store/actions/actions";
+} from "src/app/store/actions/StateActions";
 import { WarnMessage } from "src/app/models/Notification";
 
 @Injectable()

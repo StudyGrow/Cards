@@ -1,4 +1,3 @@
 export class SearchSuggestion {
-  title: string;
-  index: number;
+  constructor(public title: string, public id: string) {}
 }

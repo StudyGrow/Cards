@@ -1,6 +1,6 @@
 import { Injectable, Renderer2, RendererFactory2 } from "@angular/core";
 import { Store } from "@ngrx/store";
-import { changeTheme } from "../store/actions/actions";
+import { changeTheme } from "../store/actions/StateActions";
 
 @Injectable({
   providedIn: "root",

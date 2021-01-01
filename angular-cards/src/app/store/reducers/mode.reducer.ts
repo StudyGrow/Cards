@@ -1,17 +1,14 @@
-import * as Actions from "../actions/cardActions";
-import * as LectureActions from "../actions/LectureActions";
-import * as StateActions from "../actions/actions";
-import * as UserActions from "../actions/UserActions";
+import * as StateActions from "../actions/StateActions";
+
 import { createReducer, on, Action } from "@ngrx/store";
-import { Card } from "../../models/Card";
-import { Vorlesung } from "../../models/Vorlesung";
-import { User } from "../../models/User";
-import { UserInfo } from "../../models/UserInfo";
+
 import { formMode, Mode } from "src/app/models/state";
+import { Card } from "src/app/models/Card";
 
 export const pageSize = 3;
 //initial state of the app
 export const initialState: Mode = {
+  currentCard: undefined,
   activeIndex: 0,
   formMode: formMode.ADD,
   typingMode: false,
@@ -78,7 +75,7 @@ const _modeReducer = createReducer(
         }
   ),
 
-  on(Actions.setActiveCardIndex, (state, { index }) =>
+  on(StateActions.setActiveCardIndex, (state, { index }) =>
     index === state.activeIndex
       ? state
       : {
@@ -86,6 +83,19 @@ const _modeReducer = createReducer(
           activeIndex: index,
         }
   ),
+  on(StateActions.setActiveCard, (state, { card }) => ({
+    ...state,
+    currentCard: card,
+  })),
+  on(StateActions.goNext, (state) => ({
+    ...state,
+    activeIndex: state.activeIndex + 1,
+  })),
+
+  on(StateActions.goNext, (state) => ({
+    ...state,
+    activeIndex: state.activeIndex - 1,
+  })),
 
   on(StateActions.setTypingMode, (state, { typing }) =>
     typing === state.typingMode
@@ -129,16 +139,6 @@ const _modeReducer = createReducer(
     ...state,
     tags: initialState.tags,
     filterChanged: new Date(),
-  })),
-
-  on(Actions.goNext, (state) => ({
-    ...state,
-    activeIndex: state.activeIndex + 1,
-  })),
-
-  on(Actions.goNext, (state) => ({
-    ...state,
-    activeIndex: state.activeIndex - 1,
   }))
 );
 
@@ -156,6 +156,11 @@ function removeInArray(items: string[], item: string) {
 
 function addTag(origin: string[], tag: string) {
   //adds one tag to the original array without duplicates
-  if (origin.includes(tag)) return origin;
-  return [...origin, tag];
+
+  return origin.includes(tag) ? origin : [...origin, tag];
+}
+
+function findIndex(cards: Card[], id: string) {
+  let res = cards.findIndex((card) => card._id == id);
+  return res >= 0 ? res : 0;
 }

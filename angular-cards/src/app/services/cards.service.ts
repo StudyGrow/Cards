@@ -41,7 +41,10 @@ export class CardsService {
           observe: "response",
         }
       )
-      .pipe(map((res) => res.body));
+      .pipe(
+        //    tap((res) => console.log(res.body)),
+        map((res) => res.body)
+      );
   }
 
   addCard(card: Card): Observable<Card> {
@@ -55,6 +58,9 @@ export class CardsService {
           observe: "response",
         }
       )
-      .pipe(map((res) => res.body));
+      .pipe(
+        //  tap((res) => console.log(res)),
+        map((res) => res.body)
+      );
   }
 }

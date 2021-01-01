@@ -1,10 +1,9 @@
 import { Action, createReducer, on } from "@ngrx/store";
-import { share } from "rxjs/operators";
 import { Card } from "src/app/models/Card";
-import { CardsData, Data, LecturesData, UserData } from "src/app/models/state";
+import { Data } from "src/app/models/state";
 import { User } from "src/app/models/User";
 import { Vote } from "src/app/models/Vote";
-import * as CardActions from "../actions/cardActions";
+import * as CardActions from "../actions/CardActions";
 import * as LectureActions from "../actions/LectureActions";
 import * as UserActions from "../actions/UserActions";
 

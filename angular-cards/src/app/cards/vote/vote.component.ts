@@ -10,7 +10,7 @@ import {
   selectUserVote,
   selectVoteCount,
 } from "src/app/store/selector";
-import { changeVote } from "../../store/actions/cardActions";
+import { changeVote } from "../../store/actions/CardActions";
 
 @Component({
   selector: "app-vote",

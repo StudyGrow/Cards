@@ -17,12 +17,11 @@ import {
   FetchCardsActions,
   AddCardActions,
   UpdateCardActions,
-  setActiveCardIndex,
   fetchVotes,
   fetchVotesSuccess,
   changeVote,
   changeVoteSuccess,
-} from "../actions/cardActions";
+} from "../actions/CardActions";
 import * as LectureActions from "../actions/LectureActions";
 import { CardsService } from "../../services/cards.service";
 import { LecturesService } from "../../services/lectures.service";
@@ -49,6 +48,7 @@ import { SuccessMessage } from "src/app/models/Notification";
 
 import { CardsData } from "src/app/models/Card";
 import { VotesService } from "src/app/services/votes.service";
+import { setActiveCard, setActiveCardIndex } from "../actions/StateActions";
 
 @Injectable()
 export class CardsEffects {
@@ -142,10 +142,10 @@ export class CardsEffects {
       ofType(AddCardActions.addCard),
       exhaustMap((cardAction) =>
         this.cards.addCard(cardAction.card).pipe(
-          tap(() => {
+          tap((card) => {
             setTimeout(() => {
-              this.store.dispatch(setActiveCardIndex({ index: -1 })); //go to last card
-            }, 1000);
+              this.store.dispatch(setActiveCard({ card: card })); //go to last card
+            }, 3000);
           }),
           map((res) => AddCardActions.addCardSuccess({ card: res })),
 
@@ -160,13 +160,13 @@ export class CardsEffects {
   updateCard$ = createEffect(() =>
     this.actions$.pipe(
       ofType(UpdateCardActions.updateCard),
-      withLatestFrom(this.store.pipe(map(selectActiveIndex))),
-      exhaustMap(([action, activeIndex]) =>
+
+      exhaustMap((action) =>
         this.cards.updateCard(action.card).pipe(
-          tap(() => {
+          tap((card) => {
             setTimeout(() => {
-              this.store.dispatch(setActiveCardIndex({ index: activeIndex }));
-            }, 2000);
+              this.store.dispatch(setActiveCard({ card: card }));
+            }, 1200);
           }),
           map((card) => UpdateCardActions.updateCardSuccess({ card: card })),
           catchError((reason) => of(LoadFailure({ reason: reason })))

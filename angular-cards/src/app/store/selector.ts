@@ -91,11 +91,8 @@ export const selectLastCardIndex = createSelector(
   (cards) => cards.length - 1
 );
 
-export const selectCurrentCard = createSelector(
-  selectFilteredCards,
-  selectActiveIndex,
-  (cards, index) => (cards ? cards[index] : undefined)
-);
+export const selectCurrentCard = (state: AppState) => state.mode.currentCard;
+
 export const getCardsData = createSelector(
   selectAllCards,
   selectCurrentLecture,

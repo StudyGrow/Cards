@@ -21,16 +21,16 @@ import {
   fadeOutOnLeaveAnimation,
 } from "angular-animations";
 import { Store } from "@ngrx/store";
-import {
-  updateCard,
-  setActiveCardIndex,
-} from "../../store/actions/cardActions";
+
 import {
   setFormMode,
   changeTab,
+  setActiveCardIndex,
+  setActiveCard,
   adustIndeces,
-} from "src/app/store/actions/actions";
-import { map, withLatestFrom } from "rxjs/operators";
+} from "src/app/store/actions/StateActions";
+
+import { map } from "rxjs/operators";
 import {
   selectAllCards,
   selectFilteredCards,
@@ -48,17 +48,7 @@ import {
   MatBottomSheetRef,
 } from "@angular/material/bottom-sheet";
 import { Vote } from "src/app/models/Vote";
-
-enum sortType {
-  DATE_ASC = "dat.up",
-  DATE_DSC = "dat.down",
-  AUTHOR_ASC = "auth.up",
-  AUTHOR_DSC = "auth.down",
-  TAGS_ASC = "tags.up",
-  TAGS_DSC = "tags.down",
-  LIKES_ASC = "likes.up",
-  LIKES_DSC = "likes.down",
-}
+import { sortOptions, sortType } from "./sortOptions";
 
 @Component({
   selector: "app-bottom-sheet",
@@ -69,53 +59,13 @@ export class BottomSheetComponent {
     key: sortType;
     value: string;
     icon?: string;
-  }[] = [
-    {
-      key: sortType.DATE_DSC,
-      value: "Neueste",
-      icon: "today",
-    },
-    {
-      key: sortType.LIKES_DSC,
-      value: "Meisten Likes",
-      icon: "favorite",
-    },
-
-    {
-      key: sortType.AUTHOR_ASC,
-      value: "Author (A-Z)",
-      icon: "person",
-    },
-    {
-      key: sortType.AUTHOR_DSC,
-      value: "Author (Z-A)",
-      icon: "person",
-    },
-    {
-      key: sortType.TAGS_ASC,
-      value: "Tags (A-Z)",
-      icon: "local_offer",
-    },
-    {
-      key: sortType.TAGS_DSC,
-      value: "Tags (Z-A)",
-      icon: "local_offer",
-    },
-    {
-      key: sortType.DATE_ASC,
-      value: "Älteste",
-      icon: "today",
-    },
-    {
-      key: sortType.LIKES_ASC,
-      value: "Wenigsten Likes",
-      icon: "favorite",
-    },
-  ];
+  }[];
 
   constructor(
     private _bottomSheetRef: MatBottomSheetRef<BottomSheetComponent>
-  ) {}
+  ) {
+    this.options = sortOptions;
+  }
   sort(key: sortType) {
     this._bottomSheetRef.dismiss(key);
   }
@@ -214,9 +164,9 @@ export class CarouselComponent implements OnInit, OnDestroy {
 
     //handles new slide indexes received from other components
     sub = this.mode$
-      .pipe(map((state) => state.activeIndex))
-      .subscribe((val) => {
-        this.hanldeNewIndex(val);
+      .pipe(map((state) => state.currentCard))
+      .subscribe((newCard) => {
+        this.hanldeNewIndex(newCard); //adjust the index to show the new card
       });
     this.subscriptions$.push(sub);
 
@@ -241,12 +191,12 @@ export class CarouselComponent implements OnInit, OnDestroy {
     let votes$ = this.store.pipe(map((state) => state.data.cardData.votes));
 
     //observable which holds the final cards which should be displayed in the carousel (filtered and sorted)
-    sub = combineLatest(
+    sub = combineLatest([
       this.sortOption$.asObservable(),
       lastChanges$,
       this.store.pipe(map(selectFilteredCards)),
-      votes$
-    )
+      votes$,
+    ])
       .pipe(
         map(([sortType, lastChanges, cards, votes]) => {
           if (sortType.date && sortType.date > this.lastRefresh) {
@@ -272,15 +222,20 @@ export class CarouselComponent implements OnInit, OnDestroy {
           ) {
             //cards have changed
             this.lastRefresh = obj.date; //update the last refresh time
-            this.cardCount = obj.cards.length;
+            this.cardCount = obj.cards?.length;
             // this.activeSlide = 0; reset the active index to the first card
 
             this.cards = null; //set null to explicitely refresh carousel view
+
             setTimeout(() => {
               this.cards = [...obj.cards];
-              // setTimeout(() => {
-              //   this.selectSlide(0);
-              // }, 100);
+              setTimeout(() => {
+                if (this.cards?.length > 0) {
+                  let currCard = this.cards[0];
+                  this.store.dispatch(setActiveCard({ card: currCard }));
+                }
+                this.selectSlide(0);
+              }, 100);
             }, 100);
           }
         }
@@ -296,10 +251,11 @@ export class CarouselComponent implements OnInit, OnDestroy {
 
   //this function updates the current slide index in the store and for the component
   onSlide(slideEvent: NgbSlideEvent) {
-    if (this.activeSlide != parseInt(slideEvent.current)) {
-      this.activeSlide = parseInt(slideEvent.current); //update active slide
-      this.store.dispatch(setActiveCardIndex({ index: this.activeSlide })); //update in store
-    }
+    let newindex = Number.parseInt(slideEvent.current);
+
+    this.activeSlide = newindex;
+    this.store.dispatch(setActiveCardIndex({ index: this.activeSlide }));
+    this.store.dispatch(setActiveCard({ card: this.cards[this.activeSlide] }));
   }
 
   //function to calculate random index and select the slide with that index
@@ -388,6 +344,21 @@ export class CarouselComponent implements OnInit, OnDestroy {
     if (currCard?.latex === 1) return "primary";
   }
 
+  //this function does some adjustments if the index is out of bounds of card array
+  private hanldeNewIndex(newCard: Card) {
+    if (!newCard?._id) {
+      return;
+    }
+    let index = this.cards?.findIndex((card) => card._id === newCard._id);
+    if (index > 0 && this.carousel && index < this.cards?.length) {
+      //prevent setting an invalid index
+
+      if (index !== this.activeSlide) {
+        //got a new index
+        this.selectSlide(index); //select new slide
+      }
+    }
+  }
   private selectSlide(n: number) {
     if (this.carousel && this.cards && n >= 0 && n < this.cardCount) {
       //only update if n is index inside the cards array
@@ -399,18 +370,28 @@ export class CarouselComponent implements OnInit, OnDestroy {
     }
   }
 
-  //this function does some adjustments if the index is out of bounds of card array
-  private hanldeNewIndex(index: number) {
-    if (this.carousel && index !== this.activeSlide) {
-      //got a new index
-      if (index == -1) {
-        //handy if you want to go to the last slide but dont know the number of cards in the component where the action is dispatched
-        index = this.cardCount - 1;
-      } else if (index >= this.cardCount) {
-        index = 0;
-      }
-      this.selectSlide(index); //select new slide
+  // function which displays infos to the user that an action is not allowed
+  private showRejection(message?: string) {
+    if (!message) {
+      message = "Du musst erst die Bearbeitung der Karteikarte abschließen";
     }
+    if (this.formMode == "edit") {
+      setTimeout(() => {
+        this.store.dispatch(changeTab({ tab: 1 }));
+        this.notifs.addNotification(new WarnMessage(message));
+      }, 200);
+    } else {
+      this.notallowed = true;
+      setTimeout(() => {
+        this.notallowed = false;
+      }, 100);
+    }
+  }
+
+  ngOnDestroy() {
+    this.subscriptions$.forEach((sub) => {
+      sub.unsubscribe();
+    });
   }
 
   private static sortCards(
@@ -500,30 +481,6 @@ export class CarouselComponent implements OnInit, OnDestroy {
     }
 
     return result;
-  }
-
-  // function which displays infos to the user that an action is not allowed
-  private showRejection(message?: string) {
-    if (!message) {
-      message = "Du musst erst die Bearbeitung der Karteikarte abschließen";
-    }
-    if (this.formMode == "edit") {
-      setTimeout(() => {
-        this.store.dispatch(changeTab({ tab: 1 }));
-        this.notifs.addNotification(new WarnMessage(message));
-      }, 200);
-    } else {
-      this.notallowed = true;
-      setTimeout(() => {
-        this.notallowed = false;
-      }, 100);
-    }
-  }
-
-  ngOnDestroy() {
-    this.subscriptions$.forEach((sub) => {
-      sub.unsubscribe();
-    });
   }
 }
 

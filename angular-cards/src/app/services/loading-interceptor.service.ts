@@ -9,7 +9,10 @@ import {
 import { Observable } from "rxjs";
 import { map, filter, tap, timeout } from "rxjs/operators";
 import { Store } from "@ngrx/store";
-import { decrementLoading, incrementLoading } from "../store/actions/actions";
+import {
+  decrementLoading,
+  incrementLoading,
+} from "../store/actions/StateActions";
 import { NotificationsService } from "./notifications.service";
 
 @Injectable({

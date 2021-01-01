@@ -53,7 +53,7 @@
       (slide)="onSlide($event)"
       #mycarousel
       [@shake]="notallowed"
-      activeId="0"
+      [activeId]="this.activeSlide.toString()"
       [animation]="true"
       [keyboard]="false"
       [wrap]="false"
