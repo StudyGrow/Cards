@@ -21,9 +21,9 @@ enum ActionTypes {
   GO_PREV = "[Cards] Go to the prev. slide ",
 }
 
-export const adustIndeces = createAction(
+export const adjustIndeces = createAction(
   ActionTypes.ADJUST_INDECES,
-  props<{ totalCardCount: number; newIndex: number }>() //number of total cards for lecture
+  props<{ allCards: Card[]; newIndex: number }>() //number of total cards for lecture
 );
 
 export const changeTab = createAction(

@@ -25,7 +25,7 @@ export const initialState: Mode = {
 //Reducer which will dispatch changes to the store
 const _modeReducer = createReducer(
   initialState,
-  on(StateActions.adustIndeces, (state, { totalCardCount, newIndex }) => {
+  on(StateActions.adjustIndeces, (state, { allCards, newIndex }) => {
     newIndex = newIndex + state.startIndex;
     let actualIndex = state.startIndex + state.activeIndex; // actual index considering all cards
     console.log(
@@ -35,22 +35,32 @@ const _modeReducer = createReducer(
       "Right Boundary: " + state.endIndex
     );
     if (newIndex >= state.startIndex && newIndex < state.endIndex) return state;
-    if (newIndex < state.startIndex && state.startIndex > 0)
+    if (newIndex < state.startIndex && state.startIndex > 0) {
       //There is a page to the left
+      let newStart = state.startIndex - pageSize;
+      let newEnd = state.endIndex - pageSize;
       return {
         ...state,
-        startIndex: state.startIndex - pageSize,
-        endIndex: state.endIndex - pageSize,
+        startIndex: newStart,
+        endIndex: newEnd,
+        activeIndex: 0,
+        currentCard: allCards[newEnd],
         filterChanged: new Date(), //semantically incorrect but gets the desired result, which is refresh carousel
       };
-    if (newIndex == state.endIndex && newIndex < totalCardCount)
+    }
+    if (newIndex >= state.endIndex && newIndex < allCards.length) {
       //there is a page to the right
+      let newStart = state.startIndex + pageSize;
+      let newEnd = state.endIndex + pageSize;
       return {
         ...state,
-        startIndex: state.startIndex + pageSize,
-        endIndex: state.endIndex + pageSize,
+        startIndex: newStart,
+        endIndex: newEnd,
+        currentCard: allCards[newStart],
+        activeIndex: 0,
         filterChanged: new Date(),
       };
+    }
     return state;
   }),
   on(StateActions.changeTheme, (state, { theme }) =>

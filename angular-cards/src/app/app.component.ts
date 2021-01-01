@@ -3,7 +3,7 @@ import { Title } from "@angular/platform-browser";
 import { Router } from "@angular/router";
 import { Store } from "@ngrx/store";
 import { Observable } from "rxjs";
-import { map } from "rxjs/operators";
+import { map, sampleTime } from "rxjs/operators";
 import { AppState } from "./models/state";
 import { LecturesService } from "./services/lectures.service";
 import { ThemesService } from "./services/themes.service";
@@ -30,12 +30,8 @@ export class AppComponent {
     this.themeManager.initTheme(); //initialize theme
 
     if (isDevMode()) {
-      this.store.subscribe((state) => {
-        console.log(
-          state,
-          state.data.cardData.cards?.length,
-          state.mode.currentCard?.authorName
-        );
+      this.store.pipe(map((state) => state.mode)).subscribe((mode) => {
+        console.log(mode.startIndex, mode.endIndex, mode.activeIndex);
       });
     }
     //log state only in development mode
