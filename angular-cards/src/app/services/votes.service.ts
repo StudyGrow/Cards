@@ -1,14 +1,14 @@
-import { Injectable } from "@angular/core";
-import { NotificationsService } from "./notifications.service";
-import { HttpClient } from "@angular/common/http";
-import { Vote } from "../models/Vote";
-import { HttpConfig } from "./config";
-import { BehaviorSubject, Observable, of } from "rxjs";
-import { map, startWith } from "rxjs/operators";
-import { Router } from "@angular/router";
+import { Injectable } from '@angular/core';
+import { NotificationsService } from './notifications.service';
+import { HttpClient } from '@angular/common/http';
+import { Vote } from '../models/Vote';
+import { HttpConfig } from './config';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class VotesService {
   private config = new HttpConfig(); //configuration for http communication with the server
@@ -26,8 +26,8 @@ export class VotesService {
       abrv = this.router.url.split(/vorlesung\//)[1]; //get the lecture abreviation from the route
     }
     return this.http
-      .get<Vote[]>(this.config.urlBase + "cards/votes?abrv=" + abrv, {
-        observe: "response",
+      .get<Vote[]>(this.config.urlBase + 'cards/votes?abrv=' + abrv, {
+        observe: 'response',
       })
       .pipe(map((res) => res.body));
   }
@@ -42,11 +42,11 @@ export class VotesService {
   castVote(vote: Vote): Observable<Vote> {
     return this.http
       .put<Vote>(
-        this.config.urlBase + "cards/vote",
+        this.config.urlBase + 'cards/vote',
         { value: vote.value, id: vote.cardId },
         {
           headers: this.config.headers,
-          observe: "response",
+          observe: 'response',
         }
       )
       .pipe(map((res) => res.body));

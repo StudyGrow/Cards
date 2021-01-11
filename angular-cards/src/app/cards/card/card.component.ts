@@ -4,24 +4,24 @@ import {
   Input,
   OnDestroy,
   HostListener,
-} from "@angular/core";
-import { Card } from "../../models/Card";
-import { ViewChild } from "@angular/core";
-import { Observable, Subscription } from "rxjs";
-import { parse, HtmlGenerator } from "latex.js/dist/latex.js";
-import { Store } from "@ngrx/store";
-import { map } from "rxjs/operators";
-import { AppState } from "src/app/models/state";
-import { authenticated } from "src/app/store/selector";
+} from '@angular/core';
+import { Card } from '../../models/Card';
+import { ViewChild } from '@angular/core';
+import { Observable, Subscription } from 'rxjs';
+import { parse, HtmlGenerator } from 'latex.js/dist/latex.js';
+import { Store } from '@ngrx/store';
+import { map } from 'rxjs/operators';
+import { AppState } from 'src/app/models/state';
+import { authenticated } from 'src/app/store/selector';
 @Component({
-  selector: "app-card",
-  templateUrl: "./card.component.html",
-  styleUrls: ["./card.component.scss"],
+  selector: 'app-card',
+  templateUrl: './card.component.html',
+  styleUrls: ['./card.component.scss'],
 })
 export class CardComponent implements OnInit, OnDestroy {
   constructor(private store: Store<AppState>) {}
 
-  private mode$ = this.store.select("mode");
+  private mode$ = this.store.select('mode');
   inTypingField: boolean = false;
   activeIndex: number;
   auth$: Observable<boolean> = this.store.select(authenticated);
@@ -33,21 +33,21 @@ export class CardComponent implements OnInit, OnDestroy {
   @Input() card: Card;
   @Input() index: number;
 
-  @HostListener("window:keyup", ["$event"]) handleKeyDown(
+  @HostListener('window:keyup', ['$event']) handleKeyDown(
     event: KeyboardEvent
   ) {
     if (!this.inTypingField && this.activeIndex == this.index) {
-      if (event.key == "ArrowDown") {
+      if (event.key == 'ArrowDown') {
         event.preventDefault();
         this.content.toggle();
-      } else if (event.key == "ArrowUp") {
+      } else if (event.key == 'ArrowUp') {
         event.preventDefault();
         this.content.toggle();
       }
     }
   }
 
-  @ViewChild("answer", { static: true }) content;
+  @ViewChild('answer', { static: true }) content;
   subscriptions$: Subscription[] = [];
 
   ngOnInit(): void {

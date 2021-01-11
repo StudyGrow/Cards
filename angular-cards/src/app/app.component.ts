@@ -1,15 +1,15 @@
-import { Component, isDevMode } from "@angular/core";
-import { Title } from "@angular/platform-browser";
-import { Store } from "@ngrx/store";
-import { Observable } from "rxjs";
-import { AppState } from "./models/state";
-import { ThemesService } from "./services/themes.service";
-import { auth } from "./store/actions/UserActions";
+import { Component, isDevMode } from '@angular/core';
+import { Title } from '@angular/platform-browser';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { AppState } from './models/state';
+import { ThemesService } from './services/themes.service';
+import { auth } from './store/actions/UserActions';
 
 @Component({
-  selector: "app-root",
-  templateUrl: "./app.component.html",
-  styleUrls: ["./app.component.scss"],
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
   theme$: Observable<string>;
@@ -35,6 +35,6 @@ export class AppComponent {
     }
     //log state only in development mode
 
-    this.titleService.setTitle("Home");
+    this.titleService.setTitle('Home');
   }
 }

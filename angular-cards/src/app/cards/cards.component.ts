@@ -5,24 +5,24 @@ import {
   ViewChild,
   ElementRef,
   OnDestroy,
-} from "@angular/core";
-import { Vorlesung } from "src/app/models/Vorlesung";
-import { Title } from "@angular/platform-browser";
-import { Store } from "@ngrx/store";
-import { Observable, Subscription } from "rxjs";
-import { map, share } from "rxjs/operators";
-import { fetchCards } from "../store/actions/CardActions";
-import { fadeInOnEnterAnimation } from "angular-animations";
-import { changeTab, setSuggestionsMode } from "../store/actions/StateActions";
-import { CurrentTab, getCardsData } from "../store/selector";
-import { AppState } from "../models/state";
-import { NotificationsService } from "../services/notifications.service";
-import { WarnMessage } from "../models/Notification";
+} from '@angular/core';
+import { Vorlesung } from 'src/app/models/Vorlesung';
+import { Title } from '@angular/platform-browser';
+import { Store } from '@ngrx/store';
+import { Observable, Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { fetchCards } from '../store/actions/CardActions';
+import { fadeInOnEnterAnimation } from 'angular-animations';
+import { changeTab, setSuggestionsMode } from '../store/actions/StateActions';
+import { CurrentTab, getCardsData } from '../store/selector';
+import { AppState } from '../models/state';
+import { NotificationsService } from '../services/notifications.service';
+import { WarnMessage } from '../models/Notification';
 
 @Component({
-  selector: "app-cards",
-  templateUrl: "./cards.component.html",
-  styleUrls: ["./cards.component.scss"],
+  selector: 'app-cards',
+  templateUrl: './cards.component.html',
+  styleUrls: ['./cards.component.scss'],
   animations: [fadeInOnEnterAnimation()],
 })
 export class CardsComponent implements OnInit, OnDestroy {
@@ -31,9 +31,9 @@ export class CardsComponent implements OnInit, OnDestroy {
   selectedTab$: Observable<number>;
   vlName: string;
   private subscriptions$: Subscription[] = [];
-  @ViewChild("alert", { static: false }) alert: ElementRef;
+  @ViewChild('alert', { static: false }) alert: ElementRef;
 
-  @HostListener("click", ["$event.target"])
+  @HostListener('click', ['$event.target'])
   onClick() {
     if (!this.hideSuggestion) {
       this.store.dispatch(setSuggestionsMode({ hide: true }));
@@ -53,13 +53,13 @@ export class CardsComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.title.setTitle("Cards");
+    this.title.setTitle('Cards');
 
     this.store.dispatch(fetchCards());
 
     this.selectedTab$ = this.store.select(CurrentTab);
 
-    let sub = this.store.select("mode").subscribe((state) => {
+    let sub = this.store.select('mode').subscribe((state) => {
       if (state.formMode !== this.formMode) {
         this.formMode = state.formMode;
       }
@@ -72,7 +72,7 @@ export class CardsComponent implements OnInit, OnDestroy {
         this.vlName = state.currLecture.name;
 
         if (this.vlName) {
-          this.title.setTitle("Cards · " + this.vlName);
+          this.title.setTitle('Cards · ' + this.vlName);
         }
       }
     });

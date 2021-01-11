@@ -1,26 +1,26 @@
-import { Action, createAction, props, union } from "@ngrx/store";
+import { Action, createAction, props, union } from '@ngrx/store';
 
-import { Card, CardsData } from "../../models/Card";
-import { Vorlesung } from "../../models/Vorlesung";
+import { Card, CardsData } from '../../models/Card';
+import { Vorlesung } from '../../models/Vorlesung';
 
-import { Vote } from "src/app/models/Vote";
+import { Vote } from 'src/app/models/Vote';
 
 //Types of Actions
 enum ActionTypes {
-  FETCH_CARDS = "[Cards] Fetch from server, also loads current lecture and user.id",
-  LOAD_SUCCESS = "[Cards] Load success",
-  LOAD_FAILURE = "[Cards] Load failure",
-  ADD_CARD = "[Card] Add new card to the collection",
-  ADD_CARD_SUCCESS = "[Card] Add card success",
-  UPDATE_CARD = "[Card] update card in the  collection and on server",
-  UPDATE_CARD_SUCCESS = "[Card] update card success successfully updated on server, now update in store",
+  FETCH_CARDS = '[Cards] Fetch from server, also loads current lecture and user.id',
+  LOAD_SUCCESS = '[Cards] Load success',
+  LOAD_FAILURE = '[Cards] Load failure',
+  ADD_CARD = '[Card] Add new card to the collection',
+  ADD_CARD_SUCCESS = '[Card] Add card success',
+  UPDATE_CARD = '[Card] update card in the  collection and on server',
+  UPDATE_CARD_SUCCESS = '[Card] update card success successfully updated on server, now update in store',
 
-  CLEAR_CARD_DATA = "[Cards] clear data about cards",
+  CLEAR_CARD_DATA = '[Cards] clear data about cards',
 
-  CHANGE_VOTE = "[Vote] Change the vote on a card",
-  CHANGE_VOTE_SUCCESS = "[Vote] Change vote successfull on server",
-  FETCH_USER_VOTES = "[Votes] Fetch votes made by the current user from server",
-  FETCH_VOTES_SUCCESS = "[Votes] Fetch votes from server success",
+  CHANGE_VOTE = '[Vote] Change the vote on a card',
+  CHANGE_VOTE_SUCCESS = '[Vote] Change vote successfull on server',
+  FETCH_USER_VOTES = '[Votes] Fetch votes made by the current user from server',
+  FETCH_VOTES_SUCCESS = '[Votes] Fetch votes from server success',
 }
 
 //Concrete Actions for each type

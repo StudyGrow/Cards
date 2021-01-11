@@ -1,22 +1,22 @@
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 import {
   HttpInterceptor,
   HttpEvent,
   HttpResponse,
   HttpRequest,
   HttpHandler,
-} from "@angular/common/http";
-import { Observable } from "rxjs";
-import { map, filter, tap, timeout } from "rxjs/operators";
-import { Store } from "@ngrx/store";
+} from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { map, filter, tap, timeout } from 'rxjs/operators';
+import { Store } from '@ngrx/store';
 import {
   decrementLoading,
   incrementLoading,
-} from "../store/actions/StateActions";
-import { NotificationsService } from "./notifications.service";
+} from '../store/actions/StateActions';
+import { NotificationsService } from './notifications.service';
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class LoadingInterceptorService implements HttpInterceptor {
   constructor(private store: Store, private notifs: NotificationsService) {}
@@ -25,7 +25,7 @@ export class LoadingInterceptorService implements HttpInterceptor {
     req: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    let showLoading = !req.url.includes("vote");
+    let showLoading = !req.url.includes('vote');
     if (showLoading) this.store.dispatch(incrementLoading());
 
     return next.handle(req).pipe(

@@ -1,10 +1,10 @@
-import * as StateActions from "../actions/StateActions";
+import * as StateActions from '../actions/StateActions';
 
-import { createReducer, on, Action } from "@ngrx/store";
+import { createReducer, on, Action } from '@ngrx/store';
 
-import { formMode, Mode } from "src/app/models/state";
-import { Card } from "src/app/models/Card";
-import { SortType } from "src/app/models/SortType";
+import { formMode, Mode } from 'src/app/models/state';
+import { Card } from 'src/app/models/Card';
+import { SortType } from 'src/app/models/SortType';
 
 //initial state of the app
 export const initialState: Mode = {
@@ -16,7 +16,7 @@ export const initialState: Mode = {
   loading: 0,
   tags: [],
   currTab: 0,
-  theme: localStorage.getItem("theme"),
+  theme: localStorage.getItem('theme'),
   cardsChanged: undefined,
   sortType: SortType.DATE_ASC,
 };

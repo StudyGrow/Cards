@@ -1,5 +1,5 @@
-import { Vorlesung } from "./Vorlesung";
-import { Vote } from "./Vote";
+import { Vorlesung } from './Vorlesung';
+import { Vote } from './Vote';
 
 export class Card {
   constructor(

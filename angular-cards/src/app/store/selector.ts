@@ -23,13 +23,15 @@ export const UserVote = (
   cardId: string //
 ) =>
   state.data.userData.authenticated
-    ? state.data.userData.votes?.find((vote) => vote.cardId == cardId)
+    ? state.data.userData.votes?.find((vote) => vote.cardId === cardId)
     : undefined;
-/**Returns votes for a certain card */
+/**
+ * Returns votes for a certain card
+ */
 export const VotesForCard = (state: AppState, cardId: string) =>
   state.data.cardData.votes
     ? state.data.cardData.votes.filter(
-        (vote) => vote.cardId == cardId && vote.value == 1
+        (vote) => vote.cardId === cardId && vote.value == 1
       )
     : undefined;
 /**Returns all votes for the current lecture */

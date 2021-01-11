@@ -1,13 +1,13 @@
-import { NgModule } from "@angular/core";
+import { NgModule } from '@angular/core';
 
-import { Routes, RouterModule } from "@angular/router";
+import { Routes, RouterModule } from '@angular/router';
 
-import { CardsComponent } from "./cards.component";
-import { NewVlComponent } from "./new-vl/new-vl.component";
+import { CardsComponent } from './cards.component';
+import { NewVlComponent } from './new-vl/new-vl.component';
 
 const routes: Routes = [
-  { path: "neu", component: NewVlComponent },
-  { path: ":abrv", component: CardsComponent },
+  { path: 'neu', component: NewVlComponent },
+  { path: ':abrv', component: CardsComponent },
 ];
 
 @NgModule({

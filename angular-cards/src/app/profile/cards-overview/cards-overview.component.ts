@@ -1,20 +1,20 @@
-import { Component, OnInit } from "@angular/core";
-import { Card } from "src/app/models/Card";
-import { Subscription, Observable } from "rxjs";
-import { map } from "rxjs/operators";
-import { Store } from "@ngrx/store";
-import { UserCards } from "src/app/store/selector";
-import { PageEvent } from "@angular/material/paginator";
+import { Component, OnInit } from '@angular/core';
+import { Card } from 'src/app/models/Card';
+import { Subscription, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { Store } from '@ngrx/store';
+import { UserCards } from 'src/app/store/selector';
+import { PageEvent } from '@angular/material/paginator';
 import {
   fadeInOnEnterAnimation,
   fadeOutOnLeaveAnimation,
-} from "angular-animations";
-import { AppState } from "src/app/models/state";
+} from 'angular-animations';
+import { AppState } from 'src/app/models/state';
 
 @Component({
-  selector: "app-cards-overview",
-  templateUrl: "./cards-overview.component.html",
-  styleUrls: ["./cards-overview.component.scss"],
+  selector: 'app-cards-overview',
+  templateUrl: './cards-overview.component.html',
+  styleUrls: ['./cards-overview.component.scss'],
   animations: [
     fadeInOnEnterAnimation({ duration: 500 }),
     fadeOutOnLeaveAnimation({ duration: 100 }),

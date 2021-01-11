@@ -11,18 +11,18 @@ export abstract class Notification {
 export class WarnMessage extends Notification {
   code: number;
   constructor(m: string, c?: number) {
-    super("warning", m);
+    super('warning', m);
     this.code = c;
   }
 }
 
 export class InfoMessage extends Notification {
   constructor(m: string) {
-    super("info", m);
+    super('info', m);
   }
 }
 export class SuccessMessage extends Notification {
   constructor(m: string) {
-    super("success", m);
+    super('success', m);
   }
 }

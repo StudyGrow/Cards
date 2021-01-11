@@ -1,14 +1,14 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
-import { Store } from "@ngrx/store";
-import { map } from "rxjs/operators";
-import { userInfo } from "../store/selector";
-import { Subscription } from "rxjs";
-import { AppState } from "../models/state";
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { map } from 'rxjs/operators';
+import { userInfo } from '../store/selector';
+import { Subscription } from 'rxjs';
+import { AppState } from '../models/state';
 
 @Component({
-  selector: "app-profile",
-  templateUrl: "./profile.component.html",
-  styleUrls: ["./profile.component.scss"],
+  selector: 'app-profile',
+  templateUrl: './profile.component.html',
+  styleUrls: ['./profile.component.scss'],
 })
 export class ProfileComponent implements OnInit, OnDestroy {
   public page: string;
