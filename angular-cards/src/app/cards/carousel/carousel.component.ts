@@ -27,6 +27,7 @@ import {
   changeTab,
   setActiveCardIndex,
   setActiveCard,
+  changeSorting,
 } from "src/app/store/actions/StateActions";
 
 import { map } from "rxjs/operators";
@@ -93,7 +94,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
   filters: string[]; //tags selected for filtering
   cards: Card[]; //array of all the cards
   cardCount = 0; //counts the cards that are displayed in the carousel
-  lastRefresh: Date; // holds the timestamp at which the carousel was last updated
+  lastRefresh: number; // holds the timestamp at which the carousel was last updated
   activeSlide = 0; //holds the slide which is currently shown
   formMode: string; // mode in which the form is displayed either add or edit
   notallowed: boolean = false; //wether an action is allowed or not
@@ -163,7 +164,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
     });
     this.subscriptions$.push(sub);
 
-    let filtered$ = this.mode$.pipe(map((state) => state.cardsChanged)); //observable of timestamp at which user has modified the selected tags for filtering
+    let filtered$ = this.mode$.pipe(map((state) => state.cardsChanged)); //observable of timestamp at which user has modified the way cards are displayed
     let added$ = this.data$.pipe(map((state) => state.cardData.lastUpdated)); //observable of timestamp at the cards were last modified
 
     //observable which holds the maximum of filtered$ and added$ which represents the lastChanges which were made
@@ -173,58 +174,31 @@ export class CarouselComponent implements OnInit, OnDestroy {
       )
     );
 
-    let votes$ = this.store.select((state) => state.data.cardData.votes);
-
     //observable which holds the final cards which should be displayed in the carousel (filtered and sorted)
     sub = combineLatest([
-      this.sortOption$.asObservable(),
-      lastChanges$,
       this.store.select(DisplayedCards),
-      votes$,
-    ])
-      .pipe(
-        map(([sortType, lastChanges, cards, votes]) => {
-          if (sortType.date && sortType.date > this.lastRefresh) {
-            return CarouselComponent.sortCards(
-              sortType.type,
-              new Date(lastChanges),
-              cards,
-              votes
-            );
-          } else {
-            return { date: lastChanges, cards: cards };
-          }
-        })
-      )
-      .subscribe(
-        (obj: {
-          date: Date; //modified datestamp holding last timestamp at which cards have been modified
-          cards: Card[];
-        }) => {
-          if (
-            obj.cards?.length > 0 &&
-            (!this.lastRefresh || this.lastRefresh < obj.date)
-          ) {
-            //cards have changed
-            this.lastRefresh = obj.date; //update the last refresh time
-            this.cardCount = obj.cards?.length;
-            // this.activeSlide = 0; reset the active index to the first card
+      lastChanges$,
+    ]).subscribe(([cards, date]) => {
+      if (cards?.length > 0 && (!this.lastRefresh || this.lastRefresh < date)) {
+        //cards have changed
+        this.lastRefresh = date; //update the last refresh time
+        this.cardCount = cards?.length;
+        // this.activeSlide = 0; reset the active index to the first card
 
-            this.cards = null; //set null to explicitely refresh carousel view
+        this.cards = null; //set null to explicitely refresh carousel view
 
-            setTimeout(() => {
-              this.cards = [...obj.cards];
-              setTimeout(() => {
-                if (this.cards?.length > 0) {
-                  let currCard = this.cards[0];
-                  this.store.dispatch(setActiveCard({ card: currCard }));
-                }
-                this.selectSlide(0);
-              }, 100);
-            }, 100);
-          }
-        }
-      );
+        setTimeout(() => {
+          this.cards = [...cards];
+          setTimeout(() => {
+            if (this.cards?.length > 0) {
+              let currCard = this.cards[0];
+              this.store.dispatch(setActiveCard({ card: currCard }));
+            }
+            this.selectSlide(0);
+          }, 100);
+        }, 100);
+      }
+    });
 
     this.subscriptions$.push(sub);
   }
@@ -281,7 +255,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
     let ref = this._bottomSheet.open(BottomSheetComponent);
     ref.afterDismissed().subscribe((key: SortType) => {
       if (key) {
-        this.sortOption$.next({ type: key, date: new Date() });
+        this.store.dispatch(changeSorting({ sortType: key }));
       }
     });
   }
@@ -359,99 +333,4 @@ export class CarouselComponent implements OnInit, OnDestroy {
       sub.unsubscribe();
     });
   }
-
-  private static sortCards(
-    type: SortType,
-    date: Date,
-    cards: Card[],
-    votes: Vote[]
-  ): { date: Date; cards: Card[] } {
-    let result = { cards: cards, date: date };
-    result.date = new Date(); //will be overwritten by initial date if no change is made
-    switch (type) {
-      case SortType.DATE_ASC:
-        result.cards = [...cards].sort((a, b) => {
-          if (!a.date && !b.date) return 0;
-          if (!a.date) return 1;
-          if (!b.date) return -1;
-          if (new Date(a.date).getTime() < new Date(b.date).getTime())
-            return -1;
-          if (new Date(a.date).getTime() > new Date(b.date).getTime()) return 1;
-          return 0;
-        });
-        break;
-      case SortType.DATE_DSC:
-        result.cards = [...cards].sort((a, b) => {
-          if (!a.date && !b.date) return 0;
-          if (!a.date) return 1;
-          if (!b.date) return -1;
-          if (new Date(a.date).getTime() > new Date(b.date).getTime())
-            return -1;
-          if (new Date(a.date).getTime() < new Date(b.date).getTime()) return 1;
-          return 0;
-        });
-        break;
-      case SortType.AUTHOR_ASC:
-        result.cards = [...cards].sort((a, b) => {
-          if (!a.authorName && !b.authorName) return 0;
-          if (!a.authorName) return 1;
-          if (!b.authorName) return -1;
-          if (a.authorName < b.authorName) return -1;
-          if (a.authorName > b.authorName) return 1;
-          return 0;
-        });
-        break;
-      case SortType.AUTHOR_DSC:
-        result.cards = [...cards].sort((a, b) => {
-          if (!a.authorName && !b.authorName) return 0;
-          if (!a.authorName) return 1;
-          if (!b.authorName) return -1;
-          if (a.authorName > b.authorName) return -1;
-          if (a.authorName < b.authorName) return 1;
-          return 0;
-        });
-        break;
-      case SortType.TAGS_ASC:
-        result.cards = [...cards].sort((a, b) => {
-          if (!a.tags && !b.tags) return 0;
-          if (!a.tags) return 1;
-          if (!b.tags) return -1;
-          if (a.tags[0] > b.tags[0]) return 1;
-          if (a.tags[0] < b.tags[0]) return -1;
-          return 0;
-        });
-        break;
-      case SortType.TAGS_DSC:
-        result.cards = [...cards].sort((a, b) => {
-          if (!a.tags && !b.tags) return 0;
-          if (!a.tags) return 1;
-          if (!b.tags) return -1;
-          if (a.tags[0] > b.tags[0]) return -1;
-          if (a.tags[0] < b.tags[0]) return 1;
-          return 0;
-        });
-        break;
-      case SortType.LIKES_ASC:
-        result.cards = [...cards].sort(
-          (a, b) => countVotesForCard(a, votes) - countVotesForCard(b, votes)
-        );
-        break;
-      case SortType.LIKES_DSC:
-        result.cards = [...cards].sort(
-          (a, b) => countVotesForCard(b, votes) - countVotesForCard(a, votes)
-        );
-        break;
-      default:
-        result.date = date; //no changes were made so reset to initial date
-        break;
-    }
-
-    return result;
-  }
-}
-
-function countVotesForCard(card: Card, votes: Vote[]) {
-  let res = votes.filter((vote) => vote.cardId === card._id && vote.value === 1)
-    .length;
-  return res;
 }
