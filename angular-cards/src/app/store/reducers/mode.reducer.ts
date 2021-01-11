@@ -4,6 +4,7 @@ import { createReducer, on, Action } from "@ngrx/store";
 
 import { formMode, Mode } from "src/app/models/state";
 import { Card } from "src/app/models/Card";
+import { SortType } from "src/app/models/SortType";
 
 //initial state of the app
 export const initialState: Mode = {
@@ -16,7 +17,8 @@ export const initialState: Mode = {
   tags: [],
   currTab: 0,
   theme: localStorage.getItem("theme"),
-  filterChanged: undefined,
+  cardsChanged: undefined,
+  sortType: SortType.DATE_ASC,
 };
 
 //Reducer which will dispatch changes to the store
@@ -96,19 +98,24 @@ const _modeReducer = createReducer(
   on(StateActions.addTag, (state, { tag }) => ({
     ...state,
     tags: addTag(state.tags, tag),
-    filterChanged: new Date(),
+    cardsChanged: new Date(),
   })),
 
   on(StateActions.removeTag, (state, { tag }) => ({
     ...state,
     tags: removeInArray([...state.tags], tag),
-    filterChanged: new Date(),
+    cardsChanged: new Date(),
   })),
 
   on(StateActions.resetFilter, (state) => ({
     ...state,
     tags: initialState.tags,
-    filterChanged: new Date(),
+    cardsChanged: new Date(),
+  })),
+  on(StateActions.changeSorting, (state, { sortType }) => ({
+    ...state,
+    sortType: sortType,
+    cardsChanged: new Date(),
   }))
 );
 

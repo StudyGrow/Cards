@@ -1,8 +1,9 @@
-import { Card } from "./Card";
-import { User } from "./User";
-import { UserInfo } from "./UserInfo";
-import { Vorlesung } from "./Vorlesung";
-import { Vote } from "./Vote";
+import { Card } from './Card';
+import { SortType } from './SortType';
+import { User } from './User';
+import { UserInfo } from './UserInfo';
+import { Vorlesung } from './Vorlesung';
+import { Vote } from './Vote';
 
 export interface AppState {
   data: Data;
@@ -43,11 +44,12 @@ export interface Mode {
   hideSearchResults: boolean;
   loading: number;
   tags: string[];
-  filterChanged: Date;
+  cardsChanged: Date;
   currTab: number;
   theme: string;
+  sortType: SortType;
 }
 export enum formMode {
-  ADD = "add",
-  EDIT = "edit",
+  ADD = 'add',
+  EDIT = 'edit',
 }

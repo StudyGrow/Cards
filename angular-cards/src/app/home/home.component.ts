@@ -1,14 +1,14 @@
-import { Component, OnInit } from "@angular/core";
-import { Observable } from "rxjs";
-import { Store } from "@ngrx/store";
-import { map } from "rxjs/operators";
-import { authenticated } from "../store/selector";
-import { AppState } from "../models/state";
+import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { map } from 'rxjs/operators';
+import { authenticated } from '../store/selector';
+import { AppState } from '../models/state';
 
 @Component({
-  selector: "app-home",
-  templateUrl: "./home.component.html",
-  styleUrls: ["./home.component.scss"],
+  selector: 'app-home',
+  templateUrl: './home.component.html',
+  styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit {
   authenticated$: Observable<boolean>;
@@ -16,6 +16,6 @@ export class HomeComponent implements OnInit {
   constructor(private store: Store<AppState>) {}
 
   ngOnInit(): void {
-    this.authenticated$ = this.store.pipe(map(authenticated));
+    this.authenticated$ = this.store.select(authenticated);
   }
 }

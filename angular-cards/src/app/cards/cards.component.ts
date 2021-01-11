@@ -14,7 +14,7 @@ import { map, share } from "rxjs/operators";
 import { fetchCards } from "../store/actions/CardActions";
 import { fadeInOnEnterAnimation } from "angular-animations";
 import { changeTab, setSuggestionsMode } from "../store/actions/StateActions";
-import { getCardsData, selectCurrentTab } from "../store/selector";
+import { CurrentTab, getCardsData } from "../store/selector";
 import { AppState } from "../models/state";
 import { NotificationsService } from "../services/notifications.service";
 import { WarnMessage } from "../models/Notification";
@@ -40,7 +40,7 @@ export class CardsComponent implements OnInit, OnDestroy {
     }
   }
   //holds data from store
-  public data$: Observable<any> = this.store.pipe(map(getCardsData), share());
+  public data$: Observable<any> = this.store.select(getCardsData);
 
   public lecture$: Observable<Vorlesung> = this.data$.pipe(
     map((data) => data.currLecture)
@@ -57,7 +57,7 @@ export class CardsComponent implements OnInit, OnDestroy {
 
     this.store.dispatch(fetchCards());
 
-    this.selectedTab$ = this.store.pipe(map(selectCurrentTab));
+    this.selectedTab$ = this.store.select(CurrentTab);
 
     let sub = this.store.select("mode").subscribe((state) => {
       if (state.formMode !== this.formMode) {

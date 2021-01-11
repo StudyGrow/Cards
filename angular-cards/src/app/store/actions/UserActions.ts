@@ -1,20 +1,20 @@
-import { createAction, props } from "@ngrx/store";
-import { UserInfo } from "src/app/models/UserInfo";
-import { User } from "src/app/models/User";
+import { createAction, props } from '@ngrx/store';
+import { UserInfo } from 'src/app/models/UserInfo';
+import { User } from 'src/app/models/User';
 
 enum ActionTypes {
-  FETCH_USER_DATA = "[User] Fetch from server",
-  FETCH_USER_DATA_SUCCESS = "[User] Load success",
-  UPDATE_USER_DATA = "[User] Update user info",
-  UPDATE_USER_DATA_SUCCESS = "[User] successfull update of user info",
-  LOGOUT_USER = "[User] logout",
-  LOGOUT_USER_SUCCESS = "[User] logout success",
-  LOGIN_USER = "[User] login",
-  LOGIN_USER_SUCCESS = "[User] login success",
-  AUTHENTICATE = "[User] check if user is authenticated",
-  AUTHENTICATED = "[User]  user is authenticated",
-  REGISTER = "[User] register user account on server",
-  REGISTRY_SUCCESS = "[User] Account registry was successfull",
+  FETCH_USER_DATA = '[User] Fetch from server',
+  FETCH_USER_DATA_SUCCESS = '[User] Load success',
+  UPDATE_USER_DATA = '[User] Update user info',
+  UPDATE_USER_DATA_SUCCESS = '[User] successfull update of user info',
+  LOGOUT_USER = '[User] logout',
+  LOGOUT_USER_SUCCESS = '[User] logout success',
+  LOGIN_USER = '[User] login',
+  LOGIN_USER_SUCCESS = '[User] login success',
+  AUTHENTICATE = '[User] check if user is authenticated',
+  AUTHENTICATED = '[User]  user is authenticated',
+  REGISTER = '[User] register user account on server',
+  REGISTRY_SUCCESS = '[User] Account registry was successfull',
 }
 
 export const login = createAction(ActionTypes.LOGIN_USER, props<User>());

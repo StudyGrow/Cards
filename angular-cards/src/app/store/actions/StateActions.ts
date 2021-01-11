@@ -1,5 +1,6 @@
 import { createAction, props } from "@ngrx/store";
 import { Card } from "src/app/models/Card";
+import { SortType } from "src/app/models/SortType";
 
 enum ActionTypes {
   SET_FORM_MODE = "[Form] set display mode of form (edit, add, none, reset)",
@@ -18,11 +19,16 @@ enum ActionTypes {
   SET_ACITVE_CARD = "[Card] set the card which should be shown ",
   GO_NEXT = "[Cards] Go to the next slide ",
   GO_PREV = "[Cards] Go to the prev. slide ",
+  CHANGE_SORTING = "[SortType] change the sortType applied to the cards",
 }
 
 export const changeTab = createAction(
   ActionTypes.CHANGE_TAB,
   props<{ tab: number }>()
+);
+export const changeSorting = createAction(
+  ActionTypes.CHANGE_SORTING,
+  props<{ sortType: SortType }>()
 );
 export const applyFilter = createAction(
   ActionTypes.APPLY_FILTER,
