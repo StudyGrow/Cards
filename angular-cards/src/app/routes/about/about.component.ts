@@ -1,12 +1,12 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Component, OnInit, OnDestroy } from '@angular/core';
 
-import { UserService } from "src/app/services/user.service";
-import { Subscription } from "rxjs";
+import { UserService } from 'src/app/services/user.service';
+import { Subscription } from 'rxjs';
 
 @Component({
-  selector: "app-about",
-  templateUrl: "./about.component.html",
-  styleUrls: ["./about.component.scss"],
+  selector: 'app-about',
+  templateUrl: './about.component.html',
+  styleUrls: ['./about.component.scss'],
 })
 export class AboutComponent implements OnInit, OnDestroy {
   public loggedIn: boolean;

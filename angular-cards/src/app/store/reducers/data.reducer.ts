@@ -1,11 +1,11 @@
-import { Action, createReducer, on } from "@ngrx/store";
-import { Card } from "src/app/models/Card";
-import { Data } from "src/app/models/state";
-import { User } from "src/app/models/User";
-import { Vote } from "src/app/models/Vote";
-import * as CardActions from "../actions/CardActions";
-import * as LectureActions from "../actions/LectureActions";
-import * as UserActions from "../actions/UserActions";
+import { Action, createReducer, on } from '@ngrx/store';
+import { Card } from 'src/app/models/Card';
+import { Data } from 'src/app/models/state';
+import { User } from 'src/app/models/User';
+import { Vote } from 'src/app/models/Vote';
+import * as CardActions from '../actions/CardActions';
+import * as LectureActions from '../actions/LectureActions';
+import * as UserActions from '../actions/UserActions';
 
 const initialState: Data = {
   cardData: {

@@ -1,8 +1,8 @@
-import { async, ComponentFixture, TestBed } from "@angular/core/testing";
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { NewVlComponent } from "./new-vl.component";
+import { NewVlComponent } from './new-vl.component';
 
-describe("NewVlComponent", () => {
+describe('NewVlComponent', () => {
   let component: NewVlComponent;
   let fixture: ComponentFixture<NewVlComponent>;
 
@@ -18,7 +18,7 @@ describe("NewVlComponent", () => {
     fixture.detectChanges();
   });
 
-  it("should create", () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 });

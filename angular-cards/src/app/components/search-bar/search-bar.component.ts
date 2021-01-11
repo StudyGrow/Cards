@@ -1,27 +1,27 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
-import { Card } from "../../models/Card";
-import { SearchSuggestion } from "../../models/SearchSuggestion";
-import { Subscription, Observable } from "rxjs";
-import { Store } from "@ngrx/store";
-import { map, withLatestFrom } from "rxjs/operators";
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Card } from '../../models/Card';
+import { SearchSuggestion } from '../../models/SearchSuggestion';
+import { Subscription, Observable } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { map, withLatestFrom } from 'rxjs/operators';
 import {
   setTypingMode,
   setSuggestionsMode,
   resetFilter,
   changeTab,
   setActiveCard,
-} from "src/app/store/actions/StateActions";
+} from 'src/app/store/actions/StateActions';
 
-import { AllCards, DisplayedCards, FormMode } from "src/app/store/selector";
-import { FormControl } from "@angular/forms";
-import { AppState } from "src/app/models/state";
-import { WarnMessage } from "src/app/models/Notification";
-import { NotificationsService } from "src/app/services/notifications.service";
+import { AllCards, DisplayedCards, FormMode } from 'src/app/store/selector';
+import { FormControl } from '@angular/forms';
+import { AppState } from 'src/app/models/state';
+import { WarnMessage } from 'src/app/models/Notification';
+import { NotificationsService } from 'src/app/services/notifications.service';
 
 @Component({
-  selector: "app-search-bar",
-  templateUrl: "./search-bar.component.html",
-  styleUrls: ["./search-bar.component.scss"],
+  selector: 'app-search-bar',
+  templateUrl: './search-bar.component.html',
+  styleUrls: ['./search-bar.component.scss'],
 })
 export class SearchBarComponent implements OnInit, OnDestroy {
   uInput = new FormControl();
@@ -103,7 +103,7 @@ export class SearchBarComponent implements OnInit, OnDestroy {
     let allSuggestions: SearchSuggestion[] = []; //suggestions from all cards, more specifically from cards not in the carousel
 
     if (input?.length > 2) {
-      const regex = new RegExp(`${input}`, "gi");
+      const regex = new RegExp(`${input}`, 'gi');
 
       for (let i = 0; i < this.allCards.length; i++) {
         if (i < filteredCards.length && filteredCards[i].thema.match(regex)) {
@@ -124,8 +124,8 @@ export class SearchBarComponent implements OnInit, OnDestroy {
   navigateTo(e: Event, id: string) {
     e.preventDefault();
     this.uInput.reset();
-    if (this.formMode == "edit") {
-      let message = "Du musst erst die Bearbeitung der Karteikarte abschließen";
+    if (this.formMode == 'edit') {
+      let message = 'Du musst erst die Bearbeitung der Karteikarte abschließen';
       this.notifs.addNotification(new WarnMessage(message));
       return;
     }
@@ -157,11 +157,11 @@ export class SearchBarComponent implements OnInit, OnDestroy {
     this.size = paragraph.offsetWidth;
     this.enabled = true;
     var time = this.size * 0.02;
-    paragraph.classList.add("textToScroll");
-    paragraph.style.setProperty("--time", time.toString());
+    paragraph.classList.add('textToScroll');
+    paragraph.style.setProperty('--time', time.toString());
   }
   endScroll(paragraph: HTMLElement) {
     this.enabled = false;
-    paragraph.classList.remove("textToScroll");
+    paragraph.classList.remove('textToScroll');
   }
 }

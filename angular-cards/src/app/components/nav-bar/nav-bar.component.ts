@@ -1,33 +1,33 @@
-import { Component, OnInit, OnDestroy, ChangeDetectorRef } from "@angular/core";
-import { Card } from "../../models/Card";
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { Card } from '../../models/Card';
 import {
   Router,
   NavigationEnd,
   RouterEvent,
   RoutesRecognized,
-} from "@angular/router";
-import { Title } from "@angular/platform-browser";
-import { Subscription, Observable, combineLatest } from "rxjs";
-import { Store } from "@ngrx/store";
+} from '@angular/router';
+import { Title } from '@angular/platform-browser';
+import { Subscription, Observable, combineLatest } from 'rxjs';
+import { Store } from '@ngrx/store';
 
-import { filter, map, withLatestFrom } from "rxjs/operators";
+import { filter, map, withLatestFrom } from 'rxjs/operators';
 import {
   ActiveIndex,
   DisplayedCards,
   LoadingState,
-} from "src/app/store/selector";
-import { clearCardData } from "src/app/store/actions/CardActions";
-import { AppState, Data, Mode } from "src/app/models/state";
-import { NavbarToggleService } from "src/app/services/navbar-toggle.service";
+} from 'src/app/store/selector';
+import { clearCardData } from 'src/app/store/actions/CardActions';
+import { AppState, Data, Mode } from 'src/app/models/state';
+import { NavbarToggleService } from 'src/app/services/navbar-toggle.service';
 
 @Component({
-  selector: "app-nav-bar",
-  templateUrl: "./nav-bar.component.html",
-  styleUrls: ["./nav-bar.component.scss"],
+  selector: 'app-nav-bar',
+  templateUrl: './nav-bar.component.html',
+  styleUrls: ['./nav-bar.component.scss'],
 })
 export class NavBarComponent implements OnInit, OnDestroy {
-  private data$: Observable<Data> = this.store.select("data");
-  private mode$: Observable<Mode> = this.store.select("mode");
+  private data$: Observable<Data> = this.store.select('data');
+  private mode$: Observable<Mode> = this.store.select('mode');
 
   loggedIn: boolean;
   cards: Card[] = [];
@@ -89,9 +89,9 @@ export class NavBarComponent implements OnInit, OnDestroy {
   }
   private updateTitle() {
     if (this.router.url.match(/account/)) {
-      this.titleService.setTitle("Account");
-    } else if (this.router.url == "/") {
-      this.titleService.setTitle("Home");
+      this.titleService.setTitle('Account');
+    } else if (this.router.url == '/') {
+      this.titleService.setTitle('Home');
     }
   }
 
@@ -102,26 +102,26 @@ export class NavBarComponent implements OnInit, OnDestroy {
   }
 
   isActive(path: string): string {
-    return path === this.router.url ? "active" : "";
+    return path === this.router.url ? 'active' : '';
   }
 
   setPageTitle(e: RouterEvent): void {
-    let currentTitle = "Cards";
+    let currentTitle = 'Cards';
 
     switch (e.url) {
-      case "/login":
-        currentTitle = "Login";
+      case '/login':
+        currentTitle = 'Login';
         break;
-      case "/signup":
-        currentTitle = "Sign Up";
+      case '/signup':
+        currentTitle = 'Sign Up';
         break;
-      case "/":
-        currentTitle = "Home";
+      case '/':
+        currentTitle = 'Home';
         break;
 
       default:
         if (this.router.url.match(/account/)) {
-          currentTitle = "Account";
+          currentTitle = 'Account';
         }
         break;
     }

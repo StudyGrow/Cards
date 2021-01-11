@@ -1,9 +1,9 @@
-import { Card } from "./Card";
-import { SortType } from "./SortType";
-import { User } from "./User";
-import { UserInfo } from "./UserInfo";
-import { Vorlesung } from "./Vorlesung";
-import { Vote } from "./Vote";
+import { Card } from './Card';
+import { SortType } from './SortType';
+import { User } from './User';
+import { UserInfo } from './UserInfo';
+import { Vorlesung } from './Vorlesung';
+import { Vote } from './Vote';
 
 export interface AppState {
   data: Data;
@@ -50,6 +50,6 @@ export interface Mode {
   sortType: SortType;
 }
 export enum formMode {
-  ADD = "add",
-  EDIT = "edit",
+  ADD = 'add',
+  EDIT = 'edit',
 }

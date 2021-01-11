@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 import {
   HttpEvent,
   HttpRequest,
@@ -6,18 +6,18 @@ import {
   HttpInterceptor,
   HttpHandler,
   HttpErrorResponse,
-} from "@angular/common/http";
+} from '@angular/common/http';
 
-import { Observable, of, throwError } from "rxjs";
-import { catchError, map, tap, timeout } from "rxjs/operators";
-import { RequestCache } from "./request-cache.service";
-import { Store } from "@ngrx/store";
-import { NotificationsService } from "../notifications.service";
+import { Observable, of, throwError } from 'rxjs';
+import { catchError, map, tap, timeout } from 'rxjs/operators';
+import { RequestCache } from './request-cache.service';
+import { Store } from '@ngrx/store';
+import { NotificationsService } from '../notifications.service';
 import {
   decrementLoading,
   incrementLoading,
-} from "src/app/store/actions/StateActions";
-import { WarnMessage } from "src/app/models/Notification";
+} from 'src/app/store/actions/StateActions';
+import { WarnMessage } from 'src/app/models/Notification';
 
 @Injectable()
 export class CachingInterceptor implements HttpInterceptor {
@@ -59,7 +59,7 @@ export class CachingInterceptor implements HttpInterceptor {
       tap((event) => {
         if (event instanceof HttpResponse) {
           this.store.dispatch(decrementLoading());
-          if (req.method == "GET" && event.status == 200) cache.put(req, event); //only cache valid get requests
+          if (req.method == 'GET' && event.status == 200) cache.put(req, event); //only cache valid get requests
         }
       }),
       catchError((err) => this.handleError(err, cachedResp))
@@ -77,13 +77,13 @@ export class CachingInterceptor implements HttpInterceptor {
       //server error but data was cached
       this.notifs.addNotification(
         new WarnMessage(
-          "Der Server ist offline, die Karten werden aus lokalem Speicher geladen"
+          'Der Server ist offline, die Karten werden aus lokalem Speicher geladen'
         )
       );
       return of(cachedResp);
     }
     this.notifs.handleErrors(error); //make a notification for error
     // Return an observable with error message.
-    return throwError("Ein unbekannter Fehler ist aufgetreten");
+    return throwError('Ein unbekannter Fehler ist aufgetreten');
   }
 }

@@ -1,6 +1,6 @@
-import { Injectable } from "@angular/core";
-import { Actions, Effect, ofType, createEffect } from "@ngrx/effects";
-import { of, Observable } from "rxjs";
+import { Injectable } from '@angular/core';
+import { Actions, Effect, ofType, createEffect } from '@ngrx/effects';
+import { of, Observable } from 'rxjs';
 import {
   share,
   tap,
@@ -9,9 +9,9 @@ import {
   filter,
   shareReplay,
   switchMap,
-} from "rxjs/operators";
+} from 'rxjs/operators';
 
-import { catchError, map, mergeMap, exhaustMap } from "rxjs/operators";
+import { catchError, map, mergeMap, exhaustMap } from 'rxjs/operators';
 import {
   LoadFailure,
   FetchCardsActions,
@@ -21,12 +21,12 @@ import {
   fetchVotesSuccess,
   changeVote,
   changeVoteSuccess,
-} from "../actions/CardActions";
-import * as LectureActions from "../actions/LectureActions";
-import { CardsService } from "../../services/cards.service";
-import { LecturesService } from "../../services/lectures.service";
+} from '../actions/CardActions';
+import * as LectureActions from '../actions/LectureActions';
+import { CardsService } from '../../services/cards.service';
+import { LecturesService } from '../../services/lectures.service';
 
-import { Store } from "@ngrx/store";
+import { Store } from '@ngrx/store';
 import {
   fetchUserData,
   fetchUserDataSuccess,
@@ -39,16 +39,16 @@ import {
   authenticated,
   logoutSuccess,
   createAccount,
-} from "../actions/UserActions";
-import { UserService } from "src/app/services/user.service";
+} from '../actions/UserActions';
+import { UserService } from 'src/app/services/user.service';
 
-import { Router } from "@angular/router";
-import { NotificationsService } from "src/app/services/notifications.service";
-import { SuccessMessage } from "src/app/models/Notification";
-import { VotesService } from "src/app/services/votes.service";
+import { Router } from '@angular/router';
+import { NotificationsService } from 'src/app/services/notifications.service';
+import { SuccessMessage } from 'src/app/models/Notification';
+import { VotesService } from 'src/app/services/votes.service';
 
-import { CardsData } from "src/app/models/Card";
-import { setActiveCard } from "../actions/StateActions";
+import { CardsData } from 'src/app/models/Card';
+import { setActiveCard } from '../actions/StateActions';
 
 @Injectable()
 export class CardsEffects {
@@ -212,7 +212,7 @@ export class CardsEffects {
         this.user.login(user).pipe(
           tap((user) => {
             if (user) {
-              this.router.navigateByUrl("/");
+              this.router.navigateByUrl('/');
               this.notifications.addNotification(
                 new SuccessMessage(`Willkommen ${user.username}`)
               );
@@ -233,10 +233,10 @@ export class CardsEffects {
       mergeMap(() =>
         this.user.logoutServer().pipe(
           tap((success) => {
-            this.router.navigateByUrl("/");
+            this.router.navigateByUrl('/');
             if (success)
               this.notifications.addNotification(
-                new SuccessMessage("Erfolgreich abgemeldet")
+                new SuccessMessage('Erfolgreich abgemeldet')
               );
           }),
           map(() => logoutSuccess()),

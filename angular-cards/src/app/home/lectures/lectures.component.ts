@@ -1,16 +1,16 @@
-import { Component, OnInit } from "@angular/core";
-import { Vorlesung } from "../../models/Vorlesung";
+import { Component, OnInit } from '@angular/core';
+import { Vorlesung } from '../../models/Vorlesung';
 
-import { Observable } from "rxjs";
-import { Store } from "@ngrx/store";
-import { fetchLectures } from "src/app/store/actions/LectureActions";
-import { map } from "rxjs/operators";
-import { Lectures } from "src/app/store/selector";
-import { AppState } from "src/app/models/state";
+import { Observable } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { fetchLectures } from 'src/app/store/actions/LectureActions';
+import { map } from 'rxjs/operators';
+import { Lectures } from 'src/app/store/selector';
+import { AppState } from 'src/app/models/state';
 @Component({
-  selector: "app-lectures",
-  templateUrl: "./lectures.component.html",
-  styleUrls: ["./lectures.component.scss"],
+  selector: 'app-lectures',
+  templateUrl: './lectures.component.html',
+  styleUrls: ['./lectures.component.scss'],
 })
 export class LecturesComponent implements OnInit {
   lectures$: Observable<Vorlesung[]>;
@@ -23,6 +23,6 @@ export class LecturesComponent implements OnInit {
   }
 
   setLink(lecture: Vorlesung) {
-    return "/vorlesung/" + lecture.abrv;
+    return '/vorlesung/' + lecture.abrv;
   }
 }

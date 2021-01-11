@@ -1,17 +1,17 @@
-import { Component, OnInit, OnDestroy, Input } from "@angular/core";
-import { Store } from "@ngrx/store";
-import { Observable, Subscription } from "rxjs";
-import { delay, map } from "rxjs/operators";
-import { AppState } from "src/app/models/state";
-import { Vote } from "src/app/models/Vote";
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { Observable, Subscription } from 'rxjs';
+import { delay, map } from 'rxjs/operators';
+import { AppState } from 'src/app/models/state';
+import { Vote } from 'src/app/models/Vote';
 
-import { authenticated, UserVote, VoteCount } from "src/app/store/selector";
-import { changeVote } from "../../store/actions/CardActions";
+import { authenticated, UserVote, VoteCount } from 'src/app/store/selector';
+import { changeVote } from '../../store/actions/CardActions';
 
 @Component({
-  selector: "app-vote",
-  templateUrl: "./vote.component.html",
-  styleUrls: ["./vote.component.css"],
+  selector: 'app-vote',
+  templateUrl: './vote.component.html',
+  styleUrls: ['./vote.component.css'],
 })
 export class VoteComponent implements OnInit, OnDestroy {
   vote: Vote = new Vote();

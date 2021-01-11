@@ -1,11 +1,11 @@
-import { createSelector } from "@ngrx/store";
+import { createSelector } from '@ngrx/store';
 
-import { Card } from "../models/Card";
-import { Vorlesung } from "../models/Vorlesung";
-import { AppState } from "../models/state";
+import { Card } from '../models/Card';
+import { Vorlesung } from '../models/Vorlesung';
+import { AppState } from '../models/state';
 
-import { SortType } from "../models/SortType";
-import { Vote } from "../models/Vote";
+import { SortType } from '../models/SortType';
+import { Vote } from '../models/Vote';
 
 /**
  * Get all cards for a certain lecture from store
