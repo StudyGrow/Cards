@@ -14,7 +14,7 @@ import {
 
 import {
   selectAllCards,
-  selectFilteredCards,
+  selectDisplayedCards,
   selectFormMode,
 } from "src/app/store/selector";
 import { FormControl } from "@angular/forms";
@@ -61,13 +61,13 @@ export class SearchBarComponent implements OnInit, OnDestroy {
       this.allCards = allCards;
     });
     this.subscriptions$.push(sub);
-    let filteredCards$ = this.store.pipe(map(selectFilteredCards));
-    sub = filteredCards$.subscribe((filtered) => {
+    let DisplayedCards$ = this.store.pipe(map(selectDisplayedCards));
+    sub = DisplayedCards$.subscribe((filtered) => {
       this.currentSelection = filtered;
     });
 
     let filteredSuggestions = this.uInput.valueChanges.pipe(
-      withLatestFrom(allCards$, filteredCards$),
+      withLatestFrom(allCards$, DisplayedCards$),
       map(
         ([input, allCards, filteredCards]) =>
           this.findMatches(input, allCards, filteredCards) || {

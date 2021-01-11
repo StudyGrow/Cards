@@ -1,53 +1,44 @@
-export enum sortType {
-  DATE_ASC = "dat.up",
-  DATE_DSC = "dat.down",
-  AUTHOR_ASC = "auth.up",
-  AUTHOR_DSC = "auth.down",
-  TAGS_ASC = "tags.up",
-  TAGS_DSC = "tags.down",
-  LIKES_ASC = "likes.up",
-  LIKES_DSC = "likes.down",
-}
+import { SortType } from "src/app/models/SortType";
 
 export const sortOptions = [
   {
-    key: sortType.DATE_DSC,
+    key: SortType.DATE_DSC,
     value: "Neueste",
     icon: "today",
   },
   {
-    key: sortType.LIKES_DSC,
+    key: SortType.LIKES_DSC,
     value: "Meisten Likes",
     icon: "favorite",
   },
 
   {
-    key: sortType.AUTHOR_ASC,
+    key: SortType.AUTHOR_ASC,
     value: "Author (A-Z)",
     icon: "person",
   },
   {
-    key: sortType.AUTHOR_DSC,
+    key: SortType.AUTHOR_DSC,
     value: "Author (Z-A)",
     icon: "person",
   },
   {
-    key: sortType.TAGS_ASC,
+    key: SortType.TAGS_ASC,
     value: "Tags (A-Z)",
     icon: "local_offer",
   },
   {
-    key: sortType.TAGS_DSC,
+    key: SortType.TAGS_DSC,
     value: "Tags (Z-A)",
     icon: "local_offer",
   },
   {
-    key: sortType.DATE_ASC,
+    key: SortType.DATE_ASC,
     value: "Älteste",
     icon: "today",
   },
   {
-    key: sortType.LIKES_ASC,
+    key: SortType.LIKES_ASC,
     value: "Wenigsten Likes",
     icon: "favorite",
   },

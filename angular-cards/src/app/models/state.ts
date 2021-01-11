@@ -1,4 +1,5 @@
 import { Card } from "./Card";
+import { SortType } from "./SortType";
 import { User } from "./User";
 import { UserInfo } from "./UserInfo";
 import { Vorlesung } from "./Vorlesung";
@@ -43,9 +44,10 @@ export interface Mode {
   hideSearchResults: boolean;
   loading: number;
   tags: string[];
-  filterChanged: Date;
+  cardsChanged: Date;
   currTab: number;
   theme: string;
+  sortType: SortType;
 }
 export enum formMode {
   ADD = "add",

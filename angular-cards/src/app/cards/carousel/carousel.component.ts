@@ -30,7 +30,7 @@ import {
 } from "src/app/store/actions/StateActions";
 
 import { map } from "rxjs/operators";
-import { selectFilteredCards, selectUserId } from "src/app/store/selector";
+import { selectDisplayedCards, selectUserId } from "src/app/store/selector";
 import { NgbCarousel, NgbSlideEvent } from "@ng-bootstrap/ng-bootstrap";
 import { NotificationsService } from "src/app/services/notifications.service";
 import { WarnMessage } from "src/app/models/Notification";
@@ -43,7 +43,8 @@ import {
   MatBottomSheetRef,
 } from "@angular/material/bottom-sheet";
 import { Vote } from "src/app/models/Vote";
-import { sortOptions, sortType } from "./sortOptions";
+import { sortOptions } from "./sortOptions";
+import { SortType } from "src/app/models/SortType";
 
 @Component({
   selector: "app-bottom-sheet",
@@ -51,7 +52,7 @@ import { sortOptions, sortType } from "./sortOptions";
 })
 export class BottomSheetComponent {
   options: {
-    key: sortType;
+    key: SortType;
     value: string;
     icon?: string;
   }[];
@@ -61,7 +62,7 @@ export class BottomSheetComponent {
   ) {
     this.options = sortOptions;
   }
-  sort(key: sortType) {
+  sort(key: SortType) {
     this._bottomSheetRef.dismiss(key);
   }
 }
@@ -100,7 +101,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
   subscriptions$: Subscription[] = []; //holds all subscriptions from observables they are unsubscribed in ngOnDestroy
 
   sortOption$: BehaviorSubject<{
-    type: sortType;
+    type: SortType;
     date: Date;
   }> = new BehaviorSubject({ type: undefined, date: undefined }); //subject which holds the type of sorting for the cards. undefined if the user has done no selection
 
@@ -162,7 +163,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
     });
     this.subscriptions$.push(sub);
 
-    let filtered$ = this.mode$.pipe(map((state) => state.filterChanged)); //observable of timestamp at which user has modified the selected tags for filtering
+    let filtered$ = this.mode$.pipe(map((state) => state.cardsChanged)); //observable of timestamp at which user has modified the selected tags for filtering
     let added$ = this.data$.pipe(map((state) => state.cardData.lastUpdated)); //observable of timestamp at the cards were last modified
 
     //observable which holds the maximum of filtered$ and added$ which represents the lastChanges which were made
@@ -178,7 +179,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
     sub = combineLatest([
       this.sortOption$.asObservable(),
       lastChanges$,
-      this.store.pipe(map(selectFilteredCards)),
+      this.store.pipe(map(selectDisplayedCards)),
       votes$,
     ])
       .pipe(
@@ -278,7 +279,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
   //opens bottom sheet with sort options. Handles the selected sort type
   openBottomSheet(): void {
     let ref = this._bottomSheet.open(BottomSheetComponent);
-    ref.afterDismissed().subscribe((key: sortType) => {
+    ref.afterDismissed().subscribe((key: SortType) => {
       if (key) {
         this.sortOption$.next({ type: key, date: new Date() });
       }
@@ -360,7 +361,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
   }
 
   private static sortCards(
-    type: sortType,
+    type: SortType,
     date: Date,
     cards: Card[],
     votes: Vote[]
@@ -368,7 +369,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
     let result = { cards: cards, date: date };
     result.date = new Date(); //will be overwritten by initial date if no change is made
     switch (type) {
-      case sortType.DATE_ASC:
+      case SortType.DATE_ASC:
         result.cards = [...cards].sort((a, b) => {
           if (!a.date && !b.date) return 0;
           if (!a.date) return 1;
@@ -379,7 +380,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
           return 0;
         });
         break;
-      case sortType.DATE_DSC:
+      case SortType.DATE_DSC:
         result.cards = [...cards].sort((a, b) => {
           if (!a.date && !b.date) return 0;
           if (!a.date) return 1;
@@ -390,7 +391,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
           return 0;
         });
         break;
-      case sortType.AUTHOR_ASC:
+      case SortType.AUTHOR_ASC:
         result.cards = [...cards].sort((a, b) => {
           if (!a.authorName && !b.authorName) return 0;
           if (!a.authorName) return 1;
@@ -400,7 +401,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
           return 0;
         });
         break;
-      case sortType.AUTHOR_DSC:
+      case SortType.AUTHOR_DSC:
         result.cards = [...cards].sort((a, b) => {
           if (!a.authorName && !b.authorName) return 0;
           if (!a.authorName) return 1;
@@ -410,7 +411,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
           return 0;
         });
         break;
-      case sortType.TAGS_ASC:
+      case SortType.TAGS_ASC:
         result.cards = [...cards].sort((a, b) => {
           if (!a.tags && !b.tags) return 0;
           if (!a.tags) return 1;
@@ -420,7 +421,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
           return 0;
         });
         break;
-      case sortType.TAGS_DSC:
+      case SortType.TAGS_DSC:
         result.cards = [...cards].sort((a, b) => {
           if (!a.tags && !b.tags) return 0;
           if (!a.tags) return 1;
@@ -430,12 +431,12 @@ export class CarouselComponent implements OnInit, OnDestroy {
           return 0;
         });
         break;
-      case sortType.LIKES_ASC:
+      case SortType.LIKES_ASC:
         result.cards = [...cards].sort(
           (a, b) => countVotesForCard(a, votes) - countVotesForCard(b, votes)
         );
         break;
-      case sortType.LIKES_DSC:
+      case SortType.LIKES_DSC:
         result.cards = [...cards].sort(
           (a, b) => countVotesForCard(b, votes) - countVotesForCard(a, votes)
         );

@@ -12,9 +12,9 @@ import { Store } from "@ngrx/store";
 
 import { filter, map, withLatestFrom } from "rxjs/operators";
 import {
-  isLoading,
   selectActiveIndex,
-  selectFilteredCards,
+  selectDisplayedCards,
+  selectLoadingState,
 } from "src/app/store/selector";
 import { clearCardData } from "src/app/store/actions/CardActions";
 import { AppState, Data, Mode } from "src/app/models/state";
@@ -49,14 +49,14 @@ export class NavBarComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     setTimeout(() => {
-      let sub = this.store.pipe(map(isLoading)).subscribe((val) => {
+      let sub = this.store.pipe(map(selectLoadingState)).subscribe((val) => {
         this.loading = val;
         this.cdr.detectChanges();
       });
       this.subscriptions$.push(sub);
 
       let cardCount$ = this.store.pipe(
-        map(selectFilteredCards),
+        map(selectDisplayedCards),
         map((cards) => cards?.length)
       );
       //progress of carousel. will be undefined if there are no cards
