@@ -12,11 +12,7 @@ import {
   setActiveCard,
 } from "src/app/store/actions/StateActions";
 
-import {
-  selectAllCards,
-  selectDisplayedCards,
-  selectFormMode,
-} from "src/app/store/selector";
+import { AllCards, DisplayedCards, FormMode } from "src/app/store/selector";
 import { FormControl } from "@angular/forms";
 import { AppState } from "src/app/models/state";
 import { WarnMessage } from "src/app/models/Notification";
@@ -56,12 +52,12 @@ export class SearchBarComponent implements OnInit, OnDestroy {
         }
       });
     this.subscriptions$.push(sub);
-    let allCards$ = this.store.pipe(map(selectAllCards));
+    let allCards$ = this.store.select(AllCards);
     sub = allCards$.subscribe((allCards) => {
       this.allCards = allCards;
     });
     this.subscriptions$.push(sub);
-    let DisplayedCards$ = this.store.pipe(map(selectDisplayedCards));
+    let DisplayedCards$ = this.store.select(DisplayedCards);
     sub = DisplayedCards$.subscribe((filtered) => {
       this.currentSelection = filtered;
     });
@@ -82,9 +78,7 @@ export class SearchBarComponent implements OnInit, OnDestroy {
     this.allSuggestions$ = filteredSuggestions.pipe(
       map((res) => res?.allSuggestions)
     );
-    this.store
-      .pipe(map(selectFormMode))
-      .subscribe((mode) => (this.formMode = mode));
+    this.store.select(FormMode).subscribe((mode) => (this.formMode = mode));
   }
 
   ngOnDestroy() {

@@ -24,7 +24,7 @@ export class CardComponent implements OnInit, OnDestroy {
   private mode$ = this.store.select("mode");
   inTypingField: boolean = false;
   activeIndex: number;
-  auth$: Observable<boolean> = this.store.pipe(map(authenticated));
+  auth$: Observable<boolean> = this.store.select(authenticated);
 
   parsed: any = [];
 

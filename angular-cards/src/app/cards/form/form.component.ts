@@ -7,7 +7,7 @@ import { MatDialog } from "@angular/material/dialog";
 
 import { MatSlideToggle } from "@angular/material/slide-toggle";
 import { Router } from "@angular/router";
-import { Store } from "@ngrx/store";
+import { select, Store } from "@ngrx/store";
 import { Observable, Subscription } from "rxjs";
 import { map, startWith, withLatestFrom } from "rxjs/operators";
 import { DialogueComponent } from "src/app/components/dialogue/dialogue.component";
@@ -28,11 +28,11 @@ import { CardsEffects } from "src/app/store/effects/effects";
 import { AppState } from "../../models/state";
 import { parse, HtmlGenerator } from "latex.js/dist/latex.js";
 import {
-  selectAllTags,
-  selectFormMode,
-  selectUser,
-  selectCurrentLecture,
-  selectCurrentCard,
+  AllTags,
+  CurrentCard,
+  CurrentLecture,
+  FormMode,
+  user,
 } from "src/app/store/selector";
 
 class CardFormData {
@@ -110,7 +110,7 @@ export class FormComponent implements OnInit, OnDestroy {
     let sub: Subscription;
 
     sub = this.store
-      .pipe(map(selectUser)) //get user
+      .select(user) //get user
       .subscribe((user) => {
         if (user && this.author !== user) {
           this.author = user;
@@ -119,14 +119,14 @@ export class FormComponent implements OnInit, OnDestroy {
     this.subscriptions$.push(sub);
 
     //FormMode
-    this.formMode$ = this.store.pipe(map(selectFormMode));
+    this.formMode$ = this.store.select(FormMode);
 
     //input from tagfield
     let tagInput$ = this.form.valueChanges.pipe(
       map((val: CardFormData) => val.tag)
     );
 
-    let allTags$ = this.store.pipe(map(selectAllTags)); //get all tags
+    let allTags$ = this.store.select(AllTags); //get all tags
 
     //suggestions for autocomplete
     this.tagsSuggestions$ = tagInput$.pipe(
@@ -141,7 +141,7 @@ export class FormComponent implements OnInit, OnDestroy {
     sub = this.store
       .pipe(
         //create new global state interface
-        map(selectCurrentCard),
+        map(CurrentCard),
         withLatestFrom(this.formMode$),
         withLatestFrom(tab$)
       )
@@ -160,7 +160,7 @@ export class FormComponent implements OnInit, OnDestroy {
       });
     this.subscriptions$.push(sub);
 
-    sub = this.store.pipe(map(selectCurrentLecture)).subscribe((lect) => {
+    sub = this.store.select(CurrentLecture).subscribe((lect) => {
       if (lect) {
         this.lecture = lect;
       }

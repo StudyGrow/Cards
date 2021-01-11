@@ -41,14 +41,14 @@ import {
   createAccount,
 } from "../actions/UserActions";
 import { UserService } from "src/app/services/user.service";
-import { selectActiveIndex, selectLastCardIndex } from "../selector";
+
 import { Router } from "@angular/router";
 import { NotificationsService } from "src/app/services/notifications.service";
 import { SuccessMessage } from "src/app/models/Notification";
 import { VotesService } from "src/app/services/votes.service";
 
 import { CardsData } from "src/app/models/Card";
-import { setActiveCard, setActiveCardIndex } from "../actions/StateActions";
+import { setActiveCard } from "../actions/StateActions";
 
 @Injectable()
 export class CardsEffects {

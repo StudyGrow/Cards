@@ -45,7 +45,7 @@ export class NavListComponent implements OnInit {
       }
     });
 
-    this.loggedIn$ = this.store.pipe(map(authenticated));
+    this.loggedIn$ = this.store.select(authenticated);
   }
 
   logout() {

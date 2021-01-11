@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { Store } from "@ngrx/store";
 import { map } from "rxjs/operators";
-import { selectUserInfo } from "../store/selector";
+import { userInfo } from "../store/selector";
 import { Subscription } from "rxjs";
 import { AppState } from "../models/state";
 
@@ -20,7 +20,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     let sub = this.store
 
       .pipe(
-        map(selectUserInfo),
+        map(userInfo),
         map((info) => info.cards)
       )
       .subscribe((cards) => {

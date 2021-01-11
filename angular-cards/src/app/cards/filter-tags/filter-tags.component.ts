@@ -15,11 +15,7 @@ import {
   removeTag,
   addTag,
 } from "src/app/store/actions/StateActions";
-import {
-  selectActiveTags,
-  selectTagOptions,
-  selectCurrentLecture,
-} from "src/app/store/selector";
+import { ActiveTags, CurrentLecture, TagOptions } from "src/app/store/selector";
 import { AppState } from "src/app/models/state";
 
 @Component({
@@ -28,7 +24,7 @@ import { AppState } from "src/app/models/state";
   styleUrls: ["./filter-tags.component.scss"],
 })
 export class FilterTagsComponent implements OnInit {
-  lecture$: Observable<Vorlesung> = this.store.pipe(map(selectCurrentLecture));
+  lecture$: Observable<Vorlesung> = this.store.select(CurrentLecture);
   selected$: Observable<string[]>; //actively selected tags
   separatorKeysCodes: number[] = [ENTER, COMMA];
   formCtrl = new FormControl("");
@@ -41,11 +37,11 @@ export class FilterTagsComponent implements OnInit {
   constructor(private store: Store<AppState>) {}
 
   ngOnInit(): void {
-    this.selected$ = this.store.pipe(map(selectActiveTags));
+    this.selected$ = this.store.select(ActiveTags);
     this.filteredTags$ = this.formCtrl.valueChanges.pipe(
       //autocomplete
       startWith(""),
-      withLatestFrom(this.store.pipe(map(selectTagOptions))), //get all available tags
+      withLatestFrom(this.store.select(TagOptions)), //get all available tags
       map(([input, tags]: [string, string[]]) => {
         return input?.length > 0 ? this._filter(input, tags) : tags;
       }),

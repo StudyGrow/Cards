@@ -30,7 +30,7 @@ import {
 } from "src/app/store/actions/StateActions";
 
 import { map } from "rxjs/operators";
-import { selectDisplayedCards, selectUserId } from "src/app/store/selector";
+import { DisplayedCards, UserId } from "src/app/store/selector";
 import { NgbCarousel, NgbSlideEvent } from "@ng-bootstrap/ng-bootstrap";
 import { NotificationsService } from "src/app/services/notifications.service";
 import { WarnMessage } from "src/app/models/Notification";
@@ -156,7 +156,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
     this.subscriptions$.push(sub);
 
     //get the user id to check if user has the rigth to edit the card
-    sub = this.store.pipe(map(selectUserId)).subscribe((id) => {
+    sub = this.store.select(UserId).subscribe((id) => {
       if (this.uid !== id) {
         this.uid = id;
       }
@@ -173,13 +173,13 @@ export class CarouselComponent implements OnInit, OnDestroy {
       )
     );
 
-    let votes$ = this.store.pipe(map((state) => state.data.cardData.votes));
+    let votes$ = this.store.select((state) => state.data.cardData.votes);
 
     //observable which holds the final cards which should be displayed in the carousel (filtered and sorted)
     sub = combineLatest([
       this.sortOption$.asObservable(),
       lastChanges$,
-      this.store.pipe(map(selectDisplayedCards)),
+      this.store.select(DisplayedCards),
       votes$,
     ])
       .pipe(

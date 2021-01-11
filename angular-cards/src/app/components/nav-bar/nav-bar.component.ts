@@ -7,14 +7,14 @@ import {
   RoutesRecognized,
 } from "@angular/router";
 import { Title } from "@angular/platform-browser";
-import { Subscription, Observable } from "rxjs";
+import { Subscription, Observable, combineLatest } from "rxjs";
 import { Store } from "@ngrx/store";
 
 import { filter, map, withLatestFrom } from "rxjs/operators";
 import {
-  selectActiveIndex,
-  selectDisplayedCards,
-  selectLoadingState,
+  ActiveIndex,
+  DisplayedCards,
+  LoadingState,
 } from "src/app/store/selector";
 import { clearCardData } from "src/app/store/actions/CardActions";
 import { AppState, Data, Mode } from "src/app/models/state";
@@ -49,22 +49,20 @@ export class NavBarComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     setTimeout(() => {
-      let sub = this.store.pipe(map(selectLoadingState)).subscribe((val) => {
+      let sub = this.store.select(LoadingState).subscribe((val) => {
         this.loading = val;
         this.cdr.detectChanges();
       });
       this.subscriptions$.push(sub);
 
-      let cardCount$ = this.store.pipe(
-        map(selectDisplayedCards),
-        map((cards) => cards?.length)
-      );
+      let cardCount$ = this.store
+        .select(DisplayedCards)
+        .pipe(map((cards) => cards?.length));
       //progress of carousel. will be undefined if there are no cards
-      this.progress$ = this.store.pipe(
-        map(selectActiveIndex),
-        withLatestFrom(cardCount$),
-        map(([curr, all]) => (all ? (100 * curr) / all : undefined))
-      );
+      this.progress$ = combineLatest([
+        this.store.select(ActiveIndex),
+        cardCount$,
+      ]).pipe(map(([curr, all]) => (all ? (100 * curr) / all : undefined)));
 
       sub = this.router.events
         .pipe(filter((e): e is RouterEvent => e instanceof RouterEvent))

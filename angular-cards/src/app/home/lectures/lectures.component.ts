@@ -5,7 +5,7 @@ import { Observable } from "rxjs";
 import { Store } from "@ngrx/store";
 import { fetchLectures } from "src/app/store/actions/LectureActions";
 import { map } from "rxjs/operators";
-import { selectLectures } from "src/app/store/selector";
+import { Lectures } from "src/app/store/selector";
 import { AppState } from "src/app/models/state";
 @Component({
   selector: "app-lectures",
@@ -19,7 +19,7 @@ export class LecturesComponent implements OnInit {
 
   ngOnInit(): void {
     this.store.dispatch(fetchLectures());
-    this.lectures$ = this.store.pipe(map(selectLectures));
+    this.lectures$ = this.store.select(Lectures);
   }
 
   setLink(lecture: Vorlesung) {

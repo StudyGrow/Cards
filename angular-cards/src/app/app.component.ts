@@ -1,15 +1,10 @@
-import { Component, ViewChild, ElementRef, isDevMode } from "@angular/core";
+import { Component, isDevMode } from "@angular/core";
 import { Title } from "@angular/platform-browser";
-import { Router } from "@angular/router";
 import { Store } from "@ngrx/store";
 import { Observable } from "rxjs";
-import { map } from "rxjs/operators";
 import { AppState } from "./models/state";
-import { LecturesService } from "./services/lectures.service";
 import { ThemesService } from "./services/themes.service";
-import { changeTheme } from "./store/actions/StateActions";
 import { auth } from "./store/actions/UserActions";
-import { selectFilteredCards } from "./store/selector";
 
 @Component({
   selector: "app-root",

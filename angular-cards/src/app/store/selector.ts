@@ -11,33 +11,36 @@ import { Vote } from "../models/Vote";
  * Get all cards for a certain lecture from store
  * @param state state of the store
  */
-export const selectAllCards = (state: AppState) => state.data?.cardData?.cards;
+export const AllCards = (state: AppState) => state.data?.cardData?.cards;
 
 /**
  * Get the votes that were made by a user for a certain card
  * @param state  state of the store
  * @param cardId ID of the card for which the vote should be fetched
  */
-export const selectUserVote = (
+export const UserVote = (
   state: AppState,
   cardId: string //
 ) =>
   state.data.userData.authenticated
     ? state.data.userData.votes?.find((vote) => vote.cardId == cardId)
     : undefined;
-
-export const selectVotes = (state: AppState, cardId: string) =>
+/**Returns votes for a certain card */
+export const VotesForCard = (state: AppState, cardId: string) =>
   state.data.cardData.votes
     ? state.data.cardData.votes.filter(
         (vote) => vote.cardId == cardId && vote.value == 1
       )
     : undefined;
+/**Returns all votes for the current lecture */
+export const AllVotes = (state: AppState) => state.data.cardData.votes;
+
 /**
  * Counts all votes for a certain card
  * @param state state of the app
  * @param cardId id of the card for which the votes should be counted
  */
-export const selectVoteCount = (state: AppState, cardId: string) =>
+export const VoteCount = (state: AppState, cardId: string) =>
   state.data.cardData.votes
     ? state.data.cardData.votes.filter(
         (vote) => vote.cardId == cardId && vote.value == 1
@@ -47,58 +50,56 @@ export const selectVoteCount = (state: AppState, cardId: string) =>
  * Current tags selected by the user
  * @param state state of the app
  */
-export const selectActiveTags = (state: AppState) => state.mode.tags;
+export const ActiveTags = (state: AppState) => state.mode.tags;
 /**
  * Select all tags for the current lecture
  * @param state state of the app
  */
-export const selectAllTags = (state: AppState) =>
+export const AllTags = (state: AppState) =>
   state.data.cardData?.currLecture?.tagList;
 /**select the index of the active card in the array */
-export const selectActiveIndex = (state: AppState) => state.mode.activeIndex;
+export const ActiveIndex = (state: AppState) => state.mode.activeIndex;
 /**
  * Get the mode of the card form
  * @param state state of the app
  */
-export const selectFormMode = (state: AppState) => state.mode.formMode;
+export const FormMode = (state: AppState) => state.mode.formMode;
 /**
  * Select the current lecture
  * @param state state of the app
  */
-export const selectCurrentLecture = (state: AppState) =>
+export const CurrentLecture = (state: AppState) =>
   state.data?.cardData?.currLecture;
 /**
  * Select the id of the user, if user is logged in
  * @param state state of the app
  */
-export const selectUserId = (state: AppState) =>
-  state.data?.userData?.user?._id;
+export const UserId = (state: AppState) => state.data?.userData?.user?._id;
 /**
  * select the currently active tab in the cards component view
  * @param state state of the app
  */
-export const selectCurrentTab = (state: AppState) => state.mode.currTab;
+export const CurrentTab = (state: AppState) => state.mode.currTab;
 /**
  * select the loadig state. Will be true if at least one ressource is loading
  * @param state state of the app
  */
-export const selectLoadingState = (state: AppState) => state.mode.loading > 0;
+export const LoadingState = (state: AppState) => state.mode.loading > 0;
 /**
  * select all lectures
  * @param state state of the app
  */
-export const selectLectures = (state: AppState) =>
-  state.data.lectureData.lectures;
+export const Lectures = (state: AppState) => state.data.lectureData.lectures;
 /**
  * Select user information
  * @param state state of the app
  */
-export const selectUserInfo = (state: AppState) => state.data.userData;
+export const userInfo = (state: AppState) => state.data.userData;
 /**
  * select the current user
  * @param state state of the app
  */
-export const selectUser = (state: AppState) => state.data.userData.user;
+export const user = (state: AppState) => state.data.userData.user;
 /**
  * check if user is logged in
  * @param state state of the app
@@ -106,7 +107,7 @@ export const selectUser = (state: AppState) => state.data.userData.user;
 export const authenticated = (state: AppState) =>
   state.data.userData.authenticated;
 
-const selectSortType = (state: AppState) => state.mode.sortType;
+const sortType = (state: AppState) => state.mode.sortType;
 /**
  * select the date at which the filter for the cards have changed
  * @param state state of the app
@@ -115,61 +116,54 @@ export const lastCardChange = (state: AppState) => state.mode.cardsChanged;
 /**
  * Select the cards that the user has added
  */
-export const selectUserCards = createSelector(
-  selectUserInfo,
-  (info) => info.cards
-);
+export const UserCards = createSelector(userInfo, (info) => info.cards);
 /**
- * Selects the current filter as well the date at which it was set
+ * s the current filter as well the date at which it was set
  */
-export const selectFilterObject = createSelector(
+export const FilterObject = createSelector(
   lastCardChange,
-  selectActiveTags,
+  ActiveTags,
   (date, tags) => ({ date, tags })
 );
 /**
  * Select the tag options that are still not selected by the user
  */
-export const selectTagOptions = createSelector(
-  selectAllTags,
-  selectActiveTags,
-  (all, selected) => selectedRemaining(all, selected)
+export const TagOptions = createSelector(AllTags, ActiveTags, (all, selected) =>
+  selectedRemaining(all, selected)
 );
-export const selectAllCardsSorted = createSelector(
-  selectAllCards,
-  selectVotes,
-  selectSortType,
-  lastCardChange,
-  (cards, votes, type, lastChanges) => _sort(cards, type, lastChanges, votes)
-);
+
 /**
  * Returns the cards filtered by the selected tags
  */
-export const selectDisplayedCards = createSelector(
-  selectAllCardsSorted,
-  selectActiveTags,
-  (obj, filter) => _filter(obj.cards, filter)
+export const DisplayedCards = createSelector(
+  AllCards,
+  ActiveTags,
+  AllVotes,
+  sortType,
+  lastCardChange,
+  (cards, tags, votes, type, changes) =>
+    _sort(_filter(cards, tags), type, changes, votes)?.cards
 );
-/**
- * Selects the last cardindex in the carousel
- */
-export const selectLastCardIndex = createSelector(
-  selectDisplayedCards,
-  (cards) => cards.length - 1
-);
+// /**
+//  * Selects the last cardindex in the carousel
+//  */
+// export const selectLastCardIndex = createSelector(
+//   selectDisplayedCards,
+//   (cards) => cards.length - 1
+// );
 
 /**
  * Select the card which is currently shown in the carousel
  * @param state state of the app
  */
-export const selectCurrentCard = (state: AppState) => state.mode.currentCard;
+export const CurrentCard = (state: AppState) => state.mode.currentCard;
 /**
  * get cards data as one object containing the current lecture, the user id and the cards
  */
 export const getCardsData = createSelector(
-  selectAllCards,
-  selectCurrentLecture,
-  selectUserId,
+  AllCards,
+  CurrentLecture,
+  UserId,
   (cards: Card[], currLecture: Vorlesung, uid: string) => ({
     cards,
     currLecture,
@@ -186,7 +180,7 @@ function _filter(cards: Card[], filters: string[]): Card[] {
     return cards;
   }
 
-  let res = cards.filter((card) => {
+  let res = cards?.filter((card) => {
     for (const tag of filters) {
       if (!card.tags) {
         return false;
@@ -217,6 +211,9 @@ function _sort(
   votes: Vote[]
 ): { date: Date; cards: Card[] } {
   let result = { cards: cards, date: new Date() };
+  if (!cards) {
+    return result;
+  }
   switch (type) {
     case SortType.DATE_ASC:
       result.cards = [...cards].sort((a, b) => {
