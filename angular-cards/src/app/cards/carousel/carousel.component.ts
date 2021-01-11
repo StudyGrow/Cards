@@ -4,8 +4,8 @@ import {
   ViewChild,
   OnDestroy,
   HostListener,
-} from "@angular/core";
-import { Card } from "../../models/Card";
+} from '@angular/core';
+import { Card } from '../../models/Card';
 
 import {
   Subscription,
@@ -13,14 +13,14 @@ import {
   of,
   combineLatest,
   BehaviorSubject,
-} from "rxjs";
+} from 'rxjs';
 
 import {
   fadeInOnEnterAnimation,
   shakeAnimation,
   fadeOutOnLeaveAnimation,
-} from "angular-animations";
-import { Store } from "@ngrx/store";
+} from 'angular-animations';
+import { Store } from '@ngrx/store';
 
 import {
   setFormMode,
@@ -28,28 +28,28 @@ import {
   setActiveCardIndex,
   setActiveCard,
   changeSorting,
-} from "src/app/store/actions/StateActions";
+} from 'src/app/store/actions/StateActions';
 
-import { map } from "rxjs/operators";
-import { DisplayedCards, UserId } from "src/app/store/selector";
-import { NgbCarousel, NgbSlideEvent } from "@ng-bootstrap/ng-bootstrap";
-import { NotificationsService } from "src/app/services/notifications.service";
-import { WarnMessage } from "src/app/models/Notification";
-import { AppState, Data, Mode } from "src/app/models/state";
+import { map } from 'rxjs/operators';
+import { DisplayedCards, UserId } from 'src/app/store/selector';
+import { NgbCarousel, NgbSlideEvent } from '@ng-bootstrap/ng-bootstrap';
+import { NotificationsService } from 'src/app/services/notifications.service';
+import { WarnMessage } from 'src/app/models/Notification';
+import { AppState, Data, Mode } from 'src/app/models/state';
 
-import { state } from "@angular/animations";
+import { state } from '@angular/animations';
 
 import {
   MatBottomSheet,
   MatBottomSheetRef,
-} from "@angular/material/bottom-sheet";
-import { Vote } from "src/app/models/Vote";
-import { sortOptions } from "./sortOptions";
-import { SortType } from "src/app/models/SortType";
+} from '@angular/material/bottom-sheet';
+import { Vote } from 'src/app/models/Vote';
+import { sortOptions } from './sortOptions';
+import { SortType } from 'src/app/models/SortType';
 
 @Component({
-  selector: "app-bottom-sheet",
-  templateUrl: "./bottom-sheet.component.html",
+  selector: 'app-bottom-sheet',
+  templateUrl: './bottom-sheet.component.html',
 })
 export class BottomSheetComponent {
   options: {
@@ -69,9 +69,9 @@ export class BottomSheetComponent {
 }
 
 @Component({
-  selector: "app-carousel",
-  templateUrl: "./carousel.component.html",
-  styleUrls: ["./carousel.component.scss"],
+  selector: 'app-carousel',
+  templateUrl: './carousel.component.html',
+  styleUrls: ['./carousel.component.scss'],
   animations: [
     fadeInOnEnterAnimation({ duration: 500 }),
     fadeOutOnLeaveAnimation({ duration: 100 }),
@@ -81,11 +81,11 @@ export class BottomSheetComponent {
 export class CarouselComponent implements OnInit, OnDestroy {
   private data$: Observable<Data> = this.store.select(
     //holds cards data from store
-    "data"
+    'data'
   );
   private mode$: Observable<Mode> = this.store.select(
     //holds cards data from store
-    "mode"
+    'mode'
   );
   private inTypingField: boolean; //check if user is in input field
   private uid: string; //user id
@@ -106,24 +106,24 @@ export class CarouselComponent implements OnInit, OnDestroy {
     date: Date;
   }> = new BehaviorSubject({ type: undefined, date: undefined }); //subject which holds the type of sorting for the cards. undefined if the user has done no selection
 
-  @ViewChild("mycarousel", { static: false }) public carousel: NgbCarousel; //ref to the ngbootsrap carousel
+  @ViewChild('mycarousel', { static: false }) public carousel: NgbCarousel; //ref to the ngbootsrap carousel
 
-  @HostListener("window:keyup", ["$event"]) handleKeyDown(
+  @HostListener('window:keyup', ['$event']) handleKeyDown(
     event: KeyboardEvent
   ) {
     if (!this.inTypingField) {
       //allow arrow keys navigation if user is not in an input field
-      if (event.key == "ArrowRight") {
+      if (event.key == 'ArrowRight') {
         this.goToNext();
-      } else if (event.key == "ArrowLeft") {
+      } else if (event.key == 'ArrowLeft') {
         this.goToPrev();
       }
     }
   }
-  @HostListener("swipeleft", ["$event"]) public swipePrev(event: any) {
+  @HostListener('swipeleft', ['$event']) public swipePrev(event: any) {
     this.goToNext();
   }
-  @HostListener("swiperight", ["$event"]) public swipeNext(event: any) {
+  @HostListener('swiperight', ['$event']) public swipeNext(event: any) {
     this.goToPrev();
   }
 
@@ -228,7 +228,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
       this.carousel &&
       this.cards &&
       this.cardCount > 1 &&
-      this.formMode != "edit"
+      this.formMode != 'edit'
     ) {
       this.carousel.prev();
     } else {
@@ -242,7 +242,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
       this.carousel &&
       this.cards &&
       this.cardCount > 1 &&
-      this.formMode != "edit"
+      this.formMode != 'edit'
     ) {
       this.carousel.next();
     } else {
@@ -261,7 +261,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
   }
 
   isDisabled() {
-    if (this.formMode == "edit" || this.cards?.length === 0) return true;
+    if (this.formMode == 'edit' || this.cards?.length === 0) return true;
 
     let currCard = this.cards ? this.cards[this.activeSlide] : new Card(); //get the card that is currently showing
 
@@ -271,8 +271,8 @@ export class CarouselComponent implements OnInit, OnDestroy {
   }
 
   enableEdit() {
-    if (this.formMode != "edit") {
-      this.store.dispatch(setFormMode({ mode: "edit" }));
+    if (this.formMode != 'edit') {
+      this.store.dispatch(setFormMode({ mode: 'edit' }));
       this.store.dispatch(changeTab({ tab: 1 }));
     }
   }
@@ -281,7 +281,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
     if (this.cards?.length === 0) return;
     let currCard = this.cards[this.activeSlide]; // current card being shown
 
-    if (currCard?.latex === 1) return "primary";
+    if (currCard?.latex === 1) return 'primary';
   }
 
   //this function does some adjustments if the index is out of bounds of card array
@@ -302,7 +302,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
   private selectSlide(n: number) {
     if (this.carousel && this.cards && n >= 0 && n < this.cardCount) {
       //only update if n is index inside the cards array
-      if (this.formMode != "edit") {
+      if (this.formMode != 'edit') {
         this.carousel.select(n.toString());
       } else {
         this.showRejection();
@@ -313,9 +313,9 @@ export class CarouselComponent implements OnInit, OnDestroy {
   // function which displays infos to the user that an action is not allowed
   private showRejection(message?: string) {
     if (!message) {
-      message = "Du musst erst die Bearbeitung der Karteikarte abschließen";
+      message = 'Du musst erst die Bearbeitung der Karteikarte abschließen';
     }
-    if (this.formMode == "edit") {
+    if (this.formMode == 'edit') {
       setTimeout(() => {
         this.store.dispatch(changeTab({ tab: 1 }));
         this.notifs.addNotification(new WarnMessage(message));
