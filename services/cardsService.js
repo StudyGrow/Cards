@@ -34,6 +34,7 @@ module.exports = function cardsService() {
 
       updateTags(card.vorlesung, card.tags);
       await card.save();
+      await Lecture.findOneAndUpdate({ abrv: form.abrv }, {$inc : {'totalCards' : 1}});
       callback(null, card);
     } catch (error) {
       callback(error, null);
