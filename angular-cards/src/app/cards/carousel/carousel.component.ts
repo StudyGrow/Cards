@@ -200,7 +200,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
       votes$,
     ])
       .pipe(
-        debounceTime(50),
+        debounceTime(10),
         map(([sortType, lastChanges, cards, votes]) => {
           if (sortType.date && sortType.date > this.lastRefresh) {
             return CarouselComponent.sortCards(
@@ -358,7 +358,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
       return;
     }
     let index = this.tmp?.findIndex((card) => card._id === newCard._id);
-    console.log("Bls", newCard, index);
+
     if (index >= 0 && index < this.cardCount) {
       //prevent setting an invalid index
 

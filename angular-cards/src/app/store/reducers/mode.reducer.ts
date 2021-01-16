@@ -29,36 +29,31 @@ const _modeReducer = createReducer(
     newIndex = newIndex + state.startIndex; //actual position of newIndex considering all cards
     let actualIndex = state.startIndex + state.activeIndex; // actual index considering all cards
     console.log(
-      "actual index: " + actualIndex,
+      "Current index: " + actualIndex,
       "Index to be: " + newIndex,
-      "Left Boundary: " + state.startIndex,
-      "Right Boundary: " + state.endIndex
+      "First Index: " + state.startIndex,
+      "Last Index: " + state.endIndex
     );
-    if (newIndex >= state.startIndex && newIndex < state.endIndex) return state;
+    if (
+      (newIndex >= state.startIndex && newIndex < state.endIndex) || //in current range
+      newIndex < 0 || //no cards on the left
+      newIndex >= allCards.length //no cards on the right
+    )
+      return state;
     if (newIndex < state.startIndex) {
-      if (newIndex < 0) {
-        //There is no card to the left of the page
-        return state;
-      }
-
       let newStart =
         state.startIndex - pageSize > 0 ? state.startIndex - pageSize : 0;
-      let newEnd = newIndex;
+      let newEnd = state.startIndex;
       return {
         ...state,
         startIndex: newStart,
         endIndex: newEnd,
-        currentCard: allCards[newEnd],
+        currentCard: allCards[newIndex],
         activeIndex: newIndex - newStart, //relative position
         filterChanged: new Date(), //semantically incorrect but gets the desired result, which is refresh carousel
       };
     }
     if (newIndex >= state.endIndex) {
-      if (newIndex >= allCards.length) {
-        //there is no card to the right of the page
-        return state;
-      }
-
       let newStart = newIndex;
       let newEnd =
         state.endIndex + pageSize < allCards.length

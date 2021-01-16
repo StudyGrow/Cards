@@ -26,9 +26,6 @@ import { NavbarToggleService } from "src/app/services/navbar-toggle.service";
   styleUrls: ["./nav-bar.component.scss"],
 })
 export class NavBarComponent implements OnInit, OnDestroy {
-  private data$: Observable<Data> = this.store.select("data");
-  private mode$: Observable<Mode> = this.store.select("mode");
-
   loggedIn: boolean;
   cards: Card[] = [];
 
