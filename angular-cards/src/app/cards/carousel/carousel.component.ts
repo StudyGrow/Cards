@@ -112,8 +112,6 @@ export class CarouselComponent implements OnInit, OnDestroy {
   filters: string[];
   cards: Card[]; //array of all the cards
   cardCount = 0;
-  startIndex = 0;
-  endIndex = 50;
 
   lastRefresh: Date;
 
@@ -248,7 +246,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
       .pipe(
         map((state) => state.currentCard),
         distinctUntilChanged((prev, curr) => prev?._id === curr?._id),
-        delay(60)
+        delay(80)
         // debounceTime(20),
       )
       .subscribe((newCard) => {
