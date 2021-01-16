@@ -48,6 +48,8 @@ export interface Mode {
   currTab: number;
   theme: string;
   sortType: SortType;
+  startIndex: number;
+  endIndex: number;
 }
 export enum formMode {
   ADD = 'add',

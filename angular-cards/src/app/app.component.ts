@@ -2,6 +2,7 @@ import { Component, isDevMode } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { AppState } from './models/state';
 import { ThemesService } from './services/themes.service';
 import { auth } from './store/actions/UserActions';
@@ -25,12 +26,8 @@ export class AppComponent {
     this.themeManager.initTheme(); //initialize theme
 
     if (isDevMode()) {
-      this.store.subscribe((state) => {
-        console.log(
-          state,
-          state.data.cardData.cards?.length,
-          state.mode.currentCard?.authorName
-        );
+      this.store.pipe(map((state) => state.data)).subscribe((data) => {
+        console.log(data.cardData.cards);
       });
     }
     //log state only in development mode

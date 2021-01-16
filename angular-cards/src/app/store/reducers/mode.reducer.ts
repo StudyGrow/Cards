@@ -6,6 +6,7 @@ import { formMode, Mode } from 'src/app/models/state';
 import { Card } from 'src/app/models/Card';
 import { SortType } from 'src/app/models/SortType';
 
+export const pageSize = 50;
 //initial state of the app
 export const initialState: Mode = {
   currentCard: undefined,
@@ -19,12 +20,58 @@ export const initialState: Mode = {
   theme: localStorage.getItem('theme'),
   cardsChanged: undefined,
   sortType: SortType.DATE_ASC,
+  startIndex: 0,
+  endIndex: pageSize,
 };
 
 //Reducer which will dispatch changes to the store
 const _modeReducer = createReducer(
   initialState,
-
+  on(StateActions.adjustIndeces, (state, { allCards, newIndex }) => {
+    newIndex = newIndex + state.startIndex; //actual position of newIndex considering all cards
+    let actualIndex = state.startIndex + state.activeIndex; // actual index considering all cards
+    console.log(
+      'Current index: ' + actualIndex,
+      'Index to be: ' + newIndex,
+      'First Index: ' + state.startIndex,
+      'Last Index: ' + state.endIndex
+    );
+    if (
+      (newIndex >= state.startIndex && newIndex < state.endIndex) || //in current range
+      newIndex < 0 || //no cards on the left
+      newIndex >= allCards.length //no cards on the right
+    )
+      return state;
+    if (newIndex < state.startIndex) {
+      let newStart =
+        state.startIndex - pageSize > 0 ? state.startIndex - pageSize : 0;
+      let newEnd = state.startIndex;
+      return {
+        ...state,
+        startIndex: newStart,
+        endIndex: newEnd,
+        currentCard: allCards[newIndex],
+        activeIndex: newIndex - newStart, //relative position
+        filterChanged: new Date(), //semantically incorrect but gets the desired result, which is refresh carousel
+      };
+    }
+    if (newIndex >= state.endIndex) {
+      let newStart = newIndex;
+      let newEnd =
+        state.endIndex + pageSize < allCards.length
+          ? state.endIndex + pageSize
+          : allCards.length;
+      return {
+        ...state,
+        startIndex: newStart,
+        endIndex: newEnd,
+        currentCard: allCards[newStart],
+        activeIndex: newIndex - newStart, //relative index
+        filterChanged: new Date(),
+      };
+    }
+    return state;
+  }),
   on(StateActions.changeTheme, (state, { theme }) =>
     theme === state.theme
       ? state

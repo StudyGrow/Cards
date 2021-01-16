@@ -1,11 +1,14 @@
 import { createSelector } from '@ngrx/store';
 
+import { SortType } from '../models/SortType';
+import { Vote } from '../models/Vote';
+
 import { Card } from '../models/Card';
 import { Vorlesung } from '../models/Vorlesung';
 import { AppState } from '../models/state';
 
-import { SortType } from '../models/SortType';
-import { Vote } from '../models/Vote';
+const maxCards = 50; //maximum amount of cards which should be displayed in carousel
+export const selectAllCards = (state: AppState) => state.data?.cardData?.cards;
 
 /**
  * Get all cards for a certain lecture from store
@@ -106,6 +109,27 @@ export const user = (state: AppState) => state.data.userData.user;
  * check if user is logged in
  * @param state state of the app
  */
+
+export const selectUserId = (state: AppState) =>
+  state.data?.userData?.user?._id;
+
+export const selectCurrentTab = (state: AppState) => state.mode.currTab;
+
+export const isLoading = (state: AppState) => state.mode.loading > 0;
+
+export const selectLectures = (state: AppState) =>
+  state.data.lectureData.lectures;
+
+export const selectUserInfo = (state: AppState) => state.data.userData;
+
+export const selectUser = (state: AppState) => state.data.userData.user;
+
+const CardIndices = (state: AppState) => [
+  state.mode.startIndex,
+  state.mode.endIndex,
+  state.mode.activeIndex,
+];
+
 export const authenticated = (state: AppState) =>
   state.data.userData.authenticated;
 
@@ -120,18 +144,19 @@ export const lastCardChange = (state: AppState) => state.mode.cardsChanged;
  */
 export const UserCards = createSelector(userInfo, (info) => info.cards);
 /**
+ * Select the tag options that are still not selected by the user
+ */
+export const TagOptions = createSelector(AllTags, ActiveTags, (all, selected) =>
+  selectRemaining(all, selected)
+);
+
+/**
  * s the current filter as well the date at which it was set
  */
 export const FilterObject = createSelector(
   lastCardChange,
   ActiveTags,
   (date, tags) => ({ date, tags })
-);
-/**
- * Select the tag options that are still not selected by the user
- */
-export const TagOptions = createSelector(AllTags, ActiveTags, (all, selected) =>
-  selectedRemaining(all, selected)
 );
 
 /**
@@ -195,7 +220,7 @@ function _filter(cards: Card[], filters: string[]): Card[] {
   });
   return res;
 }
-function selectedRemaining(all: any[], selected: any[]) {
+function selectRemaining(all: any[], selected: any[]) {
   if (!selected) return [];
   return all.filter((tag) => !selected?.includes(tag));
 }

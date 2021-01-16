@@ -7,13 +7,7 @@ import {
 } from '@angular/core';
 import { Card } from '../../models/Card';
 
-import {
-  Subscription,
-  Observable,
-  of,
-  combineLatest,
-  BehaviorSubject,
-} from 'rxjs';
+import { Subscription, Observable, combineLatest, BehaviorSubject } from 'rxjs';
 
 import {
   fadeInOnEnterAnimation,
@@ -28,16 +22,15 @@ import {
   setActiveCardIndex,
   setActiveCard,
   changeSorting,
+  adjustIndeces,
 } from 'src/app/store/actions/StateActions';
 
-import { map } from 'rxjs/operators';
-import { DisplayedCards, UserId } from 'src/app/store/selector';
+import { delay, distinctUntilChanged, map } from 'rxjs/operators';
+
 import { NgbCarousel, NgbSlideEvent } from '@ng-bootstrap/ng-bootstrap';
 import { NotificationsService } from 'src/app/services/notifications.service';
 import { WarnMessage } from 'src/app/models/Notification';
 import { AppState, Data, Mode } from 'src/app/models/state';
-
-import { state } from '@angular/animations';
 
 import {
   MatBottomSheet,
@@ -46,6 +39,7 @@ import {
 import { Vote } from 'src/app/models/Vote';
 import { sortOptions } from './sortOptions';
 import { SortType } from 'src/app/models/SortType';
+import { AllCards, DisplayedCards, UserId } from 'src/app/store/selector';
 
 @Component({
   selector: 'app-bottom-sheet',
@@ -90,12 +84,22 @@ export class CarouselComponent implements OnInit, OnDestroy {
   private inTypingField: boolean; //check if user is in input field
   private uid: string; //user id
 
-  filters$: Observable<string[]> = this.mode$.pipe(map((mode) => mode.tags)); //tags selected for filtering
-  filters: string[]; //tags selected for filtering
+  allCards: Card[];
+  tmp: Card[];
+
+  loading: boolean;
+
+  public cards$: Observable<Card[]> = this.data$.pipe(
+    map((data) => data.cardData.cards)
+  );
+  filters$: Observable<string[]> = this.mode$.pipe(map((mode) => mode.tags));
+  filters: string[];
   cards: Card[]; //array of all the cards
   cardCount = 0; //counts the cards that are displayed in the carousel
   lastRefresh: number; // holds the timestamp at which the carousel was last updated
   activeSlide = 0; //holds the slide which is currently shown
+  readonly initialSlide = 0;
+
   formMode: string; // mode in which the form is displayed either add or edit
   notallowed: boolean = false; //wether an action is allowed or not
 
@@ -120,10 +124,10 @@ export class CarouselComponent implements OnInit, OnDestroy {
       }
     }
   }
-  @HostListener('swipeleft', ['$event']) public swipePrev(event: any) {
+  @HostListener('swipeleft', ['$event']) public swipePrev() {
     this.goToNext();
   }
-  @HostListener('swiperight', ['$event']) public swipeNext(event: any) {
+  @HostListener('swiperight', ['$event']) public swipeNext() {
     this.goToPrev();
   }
 
@@ -146,14 +150,6 @@ export class CarouselComponent implements OnInit, OnDestroy {
     sub = this.mode$.pipe(map((state) => state.typingMode)).subscribe((val) => {
       this.inTypingField = val;
     });
-    this.subscriptions$.push(sub);
-
-    //handles new slide indexes received from other components
-    sub = this.mode$
-      .pipe(map((state) => state.currentCard))
-      .subscribe((newCard) => {
-        this.hanldeNewIndex(newCard); //adjust the index to show the new card
-      });
     this.subscriptions$.push(sub);
 
     //get the user id to check if user has the rigth to edit the card
@@ -186,30 +182,46 @@ export class CarouselComponent implements OnInit, OnDestroy {
         // this.activeSlide = 0; reset the active index to the first card
 
         this.cards = null; //set null to explicitely refresh carousel view
+        //cards have changed
+        this.lastRefresh = new Date().getTime(); //update the last refresh time
+        this.cardCount = cards?.length;
+        // this.activeSlide = 0; reset the active index to the first card
+        this.tmp = [...cards];
+        this.cards = null; //set null to explicitely refresh carousel view
 
         setTimeout(() => {
           this.cards = [...cards];
-          setTimeout(() => {
-            if (this.cards?.length > 0) {
-              let currCard = this.cards[0];
-              this.store.dispatch(setActiveCard({ card: currCard }));
-            }
-            this.selectSlide(0);
-          }, 100);
-        }, 100);
+        }, 150);
       }
     });
 
+    this.subscriptions$.push(sub);
+    sub = this.store.pipe(map(AllCards)).subscribe((cards) => {
+      this.allCards = cards;
+    });
+
+    this.subscriptions$.push(sub);
+    //handles new slide indexes received from other components
+    sub = this.mode$
+      .pipe(
+        map((state) => state.currentCard),
+        distinctUntilChanged((prev, curr) => prev?._id === curr?._id),
+        delay(80)
+        // debounceTime(20),
+      )
+      .subscribe((newCard) => {
+        this.handleNewCard(newCard); //adjust the index to show the new card
+      });
     this.subscriptions$.push(sub);
   }
 
   //this function updates the current slide index in the store and for the component
   onSlide(slideEvent: NgbSlideEvent) {
     let newindex = Number.parseInt(slideEvent.current);
-
     this.activeSlide = newindex;
-    this.store.dispatch(setActiveCardIndex({ index: this.activeSlide }));
-    this.store.dispatch(setActiveCard({ card: this.cards[this.activeSlide] }));
+    if (this.cards) {
+      this.store.dispatch(setActiveCardIndex({ index: this.activeSlide }));
+    }
   }
 
   //function to calculate random index and select the slide with that index
@@ -230,12 +242,18 @@ export class CarouselComponent implements OnInit, OnDestroy {
       this.cardCount > 1 &&
       this.formMode != 'edit'
     ) {
+      this.store.dispatch(
+        adjustIndeces({
+          allCards: this.allCards,
+          newIndex: this.activeSlide - 1,
+        })
+      );
+
       this.carousel.prev();
     } else {
       this.showRejection();
     }
   }
-
   //select the next slide
   goToNext() {
     if (
@@ -244,6 +262,14 @@ export class CarouselComponent implements OnInit, OnDestroy {
       this.cardCount > 1 &&
       this.formMode != 'edit'
     ) {
+      console.log(this.activeSlide);
+      this.store.dispatch(
+        adjustIndeces({
+          allCards: this.allCards,
+          newIndex: this.activeSlide + 1,
+        })
+      );
+
       this.carousel.next();
     } else {
       this.showRejection();
@@ -285,17 +311,23 @@ export class CarouselComponent implements OnInit, OnDestroy {
   }
 
   //this function does some adjustments if the index is out of bounds of card array
-  private hanldeNewIndex(newCard: Card) {
+  private handleNewCard(newCard: Card) {
     if (!newCard?._id) {
       return;
     }
-    let index = this.cards?.findIndex((card) => card._id === newCard._id);
-    if (index > 0 && this.carousel && index < this.cards?.length) {
+    let index = this.tmp?.findIndex((card) => card._id === newCard._id);
+
+    if (index >= 0 && index < this.cardCount) {
       //prevent setting an invalid index
 
       if (index !== this.activeSlide) {
         //got a new index
-        this.selectSlide(index); //select new slide
+
+        if (this.cards !== null) {
+          this.selectSlide(index); //select new slide
+        } else {
+          this.activeSlide = index;
+        }
       }
     }
   }

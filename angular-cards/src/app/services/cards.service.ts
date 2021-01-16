@@ -28,6 +28,7 @@ export class CardsService {
       this.config.urlBase + 'cards/data?abrv=' + abrv
     );
   }
+  S;
 
   updateCard(card: Card): Observable<Card> {
     //send update to server using http service

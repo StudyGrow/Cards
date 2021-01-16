@@ -20,7 +20,13 @@ enum ActionTypes {
   GO_NEXT = '[Cards] Go to the next slide ',
   GO_PREV = '[Cards] Go to the prev. slide ',
   CHANGE_SORTING = '[SortType] change the sortType applied to the cards',
+  ADJUST_INDECES = '[startInex,endIndex] adjust the start and end indeces',
 }
+
+export const adjustIndeces = createAction(
+  ActionTypes.ADJUST_INDECES,
+  props<{ allCards: Card[]; newIndex: number }>() //number of total cards for lecture
+);
 
 export const changeTab = createAction(
   ActionTypes.CHANGE_TAB,
