@@ -3,5 +3,5 @@ deploy:
   script:
   - cd ~/project
   - git fetch
-  - git pull origin master
+  - git pull origin master --force
   - git push heroku master
