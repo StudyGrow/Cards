@@ -26,11 +26,11 @@ import {
   setFormMode,
   changeTab,
   setActiveCardIndex,
-  setActiveCard,
   adjustIndeces,
 } from "src/app/store/actions/StateActions";
 
 import {
+  debounceTime,
   delay,
   distinctUntilChanged,
   map,
@@ -101,6 +101,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
   private uid: string; //user id
 
   allCards: Card[];
+  tmp: Card[];
 
   loading: boolean;
 
@@ -143,10 +144,10 @@ export class CarouselComponent implements OnInit, OnDestroy {
       }
     }
   }
-  @HostListener("swipeleft", ["$event"]) public swipePrev(event: any) {
+  @HostListener("swipeleft", ["$event"]) public swipePrev() {
     this.goToNext();
   }
-  @HostListener("swiperight", ["$event"]) public swipeNext(event: any) {
+  @HostListener("swiperight", ["$event"]) public swipeNext() {
     this.goToPrev();
   }
 
@@ -169,14 +170,6 @@ export class CarouselComponent implements OnInit, OnDestroy {
     sub = this.mode$.pipe(map((state) => state.typingMode)).subscribe((val) => {
       this.inTypingField = val;
     });
-    this.subscriptions$.push(sub);
-
-    //handles new slide indexes received from other components
-    sub = this.mode$
-      .pipe(map((state) => state.currentCard))
-      .subscribe((newCard) => {
-        this.hanldeNewIndex(newCard); //adjust the index to show the new card
-      });
     this.subscriptions$.push(sub);
 
     //get the user id to check if user has the rigth to edit the card
@@ -202,16 +195,13 @@ export class CarouselComponent implements OnInit, OnDestroy {
     //observable which holds the final cards which should be displayed in the carousel (filtered and sorted)
     sub = combineLatest([
       this.sortOption$.asObservable(),
-      lastChanges$.pipe(delay(100)), //delay slightly such that filtered cards will emit first
+      lastChanges$.pipe(delay(10)), //delay slightly such that filtered cards will emit first
       this.store.pipe(map(selectFilteredCards)),
       votes$,
     ])
       .pipe(
+        debounceTime(50),
         map(([sortType, lastChanges, cards, votes]) => {
-          console.log(
-            "New Cards: ",
-            cards?.map((card) => card.thema)
-          );
           if (sortType.date && sortType.date > this.lastRefresh) {
             return CarouselComponent.sortCards(
               sortType.type,
@@ -234,10 +224,10 @@ export class CarouselComponent implements OnInit, OnDestroy {
             (!this.lastRefresh || this.lastRefresh < obj.date)
           ) {
             //cards have changed
-            this.lastRefresh = obj.date; //update the last refresh time
+            this.lastRefresh = new Date(); //update the last refresh time
             this.cardCount = obj.cards?.length;
             // this.activeSlide = 0; reset the active index to the first card
-
+            this.tmp = [...obj.cards];
             this.cards = null; //set null to explicitely refresh carousel view
 
             setTimeout(() => {
@@ -253,6 +243,18 @@ export class CarouselComponent implements OnInit, OnDestroy {
     });
 
     this.subscriptions$.push(sub);
+    //handles new slide indexes received from other components
+    sub = this.mode$
+      .pipe(
+        map((state) => state.currentCard),
+        distinctUntilChanged((prev, curr) => prev?._id === curr?._id),
+        delay(60)
+        // debounceTime(20),
+      )
+      .subscribe((newCard) => {
+        this.handleNewCard(newCard); //adjust the index to show the new card
+      });
+    this.subscriptions$.push(sub);
   }
 
   //this function updates the current slide index in the store and for the component
@@ -261,9 +263,6 @@ export class CarouselComponent implements OnInit, OnDestroy {
     this.activeSlide = newindex;
     if (this.cards) {
       this.store.dispatch(setActiveCardIndex({ index: this.activeSlide }));
-      this.store.dispatch(
-        setActiveCard({ card: this.cards[this.activeSlide] })
-      );
     }
   }
 
@@ -354,18 +353,23 @@ export class CarouselComponent implements OnInit, OnDestroy {
   }
 
   //this function does some adjustments if the index is out of bounds of card array
-  private hanldeNewIndex(newCard: Card) {
+  private handleNewCard(newCard: Card) {
     if (!newCard?._id) {
       return;
     }
-    let index = this.cards?.findIndex((card) => card._id === newCard._id);
-    if (index > 0 && index < this.cardCount) {
+    let index = this.tmp?.findIndex((card) => card._id === newCard._id);
+    console.log("Bls", newCard, index);
+    if (index >= 0 && index < this.cardCount) {
       //prevent setting an invalid index
 
       if (index !== this.activeSlide) {
         //got a new index
-        // this.activeSlide = index;
-        this.selectSlide(index); //select new slide
+
+        if (this.cards !== null) {
+          this.selectSlide(index); //select new slide
+        } else {
+          this.activeSlide = index;
+        }
       }
     }
   }

@@ -26,7 +26,7 @@ export const initialState: Mode = {
 const _modeReducer = createReducer(
   initialState,
   on(StateActions.adjustIndeces, (state, { allCards, newIndex }) => {
-    newIndex = newIndex + state.startIndex;
+    newIndex = newIndex + state.startIndex; //actual position of newIndex considering all cards
     let actualIndex = state.startIndex + state.activeIndex; // actual index considering all cards
     console.log(
       "actual index: " + actualIndex,
@@ -35,29 +35,41 @@ const _modeReducer = createReducer(
       "Right Boundary: " + state.endIndex
     );
     if (newIndex >= state.startIndex && newIndex < state.endIndex) return state;
-    if (newIndex < state.startIndex && state.startIndex > 0) {
-      //There is a page to the left
-      let newStart = state.startIndex - pageSize;
-      let newEnd = state.endIndex - pageSize;
+    if (newIndex < state.startIndex) {
+      if (newIndex < 0) {
+        //There is no card to the left of the page
+        return state;
+      }
+
+      let newStart =
+        state.startIndex - pageSize > 0 ? state.startIndex - pageSize : 0;
+      let newEnd = newIndex;
       return {
         ...state,
         startIndex: newStart,
         endIndex: newEnd,
-        activeIndex: 0,
         currentCard: allCards[newEnd],
+        activeIndex: newIndex - newStart, //relative position
         filterChanged: new Date(), //semantically incorrect but gets the desired result, which is refresh carousel
       };
     }
-    if (newIndex >= state.endIndex && newIndex < allCards.length) {
-      //there is a page to the right
-      let newStart = state.startIndex + pageSize;
-      let newEnd = state.endIndex + pageSize;
+    if (newIndex >= state.endIndex) {
+      if (newIndex >= allCards.length) {
+        //there is no card to the right of the page
+        return state;
+      }
+
+      let newStart = newIndex;
+      let newEnd =
+        state.endIndex + pageSize < allCards.length
+          ? state.endIndex + pageSize
+          : allCards.length;
       return {
         ...state,
         startIndex: newStart,
         endIndex: newEnd,
         currentCard: allCards[newStart],
-        activeIndex: 0,
+        activeIndex: newIndex - newStart, //relative index
         filterChanged: new Date(),
       };
     }
