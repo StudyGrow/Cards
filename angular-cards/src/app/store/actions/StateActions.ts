@@ -21,12 +21,15 @@ enum ActionTypes {
   GO_PREV = '[Cards] Go to the prev. slide ',
   CHANGE_SORTING = '[SortType] change the sortType applied to the cards',
   ADJUST_INDECES = '[startInex,endIndex] adjust the start and end indeces',
+  RESET_CARDSDATA = '[CardsData] reset the cardsdata which are specific to the cards route',
 }
 
 export const adjustIndeces = createAction(
   ActionTypes.ADJUST_INDECES,
   props<{ allCards: Card[]; newIndex: number }>() //number of total cards for lecture
 );
+
+export const resetCardsState = createAction(ActionTypes.RESET_CARDSDATA);
 
 export const changeTab = createAction(
   ActionTypes.CHANGE_TAB,

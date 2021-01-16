@@ -25,7 +25,7 @@ import {
   adjustIndeces,
 } from 'src/app/store/actions/StateActions';
 
-import { delay, distinctUntilChanged, map } from 'rxjs/operators';
+import { debounceTime, delay, distinctUntilChanged, map } from 'rxjs/operators';
 
 import { NgbCarousel, NgbSlideEvent } from '@ng-bootstrap/ng-bootstrap';
 import { NotificationsService } from 'src/app/services/notifications.service';
@@ -171,29 +171,31 @@ export class CarouselComponent implements OnInit, OnDestroy {
     );
 
     //observable which holds the final cards which should be displayed in the carousel (filtered and sorted)
-    sub = combineLatest([
-      this.store.select(DisplayedCards),
-      lastChanges$,
-    ]).subscribe(([cards, date]) => {
-      if (cards?.length > 0 && (!this.lastRefresh || this.lastRefresh < date)) {
-        //cards have changed
-        this.lastRefresh = date; //update the last refresh time
-        this.cardCount = cards?.length;
-        // this.activeSlide = 0; reset the active index to the first card
+    sub = combineLatest([this.store.select(DisplayedCards), lastChanges$])
+      .pipe(debounceTime(10))
+      .subscribe(([cards, date]) => {
+        if (
+          cards?.length > 0 &&
+          (!this.lastRefresh || this.lastRefresh < date)
+        ) {
+          //cards have changed
+          this.lastRefresh = date; //update the last refresh time
+          this.cardCount = cards?.length;
+          // this.activeSlide = 0; reset the active index to the first card
 
-        this.cards = null; //set null to explicitely refresh carousel view
-        //cards have changed
-        this.lastRefresh = new Date().getTime(); //update the last refresh time
-        this.cardCount = cards?.length;
-        // this.activeSlide = 0; reset the active index to the first card
-        this.tmp = [...cards];
-        this.cards = null; //set null to explicitely refresh carousel view
+          this.cards = null; //set null to explicitely refresh carousel view
+          //cards have changed
+          this.lastRefresh = new Date().getTime(); //update the last refresh time
+          this.cardCount = cards?.length;
+          // this.activeSlide = 0; reset the active index to the first card
+          this.tmp = [...cards];
+          this.cards = null; //set null to explicitely refresh carousel view
 
-        setTimeout(() => {
-          this.cards = [...cards];
-        }, 150);
-      }
-    });
+          setTimeout(() => {
+            this.cards = [...cards];
+          }, 150);
+        }
+      });
 
     this.subscriptions$.push(sub);
     sub = this.store.pipe(map(AllCards)).subscribe((cards) => {
@@ -204,9 +206,10 @@ export class CarouselComponent implements OnInit, OnDestroy {
     //handles new slide indexes received from other components
     sub = this.mode$
       .pipe(
+        delay(150),
         map((state) => state.currentCard),
-        distinctUntilChanged((prev, curr) => prev?._id === curr?._id),
-        delay(80)
+        distinctUntilChanged((prev, curr) => prev?._id === curr?._id)
+
         // debounceTime(20),
       )
       .subscribe((newCard) => {

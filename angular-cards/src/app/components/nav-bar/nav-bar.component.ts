@@ -19,6 +19,7 @@ import {
 import { clearCardData } from 'src/app/store/actions/CardActions';
 import { AppState, Data, Mode } from 'src/app/models/state';
 import { NavbarToggleService } from 'src/app/services/navbar-toggle.service';
+import { resetCardsState } from 'src/app/store/actions/StateActions';
 
 @Component({
   selector: 'app-nav-bar',
@@ -81,7 +82,10 @@ export class NavBarComponent implements OnInit, OnDestroy {
         this.showSearch = false;
       }
     } else if (e instanceof NavigationEnd) {
-      if (!e.url.match(/vorlesung/)) this.store.dispatch(clearCardData()); //clear card data on store when leaving lecture route
+      if (!e.url.match(/vorlesung/)) {
+        this.store.dispatch(clearCardData());
+        this.store.dispatch(resetCardsState()); //clear card data on store when leaving lecture route}
+      }
     }
   }
   private updateTitle() {

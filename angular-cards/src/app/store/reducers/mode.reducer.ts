@@ -6,7 +6,7 @@ import { formMode, Mode } from 'src/app/models/state';
 import { Card } from 'src/app/models/Card';
 import { SortType } from 'src/app/models/SortType';
 
-export const pageSize = 50;
+export const pageSize = 3;
 //initial state of the app
 export const initialState: Mode = {
   currentCard: undefined,
@@ -52,7 +52,7 @@ const _modeReducer = createReducer(
         endIndex: newEnd,
         currentCard: allCards[newIndex],
         activeIndex: newIndex - newStart, //relative position
-        filterChanged: new Date(), //semantically incorrect but gets the desired result, which is refresh carousel
+        cardsChanged: new Date(), //semantically incorrect but gets the desired result, which is refresh carousel
       };
     }
     if (newIndex >= state.endIndex) {
@@ -67,7 +67,7 @@ const _modeReducer = createReducer(
         endIndex: newEnd,
         currentCard: allCards[newStart],
         activeIndex: newIndex - newStart, //relative index
-        filterChanged: new Date(),
+        cardsChanged: new Date(),
       };
     }
     return state;
@@ -163,6 +163,20 @@ const _modeReducer = createReducer(
     ...state,
     sortType: sortType,
     cardsChanged: new Date(),
+  })),
+  on(StateActions.resetCardsState, (state) => ({
+    ...state,
+    currentCard: initialState.currentCard,
+    activeIndex: initialState.activeIndex,
+    formMode: initialState.formMode,
+    typingMode: false,
+    hideSearchResults: true,
+    tags: initialState.tags,
+    currTab: initialState.currTab,
+    cardsChanged: new Date(),
+    sortType: initialState.sortType,
+    startIndex: initialState.startIndex,
+    endIndex: initialState.endIndex,
   }))
 );
 

@@ -110,20 +110,6 @@ export const user = (state: AppState) => state.data.userData.user;
  * @param state state of the app
  */
 
-export const selectUserId = (state: AppState) =>
-  state.data?.userData?.user?._id;
-
-export const selectCurrentTab = (state: AppState) => state.mode.currTab;
-
-export const isLoading = (state: AppState) => state.mode.loading > 0;
-
-export const selectLectures = (state: AppState) =>
-  state.data.lectureData.lectures;
-
-export const selectUserInfo = (state: AppState) => state.data.userData;
-
-export const selectUser = (state: AppState) => state.data.userData.user;
-
 const CardIndices = (state: AppState) => [
   state.mode.startIndex,
   state.mode.endIndex,
@@ -168,8 +154,9 @@ export const DisplayedCards = createSelector(
   AllVotes,
   sortType,
   lastCardChange,
-  (cards, tags, votes, type, changes) =>
-    _sort(_filter(cards, tags), type, changes, votes)?.cards
+  CardIndices,
+  (cards, tags, votes, type, changes, [start, end, curr]) =>
+    _sort(_filter(cards, tags), type, changes, votes)?.cards?.slice(start, end)
 );
 // /**
 //  * Selects the last cardindex in the carousel
