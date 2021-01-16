@@ -230,7 +230,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
 
             setTimeout(() => {
               this.cards = [...obj.cards];
-            }, 100);
+            }, 150);
           }
         }
       );
