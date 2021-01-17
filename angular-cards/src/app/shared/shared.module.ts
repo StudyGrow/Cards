@@ -23,6 +23,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatBadgeModule } from '@angular/material/badge';
 
 import { MatSelectModule } from '@angular/material/select';
 
@@ -67,6 +68,7 @@ import { MatDividerModule } from '@angular/material/divider';
     MatFormFieldModule,
     ReactiveFormsModule,
     MatAutocompleteModule,
+    MatBadgeModule,
     MatExpansionModule,
     MatDialogModule,
     MatTooltipModule,
