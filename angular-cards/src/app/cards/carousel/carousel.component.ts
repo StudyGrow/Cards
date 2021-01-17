@@ -147,17 +147,25 @@ export class CarouselComponent implements OnInit, OnDestroy {
     this.subscriptions$.push(sub);
 
     //see if user is in a typing field. (If so we disable carousel navigation with arrows)
-    sub = this.mode$.pipe(map((state) => state.typingMode)).subscribe((val) => {
-      this.inTypingField = val;
-    });
+    sub = this.mode$
+      .pipe(
+        map((state) => state.typingMode),
+        distinctUntilChanged()
+      )
+      .subscribe((val) => {
+        this.inTypingField = val;
+      });
     this.subscriptions$.push(sub);
 
     //get the user id to check if user has the rigth to edit the card
-    sub = this.store.select(UserId).subscribe((id) => {
-      if (this.uid !== id) {
-        this.uid = id;
-      }
-    });
+    sub = this.store
+      .select(UserId)
+      .pipe(distinctUntilChanged())
+      .subscribe((id) => {
+        if (this.uid !== id) {
+          this.uid = id;
+        }
+      });
     this.subscriptions$.push(sub);
 
     let filtered$ = this.mode$.pipe(map((state) => state.cardsChanged)); //observable of timestamp at which user has modified the way cards are displayed
@@ -172,7 +180,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
 
     //observable which holds the final cards which should be displayed in the carousel (filtered and sorted)
     sub = combineLatest([this.store.select(DisplayedCards), lastChanges$])
-      .pipe(debounceTime(10))
+      .pipe(debounceTime(5))
       .subscribe(([cards, date]) => {
         if (
           cards?.length > 0 &&
@@ -206,7 +214,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
     //handles new slide indexes received from other components
     sub = this.mode$
       .pipe(
-        delay(150),
+        delay(20),
         map((state) => state.currentCard),
         distinctUntilChanged((prev, curr) => prev?._id === curr?._id)
 

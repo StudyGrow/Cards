@@ -51,7 +51,7 @@ export class NotificationsService {
   //because errors suck and we dont have a unified error handling system in the backend
   handleErrors(error: HttpErrorResponse) {
     let err = error.error;
-    console.log(error);
+    // console.log(error);
     switch (error.status) {
       case 401:
         if (error.url.includes('api/login'))
@@ -64,15 +64,16 @@ export class NotificationsService {
         break;
       case 422:
         if (typeof err == 'string') {
-          this.addNotification(new WarnMessage(err, error.status));
+          if (err.includes('nicht eingeloggt')) break;
+          else this.addNotification(new WarnMessage(err, error.status));
         } else if (typeof err == 'object') {
-          this.addNotification(
-            new WarnMessage(
-              'Ein unbekannter Fehler ist aufgetreten. Versuche es später erneut.',
-              error.status
-            )
-          );
-          console.log(err);
+          // this.addNotification(
+          //   new WarnMessage(
+          //     'Ein unbekannter Fehler ist aufgetreten. Versuche es später erneut.',
+          //     error.status
+          //   )
+          // );
+          console.error(err);
         } else {
           for (const e of err) {
             this.addNotification(new WarnMessage(e, error.status));
