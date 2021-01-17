@@ -99,6 +99,10 @@ export class CarouselComponent implements OnInit, OnDestroy {
   lastRefresh: number; // holds the timestamp at which the carousel was last updated
   activeSlide = 0; //holds the slide which is currently shown
   readonly initialSlide = 0;
+  start$ = this.mode$.pipe(map((mode) => mode.startIndex));
+  start: number;
+  end: number;
+  end$ = this.mode$.pipe(map((mode) => mode.endIndex));
 
   formMode: string; // mode in which the form is displayed either add or edit
   notallowed: boolean = false; //wether an action is allowed or not
@@ -181,9 +185,14 @@ export class CarouselComponent implements OnInit, OnDestroy {
     );
 
     //observable which holds the final cards which should be displayed in the carousel (filtered and sorted)
-    sub = combineLatest([this.store.select(DisplayedCards), lastChanges$])
+    sub = combineLatest([
+      this.store.select(DisplayedCards),
+      lastChanges$,
+      this.start$,
+      this.end$,
+    ])
       .pipe(debounceTime(5))
-      .subscribe(([cards, date]) => {
+      .subscribe(([cards, date, start, end]) => {
         if (
           cards?.length > 0 &&
           (!this.lastRefresh || this.lastRefresh < date)
@@ -191,12 +200,23 @@ export class CarouselComponent implements OnInit, OnDestroy {
           //cards have changed
           this.lastRefresh = date; //update the last refresh time
           this.cardCount = cards?.length;
-          // this.activeSlide = 0; reset the active index to the first card
 
           this.cards = null; //set null to explicitely refresh carousel view
           //cards have changed
           this.lastRefresh = new Date().getTime(); //update the last refresh time
           this.cardCount = cards?.length;
+          if (!this.start || this.start < start) {
+            //got a bigger pageslice
+            this.start = start;
+            this.end = end;
+            this.activeSlide = 0; //set activeSlide to the first index in the new pageSlice
+          } else if (this.start > start) {
+            //got a smaller pageslice
+            this.start = start;
+            this.end = end;
+            this.activeSlide = this.cardCount - 1; //set the activeSlide to the last index of the new pageSlice
+          }
+
           // this.activeSlide = 0; reset the active index to the first card
           this.tmp = [...cards];
           this.cards = null; //set null to explicitely refresh carousel view
@@ -216,7 +236,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
     //handles new slide indexes received from other components
     sub = this.mode$
       .pipe(
-        delay(20),
+        delay(180),
         map((state) => state.currentCard),
         distinctUntilChanged((prev, curr) => prev?._id === curr?._id)
 
@@ -261,6 +281,11 @@ export class CarouselComponent implements OnInit, OnDestroy {
           newIndex: this.activeSlide - 1,
         })
       );
+      // if (this.activeSlide - 1 < 0 && this.start > 0) {
+      //   this.activeSlide = this.cardCount - 1;
+      // } else if (this.activeSlide - 1 > 0) {
+      //   this.activeSlide--;
+      // }
 
       this.carousel.prev();
     } else {
@@ -282,6 +307,14 @@ export class CarouselComponent implements OnInit, OnDestroy {
           newIndex: this.activeSlide + 1,
         })
       );
+      // if (
+      //   this.activeSlide + 1 >= this.cardCount &&
+      //   this.end < this.allCards.length
+      // ) {
+      //   this.activeSlide = 0;
+      // } else if (this.activeSlide + 1 < this.cardCount) {
+      //   this.activeSlide++;
+      // }
 
       this.carousel.next();
     } else {

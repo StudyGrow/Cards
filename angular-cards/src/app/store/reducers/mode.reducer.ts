@@ -50,7 +50,7 @@ const _modeReducer = createReducer(
         ...state,
         startIndex: newStart,
         endIndex: newEnd,
-        currentCard: allCards[newIndex],
+        // currentCard: allCards[newIndex],
         activeIndex: newIndex - newStart, //relative position
         cardsChanged: new Date(), //semantically incorrect but gets the desired result, which is refresh carousel
       };
@@ -65,7 +65,7 @@ const _modeReducer = createReducer(
         ...state,
         startIndex: newStart,
         endIndex: newEnd,
-        currentCard: allCards[newStart],
+        // currentCard: allCards[newIndex],
         activeIndex: newIndex - newStart, //relative index
         cardsChanged: new Date(),
       };
