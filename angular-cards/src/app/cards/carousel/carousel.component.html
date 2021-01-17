@@ -50,10 +50,11 @@
   </a>
   <div id="carousel">
     <ngb-carousel
-      (slide)="activeSlide = $event.current; prevSlide =  $event.prev"
+      (slide)="onSlide($event)"
       #mycarousel
       [@shake]="notallowed"
       [animation]="true"
+      [activeId]="this.activeSlide.toString()"
       [keyboard]="false"
       [wrap]="false"
       [showNavigationArrows]="false"
@@ -65,7 +66,7 @@
         *ngFor="let card of cards; index as i"
         [id]="i.toString()"
       >
-        <app-card [card]="card" [index]="i" *ngIf="activeSlide == i || i == prevSlide"></app-card>
+        <app-card [card]="card" [index]="i"></app-card>
       </ng-template>
     </ngb-carousel>
   </div>

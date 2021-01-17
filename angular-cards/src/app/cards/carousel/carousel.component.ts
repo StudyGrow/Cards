@@ -85,7 +85,6 @@ export class CarouselComponent implements OnInit, OnDestroy {
   private uid: string; //user id
 
   allCards: Card[];
-  tmp: Card[];
 
   loading: boolean;
 
@@ -98,7 +97,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
   cardCount = 0; //counts the cards that are displayed in the carousel
   lastRefresh: number; // holds the timestamp at which the carousel was last updated
   activeSlide = 0; //holds the slide which is currently shown
-  readonly initialSlide = 0;
+
   start$ = this.mode$.pipe(map((mode) => mode.startIndex));
   start: number;
   end: number;
@@ -107,7 +106,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
   formMode: string; // mode in which the form is displayed either add or edit
   notallowed: boolean = false; //wether an action is allowed or not
 
-  prevSlide = 0; //holds the slide which is currently shown
+  // prevSlide = 0; //holds the slide which is currently shown
 
   subscriptions$: Subscription[] = []; //holds all subscriptions from observables they are unsubscribed in ngOnDestroy
 
@@ -218,7 +217,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
           }
 
           // this.activeSlide = 0; reset the active index to the first card
-          this.tmp = [...cards];
+
           this.cards = null; //set null to explicitely refresh carousel view
 
           setTimeout(() => {
@@ -236,7 +235,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
     //handles new slide indexes received from other components
     sub = this.mode$
       .pipe(
-        delay(180),
+        // delay(180),
         map((state) => state.currentCard),
         distinctUntilChanged((prev, curr) => prev?._id === curr?._id)
 
@@ -250,8 +249,8 @@ export class CarouselComponent implements OnInit, OnDestroy {
 
   //this function updates the current slide index in the store and for the component
   onSlide(slideEvent: NgbSlideEvent) {
-    let newindex = Number.parseInt(slideEvent.current);
-    this.activeSlide = newindex;
+    // this.prevSlide = Number.parseInt(slideEvent.prev);
+    this.activeSlide = Number.parseInt(slideEvent.current);
     if (this.cards) {
       this.store.dispatch(setActiveCardIndex({ index: this.activeSlide }));
     }
@@ -361,7 +360,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
     if (!newCard?._id) {
       return;
     }
-    let index = this.tmp?.findIndex((card) => card._id === newCard._id);
+    let index = this.cards?.findIndex((card) => card._id === newCard._id);
 
     if (index >= 0 && index < this.cardCount) {
       //prevent setting an invalid index
