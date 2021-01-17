@@ -6,7 +6,7 @@ import { formMode, Mode } from 'src/app/models/state';
 import { Card } from 'src/app/models/Card';
 import { SortType } from 'src/app/models/SortType';
 
-export const pageSize = 3;
+export const pageSize = 50;
 //initial state of the app
 export const initialState: Mode = {
   currentCard: undefined,
