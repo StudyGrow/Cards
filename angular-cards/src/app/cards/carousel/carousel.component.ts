@@ -99,6 +99,8 @@ export class CarouselComponent implements OnInit, OnDestroy {
   formMode: string; // mode in which the form is displayed either add or edit
   notallowed: boolean = false; //wether an action is allowed or not
 
+  prevSlide = 0; //holds the slide which is currently shown
+
   subscriptions$: Subscription[] = []; //holds all subscriptions from observables they are unsubscribed in ngOnDestroy
 
   sortOption$: BehaviorSubject<{
