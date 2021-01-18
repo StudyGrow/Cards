@@ -60,7 +60,9 @@ export class NavBarComponent implements OnInit, OnDestroy {
       this.progress$ = combineLatest([
         this.store.select(ActiveIndex),
         cardCount$,
-      ]).pipe(map(([curr, all]) => (all ? (100 * curr) / all : undefined)));
+      ]).pipe(
+        map(([curr, all]) => (all > 1 ? (curr / (all - 1)) * 100 : undefined))
+      );
 
       sub = this.router.events
         .pipe(filter((e): e is RouterEvent => e instanceof RouterEvent))
