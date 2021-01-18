@@ -30,12 +30,7 @@ const _modeReducer = createReducer(
   on(StateActions.adjustIndeces, (state, { allCards, newIndex }) => {
     newIndex = newIndex + state.startIndex; //actual position of newIndex considering all cards
     let actualIndex = state.startIndex + state.activeIndex; // actual index considering all cards
-    console.log(
-      'Current index: ' + actualIndex,
-      'Index to be: ' + newIndex,
-      'First Index: ' + state.startIndex,
-      'Last Index: ' + state.endIndex
-    );
+
     if (
       (newIndex >= state.startIndex && newIndex < state.endIndex) || //in current range
       newIndex < 0 || //no cards on the left

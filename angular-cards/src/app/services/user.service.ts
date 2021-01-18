@@ -96,7 +96,7 @@ export class UserService implements CanActivate {
   }
 
   uploadFile(file: FormData): Observable<boolean> {
-    console.log(file);
+    // console.log(file);
     //this.statesService.setLoadingState(true);
     // return this.http
     //   .post<boolean>(this.config.urlBase + "user/pic", file, {

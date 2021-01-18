@@ -28,7 +28,7 @@ export class SignupFormComponent implements OnInit {
     if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
       return true;
     }
-    console.log('not email');
+    // console.log('not email');
     return false;
   }
   getLength(elem) {

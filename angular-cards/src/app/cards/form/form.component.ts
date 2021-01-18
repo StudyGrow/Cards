@@ -268,7 +268,6 @@ export class FormComponent implements OnInit, OnDestroy {
     tags: string[],
     latex: number
   ) {
-    console.log(content);
     //dispatch update by overwriting the fields of cardCopy
     this.store.dispatch(
       updateCard({

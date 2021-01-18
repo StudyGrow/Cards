@@ -299,7 +299,6 @@ export class CarouselComponent implements OnInit, OnDestroy {
       this.cardCount > 1 &&
       this.formMode != 'edit'
     ) {
-      console.log(this.activeSlide);
       this.store.dispatch(
         adjustIndeces({
           allCards: this.allCards,
