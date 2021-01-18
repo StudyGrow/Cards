@@ -20,8 +20,17 @@
         {{ card.thema }}
       </mat-card-title>
       <mat-card-subtitle>
-        {{ card.date | date: "longDate":"de" }}
+        {{ card.date | date: 'longDate':'de' }}
       </mat-card-subtitle>
+      <button
+        color="primary"
+        mat-icon-button
+        matTooltip="In Vorlesung anzeigen"
+        matTooltipPosition="above"
+        class="ml-auto"
+      >
+        <mat-icon>launch</mat-icon>
+      </button>
     </mat-card-header>
     <mat-card-content>
       <p>{{ card.content }}</p>
