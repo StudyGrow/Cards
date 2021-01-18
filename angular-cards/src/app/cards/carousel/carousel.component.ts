@@ -280,11 +280,6 @@ export class CarouselComponent implements OnInit, OnDestroy {
           newIndex: this.activeSlide - 1,
         })
       );
-      // if (this.activeSlide - 1 < 0 && this.start > 0) {
-      //   this.activeSlide = this.cardCount - 1;
-      // } else if (this.activeSlide - 1 > 0) {
-      //   this.activeSlide--;
-      // }
 
       this.carousel.prev();
     } else {
@@ -305,14 +300,6 @@ export class CarouselComponent implements OnInit, OnDestroy {
           newIndex: this.activeSlide + 1,
         })
       );
-      // if (
-      //   this.activeSlide + 1 >= this.cardCount &&
-      //   this.end < this.allCards.length
-      // ) {
-      //   this.activeSlide = 0;
-      // } else if (this.activeSlide + 1 < this.cardCount) {
-      //   this.activeSlide++;
-      // }
 
       this.carousel.next();
     } else {
@@ -359,6 +346,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
     if (!newCard?._id) {
       return;
     }
+    console.log(newCard);
     let index = this.cards?.findIndex((card) => card._id === newCard._id);
 
     if (index >= 0 && index < this.cardCount) {

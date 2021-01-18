@@ -161,7 +161,7 @@ const _modeReducer = createReducer(
   })),
   on(StateActions.resetCardsState, (state) => ({
     ...state,
-    currentCard: initialState.currentCard,
+
     activeIndex: initialState.activeIndex,
     formMode: initialState.formMode,
     typingMode: false,
