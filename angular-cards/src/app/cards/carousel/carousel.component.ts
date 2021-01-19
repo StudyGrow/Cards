@@ -8,7 +8,7 @@ import {
 import { Card } from '../../models/Card';
 
 import { Subscription, Observable, combineLatest, BehaviorSubject } from 'rxjs';
-
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import {
   fadeInOnEnterAnimation,
   shakeAnimation,
@@ -139,7 +139,8 @@ export class CarouselComponent implements OnInit, OnDestroy {
   constructor(
     private store: Store<AppState>,
     private _bottomSheet: MatBottomSheet,
-    private notifs: NotificationsService
+    private notifs: NotificationsService,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
@@ -149,6 +150,15 @@ export class CarouselComponent implements OnInit, OnDestroy {
       .subscribe((mode) => {
         this.formMode = mode;
       });
+    this.subscriptions$.push(sub);
+
+    sub = this.route.queryParams.subscribe((params) => {
+      let id = params['card'];
+      if (id) {
+        if (this.cards.find((card) => card._id)) {
+        }
+      }
+    });
     this.subscriptions$.push(sub);
 
     //see if user is in a typing field. (If so we disable carousel navigation with arrows)

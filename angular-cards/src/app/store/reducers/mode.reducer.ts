@@ -97,10 +97,12 @@ const _modeReducer = createReducer(
           activeIndex: index,
         }
   ),
-  on(StateActions.setActiveCard, (state, { card }) => ({
-    ...state,
-    currentCard: card,
-  })),
+  on(StateActions.setActiveCard, (state, { card }) => {
+    return {
+      ...state,
+      currentCard: card,
+    };
+  }),
   on(StateActions.goNext, (state) => ({
     ...state,
     activeIndex: state.activeIndex + 1,
