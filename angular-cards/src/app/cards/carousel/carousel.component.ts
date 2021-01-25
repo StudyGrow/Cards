@@ -25,7 +25,14 @@ import {
   adjustIndeces,
 } from 'src/app/store/actions/StateActions';
 
-import { debounceTime, delay, distinctUntilChanged, map } from 'rxjs/operators';
+import {
+  debounceTime,
+  delay,
+  distinctUntilChanged,
+  first,
+  map,
+  take,
+} from 'rxjs/operators';
 
 import { NgbCarousel, NgbSlideEvent } from '@ng-bootstrap/ng-bootstrap';
 import { NotificationsService } from 'src/app/services/notifications.service';
@@ -40,6 +47,7 @@ import { Vote } from 'src/app/models/Vote';
 import { sortOptions } from './sortOptions';
 import { SortType } from 'src/app/models/SortType';
 import { AllCards, DisplayedCards, UserId } from 'src/app/store/selector';
+import { logging } from 'protractor';
 
 @Component({
   selector: 'app-bottom-sheet',
@@ -88,9 +96,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
 
   loading: boolean;
 
-  public cards$: Observable<Card[]> = this.data$.pipe(
-    map((data) => data.cardData.cards)
-  );
+  public cardsData$: Observable<[Card[], number, number, number]>;
   filters$: Observable<string[]> = this.mode$.pipe(map((mode) => mode.tags));
   filters: string[];
   cards: Card[]; //array of all the cards
@@ -194,47 +200,43 @@ export class CarouselComponent implements OnInit, OnDestroy {
     );
 
     //observable which holds the final cards which should be displayed in the carousel (filtered and sorted)
-    sub = combineLatest([
+    this.cardsData$ = combineLatest([
       this.store.select(DisplayedCards),
       lastChanges$,
       this.start$,
       this.end$,
-    ])
-      .pipe(debounceTime(5))
-      .subscribe(([cards, date, start, end]) => {
-        if (
-          cards?.length > 0 &&
-          (!this.lastRefresh || this.lastRefresh < date)
-        ) {
-          //cards have changed
-          this.lastRefresh = date; //update the last refresh time
-          this.cardCount = cards?.length;
+    ]).pipe(debounceTime(5));
+    sub = this.cardsData$.subscribe(([cards, date, start, end]) => {
+      if (cards?.length > 0 && (!this.lastRefresh || this.lastRefresh < date)) {
+        //cards have changed
+        this.lastRefresh = date; //update the last refresh time
+        this.cardCount = cards?.length;
 
-          this.cards = null; //set null to explicitely refresh carousel view
-          //cards have changed
-          this.lastRefresh = new Date().getTime(); //update the last refresh time
-          this.cardCount = cards?.length;
-          if (!this.start || this.start < start) {
-            //got a bigger pageslice
-            this.start = start;
-            this.end = end;
-            this.activeSlide = 0; //set activeSlide to the first index in the new pageSlice
-          } else if (this.start > start) {
-            //got a smaller pageslice
-            this.start = start;
-            this.end = end;
-            this.activeSlide = this.cardCount - 1; //set the activeSlide to the last index of the new pageSlice
-          }
-
-          // this.activeSlide = 0; reset the active index to the first card
-
-          this.cards = null; //set null to explicitely refresh carousel view
-
-          setTimeout(() => {
-            this.cards = [...cards];
-          }, 150);
+        this.cards = null; //set null to explicitely refresh carousel view
+        //cards have changed
+        this.lastRefresh = new Date().getTime(); //update the last refresh time
+        this.cardCount = cards?.length;
+        if (!this.start || this.start < start) {
+          //got a bigger pageslice
+          this.start = start;
+          this.end = end;
+          this.activeSlide = 0; //set activeSlide to the first index in the new pageSlice
+        } else if (this.start > start) {
+          //got a smaller pageslice
+          this.start = start;
+          this.end = end;
+          this.activeSlide = this.cardCount - 1; //set the activeSlide to the last index of the new pageSlice
         }
-      });
+
+        // this.activeSlide = 0; reset the active index to the first card
+
+        this.cards = null; //set null to explicitely refresh carousel view
+
+        setTimeout(() => {
+          this.cards = [...cards];
+        }, 150);
+      }
+    });
 
     this.subscriptions$.push(sub);
     sub = this.store.pipe(map(AllCards)).subscribe((cards) => {
@@ -356,22 +358,26 @@ export class CarouselComponent implements OnInit, OnDestroy {
     if (!newCard?._id) {
       return;
     }
+    this.cardsData$
+      .pipe(first((array) => array && array[0] !== undefined)) //array[0] holds cards
+      .toPromise() //wait for cards before changin to be loaded before handling index change
+      .then(([cards]) => {
+        console.log(cards);
+        let index = cards?.findIndex((card) => card._id === newCard._id);
+        if (index >= 0 && index < cards.length) {
+          //prevent setting an invalid index
 
-    let index = this.cards?.findIndex((card) => card._id === newCard._id);
+          if (index !== this.activeSlide) {
+            //got a new index
 
-    if (index >= 0 && index < this.cardCount) {
-      //prevent setting an invalid index
-
-      if (index !== this.activeSlide) {
-        //got a new index
-
-        if (this.cards !== null) {
-          this.selectSlide(index); //select new slide
-        } else {
-          this.activeSlide = index;
+            if (this.cards) {
+              this.selectSlide(index); //select new slide
+            } else {
+              this.activeSlide = index;
+            }
+          }
         }
-      }
-    }
+      });
   }
   private selectSlide(n: number) {
     if (this.carousel && this.cards && n >= 0 && n < this.cardCount) {

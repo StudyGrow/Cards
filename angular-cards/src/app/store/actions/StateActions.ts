@@ -17,6 +17,7 @@ enum ActionTypes {
   CHABGE_THEME = '[Theme] change theme',
   SET_ACITVE_CARD_INDEX = '[Index] update the index of the card which is currently showing. This should only be dispatched by the carousel',
   SET_ACITVE_CARD = '[Card] set the card which should be shown ',
+  NAVIGATE_TO_CARD = '[Card] navigate to card on lecture route',
   SET_ACITVE_CARD_SUCCESS = '[Card] Successfully set the card which should be shown ',
   GO_NEXT = '[Cards] Go to the next slide ',
   GO_PREV = '[Cards] Go to the prev. slide ',
@@ -84,6 +85,10 @@ export const setActiveCardIndex = createAction(
 );
 export const setActiveCard = createAction(
   ActionTypes.SET_ACITVE_CARD,
+  props<{ card: Card }>()
+);
+export const navigateToCard = createAction(
+  ActionTypes.NAVIGATE_TO_CARD,
   props<{ card: Card }>()
 );
 

@@ -52,6 +52,7 @@ import { Card, CardsData } from 'src/app/models/Card';
 import {
   adjustIndeces,
   fail,
+  navigateToCard,
   resetFilter,
   setActiveCard,
   setActiveCardSuccess,
@@ -104,6 +105,23 @@ export class CardsEffects {
       share()
     )
   );
+
+  @Effect()
+  navigateToCard$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(navigateToCard),
+      tap(({ card }) => {
+        let url = `vorlesung/${card.abrv ? card.abrv : card['vorlesung']}`;
+        this.router.navigateByUrl(url);
+      }),
+      delay(200),
+      map(({ card }) => {
+        return setActiveCardSuccess({ card: card });
+      }),
+      share()
+    )
+  );
+
   @Effect()
   currentCardChange$ = createEffect(() =>
     this.actions$.pipe(
@@ -116,13 +134,13 @@ export class CardsEffects {
         ])
       ),
       map(([{ card }, [currCards, allCards, filteredCards]]) => {
-        if (!currCards.includes(card)) {
+        if (!currCards?.includes(card)) {
           //need to adjust indeces
-          if (!filteredCards.includes(card)) {
+          if (!filteredCards?.includes(card)) {
             // need to reset filter
             this.store.dispatch(resetFilter());
           }
-          let newIndex = allCards.indexOf(card);
+          let newIndex = allCards?.indexOf(card);
           if (newIndex >= 0) {
             this.store.dispatch(
               adjustIndeces({ allCards: allCards, newIndex: newIndex })
@@ -134,7 +152,7 @@ export class CardsEffects {
         }
         return card;
       }),
-      delay(200),
+      delay(200), //delay in case carousel needs refresh
       map((card: Card) => setActiveCardSuccess({ card: card })),
       share()
     )

@@ -11,7 +11,7 @@ import {
 } from 'angular-animations';
 import { AppState } from 'src/app/models/state';
 import { Router } from '@angular/router';
-import { setActiveCard } from 'src/app/store/actions/StateActions';
+import { navigateToCard } from 'src/app/store/actions/StateActions';
 
 @Component({
   selector: 'app-cards-overview',
@@ -44,7 +44,7 @@ export class CardsOverviewComponent implements OnInit {
       this.end = this.start + event.pageSize;
     }
   }
-  navigateToCard(card: Card) {
-    // this.store.dispatch(); create an new effect for this
+  navigate(card: Card) {
+    this.store.dispatch(navigateToCard({ card: card }));
   }
 }
