@@ -18,24 +18,19 @@ export class VoteComponent implements OnInit, OnDestroy {
   voteCount: number;
   loggedIn$: Observable<boolean> = this.store.select(authenticated);
 
-  @Input() id: string; //id of card that the vote belongs to
+  @Input() id: string; // id of card that the vote belongs to
 
   private subscriptions$: Subscription[] = [];
   constructor(private store: Store<any>) {}
 
   ngOnInit(): void {
-    let sub = this.store
-      .pipe(map((state: AppState) => UserVote(state, this.id)))
-      .subscribe((init) => {
-        if (init && this.vote && this.vote.value != init.value)
-          this.vote = { ...init };
-      });
+    let sub = this.store.pipe(map((state: AppState) => UserVote(state, this.id))).subscribe((init) => {
+      if (init && this.vote && this.vote.value != init.value) this.vote = { ...init };
+    });
     this.subscriptions$.push(sub);
-    sub = this.store
-      .pipe(map((state) => VoteCount(state, this.id)))
-      .subscribe((count) => {
-        this.voteCount = count;
-      });
+    sub = this.store.pipe(map((state) => VoteCount(state, this.id))).subscribe((count) => {
+      this.voteCount = count;
+    });
     this.subscriptions$.push(sub);
   }
 

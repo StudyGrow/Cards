@@ -296,8 +296,11 @@ export class CarouselComponent implements OnInit, OnDestroy {
 
   enableEdit() {
     if (this.formMode != 'edit') {
-      this.store.dispatch(setFormMode({ mode: 'edit' }));
-      this.store.dispatch(changeTab({ tab: 1 }));
+      this.store.dispatch(setActiveCard({ card: this.cards[this.activeSlide] }));
+      setTimeout(() => {
+        this.store.dispatch(setFormMode({ mode: 'edit' }));
+        this.store.dispatch(changeTab({ tab: 1 }));
+      }, 20);
     }
   }
 
@@ -317,7 +320,6 @@ export class CarouselComponent implements OnInit, OnDestroy {
       .pipe(first((array) => array && array[0] !== undefined)) //array[0] holds cards
       .toPromise() //wait for cards before changin to be loaded before handling index change
       .then(([cards]) => {
-        console.log(cards);
         let index = cards?.findIndex((card) => card._id === newCard._id);
         if (index >= 0 && index < cards.length) {
           //prevent setting an invalid index
@@ -329,6 +331,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
               this.selectSlide(index); //select new slide
             } else {
               this.activeSlide = index;
+              this.store.dispatch(setActiveCardIndex({ index: index }));
             }
           }
         }

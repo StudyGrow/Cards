@@ -127,9 +127,10 @@ export class FormComponent implements OnInit, OnDestroy {
     let tab$ = this.mode$.pipe(map((state: Mode) => state.currTab));
 
     sub = this.store
+      .select(CurrentCard)
       .pipe(
         //create new global state interface
-        map(CurrentCard),
+
         withLatestFrom(this.formMode$),
         withLatestFrom(tab$)
       )
@@ -160,11 +161,13 @@ export class FormComponent implements OnInit, OnDestroy {
         //formmode has changed
         this.formMode = mode;
         if (mode == 'edit') {
-          this.form.reset({ ...this.cardCopy }); //overwrite form with content of the card
+          setTimeout(() => {
+            this.form.reset({ ...this.cardCopy }); //overwrite form with content of the card
 
-          this.selectedTags = this.cardCopy?.tags //load the selecteed tags for the current card
-            ? [...this.cardCopy.tags]
-            : [];
+            this.selectedTags = this.cardCopy?.tags //load the selecteed tags for the current card
+              ? [...this.cardCopy.tags]
+              : [];
+          }, 200);
         } else this.resetForm(); //clear data from form when mode is "add"
       }
     });

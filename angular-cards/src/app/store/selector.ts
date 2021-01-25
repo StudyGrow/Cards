@@ -46,7 +46,7 @@ export const AllVotes = (state: AppState) => state.data.cardData.votes;
  */
 export const VoteCount = (state: AppState, cardId: string) =>
   state.data.cardData.votes
-    ? state.data.cardData.votes.filter((vote) => vote.cardId == cardId && vote.value == 1).length
+    ? state.data.cardData.votes.filter((vote) => vote.cardId === cardId && vote.value == 1).length
     : undefined;
 /**
  * Current tags selected by the user
