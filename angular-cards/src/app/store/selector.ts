@@ -13,6 +13,7 @@ export const selectAllCards = (state: AppState) => state.data?.cardData?.cards;
 /**
  * Get all cards for a certain lecture from store
  * @param state state of the store
+ * @deprecated Use CardsSorted instead
  */
 export const AllCards = (state: AppState) => state.data?.cardData?.cards;
 
@@ -146,7 +147,7 @@ export const FilterObject = createSelector(
 );
 
 /**
- * Returns the cards filtered by the selected tags
+ * Returns the cards which are displayed in the carousel; filtered and sorted
  */
 export const DisplayedCards = createSelector(
   AllCards,
@@ -158,6 +159,25 @@ export const DisplayedCards = createSelector(
   (cards, tags, votes, type, changes, [start, end, curr]) =>
     _sort(_filter(cards, tags), type, changes, votes)?.cards?.slice(start, end)
 );
+
+export const CardsSorted = createSelector(
+  AllCards,
+  AllVotes,
+  sortType,
+  lastCardChange,
+  (cards, votes, type, changes) => _sort(cards, type, changes, votes)?.cards
+);
+
+export const CardsSortedAndFiltered = createSelector(
+  AllCards,
+  ActiveTags,
+  AllVotes,
+  sortType,
+  lastCardChange,
+  (cards, tags, votes, type, changes) =>
+    _sort(_filter(cards, tags), type, changes, votes)?.cards
+);
+
 // /**
 //  * Selects the last cardindex in the carousel
 //  */

@@ -10,6 +10,8 @@ import {
   fadeOutOnLeaveAnimation,
 } from 'angular-animations';
 import { AppState } from 'src/app/models/state';
+import { Router } from '@angular/router';
+import { navigateToCard } from 'src/app/store/actions/StateActions';
 
 @Component({
   selector: 'app-cards-overview',
@@ -27,7 +29,7 @@ export class CardsOverviewComponent implements OnInit {
   end: number = 3;
   pageSizeOptions = [3, 10, 15];
   cards$: Observable<Card[]>;
-  constructor(private store: Store<AppState>) {}
+  constructor(private store: Store, private router: Router) {}
 
   ngOnInit(): void {
     this.cards$ = this.store.select(UserCards);
@@ -41,5 +43,8 @@ export class CardsOverviewComponent implements OnInit {
     } else {
       this.end = this.start + event.pageSize;
     }
+  }
+  navigate(card: Card) {
+    this.store.dispatch(navigateToCard({ card: card }));
   }
 }

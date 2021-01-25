@@ -26,9 +26,9 @@ export class AppComponent {
     this.themeManager.initTheme(); //initialize theme
 
     if (isDevMode()) {
-      this.store.pipe(map((state) => state.data)).subscribe((data) => {
-        console.log(data.cardData.cards);
-      });
+      // this.store.pipe(map((state) => state.mode)).subscribe((mode) => {
+      //   console.log(mode.currentCard);
+      // });
     }
     //log state only in development mode
 
