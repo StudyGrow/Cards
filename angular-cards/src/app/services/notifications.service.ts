@@ -54,13 +54,10 @@ export class NotificationsService {
     // console.log(error);
     switch (error.status) {
       case 401:
-        if (error.url.includes('api/login'))
-          this.addNotification(new WarnMessage(err));
+        if (error.url.includes('api/login')) this.addNotification(new WarnMessage(err));
         break;
       case 403:
-        this.addNotification(
-          new WarnMessage('Du musst dich einloggen, um diese Seite zu besuchen')
-        );
+        this.addNotification(new WarnMessage('Du musst dich einloggen, um diese Seite zu besuchen'));
         break;
       case 422:
         if (typeof err == 'string') {
@@ -82,26 +79,17 @@ export class NotificationsService {
         break;
       case 500:
         this.addNotification(
-          new WarnMessage(
-            'Der Server scheint offline zu sein. Versuche es später erneut.',
-            error.status
-          )
+          new WarnMessage('Der Server scheint offline zu sein. Versuche es später erneut.', error.status)
         );
         break;
       case 504:
         this.addNotification(
-          new WarnMessage(
-            'Der Server scheint offline zu sein. Versuche es später erneut.',
-            error.status
-          )
+          new WarnMessage('Der Server scheint offline zu sein. Versuche es später erneut.', error.status)
         );
         break;
       default:
         this.addNotification(
-          new WarnMessage(
-            'Ein unbekannter Fehler ist aufgetreten. Versuche es später erneut.',
-            error.status
-          )
+          new WarnMessage('Ein unbekannter Fehler ist aufgetreten. Versuche es später erneut.', error.status)
         );
         break;
     }

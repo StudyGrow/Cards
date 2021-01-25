@@ -21,11 +21,7 @@ export class ChangeProfileComponent implements OnInit, OnDestroy {
   subscriptions$: Subscription[] = [];
   public user = new User();
   fileToUpload: File = null;
-  constructor(
-    private userService: UserService,
-    private store: Store<AppState>,
-    public dialog: MatDialog
-  ) {}
+  constructor(private userService: UserService, private store: Store<AppState>, public dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.user.name = '';
@@ -61,11 +57,7 @@ export class ChangeProfileComponent implements OnInit, OnDestroy {
     this.userService.uploadFile(formData).subscribe((success) => {});
   }
   setStyle(password, password2) {
-    if (
-      password2.value &&
-      password2.value.length > 5 &&
-      password2.value != password.value
-    ) {
+    if (password2.value && password2.value.length > 5 && password2.value != password.value) {
       return 'box-shadow:0 0 3px #CC0000;';
     }
     return '';
@@ -74,11 +66,7 @@ export class ChangeProfileComponent implements OnInit, OnDestroy {
     return s1 && s1.length > 7 && s1 === s2;
   }
   validate(form: NgForm) {
-    if (
-      this.checkEmail(form.value.email) &&
-      form.value.username &&
-      form.value.username.length >= 5
-    ) {
+    if (this.checkEmail(form.value.email) && form.value.username && form.value.username.length >= 5) {
       return true;
     } else {
       return false;
@@ -96,8 +84,7 @@ export class ChangeProfileComponent implements OnInit, OnDestroy {
       width: '400px',
       data: {
         title: 'Account löschen',
-        content:
-          'Bist du sicher, dass du deinen Account unwiderruflich löschen möchtest?',
+        content: 'Bist du sicher, dass du deinen Account unwiderruflich löschen möchtest?',
         abortText: 'Nein, zurück',
         proceedText: 'Ja',
       },

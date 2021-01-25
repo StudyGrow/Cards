@@ -21,9 +21,7 @@ export class RequestCache {
   }
 
   //returns cached lectures or cards or undefined if non existant
-  get(
-    req: HttpRequest<any>
-  ): { response: HttpResponse<any>; expired: boolean } | undefined {
+  get(req: HttpRequest<any>): { response: HttpResponse<any>; expired: boolean } | undefined {
     const url = req.urlWithParams;
 
     if (!url.includes('lecture') && !url.includes('cards')) {

@@ -17,23 +17,13 @@ import { Data, Mode } from 'src/app/models/state';
 import { User } from 'src/app/models/User';
 import { Vorlesung } from 'src/app/models/Vorlesung';
 import { NotificationsService } from 'src/app/services/notifications.service';
-import {
-  changeTab,
-  setFormMode,
-  setTypingMode,
-} from 'src/app/store/actions/StateActions';
+import { changeTab, setFormMode, setTypingMode } from 'src/app/store/actions/StateActions';
 import { addCard, updateCard } from 'src/app/store/actions/CardActions';
 import { addLercture } from 'src/app/store/actions/LectureActions';
 import { CardsEffects } from 'src/app/store/effects/effects';
 import { AppState } from '../../models/state';
 import { parse, HtmlGenerator } from 'latex.js/dist/latex.js';
-import {
-  AllTags,
-  CurrentCard,
-  CurrentLecture,
-  FormMode,
-  user,
-} from 'src/app/store/selector';
+import { AllTags, CurrentCard, CurrentLecture, FormMode, user } from 'src/app/store/selector';
 
 class CardFormData {
   thema: string;
@@ -122,9 +112,7 @@ export class FormComponent implements OnInit, OnDestroy {
     this.formMode$ = this.store.select(FormMode);
 
     //input from tagfield
-    let tagInput$ = this.form.valueChanges.pipe(
-      map((val: CardFormData) => val.tag)
-    );
+    let tagInput$ = this.form.valueChanges.pipe(map((val: CardFormData) => val.tag));
 
     let allTags$ = this.store.select(AllTags); //get all tags
 
@@ -139,9 +127,10 @@ export class FormComponent implements OnInit, OnDestroy {
     let tab$ = this.mode$.pipe(map((state: Mode) => state.currTab));
 
     sub = this.store
+      .select(CurrentCard)
       .pipe(
         //create new global state interface
-        map(CurrentCard),
+
         withLatestFrom(this.formMode$),
         withLatestFrom(tab$)
       )
@@ -172,11 +161,13 @@ export class FormComponent implements OnInit, OnDestroy {
         //formmode has changed
         this.formMode = mode;
         if (mode == 'edit') {
-          this.form.reset({ ...this.cardCopy }); //overwrite form with content of the card
+          setTimeout(() => {
+            this.form.reset({ ...this.cardCopy }); //overwrite form with content of the card
 
-          this.selectedTags = this.cardCopy?.tags //load the selecteed tags for the current card
-            ? [...this.cardCopy.tags]
-            : [];
+            this.selectedTags = this.cardCopy?.tags //load the selecteed tags for the current card
+              ? [...this.cardCopy.tags]
+              : [];
+          }, 200);
         } else this.resetForm(); //clear data from form when mode is "add"
       }
     });
@@ -185,9 +176,7 @@ export class FormComponent implements OnInit, OnDestroy {
     if (this.neu) {
       this.lecture = JSON.parse(localStorage.getItem('vl'));
       sub = this.actionState.addLecture$.subscribe(() =>
-        this.router.navigateByUrl(
-          `vorlesung/${JSON.parse(localStorage.getItem('vl')).abrv}`
-        )
+        this.router.navigateByUrl(`vorlesung/${JSON.parse(localStorage.getItem('vl')).abrv}`)
       );
       this.subscriptions$.push(sub);
     }
@@ -209,9 +198,7 @@ export class FormComponent implements OnInit, OnDestroy {
         doc.htmlDocument().body;
       } catch (e) {
         console.log(e);
-        this.notifs.addNotification(
-          new WarnMessage('Der Latex content ist nicht korrekt mit $ umhüllt')
-        );
+        this.notifs.addNotification(new WarnMessage('Der Latex content ist nicht korrekt mit $ umhüllt'));
         return;
       }
 
@@ -226,20 +213,13 @@ export class FormComponent implements OnInit, OnDestroy {
         this.form.value.thema,
         this.form.value.content,
         this.selectedTags,
-        this.neu
-          ? JSON.parse(localStorage.getItem('vl')).abrv
-          : this.lecture.abrv
+        this.neu ? JSON.parse(localStorage.getItem('vl')).abrv : this.lecture.abrv
       );
       card.latex = latexState;
 
       this.addCard(card);
     } else if (this.formMode === 'edit') {
-      this.updateCard(
-        this.form.value.thema,
-        this.form.value.content,
-        this.selectedTags,
-        latexState
-      );
+      this.updateCard(this.form.value.thema, this.form.value.content, this.selectedTags, latexState);
     }
   }
 
@@ -249,9 +229,7 @@ export class FormComponent implements OnInit, OnDestroy {
       card.authorName = this.author.name;
     }
     if (this.neu) {
-      this.store.dispatch(
-        addLercture({ lecture: JSON.parse(localStorage.getItem('vl')) })
-      );
+      this.store.dispatch(addLercture({ lecture: JSON.parse(localStorage.getItem('vl')) }));
     }
     this.store.dispatch(addCard({ card: card }));
     let sub = this.actionState.addCard$.subscribe((card) => {
@@ -262,12 +240,7 @@ export class FormComponent implements OnInit, OnDestroy {
     });
   }
 
-  private updateCard(
-    thema: string,
-    content: string,
-    tags: string[],
-    latex: number
-  ) {
+  private updateCard(thema: string, content: string, tags: string[], latex: number) {
     //dispatch update by overwriting the fields of cardCopy
     this.store.dispatch(
       updateCard({
@@ -312,11 +285,7 @@ export class FormComponent implements OnInit, OnDestroy {
       return true;
     }
 
-    return (
-      thema.value.trim().length < 3 ||
-      thema.value.trim().length > 500 ||
-      content.value.trim().length > 1000
-    );
+    return thema.value.trim().length < 3 || thema.value.trim().length > 500 || content.value.trim().length > 1000;
   }
   removeChip(tag: string): void {
     const index = this.selectedTags.indexOf(tag);
@@ -340,17 +309,14 @@ export class FormComponent implements OnInit, OnDestroy {
     if (!value || value.trim().length == 0) return tags;
     const filterValue = value.toLowerCase();
 
-    return [...tags].filter(
-      (item) => item.toLowerCase().indexOf(filterValue) === 0
-    );
+    return [...tags].filter((item) => item.toLowerCase().indexOf(filterValue) === 0);
   }
   cancelEdit() {
     this.dialog.open(DialogueComponent, {
       width: '400px',
       data: {
         title: 'Abbruch',
-        content:
-          'Bist du sicher, dass du das Bearbeiten dieser Karte abbrechen möchtest?',
+        content: 'Bist du sicher, dass du das Bearbeiten dieser Karte abbrechen möchtest?',
         abortText: 'Nein, zurück',
         proceedText: 'Ja',
       },

@@ -1,19 +1,9 @@
-import {
-  Component,
-  OnInit,
-  ViewChild,
-  OnDestroy,
-  HostListener,
-} from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, HostListener } from '@angular/core';
 import { Card } from '../../models/Card';
 
 import { Subscription, Observable, combineLatest, BehaviorSubject } from 'rxjs';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
-import {
-  fadeInOnEnterAnimation,
-  shakeAnimation,
-  fadeOutOnLeaveAnimation,
-} from 'angular-animations';
+import { fadeInOnEnterAnimation, shakeAnimation, fadeOutOnLeaveAnimation } from 'angular-animations';
 import { Store } from '@ngrx/store';
 
 import {
@@ -25,24 +15,14 @@ import {
   adjustIndeces,
 } from 'src/app/store/actions/StateActions';
 
-import {
-  debounceTime,
-  delay,
-  distinctUntilChanged,
-  first,
-  map,
-  take,
-} from 'rxjs/operators';
+import { debounceTime, delay, distinctUntilChanged, first, map, take } from 'rxjs/operators';
 
 import { NgbCarousel, NgbSlideEvent } from '@ng-bootstrap/ng-bootstrap';
 import { NotificationsService } from 'src/app/services/notifications.service';
 import { WarnMessage } from 'src/app/models/Notification';
 import { AppState, Data, Mode } from 'src/app/models/state';
 
-import {
-  MatBottomSheet,
-  MatBottomSheetRef,
-} from '@angular/material/bottom-sheet';
+import { MatBottomSheet, MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { Vote } from 'src/app/models/Vote';
 import { sortOptions } from './sortOptions';
 import { SortType } from 'src/app/models/SortType';
@@ -60,9 +40,7 @@ export class BottomSheetComponent {
     icon?: string;
   }[];
 
-  constructor(
-    private _bottomSheetRef: MatBottomSheetRef<BottomSheetComponent>
-  ) {
+  constructor(private _bottomSheetRef: MatBottomSheetRef<BottomSheetComponent>) {
     this.options = sortOptions;
   }
   sort(key: SortType) {
@@ -74,11 +52,7 @@ export class BottomSheetComponent {
   selector: 'app-carousel',
   templateUrl: './carousel.component.html',
   styleUrls: ['./carousel.component.scss'],
-  animations: [
-    fadeInOnEnterAnimation({ duration: 500 }),
-    fadeOutOnLeaveAnimation({ duration: 100 }),
-    shakeAnimation(),
-  ],
+  animations: [fadeInOnEnterAnimation({ duration: 500 }), fadeOutOnLeaveAnimation({ duration: 100 }), shakeAnimation()],
 })
 export class CarouselComponent implements OnInit, OnDestroy {
   private data$: Observable<Data> = this.store.select(
@@ -123,9 +97,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
 
   @ViewChild('mycarousel', { static: false }) public carousel: NgbCarousel; //ref to the ngbootsrap carousel
 
-  @HostListener('window:keyup', ['$event']) handleKeyDown(
-    event: KeyboardEvent
-  ) {
+  @HostListener('window:keyup', ['$event']) handleKeyDown(event: KeyboardEvent) {
     if (!this.inTypingField) {
       //allow arrow keys navigation if user is not in an input field
       if (event.key == 'ArrowRight') {
@@ -151,11 +123,9 @@ export class CarouselComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     //Form Mode, depending on the mode different actions are not allowed
-    let sub = this.mode$
-      .pipe(map((state) => state.formMode))
-      .subscribe((mode) => {
-        this.formMode = mode;
-      });
+    let sub = this.mode$.pipe(map((state) => state.formMode)).subscribe((mode) => {
+      this.formMode = mode;
+    });
     this.subscriptions$.push(sub);
 
     sub = this.route.queryParams.subscribe((params) => {
@@ -194,18 +164,13 @@ export class CarouselComponent implements OnInit, OnDestroy {
 
     //observable which holds the maximum of filtered$ and added$ which represents the lastChanges which were made
     let lastChanges$ = combineLatest([filtered$, added$]).pipe(
-      map(([d1, d2]) =>
-        !d1 && !d2 ? 0 : Math.max(d1?.getTime() || 0, d2?.getTime())
-      )
+      map(([d1, d2]) => (!d1 && !d2 ? 0 : Math.max(d1?.getTime() || 0, d2?.getTime())))
     );
 
     //observable which holds the final cards which should be displayed in the carousel (filtered and sorted)
-    this.cardsData$ = combineLatest([
-      this.store.select(DisplayedCards),
-      lastChanges$,
-      this.start$,
-      this.end$,
-    ]).pipe(debounceTime(5));
+    this.cardsData$ = combineLatest([this.store.select(DisplayedCards), lastChanges$, this.start$, this.end$]).pipe(
+      debounceTime(5)
+    );
     sub = this.cardsData$.subscribe(([cards, date, start, end]) => {
       if (cards?.length > 0 && (!this.lastRefresh || this.lastRefresh < date)) {
         //cards have changed
@@ -280,12 +245,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
 
   //select the previous slide
   goToPrev() {
-    if (
-      this.carousel &&
-      this.cards &&
-      this.cardCount > 1 &&
-      this.formMode != 'edit'
-    ) {
+    if (this.carousel && this.cards && this.cardCount > 1 && this.formMode != 'edit') {
       this.store.dispatch(
         adjustIndeces({
           allCards: this.allCards,
@@ -300,12 +260,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
   }
   //select the next slide
   goToNext() {
-    if (
-      this.carousel &&
-      this.cards &&
-      this.cardCount > 1 &&
-      this.formMode != 'edit'
-    ) {
+    if (this.carousel && this.cards && this.cardCount > 1 && this.formMode != 'edit') {
       this.store.dispatch(
         adjustIndeces({
           allCards: this.allCards,
@@ -341,8 +296,11 @@ export class CarouselComponent implements OnInit, OnDestroy {
 
   enableEdit() {
     if (this.formMode != 'edit') {
-      this.store.dispatch(setFormMode({ mode: 'edit' }));
-      this.store.dispatch(changeTab({ tab: 1 }));
+      this.store.dispatch(setActiveCard({ card: this.cards[this.activeSlide] }));
+      setTimeout(() => {
+        this.store.dispatch(setFormMode({ mode: 'edit' }));
+        this.store.dispatch(changeTab({ tab: 1 }));
+      }, 20);
     }
   }
 
@@ -362,7 +320,6 @@ export class CarouselComponent implements OnInit, OnDestroy {
       .pipe(first((array) => array && array[0] !== undefined)) //array[0] holds cards
       .toPromise() //wait for cards before changin to be loaded before handling index change
       .then(([cards]) => {
-        console.log(cards);
         let index = cards?.findIndex((card) => card._id === newCard._id);
         if (index >= 0 && index < cards.length) {
           //prevent setting an invalid index
@@ -374,6 +331,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
               this.selectSlide(index); //select new slide
             } else {
               this.activeSlide = index;
+              this.store.dispatch(setActiveCardIndex({ index: index }));
             }
           }
         }
