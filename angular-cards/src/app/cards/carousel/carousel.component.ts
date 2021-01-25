@@ -356,7 +356,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
     if (!newCard?._id) {
       return;
     }
-    console.log(newCard);
+
     let index = this.cards?.findIndex((card) => card._id === newCard._id);
 
     if (index >= 0 && index < this.cardCount) {

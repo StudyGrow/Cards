@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType, createEffect } from '@ngrx/effects';
-import { of, Observable } from 'rxjs';
+import { of, Observable, combineLatest } from 'rxjs';
 import {
   share,
   tap,
@@ -9,6 +9,7 @@ import {
   filter,
   shareReplay,
   switchMap,
+  delay,
 } from 'rxjs/operators';
 
 import { catchError, map, mergeMap, exhaustMap } from 'rxjs/operators';
@@ -47,8 +48,19 @@ import { NotificationsService } from 'src/app/services/notifications.service';
 import { SuccessMessage } from 'src/app/models/Notification';
 import { VotesService } from 'src/app/services/votes.service';
 
-import { CardsData } from 'src/app/models/Card';
-import { setActiveCard } from '../actions/StateActions';
+import { Card, CardsData } from 'src/app/models/Card';
+import {
+  adjustIndeces,
+  fail,
+  resetFilter,
+  setActiveCard,
+  setActiveCardSuccess,
+} from '../actions/StateActions';
+import {
+  CardsSorted,
+  CardsSortedAndFiltered,
+  DisplayedCards,
+} from '../selector';
 
 @Injectable()
 export class CardsEffects {
@@ -89,6 +101,41 @@ export class CardsEffects {
           .fetchVotes()
           .pipe(map((votes) => fetchVotesSuccess({ votes: votes })))
       ),
+      share()
+    )
+  );
+  @Effect()
+  currentCardChange$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(setActiveCard),
+      withLatestFrom(
+        combineLatest([
+          this.store.select(DisplayedCards),
+          this.store.select(CardsSorted),
+          this.store.select(CardsSortedAndFiltered),
+        ])
+      ),
+      map(([{ card }, [currCards, allCards, filteredCards]]) => {
+        if (!currCards.includes(card)) {
+          //need to adjust indeces
+          if (!filteredCards.includes(card)) {
+            // need to reset filter
+            this.store.dispatch(resetFilter());
+          }
+          let newIndex = allCards.indexOf(card);
+          if (newIndex >= 0) {
+            this.store.dispatch(
+              adjustIndeces({ allCards: allCards, newIndex: newIndex })
+            );
+          } else {
+            console.error('Could not find card in array', card, allCards);
+            return undefined;
+          }
+        }
+        return card;
+      }),
+      delay(200),
+      map((card: Card) => setActiveCardSuccess({ card: card })),
       share()
     )
   );

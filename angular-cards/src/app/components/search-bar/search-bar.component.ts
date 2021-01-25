@@ -12,7 +12,7 @@ import {
   setActiveCard,
 } from 'src/app/store/actions/StateActions';
 
-import { AllCards, DisplayedCards, FormMode } from 'src/app/store/selector';
+import { CardsSorted, DisplayedCards, FormMode } from 'src/app/store/selector';
 import { FormControl } from '@angular/forms';
 import { AppState } from 'src/app/models/state';
 import { WarnMessage } from 'src/app/models/Notification';
@@ -52,7 +52,7 @@ export class SearchBarComponent implements OnInit, OnDestroy {
         }
       });
     this.subscriptions$.push(sub);
-    let allCards$ = this.store.select(AllCards);
+    let allCards$ = this.store.select(CardsSorted);
     sub = allCards$.subscribe((allCards) => {
       this.allCards = allCards;
     });
@@ -61,6 +61,7 @@ export class SearchBarComponent implements OnInit, OnDestroy {
     sub = DisplayedCards$.subscribe((filtered) => {
       this.currentSelection = filtered;
     });
+    this.subscriptions$.push(sub);
 
     let filteredSuggestions = this.uInput.valueChanges.pipe(
       withLatestFrom(allCards$, DisplayedCards$),
@@ -130,20 +131,8 @@ export class SearchBarComponent implements OnInit, OnDestroy {
       return;
     }
     this.store.dispatch(changeTab({ tab: 0 }));
-    let currCard = this.currentSelection.find((card) => card._id === id);
-    if (currCard) {
-      //card is in current selection (cards currently in carousel)
-      this.store.dispatch(setActiveCard({ card: currCard }));
-    } else {
-      //card is not in the carousel currently
-      this.store.dispatch(resetFilter()); //remove all filters
-
-      currCard = this.allCards.find((card) => card._id === id);
-
-      setTimeout(() => {
-        this.store.dispatch(setActiveCard({ card: currCard }));
-      }, 700);
-    }
+    let newCard = this.allCards.find((card) => card._id === id);
+    this.store.dispatch(setActiveCard({ card: newCard }));
     this.store.dispatch(setSuggestionsMode({ hide: true }));
   }
 

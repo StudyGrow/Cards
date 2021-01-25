@@ -97,12 +97,14 @@ const _modeReducer = createReducer(
           activeIndex: index,
         }
   ),
-  on(StateActions.setActiveCard, (state, { card }) => {
-    return {
-      ...state,
-      currentCard: card,
-    };
-  }),
+  on(StateActions.setActiveCardSuccess, (state, { card }) =>
+    card
+      ? {
+          ...state,
+          currentCard: card,
+        }
+      : state
+  ),
   on(StateActions.goNext, (state) => ({
     ...state,
     activeIndex: state.activeIndex + 1,
@@ -163,7 +165,6 @@ const _modeReducer = createReducer(
   })),
   on(StateActions.resetCardsState, (state) => ({
     ...state,
-
     activeIndex: initialState.activeIndex,
     formMode: initialState.formMode,
     typingMode: false,
@@ -174,7 +175,8 @@ const _modeReducer = createReducer(
     sortType: initialState.sortType,
     startIndex: initialState.startIndex,
     endIndex: initialState.endIndex,
-  }))
+  })),
+  on(StateActions.fail, (state) => state)
 );
 
 export function modeReducer(state: Mode, action: Action) {
