@@ -115,13 +115,13 @@ export class CardsEffects {
         ])
       ),
       map(([{ card }, [currCards, allCards, filteredCards]]) => {
-        if (!currCards?.includes(card)) {
+        if (!currCards?.some((c) => c._id === card._id)) {
           //need to adjust indeces
-          if (!filteredCards?.includes(card)) {
+          if (!filteredCards?.some((c) => c._id === card._id)) {
             // need to reset filter
             this.store.dispatch(resetFilter());
           }
-          let newIndex = allCards?.indexOf(card);
+          let newIndex = allCards?.findIndex((c) => c._id === card._id);
           if (newIndex >= 0) {
             this.store.dispatch(adjustIndeces({ allCards: allCards, newIndex: newIndex }));
           } else {
@@ -189,7 +189,7 @@ export class CardsEffects {
           tap((card) => {
             setTimeout(() => {
               this.store.dispatch(setActiveCard({ card: card })); //go to last card
-            }, 300);
+            }, 200);
           }),
           map((res) => AddCardActions.addCardSuccess({ card: res })),
 
@@ -207,9 +207,7 @@ export class CardsEffects {
       exhaustMap((action) =>
         this.cards.updateCard(action.card).pipe(
           tap((card) => {
-            setTimeout(() => {
-              this.store.dispatch(setActiveCard({ card: card }));
-            }, 120);
+            this.store.dispatch(setActiveCard({ card: card }));
           }),
           map((card) => UpdateCardActions.updateCardSuccess({ card: card })),
           catchError((reason) => of(LoadFailure({ reason: reason })))
