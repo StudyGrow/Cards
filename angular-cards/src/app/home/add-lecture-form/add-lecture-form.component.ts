@@ -18,11 +18,7 @@ export class AddLectureFormComponent implements OnInit {
     });
   }
   onSubmit(f) {
-    let newLecture = new Vorlesung(
-      f.value.vlname.trim(),
-      f.value.abrv.toLowerCase().trim(),
-      []
-    );
+    let newLecture = new Vorlesung(f.value.vlname.trim(), f.value.abrv.toLowerCase().trim(), []);
     localStorage.setItem('vl', JSON.stringify(newLecture));
     this.router.navigateByUrl('/vorlesung/neu');
   }

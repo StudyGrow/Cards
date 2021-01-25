@@ -1,10 +1,4 @@
-import {
-  Component,
-  OnInit,
-  Input,
-  OnDestroy,
-  HostListener,
-} from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, HostListener } from '@angular/core';
 import { Card } from '../../models/Card';
 import { ViewChild } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
@@ -33,9 +27,7 @@ export class CardComponent implements OnInit, OnDestroy {
   @Input() card: Card;
   @Input() index: number;
 
-  @HostListener('window:keyup', ['$event']) handleKeyDown(
-    event: KeyboardEvent
-  ) {
+  @HostListener('window:keyup', ['$event']) handleKeyDown(event: KeyboardEvent) {
     if (!this.inTypingField && this.activeIndex == this.index) {
       if (event.key == 'ArrowDown') {
         event.preventDefault();
@@ -51,15 +43,13 @@ export class CardComponent implements OnInit, OnDestroy {
   subscriptions$: Subscription[] = [];
 
   ngOnInit(): void {
-    let sub = this.mode$
-      .pipe(map((state) => state.activeIndex))
-      .subscribe((index) => {
-        //hides the card content when carousel slides
-        if (this.activeIndex != index) {
-          this.content.close();
-        }
-        this.activeIndex = index;
-      });
+    let sub = this.mode$.pipe(map((state) => state.activeIndex)).subscribe((index) => {
+      //hides the card content when carousel slides
+      if (this.activeIndex != index) {
+        this.content.close();
+      }
+      this.activeIndex = index;
+    });
     this.subscriptions$.push(sub);
 
     sub = this.mode$.pipe(map((state) => state.typingMode)).subscribe((val) => {

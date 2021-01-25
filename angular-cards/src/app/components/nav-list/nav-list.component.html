@@ -1,13 +1,7 @@
 <mat-nav-list class="p-0">
-  <a mat-list-item color="primary" class="{{ isActive('/') }}" routerLink="/"
-    ><mat-icon>home</mat-icon> Vorlesungen</a
-  >
+  <a mat-list-item color="primary" class="{{ isActive('/') }}" routerLink="/"><mat-icon>home</mat-icon> Vorlesungen</a>
   <ng-container *ngIf="(loggedIn$ | async) == false">
-    <a
-      mat-list-item
-      mat-ripple
-      class=" {{ isActive('/login') }}"
-      routerLink="/login"
+    <a mat-list-item mat-ripple class=" {{ isActive('/login') }}" routerLink="/login"
       ><mat-icon>person</mat-icon>Login</a
     >
 
@@ -18,40 +12,19 @@
   <div *ngIf="loggedIn$ | async">
     <div mat-subheader>Account</div>
 
-    <a
-      mat-list-item
-      routerLink="/account/overview"
-      class=" {{ isActive('/account/overview') }}"
-    >
+    <a mat-list-item routerLink="/account/overview" class=" {{ isActive('/account/overview') }}">
       <mat-icon>account_box</mat-icon> Übersicht</a
     >
-    <a
-      mat-list-item
-      routerLink="/account/cards"
-      class=" {{ isActive('/account/cards') }}"
-    >
+    <a mat-list-item routerLink="/account/cards" class=" {{ isActive('/account/cards') }}">
       <mat-icon>style</mat-icon> Meine Karten</a
     >
   </div>
   <div mat-subheader>Über uns</div>
-  <a mat-list-item routerLink="/about" class=" {{ isActive('/about') }}">
-    <mat-icon>contacts</mat-icon> Infos
-  </a>
+  <a mat-list-item routerLink="/about" class=" {{ isActive('/about') }}"> <mat-icon>contacts</mat-icon> Infos </a>
   <mat-divider></mat-divider>
-  <mat-slide-toggle
-    #darkmode
-    class="ml-3 mb.0 mt-2"
-    (change)="toggleDarkMode($event)"
-    >Darkmode</mat-slide-toggle
-  >
+  <mat-slide-toggle #darkmode class="ml-3 mb.0 mt-2" (change)="toggleDarkMode($event)">Darkmode</mat-slide-toggle>
   <div class="bottom">
-    <a
-      mat-list-item
-      (click)="logout()"
-      class="mb-0"
-      id="logout"
-      *ngIf="loggedIn$ | async"
-    >
+    <a mat-list-item (click)="logout()" class="mb-0" id="logout" *ngIf="loggedIn$ | async">
       <mat-icon>exit_to_app</mat-icon> Logout
     </a>
   </div>

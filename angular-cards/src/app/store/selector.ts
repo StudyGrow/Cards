@@ -7,7 +7,7 @@ import { Card } from '../models/Card';
 import { Vorlesung } from '../models/Vorlesung';
 import { AppState } from '../models/state';
 
-const maxCards = 50; //maximum amount of cards which should be displayed in carousel
+const maxCards = 50; // maximum amount of cards which should be displayed in carousel
 export const selectAllCards = (state: AppState) => state.data?.cardData?.cards;
 
 /**
@@ -26,19 +26,17 @@ export const UserVote = (
   state: AppState,
   cardId: string //
 ) =>
-  state.data.userData.authenticated
-    ? state.data.userData.votes?.find((vote) => vote.cardId === cardId)
-    : undefined;
+  state.data.userData.authenticated ? state.data.userData.votes?.find((vote) => vote.cardId === cardId) : undefined;
 /**
  * Returns votes for a certain card
  */
 export const VotesForCard = (state: AppState, cardId: string) =>
   state.data.cardData.votes
-    ? state.data.cardData.votes.filter(
-        (vote) => vote.cardId === cardId && vote.value == 1
-      )
+    ? state.data.cardData.votes.filter((vote) => vote.cardId === cardId && vote.value === 1)
     : undefined;
-/**Returns all votes for the current lecture */
+/**
+ * Returns all votes for the current lecture
+ */
 export const AllVotes = (state: AppState) => state.data.cardData.votes;
 
 /**
@@ -48,9 +46,7 @@ export const AllVotes = (state: AppState) => state.data.cardData.votes;
  */
 export const VoteCount = (state: AppState, cardId: string) =>
   state.data.cardData.votes
-    ? state.data.cardData.votes.filter(
-        (vote) => vote.cardId == cardId && vote.value == 1
-      ).length
+    ? state.data.cardData.votes.filter((vote) => vote.cardId == cardId && vote.value == 1).length
     : undefined;
 /**
  * Current tags selected by the user
@@ -61,8 +57,7 @@ export const ActiveTags = (state: AppState) => state.mode.tags;
  * Select all tags for the current lecture
  * @param state state of the app
  */
-export const AllTags = (state: AppState) =>
-  state.data.cardData?.currLecture?.tagList;
+export const AllTags = (state: AppState) => state.data.cardData?.currLecture?.tagList;
 /**select the index of the active card in the array */
 export const ActiveIndex = (state: AppState) => state.mode.activeIndex;
 /**
@@ -74,8 +69,7 @@ export const FormMode = (state: AppState) => state.mode.formMode;
  * Select the current lecture
  * @param state state of the app
  */
-export const CurrentLecture = (state: AppState) =>
-  state.data?.cardData?.currLecture;
+export const CurrentLecture = (state: AppState) => state.data?.cardData?.currLecture;
 /**
  * Select the id of the user, if user is logged in
  * @param state state of the app
@@ -111,14 +105,9 @@ export const user = (state: AppState) => state.data.userData.user;
  * @param state state of the app
  */
 
-const CardIndices = (state: AppState) => [
-  state.mode.startIndex,
-  state.mode.endIndex,
-  state.mode.activeIndex,
-];
+const CardIndices = (state: AppState) => [state.mode.startIndex, state.mode.endIndex, state.mode.activeIndex];
 
-export const authenticated = (state: AppState) =>
-  state.data.userData.authenticated;
+export const authenticated = (state: AppState) => state.data.userData.authenticated;
 
 const sortType = (state: AppState) => state.mode.sortType;
 /**
@@ -133,18 +122,12 @@ export const UserCards = createSelector(userInfo, (info) => info.cards);
 /**
  * Select the tag options that are still not selected by the user
  */
-export const TagOptions = createSelector(AllTags, ActiveTags, (all, selected) =>
-  selectRemaining(all, selected)
-);
+export const TagOptions = createSelector(AllTags, ActiveTags, (all, selected) => selectRemaining(all, selected));
 
 /**
  * s the current filter as well the date at which it was set
  */
-export const FilterObject = createSelector(
-  lastCardChange,
-  ActiveTags,
-  (date, tags) => ({ date, tags })
-);
+export const FilterObject = createSelector(lastCardChange, ActiveTags, (date, tags) => ({ date, tags }));
 
 /**
  * Returns the cards which are displayed in the carousel; filtered and sorted
@@ -174,8 +157,7 @@ export const CardsSortedAndFiltered = createSelector(
   AllVotes,
   sortType,
   lastCardChange,
-  (cards, tags, votes, type, changes) =>
-    _sort(_filter(cards, tags), type, changes, votes)?.cards
+  (cards, tags, votes, type, changes) => _sort(_filter(cards, tags), type, changes, votes)?.cards
 );
 
 // /**
@@ -238,12 +220,7 @@ function selectRemaining(all: any[], selected: any[]) {
  * @param date Date by which the cards array has changed
  * @param votes Votes are needed if the user wants to sort cards by the number of likes
  */
-function _sort(
-  cards: Card[],
-  type: SortType,
-  date: Date,
-  votes: Vote[]
-): { date: Date; cards: Card[] } {
+function _sort(cards: Card[], type: SortType, date: Date, votes: Vote[]): { date: Date; cards: Card[] } {
   let result = { cards: cards, date: new Date() };
   if (!cards) {
     return result;
@@ -310,14 +287,10 @@ function _sort(
       });
       break;
     case SortType.LIKES_ASC:
-      result.cards = [...cards].sort(
-        (a, b) => countVotesForCard(a, votes) - countVotesForCard(b, votes)
-      );
+      result.cards = [...cards].sort((a, b) => countVotesForCard(a, votes) - countVotesForCard(b, votes));
       break;
     case SortType.LIKES_DSC:
-      result.cards = [...cards].sort(
-        (a, b) => countVotesForCard(b, votes) - countVotesForCard(a, votes)
-      );
+      result.cards = [...cards].sort((a, b) => countVotesForCard(b, votes) - countVotesForCard(a, votes));
       break;
     default:
       result.date = date; //no changes were made so reset to initial date
@@ -331,7 +304,6 @@ function _sort(
  * @param votes all votes
  */
 function countVotesForCard(card: Card, votes: Vote[]) {
-  let res = votes.filter((vote) => vote.cardId === card._id && vote.value === 1)
-    .length;
+  let res = votes.filter((vote) => vote.cardId === card._id && vote.value === 1).length;
   return res;
 }

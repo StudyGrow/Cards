@@ -1,21 +1,12 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { Card } from '../../models/Card';
-import {
-  Router,
-  NavigationEnd,
-  RouterEvent,
-  RoutesRecognized,
-} from '@angular/router';
+import { Router, NavigationEnd, RouterEvent, RoutesRecognized } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { Subscription, Observable, combineLatest } from 'rxjs';
 import { Store } from '@ngrx/store';
 
 import { filter, map, withLatestFrom } from 'rxjs/operators';
-import {
-  ActiveIndex,
-  DisplayedCards,
-  LoadingState,
-} from 'src/app/store/selector';
+import { ActiveIndex, DisplayedCards, LoadingState } from 'src/app/store/selector';
 import { clearCardData } from 'src/app/store/actions/CardActions';
 import { AppState, Data, Mode } from 'src/app/models/state';
 import { NavbarToggleService } from 'src/app/services/navbar-toggle.service';
@@ -53,22 +44,15 @@ export class NavBarComponent implements OnInit, OnDestroy {
       });
       this.subscriptions$.push(sub);
 
-      let cardCount$ = this.store
-        .select(DisplayedCards)
-        .pipe(map((cards) => cards?.length));
+      let cardCount$ = this.store.select(DisplayedCards).pipe(map((cards) => cards?.length));
       //progress of carousel. will be undefined if there are no cards
-      this.progress$ = combineLatest([
-        this.store.select(ActiveIndex),
-        cardCount$,
-      ]).pipe(
+      this.progress$ = combineLatest([this.store.select(ActiveIndex), cardCount$]).pipe(
         map(([curr, all]) => (all > 1 ? (curr / (all - 1)) * 100 : undefined))
       );
 
-      sub = this.router.events
-        .pipe(filter((e): e is RouterEvent => e instanceof RouterEvent))
-        .subscribe((e) => {
-          this.handleRouteChanges(e);
-        });
+      sub = this.router.events.pipe(filter((e): e is RouterEvent => e instanceof RouterEvent)).subscribe((e) => {
+        this.handleRouteChanges(e);
+      });
       this.subscriptions$.push(sub);
     }, 1);
   }

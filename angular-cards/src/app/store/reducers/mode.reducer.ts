@@ -38,8 +38,7 @@ const _modeReducer = createReducer(
     )
       return state;
     if (newIndex < state.startIndex) {
-      let newStart =
-        state.startIndex - pageSize > 0 ? state.startIndex - pageSize : 0;
+      let newStart = state.startIndex - pageSize > 0 ? state.startIndex - pageSize : 0;
       let newEnd = state.startIndex;
       return {
         ...state,
@@ -52,10 +51,7 @@ const _modeReducer = createReducer(
     }
     if (newIndex >= state.endIndex) {
       let newStart = newIndex;
-      let newEnd =
-        state.endIndex + pageSize < allCards.length
-          ? state.endIndex + pageSize
-          : allCards.length;
+      let newEnd = state.endIndex + pageSize < allCards.length ? state.endIndex + pageSize : allCards.length;
       return {
         ...state,
         startIndex: newStart,
@@ -76,9 +72,7 @@ const _modeReducer = createReducer(
         }
   ),
 
-  on(StateActions.changeTab, (state, { tab }) =>
-    tab === state.currTab ? state : { ...state, currTab: tab }
-  ),
+  on(StateActions.changeTab, (state, { tab }) => (tab === state.currTab ? state : { ...state, currTab: tab })),
 
   on(StateActions.setFormMode, (state, { mode }) =>
     mode === state.formMode

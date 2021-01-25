@@ -1,16 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType, createEffect } from '@ngrx/effects';
 import { of, Observable, combineLatest } from 'rxjs';
-import {
-  share,
-  tap,
-  startWith,
-  withLatestFrom,
-  filter,
-  shareReplay,
-  switchMap,
-  delay,
-} from 'rxjs/operators';
+import { share, tap, startWith, withLatestFrom, filter, shareReplay, switchMap, delay } from 'rxjs/operators';
 
 import { catchError, map, mergeMap, exhaustMap } from 'rxjs/operators';
 import {
@@ -57,11 +48,7 @@ import {
   setActiveCard,
   setActiveCardSuccess,
 } from '../actions/StateActions';
-import {
-  CardsSorted,
-  CardsSortedAndFiltered,
-  DisplayedCards,
-} from '../selector';
+import { CardsSorted, CardsSortedAndFiltered, DisplayedCards } from '../selector';
 
 @Injectable()
 export class CardsEffects {
@@ -83,9 +70,7 @@ export class CardsEffects {
       switchMap(() => {
         this.store.dispatch(fetchVotes());
         return this.cards.fetchCardsData().pipe(
-          map((data: CardsData) =>
-            FetchCardsActions.LoadSuccess({ data: data })
-          ),
+          map((data: CardsData) => FetchCardsActions.LoadSuccess({ data: data })),
           catchError((reason) => of(LoadFailure({ reason: reason })))
         );
       }),
@@ -97,11 +82,7 @@ export class CardsEffects {
   fetchVotes$ = createEffect(() =>
     this.actions$.pipe(
       ofType(fetchVotes),
-      switchMap(() =>
-        this.votes
-          .fetchVotes()
-          .pipe(map((votes) => fetchVotesSuccess({ votes: votes })))
-      ),
+      switchMap(() => this.votes.fetchVotes().pipe(map((votes) => fetchVotesSuccess({ votes: votes })))),
       share()
     )
   );
@@ -142,9 +123,7 @@ export class CardsEffects {
           }
           let newIndex = allCards?.indexOf(card);
           if (newIndex >= 0) {
-            this.store.dispatch(
-              adjustIndeces({ allCards: allCards, newIndex: newIndex })
-            );
+            this.store.dispatch(adjustIndeces({ allCards: allCards, newIndex: newIndex }));
           } else {
             console.error('Could not find card in array', card, allCards);
             return undefined;
@@ -278,9 +257,7 @@ export class CardsEffects {
           tap((user) => {
             if (user) {
               this.router.navigateByUrl('/');
-              this.notifications.addNotification(
-                new SuccessMessage(`Willkommen ${user.username}`)
-              );
+              this.notifications.addNotification(new SuccessMessage(`Willkommen ${user.username}`));
               this.store.dispatch(fetchUserData());
             }
           }),
@@ -299,10 +276,7 @@ export class CardsEffects {
         this.user.logoutServer().pipe(
           tap((success) => {
             this.router.navigateByUrl('/');
-            if (success)
-              this.notifications.addNotification(
-                new SuccessMessage('Erfolgreich abgemeldet')
-              );
+            if (success) this.notifications.addNotification(new SuccessMessage('Erfolgreich abgemeldet'));
           }),
           map(() => logoutSuccess()),
           catchError((reason) => of(LoadFailure({ reason: reason })))
