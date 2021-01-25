@@ -22,7 +22,7 @@
   <div mat-subheader>Über uns</div>
   <a mat-list-item routerLink="/about" class=" {{ isActive('/about') }}"> <mat-icon>contacts</mat-icon> Infos </a>
   <mat-divider></mat-divider>
-  <mat-slide-toggle #darkmode class="ml-3 mb.0 mt-2" (change)="toggleDarkMode($event)">Darkmode</mat-slide-toggle>
+  <mat-slide-toggle #darkmode class="ml-3 mb-0 mt-2" (change)="toggleDarkMode($event)">Darkmode</mat-slide-toggle>
   <div class="bottom">
     <a mat-list-item (click)="logout()" class="mb-0" id="logout" *ngIf="loggedIn$ | async">
       <mat-icon>exit_to_app</mat-icon> Logout

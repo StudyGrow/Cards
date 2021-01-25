@@ -1,10 +1,10 @@
 //Service that provides functions associated with users
-const User = require("../models/User");
-const Card = require("../models/Card");
-const bcrypt = require("bcryptjs"); //used to encrypt and decrypt passwords
-const mail = require("./mailService");
-const crypto = require("crypto-random-string");
-const { findByIdAndDelete } = require("../models/User");
+const User = require('../models/User');
+const Card = require('../models/Card');
+const bcrypt = require('bcryptjs'); //used to encrypt and decrypt passwords
+const mail = require('./mailService');
+const crypto = require('crypto-random-string');
+const { findByIdAndDelete } = require('../models/User');
 
 module.exports = function userService() {
   //create a new Account for the site
@@ -19,25 +19,29 @@ module.exports = function userService() {
 
   //Login the user
   userService.login = async (passport, req, res, next) => {
-    passport.authenticate("local", { session: req.body.remember === true }, (error, user, info) => {
-      //authenticate the user using the local strategy for passport
-      if (error) res.status(401).send(error.message);
-      else
-        req.login(user._id, function (error) {
-          if (error) {
-            res.status(401).send(error.message);
-          } else {
-            res.status(200).send({ _id: user._id, username: user.username, email: user.email });
-          }
-        });
-    })(req, res, next);
+    passport.authenticate(
+      'local',
+      { session: req.body.enable_session === true },
+      (error, user, info) => {
+        //authenticate the user using the local strategy for passport
+        if (error) res.status(401).send(error.message);
+        else
+          req.login(user._id, function (error) {
+            if (error) {
+              res.status(401).send(error.message);
+            } else {
+              res.status(200).send({ _id: user._id, username: user.username, email: user.email });
+            }
+          });
+      }
+    )(req, res, next);
   };
 
   //get account info for a user, for now only cards
   userService.getAccountInfo = async (user, callback) => {
     try {
       if (!user) {
-        throw new Error("Bitte logge dich erst ein");
+        throw new Error('Bitte logge dich erst ein');
       }
       let info = new Object();
       info.user = { ...user._doc, password: null };
@@ -100,14 +104,14 @@ async function checkUnique(email, username) {
     user = await User.findOne({ email: email }); //check if email is already registered
   }
   if (user) {
-    throw new Error("Diese Email adresse ist bereits registriert");
+    throw new Error('Diese Email adresse ist bereits registriert');
   }
   if (username) {
     user = await User.findOne({ username: username }); //check if username is already taken
   }
 
   if (user) {
-    throw new Error("Der Benutzername existiert bereits");
+    throw new Error('Der Benutzername existiert bereits');
   }
 }
 //function to add an account to the database
@@ -134,7 +138,7 @@ function addAccount(form, callback) {
     } else if (err) {
       callback(err, false);
     } else {
-      callback(new Error("Ein unbekannter Fehler ist aufgetreten"), false);
+      callback(new Error('Ein unbekannter Fehler ist aufgetreten'), false);
     }
   });
 }
