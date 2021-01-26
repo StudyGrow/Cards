@@ -1,9 +1,10 @@
 import { isDevMode } from '@angular/core';
 import { NgcCookieConsentConfig } from 'ngx-cookieconsent';
+import { environment } from './../environments/environment';
 
 export const cookieConfig: NgcCookieConsentConfig = {
   cookie: {
-    domain: isDevMode() ? 'localhost' : 'rwth-aachen.tk',
+    domain: environment.domain,
   },
   position: 'bottom-right',
   theme: 'classic',
