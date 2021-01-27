@@ -38,7 +38,7 @@ export class RequestCache {
   }
 
   shouldBeCached(url: string): boolean {
-    if (url.includes('lecture') || url.includes('cards')) {
+    if (url.includes('lecture') || url.includes('cards') || url.includes('info')) {
       //only cards and lectures are cached
       return true;
     } else {

@@ -99,9 +99,9 @@ export class MyHammerConfig extends HammerGestureConfig {
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    HttpClientModule,
     SharedModule,
     MatProgressBarModule,
     MatSidenavModule,

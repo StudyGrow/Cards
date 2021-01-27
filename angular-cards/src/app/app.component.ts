@@ -13,8 +13,6 @@ import { auth } from './store/actions/UserActions';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  theme$: Observable<string>;
-  cachedTheme: string;
   public constructor(
     private titleService: Title,
     private store: Store<AppState>,

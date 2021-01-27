@@ -9,7 +9,7 @@ import {
 } from '@angular/common/http';
 
 import { Observable, of, throwError } from 'rxjs';
-import { catchError, map, shareReplay, tap, timeout } from 'rxjs/operators';
+import { catchError, delay, map, shareReplay, tap, timeout } from 'rxjs/operators';
 import { RequestCache } from './request-cache.service';
 import { NotificationsService } from '../notifications.service';
 import { WarnMessage } from 'src/app/models/Notification';
@@ -29,7 +29,10 @@ export class CachingInterceptor implements HttpInterceptor {
     if (!cachedObject || expired) {
       return this.sendRequest(req, next, this.cache, response);
     }
-    return of(response);
+
+    let res$ = of(response);
+    // res$.subscribe((res) => console.log(res)); //here response is logged, but subscribers outside this function dont receive it
+    return res$;
   }
 
   //sends a request to the server
@@ -56,7 +59,7 @@ export class CachingInterceptor implements HttpInterceptor {
       this.notifs.addNotification(
         new WarnMessage('Der Server ist offline, die Karten werden aus lokalem Speicher geladen')
       );
-      return of(cachedResp);
+      return of(cachedResp).pipe(shareReplay(1));
     }
     this.notifs.handleErrors(error); //make a notification for error
     // Return an observable with error message.

@@ -156,8 +156,7 @@ export class CardsEffects {
             return LectureActions.fetchLecturesSuccess({ lectures: data });
           })
         )
-      ),
-      shareReplay(1)
+      )
     )
   );
 

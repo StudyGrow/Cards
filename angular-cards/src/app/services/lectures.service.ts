@@ -3,8 +3,6 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable, BehaviorSubject, of } from 'rxjs';
 import { tap, map, share, shareReplay, catchError } from 'rxjs/operators';
 
-import { NotificationsService } from './notifications.service';
-import { Router } from '@angular/router';
 import { HttpConfig } from './config';
 //Models
 import { Vorlesung } from '../models/Vorlesung';
@@ -23,7 +21,13 @@ export class LecturesService {
   getAllLectures(): Observable<Vorlesung[]> {
     //load lectures from the server
 
-    return this.http.get<Vorlesung[]>(this.config.urlBase + 'lectures');
+    return this.http
+      .get<Vorlesung[]>(this.config.urlBase + 'lectures', { observe: 'response' })
+      .pipe(
+        map((res) => {
+          return res.body;
+        })
+      );
   }
 
   //add a lecture to the database on the server
