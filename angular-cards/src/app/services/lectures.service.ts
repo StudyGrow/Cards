@@ -23,27 +23,17 @@ export class LecturesService {
   getAllLectures(): Observable<Vorlesung[]> {
     //load lectures from the server
 
-    return this.http
-      .get<Vorlesung[]>(this.config.urlBase + 'lectures', {
-        observe: 'response',
-      })
-      .pipe(
-        map((res) => res.body),
-        shareReplay(1)
-      );
+    return this.http.get<Vorlesung[]>(this.config.urlBase + 'lectures');
   }
 
   //add a lecture to the database on the server
   addLecture(lecture: Vorlesung): Observable<Vorlesung> {
-    return this.http
-      .post<any>(
-        this.config.urlBase + 'lectures/new',
-        { lecture: lecture },
-        {
-          headers: this.config.headers,
-          observe: 'response',
-        }
-      )
-      .pipe(map((res) => res.body));
+    return this.http.post<any>(
+      this.config.urlBase + 'lectures/new',
+      { lecture: lecture },
+      {
+        headers: this.config.headers,
+      }
+    );
   }
 }

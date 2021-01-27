@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Card, CardsData } from '../models/Card';
 
-import { tap, map, share } from 'rxjs/operators';
+import { tap, map, share, debounceTime } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { HttpConfig } from './config';
 import { HttpClient } from '@angular/common/http';
@@ -24,11 +24,11 @@ export class CardsService {
   fetchCardsData(): Observable<CardsData> {
     let abrv = this.router.url.split(/vorlesung\//)[1]; //get the lecture abreviation from the route
 
-    return this.http.get<CardsData>(
-      this.config.urlBase + 'cards/data?abrv=' + abrv
+    return this.http.get<CardsData>(this.config.urlBase + 'cards/data?abrv=' + abrv).pipe(
+      tap((res) => console.log(res)),
+      debounceTime(10)
     );
   }
-  S;
 
   updateCard(card: Card): Observable<Card> {
     //send update to server using http service
@@ -41,10 +41,7 @@ export class CardsService {
           observe: 'response',
         }
       )
-      .pipe(
-        //    tap((res) => console.log(res.body)),
-        map((res) => res.body)
-      );
+      .pipe(map((res) => res.body));
   }
 
   addCard(card: Card): Observable<Card> {
@@ -58,9 +55,6 @@ export class CardsService {
           observe: 'response',
         }
       )
-      .pipe(
-        //  tap((res) => console.log(res)),
-        map((res) => res.body)
-      );
+      .pipe(map((res) => res.body));
   }
 }

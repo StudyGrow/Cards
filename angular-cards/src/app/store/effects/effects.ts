@@ -63,12 +63,11 @@ export class CardsEffects {
     private notifications: NotificationsService
   ) {}
 
-  @Effect()
   loadCards$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FetchCardsActions.fetchCards),
+      tap(() => this.store.dispatch(fetchVotes())),
       switchMap(() => {
-        this.store.dispatch(fetchVotes());
         return this.cards.fetchCardsData().pipe(
           map((data: CardsData) => FetchCardsActions.LoadSuccess({ data: data })),
           catchError((reason) => of(LoadFailure({ reason: reason })))
@@ -78,7 +77,6 @@ export class CardsEffects {
     )
   );
 
-  @Effect()
   fetchVotes$ = createEffect(() =>
     this.actions$.pipe(
       ofType(fetchVotes),
@@ -87,7 +85,6 @@ export class CardsEffects {
     )
   );
 
-  @Effect()
   navigateToCard$ = createEffect(() =>
     this.actions$.pipe(
       ofType(navigateToCard),
@@ -103,7 +100,6 @@ export class CardsEffects {
     )
   );
 
-  @Effect()
   currentCardChange$ = createEffect(() =>
     this.actions$.pipe(
       ofType(setActiveCard),
@@ -151,7 +147,6 @@ export class CardsEffects {
     )
   );
 
-  @Effect()
   fetchLectures$ = createEffect(() =>
     this.actions$.pipe(
       ofType(LectureActions.fetchLectures),
@@ -166,7 +161,6 @@ export class CardsEffects {
     )
   );
 
-  @Effect()
   addLecture$ = createEffect(() =>
     this.actions$.pipe(
       ofType(LectureActions.addLercture),
@@ -180,7 +174,6 @@ export class CardsEffects {
     )
   );
 
-  @Effect()
   addCard$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AddCardActions.addCard),
@@ -200,7 +193,6 @@ export class CardsEffects {
     )
   );
 
-  @Effect()
   updateCard$ = createEffect(() =>
     this.actions$.pipe(
       ofType(UpdateCardActions.updateCard),
@@ -219,7 +211,6 @@ export class CardsEffects {
     )
   );
 
-  @Effect()
   fetchUserInfo$ = createEffect(() =>
     this.actions$.pipe(
       ofType(fetchUserData),
@@ -233,7 +224,6 @@ export class CardsEffects {
     )
   );
 
-  @Effect()
   updateUserInfo$ = createEffect(() =>
     this.actions$.pipe(
       ofType(updateUserData),
@@ -247,7 +237,6 @@ export class CardsEffects {
     )
   );
 
-  @Effect()
   login$ = createEffect(() =>
     this.actions$.pipe(
       ofType(login),
@@ -267,7 +256,7 @@ export class CardsEffects {
       share()
     )
   );
-  @Effect()
+
   logout$ = createEffect(() =>
     this.actions$.pipe(
       ofType(logout),
@@ -285,7 +274,6 @@ export class CardsEffects {
     )
   );
 
-  @Effect()
   registerAccount$ = createEffect(() =>
     this.actions$.pipe(
       ofType(createAccount),
@@ -301,7 +289,6 @@ export class CardsEffects {
     )
   );
 
-  @Effect()
   auth$ = createEffect(() =>
     this.actions$.pipe(
       ofType(auth),
