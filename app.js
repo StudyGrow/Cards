@@ -6,6 +6,13 @@ const session = require("express-session");
 const MongoStore = require("connect-mongo")(session); //store session on MongoDb
 const app = express();
 const mongoose = require("mongoose");
+const swaggerUI = require("swagger-ui-express");
+const swaggerJsDoc = require("swagger-jsdoc");
+const swaggerOptions = require("./config/swagger");
+const swaggerDocs = swaggerJsDoc(swaggerOptions);
+
+app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocs));
+
 app.use(helmet());
 app.use(require("./middleware/serviceMiddleware")());
 

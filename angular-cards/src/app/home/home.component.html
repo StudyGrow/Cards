@@ -1,5 +1,5 @@
-<div class="container">
-  <div *ngIf="authenticated$ | async" class="row">
+<div class="container mt-3">
+  <div *ngIf="authenticated$ | async; else elseBlock" class="row">
     <div class="col-md-6 col-xs-12 mb-2">
       <app-lectures></app-lectures>
       <br />
@@ -9,8 +9,5 @@
       <app-add-lecture-form></app-add-lecture-form>
     </div>
   </div>
-
-  <div *ngIf="!(authenticated$ | async)">
-    <app-lectures></app-lectures>
-  </div>
+  <ng-template #elseBlock> <app-lectures></app-lectures></ng-template>
 </div>

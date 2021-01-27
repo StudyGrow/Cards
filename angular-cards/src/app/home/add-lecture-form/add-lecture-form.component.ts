@@ -1,14 +1,11 @@
-import { Component, OnInit, Output, EventEmitter } from "@angular/core";
-
-import { Vorlesung } from "../../models/Vorlesung";
-import { LecturesService } from "../../services/lectures.service";
-
-import { Subscription } from "rxjs";
-import { Router } from "@angular/router";
+import { Component, OnInit } from '@angular/core';
+import { Vorlesung } from '../../models/Vorlesung';
+import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
 @Component({
-  selector: "app-add-lecture-form",
-  templateUrl: "./add-lecture-form.component.html",
-  styleUrls: ["./add-lecture-form.component.scss"],
+  selector: 'app-add-lecture-form',
+  templateUrl: './add-lecture-form.component.html',
+  styleUrls: ['./add-lecture-form.component.scss'],
 })
 export class AddLectureFormComponent implements OnInit {
   subscriptions$: Subscription[] = [];
@@ -21,22 +18,18 @@ export class AddLectureFormComponent implements OnInit {
     });
   }
   onSubmit(f) {
-    let newLecture = new Vorlesung(
-      f.value.vlname.trim(),
-      f.value.abrv.toLowerCase().trim(),
-      []
-    );
-    localStorage.setItem("vl", JSON.stringify(newLecture));
-    this.router.navigateByUrl("/vorlesung/neu");
+    let newLecture = new Vorlesung(f.value.vlname.trim(), f.value.abrv.toLowerCase().trim(), []);
+    localStorage.setItem('vl', JSON.stringify(newLecture));
+    this.router.navigateByUrl('/vorlesung/neu');
   }
 
   setCharIndicatorStyle(field, max: number) {
     if (field.value) {
       return {
-        color: field.value.length > max ? "#ff0000" : "#000000",
+        color: field.value.length > max ? '#ff0000' : '#000000',
       };
     } else {
-      return { color: "#000000" };
+      return { color: '#000000' };
     }
   }
   getLength(elem) {

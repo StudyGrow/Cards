@@ -1,12 +1,21 @@
-<div class="row no-gutters" id="controls" *ngIf="cards">
+<div class="row" id="controls">
   <div class="col pr-1">
     <app-filter-tags></app-filter-tags>
   </div>
 
-  <div class="col-auto">
+  <div class="col-auto" *ngIf="this.cards !== undefined">
     <button
       mat-icon-button
-      placement="top"
+      matTooltip="Sortieren"
+      matTooltipPosition="above"
+      aria-label="sortieren"
+      (click)="openBottomSheet()"
+    >
+      <mat-icon>sort</mat-icon>
+    </button>
+
+    <button
+      mat-icon-button
       matTooltip="Zufall"
       matTooltipPosition="above"
       aria-label="zufall"
@@ -27,68 +36,50 @@
     >
       <mat-icon>edit</mat-icon>
     </button>
-    <button
-      mat-icon-button
-      [color]="checkLatexState()"
-      id="toggleLatex"
-      aria-label="latex einstellen"
-      type="button"
-      (click)="toggleLatex()"
-      matTooltip="Latex"
-      matTooltipPosition="above"
-      [disabled]="isDisabled()"
-    >
-      <mat-icon>functions</mat-icon>
-    </button>
   </div>
 </div>
-
-<div
-  class="row"
-  id="carousel-row"
-  *ngIf="cards?.length > 0"
-  [@fadeInOnEnter]
-  [@fadeOutOnLeave]
->
+<div class="row" id="carousel-row" *ngIf="cards?.length > 0" [@fadeInOnEnter]>
   <a
     id="left"
     class="navig col"
     aria-label="vorherige karte"
-    *ngIf="cardCount > 1"
-    [@fadeInOnEnter]
+    *ngIf="cardCount > 1 && (this.activeSlide > 0 || this.start > 0)"
     (click)="goToPrev()"
   >
     <mat-icon>keyboard_arrow_left</mat-icon>
   </a>
   <div id="carousel">
-    <mdb-carousel
-      (activeSlideChange)="onSlide($event)"
+    <ngb-carousel
+      (slide)="onSlide($event)"
       #mycarousel
-      [(activeSlideIndex)]="this.activeSlide"
-      [animation]="'slide'"
-      [isControls]="false"
-      [allowSwipe]="false"
+      [@shake]="notallowed"
+      [animation]="true"
+      [activeId]="this.activeSlide.toString()"
+      [keyboard]="false"
+      [wrap]="false"
+      [showNavigationArrows]="false"
       [interval]="'0'"
+      [showNavigationIndicators]="false"
     >
-      <mdb-carousel-item
-        *ngFor="let card of cards; index as i"
-        [id]="i.toString()"
-      >
-        <app-card [@shake]="notallowed" [card]="card" [index]="i"></app-card>
-      </mdb-carousel-item>
-    </mdb-carousel>
+      <ng-template ngbSlide *ngFor="let card of cards; index as i" [id]="i.toString()">
+        <app-card [card]="card" [index]="i"></app-card>
+      </ng-template>
+    </ngb-carousel>
   </div>
   <a
     id="right"
     class="navig col"
-    *ngIf="cardCount > 1"
-    [@fadeInOnEnter]
+    *ngIf="cardCount > 1 && this.activeSlide < this.allCards.length - 1"
     (click)="goToNext()"
     aria-label="nächste karte"
   >
     <mat-icon>keyboard_arrow_right</mat-icon>
   </a>
 </div>
+<div class="row" id="progress" *ngIf="!cards">
+  <mat-spinner></mat-spinner>
+</div>
+
 <div class="row" *ngIf="cards?.length === 0">
   <p class="text-muted text-center w-100 mt-2">Keine Karten gefunden</p>
 </div>

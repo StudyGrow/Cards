@@ -18,7 +18,7 @@
       "env": {
         "NODE_ENV": "development"
       },
-      "runtimeExecutable": " nodemon",
+      "runtimeExecutable": "nodemon",
       "program": "${workspaceFolder}/start.js",
       "restart": true,
       "console": "integratedTerminal",

@@ -1,13 +1,13 @@
-import { createAction, props } from "@ngrx/store";
-import { Vorlesung } from "../../models/Vorlesung";
+import { createAction, props } from '@ngrx/store';
+import { Vorlesung } from '../../models/Vorlesung';
 
 enum ActionTypes {
-  FETCH_LECTURES = "[Lectures] Fetch from server",
-  FETCH_LECTURES_SUCCESS = "[Lectures] Load success",
+  FETCH_LECTURES = '[Lectures] Fetch from server',
+  FETCH_LECTURES_SUCCESS = '[Lectures] Load success',
 
-  ADD_LECTURE = "[Lecture] Add new lecture to the collection",
-  ADD_LECTURE_SUCCESS = "[Lecture] Add lecture success",
-  LOAD_FAILURE = " Load failure",
+  ADD_LECTURE = '[Lecture] Add new lecture to the collection',
+  ADD_LECTURE_SUCCESS = '[Lecture] Add lecture success',
+  LOAD_FAILURE = ' Load failure',
 }
 
 export const fetchLectures = createAction(ActionTypes.FETCH_LECTURES);

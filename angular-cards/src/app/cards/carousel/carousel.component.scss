@@ -1,5 +1,7 @@
 .row {
   max-width: 900px;
+  min-height: 0.9vh;
+  overflow: hidden;
 }
 /*first row controls*/
 #controls {
@@ -12,6 +14,7 @@ button {
 /*carousel row*/
 #carousel-row {
   position: relative;
+  overflow: hidden !important;
   margin: 0;
 }
 /*navigation*/
@@ -26,7 +29,6 @@ mat-icon {
   width: 100%;
 }
 .navig {
-  color: black;
   display: inline-flex;
   align-items: center;
   width: 5%;
@@ -38,13 +40,13 @@ mat-icon {
 /*carousel*/
 #carousel {
   width: 100% !important;
+  overflow-y: hidden;
 }
-mdb-carousel-item.carousel-item {
-  padding: 0;
+:focus {
+  outline: none;
 }
-
-/*card*/
-app-card {
-  width: 90%;
-  margin: 0 auto 0 auto;
+#progress {
+}
+mat-spinner {
+  margin: auto;
 }

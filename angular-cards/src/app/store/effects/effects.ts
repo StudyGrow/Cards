@@ -1,29 +1,24 @@
-import { Injectable } from "@angular/core";
-import { Actions, Effect, ofType, createEffect } from "@ngrx/effects";
-import { of, Observable } from "rxjs";
-import {
-  share,
-  tap,
-  startWith,
-  withLatestFrom,
-  filter,
-  shareReplay,
-  switchMap,
-} from "rxjs/operators";
+import { Injectable } from '@angular/core';
+import { Actions, Effect, ofType, createEffect } from '@ngrx/effects';
+import { of, Observable, combineLatest } from 'rxjs';
+import { share, tap, startWith, withLatestFrom, filter, shareReplay, switchMap, delay } from 'rxjs/operators';
 
-import { catchError, map, mergeMap, exhaustMap } from "rxjs/operators";
+import { catchError, map, mergeMap, exhaustMap } from 'rxjs/operators';
 import {
   LoadFailure,
   FetchCardsActions,
   AddCardActions,
   UpdateCardActions,
-  setActiveCardIndex,
-} from "../actions/cardActions";
-import * as LectureActions from "../actions/LectureActions";
-import { CardsService } from "../../services/cards.service";
-import { LecturesService } from "../../services/lectures.service";
-import { setDrawerState } from "../actions/actions";
-import { Store } from "@ngrx/store";
+  fetchVotes,
+  fetchVotesSuccess,
+  changeVote,
+  changeVoteSuccess,
+} from '../actions/CardActions';
+import * as LectureActions from '../actions/LectureActions';
+import { CardsService } from '../../services/cards.service';
+import { LecturesService } from '../../services/lectures.service';
+
+import { Store } from '@ngrx/store';
 import {
   fetchUserData,
   fetchUserDataSuccess,
@@ -36,12 +31,24 @@ import {
   authenticated,
   logoutSuccess,
   createAccount,
-} from "../actions/UserActions";
-import { UserService } from "src/app/services/user.service";
-import { selectActiveIndex, selectLastCardIndex } from "../selector";
-import { Router } from "@angular/router";
-import { NotificationsService } from "src/app/services/notifications.service";
-import { SuccessMessage } from "src/app/models/Notification";
+} from '../actions/UserActions';
+import { UserService } from 'src/app/services/user.service';
+
+import { Router } from '@angular/router';
+import { NotificationsService } from 'src/app/services/notifications.service';
+import { SuccessMessage } from 'src/app/models/Notification';
+import { VotesService } from 'src/app/services/votes.service';
+
+import { Card, CardsData } from 'src/app/models/Card';
+import {
+  adjustIndeces,
+  fail,
+  navigateToCard,
+  resetFilter,
+  setActiveCard,
+  setActiveCardSuccess,
+} from '../actions/StateActions';
+import { CardsSorted, CardsSortedAndFiltered, DisplayedCards } from '../selector';
 
 @Injectable()
 export class CardsEffects {
@@ -49,21 +56,95 @@ export class CardsEffects {
     private actions$: Actions,
     private cards: CardsService,
     private user: UserService,
+    private votes: VotesService,
     private lectures: LecturesService,
-    private store: Store<any>,
+    private store: Store,
     private router: Router,
     private notifications: NotificationsService
   ) {}
-  data$ = this.store.select("cardsData").pipe(share());
 
   @Effect()
   loadCards$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FetchCardsActions.fetchCards),
-      switchMap(() =>
-        this.cards.fetchCardsData().pipe(
-          map((data) => FetchCardsActions.LoadSuccess({ data: data })),
+      switchMap(() => {
+        this.store.dispatch(fetchVotes());
+        return this.cards.fetchCardsData().pipe(
+          map((data: CardsData) => FetchCardsActions.LoadSuccess({ data: data })),
           catchError((reason) => of(LoadFailure({ reason: reason })))
+        );
+      }),
+      share()
+    )
+  );
+
+  @Effect()
+  fetchVotes$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(fetchVotes),
+      switchMap(() => this.votes.fetchVotes().pipe(map((votes) => fetchVotesSuccess({ votes: votes })))),
+      share()
+    )
+  );
+
+  @Effect()
+  navigateToCard$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(navigateToCard),
+      tap(({ card }) => {
+        let url = `vorlesung/${card.abrv ? card.abrv : card['vorlesung']}`;
+        this.router.navigateByUrl(url);
+      }),
+      delay(200),
+      map(({ card }) => {
+        return setActiveCardSuccess({ card: card });
+      }),
+      share()
+    )
+  );
+
+  @Effect()
+  currentCardChange$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(setActiveCard),
+      withLatestFrom(
+        combineLatest([
+          this.store.select(DisplayedCards),
+          this.store.select(CardsSorted),
+          this.store.select(CardsSortedAndFiltered),
+        ])
+      ),
+      map(([{ card }, [currCards, allCards, filteredCards]]) => {
+        if (!currCards?.includes(card)) {
+          //need to adjust indeces
+          if (!filteredCards?.includes(card)) {
+            // need to reset filter
+            this.store.dispatch(resetFilter());
+          }
+          let newIndex = allCards?.indexOf(card);
+          if (newIndex >= 0) {
+            this.store.dispatch(adjustIndeces({ allCards: allCards, newIndex: newIndex }));
+          } else {
+            console.error('Could not find card in array', card, allCards);
+            return undefined;
+          }
+        }
+        return card;
+      }),
+      delay(200), //delay in case carousel needs refresh
+      map((card: Card) => setActiveCardSuccess({ card: card })),
+      share()
+    )
+  );
+
+  changeVote$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(changeVote),
+      exhaustMap((action) =>
+        this.votes.castVote(action.vote).pipe(
+          map((vote) => {
+            return changeVoteSuccess({ vote: vote });
+          })
         )
       ),
       share()
@@ -81,7 +162,7 @@ export class CardsEffects {
           })
         )
       ),
-      share()
+      shareReplay(1)
     )
   );
 
@@ -105,10 +186,10 @@ export class CardsEffects {
       ofType(AddCardActions.addCard),
       exhaustMap((cardAction) =>
         this.cards.addCard(cardAction.card).pipe(
-          tap(() => {
+          tap((card) => {
             setTimeout(() => {
-              this.store.dispatch(setActiveCardIndex({ index: -1 })); //go to last card
-            }, 1000);
+              this.store.dispatch(setActiveCard({ card: card })); //go to last card
+            }, 300);
           }),
           map((res) => AddCardActions.addCardSuccess({ card: res })),
 
@@ -123,13 +204,12 @@ export class CardsEffects {
   updateCard$ = createEffect(() =>
     this.actions$.pipe(
       ofType(UpdateCardActions.updateCard),
-      withLatestFrom(this.data$.pipe(map(selectActiveIndex))),
-      exhaustMap(([action, activeIndex]) =>
+      exhaustMap((action) =>
         this.cards.updateCard(action.card).pipe(
-          tap(() => {
+          tap((card) => {
             setTimeout(() => {
-              this.store.dispatch(setActiveCardIndex({ index: activeIndex }));
-            }, 1000);
+              this.store.dispatch(setActiveCard({ card: card }));
+            }, 120);
           }),
           map((card) => UpdateCardActions.updateCardSuccess({ card: card })),
           catchError((reason) => of(LoadFailure({ reason: reason })))
@@ -175,10 +255,9 @@ export class CardsEffects {
         this.user.login(user).pipe(
           tap((user) => {
             if (user) {
-              this.router.navigateByUrl("/");
-              this.notifications.addNotification(
-                new SuccessMessage(`Willkommen ${user.username}`)
-              );
+              this.router.navigateByUrl('/');
+              this.notifications.addNotification(new SuccessMessage(`Willkommen ${user.username}`));
+              this.store.dispatch(fetchUserData());
             }
           }),
           map((user) => loginSuccess(user)),
@@ -195,11 +274,8 @@ export class CardsEffects {
       mergeMap(() =>
         this.user.logoutServer().pipe(
           tap((success) => {
-            this.router.navigateByUrl("/");
-            if (success)
-              this.notifications.addNotification(
-                new SuccessMessage("Erfolgreich abgemeldet")
-              );
+            this.router.navigateByUrl('/');
+            if (success) this.notifications.addNotification(new SuccessMessage('Erfolgreich abgemeldet'));
           }),
           map(() => logoutSuccess()),
           catchError((reason) => of(LoadFailure({ reason: reason })))

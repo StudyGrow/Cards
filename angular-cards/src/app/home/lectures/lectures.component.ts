@@ -1,29 +1,28 @@
-import { Component, OnInit } from "@angular/core";
-import { Vorlesung } from "../../models/Vorlesung";
+import { Component, OnInit } from '@angular/core';
+import { Vorlesung } from '../../models/Vorlesung';
 
-import { Subscription, Observable } from "rxjs";
-import { LecturesService } from "src/app/services/lectures.service";
-import { Store } from "@ngrx/store";
-import { AppState } from "src/app/store/reducer";
-import { fetchLectures } from "src/app/store/actions/LectureActions";
-import { tap, map } from "rxjs/operators";
-import { selectLectures } from "src/app/store/selector";
+import { Observable } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { fetchLectures } from 'src/app/store/actions/LectureActions';
+import { map } from 'rxjs/operators';
+import { Lectures } from 'src/app/store/selector';
+import { AppState } from 'src/app/models/state';
 @Component({
-  selector: "app-lectures",
-  templateUrl: "./lectures.component.html",
-  styleUrls: ["./lectures.component.scss"],
+  selector: 'app-lectures',
+  templateUrl: './lectures.component.html',
+  styleUrls: ['./lectures.component.scss'],
 })
 export class LecturesComponent implements OnInit {
   lectures$: Observable<Vorlesung[]>;
 
-  constructor(private store: Store<any>) {}
+  constructor(private store: Store<AppState>) {}
 
   ngOnInit(): void {
     this.store.dispatch(fetchLectures());
-    this.lectures$ = this.store.select("cardsData").pipe(map(selectLectures));
+    this.lectures$ = this.store.select(Lectures);
   }
 
   setLink(lecture: Vorlesung) {
-    return "/vorlesung/" + lecture.abrv;
+    return '/vorlesung/' + lecture.abrv;
   }
 }

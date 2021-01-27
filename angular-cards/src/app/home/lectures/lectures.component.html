@@ -1,10 +1,19 @@
-<h2 *ngIf="lectures$">Vorlesungen</h2>
-<mat-nav-list *ngIf="lectures$ | async as lectures">
-  <a
-    mat-list-item
-    *ngFor="let lecture of lectures"
-    [routerLink]="setLink(lecture)"
-  >
-    {{ lecture.name }}
-  </a>
-</mat-nav-list>
+<ng-container *ngIf="lectures$ | async as lectures">
+  <h2>Vorlesungen</h2>
+  <mat-nav-list>
+    <a
+      mat-list-item
+      *ngFor="let lecture of lectures"
+      [routerLink]="setLink(lecture)"
+      class="mr-2"
+    >
+      {{ lecture.name }}
+      <span
+        matTooltip="Anzahl an Karten"
+        matTooltipPosition="after"
+        class="badge badge-info ml-auto"
+        >{{ lecture.totalCards || '0' }}</span
+      >
+    </a>
+  </mat-nav-list>
+</ng-container>

@@ -1,70 +1,40 @@
-import { Component, OnInit, Output, OnDestroy } from "@angular/core";
-import { Observable, Subscription } from "rxjs";
-import { Vorlesung } from "src/app/models/Vorlesung";
-import { LecturesService } from "src/app/services/lectures.service";
-
-import { COMMA, ENTER } from "@angular/cdk/keycodes";
-import { ElementRef, ViewChild } from "@angular/core";
-import { FormControl } from "@angular/forms";
-import {
-  MatAutocompleteSelectedEvent,
-  MatAutocomplete,
-} from "@angular/material/autocomplete";
-import { MatChipInputEvent } from "@angular/material/chips";
-
-import {
-  map,
-  startWith,
-  share,
-  filter,
-  tap,
-  withLatestFrom,
-} from "rxjs/operators";
-
-import { Store } from "@ngrx/store";
-import {
-  setTypingMode,
-  resetFilter,
-  removeTag,
-  addTag,
-} from "src/app/store/actions/actions";
-import {
-  selectDrawerState,
-  selectActiveTags,
-  selectAllTags,
-  selectTagOptions,
-  selectCurrentLecture,
-} from "src/app/store/selector";
+import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { Vorlesung } from 'src/app/models/Vorlesung';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import { ElementRef, ViewChild } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { MatAutocompleteSelectedEvent, MatAutocomplete } from '@angular/material/autocomplete';
+import { map, startWith, withLatestFrom } from 'rxjs/operators';
+import { Store } from '@ngrx/store';
+import { setTypingMode, removeTag, addTag } from 'src/app/store/actions/StateActions';
+import { ActiveTags, CurrentLecture, TagOptions } from 'src/app/store/selector';
+import { AppState } from 'src/app/models/state';
 
 @Component({
-  selector: "app-filter-tags",
-  templateUrl: "./filter-tags.component.html",
-  styleUrls: ["./filter-tags.component.scss"],
+  selector: 'app-filter-tags',
+  templateUrl: './filter-tags.component.html',
+  styleUrls: ['./filter-tags.component.scss'],
 })
 export class FilterTagsComponent implements OnInit {
-  private data$: Observable<any> = this.store.select(
-    //holds cards data from store
-    "cardsData"
-  );
-
-  lecture$: Observable<Vorlesung> = this.data$.pipe(map(selectCurrentLecture));
+  lecture$: Observable<Vorlesung> = this.store.select(CurrentLecture);
   selected$: Observable<string[]>; //actively selected tags
   separatorKeysCodes: number[] = [ENTER, COMMA];
-  formCtrl = new FormControl("");
+  formCtrl = new FormControl('');
   options: string[] = [];
   filteredTags$: Observable<string[]>; //tags filtered by userinput
 
-  @ViewChild("Input") input: ElementRef<HTMLInputElement>;
-  @ViewChild("auto") matAutocomplete: MatAutocomplete;
+  @ViewChild('Input') input: ElementRef<HTMLInputElement>;
+  @ViewChild('auto') matAutocomplete: MatAutocomplete;
 
-  constructor(private store: Store<any>) {}
+  constructor(private store: Store<AppState>) {}
 
   ngOnInit(): void {
-    this.selected$ = this.data$.pipe(map(selectActiveTags));
+    this.selected$ = this.store.select(ActiveTags);
     this.filteredTags$ = this.formCtrl.valueChanges.pipe(
       //autocomplete
-      startWith(""),
-      withLatestFrom(this.data$.pipe(map(selectTagOptions))), //get all available tags
+      startWith(''),
+      withLatestFrom(this.store.select(TagOptions)), //get all available tags
       map(([input, tags]: [string, string[]]) => {
         return input?.length > 0 ? this._filter(input, tags) : tags;
       }),

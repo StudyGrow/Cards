@@ -1,25 +1,20 @@
-import { Component, OnInit } from "@angular/core";
-import { UserService } from "src/app/services/user.service";
-import { Card } from "src/app/models/Card";
-import { Subscription, Observable } from "rxjs";
-import { map } from "rxjs/operators";
-import { Store } from "@ngrx/store";
-import { selectUserInfo } from "src/app/store/selector";
-
-import { PageEvent } from "@angular/material/paginator";
-import {
-  fadeInOnEnterAnimation,
-  fadeOutOnLeaveAnimation,
-} from "angular-animations";
+import { Component, OnInit } from '@angular/core';
+import { Card } from 'src/app/models/Card';
+import { Subscription, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { Store } from '@ngrx/store';
+import { UserCards } from 'src/app/store/selector';
+import { PageEvent } from '@angular/material/paginator';
+import { fadeInOnEnterAnimation, fadeOutOnLeaveAnimation } from 'angular-animations';
+import { AppState } from 'src/app/models/state';
+import { Router } from '@angular/router';
+import { navigateToCard } from 'src/app/store/actions/StateActions';
 
 @Component({
-  selector: "app-cards-overview",
-  templateUrl: "./cards-overview.component.html",
-  styleUrls: ["./cards-overview.component.scss"],
-  animations: [
-    fadeInOnEnterAnimation({ duration: 500 }),
-    fadeOutOnLeaveAnimation({ duration: 100 }),
-  ],
+  selector: 'app-cards-overview',
+  templateUrl: './cards-overview.component.html',
+  styleUrls: ['./cards-overview.component.scss'],
+  animations: [fadeInOnEnterAnimation({ duration: 500 }), fadeOutOnLeaveAnimation({ duration: 100 })],
 })
 export class CardsOverviewComponent implements OnInit {
   subscriptions$: Subscription[] = [];
@@ -28,13 +23,10 @@ export class CardsOverviewComponent implements OnInit {
   end: number = 3;
   pageSizeOptions = [3, 10, 15];
   cards$: Observable<Card[]>;
-  constructor(private store: Store<any>) {}
+  constructor(private store: Store, private router: Router) {}
 
   ngOnInit(): void {
-    this.cards$ = this.store.select("cardsData").pipe(
-      map(selectUserInfo),
-      map((info) => info.cards)
-    );
+    this.cards$ = this.store.select(UserCards);
     this.cards$.subscribe((cards) => (this.cardCount = cards?.length));
   }
   incrementSlice(event: PageEvent) {
@@ -45,5 +37,8 @@ export class CardsOverviewComponent implements OnInit {
     } else {
       this.end = this.start + event.pageSize;
     }
+  }
+  navigate(card: Card) {
+    this.store.dispatch(navigateToCard({ card: card }));
   }
 }

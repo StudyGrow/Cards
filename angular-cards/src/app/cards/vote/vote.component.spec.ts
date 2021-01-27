@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AddCardFormComponent } from './add-card-form.component';
+import { VoteComponent } from './vote.component';
 
-describe('AddCardFormComponent', () => {
-  let component: AddCardFormComponent;
-  let fixture: ComponentFixture<AddCardFormComponent>;
+describe('VoteComponent', () => {
+  let component: VoteComponent;
+  let fixture: ComponentFixture<VoteComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AddCardFormComponent ]
+      declarations: [ VoteComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AddCardFormComponent);
+    fixture = TestBed.createComponent(VoteComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

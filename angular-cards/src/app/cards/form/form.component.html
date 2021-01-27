@@ -88,13 +88,17 @@
         </mat-option>
       </mat-autocomplete>
     </mat-form-field>
+    <mat-slide-toggle #latex class="mb-1">Latex</mat-slide-toggle><br />
+    <small>
+      <mat-hint class="mb-4">Aktiviere die Latex Formattierung</mat-hint>
+    </small>
 
+    <div class="m-3"></div>
     <ng-container [ngSwitch]="mode">
       <ng-container *ngSwitchCase="'edit'">
         <button
           mat-raised-button
           color="primary"
-          class="mr-1"
           type="submit"
           [disabled]="isDisabled(content, thema)"
         >

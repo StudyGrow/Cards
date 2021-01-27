@@ -1,24 +1,40 @@
-<div class="list-group" *ngIf="cards$ | async as cards">
+<div *ngIf="cards$ | async as cards">
   <div class="d-flex justify-content-center">
     <mat-paginator
       [length]="cardCount || 0"
       [pageSize]="3"
       [pageSizeOptions]="pageSizeOptions"
       (page)="incrementSlice($event)"
+      class="mb-2 w-100 rounded"
     >
     </mat-paginator>
   </div>
-  <a
+
+  <mat-card
     *ngFor="let card of cards.slice(start, end)"
     [@fadeInOnEnter]
-    class="list-group-item list-group-item-action rounded"
+    class="w-100 h-100 mb-2"
   >
-    <div class="d-flex w-100 justify-content-between">
-      <h5 class="mb-1">{{ card.thema }}</h5>
-      <small>{{ card.date | date: "longDate":"de" }}</small>
-    </div>
-    <p class="mb-1">
-      {{ card.content }}
-    </p>
-  </a>
+    <mat-card-header>
+      <mat-card-title>
+        {{ card.thema }}
+      </mat-card-title>
+      <mat-card-subtitle>
+        {{ card.date | date: 'longDate':'de' }}
+      </mat-card-subtitle>
+      <button
+        color="primary"
+        mat-icon-button
+        matTooltip="In Vorlesung anzeigen"
+        matTooltipPosition="above"
+        class="ml-auto"
+        (click)="navigate(card)"
+      >
+        <mat-icon>launch</mat-icon>
+      </button>
+    </mat-card-header>
+    <mat-card-content>
+      <p>{{ card.content }}</p>
+    </mat-card-content>
+  </mat-card>
 </div>

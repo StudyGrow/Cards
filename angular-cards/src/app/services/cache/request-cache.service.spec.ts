@@ -1,8 +1,8 @@
-import { TestBed } from "@angular/core/testing";
+import { TestBed } from '@angular/core/testing';
 
-import { RequestCache } from "./request-cache.service";
+import { RequestCache } from './request-cache.service';
 
-describe("RequestCacheService", () => {
+describe('RequestCacheService', () => {
   let service: RequestCache;
 
   beforeEach(() => {
@@ -10,7 +10,7 @@ describe("RequestCacheService", () => {
     service = TestBed.inject(RequestCache);
   });
 
-  it("should be created", () => {
+  it('should be created', () => {
     expect(service).toBeTruthy();
   });
 });

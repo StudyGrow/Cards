@@ -1,18 +1,14 @@
-import { Component, OnInit } from "@angular/core";
-import { NgForm } from "@angular/forms";
-
-import { Router } from "@angular/router";
-import { Store } from "@ngrx/store";
-import { UserService } from "src/app/services/user.service";
-import { createAccount } from "src/app/store/actions/UserActions";
+import { Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
+import { Store } from '@ngrx/store';
+import { createAccount } from 'src/app/store/actions/UserActions';
 @Component({
-  selector: "app-signup-form",
-  templateUrl: "./signup-form.component.html",
-  styleUrls: ["./signup-form.component.scss"],
+  selector: 'app-signup-form',
+  templateUrl: './signup-form.component.html',
+  styleUrls: ['./signup-form.component.scss'],
 })
 export class SignupFormComponent implements OnInit {
   constructor(private store: Store) {}
-  errors;
 
   ngOnInit(): void {}
   submit(form: NgForm) {
@@ -24,15 +20,15 @@ export class SignupFormComponent implements OnInit {
       password2.value.length > 5 &&
       password2.value != password.value
     ) {
-      return "box-shadow:0 0 3px #CC0000;";
+      return 'box-shadow:0 0 3px #CC0000;';
     }
-    return "";
+    return '';
   }
-  checkEmail(email) {
+  checkEmail(email: string) {
     if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
       return true;
     }
-
+    // console.log('not email');
     return false;
   }
   getLength(elem) {
@@ -45,10 +41,10 @@ export class SignupFormComponent implements OnInit {
   setCharIndicatorStyle(field, max: number) {
     if (field.value) {
       return {
-        color: field.value.length > max ? "#ff0000" : "#000000",
+        color: field.value.length > max ? '#ff0000' : '#000000',
       };
     } else {
-      return { color: "#000000" };
+      return { color: '#000000' };
     }
   }
   isDisabled(username, email, password, password2) {

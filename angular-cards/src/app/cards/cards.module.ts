@@ -1,16 +1,19 @@
-import { NgModule } from "@angular/core";
+import { NgModule } from '@angular/core';
 
-import { SharedModule } from "../shared/shared.module";
-import { CardsRoutingModule } from "./cards-routing.module";
-import { CardsComponent } from "./cards.component";
-import { CardComponent } from "./card/card.component";
-import { AddCardFormComponent } from "./add-card-form/add-card-form.component";
-import { CarouselComponent } from "./carousel/carousel.component";
-import { FilterTagsComponent } from "./filter-tags/filter-tags.component";
+import { SharedModule } from '../shared/shared.module';
+import { CardsRoutingModule } from './cards-routing.module';
+import { CardsComponent } from './cards.component';
+import { CardComponent } from './card/card.component';
 
-import { CarouselModule, WavesModule } from "angular-bootstrap-md";
-import { NewVlComponent } from "./new-vl/new-vl.component";
-import { FormComponent } from "../cards/form/form.component";
+import {
+  CarouselComponent,
+  BottomSheetComponent,
+} from './carousel/carousel.component';
+import { FilterTagsComponent } from './filter-tags/filter-tags.component';
+import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
+import { NewVlComponent } from './new-vl/new-vl.component';
+import { FormComponent } from '../cards/form/form.component';
+import { VoteComponent } from './vote/vote.component';
 
 //Pipes
 
@@ -18,12 +21,13 @@ import { FormComponent } from "../cards/form/form.component";
   declarations: [
     CardsComponent,
     CardComponent,
-    AddCardFormComponent,
+    BottomSheetComponent,
     CarouselComponent,
     FilterTagsComponent,
     NewVlComponent,
+    VoteComponent,
     FormComponent,
   ],
-  imports: [CardsRoutingModule, SharedModule, CarouselModule, WavesModule],
+  imports: [CardsRoutingModule, SharedModule, NgbCarouselModule],
 })
 export class CardsModule {}

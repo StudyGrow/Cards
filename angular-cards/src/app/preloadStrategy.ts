@@ -1,7 +1,7 @@
-import { PreloadingStrategy, Route } from "@angular/router";
+import { PreloadingStrategy, Route } from '@angular/router';
 
-import { Observable, of } from "rxjs";
-import { Injectable } from "@angular/core";
+import { Observable, of } from 'rxjs';
+import { Injectable } from '@angular/core';
 
 @Injectable()
 export class AppCustomPreloader implements PreloadingStrategy {

@@ -8,9 +8,8 @@ describe('NewVlComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ NewVlComponent ]
-    })
-    .compileComponents();
+      declarations: [NewVlComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

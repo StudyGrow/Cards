@@ -1,76 +1,65 @@
-import { Component, OnInit, OnDestroy, ChangeDetectorRef } from "@angular/core";
-import { Card } from "../../models/Card";
-import {
-  Router,
-  NavigationEnd,
-  RouterEvent,
-  NavigationStart,
-  RoutesRecognized,
-} from "@angular/router";
-import { Title } from "@angular/platform-browser";
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { Card } from '../../models/Card';
+import { Router, NavigationEnd, RouterEvent, RoutesRecognized } from '@angular/router';
+import { Title } from '@angular/platform-browser';
+import { Subscription, Observable, combineLatest } from 'rxjs';
+import { Store } from '@ngrx/store';
 
-import { NotificationsService } from "../../services/notifications.service";
-
-import { Notification } from "../../models/Notification";
-import { UserService } from "../../services/user.service";
-
-import { Subscription, Observable } from "rxjs";
-import { Store } from "@ngrx/store";
-import {
-  toggleDrawerState,
-  setDrawerState,
-  resetFilter,
-} from "src/app/store/actions/actions";
-import { filter, map } from "rxjs/operators";
-import { authenticated, getCardsData } from "src/app/store/selector";
-import { clearCardData, fetchCards } from "src/app/store/actions/cardActions";
+import { filter, map, withLatestFrom } from 'rxjs/operators';
+import { ActiveIndex, DisplayedCards, LoadingState } from 'src/app/store/selector';
+import { clearCardData } from 'src/app/store/actions/CardActions';
+import { AppState, Data, Mode } from 'src/app/models/state';
+import { NavbarToggleService } from 'src/app/services/navbar-toggle.service';
+import { resetCardsState } from 'src/app/store/actions/StateActions';
 
 @Component({
-  selector: "app-nav-bar",
-  templateUrl: "./nav-bar.component.html",
-  styleUrls: ["./nav-bar.component.scss"],
+  selector: 'app-nav-bar',
+  templateUrl: './nav-bar.component.html',
+  styleUrls: ['./nav-bar.component.scss'],
 })
 export class NavBarComponent implements OnInit, OnDestroy {
-  public loggedIn: boolean;
-  public cards: Card[] = [];
+  loggedIn: boolean;
+  cards: Card[] = [];
 
+  experiment: boolean = false;
   subscriptions$: Subscription[] = [];
   showSearch: boolean;
-  public loading: boolean;
-  public loading$: Observable<boolean>;
+  loading: boolean;
+  loading$: Observable<boolean>;
+  progress$: Observable<number>;
 
   public constructor(
     private router: Router,
     private titleService: Title,
-
-    private notification: NotificationsService,
-
     private cdr: ChangeDetectorRef,
-    private store: Store<any>
+    private store: Store<AppState>,
+    private nav: NavbarToggleService
   ) {}
 
   ngOnInit(): void {
     setTimeout(() => {
-      let sub = this.store
-        .select("cardsData")
-        .pipe(map((state) => state.loading))
-        .subscribe((val) => {
-          this.loading = val;
-          this.cdr.detectChanges();
-        });
+      let sub = this.store.select(LoadingState).subscribe((val) => {
+        this.loading = val;
+        this.cdr.detectChanges();
+      });
       this.subscriptions$.push(sub);
 
-      sub = this.router.events
-        .pipe(filter((e): e is RouterEvent => e instanceof RouterEvent))
-        .subscribe((e) => {
-          this.handleRouteChanges(e);
-        });
+      let cardCount$ = this.store.select(DisplayedCards).pipe(map((cards) => cards?.length));
+      //progress of carousel. will be undefined if there are no cards
+      this.progress$ = combineLatest([this.store.select(ActiveIndex), cardCount$]).pipe(
+        map(([curr, all]) => (all > 1 ? (curr / (all - 1)) * 100 : undefined))
+      );
+
+      sub = this.router.events.pipe(filter((e): e is RouterEvent => e instanceof RouterEvent)).subscribe((e) => {
+        this.handleRouteChanges(e);
+      });
       this.subscriptions$.push(sub);
     }, 1);
   }
+
   private handleRouteChanges(e: RouterEvent) {
     if (e instanceof RoutesRecognized) {
-      this.store.dispatch(setDrawerState({ show: false })); //hide drawer when changing route
+      this.nav.close(); //hide drawer when changing route
       this.setPageTitle(e);
       if (e.url.match(/vorlesung/)) {
         this.showSearch = true;
@@ -79,14 +68,17 @@ export class NavBarComponent implements OnInit, OnDestroy {
         this.showSearch = false;
       }
     } else if (e instanceof NavigationEnd) {
-      if (!e.url.match(/vorlesung/)) this.store.dispatch(clearCardData()); //clear card data on store when leaving lecture route
+      if (!e.url.match(/vorlesung/)) {
+        this.store.dispatch(clearCardData());
+        this.store.dispatch(resetCardsState()); //clear card data on store when leaving lecture route}
+      }
     }
   }
   private updateTitle() {
     if (this.router.url.match(/account/)) {
-      this.titleService.setTitle("Account");
-    } else if (this.router.url == "/") {
-      this.titleService.setTitle("Home");
+      this.titleService.setTitle('Account');
+    } else if (this.router.url == '/') {
+      this.titleService.setTitle('Home');
     }
   }
 
@@ -97,32 +89,32 @@ export class NavBarComponent implements OnInit, OnDestroy {
   }
 
   isActive(path: string): string {
-    return path === this.router.url ? "active" : "";
+    return path === this.router.url ? 'active' : '';
   }
 
   setPageTitle(e: RouterEvent): void {
-    let currentTitle = "Cards";
+    let currentTitle = 'Cards';
 
     switch (e.url) {
-      case "/login":
-        currentTitle = "Login";
+      case '/login':
+        currentTitle = 'Login';
         break;
-      case "/signup":
-        currentTitle = "Sign Up";
+      case '/signup':
+        currentTitle = 'Sign Up';
         break;
-      case "/":
-        currentTitle = "Home";
+      case '/':
+        currentTitle = 'Home';
         break;
 
       default:
         if (this.router.url.match(/account/)) {
-          currentTitle = "Account";
+          currentTitle = 'Account';
         }
         break;
     }
     this.titleService.setTitle(currentTitle);
   }
   drawerToggle() {
-    this.store.dispatch(toggleDrawerState());
+    this.nav.toggle();
   }
 }

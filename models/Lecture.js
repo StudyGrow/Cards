@@ -10,6 +10,7 @@ const vlSchema = new mongoose.Schema({
     required: true,
   },
   tagList: [String],
+  totalCards: Number,
 });
 
 const Lecture = (module.exports = mongoose.model("Lecture", vlSchema));

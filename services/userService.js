@@ -40,6 +40,8 @@ module.exports = function userService() {
         throw new Error("Bitte logge dich erst ein");
       }
       let info = new Object();
+      info.user = { ...user._doc, password: null };
+
       let cards = await Card.find({ authorId: user._id });
       info.cards = cards;
       callback(null, info);

@@ -1,11 +1,11 @@
-import { Injectable } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
-import { HttpConfig } from "./config";
-import { Router, ActivatedRoute } from "@angular/router";
-import { Subject } from "rxjs";
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { HttpConfig } from './config';
+import { Router, ActivatedRoute } from '@angular/router';
+import { Subject } from 'rxjs';
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class MailService {
   private config = new HttpConfig();
@@ -22,18 +22,18 @@ export class MailService {
     if (this.route.snapshot.queryParams.token != undefined) {
       let token = this.route.snapshot.queryParams.token;
       this.http
-        .get<any>(this.config.urlBase + "mail/confirmation?token=" + token, {
-          observe: "response",
+        .get<any>(this.config.urlBase + 'mail/confirmation?token=' + token, {
+          observe: 'response',
         })
         .subscribe(
           (res) => {
             //console.log(res.body.confirmed)
             switch (res.body.confirmed) {
-              case "true":
+              case 'true':
                 this.tokenCheckStatus = 1;
                 this.tokenCheckStatusUpdated.next(this.tokenCheckStatus);
                 break;
-              case "false":
+              case 'false':
                 this.tokenCheckStatus = 0;
                 this.tokenCheckStatusUpdated.next(this.tokenCheckStatus);
                 break;

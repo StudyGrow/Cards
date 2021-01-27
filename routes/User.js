@@ -50,9 +50,6 @@ router.get("/info", auth, (req, res) => {
     if (err) {
       res.status(400).send(err.message);
     } else {
-      let user = req.user;
-      user.password = null;
-      info.user = user;
       res.status(200).send(info);
     }
   });
@@ -87,9 +84,9 @@ router.put(
   }
 );
 
-router.post("/pic", (req, res) => {
-  console.log("Req.body: ", req.body);
-});
+// router.post("/pic", (req, res) => {
+//   console.log("Req.body: ", req.body);
+// });
 
 router.put(
   "/updateAccount",

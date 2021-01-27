@@ -17,4 +17,10 @@
     mode="indeterminate"
     color="accent"
   ></mat-progress-bar>
+  <mat-progress-bar
+    *ngIf="!loading && (progress$ | async) !== undefined"
+    mode="determinate"
+    color="primary"
+    [value]="progress$ | async"
+  ></mat-progress-bar>
 </div>

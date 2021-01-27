@@ -1,13 +1,9 @@
 #list {
   position: sticky;
-  top: 0;
+  top: 8px;
   margin-bottom: 10px;
 }
 
 #sub {
   overflow-y: auto;
-}
-.active {
-  background-color: #651dbd;
-  border: 0;
 }
