@@ -3,7 +3,7 @@
     <app-filter-tags></app-filter-tags>
   </div>
 
-  <div class="col-auto">
+  <div class="col-auto" *ngIf="this.cards !== undefined">
     <button
       mat-icon-button
       matTooltip="Sortieren"
@@ -61,11 +61,7 @@
       [interval]="'0'"
       [showNavigationIndicators]="false"
     >
-      <ng-template
-        ngbSlide
-        *ngFor="let card of cards; index as i"
-        [id]="i.toString()"
-      >
+      <ng-template ngbSlide *ngFor="let card of cards; index as i" [id]="i.toString()">
         <app-card [card]="card" [index]="i"></app-card>
       </ng-template>
     </ngb-carousel>
