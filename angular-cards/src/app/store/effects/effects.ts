@@ -177,6 +177,9 @@ export class CardsEffects {
     )
   );
 
+  /**
+   * Changes the vote on a card
+   */
   changeVote$ = createEffect(() =>
     this.actions$.pipe(
       ofType(changeVote),
@@ -191,6 +194,9 @@ export class CardsEffects {
     )
   );
 
+  /**
+   * Fetch lectures from the server
+   */
   @Effect()
   fetchLectures$ = createEffect(() =>
     this.actions$.pipe(
@@ -201,8 +207,7 @@ export class CardsEffects {
             return LectureActions.fetchLecturesSuccess({ lectures: data });
           })
         )
-      ),
-      shareReplay(1)
+      )
     )
   );
 
@@ -210,7 +215,9 @@ export class CardsEffects {
   addLecture$ = createEffect(() =>
     this.actions$.pipe(
       ofType(LectureActions.addLercture),
-      exhaustMap((action) =>
+      mergeMap((
+        action //use merge map here as multiple changes could be made while the request has not terminated
+      ) =>
         this.lectures.addLecture(action.lecture).pipe(
           map((res) => LectureActions.addLectureSuccess({ lecture: res })),
           catchError((reason) => of(LoadFailure({ reason: reason })))
