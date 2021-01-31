@@ -68,7 +68,7 @@ router.get(
         })
       )
       .catch((err) => {
-        res.status(500).send(err.message);
+        res.status(422).send(err.message);
       });
   }
 );
@@ -188,17 +188,18 @@ router.get(
       res.status(422).json({
         errors: errors.array(),
       });
-    }
-    if (req.isAuthenticated()) {
-      req.services.votes.getVotesByLectureAbrv(req.query.abrv, req.user._id, (err, votes) => {
-        if (err) {
-          res.status(422).send(err.message);
-        } else {
-          res.status(200).send(votes);
-        }
-      });
     } else {
-      res.status(200).send([]);
+      if (req.isAuthenticated()) {
+        req.services.votes.getVotesByLectureAbrv(req.query.abrv, req.user._id, (err, votes) => {
+          if (err) {
+            res.status(422).send(err.message);
+          } else {
+            res.status(200).send(votes);
+          }
+        });
+      } else {
+        res.status(200).send([]);
+      }
     }
   }
 );

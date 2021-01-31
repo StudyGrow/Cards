@@ -8,17 +8,19 @@ import { HttpErrorResponse } from '@angular/common/http';
 })
 export class NotificationsService {
   private notifications$ = new BehaviorSubject<Notification[]>([]);
-  constructor() {}
+  constructor(private router: Router) {}
 
   addNotification(n: Notification) {
-    let notifications = this.notifications$.getValue();
-    for (const notif of notifications) {
-      if (notif.message == n.message) {
-        return;
+    setTimeout(() => {
+      let notifications = this.notifications$.getValue();
+      for (const notif of notifications) {
+        if (notif.message.includes(n.message)) {
+          return;
+        }
       }
-    }
-    notifications.push(n);
-    this.notifications$.next(notifications);
+      notifications.push(n);
+      this.notifications$.next(notifications);
+    });
   }
 
   //removes a specific notification
@@ -60,9 +62,15 @@ export class NotificationsService {
         this.addNotification(new WarnMessage('Du musst dich einloggen, um diese Seite zu besuchen'));
         break;
       case 422:
+        if (error.url.includes('?abrv')) {
+          this.router.navigateByUrl('/');
+          this.addNotification(new WarnMessage('Die angegebene Vorlesung existiert nicht', error.status));
+          break;
+        }
         if (typeof err == 'string') {
           if (err.includes('nicht eingeloggt')) break;
-          else this.addNotification(new WarnMessage(err, error.status));
+
+          this.addNotification(new WarnMessage(err, error.status));
         } else if (typeof err == 'object') {
           // this.addNotification(
           //   new WarnMessage(
@@ -81,6 +89,7 @@ export class NotificationsService {
         this.addNotification(
           new WarnMessage('Der Server scheint offline zu sein. Versuche es später erneut.', error.status)
         );
+        this.router.navigateByUrl('/');
         break;
       case 504:
         this.addNotification(
