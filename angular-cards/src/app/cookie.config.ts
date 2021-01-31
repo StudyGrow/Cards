@@ -7,10 +7,10 @@ export const cookieConfig: NgcCookieConsentConfig = {
     domain: environment.domain,
   },
   position: 'bottom-right',
-  theme: 'classic',
+  theme: 'block',
   palette: {
     popup: {
-      background: '#333333',
+      background: '#222222',
       text: '#ffffff',
       link: '#ffffff',
     },
@@ -22,8 +22,8 @@ export const cookieConfig: NgcCookieConsentConfig = {
   },
   type: 'info',
   content: {
-    message: 'This website uses cookies to ensure you get the best experience on our website.',
-    dismiss: 'Got it!',
+    message: 'Diese Webseite verwendet cookies 🍪 für ein optimales Nutzererlebnis',
+    dismiss: 'Alles klar!',
     deny: 'Refuse cookies',
     link: '',
     href: '',
