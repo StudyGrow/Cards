@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Card } from 'src/app/models/Card';
 import { Subscription, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -16,18 +16,22 @@ import { navigateToCard } from 'src/app/store/actions/StateActions';
   styleUrls: ['./cards-overview.component.scss'],
   animations: [fadeInOnEnterAnimation({ duration: 500 }), fadeOutOnLeaveAnimation({ duration: 100 })],
 })
-export class CardsOverviewComponent implements OnInit {
+export class CardsOverviewComponent implements OnInit, OnDestroy {
   subscriptions$: Subscription[] = [];
   cardCount: number;
   start: number = 0;
   end: number = 3;
   pageSizeOptions = [3, 10, 15];
   cards$: Observable<Card[]>;
-  constructor(private store: Store, private router: Router) {}
+  constructor(private store: Store) {}
 
   ngOnInit(): void {
     this.cards$ = this.store.select(UserCards);
-    this.cards$.subscribe((cards) => (this.cardCount = cards?.length));
+    let sub = this.cards$.subscribe((cards) => (this.cardCount = cards?.length));
+    this.subscriptions$.push(sub);
+  }
+  ngOnDestroy() {
+    this.subscriptions$.forEach((sub) => sub.unsubscribe());
   }
   incrementSlice(event: PageEvent) {
     this.start = event.pageIndex * event.pageSize;

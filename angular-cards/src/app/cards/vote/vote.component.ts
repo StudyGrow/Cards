@@ -5,7 +5,7 @@ import { delay, map } from 'rxjs/operators';
 import { AppState } from 'src/app/models/state';
 import { Vote } from 'src/app/models/Vote';
 
-import { authenticated, UserVote, VoteCount } from 'src/app/store/selector';
+import { authorized, UserVote, VoteCount } from 'src/app/store/selector';
 import { changeVote } from '../../store/actions/CardActions';
 
 @Component({
@@ -16,7 +16,7 @@ import { changeVote } from '../../store/actions/CardActions';
 export class VoteComponent implements OnInit, OnDestroy {
   vote: Vote = new Vote();
   voteCount: number;
-  loggedIn$: Observable<boolean> = this.store.select(authenticated);
+  loggedIn$: Observable<boolean> = this.store.select(authorized);
 
   @Input() id: string; // id of card that the vote belongs to
 

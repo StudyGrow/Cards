@@ -20,7 +20,11 @@ export class VotesService {
     private router: Router
   ) {}
 
-  //called once by the cardsservice every time the route changes to a new lecture
+  /**
+   * Function,which loads the votes made by the user
+   * called once by the cardsservice every time the route changes to a new lecture
+   * @param abrv abreviation of the lecture; identifies the lecture
+   */
   fetchVotes(abrv?: string): Observable<Vote[]> {
     if (!abrv) {
       abrv = this.router.url.split(/vorlesung\//)[1]; //get the lecture abreviation from the route
@@ -29,7 +33,13 @@ export class VotesService {
       .get<Vote[]>(this.config.urlBase + 'cards/votes?abrv=' + abrv, {
         observe: 'response',
       })
-      .pipe(map((res) => res.body));
+      .pipe(
+        map((res) => {
+          if (res.status === 403) return [];
+
+          return res.body;
+        })
+      );
   }
 
   //used for vote component to load the initial value of the respective vote

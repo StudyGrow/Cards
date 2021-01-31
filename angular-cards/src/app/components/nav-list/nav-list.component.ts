@@ -2,13 +2,10 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { map } from 'rxjs/operators';
-import { authenticated } from 'src/app/store/selector';
+import { authorized } from 'src/app/store/selector';
 import { Observable, Subscription } from 'rxjs';
 import { logout as logoutUser } from 'src/app/store/actions/UserActions';
-import {
-  MatSlideToggle,
-  MatSlideToggleChange,
-} from '@angular/material/slide-toggle';
+import { MatSlideToggle, MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { ThemesService } from 'src/app/services/themes.service';
 import { AppState, Data, Mode } from 'src/app/models/state';
 
@@ -45,7 +42,7 @@ export class NavListComponent implements OnInit {
       }
     });
 
-    this.loggedIn$ = this.store.select(authenticated);
+    this.loggedIn$ = this.store.select(authorized);
   }
 
   logout() {

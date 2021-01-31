@@ -6,6 +6,7 @@ import { map } from 'rxjs/operators';
 import { AppState } from './models/state';
 import { ThemesService } from './services/themes.service';
 import { auth } from './store/actions/UserActions';
+import { DisplayedCards } from './store/selector';
 
 @Component({
   selector: 'app-root',
@@ -26,9 +27,9 @@ export class AppComponent {
     this.themeManager.initTheme(); //initialize theme
 
     if (isDevMode()) {
-      // this.store.pipe(map((state) => state.mode)).subscribe((mode) => {
-      //   console.log(mode.currentCard);
-      // });
+      this.store.select(DisplayedCards).subscribe((a) => {
+        console.log(a);
+      });
     }
     //log state only in development mode
 

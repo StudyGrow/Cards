@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, isDevMode } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { Notification, WarnMessage, InfoMessage } from '../models/Notification';
 import { Router } from '@angular/router';
@@ -78,7 +78,9 @@ export class NotificationsService {
           //     error.status
           //   )
           // );
-          console.error(err);
+          if (isDevMode()) {
+            console.error(err);
+          }
         } else {
           for (const e of err) {
             this.addNotification(new WarnMessage(e, error.status));
