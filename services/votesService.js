@@ -1,6 +1,6 @@
-const Vote = require("../models/Vote");
-const Card = require("../models/Card");
-const Lecture = require("../models/Lecture");
+const Vote = require('../models/Vote');
+const Card = require('../models/Card');
+const Lecture = require('../models/Lecture');
 
 module.exports = function votesService() {
   votesService.getVotesByQuery = async (query, callback) => {
@@ -15,8 +15,12 @@ module.exports = function votesService() {
   votesService.getVotesByLectureAbrv = async (abrv, uId, callback) => {
     try {
       let lecture = await Lecture.findOne({ abrv: abrv });
-      let votes = await Vote.find({ lectureId: lecture._id, userId: uId });
-      callback(null, votes);
+      if (!lecture) {
+        throw new Error('Die Vorlesung existiert nicht');
+      } else {
+        let votes = await Vote.find({ lectureId: lecture._id, userId: uId });
+        callback(null, votes);
+      }
     } catch (error) {
       callback(error, null);
     }
@@ -24,6 +28,9 @@ module.exports = function votesService() {
 
   votesService.getAllVotesByLectureAbrv = async (abrv) => {
     let lecture = await Lecture.findOne({ abrv: abrv });
+    if (!lecture) {
+      return null;
+    }
     let allVotes = await Vote.find({ lectureId: lecture.id });
     return allVotes;
   };
@@ -31,11 +38,11 @@ module.exports = function votesService() {
   votesService.castVote = async (req, callback) => {
     try {
       if (!req.isAuthenticated()) {
-        throw Error("Bitte logge dich erst ein");
+        throw Error('Bitte logge dich erst ein');
       }
       let card = await Card.findById(req.body.id);
       if (!card) {
-        throw Error("Karte konnte nicht gefunden werden");
+        throw Error('Karte konnte nicht gefunden werden');
       }
       let vote = await Vote.findOne({ cardId: req.body.id, userId: req.user._id }).lean();
       if (vote) {
@@ -81,7 +88,7 @@ function deleteVote(req, callback) {
 
 function checkVote(vote) {
   if (vote !== 1 && vote !== 0) {
-    throw new Error("Vote muss entweder 1 oder 0 sein");
+    throw new Error('Vote muss entweder 1 oder 0 sein');
   }
 }
 

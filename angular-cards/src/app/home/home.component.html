@@ -1,5 +1,5 @@
 <div class="container mt-3">
-  <div *ngIf="authenticated$ | async; else elseBlock" class="row">
+  <div *ngIf="authorized$ | async; else elseBlock" class="row">
     <div class="col-md-6 col-xs-12 mb-2">
       <app-lectures></app-lectures>
       <br />

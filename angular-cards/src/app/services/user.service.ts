@@ -11,7 +11,7 @@ import { HttpClient } from '@angular/common/http';
 import { User } from '../models/User';
 import { Store } from '@ngrx/store';
 
-import { authenticated } from '../store/selector';
+import { authorized } from '../store/selector';
 import { AppState } from '../models/state';
 
 @Injectable({
@@ -30,7 +30,7 @@ export class UserService implements CanActivate {
   //checks wheter page can be accessed. returns the authentication subject while redirecting
   //to login page if the result is false
   canActivate(): Observable<boolean> {
-    return this.store.select(authenticated);
+    return this.store.select(authorized);
   }
 
   //central function to handle authentication

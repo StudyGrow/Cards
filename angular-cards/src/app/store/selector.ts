@@ -107,7 +107,7 @@ export const user = (state: AppState) => state.data.userData.user;
 
 const CardIndices = (state: AppState) => [state.mode.startIndex, state.mode.endIndex, state.mode.activeIndex];
 
-export const authenticated = (state: AppState) => state.data.userData.authenticated;
+export const authorized = (state: AppState) => state.data.userData.authenticated;
 
 const sortType = (state: AppState) => state.mode.sortType;
 /**

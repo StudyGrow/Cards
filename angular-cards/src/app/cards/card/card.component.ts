@@ -6,7 +6,7 @@ import { parse, HtmlGenerator } from 'latex.js/dist/latex.js';
 import { Store } from '@ngrx/store';
 import { map } from 'rxjs/operators';
 import { AppState } from 'src/app/models/state';
-import { authenticated } from 'src/app/store/selector';
+import { authorized } from 'src/app/store/selector';
 @Component({
   selector: 'app-card',
   templateUrl: './card.component.html',
@@ -18,7 +18,7 @@ export class CardComponent implements OnInit, OnDestroy {
   private mode$ = this.store.select('mode');
   inTypingField: boolean = false;
   activeIndex: number;
-  auth$: Observable<boolean> = this.store.select(authenticated);
+  auth$: Observable<boolean> = this.store.select(authorized);
 
   parsed: any = [];
 
