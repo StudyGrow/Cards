@@ -10,12 +10,13 @@ const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerOptions = require('./config/swagger');
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
 
-app.get('*', function(req, res) {  
-  res.redirect('https://' + req.headers.host + req.url);
-
-  // Or, if you don't want to automatically detect the domain name from the request header, you can hard code it:
-  // res.redirect('https://example.com' + req.url);
-})
+app.use (function (req, res, next) {
+  if (req.secure) {
+          next();
+  } else {
+          res.redirect('https://' + req.headers.host + req.url);
+  }
+});
 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocs));
 
 app.use(helmet());
