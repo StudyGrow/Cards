@@ -14,9 +14,7 @@ enum ActionTypes {
   ADD_CARD_SUCCESS = '[Card] Add card success',
   UPDATE_CARD = '[Card] update card in the  collection and on server',
   UPDATE_CARD_SUCCESS = '[Card] update card success successfully updated on server, now update in store',
-
   CLEAR_CARD_DATA = '[Cards] clear data about cards',
-
   CHANGE_VOTE = '[Vote] Change the vote on a card',
   CHANGE_VOTE_SUCCESS = '[Vote] Change vote successfull on server',
   FETCH_USER_VOTES = '[Votes] Fetch votes made by the current user from server',

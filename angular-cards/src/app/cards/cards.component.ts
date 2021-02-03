@@ -1,11 +1,4 @@
-import {
-  Component,
-  OnInit,
-  HostListener,
-  ViewChild,
-  ElementRef,
-  OnDestroy,
-} from '@angular/core';
+import { Component, OnInit, HostListener, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { Vorlesung } from 'src/app/models/Vorlesung';
 import { Title } from '@angular/platform-browser';
 import { Store } from '@ngrx/store';
@@ -42,15 +35,9 @@ export class CardsComponent implements OnInit, OnDestroy {
   //holds data from store
   public data$: Observable<any> = this.store.select(getCardsData);
 
-  public lecture$: Observable<Vorlesung> = this.data$.pipe(
-    map((data) => data.currLecture)
-  );
+  public lecture$: Observable<Vorlesung> = this.data$.pipe(map((data) => data.currLecture));
 
-  constructor(
-    private store: Store<AppState>,
-    private title: Title,
-    private notifs: NotificationsService
-  ) {}
+  constructor(private store: Store<AppState>, private title: Title, private notifs: NotificationsService) {}
 
   ngOnInit(): void {
     this.title.setTitle('Cards');

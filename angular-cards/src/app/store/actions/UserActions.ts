@@ -19,40 +19,21 @@ enum ActionTypes {
 
 export const login = createAction(ActionTypes.LOGIN_USER, props<User>());
 
-export const loginSuccess = createAction(
-  ActionTypes.LOGIN_USER_SUCCESS,
-  props<User>()
-);
+export const loginSuccess = createAction(ActionTypes.LOGIN_USER_SUCCESS, props<User>());
 export const createAccount = createAction(ActionTypes.REGISTER, props<User>());
-export const createAccountSuccess = createAction(
-  ActionTypes.REGISTRY_SUCCESS,
-  props<User>()
-);
+export const createAccountSuccess = createAction(ActionTypes.REGISTRY_SUCCESS, props<User>());
 
 export const auth = createAction(ActionTypes.AUTHENTICATE);
-
-export const authenticated = createAction(
-  ActionTypes.AUTHENTICATED,
-  props<{ auth: boolean }>()
-);
+export const authenticated = createAction(ActionTypes.AUTHENTICATED, props<{ auth: boolean }>());
 
 export const fetchUserData = createAction(ActionTypes.FETCH_USER_DATA);
 
-export const fetchUserDataSuccess = createAction(
-  ActionTypes.FETCH_USER_DATA_SUCCESS,
-  props<UserInfo>()
-);
+export const fetchUserDataSuccess = createAction(ActionTypes.FETCH_USER_DATA_SUCCESS, props<UserInfo>());
 
-export const updateUserData = createAction(
-  ActionTypes.UPDATE_USER_DATA,
-  props<User>()
-);
+export const updateUserData = createAction(ActionTypes.UPDATE_USER_DATA, props<User>());
 
 export const logoutSuccess = createAction(ActionTypes.LOGOUT_USER_SUCCESS);
 
 export const logout = createAction(ActionTypes.LOGOUT_USER);
 
-export const updateUserDataSuccess = createAction(
-  ActionTypes.UPDATE_USER_DATA,
-  props<User>()
-);
+export const updateUserDataSuccess = createAction(ActionTypes.UPDATE_USER_DATA, props<User>());

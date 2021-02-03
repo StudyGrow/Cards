@@ -12,7 +12,7 @@ import {
   setActiveCard,
 } from 'src/app/store/actions/StateActions';
 
-import { AllCards, DisplayedCards, FormMode } from 'src/app/store/selector';
+import { CardsSorted, DisplayedCards, FormMode } from 'src/app/store/selector';
 import { FormControl } from '@angular/forms';
 import { AppState } from 'src/app/models/state';
 import { WarnMessage } from 'src/app/models/Notification';
@@ -26,10 +26,7 @@ import { NotificationsService } from 'src/app/services/notifications.service';
 export class SearchBarComponent implements OnInit, OnDestroy {
   uInput = new FormControl();
 
-  constructor(
-    private store: Store<AppState>,
-    private notifs: NotificationsService
-  ) {}
+  constructor(private store: Store<AppState>, private notifs: NotificationsService) {}
   currentSelection: Card[]; //Cards which are currently shown
   subscriptions$: Subscription[] = []; //holds all subscriptions from observables to later unsub
   allCards: Card[]; //all cards
@@ -42,17 +39,15 @@ export class SearchBarComponent implements OnInit, OnDestroy {
   form = new FormControl();
 
   ngOnInit(): void {
-    let sub = this.store
-      .pipe(map((state) => state.mode.hideSearchResults))
-      .subscribe((hide) => {
-        if (hide !== this.clearSuggestions) {
-          //only reset
-          this.clearSuggestions = hide;
-          // this.uInput.reset();
-        }
-      });
+    let sub = this.store.pipe(map((state) => state.mode.hideSearchResults)).subscribe((hide) => {
+      if (hide !== this.clearSuggestions) {
+        //only reset
+        this.clearSuggestions = hide;
+        // this.uInput.reset();
+      }
+    });
     this.subscriptions$.push(sub);
-    let allCards$ = this.store.select(AllCards);
+    let allCards$ = this.store.select(CardsSorted);
     sub = allCards$.subscribe((allCards) => {
       this.allCards = allCards;
     });
@@ -61,6 +56,7 @@ export class SearchBarComponent implements OnInit, OnDestroy {
     sub = DisplayedCards$.subscribe((filtered) => {
       this.currentSelection = filtered;
     });
+    this.subscriptions$.push(sub);
 
     let filteredSuggestions = this.uInput.valueChanges.pipe(
       withLatestFrom(allCards$, DisplayedCards$),
@@ -72,12 +68,8 @@ export class SearchBarComponent implements OnInit, OnDestroy {
           }
       )
     );
-    this.suggestions$ = filteredSuggestions.pipe(
-      map((res) => res?.suggestions)
-    );
-    this.allSuggestions$ = filteredSuggestions.pipe(
-      map((res) => res?.allSuggestions)
-    );
+    this.suggestions$ = filteredSuggestions.pipe(map((res) => res?.suggestions));
+    this.allSuggestions$ = filteredSuggestions.pipe(map((res) => res?.allSuggestions));
     this.store.select(FormMode).subscribe((mode) => (this.formMode = mode));
   }
 
@@ -97,8 +89,7 @@ export class SearchBarComponent implements OnInit, OnDestroy {
     allCards: Card[], //all cards
     filteredCards: Card[] //cards currently in carousel
   ): { suggestions: SearchSuggestion[]; allSuggestions: SearchSuggestion[] } {
-    if (this.clearSuggestions)
-      this.store.dispatch(setSuggestionsMode({ hide: false })); //show suggestions
+    if (this.clearSuggestions) this.store.dispatch(setSuggestionsMode({ hide: false })); //show suggestions
     let suggestions: SearchSuggestion[] = []; //suggestions from cards currently in the carousel
     let allSuggestions: SearchSuggestion[] = []; //suggestions from all cards, more specifically from cards not in the carousel
 
@@ -107,13 +98,9 @@ export class SearchBarComponent implements OnInit, OnDestroy {
 
       for (let i = 0; i < this.allCards.length; i++) {
         if (i < filteredCards.length && filteredCards[i].thema.match(regex)) {
-          suggestions.push(
-            new SearchSuggestion(filteredCards[i].thema, filteredCards[i]._id)
-          );
+          suggestions.push(new SearchSuggestion(filteredCards[i].thema, filteredCards[i]._id));
         } else if (allCards[i].thema.match(regex)) {
-          allSuggestions.push(
-            new SearchSuggestion(allCards[i].thema, allCards[i]._id)
-          );
+          allSuggestions.push(new SearchSuggestion(allCards[i].thema, allCards[i]._id));
         }
       }
 
@@ -130,20 +117,8 @@ export class SearchBarComponent implements OnInit, OnDestroy {
       return;
     }
     this.store.dispatch(changeTab({ tab: 0 }));
-    let currCard = this.currentSelection.find((card) => card._id === id);
-    if (currCard) {
-      //card is in current selection (cards currently in carousel)
-      this.store.dispatch(setActiveCard({ card: currCard }));
-    } else {
-      //card is not in the carousel currently
-      this.store.dispatch(resetFilter()); //remove all filters
-
-      currCard = this.allCards.find((card) => card._id === id);
-
-      setTimeout(() => {
-        this.store.dispatch(setActiveCard({ card: currCard }));
-      }, 700);
-    }
+    let newCard = this.allCards.find((card) => card._id === id);
+    this.store.dispatch(setActiveCard({ card: newCard }));
     this.store.dispatch(setSuggestionsMode({ hide: true }));
   }
 

@@ -38,8 +38,7 @@ const _modeReducer = createReducer(
     )
       return state;
     if (newIndex < state.startIndex) {
-      let newStart =
-        state.startIndex - pageSize > 0 ? state.startIndex - pageSize : 0;
+      let newStart = state.startIndex - pageSize > 0 ? state.startIndex - pageSize : 0;
       let newEnd = state.startIndex;
       return {
         ...state,
@@ -52,10 +51,7 @@ const _modeReducer = createReducer(
     }
     if (newIndex >= state.endIndex) {
       let newStart = newIndex;
-      let newEnd =
-        state.endIndex + pageSize < allCards.length
-          ? state.endIndex + pageSize
-          : allCards.length;
+      let newEnd = state.endIndex + pageSize < allCards.length ? state.endIndex + pageSize : allCards.length;
       return {
         ...state,
         startIndex: newStart,
@@ -76,9 +72,7 @@ const _modeReducer = createReducer(
         }
   ),
 
-  on(StateActions.changeTab, (state, { tab }) =>
-    tab === state.currTab ? state : { ...state, currTab: tab }
-  ),
+  on(StateActions.changeTab, (state, { tab }) => (tab === state.currTab ? state : { ...state, currTab: tab })),
 
   on(StateActions.setFormMode, (state, { mode }) =>
     mode === state.formMode
@@ -97,10 +91,14 @@ const _modeReducer = createReducer(
           activeIndex: index,
         }
   ),
-  on(StateActions.setActiveCard, (state, { card }) => ({
-    ...state,
-    currentCard: card,
-  })),
+  on(StateActions.setActiveCardSuccess, (state, { card }) =>
+    card
+      ? {
+          ...state,
+          currentCard: card,
+        }
+      : state
+  ),
   on(StateActions.goNext, (state) => ({
     ...state,
     activeIndex: state.activeIndex + 1,
@@ -161,7 +159,6 @@ const _modeReducer = createReducer(
   })),
   on(StateActions.resetCardsState, (state) => ({
     ...state,
-    currentCard: initialState.currentCard,
     activeIndex: initialState.activeIndex,
     formMode: initialState.formMode,
     typingMode: false,
@@ -172,7 +169,8 @@ const _modeReducer = createReducer(
     sortType: initialState.sortType,
     startIndex: initialState.startIndex,
     endIndex: initialState.endIndex,
-  }))
+  })),
+  on(StateActions.fail, (state) => state)
 );
 
 export function modeReducer(state: Mode, action: Action) {

@@ -17,7 +17,7 @@ const initialState: Data = {
   userData: {
     votes: undefined,
     cards: undefined,
-    authenticated: false,
+    authenticated: undefined,
     user: new User(),
     lastUpdated: undefined,
   },
@@ -45,24 +45,23 @@ const _dataReducer = createReducer(
       ],
       currLecture: {
         ...state.cardData.currLecture,
-        tagList: addTags(
-          state.cardData.currLecture.tagList
-            ? [...state.cardData.currLecture.tagList]
-            : [],
-          card.tags
-        ),
+        tagList: addTags(state.cardData.currLecture.tagList ? [...state.cardData.currLecture.tagList] : [], card.tags),
       }, //add new tags to the lectures taglist
       lastUpdated: new Date(),
     },
   })),
-  on(CardActions.fetchVotesSuccess, (state, { votes }) => ({
-    ...state,
+  on(CardActions.fetchVotesSuccess, (state, { votes }) =>
+    votes
+      ? {
+          ...state,
 
-    userData: {
-      ...state.userData,
-      votes: [...votes],
-    },
-  })),
+          userData: {
+            ...state.userData,
+            votes: [...votes],
+          },
+        }
+      : state
+  ),
   on(CardActions.changeVoteSuccess, (state, { vote }) => ({
     ...state,
     cardData: {

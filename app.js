@@ -1,14 +1,13 @@
-const express = require("express");
-const bodyParser = require("body-parser");
-const helmet = require("helmet");
-const path = require("path");
-const session = require("express-session");
-const MongoStore = require("connect-mongo")(session); //store session on MongoDb
+const express = require('express');
+const bodyParser = require('body-parser');
+const helmet = require('helmet');
+const path = require('path');
+const session = require('express-session');
+const sessionConfig = require('./config/session');
 const app = express();
-const mongoose = require("mongoose");
-const swaggerUI = require("swagger-ui-express");
-const swaggerJsDoc = require("swagger-jsdoc");
-const swaggerOptions = require("./config/swagger");
+const swaggerUI = require('swagger-ui-express');
+const swaggerJsDoc = require('swagger-jsdoc');
+const swaggerOptions = require('./config/swagger');
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
 
 app.get('*', function(req, res) {  
@@ -20,53 +19,40 @@ app.get('*', function(req, res) {
 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocs));
 
 app.use(helmet());
-app.use(require("./middleware/serviceMiddleware")());
+app.use(require('./middleware/serviceMiddleware')());
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.enable("trust proxy");
-app.use(
-  session({
-    secret: "wibgewe13f13", //random string
-    resave: false,
-    saveUninitialized: false,
-    proxy: true,
-    cookie: {
-      secure:
-        process.env.NODE_ENV && process.env.NODE_ENV.indexOf("development") > -1 ? false : true,
-    }, //secure needs to be set to true for production here
+app.enable('trust proxy');
+app.use(session(sessionConfig));
 
-    store: new MongoStore({ mongooseConnection: mongoose.connection }),
-  })
-);
+const passport = require('passport');
 
-const passport = require("passport");
-
-require("./config/passport")(passport);
+require('./config/passport')(passport);
 
 app.use(passport.initialize());
 app.use(passport.session());
 
 app.use((req, res, next) => {
-  if (process.env.NODE_ENV && process.env.NODE_ENV.indexOf("development") > -1) {
-    console.log("Request: ", req.originalUrl);
+  if (process.env.NODE_ENV && process.env.NODE_ENV.indexOf('development') > -1) {
+    console.log('Request: ', req.originalUrl);
   }
   next();
 });
 
-app.post("/api/login", (req, res, next) => {
+app.post('/api/login', (req, res, next) => {
   req.services.user.login(passport, req, res, next);
 });
 
 //api route
-app.use("/api", require("./routes/api"));
+app.use('/api', require('./routes/api'));
 
 //built angular files
-app.use(express.static(path.join(__dirname, "./angular-cards/dist/angular-cards/")));
+app.use(express.static(path.join(__dirname, './angular-cards/dist/angular-cards/')));
 
 //angular index.html file to always serve after client uses browser navigation
-app.get("*", (req, res) =>
-  res.sendFile(path.join(__dirname, "./angular-cards/dist/angular-cards/index.html"))
+app.get('*', (req, res) =>
+  res.sendFile(path.join(__dirname, './angular-cards/dist/angular-cards/index.html'))
 );
 
 module.exports = app;

@@ -3,11 +3,7 @@ import { UserInfo } from '../models/UserInfo';
 import { Observable, BehaviorSubject, of, Subject, Subscription } from 'rxjs';
 import { Router, CanActivate } from '@angular/router';
 import { tap, map, share } from 'rxjs/operators';
-import {
-  InfoMessage,
-  WarnMessage,
-  SuccessMessage,
-} from '../models/Notification';
+import { InfoMessage, WarnMessage, SuccessMessage } from '../models/Notification';
 import { NotificationsService } from './notifications.service';
 import { HttpConfig } from './config';
 import { HttpClient } from '@angular/common/http';
@@ -15,7 +11,7 @@ import { HttpClient } from '@angular/common/http';
 import { User } from '../models/User';
 import { Store } from '@ngrx/store';
 
-import { authenticated } from '../store/selector';
+import { authorized } from '../store/selector';
 import { AppState } from '../models/state';
 
 @Injectable({
@@ -34,16 +30,14 @@ export class UserService implements CanActivate {
   //checks wheter page can be accessed. returns the authentication subject while redirecting
   //to login page if the result is false
   canActivate(): Observable<boolean> {
-    return this.store.select(authenticated);
+    return this.store.select(authorized);
   }
 
   //central function to handle authentication
   //it makes the http authentication call only the first time
   //and caches the result in a subject which is returned on subsequent calls
   authentication(): Observable<boolean> {
-    return this.http
-      .get<boolean>(this.config.urlBase + 'user/auth')
-      .pipe(share());
+    return this.http.get<boolean>(this.config.urlBase + 'user/auth').pipe(share());
   }
   //used to login the user
   login(form: User): Observable<User> {
@@ -127,11 +121,7 @@ export class UserService implements CanActivate {
       })
       .pipe(
         tap((res) => {
-          this.notifications.addNotification(
-            new SuccessMessage(
-              'Deine Informationen wurden erfolgreich aktualisiert'
-            )
-          );
+          this.notifications.addNotification(new SuccessMessage('Deine Informationen wurden erfolgreich aktualisiert'));
         }),
         map((res) => {
           return form;
@@ -147,9 +137,7 @@ export class UserService implements CanActivate {
       })
       .pipe(
         tap((res) => {
-          this.notifications.addNotification(
-            new SuccessMessage('Dein Passwort wurde erfolgreich aktualisiert')
-          );
+          this.notifications.addNotification(new SuccessMessage('Dein Passwort wurde erfolgreich aktualisiert'));
         })
       );
   }

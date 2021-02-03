@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType, createEffect } from '@ngrx/effects';
-import { of, Observable } from 'rxjs';
+import { of, Observable, combineLatest } from 'rxjs';
 import {
   share,
   tap,
@@ -9,6 +9,13 @@ import {
   filter,
   shareReplay,
   switchMap,
+  delay,
+  skipUntil,
+  skipWhile,
+  delayWhen,
+  take,
+  debounceTime,
+  takeLast,
 } from 'rxjs/operators';
 
 import { catchError, map, mergeMap, exhaustMap } from 'rxjs/operators';
@@ -47,8 +54,16 @@ import { NotificationsService } from 'src/app/services/notifications.service';
 import { SuccessMessage } from 'src/app/models/Notification';
 import { VotesService } from 'src/app/services/votes.service';
 
-import { CardsData } from 'src/app/models/Card';
-import { setActiveCard } from '../actions/StateActions';
+import { Card, CardsData } from 'src/app/models/Card';
+import {
+  adjustIndeces,
+  fail,
+  navigateToCard,
+  resetFilter,
+  setActiveCard,
+  setActiveCardSuccess,
+} from '../actions/StateActions';
+import { CardsSorted, CardsSortedAndFiltered, DisplayedCards, authorized } from '../selector';
 
 @Injectable()
 export class CardsEffects {
@@ -63,40 +78,112 @@ export class CardsEffects {
     private notifications: NotificationsService
   ) {}
 
+  /**
+   * Loads cards data from the server
+   */
   @Effect()
   loadCards$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FetchCardsActions.fetchCards),
-      switchMap(() => {
-        this.store.dispatch(fetchVotes());
-        return this.cards.fetchCardsData().pipe(
-          map((data: CardsData) =>
-            FetchCardsActions.LoadSuccess({ data: data })
-          ),
+      tap(() => this.store.dispatch(fetchVotes())), //fetch votes of user
+      exhaustMap(() =>
+        this.cards.fetchCardsData().pipe(
+          map((data: CardsData) => FetchCardsActions.LoadSuccess({ data: data })),
           catchError((reason) => of(LoadFailure({ reason: reason })))
-        );
-      }),
-      share()
+        )
+      ),
+      share() //share is used for the effects so that components can subscribe to the effect without triggering it multiple times
     )
   );
 
+  /**
+   * Fetches votes that were made by the current user
+   */
   @Effect()
   fetchVotes$ = createEffect(() =>
     this.actions$.pipe(
       ofType(fetchVotes),
-      switchMap(() =>
-        this.votes
-          .fetchVotes()
-          .pipe(map((votes) => fetchVotesSuccess({ votes: votes })))
+      withLatestFrom(this.store.select(authorized)),
+      filter(([action, auth]) => auth), //make sure user is logged in before requesting data from server
+      exhaustMap(
+        //exhaustMap can be used whenever we are sure that the request is idempotent, as in the case with GET
+        () => this.votes.fetchVotes().pipe(map((votes) => fetchVotesSuccess({ votes: votes })))
       ),
       share()
     )
   );
 
+  /**
+   * navigates to the lecture route and sets a new card to be displayed in the carousel
+   */
+  @Effect()
+  navigateToCard$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(navigateToCard),
+      tap(({ card }) => {
+        let url = `vorlesung/${card.abrv ? card.abrv : card['vorlesung']}`;
+        if (!this.router.url.includes(url)) this.router.navigateByUrl(url); //change routes if we are not on cards route
+      }),
+
+      switchMap(({ card }) =>
+        combineLatest([
+          //emits if every inner observable emits at least one value
+          of(card),
+          this.store.select(DisplayedCards).pipe(
+            filter((cards) => cards !== undefined), //wait for cards to be loaded from the server
+            take(1)
+          ),
+        ])
+      ),
+
+      map(([newCard, cards]) => setActiveCard({ card: newCard }))
+    )
+  );
+
+  /**
+   * This effect handles components requesting a card change to the carousel. This
+   * It is important to note that this function should not be called by the carousel itself in order to prevent loops
+   */
+  @Effect()
+  currentCardChange$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(setActiveCard),
+      withLatestFrom(
+        combineLatest([
+          this.store.select(DisplayedCards), //cards in carousel
+          this.store.select(CardsSorted), //All cards sorted
+          this.store.select(CardsSortedAndFiltered), //all cards sorted and filtered by tags which the user selected
+        ])
+      ),
+      map(([{ card }, [currCards, allCards, filteredCards]]) => {
+        if (!currCards?.find((c) => c._id === card._id)) {
+          //need to adjust indeces
+          if (!filteredCards?.find((c) => c._id === card._id)) {
+            // need to reset filter
+            this.store.dispatch(resetFilter());
+          }
+          let newIndex = allCards?.findIndex((c) => c._id === card._id);
+          if (newIndex >= 0) {
+            this.store.dispatch(adjustIndeces({ allCards: allCards, newIndex: newIndex })); //adjust indeces in a way so that the new card is in the current chunk
+          } else {
+            console.error('Could not find card in array', card, allCards); //should not occur
+            return undefined;
+          }
+        }
+        return card;
+      }),
+      map((card: Card) => setActiveCardSuccess({ card: card })),
+      share()
+    )
+  );
+
+  /**
+   * Changes the vote on a card
+   */
   changeVote$ = createEffect(() =>
     this.actions$.pipe(
       ofType(changeVote),
-      exhaustMap((action) =>
+      switchMap((action) =>
         this.votes.castVote(action.vote).pipe(
           map((vote) => {
             return changeVoteSuccess({ vote: vote });
@@ -107,18 +194,20 @@ export class CardsEffects {
     )
   );
 
+  /**
+   * Fetch lectures from the server
+   */
   @Effect()
   fetchLectures$ = createEffect(() =>
     this.actions$.pipe(
       ofType(LectureActions.fetchLectures),
-      switchMap(() =>
+      exhaustMap(() =>
         this.lectures.getAllLectures().pipe(
           map((data) => {
             return LectureActions.fetchLecturesSuccess({ lectures: data });
           })
         )
-      ),
-      shareReplay(1)
+      )
     )
   );
 
@@ -126,7 +215,9 @@ export class CardsEffects {
   addLecture$ = createEffect(() =>
     this.actions$.pipe(
       ofType(LectureActions.addLercture),
-      exhaustMap((action) =>
+      mergeMap((
+        action //use merge map here as multiple changes could be made while the request has not terminated
+      ) =>
         this.lectures.addLecture(action.lecture).pipe(
           map((res) => LectureActions.addLectureSuccess({ lecture: res })),
           catchError((reason) => of(LoadFailure({ reason: reason })))
@@ -145,7 +236,7 @@ export class CardsEffects {
           tap((card) => {
             setTimeout(() => {
               this.store.dispatch(setActiveCard({ card: card })); //go to last card
-            }, 3000);
+            }, 200);
           }),
           map((res) => AddCardActions.addCardSuccess({ card: res })),
 
@@ -160,13 +251,10 @@ export class CardsEffects {
   updateCard$ = createEffect(() =>
     this.actions$.pipe(
       ofType(UpdateCardActions.updateCard),
-
-      exhaustMap((action) =>
+      switchMap((action) =>
         this.cards.updateCard(action.card).pipe(
           tap((card) => {
-            setTimeout(() => {
-              this.store.dispatch(setActiveCard({ card: card }));
-            }, 1200);
+            this.store.dispatch(setActiveCard({ card: card }));
           }),
           map((card) => UpdateCardActions.updateCardSuccess({ card: card })),
           catchError((reason) => of(LoadFailure({ reason: reason })))
@@ -180,7 +268,7 @@ export class CardsEffects {
   fetchUserInfo$ = createEffect(() =>
     this.actions$.pipe(
       ofType(fetchUserData),
-      mergeMap(() =>
+      exhaustMap(() =>
         this.user.getUserInfo().pipe(
           map((info) => fetchUserDataSuccess(info)),
           catchError((reason) => of(LoadFailure({ reason: reason })))
@@ -194,7 +282,7 @@ export class CardsEffects {
   updateUserInfo$ = createEffect(() =>
     this.actions$.pipe(
       ofType(updateUserData),
-      exhaustMap((action) =>
+      switchMap((action) =>
         this.user.updateAccount(action).pipe(
           map((user) => updateUserDataSuccess(user)),
           catchError((reason) => of(LoadFailure({ reason: reason })))
@@ -213,9 +301,7 @@ export class CardsEffects {
           tap((user) => {
             if (user) {
               this.router.navigateByUrl('/');
-              this.notifications.addNotification(
-                new SuccessMessage(`Willkommen ${user.username}`)
-              );
+              this.notifications.addNotification(new SuccessMessage(`Willkommen ${user.username}`));
               this.store.dispatch(fetchUserData());
             }
           }),
@@ -230,14 +316,11 @@ export class CardsEffects {
   logout$ = createEffect(() =>
     this.actions$.pipe(
       ofType(logout),
-      mergeMap(() =>
+      exhaustMap(() =>
         this.user.logoutServer().pipe(
           tap((success) => {
             this.router.navigateByUrl('/');
-            if (success)
-              this.notifications.addNotification(
-                new SuccessMessage('Erfolgreich abgemeldet')
-              );
+            if (success) this.notifications.addNotification(new SuccessMessage('Erfolgreich abgemeldet'));
           }),
           map(() => logoutSuccess()),
           catchError((reason) => of(LoadFailure({ reason: reason })))
@@ -267,7 +350,7 @@ export class CardsEffects {
   auth$ = createEffect(() =>
     this.actions$.pipe(
       ofType(auth),
-      mergeMap(() =>
+      switchMap(() =>
         this.user.authentication().pipe(
           map((val) => {
             if (val) {

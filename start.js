@@ -1,33 +1,31 @@
-require("dotenv").config();
+require('dotenv').config();
 
-const mongoose = require("mongoose");
-const helmet = require("helmet");
+const mongoose = require('mongoose');
+const helmet = require('helmet');
 const PORT = process.env.PORT || 3000;
-const session = require("express-session");
-const MongoStore = require("connect-mongo")(session);
 
-const databaseConfig = require("./config/database");
+const databaseConfig = require('./config/database');
 
 mongoose.connect(databaseConfig.database, databaseConfig.options).catch((reason) => {
-  console.log("Connection to Database failed, reason: ", reason);
+  console.log('Connection to Database failed, reason: ', reason);
 });
 
-mongoose.connection.on("connected", () => {
+mongoose.connection.on('connected', () => {
   console.log(
     `Mongoose connection open on ${
-      process.env.NODE_ENV && process.env.NODE_ENV.indexOf("development") > -1
-        ? "test"
-        : "production"
+      process.env.NODE_ENV && process.env.NODE_ENV.indexOf('development') > -1
+        ? 'test'
+        : 'production'
     } database`
   );
 });
 
 mongoose.Promise = global.Promise;
 
-require("./models/Card");
-require("./models/Lecture");
-require("./models/User");
-const app = require("./app");
+require('./models/Card');
+require('./models/Lecture');
+require('./models/User');
+const app = require('./app');
 
 app.use(helmet());
 
