@@ -2,21 +2,13 @@ import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 
 import { NotificationsService } from 'src/app/services/notifications.service';
 import { Observable, BehaviorSubject } from 'rxjs';
-import { Notification } from '../../models/Notification';
-import {
-  pulseOnEnterAnimation,
-  fadeOutOnLeaveAnimation,
-  fadeInOnEnterAnimation,
-} from 'angular-animations';
+import { Notification, NotificationType } from '../../models/Notification';
+import { pulseOnEnterAnimation, fadeOutOnLeaveAnimation, fadeInOnEnterAnimation } from 'angular-animations';
 import { MatDrawerContent, MatDrawer } from '@angular/material/sidenav';
 import { map, startWith } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
-import {
-  MatSnackBar,
-  MatSnackBarRef,
-  TextOnlySnackBar,
-} from '@angular/material/snack-bar';
+import { MatSnackBar, MatSnackBarRef, TextOnlySnackBar } from '@angular/material/snack-bar';
 import { AppState, Data, Mode } from 'src/app/models/state';
 import { NavbarToggleService } from 'src/app/services/navbar-toggle.service';
 @Component({
@@ -57,21 +49,30 @@ export class ViewContainerComponent implements OnInit {
     this.notifications$.subscribe((notifs) => {
       notifs.forEach((notif, index) => {
         let ref: MatSnackBarRef<TextOnlySnackBar>;
-        if (notif.type === 'success') {
-          ref = this._snackBar.open(notif.message, null, {
-            duration: 2000,
-            verticalPosition: 'bottom',
-            panelClass: 'success',
-          });
-        } else {
-          ref = this._snackBar.open(notif.message, 'Schließen', {
-            verticalPosition: 'bottom',
-            panelClass: notif.type,
-          });
+        switch (notif.type) {
+          case NotificationType.SUCCESS:
+            ref = this._snackBar.open(notif.message, null, {
+              duration: 2000,
+              verticalPosition: 'bottom',
+              panelClass: notif.type,
+            });
+            break;
+          case NotificationType.WARNING:
+            ref = this._snackBar.open(notif.message, 'Schließen', {
+              verticalPosition: 'bottom',
+              panelClass: notif.type,
+            });
+            break;
+          default:
+            ref = this._snackBar.open(notif.message, null, {
+              duration: 2500,
+              verticalPosition: 'bottom',
+              panelClass: notif.type,
+            });
+            break;
         }
-        ref
-          .afterDismissed()
-          .subscribe(() => this.notifService.removeNotification(index));
+
+        ref.afterDismissed().subscribe(() => this.notifService.removeNotification(index));
       });
     });
 

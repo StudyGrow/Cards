@@ -56,7 +56,7 @@ export class NotificationsService {
     // console.log(error);
     switch (error.status) {
       case 401:
-        if (error.url.includes('api/login')) this.addNotification(new WarnMessage(err));
+        if (error.url.includes('api/login')) this.addNotification(new InfoMessage(err));
         break;
       case 403:
         this.addNotification(new WarnMessage('Du musst dich einloggen, um diese Seite zu besuchen'));
