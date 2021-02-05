@@ -23,8 +23,8 @@ export const cookieConfig: NgcCookieConsentConfig = {
   type: 'opt-in',
   content: {
     message: 'Diese Webseite verwendet cookies 🍪 für ein optimales Nutzererlebnis',
-    dismiss: 'Alles klar!',
-    deny: 'Refuse cookies',
+    allow: 'Akzeptieren',
+    deny: 'Verweigern',
     link: '',
     href: '',
     policy: 'Cookie Policy',
