@@ -10,14 +10,21 @@ const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerOptions = require('./config/swagger');
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
 
-app.use (function (req, res, next) {
-  if (req.secure) {
-          next();
+app.use(function (req, res, next) {
+  if (req.secure || process.env.NODE_ENV.indexOf('development') > -1) {
+    next();
   } else {
-          res.redirect('https://' + req.headers.host + req.url);
+    res.redirect('https://' + req.headers.host + req.url);
   }
 });
-app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocs));
+app.use(
+  '/api-docs',
+  (req, res, next) => {
+    process.env.NODE_ENV.indexOf('development') > -1 ? next() : res.status(403).send();
+  },
+  swaggerUI.serve,
+  swaggerUI.setup(swaggerDocs)
+);
 
 app.use(helmet());
 app.use(require('./middleware/serviceMiddleware')());
@@ -41,9 +48,17 @@ app.use((req, res, next) => {
   next();
 });
 
-app.post('/api/login', (req, res, next) => {
-  req.services.user.login(passport, req, res, next);
-});
+app.post(
+  '/api/login',
+  (req, res, next) => {
+    req.headers.cookie && req.headers.cookie.includes('cookieconsent_status=deny')
+      ? res.status(401).send('Bitte akzeptiere cookies um dieses Feature zu nutzen')
+      : next();
+  },
+  (req, res, next) => {
+    req.services.user.login(passport, req, res, next);
+  }
+);
 
 //api route
 app.use('/api', require('./routes/api'));

@@ -21,56 +21,30 @@ enum ActionTypes {
   FETCH_VOTES_SUCCESS = '[Votes] Fetch votes from server success',
 }
 
+export const Failure = ActionTypes.LOAD_FAILURE;
 //Concrete Actions for each type
 
 export const fetchCards = createAction(ActionTypes.FETCH_CARDS);
 export const fetchVotes = createAction(ActionTypes.FETCH_USER_VOTES);
-export const fetchVotesSuccess = createAction(
-  ActionTypes.FETCH_VOTES_SUCCESS,
-  props<{ votes: Vote[] }>()
-);
+export const fetchVotesSuccess = createAction(ActionTypes.FETCH_VOTES_SUCCESS, props<{ votes: Vote[] }>());
 
 export const clearCardData = createAction(ActionTypes.CLEAR_CARD_DATA);
 
-export const changeVote = createAction(
-  ActionTypes.CHANGE_VOTE,
-  props<{ vote: Vote }>()
-);
+export const changeVote = createAction(ActionTypes.CHANGE_VOTE, props<{ vote: Vote }>());
 
-export const changeVoteSuccess = createAction(
-  ActionTypes.CHANGE_VOTE_SUCCESS,
-  props<{ vote: Vote }>()
-);
+export const changeVoteSuccess = createAction(ActionTypes.CHANGE_VOTE_SUCCESS, props<{ vote: Vote }>());
 
-export const LoadSuccess = createAction(
-  ActionTypes.LOAD_SUCCESS,
-  props<{ data: CardsData }>()
-);
+export const LoadSuccess = createAction(ActionTypes.LOAD_SUCCESS, props<{ data: CardsData }>());
 
-export const LoadFailure = createAction(
-  ActionTypes.LOAD_FAILURE,
-  props<{ reason: string }>()
-);
+export const LoadFailure = createAction(ActionTypes.LOAD_FAILURE, props<{ reason: string }>());
 
-export const addCard = createAction(
-  ActionTypes.ADD_CARD,
-  props<{ card: Card }>()
-);
+export const addCard = createAction(ActionTypes.ADD_CARD, props<{ card: Card }>());
 
-export const addCardSuccess = createAction(
-  ActionTypes.ADD_CARD_SUCCESS,
-  props<{ card: Card }>()
-);
+export const addCardSuccess = createAction(ActionTypes.ADD_CARD_SUCCESS, props<{ card: Card }>());
 
-export const updateCard = createAction(
-  ActionTypes.UPDATE_CARD,
-  props<{ card: Card }>()
-);
+export const updateCard = createAction(ActionTypes.UPDATE_CARD, props<{ card: Card }>());
 
-export const updateCardSuccess = createAction(
-  ActionTypes.UPDATE_CARD_SUCCESS,
-  props<{ card: Card }>()
-);
+export const updateCardSuccess = createAction(ActionTypes.UPDATE_CARD_SUCCESS, props<{ card: Card }>());
 
 export const FetchCardsActions = {
   //this loads lectures cards and user id

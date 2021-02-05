@@ -17,6 +17,13 @@ snack-bar-container.success {
   background-color: #d4edda;
   border-color: #c3e6cb;
 }
+snack-bar-container.info {
+  color: #0c5460;
+  background-color: #d1ecf1;
+  border-color: #bee5eb;
+}
+
+
 
 $foreground: map-get($my-app-theme, foreground);
 $background: map-get($my-app-theme, background);
