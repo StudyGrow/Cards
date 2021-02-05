@@ -10,14 +10,14 @@ const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerOptions = require('./config/swagger');
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
 
-app.use (function (req, res, next) {
-  if (req.secure) {
-          next();
+app.use(function (req, res, next) {
+  if (req.secure || process.env.NODE_ENV.indexOf('development') > -1) {
+    next();
   } else {
-          res.redirect('https://' + req.headers.host + req.url);
+    res.redirect('https://' + req.headers.host + req.url);
   }
 });
-app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocs));
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs));
 
 app.use(helmet());
 app.use(require('./middleware/serviceMiddleware')());
