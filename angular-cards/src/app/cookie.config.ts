@@ -20,7 +20,7 @@ export const cookieConfig: NgcCookieConsentConfig = {
       border: 'transparent',
     },
   },
-  type: 'info',
+  type: 'opt-in',
   content: {
     message: 'Diese Webseite verwendet cookies 🍪 für ein optimales Nutzererlebnis',
     dismiss: 'Alles klar!',
