@@ -48,9 +48,18 @@ app.use((req, res, next) => {
   next();
 });
 
-app.post('/api/login', (req, res, next) => {
-  req.services.user.login(passport, req, res, next);
-});
+app.post(
+  '/api/login',
+  (req, res, next) => {
+    console.log(req.headers);
+    req.headers.cookie && req.headers.cookie.includes('cookieconsent_status=deny')
+      ? res.status(401).send('Bitte akzeptiere cookies um dieses Feature zu nutzen')
+      : next();
+  },
+  (req, res, next) => {
+    req.services.user.login(passport, req, res, next);
+  }
+);
 
 //api route
 app.use('/api', require('./routes/api'));
