@@ -15,25 +15,13 @@
     </mat-form-field>
     <mat-form-field appearance="standard" class="w-100">
       <mat-label>Passwort</mat-label>
-      <input
-        matInput
-        type="password"
-        name="password"
-        id="password"
-        #password="ngModel"
-        ngModel
-      />
+      <input matInput type="password" name="password" id="password" #password="ngModel" ngModel />
     </mat-form-field>
 
-    <mat-checkbox checked="true">Eingeloggt bleiben</mat-checkbox>
-    <br />
-    <button
-      type="submit"
-      mat-flat-button
-      color="primary"
-      [disabled]="isDisabled(username, password)"
+    <mat-checkbox [checked]="this.enableSession" #remember (change)="this.enableSession = $event.checked"
+      >Eingeloggt bleiben</mat-checkbox
     >
-      Login
-    </button>
+    <br />
+    <button type="submit" mat-flat-button color="primary" [disabled]="isDisabled(username, password)">Login</button>
   </form>
 </mat-card>

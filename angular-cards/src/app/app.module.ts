@@ -5,19 +5,14 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { SharedModule } from './shared/shared.module';
 import { AppRoutingModule } from './app-routing.module';
 import { StoreModule } from '@ngrx/store';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 // Material Modules
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-
 import { MatSidenavModule } from '@angular/material/sidenav';
 
 // Gestures
-import {
-  HammerModule,
-  HammerGestureConfig,
-  HAMMER_GESTURE_CONFIG,
-} from '@angular/platform-browser';
+import { HammerModule, HammerGestureConfig, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
 
 // Reducers
 import { dataReducer } from './store/reducers/data.reducer';
@@ -36,16 +31,13 @@ registerLocaleData(de);
 import { AppComponent } from './app.component';
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 import { SearchBarComponent } from './components/search-bar/search-bar.component';
-
 import { LoginPageComponent } from './routes/login-page/login-page.component';
 import { LoginFormComponent } from './components/login-form/login-form.component';
 import { SignupPageComponent } from './routes/signup-page/signup-page.component';
 import { SignupFormComponent } from './components/signup-form/signup-form.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { AboutComponent } from './routes/about/about.component';
-
 import { ErrorPageComponent } from './routes/error-page/error-page.component';
-
 import { ConfirmationPageComponent } from './routes/confirmation-page/confirmation-page.component';
 import { ConfirmationComponent } from './components/confirmation/confirmation.component';
 import { NavListComponent } from './components/nav-list/nav-list.component';
@@ -53,9 +45,14 @@ import { ViewContainerComponent } from './components/view-container/view-contain
 import { HomeModule } from './home/home.module';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
-
 import { LoadingInterceptorService } from './services/loading-interceptor.service';
+
+//NG-Bootstrap
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
+//Cookie Consent
+import { NgcCookieConsentModule } from 'ngx-cookieconsent';
+import { cookieConfig } from './cookie.config';
 
 declare var Hammer: any;
 // Config to allow swipe gestures on carousel
@@ -69,9 +66,7 @@ export class MyHammerConfig extends HammerGestureConfig {
   buildHammer(element: HTMLElement) {
     const mc = new Hammer(element, {
       touchAction: 'auto',
-      inputClass: Hammer.SUPPORT_POINTER_EVENTS
-        ? Hammer.PointerEventInput
-        : Hammer.TouchInput,
+      inputClass: Hammer.SUPPORT_POINTER_EVENTS ? Hammer.PointerEventInput : Hammer.TouchInput,
       recognizers: [
         [
           Hammer.Swipe,
@@ -117,6 +112,7 @@ export class MyHammerConfig extends HammerGestureConfig {
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production,
     }),
+    NgcCookieConsentModule.forRoot(cookieConfig),
     NgbModule,
   ],
   providers: [

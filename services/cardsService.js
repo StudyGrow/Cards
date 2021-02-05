@@ -2,12 +2,15 @@
 const mongoose = require("mongoose");
 const Card = mongoose.model("Card");
 const Lecture = mongoose.model("Lecture");
+const MultipleChoiceCard = require("../models/MultipleChoiceCard");
 
 module.exports = function cardsService() {
   //returns all the cards matching the query
   cardsService.getCardsFromQuery = async (query, callback) => {
     try {
-      let cards = await Card.find(query).select("tags thema content vorlesung latex");
+      let cards = await Card.find(query).select(
+        "tags thema content vorlesung latex"
+      );
       callback(null, cards);
     } catch (error) {
       callback(error, null);
@@ -17,7 +20,9 @@ module.exports = function cardsService() {
   cardsService.findByAbrv = async (abrv) => {
     return await Card.find({ vorlesung: abrv })
       .lean()
-      .select("name thema vorlesung tags latex authorId authorName content date");
+      .select(
+        "name thema vorlesung tags latex authorId authorName content date"
+      );
   };
 
   //creates a new card and adds it to the database
@@ -34,8 +39,36 @@ module.exports = function cardsService() {
 
       updateTags(card.vorlesung, card.tags);
       await card.save();
-      await Lecture.findOneAndUpdate({ abrv: form.abrv }, {$inc : {'totalCards' : 1}});
+      await Lecture.findOneAndUpdate(
+        { abrv: form.abrv },
+        { $inc: { totalCards: 1 } }
+      );
       callback(null, card);
+    } catch (error) {
+      callback(error, null);
+    }
+  };
+
+  //creates a new card and adds it to the database
+  cardsService.addMultipleChoiceCard = async (form, user, callback) => {
+    try {
+      let lectureExists = await Lecture.findByIdAndUpdate(form.cardDeckID, {
+        $inc: { totalCards: 1 },
+      });
+      if (lectureExists == null) {
+        throw new Error("CardDeck (Lecture) does not exist");
+      }
+      const multipleChoiceCard = new MultipleChoiceCard(form);
+      multipleChoiceCard.date = new Date();
+      if (user) {
+        multipleChoiceCard.authorId = user._id; //add user as author of card
+        multipleChoiceCard.authorName = user.username;
+      }
+
+      // updateTags(card.vorlesung, card.tags);
+      await multipleChoiceCard.save();
+
+      callback(null, multipleChoiceCard);
     } catch (error) {
       callback(error, null);
     }
@@ -63,13 +96,50 @@ module.exports = function cardsService() {
   //   });
   // };
 
+  //updates a MultipleChoiceCard in the database
+  cardsService.updateMultipleChoiceCard = async (card, user, callback) => {
+    try {
+      let tmp = await MultipleChoiceCard.findById(card._id); //find the card in the database
+      if (tmp == null) {
+        throw new Error("MultipleChoiceCard doesn't exist");
+      }
+      let lectureExists = await Lecture.findById(card.cardDeckID);
+      if (lectureExists == null) {
+        throw new Error("CardDeck (Lecture) does not exist");
+      }
+      if (tmp && tmp.authorId && !user) {
+        //There is an author, but there is no user logged in
+        throw new Error(
+          "Fehler: Du bist nicht der Author dieser Karte. Bitte logge dich ein."
+        );
+      }
+      if (tmp.authorId && tmp.authorId != "" && tmp.authorId != user._id) {
+        //The user is not the author of the card
+        throw new Error("Fehler: Du bist nicht der Author dieser Karte.");
+      }
+      let updatedCard = await MultipleChoiceCard.findByIdAndUpdate(
+        card._id,
+        card,
+        {
+          new: true,
+        }
+      );
+      callback(null, updatedCard);
+    } catch (error) {
+      console.error(error);
+      callback(error, null);
+    }
+  };
+
   //updates a card in the database
   cardsService.updateCard = async (card, user, callback) => {
     try {
       let tmp = await Card.findById(card._id); //find the card in the database
       if (tmp && tmp.authorId && !user) {
         //There is an author, but there is no user logged in
-        throw new Error("Fehler: Du bist nicht der Author dieser Karte. Bitte logge dich ein.");
+        throw new Error(
+          "Fehler: Du bist nicht der Author dieser Karte. Bitte logge dich ein."
+        );
       }
       if (tmp.authorId && tmp.authorId != "" && tmp.authorId != user._id) {
         //The user is not the author of the card
@@ -102,9 +172,13 @@ function updateTags(vlabrv, tags) {
   if (tags) {
     tags.forEach((tag) => {
       if (tag.length > 0) {
-        Lecture.updateOne({ abrv: vlabrv }, { $addToSet: { tagList: [tag] } }, (err, res) => {
-          console.log(res);
-        });
+        Lecture.updateOne(
+          { abrv: vlabrv },
+          { $addToSet: { tagList: [tag] } },
+          (err, res) => {
+            console.log(res);
+          }
+        );
       }
     });
   }

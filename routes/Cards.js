@@ -112,10 +112,120 @@ router.post(
   }
 );
 
+//Add MultipleChoiceCard to the database, body passed should be of form:
+// {
+//   "multipleChoiceCard": {
+//     MONGODBCARDMODELDATA
+//   }
+// }
+
+router.post(
+  '/newMultipleChoiceCard',
+  [
+    check('multipleChoiceCard.answers')
+      .isArray({ min: 1, max: 4 })
+      .withMessage('At least one answer and maximum 4'),
+    check('multipleChoiceCard.cardDeckID').exists().withMessage('Provide cardDeck (lecture) id'),
+    check('multipleChoiceCard.question')
+      .isLength({
+        min: 1,
+        max: 1000,
+      })
+      .exists()
+      .withMessage('Provide a question'),
+    check('multipleChoiceCard.answers.*.option')
+      .isLength({
+        min: 1,
+        max: 1000,
+      })
+      .exists()
+      .withMessage('Provide answer that should be at most 1000 long'),
+    check('multipleChoiceCard.answers.*.correct')
+      .exists()
+      .withMessage('Should specify if option correct or false'),
+  ],
+  (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      res.status(422).json({
+        errors: errors.array(),
+      });
+      return;
+    } else {
+      req.services.cards.addMultipleChoiceCard(
+        req.body.multipleChoiceCard,
+        req.user,
+        (err, card) => {
+          if (err) {
+            res.status(500).send(err.message);
+          } else {
+            console.log(card);
+            res.json(card);
+          }
+        }
+      );
+    }
+  }
+);
+
 // router.get("/renew", (req, res) => {
 //   req.services.cards.renew();
 //   res.send();
 // });
+
+//Update MultipleChoiceCard to the database, body passed should be of form:
+// {
+//   "multipleChoiceCard": {
+//     MONGODBCARDMODELDATA
+//   }
+// }
+router.put(
+  '/updateMultipleChoiceCard',
+  [
+    check('multipleChoiceCard.answers')
+      .isArray({ min: 1, max: 4 })
+      .withMessage('At least one answer and maximum 4'),
+    check('multipleChoiceCard.cardDeckID').exists().withMessage('Provide cardDeck (lecture) id'),
+    check('multipleChoiceCard._id').exists().withMessage('Provide id of ultipleChoiceCard'),
+    check('multipleChoiceCard.question')
+      .isLength({
+        min: 1,
+        max: 1000,
+      })
+      .exists()
+      .withMessage('Provide a question'),
+    check('multipleChoiceCard.answers.*.option')
+      .isLength({
+        min: 1,
+        max: 1000,
+      })
+      .exists()
+      .withMessage('Provide answer that should be at most 1000 long'),
+    check('multipleChoiceCard.answers.*.correct')
+      .exists()
+      .withMessage('Should specify if option correct or false'),
+  ],
+  (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      res.status(422).json({
+        errors: errors.array(),
+      });
+    } else {
+      req.services.cards.updateMultipleChoiceCard(
+        req.body.multipleChoiceCard,
+        req.user,
+        (err, card) => {
+          if (err) {
+            res.status(422).send(err.message);
+          } else {
+            res.status(200).send(card);
+          }
+        }
+      );
+    }
+  }
+);
 
 //Update Card in the database
 router.put(
@@ -157,6 +267,7 @@ router.put(
     }
   }
 );
+
 router.put('/vote', check('id').not().isEmpty().withMessage('Karten Id benötigt'), (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {

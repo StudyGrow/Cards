@@ -236,7 +236,7 @@ export class CardsEffects {
           tap((card) => {
             setTimeout(() => {
               this.store.dispatch(setActiveCard({ card: card })); //go to last card
-            }, 300);
+            }, 200);
           }),
           map((res) => AddCardActions.addCardSuccess({ card: res })),
 
@@ -254,9 +254,7 @@ export class CardsEffects {
       switchMap((action) =>
         this.cards.updateCard(action.card).pipe(
           tap((card) => {
-            setTimeout(() => {
-              this.store.dispatch(setActiveCard({ card: card }));
-            }, 120);
+            this.store.dispatch(setActiveCard({ card: card }));
           }),
           map((card) => UpdateCardActions.updateCardSuccess({ card: card })),
           catchError((reason) => of(LoadFailure({ reason: reason })))

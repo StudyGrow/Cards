@@ -214,9 +214,9 @@ export class CarouselComponent implements OnInit, OnDestroy {
       .pipe(
         // delay(180),
         map((state) => state.currentCard),
-        distinctUntilChanged((prev, curr) => prev?._id === curr?._id)
+        // distinctUntilChanged((prev, curr) => prev?._id === curr?._id)
 
-        // debounceTime(20),
+        debounceTime(10)
       )
       .subscribe((newCard) => {
         this.handleNewCard(newCard); //adjust the index to show the new card
