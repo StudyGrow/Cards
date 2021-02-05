@@ -17,7 +17,14 @@ app.use(function (req, res, next) {
     res.redirect('https://' + req.headers.host + req.url);
   }
 });
-app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs));
+app.use(
+  '/api-docs',
+  (req, res, next) => {
+    process.env.NODE_ENV.indexOf('development') > -1 ? next() : res.status(403).send();
+  },
+  swaggerUI.serve,
+  swaggerUI.setup(swaggerDocs)
+);
 
 app.use(helmet());
 app.use(require('./middleware/serviceMiddleware')());
