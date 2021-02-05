@@ -51,7 +51,6 @@ app.use((req, res, next) => {
 app.post(
   '/api/login',
   (req, res, next) => {
-    console.log(req.headers);
     req.headers.cookie && req.headers.cookie.includes('cookieconsent_status=deny')
       ? res.status(401).send('Bitte akzeptiere cookies um dieses Feature zu nutzen')
       : next();
