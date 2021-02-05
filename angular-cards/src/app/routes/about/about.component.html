@@ -1,123 +1,97 @@
 <div class="container">
-  <h2>Cards</h2>
+  <h2 #TOP>Cards</h2>
 
   <p>
-    Cards ist eine Webseite, die dir dabei helfen soll dich auf deine Klausuren
-    und Prüfungen vorzubereiten. Das Konzept von Cards beruht auf den
-    klassischen Karteikarten. Anders als die klassischen Karteikarten brauchst
-    du jedoch nicht deinen Stapel an Karten überall mitzuschleppen. Unsere
-    Webseite eignet sich vor allem auch für Smartphones, somit kannst du dir
-    deine Karteikarten auch unterwegs anschauen. Sie richtet sich vor allem an
-    Studenten.
+    Cards ist eine Webseite, die dir dabei helfen soll dich auf deine Klausuren und Prüfungen vorzubereiten. Das Konzept
+    von Cards beruht auf den klassischen Karteikarten. Anders als die klassischen Karteikarten brauchst du jedoch nicht
+    deinen Stapel an Karten überall mitzuschleppen. Unsere Webseite eignet sich vor allem auch für Smartphones, somit
+    kannst du dir deine Karteikarten auch unterwegs anschauen. Sie richtet sich vor allem an Studenten.
   </p>
   <p *ngIf="!loggedIn">
-    <a routerLink="/signup">Erstelle einen Account</a>, um alle Vorteile unserer
-    Webseite zu nutzen.
+    <a routerLink="/signup">Erstelle einen Account</a>, um alle Vorteile unserer Webseite zu nutzen.
   </p>
   <h4>Sharing is Caring</h4>
   <p>
-    Karteikarten, die du auf unserer Webseite hinzufügst, sind automatisch für
-    alle anderen Nutzer sichtbar. Andererseits kannst du dir auch Karten von
-    anderen Nutzern anschauen.Dies sorgt dafür, dass du optimal auf deine
+    Karteikarten, die du auf unserer Webseite hinzufügst, sind automatisch für alle anderen Nutzer sichtbar.
+    Andererseits kannst du dir auch Karten von anderen Nutzern anschauen.Dies sorgt dafür, dass du optimal auf deine
     Klausur vorbereitet bist. <br />
-    Wenn du mit einer Karte nicht zufrieden bist, oder du glaubst ihr Inhalt
-    wäre falsch oder unvollständig, kannst du sie bearbeiten. Karten, welche von
-    registrierten Nutzern erstellt worden sind, kannst du leider nicht
-    bearbeiten. In einer späteren Version wird es möglich sein für diese Karte
-    einen Verberungsvorschlag an den Ertseller der Karte zu senden.
+    Wenn du mit einer Karte nicht zufrieden bist, oder du glaubst ihr Inhalt wäre falsch oder unvollständig, kannst du
+    sie bearbeiten. Karten, welche von registrierten Nutzern erstellt worden sind, kannst du leider nicht bearbeiten. In
+    einer späteren Version wird es möglich sein für diese Karte einen Verberungsvorschlag an den Ertseller der Karte zu
+    senden.
   </p>
   <h4>Wir freuen uns über Feedback</h4>
   <p>
-    Wir bemühen uns, die Seite fehlerfrei zu gestalten. Trotzdem kann es sein,
-    dass sich der ein oder andere Fehler eingeschlichen hat. Diesen kannst du
-    uns gerne melden indem du
-    <a
-      href="https://git.rwth-aachen.de/jungerjunge2/cards/-/issues"
-      rel="noopener"
-      target="_blank"
-      >hier</a
-    >
-    ein Issue erstellst. Wir versuchen den Fehler, dann so schnell wie möglich
-    zu beheben. Du kannst uns dort auch gerne Feedback hinterlassen
+    Wir bemühen uns, die Seite fehlerfrei zu gestalten. Trotzdem kann es sein, dass sich der ein oder andere Fehler
+    eingeschlichen hat. Diesen kannst du uns gerne melden indem du
+    <a href="https://git.rwth-aachen.de/card/cards/-/issues" rel="noopener" target="_blank">hier</a>
+    ein Issue erstellst (hierzu wird ein Gitlab Account benötigt) oder uns eine
+    <a href="mailto:info@rwth-aachen.tk">Email</a> schreibst. Wir versuchen den Fehler, dann so schnell wie möglich zu
+    beheben. Du kannst uns dort auch gerne Feedback hinterlassen
   </p>
-
-  <h3 id="FAQ">FAQ</h3>
+  <h3 id="Cookies" #Cookies>Über cookies</h3>
+  Auf unserer Webseite verwenden wir sogenannte cookies um eingeloggte Nutzer zu authentifizieren.
+  <a href="https://gdpr.eu/cookies/" target="_blank" rel="noopener noreferrer">Mehr zu cookies</a>
+  <h3 id="FAQ" #FAQ>FAQ</h3>
   <h4>Wo finde ich die Karteikarten zu meiner Vorlesung?</h4>
   <p>
-    Auf unserer <a routerLink="/">Startseite</a> findest du eine Liste aller
-    Vorlesungen, für die bisher Karten hinzugefügt wurden. Wähle deine Vorlesung
-    aus. Falls du die Vorlesung nich in der Liste findest, dann kannst du sie
+    Auf unserer <a routerLink="/">Startseite</a> findest du eine Liste aller Vorlesungen, für die bisher Karten
+    hinzugefügt wurden. Wähle deine Vorlesung aus. Falls du die Vorlesung nich in der Liste findest, dann kannst du sie
     hinzufügen.
     <span *ngIf="!loggedIn">
       Dafür musst du dich jedoch
-      <a routerLink="/login">einloggen</a> oder einen
-      <a routerLink="/signup"> Account erstellen</a>.
+      <a routerLink="/login">einloggen</a> oder einen <a routerLink="/signup"> Account erstellen</a>.
     </span>
     <br />
-    Nachdem du auf die Vorlesung gedrückt hast kommst du auf eine neue Seite,
-    auf der du dir alle Karteikarten, die zu der Vorlesung bereits hinzugefügt
-    wurden, anschauen. Nutze die Pfeiltasten oder wische horizontal über die
-    Karte, um dir weitere Karten anzuschauen. Du kannst den Inhalt der Karte
-    aufklappen indem du auf "Mehr dazu" drückst. <br />
-    Du kannst auch die Suchfunktion in der Navigationsleiste nutzen, um nach
-    bestimmten Karten zu suchen.
+    Nachdem du auf die Vorlesung gedrückt hast kommst du auf eine neue Seite, auf der du dir alle Karteikarten, die zu
+    der Vorlesung bereits hinzugefügt wurden, anschauen. Nutze die Pfeiltasten oder wische horizontal über die Karte, um
+    dir weitere Karten anzuschauen. Du kannst den Inhalt der Karte aufklappen indem du auf "Mehr dazu" drückst. <br />
+    Du kannst auch die Suchfunktion in der Navigationsleiste nutzen, um nach bestimmten Karten zu suchen.
   </p>
   <h4>Meine Vorlesung ist nicht in der Liste. Wie kann ich sie hinzufügen?</h4>
   <p>
-    Falls du die Vorlesung nich in der Liste findest, dann kannst du sie
-    hinzufügen indem du das Formular ausfüllst und auf "Hinzufügen" drückst.
+    Falls du die Vorlesung nich in der Liste findest, dann kannst du sie hinzufügen indem du das Formular ausfüllst und
+    auf "Hinzufügen" drückst.
     <span *ngIf="!loggedIn">
       Dafür musst du dich jedoch
-      <a routerLink="/login">einloggen</a> oder einen
-      <a routerLink="/signup"> Account erstellen</a>.
+      <a routerLink="/login">einloggen</a> oder einen <a routerLink="/signup"> Account erstellen</a>.
     </span>
     <br />
-    Nachdem du auf hinzufügen gedrückt hast kommst du auf eine neue Seite, auf
-    der du deine erste Karte hinzufügen kannst
+    Nachdem du auf hinzufügen gedrückt hast kommst du auf eine neue Seite, auf der du deine erste Karte hinzufügen
+    kannst
   </p>
   <h4>Wie erstelle ich eine Karte?</h4>
   <p>
-    Auf unserer <a routerLink="/">Startseite</a> siehst du eine Liste von
-    Vorlesungen. Wähle die Vorlesung aus zu der du eine Karteikarte hinzufügen
-    möchtest. Falls deine Vorlesung nicht findest, kannst du sie über das
-    Formular hinzufügen. <br />
-    Nachdem du auf die Seite der Vorlesung navigiert bist kannst du eine neue
-    Karte hinzufügen indem du auf den "Hinzufügen" Tab drückst. Nun kannst du
-    deine Karteikarte hinzufügen indem du das Formular ausfüllst und auf den
+    Auf unserer <a routerLink="/">Startseite</a> siehst du eine Liste von Vorlesungen. Wähle die Vorlesung aus zu der du
+    eine Karteikarte hinzufügen möchtest. Falls deine Vorlesung nicht findest, kannst du sie über das Formular
+    hinzufügen. <br />
+    Nachdem du auf die Seite der Vorlesung navigiert bist kannst du eine neue Karte hinzufügen indem du auf den
+    "Hinzufügen" Tab drückst. Nun kannst du deine Karteikarte hinzufügen indem du das Formular ausfüllst und auf den
     "Hinzufügen" Knopf drückst.
     <span *ngIf="!loggedIn">
       Erstelle am Besten einen
-      <a routerLink="/signup"> Account</a>, oder
-      <a routerLink="/login">logge dich ein</a>, damit du Ertseller dieser Karte
-      wirst und nur du diese bearbeiten kannst.
+      <a routerLink="/signup"> Account</a>, oder <a routerLink="/login">logge dich ein</a>, damit du Ertseller dieser
+      Karte wirst und nur du diese bearbeiten kannst.
     </span>
-    Pro-Tip: du kannst auch mathematische Symbole schreiben indem du Latex
-    Befehle verwendest und diese mit $ Zeichen umhüllst. Mehr zu den Latex
-    Befehlen findest du
-    <a href="https://en.wikibooks.org/wiki/LaTeX/Mathematics" rel="noopener"
-      >hier</a
-    >.
+    Pro-Tip: du kannst auch mathematische Symbole schreiben indem du Latex Befehle verwendest und diese mit $ Zeichen
+    umhüllst. Mehr zu den Latex Befehlen findest du
+    <a href="https://en.wikibooks.org/wiki/LaTeX/Mathematics" rel="noopener">hier</a>.
   </p>
 
   <h4>Wie bearbeite ich eine Karte?</h4>
   <p>
-    Wähle zuerst die Karteikarte aus die du bearbeiten möchtest. Drücke auf das
-    "Bleistift" Symbol. Bearbeite deine Karte im Formular und drücke auf
-    "Sichern". Bitte beachte, dass du nur öffentliche und deine eigenen Karten
-    bearbeiten kannst. Karten, die von anderen registrierten Nutzern erstellt
-    worden sind kannst du leider nicht bearbeit. In einer späteren Version wird
-    es möglich sein für diese Karte einen Verbessungsvorschlag an den Ertseller
+    Wähle zuerst die Karteikarte aus die du bearbeiten möchtest. Drücke auf das "Bleistift" Symbol. Bearbeite deine
+    Karte im Formular und drücke auf "Sichern". Bitte beachte, dass du nur öffentliche und deine eigenen Karten
+    bearbeiten kannst. Karten, die von anderen registrierten Nutzern erstellt worden sind kannst du leider nicht
+    bearbeit. In einer späteren Version wird es möglich sein für diese Karte einen Verbessungsvorschlag an den Ertseller
     der Karte zu senden.
   </p>
 
   <h4>Wie kann ich Latex verwenden?</h4>
   <p>
-    Mithilfe von Latex kannst du Formeln in Karten besser darstellen. Umhülle
-    den Latex Teil dazu mit $-Zeichen und aktiviere den Latex Switch. Karten
-    können nur abgesendet werden, wenn die Latex Formatierung korrekt ist. Mehr
-    zu den Latex Befehlen findest du
-    <a href="https://en.wikibooks.org/wiki/LaTeX/Mathematics" rel="noopener"
-      >hier</a
-    >.
+    Mithilfe von Latex kannst du Formeln in Karten besser darstellen. Umhülle den Latex Teil dazu mit $-Zeichen und
+    aktiviere den Latex Switch. Karten können nur abgesendet werden, wenn die Latex Formatierung korrekt ist. Mehr zu
+    den Latex Befehlen findest du
+    <a href="https://en.wikibooks.org/wiki/LaTeX/Mathematics" rel="noopener">hier</a>.
   </p>
 </div>
