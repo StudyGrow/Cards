@@ -59,7 +59,7 @@ export class NotificationsService {
         if (error.url.includes('api/login')) this.addNotification(new InfoMessage(err));
         break;
       case 403:
-        this.addNotification(new WarnMessage('Du musst dich einloggen, um diese Seite zu besuchen'));
+        this.addNotification(new WarnMessage('Du musst dich erst einloggen'));
         break;
       case 422:
         if (error.url.includes('?abrv')) {

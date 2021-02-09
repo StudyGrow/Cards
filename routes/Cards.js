@@ -1,6 +1,7 @@
 //handles all card specific routes
 const express = require('express');
 const { check, query, validationResult } = require('express-validator'); //uses to validate requests
+const authentication = require('./authentication');
 const router = express.Router();
 
 //route to get the cards from a specific lecture
@@ -76,6 +77,7 @@ router.get(
 //Add card to the database
 router.post(
   '/new',
+  authentication,
   [
     check('card.abrv')
       .isLength({ min: 3, max: 7 })
@@ -250,6 +252,7 @@ router.put(
       })
       .withMessage('Inhalt darf nicht mehr als 1000 Zeichen enthalten'),
   ],
+  authentication,
   (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
