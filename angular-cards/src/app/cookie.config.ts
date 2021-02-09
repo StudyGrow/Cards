@@ -22,11 +22,11 @@ export const cookieConfig: NgcCookieConsentConfig = {
   },
   type: 'opt-in',
   content: {
-    message: 'Diese Webseite verwendet cookies 🍪 für ein optimales Nutzererlebnis',
+    message: 'Diese Webseite verwendet cookies 🍪 für ein optimales Nutzererlebnis.',
     allow: 'Akzeptieren',
     deny: 'Verweigern',
-    link: '',
-    href: '',
+    link: 'Mehr dazu',
+    href: 'http://' + environment.domain + '/about#Cookies',
     policy: 'Cookie Policy',
   },
 };
