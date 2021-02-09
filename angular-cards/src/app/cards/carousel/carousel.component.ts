@@ -26,7 +26,7 @@ import { MatBottomSheet, MatBottomSheetRef } from '@angular/material/bottom-shee
 import { Vote } from 'src/app/models/Vote';
 import { sortOptions } from './sortOptions';
 import { SortType } from 'src/app/models/SortType';
-import { AllCards, DisplayedCards, UserId } from 'src/app/store/selector';
+import { AllCards, CardsSorted, DisplayedCards, UserId } from 'src/app/store/selector';
 import { logging } from 'protractor';
 
 @Component({
@@ -204,7 +204,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
     });
 
     this.subscriptions$.push(sub);
-    sub = this.store.pipe(map(AllCards)).subscribe((cards) => {
+    sub = this.store.pipe(map(CardsSorted)).subscribe((cards) => {
       this.allCards = cards;
     });
 
