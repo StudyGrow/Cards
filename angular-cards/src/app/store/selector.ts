@@ -66,6 +66,11 @@ export const ActiveIndex = (state: AppState) => state.mode.activeIndex;
  */
 export const FormMode = (state: AppState) => state.mode.formMode;
 /**
+ * Get the theme of the app
+ * @param state state of the app
+ */
+export const Theme = (state: AppState) => state.mode.theme;
+/**
  * Select the current lecture
  * @param state state of the app
  */

@@ -53,6 +53,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 //Cookie Consent
 import { NgcCookieConsentModule } from 'ngx-cookieconsent';
 import { cookieConfig } from './cookie.config';
+import { GoogleChartsModule } from 'angular-google-charts';
 
 declare var Hammer: any;
 // Config to allow swipe gestures on carousel
@@ -103,6 +104,7 @@ export class MyHammerConfig extends HammerGestureConfig {
     BrowserAnimationsModule,
     HttpClientModule,
     SharedModule,
+
     MatProgressBarModule,
     MatSidenavModule,
     HammerModule,

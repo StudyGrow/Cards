@@ -29,21 +29,15 @@ import { MatSelectModule } from '@angular/material/select';
 
 import { MatMenuModule } from '@angular/material/menu';
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
-import {
-  MatPaginatorIntl,
-  MatPaginatorModule,
-} from '@angular/material/paginator';
+import { MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginator';
 import { getGermanPaginatorIntl } from '../profile/cards-overview/paginator.options';
 
 import { MatDividerModule } from '@angular/material/divider';
+import { GoogleChartsModule } from 'angular-google-charts';
 @NgModule({
   imports: [],
   declarations: [SafeHtmlPipe, DialogueComponent],
-  providers: [
-    DatePipe,
-    AsyncPipe,
-    { provide: MatPaginatorIntl, useValue: getGermanPaginatorIntl() },
-  ],
+  providers: [DatePipe, AsyncPipe, { provide: MatPaginatorIntl, useValue: getGermanPaginatorIntl() }],
   exports: [
     CommonModule,
     SafeHtmlPipe,
@@ -57,6 +51,7 @@ import { MatDividerModule } from '@angular/material/divider';
     MatMenuModule,
     MatCardModule,
     MatCheckboxModule,
+    GoogleChartsModule,
     MatChipsModule,
     MatDividerModule,
     MatRippleModule,

@@ -13,8 +13,6 @@
       <app-form></app-form></div
   ></mat-tab>
   <mat-tab [disabled]="this.formMode == 'edit'" label="Übersicht">
-    <h3 class="text-center mt-2" *ngIf="lecture$ | async as lecture">
-      {{ lecture.name }}
-    </h3>
+    <app-lecture-overview *ngIf="(selectedTab$ | async) == 2"></app-lecture-overview>
   </mat-tab>
 </mat-tab-group>

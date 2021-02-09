@@ -1,0 +1,15 @@
+<div class="container mt-2">
+  <h3 class="text-center" *ngIf="lecture$ | async as lecture">
+    {{ lecture.name }}
+  </h3>
+  <google-chart
+    *ngIf="activities$ | async as activities"
+    [title]="'Number of card submissions over time'"
+    [type]="'LineChart'"
+    [data]="activities"
+    [columns]="['Date', 'Cards']"
+    [options]="chartOptions"
+    [dynamicResize]="true"
+  >
+  </google-chart>
+</div>
