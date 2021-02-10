@@ -26,6 +26,7 @@
     </button>
 
     <button
+      *ngIf="authorized$ | async"
       mat-icon-button
       type="button"
       aria-label="bearbeiten"

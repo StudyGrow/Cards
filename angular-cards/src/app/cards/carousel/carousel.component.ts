@@ -26,7 +26,7 @@ import { MatBottomSheet, MatBottomSheetRef } from '@angular/material/bottom-shee
 import { Vote } from 'src/app/models/Vote';
 import { sortOptions } from './sortOptions';
 import { SortType } from 'src/app/models/SortType';
-import { AllCards, CardsSorted, DisplayedCards, UserId } from 'src/app/store/selector';
+import { AllCards, authorized, CardsSorted, DisplayedCards, UserId } from 'src/app/store/selector';
 import { logging } from 'protractor';
 
 @Component({
@@ -85,6 +85,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
 
   formMode: string; // mode in which the form is displayed either add or edit
   notallowed: boolean = false; //wether an action is allowed or not
+  authorized$ = this.store.select(authorized);
 
   // prevSlide = 0; //holds the slide which is currently shown
 
