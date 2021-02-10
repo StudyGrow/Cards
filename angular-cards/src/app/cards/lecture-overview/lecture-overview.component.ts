@@ -40,7 +40,7 @@ export class LectureOverviewComponent implements OnInit {
   );
   contributors$ = this.cards$.pipe(
     map((
-      cards //transform cards array into array containing objects with only date attribute
+      cards //transform cards array into array containing objects with only author info
     ) =>
       cards?.map((card: Card) => ({
         authorName: card.authorName,
@@ -49,7 +49,7 @@ export class LectureOverviewComponent implements OnInit {
     ),
     map((
       authors: { authorName: string; authorId: string }[] //Group array by date
-    ) => (authors ? LectureOverviewComponent.groupBy(authors, 'authorId') : [])),
+    ) => (authors ? LectureOverviewComponent.groupBy(authors, 'authorId') : [])), //grouping by authorId but authorName should work too as they are distinct
     map(
       (
         map: Map<string, { authorName: string; authorId: string }[]> //transform map into data table for google charts
