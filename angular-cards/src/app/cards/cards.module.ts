@@ -14,6 +14,7 @@ import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
 import { NewVlComponent } from './new-vl/new-vl.component';
 import { FormComponent } from '../cards/form/form.component';
 import { VoteComponent } from './vote/vote.component';
+import { LectureOverviewComponent } from './lecture-overview/lecture-overview.component';
 
 //Pipes
 
@@ -27,6 +28,7 @@ import { VoteComponent } from './vote/vote.component';
     NewVlComponent,
     VoteComponent,
     FormComponent,
+    LectureOverviewComponent,
   ],
   imports: [CardsRoutingModule, SharedModule, NgbCarouselModule],
 })

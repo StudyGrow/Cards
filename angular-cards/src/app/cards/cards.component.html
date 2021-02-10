@@ -1,6 +1,7 @@
 <mat-tab-group
   [selectedIndex]="selectedTab$ | async"
   mat-align-tabs="center"
+  animationDuration="0ms"
   (selectedIndexChange)="setActiveTab($event)"
 >
   <mat-tab [disabled]="this.formMode == 'edit'" label="Karteikarten">
@@ -8,13 +9,13 @@
       <app-carousel></app-carousel>
     </div>
   </mat-tab>
-  <mat-tab [label]="formMode === 'edit' ? 'Bearbeiten' : 'Hinzufügen'"
+  <mat-tab *ngIf="authorized$ | async" [label]="formMode === 'edit' ? 'Bearbeiten' : 'Hinzufügen'"
     ><div class="container py-1">
       <app-form></app-form></div
   ></mat-tab>
   <mat-tab [disabled]="this.formMode == 'edit'" label="Übersicht">
-    <h3 class="text-center mt-2" *ngIf="lecture$ | async as lecture">
-      {{ lecture.name }}
-    </h3>
+    <ng-template matTabContent>
+      <app-lecture-overview></app-lecture-overview>
+    </ng-template>
   </mat-tab>
 </mat-tab-group>

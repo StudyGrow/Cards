@@ -1,0 +1,28 @@
+<div class="container mt-2">
+  <h3 class="text-center" *ngIf="lecture$ | async as lecture">
+    {{ lecture.name }}
+  </h3>
+  <google-chart
+    class="fade-in"
+    *ngIf="activities$ | async as activities"
+    [title]="'Beiträge über Zeit'"
+    [type]="'LineChart'"
+    [data]="activities"
+    [columns]="['Date', 'Cards']"
+    [options]="chartOptions"
+    [dynamicResize]="true"
+  >
+  </google-chart>
+
+  <google-chart
+    class="fade-in"
+    *ngIf="contributors$ | async as contributors"
+    [title]="'Top Authoren'"
+    [type]="'PieChart'"
+    [data]="contributors"
+    [columns]="['Author', 'Cards']"
+    [options]="chartOptions"
+    [dynamicResize]="true"
+  >
+  </google-chart>
+</div>

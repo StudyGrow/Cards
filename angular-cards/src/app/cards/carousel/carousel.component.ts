@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, OnDestroy, HostListener } from '@angular/
 import { Card } from '../../models/Card';
 
 import { Subscription, Observable, combineLatest, BehaviorSubject } from 'rxjs';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { fadeInOnEnterAnimation, shakeAnimation, fadeOutOnLeaveAnimation } from 'angular-animations';
 import { Store } from '@ngrx/store';
 
@@ -26,7 +26,7 @@ import { MatBottomSheet, MatBottomSheetRef } from '@angular/material/bottom-shee
 import { Vote } from 'src/app/models/Vote';
 import { sortOptions } from './sortOptions';
 import { SortType } from 'src/app/models/SortType';
-import { AllCards, DisplayedCards, UserId } from 'src/app/store/selector';
+import { AllCards, CardsSorted, DisplayedCards, UserId } from 'src/app/store/selector';
 import { logging } from 'protractor';
 
 @Component({
@@ -204,7 +204,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
     });
 
     this.subscriptions$.push(sub);
-    sub = this.store.pipe(map(AllCards)).subscribe((cards) => {
+    sub = this.store.pipe(map(CardsSorted)).subscribe((cards) => {
       this.allCards = cards;
     });
 
