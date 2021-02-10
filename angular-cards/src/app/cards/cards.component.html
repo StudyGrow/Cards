@@ -1,6 +1,7 @@
 <mat-tab-group
   [selectedIndex]="selectedTab$ | async"
   mat-align-tabs="center"
+  animationDuration="0ms"
   (selectedIndexChange)="setActiveTab($event)"
 >
   <mat-tab [disabled]="this.formMode == 'edit'" label="Karteikarten">
@@ -13,6 +14,8 @@
       <app-form></app-form></div
   ></mat-tab>
   <mat-tab [disabled]="this.formMode == 'edit'" label="Übersicht">
-    <app-lecture-overview *ngIf="(selectedTab$ | async) == 2"></app-lecture-overview>
+    <ng-template matTabContent>
+      <app-lecture-overview></app-lecture-overview>
+    </ng-template>
   </mat-tab>
 </mat-tab-group>
