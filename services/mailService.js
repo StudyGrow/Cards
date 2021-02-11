@@ -1,11 +1,11 @@
 const User = require("../models/User");
 var Mailgun = require('mailgun-js');
 
-var api_key = 'bdb7750e4d509571cd3284474ac59dfe-f45b080f-59d33dcd';   
+var api_key = '31bfcdeb258dbfcdc5156d4df1704448-4de08e90-442bc7da';   
 //Your domain, from the Mailgun Control Panel
-var domain = 'rwth-aachen.tk';    
+var domain = 'studydrive.me';    
 //Your sending email address
-var from_who = 'mail@rwth-aachen.tk';
+var from_who = 'info@studydrive.me';
 var host = 'api.eu.mailgun.net'
 var mailgun =  Mailgun({apiKey: api_key, domain: domain, host: host});
 
