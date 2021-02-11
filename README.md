@@ -1,6 +1,6 @@
 # Cards Project
 
-This project provides the code for frontend and backend of our cards website currently hosted on https://rwth-aachen.tk/
+This project provides the code for frontend and backend of our cards website currently hosted on https://studydrive.me/
 
 ## Getting Started
 
