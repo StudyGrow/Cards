@@ -9,7 +9,7 @@ import { MatSlideToggle } from '@angular/material/slide-toggle';
 import { Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
-import { map, startWith, withLatestFrom } from 'rxjs/operators';
+import { distinctUntilChanged, map, startWith, withLatestFrom } from 'rxjs/operators';
 import { DialogueComponent } from 'src/app/components/dialogue/dialogue.component';
 import { Card } from 'src/app/models/Card';
 import { WarnMessage } from 'src/app/models/Notification';
@@ -39,14 +39,13 @@ class CardFormData {
 export class FormComponent implements OnInit, OnDestroy {
   private mode$: Observable<Mode> = this.store.select('mode');
 
-  @ViewChild('latex') toggle: MatSlideToggle;
+  @ViewChild('latex') toggleRef: MatSlideToggle;
 
   @Input() neu: boolean = false; //true if we are adding a card for a new lecture
 
   //Form
   form: FormGroup;
   formMode$: Observable<string>;
-  formMode: string; //variable which holds the old formode
 
   //Card data
   lecture: Vorlesung;
@@ -123,30 +122,13 @@ export class FormComponent implements OnInit, OnDestroy {
       map(([input, tags]) => this._filter(tags, input)), //filter tags with input
       map((list) => (list ? [...list].sort() : list))
     );
-    //current Tab
-    let tab$ = this.mode$.pipe(map((state: Mode) => state.currTab));
 
-    sub = this.store
-      .select(CurrentCard)
-      .pipe(
-        //create new global state interface
-
-        withLatestFrom(this.formMode$),
-        withLatestFrom(tab$)
-      )
-      .subscribe(([[card, mode], tab]) => {
-        if (card) {
-          this.cardCopy = { ...this.cardCopy, ...card }; //overwrite cardCopy
-        }
-        if (tab === 0 && this.toggle) {
-          //set the toggle to the right state
-          if (!this.toggle.checked && mode === 'edit' && card?.latex === 1) {
-            this.toggle.toggle();
-          } else if (this.toggle.checked && mode === 'add') {
-            this.toggle.toggle();
-          }
-        }
-      });
+    let currentCard$ = this.store.select(CurrentCard);
+    sub = currentCard$.subscribe((card) => {
+      if (card) {
+        this.cardCopy = { ...this.cardCopy, ...card }; //overwrite cardCopy
+      }
+    });
     this.subscriptions$.push(sub);
 
     sub = this.store.select(CurrentLecture).subscribe((lect) => {
@@ -156,19 +138,23 @@ export class FormComponent implements OnInit, OnDestroy {
     });
     this.subscriptions$.push(sub);
 
-    sub = this.formMode$.subscribe((mode) => {
-      if (this.formMode !== mode) {
-        //formmode has changed
-        this.formMode = mode;
-        if (mode == 'edit') {
-          setTimeout(() => {
-            this.form.reset({ ...this.cardCopy }); //overwrite form with content of the card
+    sub = this.formMode$.pipe(distinctUntilChanged(), withLatestFrom(currentCard$)).subscribe(([mode, card]) => {
+      if (mode == 'edit') {
+        setTimeout(() => {
+          this.form.reset({ ...this.cardCopy }); //overwrite form with content of the card
 
-            this.selectedTags = this.cardCopy?.tags //load the selecteed tags for the current card
-              ? [...this.cardCopy.tags]
-              : [];
-          }, 200);
-        } else this.resetForm(); //clear data from form when mode is "add"
+          this.selectedTags = this.cardCopy?.tags //load the selecteed tags for the current card
+            ? [...this.cardCopy.tags]
+            : [];
+        }, 200);
+        if (this.toggleRef?.checked === false && card?.latex === 1) {
+          this.toggleRef.toggle();
+        }
+      } else {
+        this.resetForm(); //clear data from form when mode is "add"
+        if (this.toggleRef?.checked) {
+          this.toggleRef.toggle();
+        }
       }
     });
     this.subscriptions$.push(sub);
@@ -182,14 +168,14 @@ export class FormComponent implements OnInit, OnDestroy {
     }
   }
 
-  submitForm() {
+  submitForm(formMode: string) {
     let uinput = this.form.value.tag?.trim();
     if (uinput && !this.selectedTags.includes(uinput)) {
       this.selectedTags.push(uinput); //add last user input in case user forgot to add chip
     }
     let latexState: number;
 
-    if (this.toggle.checked) {
+    if (this.toggleRef.checked) {
       try {
         this.generator = new HtmlGenerator({ hyphenate: false });
         let doc = parse(this.form.value.content, {
@@ -207,7 +193,7 @@ export class FormComponent implements OnInit, OnDestroy {
       latexState = 0;
     }
 
-    if (this.formMode === 'add') {
+    if (formMode === 'add') {
       //Create Card from form
       let card = new Card(
         this.form.value.thema,
@@ -218,7 +204,7 @@ export class FormComponent implements OnInit, OnDestroy {
       card.latex = latexState;
 
       this.addCard(card);
-    } else if (this.formMode === 'edit') {
+    } else if (formMode === 'edit') {
       this.updateCard(this.form.value.thema, this.form.value.content, this.selectedTags, latexState);
     }
   }
