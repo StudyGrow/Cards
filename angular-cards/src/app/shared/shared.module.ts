@@ -35,7 +35,7 @@ import { getGermanPaginatorIntl } from '../profile/cards-overview/paginator.opti
 import { MatDividerModule } from '@angular/material/divider';
 import { GoogleChartsModule } from 'angular-google-charts';
 @NgModule({
-  imports: [],
+  imports: [MatDialogModule, MatButtonModule],
   declarations: [SafeHtmlPipe, DialogueComponent],
   providers: [DatePipe, AsyncPipe, { provide: MatPaginatorIntl, useValue: getGermanPaginatorIntl() }],
   exports: [
