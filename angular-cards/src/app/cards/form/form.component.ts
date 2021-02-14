@@ -50,7 +50,7 @@ export class FormComponent implements OnInit, OnDestroy {
   //Card data
   lecture: Vorlesung;
   author: User;
-  cardCopy: Card = new Card('', '');
+  cardCopy: Card = new Card('', ''); //Stores a copy of the current card. If we update the card, we use this copy and only overwrite some fields  (thema content tags latex)
   //Tags that were selected
   selectedTags = [];
 
@@ -95,11 +95,16 @@ export class FormComponent implements OnInit, OnDestroy {
   }
   ngOnInit(): void {
     this.form = this.createFormGroup();
+    let currentCard$ = this.store.select(CurrentCard);
+    //input from tagfield
+    let tagInput$ = this.form.valueChanges.pipe(map((val: CardFormData) => val.tag));
+    let allTags$ = this.store.select(AllTags); //get all tags for the lecture
 
     let sub: Subscription;
 
     sub = this.store
       .select(user) //get user
+      .pipe(distinctUntilChanged((old, current) => old._id === current._id))
       .subscribe((user) => {
         if (user && this.author !== user) {
           this.author = user;
@@ -110,51 +115,23 @@ export class FormComponent implements OnInit, OnDestroy {
     //FormMode
     this.formMode$ = this.store.select(FormMode);
 
-    //input from tagfield
-    let tagInput$ = this.form.valueChanges.pipe(map((val: CardFormData) => val.tag));
-
-    let allTags$ = this.store.select(AllTags); //get all tags
-
     //suggestions for autocomplete
     this.tagsSuggestions$ = tagInput$.pipe(
       startWith(''), //show all suggestions if input is null
-      withLatestFrom(allTags$),
+      withLatestFrom(allTags$), //holds all available tags
       map(([input, tags]) => this._filter(tags, input)), //filter tags with input
-      map((list) => (list ? [...list].sort() : list))
+      map((list) => (list ? [...list].sort() : list)) //sort tags
     );
 
-    let currentCard$ = this.store.select(CurrentCard);
-    sub = currentCard$.subscribe((card) => {
-      if (card) {
-        this.cardCopy = { ...this.cardCopy, ...card }; //overwrite cardCopy
-      }
-    });
-    this.subscriptions$.push(sub);
-
     sub = this.store.select(CurrentLecture).subscribe((lect) => {
-      if (lect) {
-        this.lecture = lect;
-      }
+      this.lecture = lect;
     });
     this.subscriptions$.push(sub);
 
     sub = this.formMode$.pipe(distinctUntilChanged(), withLatestFrom(currentCard$)).subscribe(([mode, card]) => {
-      if (mode == 'edit') {
-        setTimeout(() => {
-          this.form.reset({ ...this.cardCopy }); //overwrite form with content of the card
-
-          this.selectedTags = this.cardCopy?.tags //load the selecteed tags for the current card
-            ? [...this.cardCopy.tags]
-            : [];
-        }, 200);
-        if (this.toggleRef?.checked === false && card?.latex === 1) {
-          this.toggleRef.toggle();
-        }
-      } else {
-        this.resetForm(); //clear data from form when mode is "add"
-        if (this.toggleRef?.checked) {
-          this.toggleRef.toggle();
-        }
+      if (card) {
+        this.cardCopy = { ...card };
+        this.loadForm(mode, card);
       }
     });
     this.subscriptions$.push(sub);
@@ -165,6 +142,36 @@ export class FormComponent implements OnInit, OnDestroy {
         this.router.navigateByUrl(`vorlesung/${JSON.parse(localStorage.getItem('vl')).abrv}`)
       );
       this.subscriptions$.push(sub);
+    }
+  }
+  /**
+   * load the initial state of the form. If we are in add mode the form will be empty. If we are in edit mode it will be filled with the current card
+   * @param mode mode of the form
+   * @param card the current card
+   */
+  private loadForm(mode: string, card: Card) {
+    if (!card) return;
+
+    switch (mode) {
+      case 'edit':
+        if (card.latex === 1) {
+          this.cardCopy.content = card.content.replace(/\\\\ /g, '\n');
+          if (this.toggleRef?.checked === false) {
+            this.toggleRef.toggle();
+          }
+        }
+        this.form.reset({ ...this.cardCopy }); //overwrite form with content of the card
+        this.selectedTags = this.cardCopy?.tags //load the selecteed tags for the current card
+          ? [...this.cardCopy.tags]
+          : [];
+        break;
+
+      case 'add':
+        this.resetForm(); //clear data from form when mode is "add"
+        if (this.toggleRef?.checked) {
+          this.toggleRef.toggle();
+        }
+        break;
     }
   }
 
@@ -184,7 +191,11 @@ export class FormComponent implements OnInit, OnDestroy {
         doc.htmlDocument().body;
       } catch (e) {
         console.log(e);
-        this.notifs.addNotification(new WarnMessage('Der Latex content ist nicht korrekt mit $ umhüllt'));
+        this.notifs.addNotification(
+          new WarnMessage(
+            'Der Latex content ist nicht formattiert. Überprüfe ob der content korrekt von $ umhüllt ist '
+          )
+        );
         return;
       }
 
@@ -192,20 +203,25 @@ export class FormComponent implements OnInit, OnDestroy {
     } else {
       latexState = 0;
     }
+    let content = latexState === 1 ? this.form.value.content.replace(/\n/g, '\\\\ ') : this.form.value.content;
 
     if (formMode === 'add') {
       //Create Card from form
-      let card = new Card(
-        this.form.value.thema,
-        this.form.value.content,
-        this.selectedTags,
-        this.neu ? JSON.parse(localStorage.getItem('vl')).abrv : this.lecture.abrv
-      );
+      if (this.neu && !this.lecture) {
+        this.lecture = JSON.parse(localStorage.getItem('vl')).abrv;
+        if (!this.lecture) {
+          console.error('Vorlesung nicht definiert');
+          this.notifs.addNotification(new WarnMessage('Ein Fehler ist aufgetreten. Versuche es später erneut'));
+          return;
+        }
+      }
+
+      let card = new Card(this.form.value.thema, content, this.selectedTags, this.lecture.abrv);
       card.latex = latexState;
 
       this.addCard(card);
     } else if (formMode === 'edit') {
-      this.updateCard(this.form.value.thema, this.form.value.content, this.selectedTags, latexState);
+      this.updateCard(this.form.value.thema, content, this.selectedTags, latexState);
     }
   }
 
@@ -258,8 +274,8 @@ export class FormComponent implements OnInit, OnDestroy {
   resetNav() {
     this.store.dispatch(setTypingMode({ typing: false }));
   }
-  resetForm() {
-    this.selectedTags = [];
+  private resetForm() {
+    this.selectedTags = [...this.selectedTags];
     this.form.reset();
     Object.keys(this.form.controls).forEach((key) => {
       this.form.get(key).setErrors(null);
@@ -284,7 +300,7 @@ export class FormComponent implements OnInit, OnDestroy {
   addChip(event: MatChipInputEvent): void {
     let newTag = event.value;
     if (!this.selectedTags.includes(newTag)) this.selectedTags.push(newTag);
-    event.input.value = ''; //reset field
+    this.tagRef.reset(''); //TODO: fix this if adding a tag the input string should be cleared
   }
   onSelectOption(event: MatAutocompleteSelectedEvent) {
     let newTag = event.option.viewValue;
