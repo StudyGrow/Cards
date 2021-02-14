@@ -37,10 +37,7 @@ class CardFormData {
   styleUrls: ['./form.component.css'],
 })
 export class FormComponent implements OnInit, OnDestroy {
-  private mode$: Observable<Mode> = this.store.select('mode');
-
   @ViewChild('latex') toggleRef: MatSlideToggle;
-
   @Input() neu: boolean = false; //true if we are adding a card for a new lecture
 
   //Form
@@ -48,13 +45,13 @@ export class FormComponent implements OnInit, OnDestroy {
   formMode$: Observable<string>;
 
   //Card data
-  lecture: Vorlesung;
-  author: User;
-  cardCopy: Card = new Card('', ''); //Stores a copy of the current card. If we update the card, we use this copy and only overwrite some fields  (thema content tags latex)
+  private lecture: Vorlesung;
+  private author: User;
+  private cardCopy: Card = new Card('', ''); //Stores a copy of the current card. If we update the card, we use this copy and only overwrite some fields  (thema content tags latex)
   //Tags that were selected
   selectedTags = [];
 
-  generator: HtmlGenerator;
+  private generator: HtmlGenerator;
 
   //Autocomplete
   separatorKeysCodes: number[] = [ENTER];
@@ -62,8 +59,8 @@ export class FormComponent implements OnInit, OnDestroy {
   //List of available Tags displayed as suggestions with autocomplete
   tagsSuggestions$: Observable<string[]>;
 
-  tagRef: FormControl;
-  subscriptions$: Subscription[] = [];
+  private tagRef: FormControl;
+  private subscriptions$: Subscription[] = [];
 
   constructor(
     public dialog: MatDialog,
@@ -73,21 +70,6 @@ export class FormComponent implements OnInit, OnDestroy {
     private notifs: NotificationsService
   ) {}
 
-  createFormGroup(...args: string[]) {
-    this.tagRef = new FormControl('');
-    if (!args || args.length !== 3)
-      return new FormGroup({
-        thema: new FormControl(''),
-        content: new FormControl(''),
-        tag: this.tagRef,
-      });
-
-    return new FormGroup({
-      thema: new FormControl(args[0]),
-      content: new FormControl(args[1]),
-      tag: new FormControl(args[2]),
-    });
-  }
   ngOnDestroy() {
     this.subscriptions$.forEach((sub) => {
       sub.unsubscribe();
@@ -145,13 +127,24 @@ export class FormComponent implements OnInit, OnDestroy {
     }
   }
   /**
+   * Initialiizes the form group
+   */
+  createFormGroup() {
+    this.tagRef = new FormControl('');
+    return new FormGroup({
+      thema: new FormControl(''),
+      content: new FormControl(''),
+      tag: this.tagRef,
+    });
+  }
+
+  /**
    * load the initial state of the form. If we are in add mode the form will be empty. If we are in edit mode it will be filled with the current card
    * @param mode mode of the form
    * @param card the current card
    */
   private loadForm(mode: string, card: Card) {
     if (!card) return;
-
     switch (mode) {
       case 'edit':
         if (card.latex === 1) {
@@ -177,12 +170,13 @@ export class FormComponent implements OnInit, OnDestroy {
 
   submitForm(formMode: string) {
     let uinput = this.form.value.tag?.trim();
-    if (uinput && !this.selectedTags.includes(uinput)) {
+    if (uinput?.length > 0 && !this.selectedTags.includes(uinput)) {
       this.selectedTags.push(uinput); //add last user input in case user forgot to add chip
     }
     let latexState: number;
 
     if (this.toggleRef.checked) {
+      //check if the content can be parsed
       try {
         this.generator = new HtmlGenerator({ hyphenate: false });
         let doc = parse(this.form.value.content, {
@@ -198,11 +192,11 @@ export class FormComponent implements OnInit, OnDestroy {
         );
         return;
       }
-
       latexState = 1;
     } else {
       latexState = 0;
     }
+    //replaces the characters for newline for latex
     let content = latexState === 1 ? this.form.value.content.replace(/\n/g, '\\\\ ') : this.form.value.content;
 
     if (formMode === 'add') {
@@ -218,7 +212,6 @@ export class FormComponent implements OnInit, OnDestroy {
 
       let card = new Card(this.form.value.thema, content, this.selectedTags, this.lecture.abrv);
       card.latex = latexState;
-
       this.addCard(card);
     } else if (formMode === 'edit') {
       this.updateCard(this.form.value.thema, content, this.selectedTags, latexState);
@@ -282,13 +275,18 @@ export class FormComponent implements OnInit, OnDestroy {
     });
   }
 
-  isDisabled(content, thema) {
+  /**
+   * Checks wether the submit button should be disabled
+   * @param content
+   * @param thema
+   */
+  isDisabled(content: FormControl, thema: FormControl) {
     if (!content.value || !thema.value) {
       return true;
     }
-
     return thema.value.trim().length < 3 || thema.value.trim().length > 500 || content.value.trim().length > 1000;
   }
+
   removeChip(tag: string): void {
     const index = this.selectedTags.indexOf(tag);
 
