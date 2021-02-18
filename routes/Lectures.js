@@ -75,11 +75,11 @@ router.post(
       res.status(422).json({ errors: errors.array });
       return;
     }
-    req.services.lectures.addLecture(req.body.lecture, (err) => {
+    req.services.lectures.addLecture(req.body.lecture, (err, lecture) => {
       if (err) {
         res.status(501).send(err.message);
       } else {
-        res.status(200).send();
+        res.json(lecture);
       }
     });
   }

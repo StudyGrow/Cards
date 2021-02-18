@@ -36,10 +36,10 @@ module.exports = function vlService() {
       vl.name = lecture.name.trim();
       vl.abrv = lecture.abrv.trim().toLowerCase();
 
-      await vl.save();
-      callback(null);
+      var savedLecture = await vl.save();
+      callback(null, savedLecture);
     } catch (error) {
-      callback(error);
+      callback(error, null);
     }
   };
   return vlService;
