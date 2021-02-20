@@ -26,7 +26,7 @@ import { MatBottomSheet, MatBottomSheetRef } from '@angular/material/bottom-shee
 import { Vote } from 'src/app/models/Vote';
 import { sortOptions } from './sortOptions';
 import { SortType } from 'src/app/models/SortType';
-import { AllCards, CardsSorted, DisplayedCards, UserId } from 'src/app/store/selector';
+import { AllCards, authorized, CardsSorted, CardsSortedAndFiltered, DisplayedCards, UserId } from 'src/app/store/selector';
 import { logging } from 'protractor';
 
 @Component({
@@ -85,6 +85,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
 
   formMode: string; // mode in which the form is displayed either add or edit
   notallowed: boolean = false; //wether an action is allowed or not
+  authorized$ = this.store.select(authorized);
 
   // prevSlide = 0; //holds the slide which is currently shown
 
@@ -168,7 +169,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
     );
 
     //observable which holds the final cards which should be displayed in the carousel (filtered and sorted)
-    this.cardsData$ = combineLatest([this.store.select(DisplayedCards), lastChanges$, this.start$, this.end$]).pipe(
+    this.cardsData$ = combineLatest([this.store.select(CardsSortedAndFiltered), lastChanges$, this.start$, this.end$]).pipe(
       debounceTime(5)
     );
     sub = this.cardsData$.subscribe(([cards, date, start, end]) => {
@@ -229,7 +230,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
     // this.prevSlide = Number.parseInt(slideEvent.prev);
     this.activeSlide = Number.parseInt(slideEvent.current);
     if (this.cards) {
-      this.store.dispatch(setActiveCardIndex({ index: this.activeSlide }));
+      // this.store.dispatch(setActiveCardIndex({ index: this.activeSlide }));
     }
   }
 
@@ -246,12 +247,12 @@ export class CarouselComponent implements OnInit, OnDestroy {
   //select the previous slide
   goToPrev() {
     if (this.carousel && this.cards && this.cardCount > 1 && this.formMode != 'edit') {
-      this.store.dispatch(
-        adjustIndeces({
-          allCards: this.allCards,
-          newIndex: this.activeSlide - 1,
-        })
-      );
+      // this.store.dispatch(
+      //   adjustIndeces({
+      //     allCards: this.allCards,
+      //     newIndex: this.activeSlide - 1,
+      //   })
+      // );
 
       this.carousel.prev();
     } else {
@@ -261,12 +262,12 @@ export class CarouselComponent implements OnInit, OnDestroy {
   //select the next slide
   goToNext() {
     if (this.carousel && this.cards && this.cardCount > 1 && this.formMode != 'edit') {
-      this.store.dispatch(
-        adjustIndeces({
-          allCards: this.allCards,
-          newIndex: this.activeSlide + 1,
-        })
-      );
+      // this.store.dispatch(
+      //   adjustIndeces({
+      //     allCards: this.allCards,
+      //     newIndex: this.activeSlide + 1,
+      //   })
+      // );
 
       this.carousel.next();
     } else {
@@ -331,7 +332,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
               this.selectSlide(index); //select new slide
             } else {
               this.activeSlide = index;
-              this.store.dispatch(setActiveCardIndex({ index: index }));
+              // this.store.dispatch(setActiveCardIndex({ index: index }));
             }
           }
         }

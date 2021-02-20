@@ -161,7 +161,6 @@ router.post(
           if (err) {
             res.status(500).send(err.message);
           } else {
-            console.log(card);
             res.json(card);
           }
         }
