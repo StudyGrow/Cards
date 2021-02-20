@@ -22,47 +22,18 @@ export const initialState: Mode = {
   sortType: SortType.DATE_ASC,
   startIndex: 0,
   endIndex: pageSize,
+  newCard:undefined
 };
 
 //Reducer which will dispatch changes to the store
 const _modeReducer = createReducer(
   initialState,
-  on(StateActions.adjustIndeces, (state, { allCards, newIndex }) => {
-    newIndex = newIndex + state.startIndex; //actual position of newIndex considering all cards
-    let actualIndex = state.startIndex + state.activeIndex; // actual index considering all cards
-
-    if (
-      (newIndex >= state.startIndex && newIndex < state.endIndex) || //in current range
-      newIndex < 0 || //no cards on the left
-      newIndex >= allCards.length //no cards on the right
-    )
-      return state;
-    if (newIndex < state.startIndex) {
-      let newStart = state.startIndex - pageSize > 0 ? state.startIndex - pageSize : 0;
-      let newEnd = state.startIndex;
-      return {
-        ...state,
-        startIndex: newStart,
-        endIndex: newEnd,
-        // currentCard: allCards[newIndex],
-        activeIndex: newIndex - newStart, //relative position
-        cardsChanged: new Date(), //semantically incorrect but gets the desired result, which is refresh carousel
-      };
-    }
-    if (newIndex >= state.endIndex) {
-      let newStart = newIndex;
-      let newEnd = state.endIndex + pageSize < allCards.length ? state.endIndex + pageSize : allCards.length;
-      return {
-        ...state,
-        startIndex: newStart,
-        endIndex: newEnd,
-        // currentCard: allCards[newIndex],
-        activeIndex: newIndex - newStart, //relative index
-        cardsChanged: new Date(),
-      };
-    }
-    return state;
-  }),
+  on(StateActions.updateCarouselInfo, (state,{info}) => 
+     ({...state, currentCard:info.currentCard, activeIndex:info.currentIndex,endIndex:info.end, startIndex:info.start})
+  ),
+  on(StateActions.showNewCard, (state,{card}) => ({
+    ...state, newCard:card
+  })),
   on(StateActions.changeTheme, (state, { theme }) =>
     theme === state.theme
       ? state
@@ -83,31 +54,31 @@ const _modeReducer = createReducer(
         }
   ),
 
-  on(StateActions.setActiveCardIndex, (state, { index }) =>
-    index === state.activeIndex
-      ? state
-      : {
-          ...state,
-          activeIndex: index,
-        }
-  ),
-  on(StateActions.setActiveCardSuccess, (state, { card }) =>
-    card
-      ? {
-          ...state,
-          currentCard: card,
-        }
-      : state
-  ),
-  on(StateActions.goNext, (state) => ({
-    ...state,
-    activeIndex: state.activeIndex + 1,
-  })),
+  // on(StateActions.setActiveCardIndex, (state, { index }) =>
+  //   index === state.activeIndex
+  //     ? state
+  //     : {
+  //         ...state,
+  //         activeIndex: index,
+  //       }
+  // ),
+  // on(StateActions.setActiveCardSuccess, (state, { card }) =>
+  //   card
+  //     ? {
+  //         ...state,
+  //         currentCard: card,
+  //       }
+  //     : state
+  // ),
+  // on(StateActions.goNext, (state) => ({
+  //   ...state,
+  //   activeIndex: state.activeIndex + 1,
+  // })),
 
-  on(StateActions.goNext, (state) => ({
-    ...state,
-    activeIndex: state.activeIndex - 1,
-  })),
+  // on(StateActions.goNext, (state) => ({
+  //   ...state,
+  //   activeIndex: state.activeIndex - 1,
+  // })),
 
   on(StateActions.setTypingMode, (state, { typing }) =>
     typing === state.typingMode

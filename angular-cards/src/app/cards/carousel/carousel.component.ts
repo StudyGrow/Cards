@@ -6,16 +6,18 @@ import { ActivatedRoute } from '@angular/router';
 import { fadeInOnEnterAnimation, shakeAnimation, fadeOutOnLeaveAnimation } from 'angular-animations';
 import { Store } from '@ngrx/store';
 
-import {
-  setFormMode,
-  changeTab,
-  setActiveCardIndex,
-  setActiveCard,
-  changeSorting,
-  adjustIndeces,
-} from 'src/app/store/actions/StateActions';
+import { setFormMode, changeTab, changeSorting, updateCarouselInfo } from 'src/app/store/actions/StateActions';
 
-import { debounceTime, delay, distinctUntilChanged, first, map, take } from 'rxjs/operators';
+import {
+  debounceTime,
+  delay,
+  distinctUntilChanged,
+  distinctUntilKeyChanged,
+  first,
+  map,
+  take,
+  withLatestFrom,
+} from 'rxjs/operators';
 
 import { NgbCarousel, NgbSlideEvent } from '@ng-bootstrap/ng-bootstrap';
 import { NotificationsService } from 'src/app/services/notifications.service';
@@ -23,11 +25,19 @@ import { WarnMessage } from 'src/app/models/Notification';
 import { AppState, Data, Mode } from 'src/app/models/state';
 
 import { MatBottomSheet, MatBottomSheetRef } from '@angular/material/bottom-sheet';
-import { Vote } from 'src/app/models/Vote';
 import { sortOptions } from './sortOptions';
 import { SortType } from 'src/app/models/SortType';
-import { AllCards, authorized, CardsSorted, CardsSortedAndFiltered, DisplayedCards, UserId } from 'src/app/store/selector';
-import { logging } from 'protractor';
+import {
+  AllCards,
+  authorized,
+  CardsSorted,
+  CardsSortedAndFiltered,
+  CardToShow,
+  DisplayedCards,
+  UserId,
+} from 'src/app/store/selector';
+import { CarouselInfo } from 'src/app/models/CarouselInfo';
+import { D, Y } from '@angular/cdk/keycodes';
 
 @Component({
   selector: 'app-bottom-sheet',
@@ -67,17 +77,20 @@ export class CarouselComponent implements OnInit, OnDestroy {
   private uid: string; //user id
 
   allCards: Card[];
+  readonly carouselInfo$ = new BehaviorSubject<CarouselInfo>(new CarouselInfo());
 
   loading: boolean;
 
-  public cardsData$: Observable<[Card[], number, number, number]>;
+  public cardsData$: Observable<[Card[], number]>;
+  newCardToSet$ = this.store.select(CardToShow);
   filters$: Observable<string[]> = this.mode$.pipe(map((mode) => mode.tags));
   filters: string[];
-  cards: Card[]; //array of all the cards
+  cards: Card[]; //array of all the allCards
+  cardsToShowInCarousel: Card[];
   cardCount = 0; //counts the cards that are displayed in the carousel
   lastRefresh: number; // holds the timestamp at which the carousel was last updated
   activeSlide = 0; //holds the slide which is currently shown
-
+  chunkSize = 3;
   start$ = this.mode$.pipe(map((mode) => mode.startIndex));
   start: number;
   end: number;
@@ -169,30 +182,18 @@ export class CarouselComponent implements OnInit, OnDestroy {
     );
 
     //observable which holds the final cards which should be displayed in the carousel (filtered and sorted)
-    this.cardsData$ = combineLatest([this.store.select(CardsSortedAndFiltered), lastChanges$, this.start$, this.end$]).pipe(
-      debounceTime(5)
-    );
-    sub = this.cardsData$.subscribe(([cards, date, start, end]) => {
+    this.cardsData$ = combineLatest([this.store.select(CardsSortedAndFiltered), lastChanges$]).pipe(debounceTime(5));
+    sub = this.cardsData$.subscribe(([cards, date]) => {
+      console.log('LLOOOAADD');
       if (cards?.length > 0 && (!this.lastRefresh || this.lastRefresh < date)) {
         //cards have changed
         this.lastRefresh = date; //update the last refresh time
         this.cardCount = cards?.length;
 
-        this.cards = null; //set null to explicitely refresh carousel view
+        // this.cards = null; //set null to explicitely refresh carousel view
         //cards have changed
         this.lastRefresh = new Date().getTime(); //update the last refresh time
         this.cardCount = cards?.length;
-        if (!this.start || this.start < start) {
-          //got a bigger pageslice
-          this.start = start;
-          this.end = end;
-          this.activeSlide = 0; //set activeSlide to the first index in the new pageSlice
-        } else if (this.start > start) {
-          //got a smaller pageslice
-          this.start = start;
-          this.end = end;
-          this.activeSlide = this.cardCount - 1; //set the activeSlide to the last index of the new pageSlice
-        }
 
         // this.activeSlide = 0; reset the active index to the first card
 
@@ -200,6 +201,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
 
         setTimeout(() => {
           this.cards = [...cards];
+          this.cardsToShowInCarousel = [...cards];
         }, 150);
       }
     });
@@ -210,27 +212,64 @@ export class CarouselComponent implements OnInit, OnDestroy {
     });
 
     this.subscriptions$.push(sub);
-    //handles new slide indexes received from other components
-    sub = this.mode$
-      .pipe(
-        // delay(180),
-        map((state) => state.currentCard),
-        // distinctUntilChanged((prev, curr) => prev?._id === curr?._id)
 
-        debounceTime(10)
-      )
-      .subscribe((newCard) => {
-        this.handleNewCard(newCard); //adjust the index to show the new card
-      });
+    sub = this.carouselInfo$.pipe(distinctUntilKeyChanged('updateAt')).subscribe((newState: CarouselInfo) => {
+      this.store.dispatch(updateCarouselInfo({ info: newState }));
+    });
+    let allCards$ = this.store.select(CardsSortedAndFiltered);
+    this.subscriptions$.push(sub);
+    sub = this.newCardToSet$
+      .pipe(withLatestFrom(allCards$))
+      .subscribe(([card, allCards]) => this.handleNewCard(card, allCards));
     this.subscriptions$.push(sub);
   }
 
   //this function updates the current slide index in the store and for the component
   onSlide(slideEvent: NgbSlideEvent) {
-    // this.prevSlide = Number.parseInt(slideEvent.prev);
-    this.activeSlide = Number.parseInt(slideEvent.current);
-    if (this.cards) {
-      // this.store.dispatch(setActiveCardIndex({ index: this.activeSlide }));
+    const currSlideIndex: number = Number.parseInt(slideEvent.current);
+    const prevState = this.carouselInfo$.getValue();
+    console.log(prevState);
+    this.activeSlide = currSlideIndex;
+    console.log(slideEvent);
+    let temp = this.cards[slideEvent.current];
+    // readonly carouselInfo$ = new BehaviorSubject<{start:number,end:number,currentIndex:number,currentCard:Card}>(undefined);
+    let newState: CarouselInfo = new CarouselInfo();
+    if (!prevState.updateAt) {
+      console.log('UNDEFINED');
+      newState.start = 0;
+      newState.end = 3;
+      newState.currentCard = this.cards[currSlideIndex];
+      newState.currentIndex = currSlideIndex;
+      newState.updateAt = new Date();
+      this.carouselInfo$.next(newState);
+    }
+    // X X X Y
+    //       X X X Y
+    // check if new slice should be loaded by carousel
+    // know current index of card shown, check if next new slice should be used
+    //
+    else {
+      console.log('EEELLLSEE');
+
+      if (currSlideIndex == prevState.end - 1) {
+        newState.start = prevState.end;
+        newState.end = prevState.end + 3;
+        newState.currentCard = this.cards[currSlideIndex];
+        newState.currentIndex = currSlideIndex;
+        newState.updateAt = new Date();
+        this.cards = null; //set null to explicitely refresh carousel view
+        console.log(this.cards);
+        console.log('this.cards');
+        console.log(this.cards);
+        console.log(this.cardsToShowInCarousel)
+        console.log(this.cardsToShowInCarousel.slice(prevState.end, prevState.end + 3))
+        setTimeout(() => {
+          this.cards = this.cardsToShowInCarousel.slice(prevState.end, prevState.end + 3);
+        }, 150);
+        console.log('this.cards');
+        console.log(this.cards);
+        this.carouselInfo$.next(newState);
+      }
     }
   }
 
@@ -297,7 +336,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
 
   enableEdit() {
     if (this.formMode != 'edit') {
-      this.store.dispatch(setActiveCard({ card: this.cards[this.activeSlide] }));
+      // this.store.dispatch(setActiveCard({ card: this.cards[this.activeSlide] }));
       setTimeout(() => {
         this.store.dispatch(setFormMode({ mode: 'edit' }));
         this.store.dispatch(changeTab({ tab: 1 }));
@@ -313,31 +352,39 @@ export class CarouselComponent implements OnInit, OnDestroy {
   }
 
   //this function does some adjustments if the index is out of bounds of card array
-  private handleNewCard(newCard: Card) {
-    if (!newCard?._id) {
-      return;
-    }
-    this.cardsData$
-      .pipe(first((array) => array && array[0] !== undefined)) //array[0] holds cards
-      .toPromise() //wait for cards before changin to be loaded before handling index change
-      .then(([cards]) => {
-        let index = cards?.findIndex((card) => card._id === newCard._id);
-        if (index >= 0 && index < cards.length) {
-          //prevent setting an invalid index
+  private handleNewCard(newCard: Card, cards: Card[]) {
+    if (!newCard?._id) return;
 
-          if (index !== this.activeSlide) {
-            //got a new index
+    const carouselinfo = this.carouselInfo$.getValue();
+    let index = cards?.findIndex((card) => card._id === newCard._id);
+    if (index >= 0 && index < cards.length) {
+      
+      //prevent setting an invalid index
 
-            if (this.cards) {
-              this.selectSlide(index); //select new slide
-            } else {
-              this.activeSlide = index;
-              // this.store.dispatch(setActiveCardIndex({ index: index }));
-            }
-          }
+      if (index !== this.activeSlide) {
+        //got a new index
+        let newState= new CarouselInfo();
+        newState.currentCard = newCard;
+        newState.currentIndex= index;
+if(carouselinfo.start>index||index>= carouselinfo.end){
+//the index is not in the current slice, we need to update the start and end
+
+newState.start=index;
+  newState.end = index+this.chunkSize< cards.length ? index+this.chunkSize  :cards.length-1
+  
+}
+this.carouselInfo$.next(newState);
+
+        if (this.cards) {
+          this.selectSlide(index); //select new slide
+        } else {
+          this.activeSlide = index;
+             
         }
-      });
+      }
+    }
   }
+
   private selectSlide(n: number) {
     if (this.carousel && this.cards && n >= 0 && n < this.cardCount) {
       //only update if n is index inside the cards array

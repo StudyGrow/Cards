@@ -40,6 +40,12 @@ export const VotesForCard = (state: AppState, cardId: string) =>
 export const AllVotes = (state: AppState) => state.data.cardData.votes;
 
 /**
+ * Holds the card which should be shown 
+ */
+export const CardToShow = (state: AppState) => state.mode.newCard;
+
+
+/**
  * Counts all votes for a certain card
  * @param state state of the app
  * @param cardId id of the card for which the votes should be counted

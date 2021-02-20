@@ -50,6 +50,7 @@ export interface Mode {
   sortType: SortType;
   startIndex: number;
   endIndex: number;
+  newCard:Card
 }
 export enum formMode {
   ADD = 'add',
