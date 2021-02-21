@@ -41103,7 +41103,7 @@ n=o.oO$
 n.G(n,new Z.z_(M.atY(!0)))
 n=t.X
 s=3
-return P.J(o.yq("http://localhost:3000/api/login",P.aE(["username",b,"password",a,"remember","","type","[User] login"],n,n),B.Nf(null,null,!1,null,null,null,null,null,null,null,null,null,new R.ZT()),t.z),$async$y5)
+return P.J(o.yq("https://studydrive.me/api/login",P.aE(["username",b,"password",a,"remember","","type","[User] login"],n,n),B.Nf(null,null,!1,null,null,null,null,null,null,null,null,null,new R.ZT()),t.z),$async$y5)
 case 3:m=d
 n=m.d
 P.b0(n)
@@ -41367,7 +41367,7 @@ pR:function(a){return this.Uh(a)},
 Uh:function(a){var s=0,r=P.O(t.Nt),q,p
 var $async$pR=P.E(function(b,c){if(b===1)return P.L(c,r)
 while(true)switch(s){case 0:s=3
-return P.J(U.zb(null).H1(0,C.c.S("http://localhost:3000/api/cards/data?abrv=",a),t.z),$async$pR)
+return P.J(U.zb(null).H1(0,C.c.S("https://studydrive.me/api/cards/data?abrv=",a),t.z),$async$pR)
 case 3:p=c
 if(p.d===200){q=K.a0t(p.a)
 s=1
@@ -41392,7 +41392,7 @@ o.el$.b.q(0,"Cookie",p)
 m=t.X
 l=t.z
 s=8
-return P.J(o.yq("http://localhost:3000/api/cards/new",P.aE(["card",P.aE(["thema",a.r,"content",a.x,"abrv",a.f,"latex",0],m,l)],m,t.lG),B.Nf(null,null,!1,null,null,null,null,null,null,null,null,null,new L.a0w()),l),$async$h9)
+return P.J(o.yq("https://studydrive.me/api/cards/new",P.aE(["card",P.aE(["thema",a.r,"content",a.x,"abrv",a.f,"latex",0],m,l)],m,t.lG),B.Nf(null,null,!1,null,null,null,null,null,null,null,null,null,new L.a0w()),l),$async$h9)
 case 8:n=c
 P.b0(n)
 if(n.d===200){q=a
@@ -41420,7 +41420,7 @@ m=U.zb(null)
 m.el$.b.q(0,"content-Type","application/json")
 m.el$.b.q(0,"Cookie",n)
 s=8
-return P.J(m.yq("http://localhost:3000/api/cards/newMultipleChoiceCard",P.aE(["multipleChoiceCard",a.cS()],t.X,t.lG),B.Nf(null,null,!1,null,null,null,null,null,null,null,null,null,new L.a0x()),t.z),$async$ha)
+return P.J(m.yq("https://studydrive.me/api/cards/newMultipleChoiceCard",P.aE(["multipleChoiceCard",a.cS()],t.X,t.lG),B.Nf(null,null,!1,null,null,null,null,null,null,null,null,null,new L.a0x()),t.z),$async$ha)
 case 8:l=c
 P.b0(l)
 if(l.d===200){q=a
@@ -43353,7 +43353,7 @@ E.u_.prototype={
 ul:function(){var s=0,r=P.O(t.Ea),q,p
 var $async$ul=P.E(function(a,b){if(a===1)return P.L(b,r)
 while(true)switch(s){case 0:s=3
-return P.J(U.zb(null).H1(0,"http://localhost:3000/api/lectures",t.z),$async$ul)
+return P.J(U.zb(null).H1(0,"https://studydrive.me/api/lectures",t.z),$async$ul)
 case 3:p=b
 P.b0(p)
 if(p.d===200){q=U.ayX(p.a)
@@ -43379,7 +43379,7 @@ o.el$.b.q(0,"content-Type","application/json")
 o.el$.b.q(0,"Cookie",p)
 P.b0(a.cS())
 s=8
-return P.J(o.yq("http://localhost:3000/api/lectures/new",P.aE(["lecture",a.cS()],t.X,t.lG),B.Nf(null,null,!1,null,null,null,null,null,null,null,null,null,new E.a7M()),t.z),$async$ny)
+return P.J(o.yq("https://studydrive.me/api/lectures/new",P.aE(["lecture",a.cS()],t.X,t.lG),B.Nf(null,null,!1,null,null,null,null,null,null,null,null,null,new E.a7M()),t.z),$async$ny)
 case 8:n=c
 if(n.d===200){q=U.ayU(n.a)
 s=1
@@ -44228,7 +44228,7 @@ s=4
 break
 case 5:o=t.X
 m=G
-l="http://localhost:3000/api/user/auth"
+l="https://studydrive.me/api/user/auth"
 k=P
 j="Content-Type"
 i="application/json; charset=UTF-8"
@@ -44246,7 +44246,7 @@ return P.N($async$l1,r)},
 DI:function(){var s=0,r=P.O(t.yq),q,p,o
 var $async$DI=P.E(function(a,b){if(a===1)return P.L(b,r)
 while(true)switch(s){case 0:p=M.atY(!0)
-o=P.m5("http://localhost:3000/api/login")
+o=P.m5("https://studydrive.me/api/login")
 p.BS(o)
 if(p.zE(o).length===0){q=!1
 s=1
@@ -44257,7 +44257,7 @@ return P.N($async$DI,r)},
 nn:function(){var s=0,r=P.O(t.X),q,p,o
 var $async$nn=P.E(function(a,b){if(a===1)return P.L(b,r)
 while(true)switch(s){case 0:p=M.atY(!0)
-o=P.m5("http://localhost:3000/api/login")
+o=P.m5("https://studydrive.me/api/login")
 p.BS(o)
 o=p.zE(o)[0]
 q=o.a+("="+o.b)
