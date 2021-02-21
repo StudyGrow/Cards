@@ -229,11 +229,11 @@ export class CarouselComponent implements OnInit, OnDestroy {
 
       if (this.allCards?.length > 0) {
         newState.currentCard = this.allCards[0];
+        newState.currentIndex = newState.start;
       }
 
       this.carouselInfo$.next(newState);
 
-      newState.currentIndex = newState.start;
       newState.updateAt = new Date();
       setTimeout(() => {
         this.cardsToShowInCarousel = this.allCards.slice(newState.start, newState.end);
