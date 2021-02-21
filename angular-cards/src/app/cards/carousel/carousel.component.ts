@@ -235,39 +235,157 @@ export class CarouselComponent implements OnInit, OnDestroy {
     // readonly carouselInfo$ = new BehaviorSubject<{start:number,end:number,currentIndex:number,currentCard:Card}>(undefined);
     let newState: CarouselInfo = new CarouselInfo();
     if (!prevState.updateAt) {
+      if (this.cardsToShowInCarousel.length < 4) {
+        newState.end = this.cardsToShowInCarousel.length;
+      } else {
+        newState.end = 4;
+      }
+      // X X X X Y
       console.log('UNDEFINED');
       newState.start = 0;
-      newState.end = 3;
       newState.currentCard = this.cards[currSlideIndex];
       newState.currentIndex = currSlideIndex;
       newState.updateAt = new Date();
+      this.cards = this.cardsToShowInCarousel.slice(0, 5);
       this.carouselInfo$.next(newState);
+
     }
-    // X X X Y
+    // 0 1 2 3 4
+    // X X X X Y
     //       X X X Y
     // check if new slice should be loaded by carousel
     // know current index of card shown, check if next new slice should be used
     //
     else {
       console.log('EEELLLSEE');
+      console.log(prevState.end);
+      console.log(prevState);
+      console.log(this.cards[currSlideIndex]);
+      console.log(this.cardsToShowInCarousel.slice(prevState.start, prevState.start + 4));
+      console.log(this.cardsToShowInCarousel.indexOf(this.cards[currSlideIndex]));
+      if (this.cardsToShowInCarousel.indexOf(this.cards[currSlideIndex]) == prevState.end) {
+        console.log('GOOO IIINN');
+        if (this.cardsToShowInCarousel.length > prevState.end + 4) {
+          console.log('ok');
+          newState.end = prevState.end + 4;
+        } else {
+          console.log('alter');
 
-      if (currSlideIndex == prevState.end - 1) {
+          newState.end = this.cardsToShowInCarousel.length;
+        }
         newState.start = prevState.end;
-        newState.end = prevState.end + 3;
         newState.currentCard = this.cards[currSlideIndex];
         newState.currentIndex = currSlideIndex;
         newState.updateAt = new Date();
-        this.cards = null; //set null to explicitely refresh carousel view
-        console.log(this.cards);
-        console.log('this.cards');
-        console.log(this.cards);
-        console.log(this.cardsToShowInCarousel)
-        console.log(this.cardsToShowInCarousel.slice(prevState.end, prevState.end + 3))
-        setTimeout(() => {
-          this.cards = this.cardsToShowInCarousel.slice(prevState.end, prevState.end + 3);
-        }, 150);
-        console.log('this.cards');
-        console.log(this.cards);
+        // this.cards = null; //set null to explicitely refresh carousel view
+
+        // this.activeSlide = 0;
+        // setTimeout(() => {
+        // if (this.cardsToShowInCarousel.length > prevState.end + 4) {
+        console.log('ok');
+        temp = this.cardsToShowInCarousel.slice(prevState.end + 1, newState.end + 1);
+        this.cards = this.cards.concat(temp)
+        console.log(this.cards)
+        this.carouselInfo$.next(newState);
+
+        // } else {
+        //   console.log("alter")
+        //   temp = this.cardsToShowInCarousel.slice(prevState.end, this.cardsToShowInCarousel.length);
+        //   temp.push(this.cardsToShowInCarousel[0])
+        //   this.cards = temp
+
+        // }
+      }
+      // if(this.cardsToShowInCarousel.indexOf(this.cards[currSlideIndex]) == 0){
+      //   console.log("ooohhyeehh")
+      //   if (this.cardsToShowInCarousel.length < 4) {
+      //     newState.end = this.cardsToShowInCarousel.length;
+      //   } else {
+      //     newState.end = 4;
+      //   }
+      //   console.log('nononooono');
+      //   newState.start = 0;
+      //   newState.currentCard = this.cards[currSlideIndex];
+      //   newState.currentIndex = currSlideIndex;
+      //   newState.updateAt = new Date();
+      //   this.activeSlide = 0;
+      //   this.cards = this.cardsToShowInCarousel.slice(0, newState.end + 1);
+      //   this.carouselInfo$.next(newState);
+      // }
+      // else if (this.cardsToShowInCarousel.indexOf(this.cards[currSlideIndex]) == prevState.end ) {
+      //   console.log('GOOO IIINN');
+      //   if (this.cardsToShowInCarousel.length > prevState.end + 4) {
+      //     console.log("ok")
+      //     newState.end = prevState.end + 4;
+      //   } else {
+      //     console.log("alter")
+
+      //     newState.end = this.cardsToShowInCarousel.length;
+      //   }
+      //   newState.start = prevState.end;
+      //   newState.currentCard = this.cards[currSlideIndex];
+      //   newState.currentIndex = currSlideIndex;
+      //   newState.updateAt = new Date();
+      //   // this.cards = null; //set null to explicitely refresh carousel view
+
+      //   this.activeSlide = 0;
+      //   // setTimeout(() => {
+      //     if (this.cardsToShowInCarousel.length > prevState.end + 4) {
+      //       console.log("ok")
+      //       this.cards = this.cardsToShowInCarousel.slice(prevState.end, newState.end + 1);
+      //     } else {
+      //       console.log("alter")
+      //       temp = this.cardsToShowInCarousel.slice(prevState.end, this.cardsToShowInCarousel.length);
+      //       temp.push(this.cardsToShowInCarousel[0])
+      //       this.cards = temp
+
+      //     }
+      //   // }, 150);
+
+      //   this.carouselInfo$.next(newState);
+      // }
+      // else if (this.cardsToShowInCarousel.indexOf(this.cards[currSlideIndex]) == prevState.start) {
+      //   console.log('GOOO OOUUUTT');
+      //   if (0 < prevState.start - 5) {
+      //     console.log("ok")
+      //     newState.start = prevState.start - 5;
+      //   } else {
+      //     console.log("alterrrr")
+
+      //     newState.start = 0;
+      //   }
+      //   newState.end = prevState.start;
+      //   newState.currentCard = this.cards[currSlideIndex];
+      //   newState.currentIndex = currSlideIndex;
+      //   newState.updateAt = new Date();
+      //   // this.cards = null; //set null to explicitely refresh carousel view
+
+      //   this.activeSlide = prevState.start % 5;
+      //   // setTimeout(() => {
+      //     // if (this.cardsToShowInCarousel.length > prevState.end + 5) {
+      //       console.log("ok")
+      //       this.cards = this.cardsToShowInCarousel.slice(newState.start, prevState.start + 1);
+      //     // } else {
+      //     //   console.log("alter")
+
+      //     //   this.cards = this.cardsToShowInCarousel.slice(prevState.end, newState.end + 1);
+      //     //   this.cards.push(this.cardsToShowInCarousel[0])
+
+      //     // }
+      //   // }, 150);
+
+      //   this.carouselInfo$.next(newState);
+      // }
+      // else if(){
+
+      // }
+
+      else {
+        newState.currentIndex = currSlideIndex;
+        newState.currentCard = this.cards[currSlideIndex];
+        newState.end = prevState.end;
+        newState.start = prevState.start;
+        newState.updateAt = new Date();
         this.carouselInfo$.next(newState);
       }
     }
@@ -292,7 +410,14 @@ export class CarouselComponent implements OnInit, OnDestroy {
       //     newIndex: this.activeSlide - 1,
       //   })
       // );
-
+      const state = this.carouselInfo$.getValue();
+      console.log("pree")
+      if(state.currentIndex  == 0 || state.currentIndex == undefined){
+        console.log("preevvv")
+        console.log(String(this.cardsToShowInCarousel.length))
+        console.log(this.cardsToShowInCarousel.length)
+        this.carousel.select(String(this.cardsToShowInCarousel.length - 1))
+      }
       this.carousel.prev();
     } else {
       this.showRejection();
@@ -307,7 +432,12 @@ export class CarouselComponent implements OnInit, OnDestroy {
       //     newIndex: this.activeSlide + 1,
       //   })
       // );
-
+      const state = this.carouselInfo$.getValue();
+      console.log("nnneeeexxtt")
+      if(state.currentIndex  == this.cardsToShowInCarousel.length - 1){
+        // this.activeSlide = 0;
+        this.carousel.select("0")
+      }
       this.carousel.next();
     } else {
       this.showRejection();
@@ -351,35 +481,34 @@ export class CarouselComponent implements OnInit, OnDestroy {
     if (currCard?.latex === 1) return 'primary';
   }
 
-  //this function does some adjustments if the index is out of bounds of card array
+  /**
+   * Handles navigationg to a new card
+   */
   private handleNewCard(newCard: Card, cards: Card[]) {
     if (!newCard?._id) return;
 
     const carouselinfo = this.carouselInfo$.getValue();
     let index = cards?.findIndex((card) => card._id === newCard._id);
     if (index >= 0 && index < cards.length) {
-      
       //prevent setting an invalid index
 
       if (index !== this.activeSlide) {
         //got a new index
-        let newState= new CarouselInfo();
+        let newState = new CarouselInfo();
         newState.currentCard = newCard;
-        newState.currentIndex= index;
-if(carouselinfo.start>index||index>= carouselinfo.end){
-//the index is not in the current slice, we need to update the start and end
+        newState.currentIndex = index;
+        if (carouselinfo.start > index || index >= carouselinfo.end) {
+          //the index is not in the current slice, we need to update the start and end
 
-newState.start=index;
-  newState.end = index+this.chunkSize< cards.length ? index+this.chunkSize  :cards.length-1
-  
-}
-this.carouselInfo$.next(newState);
+          newState.start = index;
+          newState.end = index + this.chunkSize < cards.length ? index + this.chunkSize : cards.length - 1;
+        }
+        this.carouselInfo$.next(newState);
 
         if (this.cards) {
           this.selectSlide(index); //select new slide
         } else {
           this.activeSlide = index;
-             
         }
       }
     }

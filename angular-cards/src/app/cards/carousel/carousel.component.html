@@ -44,7 +44,7 @@
     id="left"
     class="navig col"
     aria-label="vorherige karte"
-    *ngIf="cardCount > 1 && (this.activeSlide > 0 || this.start > 0)"
+
     (click)="goToPrev()"
   >
     <mat-icon>keyboard_arrow_left</mat-icon>
@@ -70,7 +70,7 @@
   <a
     id="right"
     class="navig col"
-    *ngIf="cardCount > 1 && this.activeSlide < this.allCards.length - 1"
+
     (click)="goToNext()"
     aria-label="nächste karte"
   >
