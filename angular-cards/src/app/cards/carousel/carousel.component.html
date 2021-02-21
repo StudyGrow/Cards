@@ -3,7 +3,7 @@
     <app-filter-tags></app-filter-tags>
   </div>
 
-  <div class="col-auto" *ngIf="this.cards !== undefined">
+  <div class="col-auto" *ngIf="this.cardsToShowInCarousel !== undefined">
     <button
       mat-icon-button
       matTooltip="Sortieren"
@@ -20,7 +20,7 @@
       matTooltipPosition="above"
       aria-label="zufall"
       (click)="showRandomCard()"
-      [disabled]="formMode == 'edit' || !cards || cards.length == 0"
+      [disabled]="formMode == 'edit' || !cardsToShowInCarousel || cardsToShowInCarousel.length == 0"
     >
       <mat-icon>shuffle</mat-icon>
     </button>
@@ -39,12 +39,12 @@
     </button>
   </div>
 </div>
-<div class="row" id="carousel-row" *ngIf="cards?.length > 0" [@fadeInOnEnter]>
+<div class="row" id="carousel-row" *ngIf="cardsToShowInCarousel?.length > 0" [@fadeInOnEnter]>
   <a
     id="left"
     class="navig col"
     aria-label="vorherige karte"
-    *ngIf="cardCount > 1 && (this.activeSlide > 0 || this.start > 0)"
+
     (click)="goToPrev()"
   >
     <mat-icon>keyboard_arrow_left</mat-icon>
@@ -62,7 +62,7 @@
       [interval]="'0'"
       [showNavigationIndicators]="false"
     >
-      <ng-template ngbSlide *ngFor="let card of cards; index as i" [id]="i.toString()">
+      <ng-template ngbSlide *ngFor="let card of cardsToShowInCarousel; index as i" [id]="i.toString()">
         <app-card [card]="card" [index]="i"></app-card>
       </ng-template>
     </ngb-carousel>
@@ -70,17 +70,17 @@
   <a
     id="right"
     class="navig col"
-    *ngIf="cardCount > 1 && this.activeSlide < this.allCards.length - 1"
+
     (click)="goToNext()"
     aria-label="nächste karte"
   >
     <mat-icon>keyboard_arrow_right</mat-icon>
   </a>
 </div>
-<div class="row" id="progress" *ngIf="!cards">
+<div class="row" id="progress" *ngIf="!cardsToShowInCarousel">
   <mat-spinner></mat-spinner>
 </div>
 
-<div class="row" *ngIf="cards?.length === 0">
+<div class="row" *ngIf="cardsToShowInCarousel?.length === 0">
   <p class="text-muted text-center w-100 mt-2">Keine Karten gefunden</p>
 </div>

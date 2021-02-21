@@ -1,6 +1,7 @@
 import { createAction, props } from '@ngrx/store';
 import { Card } from 'src/app/models/Card';
 import { SortType } from 'src/app/models/SortType';
+import {CarouselInfo} from 'src/app/models/CarouselInfo';
 
 enum ActionTypes {
   SET_FORM_MODE = '[Form] set display mode of form (edit, add, none, reset)',
@@ -15,22 +16,20 @@ enum ActionTypes {
   ADD_TAG = '[Filter] add tag to the filter',
   CHANGE_TAB = '[Tab] change the tab on cards view',
   CHABGE_THEME = '[Theme] change theme',
-  SET_ACITVE_CARD_INDEX = '[Index] update the index of the card which is currently showing. This should only be dispatched by the carousel',
-  SET_ACITVE_CARD = '[Card] set the card which should be shown ',
+ UPDATE_CAROUSEL_INFO= '[CarouselInfo] update the carousel information in store. (This action should only be called by the carousel itself!)',
+  SHOW_CARD = '[Card] set a  card which should be shown',
   NAVIGATE_TO_CARD = '[Card] navigate to card on lecture route',
-  SET_ACITVE_CARD_SUCCESS = '[Card] Successfully set the card which should be shown ',
   GO_NEXT = '[Cards] Go to the next slide ',
   GO_PREV = '[Cards] Go to the prev. slide ',
   CHANGE_SORTING = '[SortType] change the sortType applied to the cards',
-  ADJUST_INDECES = '[startInex,endIndex] adjust the start and end indeces',
+ 
   RESET_CARDSDATA = '[CardsData] reset the cardsdata which are specific to the cards route',
   FAIL = 'Action failed',
 }
 
-export const adjustIndeces = createAction(
-  ActionTypes.ADJUST_INDECES,
-  props<{ allCards: Card[]; newIndex: number }>() //number of total cards for lecture
-);
+
+export const updateCarouselInfo = createAction(ActionTypes.UPDATE_CAROUSEL_INFO, props<{ info:CarouselInfo }>());
+export const showNewCard = createAction(ActionTypes.SHOW_CARD, props<{ card: Card }>());
 
 export const resetCardsState = createAction(ActionTypes.RESET_CARDSDATA);
 export const fail = createAction(ActionTypes.FAIL, props<{ reason: string }>());
@@ -50,13 +49,11 @@ export const setTypingMode = createAction(ActionTypes.SET_TYPING_MODE, props<{ t
 
 export const setSuggestionsMode = createAction(ActionTypes.SET_SUGGESTIONS_VISIBILITY_MODE, props<{ hide: boolean }>());
 
-export const goNext = createAction(ActionTypes.GO_NEXT);
-export const goPrev = createAction(ActionTypes.GO_PREV);
-export const setActiveCardIndex = createAction(ActionTypes.SET_ACITVE_CARD_INDEX, props<{ index: number }>());
-export const setActiveCard = createAction(ActionTypes.SET_ACITVE_CARD, props<{ card: Card }>());
+// export const setActiveCardIndex = createAction(ActionTypes.SET_ACITVE_CARD_INDEX, props<{ index: number }>());
+
 export const navigateToCard = createAction(ActionTypes.NAVIGATE_TO_CARD, props<{ card: Card }>());
 
-export const setActiveCardSuccess = createAction(ActionTypes.SET_ACITVE_CARD_SUCCESS, props<{ card: Card }>());
+// export const setActiveCardSuccess = createAction(ActionTypes.SET_ACITVE_CARD_SUCCESS, props<{ card: Card }>());
 
 export const toggleDrawerState = createAction(ActionTypes.TOGGLE_DRAWER);
 
