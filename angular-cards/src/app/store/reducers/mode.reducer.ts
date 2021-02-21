@@ -54,32 +54,6 @@ const _modeReducer = createReducer(
         }
   ),
 
-  // on(StateActions.setActiveCardIndex, (state, { index }) =>
-  //   index === state.activeIndex
-  //     ? state
-  //     : {
-  //         ...state,
-  //         activeIndex: index,
-  //       }
-  // ),
-  // on(StateActions.setActiveCardSuccess, (state, { card }) =>
-  //   card
-  //     ? {
-  //         ...state,
-  //         currentCard: card,
-  //       }
-  //     : state
-  // ),
-  // on(StateActions.goNext, (state) => ({
-  //   ...state,
-  //   activeIndex: state.activeIndex + 1,
-  // })),
-
-  // on(StateActions.goNext, (state) => ({
-  //   ...state,
-  //   activeIndex: state.activeIndex - 1,
-  // })),
-
   on(StateActions.setTypingMode, (state, { typing }) =>
     typing === state.typingMode
       ? state

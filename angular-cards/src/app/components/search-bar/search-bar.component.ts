@@ -118,7 +118,9 @@ export class SearchBarComponent implements OnInit, OnDestroy {
     }
     this.store.dispatch(changeTab({ tab: 0 }));
     let newCard = this.allCards.find((card) => card._id === id);
-   this.store.dispatch(showNewCard({ card: newCard }));
+    // to always tell that something has been selected
+    this.store.dispatch(showNewCard({ card: null }));
+    this.store.dispatch(showNewCard({ card: newCard }));
     this.store.dispatch(setSuggestionsMode({ hide: true }));
   }
 
