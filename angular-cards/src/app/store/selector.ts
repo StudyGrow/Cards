@@ -15,7 +15,7 @@ export const selectAllCards = (state: AppState) => state.data?.cardData?.cards;
  * @param state state of the store
  * @deprecated Use CardsSorted instead
  */
-export const AllCards = (state: AppState) => state.data?.cardData?.cards;
+const AllCards = (state: AppState) => state.data?.cardData?.cards;
 
 /**
  * Get the votes that were made by a user for a certain card
@@ -40,10 +40,9 @@ export const VotesForCard = (state: AppState, cardId: string) =>
 export const AllVotes = (state: AppState) => state.data.cardData.votes;
 
 /**
- * Holds the card which should be shown 
+ * Holds the card which should be shown
  */
 export const CardToShow = (state: AppState) => state.mode.newCard;
-
 
 /**
  * Counts all votes for a certain card
@@ -116,7 +115,7 @@ export const user = (state: AppState) => state.data.userData.user;
  * @param state state of the app
  */
 
-const CardIndices = (state: AppState) => [state.mode.startIndex, state.mode.endIndex, state.mode.activeIndex];
+export const CardIndices = (state: AppState) => [state.mode.startIndex, state.mode.endIndex, state.mode.activeIndex];
 
 export const authorized = (state: AppState) => state.data.userData.authenticated;
 
