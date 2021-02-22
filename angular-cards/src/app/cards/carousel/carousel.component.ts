@@ -195,6 +195,8 @@ export class CarouselComponent implements OnInit, OnDestroy {
    * Pass index of card which should be displayed initially in reference to the allCards array
    */
   initCarouselCards(index: number) {
+    console.log("this.allCards")
+    console.log(this.allCards)
     const prevState = this.carouselInfo$.getValue();
     let newState = new CarouselInfo();
     // if (!prevState.updateAt) {
@@ -227,16 +229,16 @@ export class CarouselComponent implements OnInit, OnDestroy {
    * - cards have changed in the store (e.g. user has added a card)
    */
   refreshCarouselCards() {
-    if (!this.cardsToShowInCarousel || !this.carousel) {
+    // if (!this.cardsToShowInCarousel || !this.carousel) {
       this.initCarouselCards(0);
       return;
-    } else {
-      this.activeSlide = 0;
-      this.cardsToShowInCarousel = null;
-      setTimeout(() => {
-        this.carousel.select('0');
-      }, 150);
-    }
+    // } else {
+    //   this.activeSlide = 0;
+    //   this.cardsToShowInCarousel = null;
+    //   setTimeout(() => {
+    //     this.carousel.select('0');
+    //   }, 150);
+    // }
   }
 
   //this function updates the current slide index in the store and for the component
@@ -415,12 +417,16 @@ export class CarouselComponent implements OnInit, OnDestroy {
    * if newCard is undefined the first one will be set.
    */
   private handleNewCard(newCard: Card, cards: Card[]) {
+    console.log(newCard)
+    console.log(cards)
+    console.log("hand")
     if (!newCard) this.selectSlide(0);
     let index = cards?.findIndex((card) => card._id === newCard._id);
     this.selectSlide(index);
   }
 
   private selectSlide(n: number) {
+    console.log("sel")
     if (
       this.carousel &&
       this.cardsToShowInCarousel &&
