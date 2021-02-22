@@ -184,7 +184,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
     let allCards$ = this.store.select(CardsSortedAndFiltered);
     this.subscriptions$.push(sub);
     sub = this.newCardToSet$
-      .pipe(withLatestFrom(allCards$))
+      .pipe(distinctUntilKeyChanged('_id'), withLatestFrom(allCards$))
       .subscribe(([card, allCards]) => this.handleNewCard(card, allCards));
     this.subscriptions$.push(sub);
   }
