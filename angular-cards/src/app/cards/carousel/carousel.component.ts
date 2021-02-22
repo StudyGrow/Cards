@@ -194,12 +194,12 @@ export class CarouselComponent implements OnInit, OnDestroy {
    * For each subsequent call nothing will happen -> use refreshCarouselCards for that
    * Pass index of card which should be displayed initially in reference to the allCards array
    */
-  initCarouselCards(index) {
+  initCarouselCards(index: number) {
     const prevState = this.carouselInfo$.getValue();
     let newState = new CarouselInfo();
     // if (!prevState.updateAt) {
     newState.start = index;
-    if (this.allCards.length > index + this.chunkSize) {
+    if (this.allCards?.length > index + this.chunkSize) {
       newState.end = index + this.chunkSize;
     } else {
       newState.end = this.allCards.length;
@@ -216,20 +216,26 @@ export class CarouselComponent implements OnInit, OnDestroy {
       this.cardsToShowInCarousel = this.allCards.slice(newState.start, newState.end);
     }, 150);
     setTimeout(() => {
-      this.activeSlide = 0;
-      this.carousel.select('0');
+      this.activeSlide = index || 0;
+      this.carousel.select(index.toString());
     }, 150);
   }
-  
+
   /**
    * refreshes cards to show in carousel. This function is called in 2 scenarios
    * - user tries to slide to card of new chunk
    * - cards have changed in the store (e.g. user has added a card)
    */
   refreshCarouselCards() {
-    if (this.cardsToShowInCarousel === undefined) {
+    if (!this.cardsToShowInCarousel || !this.carousel) {
       this.initCarouselCards(0);
       return;
+    } else {
+      this.activeSlide = 0;
+      this.cardsToShowInCarousel = null;
+      setTimeout(() => {
+        this.carousel.select('0');
+      }, 150);
     }
   }
 
@@ -406,25 +412,29 @@ export class CarouselComponent implements OnInit, OnDestroy {
 
   /**
    * Handles navigation to a new card
+   * if newCard is undefined the first one will be set.
    */
   private handleNewCard(newCard: Card, cards: Card[]) {
-    if (!newCard?._id) return;
-
+    if (!newCard) this.selectSlide(0);
     let index = cards?.findIndex((card) => card._id === newCard._id);
-    this.selectSlide(index)
+    this.selectSlide(index);
   }
 
   private selectSlide(n: number) {
-    if (this.carousel && this.cardsToShowInCarousel && n >= 0 && this.cardsToShowInCarousel.indexOf(this.allCards[n]) >= 0) {
+    if (
+      this.carousel &&
+      this.cardsToShowInCarousel &&
+      n >= 0 &&
+      this.cardsToShowInCarousel.indexOf(this.allCards[n]) >= 0
+    ) {
       if (this.formMode != 'edit') {
-        this.carousel.select(String(this.cardsToShowInCarousel.indexOf(this.allCards[n])))
-  } else {
+        this.carousel.select(String(this.cardsToShowInCarousel.indexOf(this.allCards[n])));
+      } else {
         this.showRejection();
       }
-    }
-    else{
+    } else {
       if (this.formMode != 'edit') {
-        this.initCarouselCards(n)
+        this.initCarouselCards(n);
       } else {
         this.showRejection();
       }
