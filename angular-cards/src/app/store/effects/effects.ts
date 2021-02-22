@@ -55,11 +55,7 @@ import { SuccessMessage } from 'src/app/models/Notification';
 import { VotesService } from 'src/app/services/votes.service';
 
 import { Card, CardsData } from 'src/app/models/Card';
-import {
-  fail,
-  navigateToCard,
-  resetFilter,
-} from '../actions/StateActions';
+import { fail, navigateToCard, resetFilter, showNewCard, showNewCardSuccess } from '../actions/StateActions';
 import { CardsSorted, CardsSortedAndFiltered, DisplayedCards, authorized } from '../selector';
 
 @Injectable()
@@ -113,66 +109,66 @@ export class CardsEffects {
   /**
    * navigates to the lecture route and sets a new card to be displayed in the carousel
    */
-  // @Effect()
-  // navigateToCard$ = createEffect(() =>
-  //   this.actions$.pipe(
-  //     ofType(navigateToCard),
-  //     tap(({ card }) => {
-  //       let url = `vorlesung/${card.abrv ? card.abrv : card['vorlesung']}`;
-  //       if (!this.router.url.includes(url)) this.router.navigateByUrl(url); //change routes if we are not on cards route
-  //     }),
+  @Effect()
+  navigateToCard$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(navigateToCard),
+      tap(({ card }) => {
+        let url = `vorlesung/${card.abrv ? card.abrv : card['vorlesung']}`;
+        if (!this.router.url.includes(url)) this.router.navigateByUrl(url); //change routes if we are not on cards route
+      }),
 
-  //     switchMap(({ card }) =>
-  //       combineLatest([
-  //         //emits if every inner observable emits at least one value
-  //         of(card),
-  //         this.store.select(DisplayedCards).pipe(
-  //           filter((cards) => cards !== undefined), //wait for cards to be loaded from the server
-  //           take(1)
-  //         ),
-  //       ])
-  //     ),
+      switchMap(({ card }) =>
+        combineLatest([
+          //emits if every inner observable emits at least one value
+          of(card),
+          this.store.select(DisplayedCards).pipe(
+            filter((cards) => cards !== undefined), //wait for cards to be loaded from the server
+            take(1)
+          ),
+        ])
+      ),
 
-  //     map(([newCard, cards]) => setActiveCard({ card: newCard }))
-  //   )
-  // );
+      map(([newCard, cards]) => showNewCard({ card: newCard }))
+    )
+  );
 
   /**
    * This effect handles components requesting a card change to the carousel. This
    * It is important to note that this function should not be called by the carousel itself in order to prevent loops
    */
-  // @Effect()
-  // currentCardChange$ = createEffect(() =>
-  //   this.actions$.pipe(
-  //     // ofType(setActiveCard),
-  //     withLatestFrom(
-  //       combineLatest([
-  //         this.store.select(DisplayedCards), //cards in carousel
-  //         this.store.select(CardsSorted), //All cards sorted
-  //         this.store.select(CardsSortedAndFiltered), //all cards sorted and filtered by tags which the user selected
-  //       ])
-  //     ),
-  //     map(([{ card }, [currCards, allCards, filteredCards]]) => {
-  //       if (!currCards?.find((c) => c._id === card._id)) {
-  //         //need to adjust indeces
-  //         if (!filteredCards?.find((c) => c._id === card._id)) {
-  //           // need to reset filter
-  //           this.store.dispatch(resetFilter());
-  //         }
-  //         let newIndex = allCards?.findIndex((c) => c._id === card._id);
-  //         if (newIndex >= 0) {
-  //           // this.store.dispatch(adjustIndeces({ allCards: allCards, newIndex: newIndex })); //adjust indeces in a way so that the new card is in the current chunk
-  //         } else {
-  //           console.error('Could not find card in array', card, allCards); //should not occur
-  //           return undefined;
-  //         }
-  //       }
-  //       return card;
-  //     }),
-  //     // map((card: Card) => setActiveCardSuccess({ card: card })),
-  //     share()
-  //   )
-  // );
+  @Effect()
+  currentCardChange$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(showNewCard),
+      withLatestFrom(
+        combineLatest([
+          this.store.select(DisplayedCards), //cards in carousel
+          this.store.select(CardsSorted), //All cards sorted
+          this.store.select(CardsSortedAndFiltered), //all cards sorted and filtered by tags which the user selected
+        ])
+      ),
+      map(([{ card }, [currCards, allCards, filteredCards]]) => {
+        if (!currCards?.find((c) => c._id === card._id)) {
+          //need to adjust indeces
+          if (!filteredCards?.find((c) => c._id === card._id)) {
+            // need to reset filter
+            this.store.dispatch(resetFilter());
+          }
+          let newIndex = allCards?.findIndex((c) => c._id === card._id);
+          if (newIndex >= 0) {
+            // this.store.dispatch(adjustIndeces({ allCards: allCards, newIndex: newIndex })); //adjust indeces in a way so that the new card is in the current chunk
+          } else {
+            console.error('Could not find card in array', card, allCards); //should not occur
+            return undefined;
+          }
+        }
+        return card;
+      }),
+      map((card: Card) => showNewCardSuccess({ card: card })),
+      share()
+    )
+  );
 
   /**
    * Changes the vote on a card
@@ -231,9 +227,9 @@ export class CardsEffects {
       exhaustMap((cardAction) =>
         this.cards.addCard(cardAction.card).pipe(
           tap((card) => {
-            // setTimeout(() => {
-            //   this.store.dispatch(setActiveCard({ card: card })); //go to last card
-            // }, 200);
+            setTimeout(() => {
+              this.store.dispatch(showNewCard({ card: card })); //go to last card
+            }, 200);
           }),
           map((res) => AddCardActions.addCardSuccess({ card: res })),
 
@@ -251,7 +247,7 @@ export class CardsEffects {
       switchMap((action) =>
         this.cards.updateCard(action.card).pipe(
           tap((card) => {
-            // this.store.dispatch(setActiveCard({ card: card }));
+            this.store.dispatch(showNewCard({ card: card }));
           }),
           map((card) => UpdateCardActions.updateCardSuccess({ card: card })),
           catchError((reason) => of(LoadFailure({ reason: reason })))

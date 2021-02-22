@@ -229,16 +229,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
    * - cards have changed in the store (e.g. user has added a card)
    */
   refreshCarouselCards() {
-    // if (!this.cardsToShowInCarousel || !this.carousel) {
-      this.initCarouselCards(0);
-      return;
-    // } else {
-    //   this.activeSlide = 0;
-    //   this.cardsToShowInCarousel = null;
-    //   setTimeout(() => {
-    //     this.carousel.select('0');
-    //   }, 150);
-    // }
+    this.initCarouselCards(0);
   }
 
   //this function updates the current slide index in the store and for the component
