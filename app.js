@@ -71,11 +71,9 @@ app.post(
 //api route
 app.use("/api", require("./routes/api"));
 
+app.use("/flutter", express.static(path.join(__dirname, "./web")));
+
 //built angular files
-app.get("/flutter", (req, res) => {
-  app.use(express.static(path.join(__dirname, "./web")));
-  res.sendFile(path.join(__dirname, "./web/index.html"));
-});
 app.use(
   express.static(path.join(__dirname, "./angular-cards/dist/angular-cards/"))
 );
