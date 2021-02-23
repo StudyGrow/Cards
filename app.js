@@ -65,7 +65,7 @@ app.use('/api', require('./routes/api'));
 
 //built angular files
 app.use(express.static(path.join(__dirname, './web/')));
-app.use('/flutter*', (req, res) =>
+app.use('/flutter/', (req, res) =>
   res.sendFile(path.join(__dirname, './web/index.html'))
 );
 app.use(express.static(path.join(__dirname, './angular-cards/dist/angular-cards/')));
