@@ -1,24 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType, createEffect } from '@ngrx/effects';
-import { of, Observable, combineLatest, noop } from 'rxjs';
-import {
-  share,
-  tap,
-  startWith,
-  withLatestFrom,
-  filter,
-  shareReplay,
-  switchMap,
-  delay,
-  skipUntil,
-  skipWhile,
-  delayWhen,
-  take,
-  debounceTime,
-  takeLast,
-  mergeMapTo,
-} from 'rxjs/operators';
-
+import { of, combineLatest } from 'rxjs';
+import { share, tap, withLatestFrom, filter, switchMap, take } from 'rxjs/operators';
 import { catchError, map, mergeMap, exhaustMap } from 'rxjs/operators';
 import {
   LoadFailure,
@@ -33,7 +16,6 @@ import {
 import * as LectureActions from '../actions/LectureActions';
 import { CardsService } from '../../services/cards.service';
 import { LecturesService } from '../../services/lectures.service';
-
 import { Store } from '@ngrx/store';
 import {
   fetchUserData,
@@ -75,7 +57,6 @@ export class CardsEffects {
   /**
    * Loads cards data from the server
    */
-  @Effect()
   loadCards$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FetchCardsActions.fetchCards),
@@ -93,7 +74,6 @@ export class CardsEffects {
   /**
    * Fetches votes that were made by the current user
    */
-  @Effect()
   fetchVotes$ = createEffect(() =>
     this.actions$.pipe(
       ofType(fetchVotes),
@@ -110,7 +90,6 @@ export class CardsEffects {
   /**
    * navigates to the lecture route and sets a new card to be displayed in the carousel
    */
-  @Effect()
   navigateToCard$ = createEffect(() =>
     this.actions$.pipe(
       ofType(navigateToCard),
@@ -118,7 +97,6 @@ export class CardsEffects {
         let url = `vorlesung/${card.abrv ? card.abrv : card['vorlesung']}`;
         if (!this.router.url.includes(url)) this.router.navigateByUrl(url); //change routes if we are not on cards route
       }),
-
       switchMap(({ card }) =>
         combineLatest([
           //emits if every inner observable emits at least one value
@@ -129,7 +107,6 @@ export class CardsEffects {
           ),
         ])
       ),
-
       map(([newCard, cards]) => showNewCard({ card: newCard }))
     )
   );
@@ -146,7 +123,6 @@ export class CardsEffects {
         this.store.select(CardsSortedAndFiltered) //all cards sorted and filtered by tags which the user selected
       ),
       tap(([{ card }, filteredCards]) => {
-        console.log(card);
         if (card && !filteredCards?.find((c) => c._id === card._id)) {
           // need to reset filter if new card is not in the filtered cards
           this.store.dispatch(resetFilter());
@@ -177,7 +153,7 @@ export class CardsEffects {
   /**
    * Fetch lectures from the server
    */
-  @Effect()
+
   fetchLectures$ = createEffect(() =>
     this.actions$.pipe(
       ofType(LectureActions.fetchLectures),
@@ -191,7 +167,6 @@ export class CardsEffects {
     )
   );
 
-  @Effect()
   addLecture$ = createEffect(() =>
     this.actions$.pipe(
       ofType(LectureActions.addLercture),
@@ -207,7 +182,6 @@ export class CardsEffects {
     )
   );
 
-  @Effect()
   addCard$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AddCardActions.addCard),
@@ -227,7 +201,6 @@ export class CardsEffects {
     )
   );
 
-  @Effect()
   updateCard$ = createEffect(() =>
     this.actions$.pipe(
       ofType(UpdateCardActions.updateCard),
@@ -244,7 +217,6 @@ export class CardsEffects {
     )
   );
 
-  @Effect()
   fetchUserInfo$ = createEffect(() =>
     this.actions$.pipe(
       ofType(fetchUserData),
@@ -258,7 +230,6 @@ export class CardsEffects {
     )
   );
 
-  @Effect()
   updateUserInfo$ = createEffect(() =>
     this.actions$.pipe(
       ofType(updateUserData),
@@ -272,7 +243,6 @@ export class CardsEffects {
     )
   );
 
-  @Effect()
   login$ = createEffect(() =>
     this.actions$.pipe(
       ofType(login),
@@ -292,7 +262,7 @@ export class CardsEffects {
       share()
     )
   );
-  @Effect()
+
   logout$ = createEffect(() =>
     this.actions$.pipe(
       ofType(logout),
@@ -310,7 +280,6 @@ export class CardsEffects {
     )
   );
 
-  @Effect()
   registerAccount$ = createEffect(() =>
     this.actions$.pipe(
       ofType(createAccount),
@@ -326,7 +295,6 @@ export class CardsEffects {
     )
   );
 
-  @Effect()
   auth$ = createEffect(() =>
     this.actions$.pipe(
       ofType(auth),
