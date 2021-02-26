@@ -8,7 +8,14 @@ import { Store } from '@ngrx/store';
 
 import { setFormMode, changeTab, changeSorting, updateCarouselInfo } from 'src/app/store/actions/StateActions';
 
-import { debounceTime, distinctUntilChanged, distinctUntilKeyChanged, map, withLatestFrom } from 'rxjs/operators';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  distinctUntilKeyChanged,
+  filter,
+  map,
+  withLatestFrom,
+} from 'rxjs/operators';
 
 import { NgbCarousel, NgbSlideEvent } from '@ng-bootstrap/ng-bootstrap';
 import { NotificationsService } from 'src/app/services/notifications.service';
@@ -184,7 +191,12 @@ export class CarouselComponent implements OnInit, OnDestroy {
     let allCards$ = this.store.select(CardsSortedAndFiltered);
     this.subscriptions$.push(sub);
     sub = this.newCardToSet$
-      .pipe(distinctUntilKeyChanged('_id'), withLatestFrom(allCards$))
+      .pipe(
+        debounceTime(10),
+        filter((card) => card !== undefined),
+        distinctUntilKeyChanged('_id'),
+        withLatestFrom(allCards$)
+      )
       .subscribe(([card, allCards]) => this.handleNewCard(card, allCards));
     this.subscriptions$.push(sub);
   }
@@ -195,8 +207,6 @@ export class CarouselComponent implements OnInit, OnDestroy {
    * Pass index of card which should be displayed initially in reference to the allCards array
    */
   initCarouselCards(index: number) {
-    console.log("this.allCards")
-    console.log(this.allCards)
     const prevState = this.carouselInfo$.getValue();
     let newState = new CarouselInfo();
     // if (!prevState.updateAt) {
@@ -204,13 +214,13 @@ export class CarouselComponent implements OnInit, OnDestroy {
     if (this.allCards?.length > index + this.chunkSize) {
       newState.end = index + this.chunkSize;
     } else {
-      newState.end = this.allCards.length;
+      newState.end = this.allCards?.length;
     }
 
-    // if (this.allCards?.length > 0) {
-    newState.currentCard = this.allCards[index];
-    newState.currentIndex = newState.start;
-    // }
+    if (this.allCards?.length > index) {
+      newState.currentCard = this.allCards[index];
+      newState.currentIndex = newState.start;
+    }
     newState.updateAt = new Date();
     this.carouselInfo$.next(newState);
     this.cardsToShowInCarousel = null;
@@ -219,7 +229,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
     }, 150);
     setTimeout(() => {
       this.activeSlide = index || 0;
-      this.carousel.select(index.toString());
+      this.carousel.select(index?.toString());
     }, 150);
   }
 
@@ -404,20 +414,19 @@ export class CarouselComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Handles navigation to a new card
-   * if newCard is undefined the first one will be set.
+   * handles setting new card from store
+   * @param newCard card which should be displayed in carousel
+   * @param cards available cards (currently filtered by tags)
    */
   private handleNewCard(newCard: Card, cards: Card[]) {
-    console.log(newCard)
-    console.log(cards)
-    console.log("hand")
-    if (!newCard) this.selectSlide(0);
+    let currCarouselInfo = this.carouselInfo$.getValue();
+    if (!newCard) return;
+    if (currCarouselInfo.currentCard._id === newCard._id) return; //newCard is already shown
     let index = cards?.findIndex((card) => card._id === newCard._id);
     this.selectSlide(index);
   }
 
   private selectSlide(n: number) {
-    console.log("sel")
     if (
       this.carousel &&
       this.cardsToShowInCarousel &&

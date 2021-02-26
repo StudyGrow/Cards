@@ -18,7 +18,7 @@ enum ActionTypes {
   CHABGE_THEME = '[Theme] change theme',
   UPDATE_CAROUSEL_INFO = '[CarouselInfo] update the carousel information in store. (This action should only be called by the carousel itself!)',
   SHOW_CARD = '[Card] set a  card which should be shown',
-  SHOW_CARD_SUCCESS = '[Card] set a  card which should be shown',
+  SHOW_CARD_SUCCESS = '[Card] card can successfully be switched',
   NAVIGATE_TO_CARD = '[Card] navigate to card on lecture route',
   GO_NEXT = '[Cards] Go to the next slide ',
   GO_PREV = '[Cards] Go to the prev. slide ',

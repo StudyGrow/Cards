@@ -35,7 +35,7 @@ const _modeReducer = createReducer(
     endIndex: info.end,
     startIndex: info.start,
   })),
-  on(StateActions.showNewCard, (state, { card }) => ({
+  on(StateActions.showNewCardSuccess, (state, { card }) => ({
     ...state,
     newCard: card,
   })),

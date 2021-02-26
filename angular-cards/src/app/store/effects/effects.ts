@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType, createEffect } from '@ngrx/effects';
-import { of, Observable, combineLatest } from 'rxjs';
+import { of, Observable, combineLatest, noop } from 'rxjs';
 import {
   share,
   tap,
@@ -16,6 +16,7 @@ import {
   take,
   debounceTime,
   takeLast,
+  mergeMapTo,
 } from 'rxjs/operators';
 
 import { catchError, map, mergeMap, exhaustMap } from 'rxjs/operators';
@@ -134,38 +135,24 @@ export class CardsEffects {
   );
 
   /**
-   * This effect handles components requesting a card change to the carousel. This
+   * This effect handles components requesting a card change to the carousel.
    * It is important to note that this function should not be called by the carousel itself in order to prevent loops
    */
-  @Effect()
+
   currentCardChange$ = createEffect(() =>
     this.actions$.pipe(
       ofType(showNewCard),
       withLatestFrom(
-        combineLatest([
-          this.store.select(DisplayedCards), //cards in carousel
-          this.store.select(CardsSorted), //All cards sorted
-          this.store.select(CardsSortedAndFiltered), //all cards sorted and filtered by tags which the user selected
-        ])
+        this.store.select(CardsSortedAndFiltered) //all cards sorted and filtered by tags which the user selected
       ),
-      map(([{ card }, [currCards, allCards, filteredCards]]) => {
-        if (!currCards?.find((c) => c._id === card._id)) {
-          //need to adjust indeces
-          if (!filteredCards?.find((c) => c._id === card._id)) {
-            // need to reset filter
-            this.store.dispatch(resetFilter());
-          }
-          let newIndex = allCards?.findIndex((c) => c._id === card._id);
-          if (newIndex >= 0) {
-            // this.store.dispatch(adjustIndeces({ allCards: allCards, newIndex: newIndex })); //adjust indeces in a way so that the new card is in the current chunk
-          } else {
-            console.error('Could not find card in array', card, allCards); //should not occur
-            return undefined;
-          }
+      tap(([{ card }, filteredCards]) => {
+        console.log(card);
+        if (card && !filteredCards?.find((c) => c._id === card._id)) {
+          // need to reset filter if new card is not in the filtered cards
+          this.store.dispatch(resetFilter());
         }
-        return card;
       }),
-      map((card: Card) => showNewCardSuccess({ card: card })),
+      map(([{ card }, filteredCards]) => showNewCardSuccess({ card: card })),
       share()
     )
   );
