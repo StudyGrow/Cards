@@ -67,9 +67,9 @@ export class CarouselComponent implements OnInit, OnDestroy {
   private inTypingField: boolean; //check if user is in input field
   private uid: string; //user id
 
-  allCards: Card[]; //array of all the allCards
+  // private allCards: Card[]; //array of all the cards
   cardsToShowInCarousel: Card[]; //array of cards to show in carousel
-  readonly carouselInfo$ = new BehaviorSubject<CarouselInfo>(new CarouselInfo());
+  private readonly carouselInfo$ = new BehaviorSubject<CarouselInfo>(new CarouselInfo());
 
   loading: boolean;
 
@@ -166,38 +166,28 @@ export class CarouselComponent implements OnInit, OnDestroy {
       map(([d1, d2]) => (!d1 && !d2 ? 0 : Math.max(d1?.getTime() || 0, d2?.getTime())))
     );
 
+    sub = this.carouselInfo$.pipe(distinctUntilKeyChanged('updateAt')).subscribe((newState: CarouselInfo) => {
+      this.store.dispatch(updateCarouselInfo({ info: newState })); //sends an update to the store whenever the info has updated
+    });
     //observable which holds the final cards which should be displayed in the carousel (filtered and sorted)
     this.cardsData$ = combineLatest([this.store.select(CardsSortedAndFiltered), lastChanges$]).pipe(debounceTime(5));
 
-    sub = this.cardsData$.subscribe(([cards, date]) => {
-      if (cards?.length > 0 && (!this.lastRefresh || this.lastRefresh < date)) {
-        //cards have changed
-        this.lastRefresh = new Date().getTime(); //update the last refresh time
-        this.cardCount = cards?.length;
-        this.refreshCarouselCards();
-      }
-    });
-
+    sub = combineLatest([this.store.select(CardsSorted), this.store.select(CardsSortedAndFiltered), lastChanges$])
+      .pipe(debounceTime(5))
+      .subscribe(([allCardsSorted, allCardsSortedAndFiltered, changes]) => {
+        let carouselState = { ...this.carouselInfo$.getValue() };
+        if (!carouselState.updateAt || carouselState.updateAt.getTime() < changes) {
+          //cards have changed
+          carouselState.updateAt = new Date(); //update the last refresh time
+          carouselState.allCardsSorted = allCardsSorted;
+          carouselState.allCardsSortedAndFiltered = allCardsSortedAndFiltered;
+          this.carouselInfo$.next(carouselState);
+          this.refreshCarouselCards();
+        }
+      });
     this.subscriptions$.push(sub);
-    sub = this.store.pipe(map(CardsSorted)).subscribe((cards) => {
-      this.allCards = cards;
-    });
 
-    this.subscriptions$.push(sub);
-
-    sub = this.carouselInfo$.pipe(distinctUntilKeyChanged('updateAt')).subscribe((newState: CarouselInfo) => {
-      this.store.dispatch(updateCarouselInfo({ info: newState }));
-    });
-    let allCards$ = this.store.select(CardsSortedAndFiltered);
-    this.subscriptions$.push(sub);
-    sub = this.newCardToSet$
-      .pipe(
-        debounceTime(10),
-        filter((card) => card !== undefined),
-        distinctUntilKeyChanged('_id'),
-        withLatestFrom(allCards$)
-      )
-      .subscribe(([card, allCards]) => this.handleNewCard(card, allCards));
+    sub = this.newCardToSet$.pipe(debounceTime(5)).subscribe((card) => this.handleNewCard(card));
     this.subscriptions$.push(sub);
   }
 
@@ -207,29 +197,30 @@ export class CarouselComponent implements OnInit, OnDestroy {
    * Pass index of card which should be displayed initially in reference to the allCards array
    */
   initCarouselCards(index: number) {
-    const prevState = this.carouselInfo$.getValue();
-    let newState = new CarouselInfo();
-    // if (!prevState.updateAt) {
-    newState.start = index;
-    if (this.allCards?.length > index + this.chunkSize) {
-      newState.end = index + this.chunkSize;
+    let state = { ...this.carouselInfo$.getValue() }; //copy state
+
+    state.start = index;
+    if (state.allCardsSortedAndFiltered?.length > index + this.chunkSize) {
+      state.end = index + this.chunkSize;
     } else {
-      newState.end = this.allCards?.length;
+      state.end = state.allCardsSortedAndFiltered?.length;
     }
 
-    if (this.allCards?.length > index) {
-      newState.currentCard = this.allCards[index];
-      newState.currentIndex = newState.start;
+    if (state.allCardsSortedAndFiltered?.length > index) {
+      state.currentCard = state.allCardsSortedAndFiltered[index];
+      state.currentIndex = state.start;
     }
-    newState.updateAt = new Date();
-    this.carouselInfo$.next(newState);
+    state.updateAt = new Date();
+
+    this.carouselInfo$.next(state);
+
     this.cardsToShowInCarousel = null;
     setTimeout(() => {
-      this.cardsToShowInCarousel = this.allCards.slice(newState.start, newState.end);
-    }, 150);
-    setTimeout(() => {
-      this.activeSlide = index || 0;
-      this.carousel.select(index?.toString());
+      this.cardsToShowInCarousel = state.allCardsSortedAndFiltered?.slice(state.start, state.end) || [];
+      setTimeout(() => {
+        this.activeSlide = index || 0;
+        if (this.carousel) this.carousel.select(index.toString());
+      }, 10);
     }, 150);
   }
 
@@ -268,8 +259,11 @@ export class CarouselComponent implements OnInit, OnDestroy {
 
   //select the previous slide
   async goToPrev() {
+    /*
+     * REPLACE allCards with {...this.carouselInfo$.getValue()}.allCardsSorted or {...this.carouselInfo$.getValue()}.allCardsSortedAndFiltered
+     */
     if (this.carousel && this.cardsToShowInCarousel && this.cardCount > 1 && this.formMode != 'edit') {
-      const state = this.carouselInfo$.getValue();
+      let state = { ...this.carouselInfo$.getValue() };
       // check if prev card is already present in cardsToShowInCarousel, then go simply prev in carousel
       if (
         this.cardsToShowInCarousel[this.cardsToShowInCarousel.indexOf(state.currentCard) - 1] != undefined &&
@@ -320,8 +314,11 @@ export class CarouselComponent implements OnInit, OnDestroy {
   }
   //select the next slide
   async goToNext() {
+    /*
+     * REPLACE allCards with {...this.carouselInfo$.getValue()}.allCardsSorted or {...this.carouselInfo$.getValue()}.allCardsSortedAndFiltered
+     */
     if (this.carousel && this.cardsToShowInCarousel && this.cardCount > 1 && this.formMode != 'edit') {
-      const state = this.carouselInfo$.getValue();
+      let state = { ...this.carouselInfo$.getValue() };
       if (
         this.cardsToShowInCarousel[this.cardsToShowInCarousel.indexOf(state.currentCard) + 1] != undefined &&
         this.cardsToShowInCarousel[this.cardsToShowInCarousel.indexOf(state.currentCard) + 1] ==
@@ -418,39 +415,35 @@ export class CarouselComponent implements OnInit, OnDestroy {
    * @param newCard card which should be displayed in carousel
    * @param cards available cards (currently filtered by tags)
    */
-  private handleNewCard(newCard: Card, cards: Card[]) {
-    let currCarouselInfo = this.carouselInfo$.getValue();
+  private handleNewCard(newCard: Card) {
     if (!newCard) return;
-    if (currCarouselInfo.currentCard._id === newCard._id) return; //newCard is already shown
+
+    let currCarouselInfo = this.carouselInfo$.getValue();
+    let cards = currCarouselInfo.allCardsSorted;
+    if (currCarouselInfo.currentCard?._id === newCard._id) return; //newCard is already shown
     let index = cards?.findIndex((card) => card._id === newCard._id);
     this.selectSlide(index);
   }
 
   private selectSlide(n: number) {
-    if (
-      this.carousel &&
-      this.cardsToShowInCarousel &&
-      n >= 0 &&
-      this.cardsToShowInCarousel.indexOf(this.allCards[n]) >= 0
-    ) {
-      if (this.formMode != 'edit') {
-        this.carousel.select(String(this.cardsToShowInCarousel.indexOf(this.allCards[n])));
-      } else {
-        this.showRejection();
-      }
+    let currCarouselInfo = this.carouselInfo$.getValue();
+    if (!this.carousel || !this.cardsToShowInCarousel || n < 0) return;
+    if (this.formMode == 'edit') {
+      this.showRejection('Du musst erst die Bearbeitung der Karteikarte abschließen');
+      return;
+    }
+    let slideIndex = this.cardsToShowInCarousel.indexOf(currCarouselInfo.allCardsSorted[n]);
+    if (slideIndex >= 0) {
+      this.carousel.select(slideIndex.toString());
     } else {
-      if (this.formMode != 'edit') {
-        this.initCarouselCards(n);
-      } else {
-        this.showRejection();
-      }
+      this.initCarouselCards(n);
     }
   }
 
   // function which displays infos to the user that an action is not allowed
   private showRejection(message?: string) {
     if (!message) {
-      message = 'Du musst erst die Bearbeitung der Karteikarte abschließen';
+      message = 'Unerlaubt';
     }
     if (this.formMode == 'edit') {
       setTimeout(() => {
