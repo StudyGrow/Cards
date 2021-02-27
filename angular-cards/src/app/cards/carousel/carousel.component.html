@@ -24,6 +24,26 @@
     >
       <mat-icon>shuffle</mat-icon>
     </button>
+    <button
+      mat-icon-button
+      matTooltip="Erste Karte"
+      matTooltipPosition="above"
+      aria-label="zufall"
+      (click)="selectSlide(0)"
+      [disabled]="formMode == 'edit' || !cardsToShowInCarousel || cardsToShowInCarousel.length == 0"
+    >
+      <mat-icon>first_page</mat-icon>
+    </button>
+    <button
+      mat-icon-button
+      matTooltip="Letzte Karte"
+      matTooltipPosition="above"
+      aria-label="zufall"
+      (click)="selectSlide(undefined)"
+      [disabled]="formMode == 'edit' || !cardsToShowInCarousel || cardsToShowInCarousel.length == 0"
+    >
+      <mat-icon>last_page</mat-icon>
+    </button>
 
     <button
       *ngIf="authorized$ | async"

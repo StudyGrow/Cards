@@ -447,8 +447,9 @@ export class CarouselComponent implements OnInit, OnDestroy {
     this.selectSlide(index);
   }
 
-  private selectSlide(n: number) {
+  selectSlide(n?: number) {
     let currCarouselInfo = this.carouselInfo$.getValue();
+    if (n === undefined) n = currCarouselInfo.allCardsSorted.length - 1;
 
     if (!this.carousel || !this.cardsToShowInCarousel || n < 0) return;
     if (this.formMode == 'edit') {
