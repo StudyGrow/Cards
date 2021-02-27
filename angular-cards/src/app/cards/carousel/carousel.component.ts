@@ -256,10 +256,11 @@ export class CarouselComponent implements OnInit, OnDestroy {
 
   //function to calculate random index and select the slide with that index
   showRandomCard() {
+    let state = { ...this.carouselInfo$.getValue() }; //copy state
     let rand: number = this.activeSlide;
     //prevent infinite recalculations
     for (let count = 0; count < 5 && rand == this.activeSlide; count++) {
-      rand = Math.floor(Math.random() * this.cardCount); //random Cardindex
+      rand = Math.floor(Math.random() * state.allCardsSorted.length); //random Cardindex
     }
     this.selectSlide(rand);
   }
@@ -476,6 +477,12 @@ export class CarouselComponent implements OnInit, OnDestroy {
     let current = this.carouselInfo$.getValue().currentCard;
     let all = this.carouselInfo$.getValue().allCardsSorted;
     return all.indexOf(current) == 0;
+  }
+
+  isLast() {
+    let current = this.carouselInfo$.getValue().currentCard;
+    let all = this.carouselInfo$.getValue().allCardsSorted;
+    return all.indexOf(current) == all.length - 1;
   }
 
   // function which displays infos to the user that an action is not allowed

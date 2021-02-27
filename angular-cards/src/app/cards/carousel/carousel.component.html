@@ -61,7 +61,7 @@
       </ng-template>
     </ngb-carousel>
   </div>
-  <a id="right" class="navig col" (click)="goToNext()" aria-label="nächste karte">
+  <a id="right" class="navig col" *ngIf="!isLast()" (click)="goToNext()" aria-label="nächste karte">
     <mat-icon>keyboard_arrow_right</mat-icon>
   </a>
 </div>
