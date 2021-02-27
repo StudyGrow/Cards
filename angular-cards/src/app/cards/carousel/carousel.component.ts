@@ -200,14 +200,14 @@ export class CarouselComponent implements OnInit, OnDestroy {
     let state = { ...this.carouselInfo$.getValue() }; //copy state
 
     state.start = index;
-    if (state.allCardsSortedAndFiltered?.length > index + this.chunkSize) {
+    if (state.allCardsSorted?.length > index + this.chunkSize) {
       state.end = index + this.chunkSize;
     } else {
-      state.end = state.allCardsSortedAndFiltered?.length;
+      state.end = state.allCardsSorted?.length;
     }
 
-    if (state.allCardsSortedAndFiltered?.length > index) {
-      state.currentCard = state.allCardsSortedAndFiltered[index];
+    if (state.allCardsSorted?.length > index) {
+      state.currentCard = state.allCardsSorted[index];
       state.currentIndex = state.start;
     }
     state.updateAt = new Date();
@@ -216,7 +216,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
 
     this.cardsToShowInCarousel = null;
     setTimeout(() => {
-      this.cardsToShowInCarousel = state.allCardsSortedAndFiltered?.slice(state.start, state.end) || [];
+      this.cardsToShowInCarousel = state.allCardsSorted?.slice(state.start, state.end) || [];
       setTimeout(() => {
         this.activeSlide = index || 0;
         if (this.carousel) this.carousel.select(index.toString());
@@ -454,6 +454,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
     if (slideIndex >= 0) {
       this.carousel.select(slideIndex.toString());
     } else {
+      console.log("does init")
       this.initCarouselCards(n);
     }
   }
