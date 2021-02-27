@@ -8,12 +8,7 @@ import { Store } from '@ngrx/store';
 
 import { setFormMode, changeTab, changeSorting, updateCarouselInfo } from 'src/app/store/actions/StateActions';
 
-import {
-  debounceTime,
-  distinctUntilChanged,
-  distinctUntilKeyChanged,
-  map,
-} from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, distinctUntilKeyChanged, map } from 'rxjs/operators';
 
 import { NgbCarousel, NgbSlideEvent } from '@ng-bootstrap/ng-bootstrap';
 import { NotificationsService } from 'src/app/services/notifications.service';
@@ -183,7 +178,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
       });
     this.subscriptions$.push(sub);
 
-    sub = this.newCardToSet$.pipe(debounceTime(70)).subscribe((card) => this.handleNewCard(card));
+    sub = this.newCardToSet$.pipe(debounceTime(100)).subscribe((card) => this.handleNewCard(card));
     this.subscriptions$.push(sub);
   }
 
@@ -192,7 +187,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
    * For each subsequent call nothing will happen -> use refreshCarouselCards for that
    * Pass index of card which should be displayed initially in reference to the allCards array
    */
-  initCarouselCards(index: number) {
+  async initCarouselCards(index: number) {
     let state = { ...this.carouselInfo$.getValue() }; //copy state
 
     state.start = index;
@@ -212,11 +207,17 @@ export class CarouselComponent implements OnInit, OnDestroy {
 
     this.cardsToShowInCarousel = null;
     this.cardsToShowInCarousel = state.allCardsSorted?.slice(state.start, state.end) || [];
+    let indexInCardsToShowInCarousel;
+    if (state.allCardsSorted) {
+      indexInCardsToShowInCarousel = this.cardsToShowInCarousel?.indexOf(state.allCardsSorted[index]);
+    } else {
+      indexInCardsToShowInCarousel = 0;
+    }
     setTimeout(() => {
-      setTimeout(() => {
-        this.activeSlide = index || 0;
-        if (this.carousel) this.carousel.select(index.toString());
-      }, 10);
+        this.activeSlide = indexInCardsToShowInCarousel || 0;
+        if (this.carousel) {this.carousel.select(indexInCardsToShowInCarousel.toString());
+          document.getElementById('slide-' + String(indexInCardsToShowInCarousel)).classList.add('active');
+        }
     }, 50);
   }
 
