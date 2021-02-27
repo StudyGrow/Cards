@@ -276,53 +276,52 @@ export class CarouselComponent implements OnInit, OnDestroy {
       this.formMode != 'edit'
     ) {
       let state = { ...this.carouselInfo$.getValue() };
+      if (this.cardsToShowInCarousel.indexOf(state.currentCard) < 0) return;
       // check if prev card is already present in cardsToShowInCarousel, then go simply prev in carousel
-      if (
-        this.cardsToShowInCarousel[this.cardsToShowInCarousel.indexOf(state.currentCard) - 1] != undefined &&
-        this.cardsToShowInCarousel[this.cardsToShowInCarousel.indexOf(state.currentCard) - 1] ==
-          { ...this.carouselInfo$.getValue() }.allCardsSorted[
-            { ...this.carouselInfo$.getValue() }.allCardsSorted.indexOf(state.currentCard) - 1
-          ]
-      ) {
+      let predecessorInCarousel = this.cardsToShowInCarousel[this.cardsToShowInCarousel.indexOf(state.currentCard) - 1];
+      let desiredPredecessor = state.allCardsSorted[state.allCardsSorted.indexOf(state.currentCard) - 1];
+      if (predecessorInCarousel && predecessorInCarousel._id === desiredPredecessor._id) {
         this.carousel.prev();
       }
-      // check if current card is the first one so that going prev should go to the last card
+      // check if current card is the first one so that going prev should go to the last card. We dont want to cycle the carousel so we show rejection
       else if (
-        { ...this.carouselInfo$.getValue() }.allCardsSorted.indexOf(
+        state.allCardsSorted.indexOf(
           this.cardsToShowInCarousel[this.cardsToShowInCarousel.indexOf(state.currentCard)]
         ) == 0
       ) {
-        var newChunk = { ...this.carouselInfo$.getValue() }.allCardsSorted.slice(
-          { ...this.carouselInfo$.getValue() }.allCardsSorted.length - 5,
-          { ...this.carouselInfo$.getValue() }.allCardsSorted.length
-        );
-        newChunk = this.cardsToShowInCarousel.concat(newChunk);
-        newChunk = [...new Set(newChunk)];
-        var sortedReference = { ...this.carouselInfo$.getValue() }.allCardsSorted;
-        newChunk.sort(function (a, b) {
-          return sortedReference.indexOf(a) - sortedReference.indexOf(b);
-        });
-        this.cardsToShowInCarousel = await newChunk;
-        setTimeout(() => {
-          this.carousel.select(String(this.cardsToShowInCarousel.length - 1));
-        }, 100);
+        // var newChunk = { ...this.carouselInfo$.getValue() }.allCardsSorted.slice(
+        //   { ...this.carouselInfo$.getValue() }.allCardsSorted.length - 5,
+        //   { ...this.carouselInfo$.getValue() }.allCardsSorted.length
+        // );
+        // newChunk = this.cardsToShowInCarousel.concat(newChunk);
+        // newChunk = [...new Set(newChunk)];
+        // var sortedReference = { ...this.carouselInfo$.getValue() }.allCardsSorted;
+        // newChunk.sort(function (a, b) {
+        //   return sortedReference.indexOf(a) - sortedReference.indexOf(b);
+        // });
+        // this.cardsToShowInCarousel = await newChunk;
+        // setTimeout(() => {
+        //   this.carousel.select(String(this.cardsToShowInCarousel.length - 1));
+        // }, 100);
+        this.showRejection();
       }
       // else load new chunk and go prev
       else {
-        var end = { ...this.carouselInfo$.getValue() }.allCardsSorted.indexOf(state.currentCard);
+        let end = state.allCardsSorted.indexOf(state.currentCard);
+        let newChunk;
         if (end - this.chunkSize < 0) {
-          var newChunk = { ...this.carouselInfo$.getValue() }.allCardsSorted.slice(0, end);
+          newChunk = state.allCardsSorted.slice(0, end);
         } else {
-          var newChunk = { ...this.carouselInfo$.getValue() }.allCardsSorted.slice(end - this.chunkSize, end);
+          newChunk = state.allCardsSorted.slice(end - this.chunkSize, end);
         }
         newChunk = this.cardsToShowInCarousel.concat(newChunk);
         newChunk = [...new Set(newChunk)];
-        var sortedReference = { ...this.carouselInfo$.getValue() }.allCardsSorted;
-        newChunk.sort(function (a, b) {
-          return sortedReference.indexOf(a) - sortedReference.indexOf(b);
+        let sortedReference = state.allCardsSorted;
+        newChunk.sort((a: any, b: any) => {
+          sortedReference.indexOf(a) - sortedReference.indexOf(b);
         });
         this.cardsToShowInCarousel = await newChunk;
-        this.carousel.activeId = String(this.cardsToShowInCarousel.indexOf(state.currentCard));
+
         setTimeout(() => {
           this.carousel.prev();
         }, 100);
@@ -357,17 +356,17 @@ export class CarouselComponent implements OnInit, OnDestroy {
         ) ==
         { ...this.carouselInfo$.getValue() }.allCardsSorted.length - 1
       ) {
-        var begin = 0;
-        var end = 0;
+        let begin = 0;
+        let end = 0;
         if (begin + this.chunkSize > { ...this.carouselInfo$.getValue() }.allCardsSorted.length) {
           end = { ...this.carouselInfo$.getValue() }.allCardsSorted.length;
         } else {
           end = begin + this.chunkSize;
         }
-        var newChunk = { ...this.carouselInfo$.getValue() }.allCardsSorted.slice(begin, end);
+        let newChunk = { ...this.carouselInfo$.getValue() }.allCardsSorted.slice(begin, end);
         newChunk = await this.cardsToShowInCarousel.concat(newChunk);
         newChunk = [...new Set(newChunk)];
-        var sortedReference = { ...this.carouselInfo$.getValue() }.allCardsSorted;
+        let sortedReference = { ...this.carouselInfo$.getValue() }.allCardsSorted;
         newChunk = await newChunk.sort(function (a, b) {
           return sortedReference.indexOf(a) - sortedReference.indexOf(b);
         });
@@ -377,17 +376,17 @@ export class CarouselComponent implements OnInit, OnDestroy {
           this.carousel.select('0');
         }, 100);
       } else {
-        var begin = { ...this.carouselInfo$.getValue() }.allCardsSorted.indexOf(state.currentCard) + 1;
-        var end = 0;
+        let begin = { ...this.carouselInfo$.getValue() }.allCardsSorted.indexOf(state.currentCard) + 1;
+        let end = 0;
         if (begin + this.chunkSize > { ...this.carouselInfo$.getValue() }.allCardsSorted.length) {
           end = { ...this.carouselInfo$.getValue() }.allCardsSorted.length;
         } else {
           end = begin + this.chunkSize;
         }
-        var newChunk = { ...this.carouselInfo$.getValue() }.allCardsSorted.slice(begin, end);
+        let newChunk = { ...this.carouselInfo$.getValue() }.allCardsSorted.slice(begin, end);
         newChunk = await this.cardsToShowInCarousel.concat(newChunk);
         newChunk = [...new Set(newChunk)];
-        var sortedReference = { ...this.carouselInfo$.getValue() }.allCardsSorted;
+        let sortedReference = { ...this.carouselInfo$.getValue() }.allCardsSorted;
         newChunk = await newChunk.sort(function (a, b) {
           return sortedReference.indexOf(a) - sortedReference.indexOf(b);
         });
