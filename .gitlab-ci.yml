@@ -13,7 +13,7 @@ deploy-beta:
   script:
   - cd ~/project-beta
   - git fetch
-  - git pull origin master --force
+  - git pull origin develop --force
   - git push heroku master
   only: 
     - develop
