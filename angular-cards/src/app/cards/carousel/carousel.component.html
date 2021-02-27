@@ -40,13 +40,7 @@
   </div>
 </div>
 <div class="row" id="carousel-row" *ngIf="cardsToShowInCarousel?.length > 0" [@fadeInOnEnter]>
-  <a
-    id="left"
-    class="navig col"
-    aria-label="vorherige karte"
-
-    (click)="goToPrev()"
-  >
+  <a id="left" class="navig col" aria-label="vorherige karte" *ngIf="!isFirst()" (click)="goToPrev()">
     <mat-icon>keyboard_arrow_left</mat-icon>
   </a>
   <div id="carousel">
@@ -67,13 +61,7 @@
       </ng-template>
     </ngb-carousel>
   </div>
-  <a
-    id="right"
-    class="navig col"
-
-    (click)="goToNext()"
-    aria-label="nächste karte"
-  >
+  <a id="right" class="navig col" (click)="goToNext()" aria-label="nächste karte">
     <mat-icon>keyboard_arrow_right</mat-icon>
   </a>
 </div>

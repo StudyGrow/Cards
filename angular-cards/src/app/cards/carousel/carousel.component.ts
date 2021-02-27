@@ -61,6 +61,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
   // private allCards: Card[]; //array of all the cards
   cardsToShowInCarousel: Card[]; //array of cards to show in carousel
   private readonly carouselInfo$ = new BehaviorSubject<CarouselInfo>(new CarouselInfo());
+  currentCard$ = this.carouselInfo$.asObservable().pipe(map((info) => info.currentCard));
 
   loading: boolean;
 
@@ -464,6 +465,12 @@ export class CarouselComponent implements OnInit, OnDestroy {
     } else {
       this.initCarouselCards(n);
     }
+  }
+
+  isFirst() {
+    let current = this.carouselInfo$.getValue().currentCard;
+    let all = this.carouselInfo$.getValue().allCardsSorted;
+    return all.indexOf(current) == 0;
   }
 
   // function which displays infos to the user that an action is not allowed
