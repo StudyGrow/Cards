@@ -8,7 +8,7 @@ import { Store } from '@ngrx/store';
 
 import { setFormMode, changeTab, changeSorting, updateCarouselInfo } from 'src/app/store/actions/StateActions';
 
-import { debounceTime, distinctUntilChanged, distinctUntilKeyChanged, map } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, distinctUntilKeyChanged, map, tap } from 'rxjs/operators';
 
 import { NgbCarousel, NgbSlideEvent } from '@ng-bootstrap/ng-bootstrap';
 import { NotificationsService } from 'src/app/services/notifications.service';
@@ -164,11 +164,6 @@ export class CarouselComponent implements OnInit, OnDestroy {
     //observable which holds the final cards which should be displayed in the carousel (filtered and sorted)
     this.cardsData$ = combineLatest([this.store.select(CardsSortedAndFiltered), lastChanges$]).pipe(debounceTime(5));
 
-    let activeIndex$ = this.carouselInfo$.asObservable().pipe(
-      map((info) => info.currentIndex),
-      distinctUntilChanged()
-    );
-
     sub = combineLatest([this.store.select(CardsSorted), this.store.select(CardsSortedAndFiltered), lastChanges$])
       // .pipe(debounceTime(5))
       .subscribe(([allCardsSorted, allCardsSortedAndFiltered, changes]) => {
@@ -185,6 +180,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
     this.subscriptions$.push(sub);
 
     sub = this.newCardToSet$.pipe(debounceTime(170)).subscribe((card) => this.handleNewCard(card));
+    this.newCardToSet$.pipe(tap((c) => console.log(c)));
     this.subscriptions$.push(sub);
   }
 
@@ -438,8 +434,8 @@ export class CarouselComponent implements OnInit, OnDestroy {
    * @param cards available cards (currently filtered by tags)
    */
   private handleNewCard(newCard: Card) {
-    if (!newCard) return;
     let currCarouselInfo = this.carouselInfo$.getValue();
+    if (!newCard && currCarouselInfo.allCardsSorted?.length > 0) newCard = currCarouselInfo.allCardsSorted[0];
     let cards = currCarouselInfo.allCardsSorted;
     // if (currCarouselInfo.currentCard?._id === newCard._id) return; //newCard is already shown
     let index = cards?.findIndex((card) => card._id === newCard._id);
