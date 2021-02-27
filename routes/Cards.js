@@ -57,7 +57,7 @@ router.get(
     if (req.isAuthenticated()) {
       userid = req.user._id;
     }
-
+    res.setHeader('Access-Control-Allow-Origin', '*');
     Promise.all([cards, vl, allVotes])
       .then(([cards, lecture, votes]) =>
         res.json({
