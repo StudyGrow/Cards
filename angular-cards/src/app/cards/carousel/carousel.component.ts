@@ -73,7 +73,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
   cardCount = 0; //counts the cards that are displayed in the carousel
   lastRefresh: number; // holds the timestamp at which the carousel was last updated
   activeSlide = 0; //holds the slide which is currently shown
-  readonly chunkSize = 20;
+  readonly chunkSize = 3;
   start: number;
   end: number;
 
@@ -342,51 +342,56 @@ export class CarouselComponent implements OnInit, OnDestroy {
       this.formMode != 'edit'
     ) {
       let state = { ...this.carouselInfo$.getValue() };
+      let successorInCarousel = this.cardsToShowInCarousel[this.cardsToShowInCarousel.indexOf(state.currentCard) + 1];
+      let desiredSuccessorInAllCards = state.allCardsSorted[
+        state.allCardsSorted.indexOf(state.currentCard) + 1
+      ];
+      let indexOfLastCardInAllCards =  state.allCardsSorted.length - 1;
+      let currentCardIndexAccordingToAllCard = state.allCardsSorted.indexOf(
+        this.cardsToShowInCarousel[this.cardsToShowInCarousel.indexOf(state.currentCard)]
+      );
       if (
-        this.cardsToShowInCarousel[this.cardsToShowInCarousel.indexOf(state.currentCard) + 1] != undefined &&
-        this.cardsToShowInCarousel[this.cardsToShowInCarousel.indexOf(state.currentCard) + 1] ==
-          { ...this.carouselInfo$.getValue() }.allCardsSorted[
-            { ...this.carouselInfo$.getValue() }.allCardsSorted.indexOf(state.currentCard) + 1
-          ]
+        successorInCarousel != undefined &&
+        successorInCarousel._id ==
+          desiredSuccessorInAllCards._id
       ) {
         this.carousel.select(String(this.cardsToShowInCarousel.indexOf(state.currentCard) + 1));
       } else if (
-        { ...this.carouselInfo$.getValue() }.allCardsSorted.indexOf(
-          this.cardsToShowInCarousel[this.cardsToShowInCarousel.indexOf(state.currentCard)]
-        ) ==
-        { ...this.carouselInfo$.getValue() }.allCardsSorted.length - 1
+        currentCardIndexAccordingToAllCard == indexOfLastCardInAllCards
+       
       ) {
-        var begin = 0;
-        var end = 0;
-        if (begin + this.chunkSize > { ...this.carouselInfo$.getValue() }.allCardsSorted.length) {
-          end = { ...this.carouselInfo$.getValue() }.allCardsSorted.length;
-        } else {
-          end = begin + this.chunkSize;
-        }
-        var newChunk = { ...this.carouselInfo$.getValue() }.allCardsSorted.slice(begin, end);
-        newChunk = await this.cardsToShowInCarousel.concat(newChunk);
-        newChunk = [...new Set(newChunk)];
-        var sortedReference = { ...this.carouselInfo$.getValue() }.allCardsSorted;
-        newChunk = await newChunk.sort(function (a, b) {
-          return sortedReference.indexOf(a) - sortedReference.indexOf(b);
-        });
-        this.cardsToShowInCarousel = await newChunk;
-        setTimeout(() => {
-          document.getElementById('slide-' + String(this.cardsToShowInCarousel.length - 1)).classList.remove('active');
-          this.carousel.select('0');
-        }, 100);
+        this.showRejection();
+        // var begin = 0;
+        // var end = 0;
+        // if (begin + this.chunkSize > { ...this.carouselInfo$.getValue() }.allCardsSorted.length) {
+        //   end = { ...this.carouselInfo$.getValue() }.allCardsSorted.length;
+        // } else {
+        //   end = begin + this.chunkSize;
+        // }
+        // var newChunk = { ...this.carouselInfo$.getValue() }.allCardsSorted.slice(begin, end);
+        // newChunk = await this.cardsToShowInCarousel.concat(newChunk);
+        // newChunk = [...new Set(newChunk)];
+        // var sortedReference = { ...this.carouselInfo$.getValue() }.allCardsSorted;
+        // newChunk = await newChunk.sort(function (a, b) {
+        //   return sortedReference.indexOf(a) - sortedReference.indexOf(b);
+        // });
+        // this.cardsToShowInCarousel = await newChunk;
+        // setTimeout(() => {
+        //   document.getElementById('slide-' + String(this.cardsToShowInCarousel.length - 1)).classList.remove('active');
+        //   this.carousel.select('0');
+        // }, 100);
       } else {
-        var begin = { ...this.carouselInfo$.getValue() }.allCardsSorted.indexOf(state.currentCard) + 1;
+        var begin = state.allCardsSorted.indexOf(state.currentCard) + 1;
         var end = 0;
-        if (begin + this.chunkSize > { ...this.carouselInfo$.getValue() }.allCardsSorted.length) {
-          end = { ...this.carouselInfo$.getValue() }.allCardsSorted.length;
+        if (begin + this.chunkSize > state.allCardsSorted.length) {
+          end = state.allCardsSorted.length;
         } else {
           end = begin + this.chunkSize;
         }
-        var newChunk = { ...this.carouselInfo$.getValue() }.allCardsSorted.slice(begin, end);
+        var newChunk = state.allCardsSorted.slice(begin, end);
         newChunk = await this.cardsToShowInCarousel.concat(newChunk);
         newChunk = [...new Set(newChunk)];
-        var sortedReference = { ...this.carouselInfo$.getValue() }.allCardsSorted;
+        var sortedReference = state.allCardsSorted;
         newChunk = await newChunk.sort(function (a, b) {
           return sortedReference.indexOf(a) - sortedReference.indexOf(b);
         });
