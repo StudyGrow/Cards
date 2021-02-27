@@ -173,7 +173,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
     this.cardsData$ = combineLatest([this.store.select(CardsSortedAndFiltered), lastChanges$]).pipe(debounceTime(5));
 
     sub = combineLatest([this.store.select(CardsSorted), this.store.select(CardsSortedAndFiltered), lastChanges$])
-      .pipe(debounceTime(5))
+      // .pipe(debounceTime(5))
       .subscribe(([allCardsSorted, allCardsSortedAndFiltered, changes]) => {
         let carouselState = { ...this.carouselInfo$.getValue() };
         if (!carouselState.updateAt || carouselState.updateAt.getTime() < changes) {
@@ -187,7 +187,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
       });
     this.subscriptions$.push(sub);
 
-    sub = this.newCardToSet$.pipe(debounceTime(5)).subscribe((card) => this.handleNewCard(card));
+    sub = this.newCardToSet$.pipe(debounceTime(70)).subscribe((card) => this.handleNewCard(card));
     this.subscriptions$.push(sub);
   }
 
@@ -215,13 +215,13 @@ export class CarouselComponent implements OnInit, OnDestroy {
     this.carouselInfo$.next(state);
 
     this.cardsToShowInCarousel = null;
+    this.cardsToShowInCarousel = state.allCardsSorted?.slice(state.start, state.end) || [];
     setTimeout(() => {
-      this.cardsToShowInCarousel = state.allCardsSorted?.slice(state.start, state.end) || [];
       setTimeout(() => {
         this.activeSlide = index || 0;
         if (this.carousel) this.carousel.select(index.toString());
       }, 10);
-    }, 150);
+    }, 50);
   }
 
   /**
@@ -263,21 +263,33 @@ export class CarouselComponent implements OnInit, OnDestroy {
     /*
      * REPLACE allCards with {...this.carouselInfo$.getValue()}.allCardsSorted or {...this.carouselInfo$.getValue()}.allCardsSortedAndFiltered
      */
-    if (this.carousel && this.cardsToShowInCarousel && this.cardsToShowInCarousel.length > 1 && this.formMode != 'edit') {
+    if (
+      this.carousel &&
+      this.cardsToShowInCarousel &&
+      this.cardsToShowInCarousel.length > 1 &&
+      this.formMode != 'edit'
+    ) {
       let state = { ...this.carouselInfo$.getValue() };
       // check if prev card is already present in cardsToShowInCarousel, then go simply prev in carousel
       if (
         this.cardsToShowInCarousel[this.cardsToShowInCarousel.indexOf(state.currentCard) - 1] != undefined &&
         this.cardsToShowInCarousel[this.cardsToShowInCarousel.indexOf(state.currentCard) - 1] ==
-        { ...this.carouselInfo$.getValue() }.allCardsSorted[{ ...this.carouselInfo$.getValue() }.allCardsSorted.indexOf(state.currentCard) - 1]
+          { ...this.carouselInfo$.getValue() }.allCardsSorted[
+            { ...this.carouselInfo$.getValue() }.allCardsSorted.indexOf(state.currentCard) - 1
+          ]
       ) {
         this.carousel.prev();
       }
       // check if current card is the first one so that going prev should go to the last card
       else if (
-        { ...this.carouselInfo$.getValue() }.allCardsSorted.indexOf(this.cardsToShowInCarousel[this.cardsToShowInCarousel.indexOf(state.currentCard)]) == 0
+        { ...this.carouselInfo$.getValue() }.allCardsSorted.indexOf(
+          this.cardsToShowInCarousel[this.cardsToShowInCarousel.indexOf(state.currentCard)]
+        ) == 0
       ) {
-        var newChunk = { ...this.carouselInfo$.getValue() }.allCardsSorted.slice({ ...this.carouselInfo$.getValue() }.allCardsSorted.length - 5, { ...this.carouselInfo$.getValue() }.allCardsSorted.length);
+        var newChunk = { ...this.carouselInfo$.getValue() }.allCardsSorted.slice(
+          { ...this.carouselInfo$.getValue() }.allCardsSorted.length - 5,
+          { ...this.carouselInfo$.getValue() }.allCardsSorted.length
+        );
         newChunk = this.cardsToShowInCarousel.concat(newChunk);
         newChunk = [...new Set(newChunk)];
         var sortedReference = { ...this.carouselInfo$.getValue() }.allCardsSorted;
@@ -336,7 +348,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
         this.cardsToShowInCarousel[this.cardsToShowInCarousel.indexOf(state.currentCard) + 1] != undefined &&
         this.cardsToShowInCarousel[this.cardsToShowInCarousel.indexOf(state.currentCard) + 1] ==
           { ...this.carouselInfo$.getValue() }.allCardsSorted[
-            ({ ...this.carouselInfo$.getValue() }.allCardsSorted).indexOf(state.currentCard) + 1
+            { ...this.carouselInfo$.getValue() }.allCardsSorted.indexOf(state.currentCard) + 1
           ]
       ) {
         this.carousel.select(String(this.cardsToShowInCarousel.indexOf(state.currentCard) + 1));
@@ -434,17 +446,18 @@ export class CarouselComponent implements OnInit, OnDestroy {
    */
   private handleNewCard(newCard: Card) {
     if (!newCard) return;
-    console.log("newCard")
-    console.log(newCard)
+    console.log('newCard');
+    console.log(newCard);
     let currCarouselInfo = this.carouselInfo$.getValue();
     let cards = currCarouselInfo.allCardsSorted;
-    if (currCarouselInfo.currentCard?._id === newCard._id) return; //newCard is already shown
+    // if (currCarouselInfo.currentCard?._id === newCard._id) return; //newCard is already shown
     let index = cards?.findIndex((card) => card._id === newCard._id);
     this.selectSlide(index);
   }
 
   private selectSlide(n: number) {
     let currCarouselInfo = this.carouselInfo$.getValue();
+
     if (!this.carousel || !this.cardsToShowInCarousel || n < 0) return;
     if (this.formMode == 'edit') {
       this.showRejection('Du musst erst die Bearbeitung der Karteikarte abschließen');
@@ -454,7 +467,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
     if (slideIndex >= 0) {
       this.carousel.select(slideIndex.toString());
     } else {
-      console.log("does init")
+      console.log('does init');
       this.initCarouselCards(n);
     }
   }
