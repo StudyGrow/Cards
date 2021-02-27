@@ -183,7 +183,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
       });
     this.subscriptions$.push(sub);
 
-    sub = this.newCardToSet$.pipe(debounceTime(100)).subscribe((card) => this.handleNewCard(card));
+    sub = this.newCardToSet$.pipe(debounceTime(170)).subscribe((card) => this.handleNewCard(card));
     this.subscriptions$.push(sub);
   }
 
