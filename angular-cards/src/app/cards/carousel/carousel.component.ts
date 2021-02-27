@@ -244,6 +244,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
     newState.end = prevState.end;
     newState.start = prevState.start;
     newState.updateAt = new Date();
+    newState.allCardsSorted = { ...this.carouselInfo$.getValue() }.allCardsSorted;
     this.carouselInfo$.next(newState);
   }
 
@@ -262,24 +263,24 @@ export class CarouselComponent implements OnInit, OnDestroy {
     /*
      * REPLACE allCards with {...this.carouselInfo$.getValue()}.allCardsSorted or {...this.carouselInfo$.getValue()}.allCardsSortedAndFiltered
      */
-    if (this.carousel && this.cardsToShowInCarousel && this.cardCount > 1 && this.formMode != 'edit') {
+    if (this.carousel && this.cardsToShowInCarousel && this.cardsToShowInCarousel.length > 1 && this.formMode != 'edit') {
       let state = { ...this.carouselInfo$.getValue() };
       // check if prev card is already present in cardsToShowInCarousel, then go simply prev in carousel
       if (
         this.cardsToShowInCarousel[this.cardsToShowInCarousel.indexOf(state.currentCard) - 1] != undefined &&
         this.cardsToShowInCarousel[this.cardsToShowInCarousel.indexOf(state.currentCard) - 1] ==
-          this.allCards[this.allCards.indexOf(state.currentCard) - 1]
+        { ...this.carouselInfo$.getValue() }.allCardsSorted[{ ...this.carouselInfo$.getValue() }.allCardsSorted.indexOf(state.currentCard) - 1]
       ) {
         this.carousel.prev();
       }
       // check if current card is the first one so that going prev should go to the last card
       else if (
-        this.allCards.indexOf(this.cardsToShowInCarousel[this.cardsToShowInCarousel.indexOf(state.currentCard)]) == 0
+        { ...this.carouselInfo$.getValue() }.allCardsSorted.indexOf(this.cardsToShowInCarousel[this.cardsToShowInCarousel.indexOf(state.currentCard)]) == 0
       ) {
-        var newChunk = this.allCards.slice(this.allCards.length - 5, this.allCards.length);
+        var newChunk = { ...this.carouselInfo$.getValue() }.allCardsSorted.slice({ ...this.carouselInfo$.getValue() }.allCardsSorted.length - 5, { ...this.carouselInfo$.getValue() }.allCardsSorted.length);
         newChunk = this.cardsToShowInCarousel.concat(newChunk);
         newChunk = [...new Set(newChunk)];
-        var sortedReference = this.allCards;
+        var sortedReference = { ...this.carouselInfo$.getValue() }.allCardsSorted;
         newChunk.sort(function (a, b) {
           return sortedReference.indexOf(a) - sortedReference.indexOf(b);
         });
@@ -290,15 +291,15 @@ export class CarouselComponent implements OnInit, OnDestroy {
       }
       // else load new chunk and go prev
       else {
-        var end = this.allCards.indexOf(state.currentCard);
+        var end = { ...this.carouselInfo$.getValue() }.allCardsSorted.indexOf(state.currentCard);
         if (end - this.chunkSize < 0) {
-          var newChunk = this.allCards.slice(0, end);
+          var newChunk = { ...this.carouselInfo$.getValue() }.allCardsSorted.slice(0, end);
         } else {
-          var newChunk = this.allCards.slice(end - this.chunkSize, end);
+          var newChunk = { ...this.carouselInfo$.getValue() }.allCardsSorted.slice(end - this.chunkSize, end);
         }
         newChunk = this.cardsToShowInCarousel.concat(newChunk);
         newChunk = [...new Set(newChunk)];
-        var sortedReference = this.allCards;
+        var sortedReference = { ...this.carouselInfo$.getValue() }.allCardsSorted;
         newChunk.sort(function (a, b) {
           return sortedReference.indexOf(a) - sortedReference.indexOf(b);
         });
@@ -317,29 +318,45 @@ export class CarouselComponent implements OnInit, OnDestroy {
     /*
      * REPLACE allCards with {...this.carouselInfo$.getValue()}.allCardsSorted or {...this.carouselInfo$.getValue()}.allCardsSortedAndFiltered
      */
-    if (this.carousel && this.cardsToShowInCarousel && this.cardCount > 1 && this.formMode != 'edit') {
+    console.log(this.carousel);
+    console.log(this.cardsToShowInCarousel);
+    console.log(this.cardCount);
+    console.log(this.cardsToShowInCarousel.length);
+    console.log(this.formMode);
+    console.log({ ...this.carouselInfo$.getValue() });
+    console.log({ ...this.carouselInfo$.getValue() }.allCardsSorted);
+    if (
+      this.carousel &&
+      this.cardsToShowInCarousel &&
+      this.cardsToShowInCarousel.length > 1 &&
+      this.formMode != 'edit'
+    ) {
       let state = { ...this.carouselInfo$.getValue() };
       if (
         this.cardsToShowInCarousel[this.cardsToShowInCarousel.indexOf(state.currentCard) + 1] != undefined &&
         this.cardsToShowInCarousel[this.cardsToShowInCarousel.indexOf(state.currentCard) + 1] ==
-          this.allCards[this.allCards.indexOf(state.currentCard) + 1]
+          { ...this.carouselInfo$.getValue() }.allCardsSorted[
+            ({ ...this.carouselInfo$.getValue() }.allCardsSorted).indexOf(state.currentCard) + 1
+          ]
       ) {
         this.carousel.select(String(this.cardsToShowInCarousel.indexOf(state.currentCard) + 1));
       } else if (
-        this.allCards.indexOf(this.cardsToShowInCarousel[this.cardsToShowInCarousel.indexOf(state.currentCard)]) ==
-        this.allCards.length - 1
+        { ...this.carouselInfo$.getValue() }.allCardsSorted.indexOf(
+          this.cardsToShowInCarousel[this.cardsToShowInCarousel.indexOf(state.currentCard)]
+        ) ==
+        { ...this.carouselInfo$.getValue() }.allCardsSorted.length - 1
       ) {
         var begin = 0;
         var end = 0;
-        if (begin + this.chunkSize > this.allCards.length) {
-          end = this.allCards.length;
+        if (begin + this.chunkSize > { ...this.carouselInfo$.getValue() }.allCardsSorted.length) {
+          end = { ...this.carouselInfo$.getValue() }.allCardsSorted.length;
         } else {
           end = begin + this.chunkSize;
         }
-        var newChunk = this.allCards.slice(begin, end);
+        var newChunk = { ...this.carouselInfo$.getValue() }.allCardsSorted.slice(begin, end);
         newChunk = await this.cardsToShowInCarousel.concat(newChunk);
         newChunk = [...new Set(newChunk)];
-        var sortedReference = this.allCards;
+        var sortedReference = { ...this.carouselInfo$.getValue() }.allCardsSorted;
         newChunk = await newChunk.sort(function (a, b) {
           return sortedReference.indexOf(a) - sortedReference.indexOf(b);
         });
@@ -349,17 +366,17 @@ export class CarouselComponent implements OnInit, OnDestroy {
           this.carousel.select('0');
         }, 100);
       } else {
-        var begin = this.allCards.indexOf(state.currentCard) + 1;
+        var begin = { ...this.carouselInfo$.getValue() }.allCardsSorted.indexOf(state.currentCard) + 1;
         var end = 0;
-        if (begin + this.chunkSize > this.allCards.length) {
-          end = this.allCards.length;
+        if (begin + this.chunkSize > { ...this.carouselInfo$.getValue() }.allCardsSorted.length) {
+          end = { ...this.carouselInfo$.getValue() }.allCardsSorted.length;
         } else {
           end = begin + this.chunkSize;
         }
-        var newChunk = this.allCards.slice(begin, end);
+        var newChunk = { ...this.carouselInfo$.getValue() }.allCardsSorted.slice(begin, end);
         newChunk = await this.cardsToShowInCarousel.concat(newChunk);
         newChunk = [...new Set(newChunk)];
-        var sortedReference = this.allCards;
+        var sortedReference = { ...this.carouselInfo$.getValue() }.allCardsSorted;
         newChunk = await newChunk.sort(function (a, b) {
           return sortedReference.indexOf(a) - sortedReference.indexOf(b);
         });
@@ -417,7 +434,8 @@ export class CarouselComponent implements OnInit, OnDestroy {
    */
   private handleNewCard(newCard: Card) {
     if (!newCard) return;
-
+    console.log("newCard")
+    console.log(newCard)
     let currCarouselInfo = this.carouselInfo$.getValue();
     let cards = currCarouselInfo.allCardsSorted;
     if (currCarouselInfo.currentCard?._id === newCard._id) return; //newCard is already shown
