@@ -326,13 +326,6 @@ export class CarouselComponent implements OnInit, OnDestroy {
     /*
      * REPLACE allCards with {...this.carouselInfo$.getValue()}.allCardsSorted or {...this.carouselInfo$.getValue()}.allCardsSortedAndFiltered
      */
-    console.log(this.carousel);
-    console.log(this.cardsToShowInCarousel);
-    console.log(this.cardCount);
-    console.log(this.cardsToShowInCarousel.length);
-    console.log(this.formMode);
-    console.log({ ...this.carouselInfo$.getValue() });
-    console.log({ ...this.carouselInfo$.getValue() }.allCardsSorted);
     if (
       this.carousel &&
       this.cardsToShowInCarousel &&
@@ -442,8 +435,6 @@ export class CarouselComponent implements OnInit, OnDestroy {
    */
   private handleNewCard(newCard: Card) {
     if (!newCard) return;
-    console.log('newCard');
-    console.log(newCard);
     let currCarouselInfo = this.carouselInfo$.getValue();
     let cards = currCarouselInfo.allCardsSorted;
     // if (currCarouselInfo.currentCard?._id === newCard._id) return; //newCard is already shown
@@ -463,7 +454,6 @@ export class CarouselComponent implements OnInit, OnDestroy {
     if (slideIndex >= 0) {
       this.carousel.select(slideIndex.toString());
     } else {
-      console.log('does init');
       this.initCarouselCards(n);
     }
   }
