@@ -12,15 +12,13 @@ import {
   debounceTime,
   distinctUntilChanged,
   distinctUntilKeyChanged,
-  filter,
   map,
-  withLatestFrom,
 } from 'rxjs/operators';
 
 import { NgbCarousel, NgbSlideEvent } from '@ng-bootstrap/ng-bootstrap';
 import { NotificationsService } from 'src/app/services/notifications.service';
 import { WarnMessage } from 'src/app/models/Notification';
-import { AppState, Data, Mode } from 'src/app/models/state';
+import { AppState } from 'src/app/models/state';
 
 import { MatBottomSheet, MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { sortOptions } from './sortOptions';
@@ -32,11 +30,9 @@ import {
   FormMode,
   CardsSortedAndFiltered,
   CardToShow,
-  DisplayedCards,
   UserId,
 } from 'src/app/store/selector';
 import { CarouselInfo } from 'src/app/models/CarouselInfo';
-import { D, Y } from '@angular/cdk/keycodes';
 
 @Component({
   selector: 'app-bottom-sheet',
