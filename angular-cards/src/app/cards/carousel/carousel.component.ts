@@ -8,12 +8,7 @@ import { Store } from '@ngrx/store';
 
 import { setFormMode, changeTab, changeSorting, updateCarouselInfo } from 'src/app/store/actions/StateActions';
 
-import {
-  debounceTime,
-  distinctUntilChanged,
-  distinctUntilKeyChanged,
-  map,
-} from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, distinctUntilKeyChanged, map } from 'rxjs/operators';
 
 import { NgbCarousel, NgbSlideEvent } from '@ng-bootstrap/ng-bootstrap';
 import { NotificationsService } from 'src/app/services/notifications.service';
@@ -168,6 +163,11 @@ export class CarouselComponent implements OnInit, OnDestroy {
     //observable which holds the final cards which should be displayed in the carousel (filtered and sorted)
     this.cardsData$ = combineLatest([this.store.select(CardsSortedAndFiltered), lastChanges$]).pipe(debounceTime(5));
 
+    let activeIndex$ = this.carouselInfo$.asObservable().pipe(
+      map((info) => info.currentIndex),
+      distinctUntilChanged()
+    );
+
     sub = combineLatest([this.store.select(CardsSorted), this.store.select(CardsSortedAndFiltered), lastChanges$])
       // .pipe(debounceTime(5))
       .subscribe(([allCardsSorted, allCardsSortedAndFiltered, changes]) => {
@@ -178,7 +178,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
           carouselState.allCardsSorted = allCardsSorted;
           carouselState.allCardsSortedAndFiltered = allCardsSortedAndFiltered;
           this.carouselInfo$.next(carouselState);
-          this.refreshCarouselCards();
+          this.initCarouselCards(carouselState.currentIndex);
         }
       });
     this.subscriptions$.push(sub);
@@ -193,6 +193,8 @@ export class CarouselComponent implements OnInit, OnDestroy {
    * Pass index of card which should be displayed initially in reference to the allCards array
    */
   initCarouselCards(index: number) {
+    if (!index) index = 0;
+
     let state = { ...this.carouselInfo$.getValue() }; //copy state
 
     state.start = index;
@@ -220,14 +222,14 @@ export class CarouselComponent implements OnInit, OnDestroy {
     }, 50);
   }
 
-  /**
-   * refreshes cards to show in carousel. This function is called in 2 scenarios
-   * - user tries to slide to card of new chunk
-   * - cards have changed in the store (e.g. user has added a card)
-   */
-  refreshCarouselCards() {
-    this.initCarouselCards(0);
-  }
+  // /**
+  //  * refreshes cards to show in carousel. This function is called in 2 scenarios
+  //  * - user tries to slide to card of new chunk
+  //  * - cards have changed in the store (e.g. user has added a card)
+  //  */
+  // refreshCarouselCards() {
+  //   this.initCarouselCards(0);
+  // }
 
   //this function updates the current slide index in the store and for the component
   onSlide(slideEvent: NgbSlideEvent) {
