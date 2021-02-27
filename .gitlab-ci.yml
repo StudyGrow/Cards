@@ -5,3 +5,15 @@ deploy:
   - git fetch
   - git pull origin master --force
   - git push heroku master
+  only: 
+    - master
+
+deploy-beta:
+  stage: deploy
+  script:
+  - cd ~/project-beta
+  - git fetch
+  - git pull origin develop --force
+  - git push heroku master
+  only: 
+    - develop
