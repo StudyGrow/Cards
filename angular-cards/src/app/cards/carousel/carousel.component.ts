@@ -225,7 +225,6 @@ export class CarouselComponent implements OnInit, OnDestroy {
 
       if (this.carousel) {
         this.carousel.select(indexInCardsToShowInCarousel.toString());
-        // document.getElementById('slide-' + String(indexInCardsToShowInCarousel)).classList.add('active');
       }
     }, 150);
   }
