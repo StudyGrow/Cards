@@ -9,7 +9,7 @@ import {
   setSuggestionsMode,
   resetFilter,
   changeTab,
-  showNewCard
+  showNewCard,
 } from 'src/app/store/actions/StateActions';
 
 import { CardsSorted, DisplayedCards, FormMode } from 'src/app/store/selector';
@@ -117,11 +117,11 @@ export class SearchBarComponent implements OnInit, OnDestroy {
       return;
     }
     this.store.dispatch(changeTab({ tab: 0 }));
+    this.store.dispatch(setSuggestionsMode({ hide: true }));
     let newCard = this.allCards.find((card) => card._id === id);
     // to always tell that something has been selected
-    this.store.dispatch(showNewCard({ card: null }));
+    // this.store.dispatch(showNewCard({ card: null }));
     this.store.dispatch(showNewCard({ card: newCard }));
-    this.store.dispatch(setSuggestionsMode({ hide: true }));
   }
 
   enabled = false;

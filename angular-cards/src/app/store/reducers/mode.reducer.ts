@@ -22,17 +22,22 @@ export const initialState: Mode = {
   sortType: SortType.DATE_ASC,
   startIndex: 0,
   endIndex: pageSize,
-  newCard:undefined
+  newCard: undefined,
 };
 
 //Reducer which will dispatch changes to the store
 const _modeReducer = createReducer(
   initialState,
-  on(StateActions.updateCarouselInfo, (state,{info}) => 
-     ({...state, currentCard:info.currentCard, activeIndex:info.currentIndex,endIndex:info.end, startIndex:info.start})
-  ),
-  on(StateActions.showNewCard, (state,{card}) => ({
-    ...state, newCard:card
+  on(StateActions.updateCarouselInfo, (state, { info }) => ({
+    ...state,
+    currentCard: info.currentCard,
+    activeIndex: info.currentIndex,
+    endIndex: info.end,
+    startIndex: info.start,
+  })),
+  on(StateActions.showNewCardSuccess, (state, { card }) => ({
+    ...state,
+    newCard: card,
   })),
   on(StateActions.changeTheme, (state, { theme }) =>
     theme === state.theme
@@ -100,6 +105,7 @@ const _modeReducer = createReducer(
   on(StateActions.changeSorting, (state, { sortType }) => ({
     ...state,
     sortType: sortType,
+    currentCard: initialState.currentCard,
     cardsChanged: new Date(),
   })),
   on(StateActions.resetCardsState, (state) => ({
