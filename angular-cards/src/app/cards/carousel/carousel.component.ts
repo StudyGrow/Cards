@@ -273,7 +273,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
     if (
       this.carousel &&
       this.cardsToShowInCarousel &&
-      this.cardsToShowInCarousel.length > 1 &&
+      this.cardsToShowInCarousel.length >= 1 &&
       this.formMode != 'edit'
     ) {
       let state = { ...this.carouselInfo$.getValue() };
@@ -318,11 +318,9 @@ export class CarouselComponent implements OnInit, OnDestroy {
         newChunk = this.cardsToShowInCarousel.concat(newChunk);
         newChunk = [...new Set(newChunk)];
         let sortedReference = state.allCardsSorted;
-        newChunk.sort((a: any, b: any) => {
-          sortedReference.indexOf(a) - sortedReference.indexOf(b);
-        });
+        newChunk = newChunk.sort((a: any, b: any) => sortedReference.indexOf(a) - sortedReference.indexOf(b));
         this.cardsToShowInCarousel = await newChunk;
-
+        this.carousel.activeId = String(this.cardsToShowInCarousel.indexOf(state.currentCard));
         setTimeout(() => {
           this.carousel.prev();
         }, 100);
@@ -339,7 +337,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
     if (
       this.carousel &&
       this.cardsToShowInCarousel &&
-      this.cardsToShowInCarousel.length > 1 &&
+      this.cardsToShowInCarousel.length >= 1 &&
       this.formMode != 'edit'
     ) {
       let state = { ...this.carouselInfo$.getValue() };
