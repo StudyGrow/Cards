@@ -78,7 +78,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
   cardCount = 0; //counts the cards that are displayed in the carousel
   lastRefresh: number; // holds the timestamp at which the carousel was last updated
   activeSlide = 0; //holds the slide which is currently shown
-  readonly chunkSize = 5;
+  readonly chunkSize = 20;
   start: number;
   end: number;
 

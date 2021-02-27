@@ -5,11 +5,13 @@ const router = express.Router();
 const auth = require("./authentication");
 //Get all lectures
 router.get("/", (req, res) => {
+  console.log(req.headers)
   req.services.lectures.getLectures((err, lectures) => {
     if (err) {
       console.log(err);
       res.status(501).send(err);
     } else {
+      res.setHeader('Access-Control-Allow-Origin', '*');
       res.status(200).send(lectures);
     }
   });
