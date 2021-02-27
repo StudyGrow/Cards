@@ -323,7 +323,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
         this.carousel.activeId = String(this.cardsToShowInCarousel.indexOf(state.currentCard));
         setTimeout(() => {
           this.carousel.prev();
-        }, 100);
+        }, 150);
       }
     } else {
       this.showRejection();
