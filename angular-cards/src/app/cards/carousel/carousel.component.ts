@@ -343,23 +343,14 @@ export class CarouselComponent implements OnInit, OnDestroy {
     ) {
       let state = { ...this.carouselInfo$.getValue() };
       let successorInCarousel = this.cardsToShowInCarousel[this.cardsToShowInCarousel.indexOf(state.currentCard) + 1];
-      let desiredSuccessorInAllCards = state.allCardsSorted[
-        state.allCardsSorted.indexOf(state.currentCard) + 1
-      ];
-      let indexOfLastCardInAllCards =  state.allCardsSorted.length - 1;
+      let desiredSuccessorInAllCards = state.allCardsSorted[state.allCardsSorted.indexOf(state.currentCard) + 1];
+      let indexOfLastCardInAllCards = state.allCardsSorted.length - 1;
       let currentCardIndexAccordingToAllCard = state.allCardsSorted.indexOf(
         this.cardsToShowInCarousel[this.cardsToShowInCarousel.indexOf(state.currentCard)]
       );
-      if (
-        successorInCarousel != undefined &&
-        successorInCarousel._id ==
-          desiredSuccessorInAllCards._id
-      ) {
+      if (successorInCarousel != undefined && successorInCarousel._id == desiredSuccessorInAllCards._id) {
         this.carousel.select(String(this.cardsToShowInCarousel.indexOf(state.currentCard) + 1));
-      } else if (
-        currentCardIndexAccordingToAllCard == indexOfLastCardInAllCards
-       
-      ) {
+      } else if (currentCardIndexAccordingToAllCard == indexOfLastCardInAllCards) {
         this.showRejection();
         // var begin = 0;
         // var end = 0;
@@ -389,13 +380,13 @@ export class CarouselComponent implements OnInit, OnDestroy {
           end = begin + this.chunkSize;
         }
         let newChunk = state.allCardsSorted.slice(begin, end);
-        newChunk = await this.cardsToShowInCarousel.concat(newChunk);
+        newChunk = this.cardsToShowInCarousel.concat(newChunk);
         newChunk = [...new Set(newChunk)];
         let sortedReference = state.allCardsSorted;
-        newChunk = await newChunk.sort(function (a, b) {
+        newChunk = newChunk.sort(function (a, b) {
           return sortedReference.indexOf(a) - sortedReference.indexOf(b);
         });
-        this.cardsToShowInCarousel = await newChunk;
+        this.cardsToShowInCarousel = newChunk;
         setTimeout(() => {
           this.carousel.next();
         }, 100);
