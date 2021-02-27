@@ -61,6 +61,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
   // private allCards: Card[]; //array of all the cards
   cardsToShowInCarousel: Card[]; //array of cards to show in carousel
   private readonly carouselInfo$ = new BehaviorSubject<CarouselInfo>(new CarouselInfo());
+  currentCard$ = this.carouselInfo$.asObservable().pipe(map((info) => info.currentCard));
 
   loading: boolean;
 
@@ -73,7 +74,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
   cardCount = 0; //counts the cards that are displayed in the carousel
   lastRefresh: number; // holds the timestamp at which the carousel was last updated
   activeSlide = 0; //holds the slide which is currently shown
-  readonly chunkSize = 20;
+  readonly chunkSize = 3;
   start: number;
   end: number;
 
@@ -163,6 +164,11 @@ export class CarouselComponent implements OnInit, OnDestroy {
     //observable which holds the final cards which should be displayed in the carousel (filtered and sorted)
     this.cardsData$ = combineLatest([this.store.select(CardsSortedAndFiltered), lastChanges$]).pipe(debounceTime(5));
 
+    let activeIndex$ = this.carouselInfo$.asObservable().pipe(
+      map((info) => info.currentIndex),
+      distinctUntilChanged()
+    );
+
     sub = combineLatest([this.store.select(CardsSorted), this.store.select(CardsSortedAndFiltered), lastChanges$])
       // .pipe(debounceTime(5))
       .subscribe(([allCardsSorted, allCardsSortedAndFiltered, changes]) => {
@@ -173,12 +179,12 @@ export class CarouselComponent implements OnInit, OnDestroy {
           carouselState.allCardsSorted = allCardsSorted;
           carouselState.allCardsSortedAndFiltered = allCardsSortedAndFiltered;
           this.carouselInfo$.next(carouselState);
-          this.refreshCarouselCards();
+          this.initCarouselCards(carouselState.currentIndex);
         }
       });
     this.subscriptions$.push(sub);
 
-    sub = this.newCardToSet$.pipe(debounceTime(100)).subscribe((card) => this.handleNewCard(card));
+    sub = this.newCardToSet$.pipe(debounceTime(170)).subscribe((card) => this.handleNewCard(card));
     this.subscriptions$.push(sub);
   }
 
@@ -187,7 +193,9 @@ export class CarouselComponent implements OnInit, OnDestroy {
    * For each subsequent call nothing will happen -> use refreshCarouselCards for that
    * Pass index of card which should be displayed initially in reference to the allCards array
    */
+
   async initCarouselCards(index: number) {
+    if (!index) index = 0;
     let state = { ...this.carouselInfo$.getValue() }; //copy state
 
     state.start = index;
@@ -206,29 +214,30 @@ export class CarouselComponent implements OnInit, OnDestroy {
     this.carouselInfo$.next(state);
 
     this.cardsToShowInCarousel = null;
-    this.cardsToShowInCarousel = state.allCardsSorted?.slice(state.start, state.end) || [];
-    let indexInCardsToShowInCarousel;
-    if (state.allCardsSorted) {
-      indexInCardsToShowInCarousel = this.cardsToShowInCarousel?.indexOf(state.allCardsSorted[index]);
-    } else {
-      indexInCardsToShowInCarousel = 0;
-    }
     setTimeout(() => {
-        this.activeSlide = indexInCardsToShowInCarousel || 0;
-        if (this.carousel) {this.carousel.select(indexInCardsToShowInCarousel.toString());
-          document.getElementById('slide-' + String(indexInCardsToShowInCarousel)).classList.add('active');
-        }
-    }, 50);
+      this.cardsToShowInCarousel = state.allCardsSorted?.slice(state.start, state.end);
+      let indexInCardsToShowInCarousel;
+      if (state.allCardsSorted) {
+        indexInCardsToShowInCarousel = this.cardsToShowInCarousel?.indexOf(state.allCardsSorted[index]);
+      } else {
+        indexInCardsToShowInCarousel = 0;
+      }
+      this.activeSlide = indexInCardsToShowInCarousel || 0;
+
+      if (this.carousel) {
+        this.carousel.select(indexInCardsToShowInCarousel.toString());
+      }
+    }, 150);
   }
 
-  /**
-   * refreshes cards to show in carousel. This function is called in 2 scenarios
-   * - user tries to slide to card of new chunk
-   * - cards have changed in the store (e.g. user has added a card)
-   */
-  refreshCarouselCards() {
-    this.initCarouselCards(0);
-  }
+  // /**
+  //  * refreshes cards to show in carousel. This function is called in 2 scenarios
+  //  * - user tries to slide to card of new chunk
+  //  * - cards have changed in the store (e.g. user has added a card)
+  //  */
+  // refreshCarouselCards() {
+  //   this.initCarouselCards(0);
+  // }
 
   //this function updates the current slide index in the store and for the component
   onSlide(slideEvent: NgbSlideEvent) {
@@ -247,10 +256,11 @@ export class CarouselComponent implements OnInit, OnDestroy {
 
   //function to calculate random index and select the slide with that index
   showRandomCard() {
+    let state = { ...this.carouselInfo$.getValue() }; //copy state
     let rand: number = this.activeSlide;
     //prevent infinite recalculations
     for (let count = 0; count < 5 && rand == this.activeSlide; count++) {
-      rand = Math.floor(Math.random() * this.cardCount); //random Cardindex
+      rand = Math.floor(Math.random() * state.allCardsSorted.length); //random Cardindex
     }
     this.selectSlide(rand);
   }
@@ -263,60 +273,57 @@ export class CarouselComponent implements OnInit, OnDestroy {
     if (
       this.carousel &&
       this.cardsToShowInCarousel &&
-      this.cardsToShowInCarousel.length > 1 &&
+      this.cardsToShowInCarousel.length >= 1 &&
       this.formMode != 'edit'
     ) {
       let state = { ...this.carouselInfo$.getValue() };
+      if (this.cardsToShowInCarousel.indexOf(state.currentCard) < 0) return;
       // check if prev card is already present in cardsToShowInCarousel, then go simply prev in carousel
-      if (
-        this.cardsToShowInCarousel[this.cardsToShowInCarousel.indexOf(state.currentCard) - 1] != undefined &&
-        this.cardsToShowInCarousel[this.cardsToShowInCarousel.indexOf(state.currentCard) - 1] ==
-          { ...this.carouselInfo$.getValue() }.allCardsSorted[
-            { ...this.carouselInfo$.getValue() }.allCardsSorted.indexOf(state.currentCard) - 1
-          ]
-      ) {
+      let predecessorInCarousel = this.cardsToShowInCarousel[this.cardsToShowInCarousel.indexOf(state.currentCard) - 1];
+      let desiredPredecessor = state.allCardsSorted[state.allCardsSorted.indexOf(state.currentCard) - 1];
+      if (predecessorInCarousel && predecessorInCarousel._id === desiredPredecessor._id) {
         this.carousel.prev();
       }
-      // check if current card is the first one so that going prev should go to the last card
+      // check if current card is the first one so that going prev should go to the last card. We dont want to cycle the carousel so we show rejection
       else if (
-        { ...this.carouselInfo$.getValue() }.allCardsSorted.indexOf(
+        state.allCardsSorted.indexOf(
           this.cardsToShowInCarousel[this.cardsToShowInCarousel.indexOf(state.currentCard)]
         ) == 0
       ) {
-        var newChunk = { ...this.carouselInfo$.getValue() }.allCardsSorted.slice(
-          { ...this.carouselInfo$.getValue() }.allCardsSorted.length - 5,
-          { ...this.carouselInfo$.getValue() }.allCardsSorted.length
-        );
-        newChunk = this.cardsToShowInCarousel.concat(newChunk);
-        newChunk = [...new Set(newChunk)];
-        var sortedReference = { ...this.carouselInfo$.getValue() }.allCardsSorted;
-        newChunk.sort(function (a, b) {
-          return sortedReference.indexOf(a) - sortedReference.indexOf(b);
-        });
-        this.cardsToShowInCarousel = await newChunk;
-        setTimeout(() => {
-          this.carousel.select(String(this.cardsToShowInCarousel.length - 1));
-        }, 100);
+        // var newChunk = { ...this.carouselInfo$.getValue() }.allCardsSorted.slice(
+        //   { ...this.carouselInfo$.getValue() }.allCardsSorted.length - 5,
+        //   { ...this.carouselInfo$.getValue() }.allCardsSorted.length
+        // );
+        // newChunk = this.cardsToShowInCarousel.concat(newChunk);
+        // newChunk = [...new Set(newChunk)];
+        // var sortedReference = { ...this.carouselInfo$.getValue() }.allCardsSorted;
+        // newChunk.sort(function (a, b) {
+        //   return sortedReference.indexOf(a) - sortedReference.indexOf(b);
+        // });
+        // this.cardsToShowInCarousel = await newChunk;
+        // setTimeout(() => {
+        //   this.carousel.select(String(this.cardsToShowInCarousel.length - 1));
+        // }, 100);
+        this.showRejection();
       }
       // else load new chunk and go prev
       else {
-        var end = { ...this.carouselInfo$.getValue() }.allCardsSorted.indexOf(state.currentCard);
+        let end = state.allCardsSorted.indexOf(state.currentCard);
+        let newChunk;
         if (end - this.chunkSize < 0) {
-          var newChunk = { ...this.carouselInfo$.getValue() }.allCardsSorted.slice(0, end);
+          newChunk = state.allCardsSorted.slice(0, end);
         } else {
-          var newChunk = { ...this.carouselInfo$.getValue() }.allCardsSorted.slice(end - this.chunkSize, end);
+          newChunk = state.allCardsSorted.slice(end - this.chunkSize, end);
         }
         newChunk = this.cardsToShowInCarousel.concat(newChunk);
         newChunk = [...new Set(newChunk)];
-        var sortedReference = { ...this.carouselInfo$.getValue() }.allCardsSorted;
-        newChunk.sort(function (a, b) {
-          return sortedReference.indexOf(a) - sortedReference.indexOf(b);
-        });
+        let sortedReference = state.allCardsSorted;
+        newChunk = newChunk.sort((a: any, b: any) => sortedReference.indexOf(a) - sortedReference.indexOf(b));
         this.cardsToShowInCarousel = await newChunk;
         this.carousel.activeId = String(this.cardsToShowInCarousel.indexOf(state.currentCard));
         setTimeout(() => {
           this.carousel.prev();
-        }, 100);
+        }, 150);
       }
     } else {
       this.showRejection();
@@ -330,59 +337,55 @@ export class CarouselComponent implements OnInit, OnDestroy {
     if (
       this.carousel &&
       this.cardsToShowInCarousel &&
-      this.cardsToShowInCarousel.length > 1 &&
+      this.cardsToShowInCarousel.length >= 1 &&
       this.formMode != 'edit'
     ) {
       let state = { ...this.carouselInfo$.getValue() };
-      if (
-        this.cardsToShowInCarousel[this.cardsToShowInCarousel.indexOf(state.currentCard) + 1] != undefined &&
-        this.cardsToShowInCarousel[this.cardsToShowInCarousel.indexOf(state.currentCard) + 1] ==
-          { ...this.carouselInfo$.getValue() }.allCardsSorted[
-            { ...this.carouselInfo$.getValue() }.allCardsSorted.indexOf(state.currentCard) + 1
-          ]
-      ) {
+      let successorInCarousel = this.cardsToShowInCarousel[this.cardsToShowInCarousel.indexOf(state.currentCard) + 1];
+      let desiredSuccessorInAllCards = state.allCardsSorted[state.allCardsSorted.indexOf(state.currentCard) + 1];
+      let indexOfLastCardInAllCards = state.allCardsSorted.length - 1;
+      let currentCardIndexAccordingToAllCard = state.allCardsSorted.indexOf(
+        this.cardsToShowInCarousel[this.cardsToShowInCarousel.indexOf(state.currentCard)]
+      );
+      if (successorInCarousel != undefined && successorInCarousel._id == desiredSuccessorInAllCards._id) {
         this.carousel.select(String(this.cardsToShowInCarousel.indexOf(state.currentCard) + 1));
-      } else if (
-        { ...this.carouselInfo$.getValue() }.allCardsSorted.indexOf(
-          this.cardsToShowInCarousel[this.cardsToShowInCarousel.indexOf(state.currentCard)]
-        ) ==
-        { ...this.carouselInfo$.getValue() }.allCardsSorted.length - 1
-      ) {
-        var begin = 0;
-        var end = 0;
-        if (begin + this.chunkSize > { ...this.carouselInfo$.getValue() }.allCardsSorted.length) {
-          end = { ...this.carouselInfo$.getValue() }.allCardsSorted.length;
-        } else {
-          end = begin + this.chunkSize;
-        }
-        var newChunk = { ...this.carouselInfo$.getValue() }.allCardsSorted.slice(begin, end);
-        newChunk = await this.cardsToShowInCarousel.concat(newChunk);
-        newChunk = [...new Set(newChunk)];
-        var sortedReference = { ...this.carouselInfo$.getValue() }.allCardsSorted;
-        newChunk = await newChunk.sort(function (a, b) {
-          return sortedReference.indexOf(a) - sortedReference.indexOf(b);
-        });
-        this.cardsToShowInCarousel = await newChunk;
-        setTimeout(() => {
-          document.getElementById('slide-' + String(this.cardsToShowInCarousel.length - 1)).classList.remove('active');
-          this.carousel.select('0');
-        }, 100);
+      } else if (currentCardIndexAccordingToAllCard == indexOfLastCardInAllCards) {
+        this.showRejection();
+        // var begin = 0;
+        // var end = 0;
+        // if (begin + this.chunkSize > { ...this.carouselInfo$.getValue() }.allCardsSorted.length) {
+        //   end = { ...this.carouselInfo$.getValue() }.allCardsSorted.length;
+        // } else {
+        //   end = begin + this.chunkSize;
+        // }
+        // var newChunk = { ...this.carouselInfo$.getValue() }.allCardsSorted.slice(begin, end);
+        // newChunk = await this.cardsToShowInCarousel.concat(newChunk);
+        // newChunk = [...new Set(newChunk)];
+        // var sortedReference = { ...this.carouselInfo$.getValue() }.allCardsSorted;
+        // newChunk = await newChunk.sort(function (a, b) {
+        //   return sortedReference.indexOf(a) - sortedReference.indexOf(b);
+        // });
+        // this.cardsToShowInCarousel = await newChunk;
+        // setTimeout(() => {
+        //   document.getElementById('slide-' + String(this.cardsToShowInCarousel.length - 1)).classList.remove('active');
+        //   this.carousel.select('0');
+        // }, 100);
       } else {
-        var begin = { ...this.carouselInfo$.getValue() }.allCardsSorted.indexOf(state.currentCard) + 1;
-        var end = 0;
-        if (begin + this.chunkSize > { ...this.carouselInfo$.getValue() }.allCardsSorted.length) {
-          end = { ...this.carouselInfo$.getValue() }.allCardsSorted.length;
+        let begin = state.allCardsSorted.indexOf(state.currentCard) + 1;
+        let end = 0;
+        if (begin + this.chunkSize > state.allCardsSorted.length) {
+          end = state.allCardsSorted.length;
         } else {
           end = begin + this.chunkSize;
         }
-        var newChunk = { ...this.carouselInfo$.getValue() }.allCardsSorted.slice(begin, end);
-        newChunk = await this.cardsToShowInCarousel.concat(newChunk);
+        let newChunk = state.allCardsSorted.slice(begin, end);
+        newChunk = this.cardsToShowInCarousel.concat(newChunk);
         newChunk = [...new Set(newChunk)];
-        var sortedReference = { ...this.carouselInfo$.getValue() }.allCardsSorted;
-        newChunk = await newChunk.sort(function (a, b) {
+        let sortedReference = state.allCardsSorted;
+        newChunk = newChunk.sort(function (a, b) {
           return sortedReference.indexOf(a) - sortedReference.indexOf(b);
         });
-        this.cardsToShowInCarousel = await newChunk;
+        this.cardsToShowInCarousel = newChunk;
         setTimeout(() => {
           this.carousel.next();
         }, 100);
@@ -443,8 +446,9 @@ export class CarouselComponent implements OnInit, OnDestroy {
     this.selectSlide(index);
   }
 
-  private selectSlide(n: number) {
+  selectSlide(n?: number) {
     let currCarouselInfo = this.carouselInfo$.getValue();
+    if (n === undefined) n = currCarouselInfo.allCardsSorted.length - 1;
 
     if (!this.carousel || !this.cardsToShowInCarousel || n < 0) return;
     if (this.formMode == 'edit') {
@@ -457,6 +461,18 @@ export class CarouselComponent implements OnInit, OnDestroy {
     } else {
       this.initCarouselCards(n);
     }
+  }
+
+  isFirst() {
+    let current = this.carouselInfo$.getValue().currentCard;
+    let all = this.carouselInfo$.getValue().allCardsSorted;
+    return all.indexOf(current) == 0;
+  }
+
+  isLast() {
+    let current = this.carouselInfo$.getValue().currentCard;
+    let all = this.carouselInfo$.getValue().allCardsSorted;
+    return all.indexOf(current) == all.length - 1;
   }
 
   // function which displays infos to the user that an action is not allowed

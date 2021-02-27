@@ -17,6 +17,12 @@ button {
   overflow: hidden !important;
   margin: 0;
 }
+
+/*carousel*/
+#carousel {
+  width: 100% !important;
+  overflow: hidden !important;
+}
 /*navigation*/
 #right {
   right: 0;
@@ -37,16 +43,11 @@ mat-icon {
   height: 100%;
   z-index: 1000;
 }
-/*carousel*/
-#carousel {
-  width: 100% !important;
-  overflow-y: hidden;
-}
+
 :focus {
   outline: none;
 }
-#progress {
-}
+
 mat-spinner {
   margin: auto;
 }

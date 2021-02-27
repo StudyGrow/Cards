@@ -24,6 +24,26 @@
     >
       <mat-icon>shuffle</mat-icon>
     </button>
+    <button
+      mat-icon-button
+      matTooltip="Erste Karte"
+      matTooltipPosition="above"
+      aria-label="zufall"
+      (click)="selectSlide(0)"
+      [disabled]="formMode == 'edit' || !cardsToShowInCarousel || cardsToShowInCarousel.length == 0"
+    >
+      <mat-icon>first_page</mat-icon>
+    </button>
+    <button
+      mat-icon-button
+      matTooltip="Letzte Karte"
+      matTooltipPosition="above"
+      aria-label="zufall"
+      (click)="selectSlide(undefined)"
+      [disabled]="formMode == 'edit' || !cardsToShowInCarousel || cardsToShowInCarousel.length == 0"
+    >
+      <mat-icon>last_page</mat-icon>
+    </button>
 
     <button
       *ngIf="authorized$ | async"
@@ -40,13 +60,7 @@
   </div>
 </div>
 <div class="row" id="carousel-row" *ngIf="cardsToShowInCarousel?.length > 0" [@fadeInOnEnter]>
-  <a
-    id="left"
-    class="navig col"
-    aria-label="vorherige karte"
-
-    (click)="goToPrev()"
-  >
+  <a id="left" class="navig col" aria-label="vorherige karte" *ngIf="!isFirst()" (click)="goToPrev()">
     <mat-icon>keyboard_arrow_left</mat-icon>
   </a>
   <div id="carousel">
@@ -67,13 +81,7 @@
       </ng-template>
     </ngb-carousel>
   </div>
-  <a
-    id="right"
-    class="navig col"
-
-    (click)="goToNext()"
-    aria-label="nächste karte"
-  >
+  <a id="right" class="navig col" *ngIf="!isLast()" (click)="goToNext()" aria-label="nächste karte">
     <mat-icon>keyboard_arrow_right</mat-icon>
   </a>
 </div>

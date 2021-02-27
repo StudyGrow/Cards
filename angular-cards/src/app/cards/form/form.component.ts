@@ -12,7 +12,7 @@ import { Observable, Subscription } from 'rxjs';
 import { distinctUntilChanged, map, startWith, withLatestFrom } from 'rxjs/operators';
 import { DialogueComponent } from 'src/app/components/dialogue/dialogue.component';
 import { Card } from 'src/app/models/Card';
-import { WarnMessage } from 'src/app/models/Notification';
+import { SuccessMessage, WarnMessage } from 'src/app/models/Notification';
 import { Data, Mode } from 'src/app/models/state';
 import { User } from 'src/app/models/User';
 import { Vorlesung } from 'src/app/models/Vorlesung';
@@ -125,6 +125,15 @@ export class FormComponent implements OnInit, OnDestroy {
       );
       this.subscriptions$.push(sub);
     }
+    sub = this.actionState.addCard$.subscribe(() => {
+      this.notifs.addNotification(
+        new SuccessMessage(
+          'Yeah added Card'
+        )
+      );
+    });
+    this.subscriptions$.push(sub);
+
   }
   /**
    * Initialiizes the form group
