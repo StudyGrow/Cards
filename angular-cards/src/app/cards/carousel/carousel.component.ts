@@ -213,20 +213,21 @@ export class CarouselComponent implements OnInit, OnDestroy {
     this.carouselInfo$.next(state);
 
     this.cardsToShowInCarousel = null;
-    this.cardsToShowInCarousel = state.allCardsSorted?.slice(state.start, state.end) || [];
-    let indexInCardsToShowInCarousel;
-    if (state.allCardsSorted) {
-      indexInCardsToShowInCarousel = this.cardsToShowInCarousel?.indexOf(state.allCardsSorted[index]);
-    } else {
-      indexInCardsToShowInCarousel = 0;
-    }
     setTimeout(() => {
+      this.cardsToShowInCarousel = state.allCardsSorted?.slice(state.start, state.end);
+      let indexInCardsToShowInCarousel;
+      if (state.allCardsSorted) {
+        indexInCardsToShowInCarousel = this.cardsToShowInCarousel?.indexOf(state.allCardsSorted[index]);
+      } else {
+        indexInCardsToShowInCarousel = 0;
+      }
       this.activeSlide = indexInCardsToShowInCarousel || 0;
+
       if (this.carousel) {
         this.carousel.select(indexInCardsToShowInCarousel.toString());
-        document.getElementById('slide-' + String(indexInCardsToShowInCarousel)).classList.add('active');
+        // document.getElementById('slide-' + String(indexInCardsToShowInCarousel)).classList.add('active');
       }
-    }, 50);
+    }, 150);
   }
 
   // /**
