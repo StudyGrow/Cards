@@ -126,14 +126,9 @@ export class FormComponent implements OnInit, OnDestroy {
       this.subscriptions$.push(sub);
     }
     sub = this.actionState.addCard$.subscribe(() => {
-      this.notifs.addNotification(
-        new SuccessMessage(
-          'Yeah added Card'
-        )
-      );
+      this.notifs.addNotification(new SuccessMessage('Card successfully added'));
     });
     this.subscriptions$.push(sub);
-
   }
   /**
    * Initialiizes the form group
