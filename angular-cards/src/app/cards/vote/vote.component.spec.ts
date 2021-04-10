@@ -22,4 +22,10 @@ describe('VoteComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('toggle vote once should increase vote count by one',()=>{
+    let currentVoteCount = component.voteCount;
+    let newVoteCount= component.toggleVote();
+    expect(newVoteCount).toBe(currentVoteCount+1);
+  })
 });

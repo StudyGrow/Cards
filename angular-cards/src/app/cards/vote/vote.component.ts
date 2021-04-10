@@ -50,5 +50,6 @@ export class VoteComponent implements OnInit, OnDestroy {
     } else if (newVote.value === 0) {
       this.voteCount--;
     }
+    return this.voteCount;
   }
 }
