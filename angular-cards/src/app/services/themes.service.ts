@@ -1,6 +1,7 @@
 import { Injectable, Renderer2, RendererFactory2 } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { Theme } from '../models/Themes';
 import { changeTheme } from '../store/actions/StateActions';
 
@@ -38,8 +39,8 @@ export class ThemesService {
 
     this.currTheme.next(newTheme); //update variable
   }
-  get currentTheme(): Observable<Theme> {
-    return this.currTheme.asObservable();
+  get currentTheme(): Observable<string> {
+    return this.currTheme.asObservable().pipe(map((theme:Theme)=>Theme[theme]));
   }
 
   initTheme() {
