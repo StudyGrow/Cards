@@ -171,7 +171,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
           carouselState.allCardsSorted = allCardsSorted;
           carouselState.allCardsSortedAndFiltered = allCardsSortedAndFiltered;
           this.carouselInfo$.next(carouselState);
-          this.refreshCarouselCards(carouselState.currentIndex);
+          this.refreshCarouselCards(carouselState.currentCard?._id);
         }
       });
     this.subscriptions$.push(sub);
@@ -187,9 +187,11 @@ export class CarouselComponent implements OnInit, OnDestroy {
    * Pass index of card which should be displayed initially in reference to the allCards array
    */
 
-  refreshCarouselCards(index: number) {
-    if (!index) index = 0;
+  refreshCarouselCards(cardid: string) {
     let state = { ...this.carouselInfo$.getValue() }; //copy state
+    let index = state.allCardsSortedAndFiltered?.findIndex((card) => card._id === cardid);
+    if (index == undefined || index < 0) index = 0;
+
     let filteredCards = state.allCardsSortedAndFiltered;
 
     state.start = index;
@@ -436,18 +438,19 @@ export class CarouselComponent implements OnInit, OnDestroy {
 
   selectSlide(n?: number) {
     let currCarouselInfo = this.carouselInfo$.getValue();
-    if (n === undefined) n = currCarouselInfo.allCardsSorted.length - 1;
+    if (n === undefined) n = currCarouselInfo.allCardsSortedAndFiltered.length - 1;
 
     if (!this.carousel || !this.cardsToShowInCarousel || n < 0) return;
     if (this.formMode == 'edit') {
       this.showRejection('Du musst erst die Bearbeitung der Karteikarte abschließen');
       return;
     }
-    let slideIndex = this.cardsToShowInCarousel.indexOf(currCarouselInfo.allCardsSorted[n]);
+    let slideIndex = this.cardsToShowInCarousel.indexOf(currCarouselInfo.allCardsSortedAndFiltered[n]);
     if (slideIndex >= 0) {
       this.carousel.select(slideIndex.toString());
     } else {
-      this.refreshCarouselCards(n);
+      let cardid = currCarouselInfo.allCardsSortedAndFiltered[n]?._id;
+      this.refreshCarouselCards(cardid);
     }
   }
 
