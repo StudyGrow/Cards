@@ -126,7 +126,7 @@ export class FormComponent implements OnInit, OnDestroy {
       this.subscriptions$.push(sub);
     }
     sub = this.actionState.addCard$.subscribe(() => {
-      this.notifs.addNotification(new SuccessMessage('Card successfully added'));
+      this.notifs.addNotification(new SuccessMessage('Deine Karte wurde erfolgreich hinzugefügt.'));
     });
     this.subscriptions$.push(sub);
   }

@@ -7,7 +7,7 @@ import { AppState } from './models/state';
 import { ThemesService } from './services/themes.service';
 import { auth } from './store/actions/UserActions';
 import { NgcCookieConsentService } from 'ngx-cookieconsent';
-import { CardToShow, DisplayedCards } from './store/selector';
+import { CardsSortedAndFiltered, CardToShow, DisplayedCards } from './store/selector';
 import { CardsEffects } from './store/effects/effects';
 import { Failure } from './store/actions/CardActions';
 import { NotificationsService } from './services/notifications.service';
@@ -33,7 +33,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.themeManager.initTheme(); //initialize theme
 
     if (isDevMode()) {
-      this.store.select(CardToShow).subscribe((a) => {
+      this.store.select(CardsSortedAndFiltered).subscribe((a) => {
         console.log(a);
       });
     }

@@ -65,7 +65,6 @@ export class CarouselComponent implements OnInit, OnDestroy {
 
   loading: boolean;
 
-  public cardsData$: Observable<[Card[], number]>;
   newCardToSet$ = this.store.select(CardToShow);
   filters$: Observable<string[]> = this.store.select(ActiveTags);
   filters: string[];
@@ -161,8 +160,6 @@ export class CarouselComponent implements OnInit, OnDestroy {
     sub = this.carouselInfo$.pipe(distinctUntilKeyChanged('updateAt')).subscribe((newState: CarouselInfo) => {
       this.store.dispatch(updateCarouselInfo({ info: newState })); //sends an update to the store whenever the info has updated
     });
-    //observable which holds the final cards which should be displayed in the carousel (filtered and sorted)
-    this.cardsData$ = combineLatest([this.store.select(CardsSortedAndFiltered), lastChanges$]).pipe(debounceTime(5));
 
     sub = combineLatest([this.store.select(CardsSorted), this.store.select(CardsSortedAndFiltered), lastChanges$])
       // .pipe(debounceTime(5))
@@ -174,7 +171,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
           carouselState.allCardsSorted = allCardsSorted;
           carouselState.allCardsSortedAndFiltered = allCardsSortedAndFiltered;
           this.carouselInfo$.next(carouselState);
-          this.initCarouselCards(carouselState.currentIndex);
+          this.refreshCarouselCards(carouselState.currentIndex);
         }
       });
     this.subscriptions$.push(sub);
@@ -190,19 +187,20 @@ export class CarouselComponent implements OnInit, OnDestroy {
    * Pass index of card which should be displayed initially in reference to the allCards array
    */
 
-  async initCarouselCards(index: number) {
+  refreshCarouselCards(index: number) {
     if (!index) index = 0;
     let state = { ...this.carouselInfo$.getValue() }; //copy state
+    let filteredCards=state.allCardsSortedAndFiltered;
 
     state.start = index;
-    if (state.allCardsSorted?.length > index + this.chunkSize) {
+    if (index + this.chunkSize<filteredCards?.length) {
       state.end = index + this.chunkSize;
     } else {
-      state.end = state.allCardsSorted?.length;
+      state.end = filteredCards?.length;
     }
 
-    if (state.allCardsSorted?.length > index) {
-      state.currentCard = state.allCardsSorted[index];
+    if (filteredCards?.length > index) {
+      state.currentCard = filteredCards[index];
       state.currentIndex = state.start;
     }
     state.updateAt = new Date();
@@ -211,29 +209,20 @@ export class CarouselComponent implements OnInit, OnDestroy {
 
     this.cardsToShowInCarousel = null;
     setTimeout(() => {
-      this.cardsToShowInCarousel = state.allCardsSorted?.slice(state.start, state.end);
-      let indexInCardsToShowInCarousel;
-      if (state.allCardsSorted) {
-        indexInCardsToShowInCarousel = this.cardsToShowInCarousel?.indexOf(state.allCardsSorted[index]);
-      } else {
-        indexInCardsToShowInCarousel = 0;
+      this.cardsToShowInCarousel = filteredCards?.slice(state.start, state.end);
+      let indexInCardsToShowInCarousel:number;
+      if (filteredCards) {
+        indexInCardsToShowInCarousel = this.cardsToShowInCarousel?.indexOf(filteredCards[index]);
       }
       this.activeSlide = indexInCardsToShowInCarousel || 0;
 
       if (this.carousel) {
-        this.carousel.select(indexInCardsToShowInCarousel.toString());
+        this.carousel.select(this.activeSlide.toString());
       }
     }, 150);
   }
 
-  // /**
-  //  * refreshes cards to show in carousel. This function is called in 2 scenarios
-  //  * - user tries to slide to card of new chunk
-  //  * - cards have changed in the store (e.g. user has added a card)
-  //  */
-  // refreshCarouselCards() {
-  //   this.initCarouselCards(0);
-  // }
+
 
   //this function updates the current slide index in the store and for the component
   onSlide(slideEvent: NgbSlideEvent) {
@@ -455,7 +444,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
     if (slideIndex >= 0) {
       this.carousel.select(slideIndex.toString());
     } else {
-      this.initCarouselCards(n);
+      this.refreshCarouselCards(n);
     }
   }
 
