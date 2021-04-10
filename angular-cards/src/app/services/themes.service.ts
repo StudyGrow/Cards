@@ -1,5 +1,8 @@
 import { Injectable, Renderer2, RendererFactory2 } from '@angular/core';
 import { Store } from '@ngrx/store';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { Theme } from '../models/Themes';
 import { changeTheme } from '../store/actions/StateActions';
 
 @Injectable({
@@ -7,33 +10,47 @@ import { changeTheme } from '../store/actions/StateActions';
 })
 export class ThemesService {
   private renderer: Renderer2;
-  constructor(private store: Store, private rendererFactory: RendererFactory2) {
-    this.renderer = rendererFactory.createRenderer(null, null);
+  private currTheme: BehaviorSubject<Theme>;
+
+  constructor( private rendererFactory: RendererFactory2) {
+    this.renderer = this.rendererFactory.createRenderer(null, null);
+    let initTheme = localStorage.getItem('theme');
+    switch (initTheme) {
+      case 'dark-theme': {
+        this.currTheme = new BehaviorSubject(Theme['dark-theme']);
+      }
+      default: {
+        this.currTheme = new BehaviorSubject(Theme['default']);
+      }
+    }
   }
 
-  currTheme: string = localStorage.getItem('theme');
-
   changeTheme(theme?: string) {
-    if (theme === this.currTheme) return;
-    let t = theme;
-    if (!t) {
-      t = this.currTheme;
-      if (!t) return;
+    if (this.currTheme.getValue() === Theme[theme]) return;
+    let newTheme: Theme = Theme[theme];
+    if (newTheme === null) {
+      newTheme = this.currTheme.getValue();
+      // if (!newTheme) return;
     }
 
-    this.renderer.removeClass(document.body, this.currTheme); //remove the old theme
-    if (t !== 'default') {
-      //no need to change body class to default
-      this.renderer.addClass(document.body, t); //add the new theme
-    }
+    this.renderer.removeClass(document.body, Theme[this.currTheme.getValue()]); //remove the old theme
+    this.renderer.addClass(document.body, Theme[newTheme]); //add the new theme
+    localStorage.setItem('theme', Theme[newTheme]); //update cache
 
-    localStorage.setItem('theme', t); //update cache
-    this.store.dispatch(changeTheme({ theme: t })); //change state
-
-    this.currTheme = t; //update variable
+    this.currTheme.next(newTheme); //update variable
+  }
+  get currentTheme(): Observable<string> {
+    return this.currTheme.asObservable().pipe(map((theme:Theme)=>Theme[theme]));
   }
 
   initTheme() {
-    this.changeTheme();
+    let cachedTheme = localStorage.getItem('theme');
+
+    if (cachedTheme) {
+      this.changeTheme(cachedTheme);
+    } else {
+      let matched = window.matchMedia('(prefers-color-scheme: dark)').matches; //check if browser set dark mode preference
+      this.changeTheme(matched ? 'dark-theme' : 'default');
+    }
   }
 }

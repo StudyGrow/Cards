@@ -105,7 +105,7 @@ const _modeReducer = createReducer(
   on(StateActions.changeSorting, (state, { sortType }) => ({
     ...state,
     sortType: sortType,
-    currentCard: initialState.currentCard,
+    newCard: initialState.newCard,
     cardsChanged: new Date(),
   })),
   on(StateActions.resetCardsState, (state) => ({
