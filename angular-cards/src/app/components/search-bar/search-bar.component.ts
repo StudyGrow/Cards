@@ -17,6 +17,7 @@ import { FormControl } from '@angular/forms';
 import { AppState } from 'src/app/models/state';
 import { WarnMessage } from 'src/app/models/Notification';
 import { NotificationsService } from 'src/app/services/notifications.service';
+import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 
 @Component({
   selector: 'app-search-bar',
@@ -108,7 +109,7 @@ export class SearchBarComponent implements OnInit, OnDestroy {
     }
   }
 
-  navigateTo(e: Event, id: string) {
+  private navigateTo(e: Event, id: string) {
     e.preventDefault();
     this.uInput.reset();
     if (this.formMode == 'edit') {
@@ -140,5 +141,12 @@ export class SearchBarComponent implements OnInit, OnDestroy {
   endScroll(paragraph: HTMLElement) {
     this.enabled = false;
     paragraph.classList.remove('textToScroll');
+  }
+
+  onSelected(e: MatAutocompleteSelectedEvent) {
+    let value: Array<any> = e.option.viewValue.split('#'); // e.option.viewValue will be of form [title]#[id]
+    let id = value[value.length - 1]; //get the id of the card
+    // console.log(id);
+    this.navigateTo(new Event(''), id);
   }
 }
