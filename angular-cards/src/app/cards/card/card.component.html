@@ -3,7 +3,7 @@
     <mat-card-title> {{ card.thema }} </mat-card-title
     ><button class="mr-1 mt-1" id="report" mat-icon-button type="button" [matMenuTriggerFor]="menu">
       <mat-icon>more_horiz</mat-icon></button
-    ><mat-menu #menu="matMenu">
+    ><mat-menu #menu="matMenu" yPosition="above">
       <button mat-menu-item>
         <button id="report" mat-icon-button type="button"><mat-icon>flag</mat-icon><span>Melden</span></button>
       </button>

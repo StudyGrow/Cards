@@ -6,9 +6,7 @@
     <div mat-card-avatar class="example-header-image">
       <img src="assets/profile.svg" alt="Profile picture" />
     </div>
-    <mat-card-title *ngIf="user.name">
-      {{ user.name }} {{ user.surname }}</mat-card-title
-    >
+    <mat-card-title *ngIf="user.name"> {{ user.name }} {{ user.surname }}</mat-card-title>
     <mat-card-subtitle>@{{ user.username }}</mat-card-subtitle>
   </mat-card-header>
 
@@ -42,7 +40,7 @@
         <div class="row w-100">
           <div class="col col-sm-5">Mitglied seit</div>
           <div class="col col-sm-7">
-            {{ user.creationDate | date: "longDate":"de" }}
+            {{ user.creationDate | date: 'longDate':'de' }}
           </div>
         </div></mat-list-item
       ><ng-container *ngIf="cardCount$ | async as count">
@@ -58,3 +56,16 @@
     </mat-list>
   </mat-card-content>
 </mat-card>
+<div *ngIf="init">
+  <google-chart
+    class="fade-in"
+    *ngIf="data$ | async as data"
+    [title]="'Verteilung der Karten auf die Vorlesungen'"
+    [type]="'PieChart'"
+    [data]="data"
+    [columns]="['Vorlesung', 'Cards']"
+    [options]="chartOptions"
+    [dynamicResize]="true"
+  >
+  </google-chart>
+</div>
