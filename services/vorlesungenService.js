@@ -32,6 +32,9 @@ module.exports = function vlService() {
   //adds a lecture to the database
   vlService.addLecture = async (lecture, callback) => {
     try {
+      await checkUniqueAbrv(lecture.abrv);
+      await checkUniqueName(lecture.name);
+
       const vl = new Lecture();
       vl.name = lecture.name.trim();
       vl.abrv = lecture.abrv.trim().toLowerCase();
@@ -42,5 +45,26 @@ module.exports = function vlService() {
       callback(error, null);
     }
   };
+
+  vlService.checkUnique = async (lecture, callback)=>{
+    try {
+      await checkUniqueAbrv(lecture.abrv);
+      await checkUniqueName(lecture.name);
+      callback(null);
+    } catch (error) {
+      callback(error);
+    }
+  }
+
   return vlService;
 };
+
+async function checkUniqueAbrv(abrv){
+ const vl = await Lecture.findOne({ abrv:abrv });
+ if(vl) throw new Error("Eine Vorlesung mit dieser Abkürzung existiert bereits.");
+}
+
+async function checkUniqueName(name){
+  const vl = await Lecture.findOne({ name:name });
+  if(vl) throw new Error("Eine Vorlesung mit diesem Namen existiert bereits.");
+ }
