@@ -20,17 +20,8 @@ export class NavListComponent implements OnInit {
   sub: Subscription;
   @ViewChild('darkmode') toggle: MatSlideToggle;
 
-  constructor(
-    private router: Router,
-    private store: Store<AppState>,
+  constructor(private router: Router, private store: Store, private themeManager: ThemesService) {}
 
-    private themeManager: ThemesService
-  ) {}
-
-  toggleDarkMode(e: MatSlideToggleChange) {
-    let theme = e.checked ? 'dark-theme' : 'default'; //theme which should be switched
-    this.themeManager.changeTheme(theme, true);
-  }
   ngOnInit(): void {
     this.theme$ = this.themeManager.currentTheme;
     this.loggedIn$ = this.store.select(authorized);
@@ -45,10 +36,27 @@ export class NavListComponent implements OnInit {
     });
   }
 
+  /**
+   * toggles the Theme of the app
+   * @param e
+   */
+  toggleDarkMode(e: MatSlideToggleChange) {
+    let theme = e.checked ? 'dark-theme' : 'default'; //theme which should be switched
+    this.themeManager.changeTheme(theme, true);
+  }
+  /**
+   * Logout the user from the site
+   */
   logout() {
     this.store.dispatch(logoutUser());
   }
+
+  /**
+   * Checks if a path is active. A path is active if it is contained in the current url
+   * @param path the path to check
+   * @returns "active" if the path is active else ""
+   */
   isActive(path: string): string {
-    return path === this.router.url ? 'active' : '';
+    return this.router.url.includes(path) ? 'active' : '';
   }
 }
