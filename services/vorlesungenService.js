@@ -5,7 +5,9 @@ module.exports = function vlService() {
   //returns all lectures in the database
   vlService.getLectures = async (callback) => {
     try {
-      let lectures = await Lecture.find().select("abrv name totalCards").sort("name");
+      let lectures = await Lecture.find()
+        .select("abrv name totalCards")
+        .sort("name");
       callback(null, lectures);
     } catch (error) {
       callback(error, null);
@@ -14,7 +16,9 @@ module.exports = function vlService() {
 
   vlService.findByAbrv = async (abrv) => {
     try {
-      return await Lecture.findOne({ abrv: abrv }).select("abrv name tagList totalCards");
+      return await Lecture.findOne({ abrv: abrv }).select(
+        "abrv name tagList totalCards"
+      );
     } finally {
     }
   };
@@ -46,25 +50,26 @@ module.exports = function vlService() {
     }
   };
 
-  vlService.checkUnique = async (lecture, callback)=>{
+  vlService.checkUnique = async (lecture, callback) => {
     try {
-      await checkUniqueAbrv(lecture.abrv);
       await checkUniqueName(lecture.name);
+      await checkUniqueAbrv(lecture.abrv);
       callback(null);
     } catch (error) {
       callback(error);
     }
-  }
+  };
 
   return vlService;
 };
 
-async function checkUniqueAbrv(abrv){
- const vl = await Lecture.findOne({ abrv:abrv });
- if(vl) throw new Error("Eine Vorlesung mit dieser Abkürzung existiert bereits.");
+async function checkUniqueAbrv(abrv) {
+  const vl = await Lecture.findOne({ abrv: abrv });
+  if (vl)
+    throw new Error("Eine Vorlesung mit dieser Abkürzung existiert bereits.");
 }
 
-async function checkUniqueName(name){
-  const vl = await Lecture.findOne({ name:name });
-  if(vl) throw new Error("Eine Vorlesung mit diesem Namen existiert bereits.");
- }
+async function checkUniqueName(name) {
+  const vl = await Lecture.findOne({ name: name });
+  if (vl) throw new Error("Eine Vorlesung mit diesem Namen existiert bereits.");
+}
