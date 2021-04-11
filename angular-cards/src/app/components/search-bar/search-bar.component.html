@@ -10,8 +10,8 @@
     (blur)="resetNav()"
   />
   <mat-icon matSuffix>search</mat-icon>
-  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelected($event)">
-    <div
+  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelected($event)" (optionActivated)="onOptionActivated($event)">
+    <div 
       *ngIf="
         (suggestions$ | async)?.length > 0 &&
         (allSuggestions$ | async)?.length > 0
@@ -22,11 +22,11 @@
     </div>
     <mat-option
       *ngFor="let suggestion of suggestions$ | async"
-     
+      
       (mouseover)="beginScroll(paragraph)"
       (mouseleave)="endScroll(paragraph)"
     >
-      <div #paragraph>{{ suggestion.title }}<div style="display: none;">#{{suggestion.id}}</div></div>
+      <div #paragraph class="txtA">{{ suggestion.title }}<div style="display: none;">#{{suggestion.id}}</div></div>
     </mat-option>
 
     <mat-divider></mat-divider>
@@ -39,7 +39,7 @@
       (mouseover)="beginScroll(paragraph)"
       (mouseleave)="endScroll(paragraph)"
     >
-      <div #paragraph>{{ suggestion.title }}<div style="display: none;">#{{suggestion.id}}</div> </div>
+      <div #paragraph class="txtA">{{ suggestion.title }}<div style="display: none;">#{{suggestion.id}}</div> </div>
     </mat-option>
   </mat-autocomplete>
 </mat-form-field>
