@@ -37,11 +37,10 @@ export class NavListComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    this.sub = this.theme$.pipe(take(1)).subscribe((theme) => {
+    this.theme$.pipe(take(1)).subscribe((theme) => {
       //initially set the toggle state
       if (theme === 'dark-theme' && this.toggle && !this.toggle.checked) {
         this.toggle.toggle();
-        this.sub.unsubscribe();
       }
     });
   }
