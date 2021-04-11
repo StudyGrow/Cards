@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { map } from 'rxjs/operators';
+import { delay, map, take } from 'rxjs/operators';
 import { authorized } from 'src/app/store/selector';
 import { Observable, Subscription } from 'rxjs';
 import { logout as logoutUser } from 'src/app/store/actions/UserActions';
@@ -32,17 +32,18 @@ export class NavListComponent implements OnInit {
     this.themeManager.changeTheme(theme, true);
   }
   ngOnInit(): void {
-    this.theme$ = this.store.select('mode').pipe(map((data) => data.theme));
+    this.theme$ = this.themeManager.currentTheme;
+    this.loggedIn$ = this.store.select(authorized);
+  }
 
-    this.sub = this.theme$.subscribe((theme) => {
+  ngAfterViewInit() {
+    this.sub = this.theme$.pipe(take(1)).subscribe((theme) => {
       //initially set the toggle state
       if (theme === 'dark-theme' && this.toggle && !this.toggle.checked) {
         this.toggle.toggle();
         this.sub.unsubscribe();
       }
     });
-
-    this.loggedIn$ = this.store.select(authorized);
   }
 
   logout() {
