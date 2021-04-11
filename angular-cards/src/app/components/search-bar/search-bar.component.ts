@@ -17,6 +17,7 @@ import { FormControl } from '@angular/forms';
 import { AppState } from 'src/app/models/state';
 import { WarnMessage } from 'src/app/models/Notification';
 import { NotificationsService } from 'src/app/services/notifications.service';
+import { MatAutocompleteActivatedEvent, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 
 @Component({
   selector: 'app-search-bar',
@@ -108,7 +109,7 @@ export class SearchBarComponent implements OnInit, OnDestroy {
     }
   }
 
-  navigateTo(e: Event, id: string) {
+  private navigateTo(e: Event, id: string) {
     e.preventDefault();
     this.uInput.reset();
     if (this.formMode == 'edit') {
@@ -128,6 +129,7 @@ export class SearchBarComponent implements OnInit, OnDestroy {
   size = 0;
 
   beginScroll(paragraph: HTMLElement) {
+    if (!paragraph) return;
     if (this.enabled == true && this.size < paragraph.offsetWidth) {
       this.size = paragraph.offsetWidth;
     }
@@ -137,8 +139,26 @@ export class SearchBarComponent implements OnInit, OnDestroy {
     paragraph.classList.add('textToScroll');
     paragraph.style.setProperty('--time', time.toString());
   }
-  endScroll(paragraph: HTMLElement) {
+  endScroll(paragraph: Element) {
     this.enabled = false;
     paragraph.classList.remove('textToScroll');
+  }
+
+  onOptionActivated(e: MatAutocompleteActivatedEvent) {
+    if (!e.option) {
+      return;
+    }
+    let paragraphs = e.option._getHostElement().parentElement.getElementsByClassName('txtA');
+    for (let index = 0; index < paragraphs.length; index++) {
+      this.endScroll(paragraphs[index]);
+    }
+    this.beginScroll(e.option._getHostElement().querySelector('.txtA'));
+  }
+
+  onSelected(e: MatAutocompleteSelectedEvent) {
+    let value: Array<any> = e.option.viewValue.split('#'); // e.option.viewValue will be of form [title]#[id]
+    let id = value[value.length - 1]; //get the id of the card
+    // console.log(id);
+    this.navigateTo(new Event(''), id);
   }
 }
