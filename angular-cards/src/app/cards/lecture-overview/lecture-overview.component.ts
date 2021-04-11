@@ -81,7 +81,7 @@ export class LectureOverviewComponent implements OnInit {
       } else {
         this.textStyle.color = '#000';
       }
-      this.chartOptions = chartOptions(this.textStyle.color);
+      this.chartOptions = chartOptions(this.textStyle);
       this.initialized = false;
       setTimeout(() => {
         this.initialized = true;

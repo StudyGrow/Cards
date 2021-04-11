@@ -1,4 +1,4 @@
-export const chartOptions = (textStyle: string) => {
+export const chartOptions = (textStyle: { color: string }) => {
   return {
     backgroundColor: { fill: 'transparent' },
     titleTextStyle: textStyle,
