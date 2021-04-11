@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { fadeInOnEnterAnimation, fadeInUpAnimation } from 'angular-animations';
-import { delay, map } from 'rxjs/operators';
+import { combineLatest } from 'rxjs';
+import { delay, distinctUntilChanged, map } from 'rxjs/operators';
 import { Card } from 'src/app/models/Card';
+import { ThemesService } from 'src/app/services/themes.service';
 import { CardsSorted, CurrentLecture, Theme } from 'src/app/store/selector';
-import { chartOptions } from './submission.chart';
+import { chartOptions } from './chart.options';
 
 @Component({
   selector: 'app-lecture-overview',
@@ -13,6 +15,7 @@ import { chartOptions } from './submission.chart';
   animations: [fadeInUpAnimation({ duration: 500 })],
 })
 export class LectureOverviewComponent implements OnInit {
+  initialized: boolean = false;
   textStyle = { color: '#FFF' };
   chartOptions = {};
   cards$ = this.store.select(CardsSorted);
@@ -65,18 +68,25 @@ export class LectureOverviewComponent implements OnInit {
     )
   );
 
-  constructor(private store: Store) {}
+  constructor(private store: Store, private themeManager: ThemesService) {}
 
   ngOnInit(): void {
-    this.store.select(Theme).subscribe((theme) => {
+    combineLatest([
+      this.themeManager.currentTheme.pipe(distinctUntilChanged()),
+      this.contributors$,
+      this.activities$,
+    ]).subscribe(([theme, contr, acti]) => {
       if (theme == 'dark-theme') {
         this.textStyle.color = '#fff';
       } else {
         this.textStyle.color = '#000';
       }
-      this.chartOptions = chartOptions(this.textStyle.color);
+      this.chartOptions = chartOptions(this.textStyle);
+      this.initialized = false;
+      setTimeout(() => {
+        this.initialized = true;
+      }, 50);
     });
-    this.contributors$.subscribe((con) => console.log(con));
   }
 
   /**

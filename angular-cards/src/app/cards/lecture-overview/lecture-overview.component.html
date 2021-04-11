@@ -2,6 +2,7 @@
   <h3 class="text-center" *ngIf="lecture$ | async as lecture">
     {{ lecture.name }}
   </h3>
+  <div class="chartContainer" *ngIf="initialized">
   <google-chart
     class="fade-in"
     *ngIf="activities$ | async as activities"
@@ -25,4 +26,5 @@
     [dynamicResize]="true"
   >
   </google-chart>
+</div>
 </div>
