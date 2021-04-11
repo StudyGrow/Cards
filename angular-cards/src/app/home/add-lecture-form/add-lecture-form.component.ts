@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Vorlesung } from '../../models/Vorlesung';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
+import { LecturesService } from 'src/app/services/lectures.service';
 @Component({
   selector: 'app-add-lecture-form',
   templateUrl: './add-lecture-form.component.html',
@@ -9,7 +10,7 @@ import { Router } from '@angular/router';
 })
 export class AddLectureFormComponent implements OnInit {
   subscriptions$: Subscription[] = [];
-  constructor(private router: Router) {}
+  constructor(private router: Router, private lectureService: LecturesService) {}
 
   ngOnInit(): void {}
   ngOnDestroy() {
@@ -19,8 +20,13 @@ export class AddLectureFormComponent implements OnInit {
   }
   onSubmit(f) {
     let newLecture = new Vorlesung(f.value.vlname.trim(), f.value.abrv.toLowerCase().trim(), []);
-    localStorage.setItem('vl', JSON.stringify(newLecture));
-    this.router.navigateByUrl('/vorlesung/neu');
+
+    this.lectureService.checkUniqueLecture(newLecture).subscribe((success) => {
+      if (success) {
+        localStorage.setItem('vl', JSON.stringify(newLecture));
+        this.router.navigateByUrl('/vorlesung/neu');
+      }
+    });
   }
 
   setCharIndicatorStyle(field, max: number) {
@@ -40,15 +46,13 @@ export class AddLectureFormComponent implements OnInit {
     }
   }
   isDisabled(name, abrv) {
-    if (!name.value || !abrv.value) {
-      return true;
-    } else {
-      return (
-        abrv.value.trim().length < 3 ||
-        abrv.value.trim().length > 7 ||
-        name.value.trim().length < 3 ||
-        name.value.trim().length > 500
-      );
-    }
+    return (
+      !name.value ||
+      !abrv.value ||
+      abrv.value.trim().length < 3 ||
+      abrv.value.trim().length > 7 ||
+      name.value.trim().length < 3 ||
+      name.value.trim().length > 500
+    );
   }
 }

@@ -5,13 +5,13 @@ const router = express.Router();
 const auth = require("./authentication");
 //Get all lectures
 router.get("/", (req, res) => {
-  console.log(req.headers)
+  console.log(req.headers);
   req.services.lectures.getLectures((err, lectures) => {
     if (err) {
       console.log(err);
       res.status(501).send(err);
     } else {
-      res.setHeader('Access-Control-Allow-Origin', '*');
+      res.setHeader("Access-Control-Allow-Origin", "*");
       res.status(200).send(lectures);
     }
   });
@@ -47,7 +47,9 @@ router.get(
         } else {
           res
             .status(422)
-            .send(`Es wurde keine Vorlesung mit der Abkürzung ${req.query.abrv} gefunden.`);
+            .send(
+              `Es wurde keine Vorlesung mit der Abkürzung ${req.query.abrv} gefunden.`
+            );
         }
       }
     );
@@ -86,5 +88,15 @@ router.post(
     });
   }
 );
+
+router.post("/check", auth, (req, res) => {
+  req.services.lectures.checkUnique(req.body.lecture, (err) => {
+    if (err) {
+      res.status(422).send(err.message);
+    } else {
+      res.status(204).send();
+    }
+  });
+});
 
 module.exports = router;
