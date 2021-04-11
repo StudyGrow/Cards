@@ -29,7 +29,7 @@ export class NavListComponent implements OnInit {
 
   toggleDarkMode(e: MatSlideToggleChange) {
     let theme = e.checked ? 'dark-theme' : 'default'; //theme which should be switched
-    this.themeManager.changeTheme(theme);
+    this.themeManager.changeTheme(theme, true);
   }
   ngOnInit(): void {
     this.theme$ = this.store.select('mode').pipe(map((data) => data.theme));
