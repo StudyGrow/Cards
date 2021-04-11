@@ -10,9 +10,8 @@ pre {
 }
 pre {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji",
-    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif,
+    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   font-size: 1em;
   font-weight: 400;
   line-height: 1.5;
@@ -46,4 +45,7 @@ mat-card-title {
 mat-card {
   width: 90%;
   margin: 0 auto 0 auto;
+}
+button {
+  outline: none;
 }

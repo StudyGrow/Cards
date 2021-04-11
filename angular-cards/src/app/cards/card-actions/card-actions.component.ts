@@ -9,11 +9,11 @@ import { authorized, UserVote, VoteCount } from 'src/app/store/selector';
 import { changeVote } from '../../store/actions/CardActions';
 
 @Component({
-  selector: 'app-vote',
-  templateUrl: './vote.component.html',
-  styleUrls: ['./vote.component.css'],
+  selector: 'card-actions',
+  templateUrl: './card-actions.component.html',
+  styleUrls: ['./card-actions.component.css'],
 })
-export class VoteComponent implements OnInit, OnDestroy {
+export class CardActionsComponent implements OnInit, OnDestroy {
   vote: Vote = new Vote();
   voteCount: number;
   loggedIn$: Observable<boolean> = this.store.select(authorized);
