@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { combineLatest, Observable } from 'rxjs';
 import { Vorlesung } from 'src/app/models/Vorlesung';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { ElementRef, ViewChild } from '@angular/core';
@@ -31,14 +31,14 @@ export class FilterTagsComponent implements OnInit {
 
   ngOnInit(): void {
     this.selected$ = this.store.select(ActiveTags);
-    this.filteredTags$ = this.formCtrl.valueChanges.pipe(
-      //autocomplete
-      startWith(''),
-      withLatestFrom(this.store.select(TagOptions)), //get all available tags
+    this.filteredTags$ = combineLatest([
+      this.formCtrl.valueChanges.pipe(startWith('')),
+      this.store.select(TagOptions),
+    ]).pipe(
       map(([input, tags]: [string, string[]]) => {
         return input?.length > 0 ? this._filter(input, tags) : tags;
       }),
-      map((list) => list.sort())
+      map((list) => list.sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase())))
     );
   }
 
