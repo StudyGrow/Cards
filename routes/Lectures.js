@@ -89,7 +89,7 @@ router.post(
   }
 );
 
-router.get("/check", auth, (req, res) => {
+router.post("/check", auth, (req, res) => {
   req.services.lectures.checkUnique(req.body.lecture, (err) => {
     if (err) {
       res.status(422).send(err.message);

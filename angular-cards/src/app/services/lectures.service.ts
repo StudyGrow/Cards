@@ -33,6 +33,16 @@ export class LecturesService {
       );
   }
 
+  checkUniqueLecture(lecture: Vorlesung): Observable<boolean> {
+    return this.http
+      .post<any>(
+        this.config.urlBase + 'lectures/check',
+        { lecture: lecture },
+        { headers: this.config.headers, observe: 'response' }
+      )
+      .pipe(map((res) => res.status === 204));
+  }
+
   //add a lecture to the database on the server
   addLecture(lecture: Vorlesung): Observable<Vorlesung> {
     return this.http
