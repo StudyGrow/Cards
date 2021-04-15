@@ -41,7 +41,7 @@ export class UserService implements CanActivate {
   }
   //used to login the user
   login(form: User): Observable<User> {
-    return this.http.post<User>(this.config.urlBase + 'login', form, {
+    return this.http.post<User>(this.config.urlBase + 'auth/login', form, {
       headers: this.config.headers,
     });
   }

@@ -7,6 +7,8 @@ import bodyParser from "body-parser";
 import swaggerJsdoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 import path from "path";
+import passport from "passport";
+
 const helmet = require("helmet");
 const express = require("express");
 export default ({ app, container }) => {
@@ -18,18 +20,22 @@ export default ({ app, container }) => {
     }
   });
   app.use(helmet());
-  app.use(cors());
+  // app.use(cors());
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: false }));
   app.get("/available", (_req: any, res: any) => {
     res.status(200).end();
   });
+  app.enable("trust proxy");
 
   app.use((req: any, _res: any, next: any) => {
     console.log(req.path);
     next();
   });
+  require("../config/passport")(passport);
 
+  app.use(passport.initialize());
+  app.use(passport.session());
   app.use(scopePerRequest(container));
   //   const subroutes = loadControllers("../routes/**/*.subroute.ts", {
   //     cwd: __dirname,
@@ -63,19 +69,36 @@ export default ({ app, container }) => {
     apis: [path.join(__dirname, "../routes/**/*.ts")],
   };
   const specs = swaggerJsdoc(options);
-  app.use(`/docs`, swaggerUi.serve, swaggerUi.setup(specs, { explorer: true }));
+  // app.use(`/docs`, swaggerUi.serve, swaggerUi.setup(specs, { explorer: true }));
   app.use(`/api/`, [routes]);
 
+
+  // app.post(
+  //   "/api/login",
+  //   (req, res, next) => {
+  //     req.headers.cookie &&
+  //     req.headers.cookie.includes("cookieconsent_status=deny")
+  //       ? res
+  //           .status(401)
+  //           .send("Bitte akzeptiere cookies um dieses Feature zu nutzen")
+  //       : next();
+  //   },
+  //   (req, res, next) => {
+  //     req.services.user.login(passport, req, res, next);
+  //   }
+  // );
   //built angular files
+
   app.use(
-    express.static(path.join(__dirname, "./angular-cards/dist/angular-cards/"))
-  );
-  //angular index.html file to always serve after client uses browser navigation
-  app.get("*", (req, res) =>
-    res.sendFile(
-      path.join(__dirname, "./angular-cards/dist/angular-cards/index.html")
-    )
-  );
+    express.static(path.join(__dirname, "../angular-cards/dist/angular-cards/"))
+    );
+    // //angular index.html file to always serve after client uses browser navigation
+
+app.get("*", (req, res) =>
+  res.sendFile(
+    path.join(__dirname, "../angular-cards/dist/angular-cards/index.html")
+  )
+);
   //   app.use((err: any, _req: any, res: any, next: any) => {
   //     if (err instanceof CelebrateError) {
   //       let message =
@@ -86,8 +109,8 @@ export default ({ app, container }) => {
   //       return next(err);
   //     }
   //   });
-  app.use((err: any, _req: any, _res: any, next: any) => {
-    console.log(err);
-    return next(err);
-  });
+  // app.use((err: any, _req: any, _res: any, next: any) => {
+  //   console.log(err);
+  //   return next(err);
+  // });
 };

@@ -7,7 +7,7 @@ export default function authorize({
   }) {
     return function (req: any, res: any, next: any) {
       authService
-        .authorizeRequest(req)
+        .authorizeRequest(req,res,next)
         .then((payload: any) => {
           req._id = payload._id;
           next();

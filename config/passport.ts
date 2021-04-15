@@ -1,6 +1,7 @@
+import { User } from "../models/user.model";
+
 const LocalStrategy = require("passport-local").Strategy;
 const bcrypt = require("bcryptjs");
-const User = require("../models/User");
 
 //configure passport for user authentification
 
@@ -9,12 +10,12 @@ module.exports = function (passport) {
     new LocalStrategy(async function (username, password, done) {
       try {
         let user = await User.findOne({ username: username });
-
+        console.log(user)
         if (!user) {
           throw new Error("Benutzername oder Passwort falsch");
         }
         let validation = await bcrypt.compare(password, user.password);
-
+        console.log(validation)
         if (validation) {
           return done(null, user);
         } else {

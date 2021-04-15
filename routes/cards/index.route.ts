@@ -1,8 +1,10 @@
 //handles all card specific routes
 import { route, GET, PUT, POST, DELETE, before, inject } from "awilix-express";
-
-const { check, query, validationResult } = require("express-validator"); //uses to validate requests
-// const authentication = require("./authentication");
+import { Request, Response } from "express";
+import { ICard } from "../../models/cards.model";
+import CardsService from "../../services/cards.service";
+import LectureService from "../../services/lecture.service";
+import VotesService from "../../services/votes.service";
 
 //route to get the cards from a specific lecture
 @route("/cards")
@@ -10,23 +12,28 @@ const { check, query, validationResult } = require("express-validator"); //uses 
 //   inject(({ authorizationMiddleware }) => authorizationMiddleware),
 // )
 export default class CardsRoute {
-  constructor({ cardsService }) {
+  constructor({ cardsService, votesService, lectureService }) {
     // this.logger = logger;
     this.cardsService = cardsService;
+    this.votesService = votesService;
+    this.lectureService = lectureService;
   }
-  cardsService;
+  cardsService: CardsService;
+  lectureService: LectureService;
+  votesService: VotesService;
   @route("")
   @GET()
   @before(
-    inject(({ validationFactory }) => validationFactory.getCardsByLecture),
+    inject(({ validationFactory }) =>
+      validationFactory.validateLectureAbbreviation()
+    )
   )
-  async getCardsByAbreviation(req, res) {
-    const lectureAbreviation = req.query.abrv;
+  async getCardsByAbbreviation(req, res) {
     this.cardsService
       .getCardsFromQuery({
-        vorlesung: lectureAbreviation,
+        vorlesung: req.query.abrv,
       })
-      .then((cards) => {
+      .then((cards: ICard[]) => {
         res.status(200).send(cards);
       })
       .catch((err) => {
@@ -34,130 +41,122 @@ export default class CardsRoute {
           .status(err?.status || 500)
           .send(err?.message || "Internal Server Error");
       });
+  }
 
-    // (
-    //   {
-    //     vorlesung: req.query.abrv,
-    //   },
-    //   (err, cards) => {
-    //     if (err) {
-    //       res.status(501).send(err.message);
-    //     } else {
-    //       res.status(200).send(cards);
-    //     }
-    //   }
-    // );
+    @route("/data")
+    @GET()
+    @before(
+      inject(({ validationFactory }) => validationFactory.validateLectureAbbreviation()),
+    )
+    async getCardsData(req,res){
+      let abrv = req.query.abrv;
+      let cards = this.cardsService.findByAbrv(abrv);
+      let vl = this.lectureService.findByAbrv(abrv);
+      let allVotes = this.votesService.getAllVotesByLectureAbrv(abrv);
+      let userid;
+      let username;
+      // if (req.isAuthenticated()) {
+        // userid = req.user._id;
+      // }
+      res.setHeader('Access-Control-Allow-Origin', '*');
+      Promise.all([cards, vl, allVotes])
+        .then(([cards, lecture, votes]) =>
+          res.json({
+            cards: cards,
+            votes: votes,
+            lecture: lecture,
+            uid: userid,
+            username: username,
+          })
+        )
+        .catch((err) => {
+          res.status(422).send(err.message);
+        });
+      }
+
+  @route("/new")
+  @POST()
+  @before(inject(({ authorizationMiddleware }) => authorizationMiddleware))
+  @before(
+    inject(({ validationFactory }) =>
+      validationFactory.validateCardToAdd()
+    )
+  )
+  async addCard(req: any, res: Response) {
+    this.cardsService
+      .addCard(req.body.card, req.user)
+      .then((card: ICard) => {
+        res.status(200).json(card);
+      })
+      .catch((err) => {
+        res.status(422).send(err.message);
+      });
+  }
+
+
+
+  @route("/upate")
+  @PUT()
+  @before(inject(({ authorizationMiddleware }) => authorizationMiddleware))
+  @before(
+    inject(({ validationFactory }) =>
+      validationFactory.validateCardToAdd()
+    )
+  )
+  async updateCard(req: any, res: Response) {
+    this.cardsService
+      .updateCard(req.body.card, req.user)
+      .then((card: ICard) => {
+        res.status(200).json(card);
+      })
+      .catch((err) => {
+        res.status(422).send(err.message);
+      });
+  }
+
+
+
+  @route("/upate")
+  @PUT()
+  @before(inject(({ authorizationMiddleware }) => authorizationMiddleware))
+  @before(
+    inject(({ validationFactory }) =>
+      validationFactory.validateCardToAdd()
+    )
+  )
+  async castCard(req: any, res: Response) {
+    let vote = parseInt(req.body.value);
+
+    this.votesService
+      .castVote(req)
+      .then(() => {
+        res.status(200);
+      })
+      .catch((err) => {
+        res.status(422).send(err.message);
+      });
+  }
+
+  @route("/user/votes")
+  @GET()
+  @before(
+    inject(({ validationFactory }) =>
+      validationFactory.validateLectureAbbreviation()
+    )
+  )
+  async getLectureVotesByUser(req: any, res: Response) {
+    let vote = parseInt(req.body.value);
+
+    this.votesService
+      .getVotesByLectureAbrv(req.query.abrv, req.user._id)
+      .then((votes) => {
+        res.status(200).send(votes);
+      })
+      .catch((err) => {
+        res.status(422).send(err.message);
+      });
   }
 }
-
-// router.get(
-//   "/",
-//   [
-//     query("abrv")
-//       .isLength({ min: 3, max: 7 })
-//       .withMessage("Lecture abreviation must be between 3 and 7 characters"),
-//   ],
-//   (req, res) => {
-//     const errors = validationResult(req);
-//     if (!errors.isEmpty()) {
-//       res.status(422).json({ errors: errors.array() }); //send errors to the client
-//       return;
-//     }
-
-//     req.services.cards.getCardsFromQuery(
-//       {
-//         vorlesung: req.query.abrv,
-//       },
-//       (err, cards) => {
-//         if (err) {
-//           res.status(501).send(err.message);
-//         } else {
-//           res.status(200).send(cards);
-//         }
-//       }
-//     );
-//   }
-// );
-
-// //returns cards as well as metadata
-// router.get(
-//   '/data',
-//   [
-//     query('abrv')
-//       .isLength({ min: 3, max: 7 })
-//       .withMessage('Lecture abreviation must be between 3 and 7 characters'),
-//   ],
-//   (req, res) => {
-//     const errors = validationResult(req);
-//     if (!errors.isEmpty()) {
-//       res.status(422).json({ errors: errors.array() }); //send errors to the client
-//       return;
-//     }
-//     let abrv = req.query.abrv;
-//     let cards = req.services.cards.findByAbrv(abrv);
-//     let vl = req.services.lectures.findByAbrv(abrv);
-//     let allVotes = req.services.votes.getAllVotesByLectureAbrv(abrv);
-//     let userid;
-//     let username;
-//     if (req.isAuthenticated()) {
-//       userid = req.user._id;
-//     }
-//     res.setHeader('Access-Control-Allow-Origin', '*');
-//     Promise.all([cards, vl, allVotes])
-//       .then(([cards, lecture, votes]) =>
-//         res.json({
-//           cards: cards,
-//           votes: votes,
-//           lecture: lecture,
-//           uid: userid,
-//           username: username,
-//         })
-//       )
-//       .catch((err) => {
-//         res.status(422).send(err.message);
-//       });
-//   }
-// );
-
-// //Add card to the database
-// router.post(
-//   '/new',
-//   authentication,
-//   [
-//     check('card.abrv')
-//       .isLength({ min: 3, max: 7 })
-//       .withMessage('Vorlesung Abkürzung ugültig (muss zwischen 3 und 7 Zeichen enthalten)'),
-//     check('card.thema')
-//       .isLength({
-//         min: 3,
-//         max: 500,
-//       })
-//       .withMessage('Thema muss zwischen 3 und 500 Zeichen enthalten'),
-//     check('card.content')
-//       .isLength({
-//         min: 1,
-//         max: 1000,
-//       })
-//       .withMessage('Inhalt darf nicht mehr als 1000 Zeichen enthalten'),
-//   ],
-//   (req, res) => {
-//     const errors = validationResult(req);
-//     if (!errors.isEmpty()) {
-//       res.status(422).json({
-//         errors: errors.array(),
-//       });
-//       return;
-//     }
-
-//     req.services.cards.addCard(req.body.card, req.user, (err, card) => {
-//       if (err) {
-//         res.status(500).send(err.message);
-//       } else {
-//         res.json(card);
-//       }
-//     });
-//   }
-// );
 
 // //Add MultipleChoiceCard to the database, body passed should be of form:
 // // {
@@ -214,10 +213,6 @@ export default class CardsRoute {
 //   }
 // );
 
-// // router.get("/renew", (req, res) => {
-// //   req.services.cards.renew();
-// //   res.send();
-// // });
 
 // //Update MultipleChoiceCard to the database, body passed should be of form:
 // // {
@@ -272,94 +267,3 @@ export default class CardsRoute {
 //     }
 //   }
 // );
-
-// //Update Card in the database
-// router.put(
-//   '/update',
-//   [
-//     check('card._id')
-//       .isLength({
-//         min: 1,
-//         max: 500,
-//       })
-//       .withMessage('_id der Karte muss angegeben werden'),
-//     check('card.thema')
-//       .isLength({
-//         min: 3,
-//         max: 500,
-//       })
-//       .withMessage('Thema muss zwischen 3 und 500 Zeichen enthalten'),
-//     check('card.content')
-//       .isLength({
-//         min: 1,
-//         max: 1000,
-//       })
-//       .withMessage('Inhalt darf nicht mehr als 1000 Zeichen enthalten'),
-//   ],
-//   authentication,
-//   (req, res) => {
-//     const errors = validationResult(req);
-//     if (!errors.isEmpty()) {
-//       res.status(422).json({
-//         errors: errors.array(),
-//       });
-//     } else {
-//       req.services.cards.updateCard(req.body.card, req.user, (err, card) => {
-//         if (err) {
-//           res.status(422).send(err.message);
-//         } else {
-//           res.status(200).send(card);
-//         }
-//       });
-//     }
-//   }
-// );
-
-// router.put('/vote', check('id').not().isEmpty().withMessage('Karten Id benötigt'), (req, res) => {
-//   const errors = validationResult(req);
-//   if (!errors.isEmpty()) {
-//     res.status(422).json({
-//       errors: errors.array(),
-//     });
-//   }
-
-//   let vote = parseInt(req.body.value);
-//   req.services.votes.castVote(req, (err, result) => {
-//     if (err) {
-//       res.status(422).send(err.message);
-//     } else {
-//       res.status(200).json(result);
-//     }
-//   });
-// });
-
-// router.get(
-//   '/votes',
-//   [
-//     query('abrv')
-//       .isLength({ min: 3, max: 7 })
-//       .withMessage('Lecture abreviation must be between 3 and 7 characters'),
-//   ],
-//   (req, res) => {
-//     const errors = validationResult(req);
-//     if (!errors.isEmpty()) {
-//       res.status(422).json({
-//         errors: errors.array(),
-//       });
-//     } else {
-//       if (req.isAuthenticated()) {
-//         req.services.votes.getVotesByLectureAbrv(req.query.abrv, req.user._id, (err, votes) => {
-//           if (err) {
-//             res.status(422).send(err.message);
-//           } else {
-//             res.status(200).send(votes);
-//           }
-//         });
-//       } else {
-//         res.status(200).send([]);
-//       }
-//     }
-//   }
-// );
-
-// module.exports = router;

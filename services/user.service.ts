@@ -1,21 +1,23 @@
 //Service that provides functions associated with users
-const User = require("../models/User");
-const Card = require("../models/Card");
-const bcrypt = require("bcryptjs"); //used to encrypt and decrypt passwords
-const mail = require("./mailService");
+import { Model } from "mongoose";
+import { IUser, User } from "../models/user.model";
+import { Card } from "../models/cards.model";
+import bcryptjs from "bcryptjs";
+import mailService from "./mail.service";
+
+// const bcryptjs = require("bcryptjs"); //used to encrypt and decrypt passwords
+// const mail = require("./mailService");
 const crypto = require("crypto-random-string");
-const { findByIdAndDelete } = require("../models/User");
-export default class userService {
-  constructor() {}
+export default class UserService {
+  constructor({ userModel, mailService }) {
+    this.userModel = userModel;
+  }
+  userModel: Model<IUser, {}>;
   //create a new Account for the site
-  createUser = async (form, callback) => {
-    try {
-      await checkUnique(form.email, form.username); //check if email and username are unique, will throw error
-      addAccount(form, callback); //add the account to the database
-    } catch (error) {
-      callback(error, false);
-    }
-  };
+  async createUser(form) {
+    await checkUnique(form.email, form.username); //check if email and username are unique, will throw error
+    return addAccount(form); //add the account to the database
+  }
 
   //Login the user
   login = async (passport, req, res, next) => {
@@ -30,13 +32,11 @@ export default class userService {
             if (error) {
               res.status(401).send(error.message);
             } else {
-              res
-                .status(200)
-                .send({
-                  _id: user._id,
-                  username: user.username,
-                  email: user.email,
-                });
+              res.status(200).send({
+                _id: user._id,
+                username: user.username,
+                email: user.email,
+              });
             }
           });
       }
@@ -44,8 +44,7 @@ export default class userService {
   };
 
   //get account info for a user, for now only cards
-  getAccountInfo = async (user, callback) => {
-    try {
+  async getAccountInfo(user){
       if (!user) {
         throw new Error("Bitte logge dich erst ein");
       }
@@ -54,32 +53,23 @@ export default class userService {
 
       let cards = await Card.find({ authorId: user._id });
       // info.cards = cards;
-      callback(null, info);
-    } catch (error) {
-      callback(error, null);
-    }
+      return info;
+
   };
 
-  updatePassword = (user, newPassword, callback) => {
-    hashPassword(newPassword, async (err, hash) => {
-      if (err) {
-        callback(err);
-      } else {
-        await User.findByIdAndUpdate(user._id, { password: hash });
-        callback(null);
-      }
-    });
-  };
-  deleAccount = async (req, callback) => {
+  async updatePassword(user, newPassword) {
     try {
-      await User.findByIdAndDelete(req.user._id);
-      callback(null);
-    } catch (error) {
-      callback(error);
+      let hashedPassword = hashPassword(newPassword);
+      await User.findByIdAndUpdate(user._id, { password: hashedPassword });
+    } catch (e) {
+      throw new Error("Error updating password");
     }
+  }
+  deleteAccount = async (req) => {
+      await User.findByIdAndDelete(req.user._id);
+      return true;
   };
-  updateAccount = async (user, form, callback) => {
-    try {
+  async updateAccount(user, form){
       if (user.username != form.username && user.email != form.email) {
         if (user.email == form.email && user.username != form.username) {
           await checkUnique(null, form.username);
@@ -95,10 +85,7 @@ export default class userService {
         name: form.name,
         surname: form.surname,
       });
-      callback(null);
-    } catch (error) {
-      callback(error);
-    }
+      return true;
   };
 }
 
@@ -121,7 +108,7 @@ async function checkUnique(email, username) {
 }
 //function to add an account to the database
 //creates a new user and decrypts the password before saving it to the database
-function addAccount(form, callback) {
+function addAccount(form): IUser {
   let user = new User({
     username: form.username,
     email: form.email,
@@ -129,37 +116,39 @@ function addAccount(form, callback) {
     confirmed: false,
     token: crypto(32),
   });
-  hashPassword(form.password, (err, password) => {
-    if (password) {
-      user.password = password; //save password as a hash
-      user.save((err, user) => {
-        if (err) {
-          callback(err, false);
-        } else {
-          mail.sendConfirmationMail(user);
-          callback(false, user);
-        }
-      });
-    } else if (err) {
-      callback(err, false);
-    } else {
-      callback(new Error("Ein unbekannter Fehler ist aufgetreten"), false);
-    }
-  });
+  let newUser: IUser;
+  try {
+    let password = hashPassword(form.password);
+    user.password = password;
+    user.save((err, savedUser) => {
+      if (err) {
+        throw new Error("Error saving user");
+      } else {
+        // mailService.sendConfirmationMail(savedUser);
+        newUser = savedUser;
+      }
+    });
+    return newUser;
+  } catch (e) {
+    throw new Error("Ein unbekannter Fehler ist aufgetreten");
+  }
 }
 
 //generates a secure hash for the password
-function hashPassword(password, callback) {
-  bcrypt.genSalt(10, (err, salt) => {
+function hashPassword(password): string {
+  let hashedPassword;
+  bcryptjs.genSalt(10, (err, salt) => {
     if (err) {
       throw err;
     }
-    bcrypt.hash(password, salt, (err, hash) => {
-      if (err) {
-        callback(err, false);
-      } else {
-        callback(false, hash);
-      }
-    });
+    bcryptjs
+      .hash(password, salt)
+      .then((hash) => {
+        hashedPassword = hash;
+      })
+      .catch((e) => {
+        throw new Error(e);
+      });
   });
+  return hashedPassword;
 }

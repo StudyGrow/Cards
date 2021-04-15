@@ -1,85 +1,144 @@
+import { Model } from "mongoose";
+import { ICard } from "../models/cards.model";
+import { ILecture } from "../models/lecture.model";
+
+
 //service which provides card related services
-const mongoose = require("mongoose");
-// const Card = mongoose.model("Card");
-// const Lecture = mongoose.model("Lecture");
 const MultipleChoiceCard = require("../models/MultipleChoiceCard");
 
-export default class cardsService {
-  constructor({ cardsModel }) {
+export default class CardsService {
+  constructor({ cardsModel,lectureModel }) {
     this.cardsModel = cardsModel;
+    this.lectureModel=lectureModel;
   }  
-  cardsModel;
+  cardsModel: Model<ICard, {}>;;
+  lectureModel: Model<ILecture, {}>;;
   //returns all the cards matching the query
-  getCardsFromQuery(query) {
-    console.log(query)
-    try {
+  getCardsFromQuery(query){
+    // console.log(query)
+   
       let cards =  this.cardsModel.find(query).select(
         "tags thema content vorlesung latex"
       );
       return cards;
-    } catch (error) {
-      throw Error('Error getting Cards');
-    }
+   
   };
 
-  // findByAbrv = async (abrv) => {
-  //   return await Card.find({ vorlesung: abrv })
-  //     .lean()
-  //     .select(
-  //       "name thema vorlesung tags latex authorId authorName content date"
-  //     );
-  // };
+  findByAbrv = async (abrv) => {
+    return await this.cardsModel.find({ vorlesung: abrv })
+      .lean()
+      .select(
+        "name thema vorlesung tags latex authorId authorName content date"
+      );
+  };
 
   // //creates a new card and adds it to the database
-  // addCard = async (form, user, callback) => {
-  //   try {
-  //     const card = new Card(form);
-  //     card.date = new Date();
-  //     card.vorlesung = form.abrv;
-  //     card.latex = form.latex;
-  //     if (user) {
-  //       card.authorId = user._id; //add user as author of card
-  //       card.authorName = user.username;
-  //     }
+  addCard = async (form, user) => {
+      const card = new this.cardsModel(form);
+      card.date = new Date();
+      card.vorlesung = form.abrv;
+      card.latex = form.latex;
+      if (user) {
+        card.authorId = user._id; //add user as author of card
+        card.authorName = user.username;
+      }
 
-  //     updateTags(card.vorlesung, card.tags);
-  //     await card.save();
-  //     await Lecture.findOneAndUpdate(
-  //       { abrv: form.abrv },
-  //       { $inc: { totalCards: 1 } }
-  //     );
-  //     callback(null, card);
-  //   } catch (error) {
-  //     callback(error, null);
-  //   }
-  // };
+      this.updateTags(card.vorlesung, card.tags);
+      await card.save();
+      await this.lectureModel.findOneAndUpdate(
+        { abrv: form.abrv },
+        { $inc: { totalCards: 1 } }
+      );
+      return card;
+  };
 
   // //creates a new card and adds it to the database
-  // addMultipleChoiceCard = async (form, user, callback) => {
-  //   try {
-  //     let lectureExists = await Lecture.findByIdAndUpdate(form.cardDeckID, {
-  //       $inc: { totalCards: 1 },
-  //     });
-  //     if (lectureExists == null) {
-  //       throw new Error("CardDeck (Lecture) does not exist");
-  //     }
-  //     const multipleChoiceCard = new MultipleChoiceCard(form);
-  //     multipleChoiceCard.date = new Date();
-  //     if (user) {
-  //       multipleChoiceCard.authorId = user._id; //add user as author of card
-  //       multipleChoiceCard.authorName = user.username;
-  //     }
+  addMultipleChoiceCard = async (form, user) => {
+   
+      let lectureExists = await this.lectureModel.findByIdAndUpdate(form.cardDeckID, {
+        $inc: { totalCards: 1 },
+      });
+      if (!lectureExists) {
+        throw new Error("CardDeck (Lecture) does not exist");
+      }
+      const multipleChoiceCard = new MultipleChoiceCard(form);
+      multipleChoiceCard.date = new Date();
+      if (user) {
+        multipleChoiceCard.authorId = user._id; //add user as author of card
+        multipleChoiceCard.authorName = user.username;
+      }
 
-  //     // updateTags(card.vorlesung, card.tags);
-  //     await multipleChoiceCard.save();
+      this.updateTags(multipleChoiceCard.vorlesung, multipleChoiceCard.tags);
+      await multipleChoiceCard.save();
 
-  //     callback(null, multipleChoiceCard);
-  //   } catch (error) {
-  //     callback(error, null);
-  //   }
-  // };
+      return multipleChoiceCard;
+    
+  };
 
-  //used to migrate data
+  //updates a MultipleChoiceCard in the database
+  updateMultipleChoiceCard = async (card, user) => {
+   
+      let tmp = await MultipleChoiceCard.findById(card._id); //find the card in the database
+      if (tmp == null) {
+        throw new Error("MultipleChoiceCard doesn't exist");
+      }
+      let lectureExists = await this.lectureModel.findById(card.cardDeckID);
+      if (lectureExists == null) {
+        throw new Error("CardDeck (Lecture) does not exist");
+      }
+      if (tmp && tmp.authorId && !user) {
+        //There is an author, but there is no user logged in
+        throw new Error(
+          "Fehler: Du bist nicht der Author dieser Karte. Bitte logge dich ein."
+        );
+      }
+      if (tmp.authorId && tmp.authorId != "" && tmp.authorId != user._id) {
+        //The user is not the author of the card
+        throw new Error("Fehler: Du bist nicht der Author dieser Karte.");
+      }
+      let updatedCard = await MultipleChoiceCard.findByIdAndUpdate(
+        card._id,
+        card,
+        {
+          new: true,
+        }
+      );
+      return updatedCard;
+   
+  };
+
+  // //updates a card in the database
+  updateCard = async (card, user) => {
+   
+      let tmp = await this.cardsModel.findById(card._id); //find the card in the database
+      if (tmp && tmp.authorId && !user) {
+        //There is an author, but there is no user logged in
+        throw new Error(
+          "Fehler: Du bist nicht der Author dieser Karte. Bitte logge dich ein."
+        );
+      }
+      if (tmp.authorId && tmp.authorId != "" && tmp.authorId != user._id) {
+        //The user is not the author of the card
+        throw new Error("Fehler: Du bist nicht der Author dieser Karte.");
+      }
+      this.updateTags(card.vorlesung, card.tags);
+      let newCard = {
+        thema: card.thema,
+        content: card.content,
+        latex: card.latex,
+        tags: card.tags,
+      };
+      await this.cardsModel.findByIdAndUpdate(
+        card._id,
+        newCard
+        //returns old content
+      );
+      // newCard._id = card._id;
+      return newCard
+   
+  };
+
+//used to migrate data
   // cardsService.renew = async () => {
   //   let cards = await Card.find({ vorlesung: "mal" });
   //   cards.forEach((card) => {
@@ -101,88 +160,18 @@ export default class cardsService {
   //   });
   // };
 
-  //updates a MultipleChoiceCard in the database
-  // updateMultipleChoiceCard = async (card, user, callback) => {
-  //   try {
-  //     let tmp = await MultipleChoiceCard.findById(card._id); //find the card in the database
-  //     if (tmp == null) {
-  //       throw new Error("MultipleChoiceCard doesn't exist");
-  //     }
-  //     let lectureExists = await Lecture.findById(card.cardDeckID);
-  //     if (lectureExists == null) {
-  //       throw new Error("CardDeck (Lecture) does not exist");
-  //     }
-  //     if (tmp && tmp.authorId && !user) {
-  //       //There is an author, but there is no user logged in
-  //       throw new Error(
-  //         "Fehler: Du bist nicht der Author dieser Karte. Bitte logge dich ein."
-  //       );
-  //     }
-  //     if (tmp.authorId && tmp.authorId != "" && tmp.authorId != user._id) {
-  //       //The user is not the author of the card
-  //       throw new Error("Fehler: Du bist nicht der Author dieser Karte.");
-  //     }
-  //     let updatedCard = await MultipleChoiceCard.findByIdAndUpdate(
-  //       card._id,
-  //       card,
-  //       {
-  //         new: true,
-  //       }
-  //     );
-  //     callback(null, updatedCard);
-  //   } catch (error) {
-  //     console.error(error);
-  //     callback(error, null);
-  //   }
-  // };
-
-  // //updates a card in the database
-  // updateCard = async (card, user, callback) => {
-  //   try {
-  //     let tmp = await Card.findById(card._id); //find the card in the database
-  //     if (tmp && tmp.authorId && !user) {
-  //       //There is an author, but there is no user logged in
-  //       throw new Error(
-  //         "Fehler: Du bist nicht der Author dieser Karte. Bitte logge dich ein."
-  //       );
-  //     }
-  //     if (tmp.authorId && tmp.authorId != "" && tmp.authorId != user._id) {
-  //       //The user is not the author of the card
-  //       throw new Error("Fehler: Du bist nicht der Author dieser Karte.");
-  //     }
-  //     updateTags(card.vorlesung, card.tags);
-  //     let newCard = {
-  //       thema: card.thema,
-  //       content: card.content,
-  //       latex: card.latex,
-  //       tags: card.tags,
-  //     };
-  //     await Card.findByIdAndUpdate(
-  //       card._id,
-  //       newCard
-  //       //returns old content
-  //     );
-  //     // newCard._id = card._id;
-  //     callback(null, newCard);
-  //   } catch (error) {
-  //     console.error(error);
-  //     callback(error, null);
-  //   }
-  // };
+  private updateTags(vlabrv, tags) {
+    if (tags) {
+      tags.forEach((tag:string) => {
+        if (tag.length > 0) {
+          this.lectureModel.updateOne(
+            { abrv: vlabrv },
+            { $addToSet: { tagList: tag } },
+          );
+        }
+      });
+    }
+  }
 }
 
-// function updateTags(vlabrv, tags) {
-//   if (tags) {
-//     tags.forEach((tag) => {
-//       if (tag.length > 0) {
-//         Lecture.updateOne(
-//           { abrv: vlabrv },
-//           { $addToSet: { tagList: [tag] } },
-//           (err, res) => {
-//             console.log(res);
-//           }
-//         );
-//       }
-//     });
-//   }
-// }
+

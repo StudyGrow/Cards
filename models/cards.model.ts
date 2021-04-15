@@ -1,6 +1,17 @@
-import mongoose from 'mongoose';
+import { model, Schema, Model, Document } from "mongoose";
+export interface ICard extends Document {
+  vorlesung: string;
+  thema: string;
+  content: string;
+  tags: string[];
+  authorId: string;
+  authorName: string;
+  date: Date;
+  latex: number;
+  rating: number; //????
+}
 
-const cardSchema = new mongoose.Schema({
+const cardSchema = new Schema({
   vorlesung: {
     type: String,
     trim: true,
@@ -21,4 +32,5 @@ const cardSchema = new mongoose.Schema({
   latex: Number,
   rating: Number,
 });
-export default mongoose.model('Card', cardSchema);
+export const Card: Model<ICard> = model("Card", cardSchema);
+export default model("Card", cardSchema);
