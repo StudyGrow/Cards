@@ -11,5 +11,5 @@ module.exports = {
     secure: process.env.NODE_ENV && process.env.NODE_ENV.indexOf('development') > -1 ? false : true,
   }, //secure needs to be set to true for production here
   expires: new Date(new Date()),
-  store: new MongoStore({ mongooseConnection: mongoose.connection }),
+  // store: new MongoStore({ mongooseConnection: mongoose.connection }),
 };
