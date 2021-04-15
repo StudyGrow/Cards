@@ -6,9 +6,15 @@ import { ActivatedRoute } from '@angular/router';
 import { fadeInOnEnterAnimation, shakeAnimation, fadeOutOnLeaveAnimation } from 'angular-animations';
 import { Store } from '@ngrx/store';
 
-import { setFormMode, changeTab, changeSorting, updateCarouselInfo } from 'src/app/store/actions/StateActions';
+import {
+  setFormMode,
+  changeTab,
+  changeSorting,
+  updateCarouselInfo,
+  resetFilter,
+} from 'src/app/store/actions/StateActions';
 
-import { debounceTime, distinctUntilChanged, distinctUntilKeyChanged, map, tap } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, distinctUntilKeyChanged, map, tap, withLatestFrom } from 'rxjs/operators';
 
 import { NgbCarousel, NgbSlideEvent } from '@ng-bootstrap/ng-bootstrap';
 import { NotificationsService } from 'src/app/services/notifications.service';
@@ -149,6 +155,14 @@ export class CarouselComponent implements OnInit, OnDestroy {
       });
     this.subscriptions$.push(sub);
 
+    sub = this.route.fragment.pipe(distinctUntilChanged()).subscribe((fragment) => {
+      //we might need to change this to handle resetting the filter if card is not in the current selection
+      if (fragment && this.cardsToShowInCarousel) {
+        this.refreshCarouselCards(fragment);
+      }
+    });
+    this.subscriptions$.push(sub);
+
     let filtered$ = this.store.select('mode').pipe(map((state) => state.cardsChanged)); //observable of timestamp at which user has modified the way cards are displayed
     let added$ = this.store.select('data').pipe(map((state) => state.cardData.lastUpdated)); //observable of timestamp at the cards were last modified
 
@@ -162,14 +176,23 @@ export class CarouselComponent implements OnInit, OnDestroy {
     });
 
     sub = combineLatest([this.store.select(CardsSorted), this.store.select(CardsSortedAndFiltered), lastChanges$])
-      // .pipe(debounceTime(5))
-      .subscribe(([allCardsSorted, allCardsSortedAndFiltered, changes]) => {
+      .pipe(withLatestFrom(this.route.fragment.pipe(distinctUntilChanged())))
+      .subscribe(([[allCardsSorted, allCardsSortedAndFiltered, changes], cardid]) => {
+        if (!allCardsSorted || !allCardsSortedAndFiltered) {
+          return;
+        }
         let carouselState = { ...this.carouselInfo$.getValue() };
         if (!carouselState.updateAt || carouselState.updateAt.getTime() < changes) {
           //cards have changed
           carouselState.updateAt = new Date(); //update the last refresh time
           carouselState.allCardsSorted = allCardsSorted;
           carouselState.allCardsSortedAndFiltered = allCardsSortedAndFiltered;
+          if (!this.cardsToShowInCarousel) {
+            //if cards were not initialized, we set the initial card to show
+            //this if statement is necessary because we do not want to change the card from the route if cards sorted change
+            carouselState.currentCard = allCardsSorted?.find((card) => card._id === cardid);
+          }
+
           this.carouselInfo$.next(carouselState);
           this.refreshCarouselCards(carouselState.currentCard?._id);
         }
@@ -183,7 +206,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
 
   /**
    * Initializes cards for the carousel.
-   * For each subsequent call nothing will happen -> use refreshCarouselCards for that
+   * @param cardid the id of the card which should be set as first card
    * Pass index of card which should be displayed initially in reference to the allCards array
    */
 
