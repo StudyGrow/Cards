@@ -1,13 +1,6 @@
 <mat-card class="p-0 my-4 shadow" id="`{{ card._id }}`">
   <div class="d-flex">
-    <mat-card-title> {{ card.thema }} </mat-card-title
-    ><button class="mr-1 mt-1" id="more" mat-icon-button type="button" [matMenuTriggerFor]="menu">
-      <mat-icon>more_horiz</mat-icon></button
-    ><mat-menu #menu="matMenu" yPosition="above">
-      <button mat-menu-item>
-        <button id="report" mat-icon-button type="button"><mat-icon>flag</mat-icon><span>Melden</span></button>
-      </button>
-    </mat-menu>
+    <mat-card-title> {{ card.thema }} </mat-card-title>
   </div>
 
   <mat-expansion-panel #answer class="mat-elevation-z0 p-0">

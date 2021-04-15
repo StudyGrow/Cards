@@ -1,4 +1,4 @@
-<div class="d-flex justify-content-end mb-2 heart" role="group">
+<div class="d-flex justify-content-end mb-1 actions" role="group">
   <div>Likes: {{ this.voteCount }}</div>
   <button
     *ngIf="loggedIn$ | async"
@@ -12,4 +12,14 @@
   >
     <mat-icon>favorite</mat-icon>
   </button>
+  <button type="button" matTooltip="Teilen" mat-icon-button matTooltipPosition="above" (click)="shareCard()">
+    <mat-icon>share</mat-icon>
+  </button>
+  <button disabled class="mr-1 mt-1" id="more" mat-icon-button type="button" [matMenuTriggerFor]="menu">
+    <mat-icon>more_horiz</mat-icon></button
+  ><mat-menu #menu="matMenu">
+    <button mat-menu-item>
+      <button id="report" mat-icon-button type="button"><mat-icon>flag</mat-icon><span>Melden</span></button>
+    </button>
+  </mat-menu>
 </div>
