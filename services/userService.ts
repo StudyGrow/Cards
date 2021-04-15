@@ -1,14 +1,14 @@
 //Service that provides functions associated with users
-const User = require('../models/User');
-const Card = require('../models/Card');
-const bcrypt = require('bcryptjs'); //used to encrypt and decrypt passwords
-const mail = require('./mailService');
-const crypto = require('crypto-random-string');
-const { findByIdAndDelete } = require('../models/User');
-
-module.exports = function userService() {
+const User = require("../models/User");
+const Card = require("../models/Card");
+const bcrypt = require("bcryptjs"); //used to encrypt and decrypt passwords
+const mail = require("./mailService");
+const crypto = require("crypto-random-string");
+const { findByIdAndDelete } = require("../models/User");
+export default class userService {
+  constructor() {}
   //create a new Account for the site
-  userService.createUser = async (form, callback) => {
+  createUser = async (form, callback) => {
     try {
       await checkUnique(form.email, form.username); //check if email and username are unique, will throw error
       addAccount(form, callback); //add the account to the database
@@ -18,9 +18,9 @@ module.exports = function userService() {
   };
 
   //Login the user
-  userService.login = async (passport, req, res, next) => {
+  login = async (passport, req, res, next) => {
     passport.authenticate(
-      'local',
+      "local",
       { session: req.body.enable_session === true },
       (error, user, info) => {
         //authenticate the user using the local strategy for passport
@@ -30,7 +30,13 @@ module.exports = function userService() {
             if (error) {
               res.status(401).send(error.message);
             } else {
-              res.status(200).send({ _id: user._id, username: user.username, email: user.email });
+              res
+                .status(200)
+                .send({
+                  _id: user._id,
+                  username: user.username,
+                  email: user.email,
+                });
             }
           });
       }
@@ -38,23 +44,23 @@ module.exports = function userService() {
   };
 
   //get account info for a user, for now only cards
-  userService.getAccountInfo = async (user, callback) => {
+  getAccountInfo = async (user, callback) => {
     try {
       if (!user) {
-        throw new Error('Bitte logge dich erst ein');
+        throw new Error("Bitte logge dich erst ein");
       }
       let info = new Object();
-      info.user = { ...user._doc, password: null };
+      // info.user = { ...user._doc, password: null };
 
       let cards = await Card.find({ authorId: user._id });
-      info.cards = cards;
+      // info.cards = cards;
       callback(null, info);
     } catch (error) {
       callback(error, null);
     }
   };
 
-  userService.updatePassword = (user, newPassword, callback) => {
+  updatePassword = (user, newPassword, callback) => {
     hashPassword(newPassword, async (err, hash) => {
       if (err) {
         callback(err);
@@ -64,7 +70,7 @@ module.exports = function userService() {
       }
     });
   };
-  userService.deleAccount = async (req, callback) => {
+  deleAccount = async (req, callback) => {
     try {
       await User.findByIdAndDelete(req.user._id);
       callback(null);
@@ -72,7 +78,7 @@ module.exports = function userService() {
       callback(error);
     }
   };
-  userService.updateAccount = async (user, form, callback) => {
+  updateAccount = async (user, form, callback) => {
     try {
       if (user.username != form.username && user.email != form.email) {
         if (user.email == form.email && user.username != form.username) {
@@ -94,8 +100,7 @@ module.exports = function userService() {
       callback(error);
     }
   };
-  return userService;
-};
+}
 
 //check if username and email provided are unique in the database
 async function checkUnique(email, username) {
@@ -104,14 +109,14 @@ async function checkUnique(email, username) {
     user = await User.findOne({ email: email }); //check if email is already registered
   }
   if (user) {
-    throw new Error('Diese Email adresse ist bereits registriert');
+    throw new Error("Diese Email adresse ist bereits registriert");
   }
   if (username) {
     user = await User.findOne({ username: username }); //check if username is already taken
   }
 
   if (user) {
-    throw new Error('Der Benutzername existiert bereits');
+    throw new Error("Der Benutzername existiert bereits");
   }
 }
 //function to add an account to the database
@@ -138,7 +143,7 @@ function addAccount(form, callback) {
     } else if (err) {
       callback(err, false);
     } else {
-      callback(new Error('Ein unbekannter Fehler ist aufgetreten'), false);
+      callback(new Error("Ein unbekannter Fehler ist aufgetreten"), false);
     }
   });
 }

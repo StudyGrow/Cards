@@ -1,7 +1,7 @@
-const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
+import * as mongoose from 'mongoose';
 
-const schema = new mongoose.Schema({
+const Schema = mongoose.Schema;
+const multiChoiceSchema = new mongoose.Schema({
   cardDeckID: { type: Schema.Types.ObjectId, ref: "Lecture", required: true },
   question: {
     type: String,
@@ -26,5 +26,5 @@ const schema = new mongoose.Schema({
 
 const MultipleChoiceCard = (module.exports = mongoose.model(
   "MultipleChoiceCard",
-  schema
+  multiChoiceSchema
 ));

@@ -1,4 +1,4 @@
-const express = require("express");
+// const express = require("express");
 const bodyParser = require("body-parser");
 const helmet = require("helmet");
 const path = require("path");
@@ -9,6 +9,7 @@ const swaggerUI = require("swagger-ui-express");
 const swaggerJsDoc = require("swagger-jsdoc");
 const swaggerOptions = require("./config/swagger");
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
+const PORT = process.env.PORT || 3000;
 
 app.use(function (req, res, next) {
   if (req.secure || process.env.NODE_ENV.indexOf("development") > -1) {
@@ -83,5 +84,9 @@ app.get("*", (req, res) =>
     path.join(__dirname, "./angular-cards/dist/angular-cards/index.html")
   )
 );
+
+const server = app.listen(PORT, () => {
+  console.log(`Express is running on port ${server.address().port}`);
+});
 
 module.exports = app;

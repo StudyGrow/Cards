@@ -1,9 +1,9 @@
 const Vote = require('../models/Vote');
 const Card = require('../models/Card');
 const Lecture = require('../models/Lecture');
-
-module.exports = function votesService() {
-  votesService.getVotesByQuery = async (query, callback) => {
+export default class votesService {
+  constructor() {}
+  getVotesByQuery = async (query, callback) => {
     try {
       let votes = await Vote.find(query);
       callback(null, votes);
@@ -12,7 +12,7 @@ module.exports = function votesService() {
     }
   };
 
-  votesService.getVotesByLectureAbrv = async (abrv, uId, callback) => {
+  getVotesByLectureAbrv = async (abrv, uId, callback) => {
     try {
       let lecture = await Lecture.findOne({ abrv: abrv });
       if (!lecture) {
@@ -26,7 +26,7 @@ module.exports = function votesService() {
     }
   };
 
-  votesService.getAllVotesByLectureAbrv = async (abrv) => {
+  getAllVotesByLectureAbrv = async (abrv) => {
     let lecture = await Lecture.findOne({ abrv: abrv });
     if (!lecture) {
       return null;
@@ -35,7 +35,7 @@ module.exports = function votesService() {
     return allVotes;
   };
 
-  votesService.castVote = async (req, callback) => {
+  castVote = async (req, callback) => {
     try {
       if (!req.isAuthenticated()) {
         throw Error('Bitte logge dich erst ein');
@@ -54,8 +54,6 @@ module.exports = function votesService() {
       callback(error);
     }
   };
-
-  return votesService;
 };
 
 function updateVote(vote, newValue, callback) {

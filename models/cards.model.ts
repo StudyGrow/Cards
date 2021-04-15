@@ -1,6 +1,6 @@
-const mongoose = require("mongoose");
+import mongoose from 'mongoose';
 
-const schema = new mongoose.Schema({
+const cardSchema = new mongoose.Schema({
   vorlesung: {
     type: String,
     trim: true,
@@ -21,5 +21,4 @@ const schema = new mongoose.Schema({
   latex: Number,
   rating: Number,
 });
-
-const Card = (module.exports = mongoose.model("Card", schema));
+export default mongoose.model('Card', cardSchema);

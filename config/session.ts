@@ -1,6 +1,6 @@
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session); //store session on MongoDb
-const mongoose = require('mongoose');
+import * as mongoose from 'mongoose';
 
 module.exports = {
   secret: 'wibgewe13f13', //random string

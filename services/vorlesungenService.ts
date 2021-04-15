@@ -1,9 +1,9 @@
 const mongoose = require("mongoose");
 const Lecture = mongoose.model("Lecture");
-
-module.exports = function vlService() {
+export default class vlService {
+  constructor() {}
   //returns all lectures in the database
-  vlService.getLectures = async (callback) => {
+  getLectures = async (callback) => {
     try {
       let lectures = await Lecture.find()
         .select("abrv name totalCards")
@@ -14,7 +14,7 @@ module.exports = function vlService() {
     }
   };
 
-  vlService.findByAbrv = async (abrv) => {
+  findByAbrv = async (abrv) => {
     try {
       return await Lecture.findOne({ abrv: abrv }).select(
         "abrv name tagList totalCards"
@@ -24,7 +24,7 @@ module.exports = function vlService() {
   };
 
   //Returns the first lecture that matches the query
-  vlService.getLectureByQuery = async (query, callback) => {
+  getLectureByQuery = async (query, callback) => {
     try {
       let lecture = await Lecture.findOne(query);
       callback(null, lecture);
@@ -34,7 +34,7 @@ module.exports = function vlService() {
   };
 
   //adds a lecture to the database
-  vlService.addLecture = async (lecture, callback) => {
+  addLecture = async (lecture, callback) => {
     try {
       await checkUniqueAbrv(lecture.abrv);
       await checkUniqueName(lecture.name);
@@ -50,7 +50,7 @@ module.exports = function vlService() {
     }
   };
 
-  vlService.checkUnique = async (lecture, callback) => {
+  checkUnique = async (lecture, callback) => {
     try {
       await checkUniqueName(lecture.name);
       await checkUniqueAbrv(lecture.abrv);
@@ -59,9 +59,7 @@ module.exports = function vlService() {
       callback(error);
     }
   };
-
-  return vlService;
-};
+}
 
 async function checkUniqueAbrv(abrv) {
   const vl = await Lecture.findOne({ abrv: abrv });

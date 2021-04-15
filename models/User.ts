@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import * as mongoose from 'mongoose';
 
 const userSchema = new mongoose.Schema({
   username: {
@@ -22,4 +22,4 @@ const userSchema = new mongoose.Schema({
   tokenExpiration: Date,
 });
 
-const User = (module.exports = mongoose.model("User", userSchema));
+module.exports = mongoose.model("User", userSchema);
