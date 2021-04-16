@@ -26,8 +26,20 @@
   <a mat-list-item routerLink="/about" [fragment]="'FAQ'" class=" {{ isActive('/about') }}">
     <mat-icon>question_answer</mat-icon> FAQ
   </a>
-  <mat-divider></mat-divider>
-  <mat-slide-toggle #darkmode class="ml-3 mb-0 mt-2" (change)="toggleDarkMode($event)">Darkmode</mat-slide-toggle>
+  <div mat-subheader>Aussehen</div>
+
+  <mat-radio-group aria-labelledby="example-radio-group-label" class="example-radio-group" [(ngModel)]="this.theme">
+    <mat-radio-button class="example-radio-button" value="light-theme">
+      <mat-icon>wb_sunny</mat-icon> Light Modus
+    </mat-radio-button>
+    <mat-radio-button class="example-radio-button" value="dark-theme">
+      <mat-icon>brightness_2</mat-icon> Dark Modus
+    </mat-radio-button>
+    <mat-radio-button class="example-radio-button" value="default">
+      <mat-icon>web_asset</mat-icon>Browsereinstellung
+    </mat-radio-button>
+  </mat-radio-group>
+
   <div class="bottom">
     <a mat-list-item (click)="logout()" class="mb-0" id="logout" *ngIf="loggedIn$ | async">
       <mat-icon>exit_to_app</mat-icon> Logout

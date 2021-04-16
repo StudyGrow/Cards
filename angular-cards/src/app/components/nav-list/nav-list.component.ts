@@ -17,6 +17,7 @@ import { AppState, Data, Mode } from 'src/app/models/state';
 export class NavListComponent implements OnInit {
   loggedIn$: Observable<boolean>;
   theme$: Observable<string>;
+  theme: string;
   sub: Subscription;
   @ViewChild('darkmode') toggle: MatSlideToggle;
 
