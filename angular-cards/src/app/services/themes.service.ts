@@ -54,7 +54,15 @@ export class ThemesService {
    * returns an observable of the theme which is currently set the theme is returned as string
    */
   get currentTheme(): Observable<string> {
-    return this.currTheme.asObservable().pipe(map((theme: Theme) => Theme[theme]));
+    return this.currTheme.asObservable().pipe(
+      map((theme: Theme) => Theme[theme]),
+      map((theme: string) => {
+        if (theme === 'default') {
+          return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark-theme' : 'light-theme';
+        }
+        return theme;
+      })
+    );
   }
 
   /**
