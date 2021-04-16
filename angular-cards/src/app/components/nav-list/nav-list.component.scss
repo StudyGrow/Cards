@@ -12,20 +12,45 @@ mat-icon {
 }
 
 /*only ios devices*/
-@supports (-webkit-touch-callout: none) {
-  mat-nav-list {
-    position: relative;
-    height: inherit;
-  }
-  .bottom {
-    position: absolute;
-    bottom: 2.1 * $nav-height;
-  }
+// @supports (-webkit-touch-callout: none) {
+//   mat-nav-list {
+//     position: relative;
+//     height: inherit;
+//   }
+//   .bottom {
+//     position: absolute;
+//     bottom: 2.1 * $nav-height;
+//   }
+// }
+
+// @supports not (-webkit-touch-callout: none) {
+//   mat-nav-list{
+//     height: $full-height - $nav-height;
+//     display: flex;
+//     flex-direction: column;
+//     justify-content: space-between;
+//   }
+// }
+mat-nav-list{
+  height: $full-height - $nav-height;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
-@supports not (-webkit-touch-callout: none) {
-  .bottom {
-    position: fixed;
-    bottom: 0;
-  }
+.example-radio-group {
+  display: flex;
+  flex-direction: column;
+ 
+padding: 0 16px;
+  
+}
+
+.example-radio-button {
+  align-items: baseline!important;
+  
+}
+mat-icon{
+  margin-right: 7px;
+  vertical-align: middle;
 }
