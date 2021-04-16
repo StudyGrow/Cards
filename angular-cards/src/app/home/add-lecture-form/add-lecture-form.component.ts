@@ -3,14 +3,22 @@ import { Vorlesung } from '../../models/Vorlesung';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 import { LecturesService } from 'src/app/services/lectures.service';
+import {
+  slideInDownOnEnterAnimation,
+  slideInRightAnimation,
+  slideInRightOnEnterAnimation,
+  slideInUpOnEnterAnimation,
+} from 'angular-animations';
 @Component({
   selector: 'app-add-lecture-form',
   templateUrl: './add-lecture-form.component.html',
   styleUrls: ['./add-lecture-form.component.scss'],
+  animations: [slideInUpOnEnterAnimation({ delay: 200 })],
 })
 export class AddLectureFormComponent implements OnInit {
   subscriptions$: Subscription[] = [];
   constructor(private router: Router, private lectureService: LecturesService) {}
+  initialized: boolean;
 
   ngOnInit(): void {}
   ngOnDestroy() {
