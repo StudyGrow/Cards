@@ -1,45 +1,48 @@
 <mat-nav-list class="p-0">
-  <a mat-list-item color="primary" class="{{ isActive('/') }}" routerLink="/"><mat-icon>home</mat-icon> Vorlesungen</a>
-  <ng-container *ngIf="!(loggedIn$ | async)">
-    <a mat-list-item mat-ripple class=" {{ isActive('/login') }}" routerLink="/login"
-      ><mat-icon>person</mat-icon>Login</a
+  <div>
+    <a mat-list-item color="primary" class="{{ isActive('/') }}" routerLink="/"
+      ><mat-icon>home</mat-icon> Vorlesungen</a
     >
+    <ng-container *ngIf="!(loggedIn$ | async)">
+      <a mat-list-item mat-ripple class=" {{ isActive('/login') }}" routerLink="/login"
+        ><mat-icon>person</mat-icon>Login</a
+      >
 
-    <a mat-list-item class="{{ isActive('/signup') }}" routerLink="/signup"
-      ><mat-icon>add_box</mat-icon> Registrieren</a
-    >
-  </ng-container>
-  <div *ngIf="loggedIn$ | async">
-    <div mat-subheader>Account</div>
+      <a mat-list-item class="{{ isActive('/signup') }}" routerLink="/signup"
+        ><mat-icon>add_box</mat-icon> Registrieren</a
+      >
+    </ng-container>
+    <div *ngIf="loggedIn$ | async">
+      <div mat-subheader>Account</div>
 
-    <a mat-list-item routerLink="/account/overview" class=" {{ isActive('/account/overview') }}">
-      <mat-icon>account_box</mat-icon> Übersicht</a
-    >
-    <a mat-list-item routerLink="/account/cards" class=" {{ isActive('/account/cards') }}">
-      <mat-icon>style</mat-icon> Meine Karten</a
-    >
+      <a mat-list-item routerLink="/account/overview" class=" {{ isActive('/account/overview') }}">
+        <mat-icon>account_box</mat-icon> Übersicht</a
+      >
+      <a mat-list-item routerLink="/account/cards" class=" {{ isActive('/account/cards') }}">
+        <mat-icon>style</mat-icon> Meine Karten</a
+      >
+    </div>
+    <div mat-subheader>Über uns</div>
+    <a mat-list-item routerLink="/about" [fragment]="'info'" class=" {{ isActive('/about#info') }}">
+      <mat-icon>contacts</mat-icon> Infos
+    </a>
+    <a mat-list-item routerLink="/about" [fragment]="'FAQ'" class=" {{ isActive('/about#FAQ') }}">
+      <mat-icon>question_answer</mat-icon> FAQ
+    </a>
+    <div mat-subheader>Aussehen</div>
+
+    <mat-radio-group aria-labelledby="example-radio-group-label" class="example-radio-group" [formControl]="theme">
+      <mat-radio-button mat-list-item class="example-radio-button" value="light-theme">
+        <mat-icon>wb_sunny</mat-icon>Hell
+      </mat-radio-button>
+      <mat-radio-button class="example-radio-button" value="dark-theme">
+        <mat-icon>brightness_2</mat-icon>Dunkel
+      </mat-radio-button>
+      <mat-radio-button class="example-radio-button" value="default">
+        <mat-icon>web_asset</mat-icon>wie Browser
+      </mat-radio-button>
+    </mat-radio-group>
   </div>
-  <div mat-subheader>Über uns</div>
-  <a mat-list-item routerLink="/about" [fragment]="'info'" class=" {{ isActive('/about') }}">
-    <mat-icon>contacts</mat-icon> Infos
-  </a>
-  <a mat-list-item routerLink="/about" [fragment]="'FAQ'" class=" {{ isActive('/about') }}">
-    <mat-icon>question_answer</mat-icon> FAQ
-  </a>
-  <div mat-subheader>Aussehen</div>
-
-  <mat-radio-group aria-labelledby="example-radio-group-label" class="example-radio-group" [(ngModel)]="this.theme">
-    <mat-radio-button class="example-radio-button" value="light-theme">
-      <mat-icon>wb_sunny</mat-icon> Light Modus
-    </mat-radio-button>
-    <mat-radio-button class="example-radio-button" value="dark-theme">
-      <mat-icon>brightness_2</mat-icon> Dark Modus
-    </mat-radio-button>
-    <mat-radio-button class="example-radio-button" value="default">
-      <mat-icon>web_asset</mat-icon>Browsereinstellung
-    </mat-radio-button>
-  </mat-radio-group>
-
   <div class="bottom">
     <a mat-list-item (click)="logout()" class="mb-0" id="logout" *ngIf="loggedIn$ | async">
       <mat-icon>exit_to_app</mat-icon> Logout

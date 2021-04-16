@@ -8,6 +8,7 @@ import { logout as logoutUser } from 'src/app/store/actions/UserActions';
 import { MatSlideToggle, MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { ThemesService } from 'src/app/services/themes.service';
 import { AppState, Data, Mode } from 'src/app/models/state';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-nav-list',
@@ -17,7 +18,7 @@ import { AppState, Data, Mode } from 'src/app/models/state';
 export class NavListComponent implements OnInit {
   loggedIn$: Observable<boolean>;
   theme$: Observable<string>;
-  theme: string;
+  theme = new FormControl('');
   sub: Subscription;
   @ViewChild('darkmode') toggle: MatSlideToggle;
 
@@ -26,25 +27,18 @@ export class NavListComponent implements OnInit {
   ngOnInit(): void {
     this.theme$ = this.themeManager.currentTheme;
     this.loggedIn$ = this.store.select(authorized);
+    this.theme.valueChanges.subscribe((value) => {
+      this.themeManager.changeTheme(value);
+    });
   }
 
   ngAfterViewInit() {
     this.theme$.pipe(take(1)).subscribe((theme) => {
-      //initially set the toggle state
-      if (theme === 'dark-theme' && this.toggle && !this.toggle.checked) {
-        this.toggle.toggle();
-      }
+      //initially select the value in the list
+      this.theme.setValue(theme);
     });
   }
 
-  /**
-   * toggles the Theme of the app
-   * @param e
-   */
-  toggleDarkMode(e: MatSlideToggleChange) {
-    let theme = e.checked ? 'dark-theme' : 'default'; //theme which should be switched
-    this.themeManager.changeTheme(theme, true);
-  }
   /**
    * Logout the user from the site
    */
@@ -58,6 +52,6 @@ export class NavListComponent implements OnInit {
    * @returns "active" if the path is active else ""
    */
   isActive(path: string): string {
-    return this.router.url.includes(path) ? 'active' : '';
+    return this.router.url === path ? 'active' : '';
   }
 }
