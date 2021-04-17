@@ -92,3 +92,12 @@
 <div class="row" *ngIf="cardsToShowInCarousel?.length === 0">
   <p class="text-muted text-center w-100 mt-2">Keine Karten gefunden</p>
 </div>
+<div class="navigationInfo">
+  Keyboard Shortcuts:
+  <div *ngIf="!this.isTouchDevice()" class="d-flex justify-content-center">
+    <div class="d-inline-flex mx-2"><mat-icon>keyboard_arrow_left</mat-icon>Vorherige Karte</div>
+    <div class="d-inline-flex mx-2"><mat-icon>keyboard_arrow_down</mat-icon>Karte öffnen</div>
+    <div class="d-inline-flex mx-2"><mat-icon>keyboard_arrow_up</mat-icon>Karte schließen</div>
+    <div class="d-inline-flex mx-2"><mat-icon>keyboard_arrow_right</mat-icon>Nächste Karte</div>
+  </div>
+</div>

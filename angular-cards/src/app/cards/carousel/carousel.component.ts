@@ -481,6 +481,10 @@ export class CarouselComponent implements OnInit, OnDestroy {
     return all.indexOf(current) == all.length - 1;
   }
 
+  isTouchDevice() {
+    return 'ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0;
+  }
+
   // function which displays infos to the user that an action is not allowed
   private showRejection(message?: string) {
     if (!message) {
