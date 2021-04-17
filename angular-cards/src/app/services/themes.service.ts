@@ -1,4 +1,4 @@
-import { Injectable, Renderer2, RendererFactory2 } from '@angular/core';
+import { Injectable, isDevMode, Renderer2, RendererFactory2 } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Theme } from '../models/Themes';
@@ -29,7 +29,7 @@ export class ThemesService {
    */
   changeTheme(theme?: string) {
     const current = this.currTheme.getValue();
-    console.log(theme, current);
+    if (isDevMode()) console.log(theme, current);
     if (current === Theme[theme]) return;
     let newTheme: Theme = Theme[theme];
     if (newTheme === null) {
