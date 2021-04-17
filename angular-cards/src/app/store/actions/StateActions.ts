@@ -23,7 +23,6 @@ enum ActionTypes {
   GO_NEXT = '[Cards] Go to the next slide ',
   GO_PREV = '[Cards] Go to the prev. slide ',
   CHANGE_SORTING = '[SortType] change the sortType applied to the cards',
-
   RESET_CARDSDATA = '[CardsData] reset the cardsdata which are specific to the cards route',
   FAIL = 'Action failed',
 }

@@ -12,6 +12,7 @@ import {
   changeSorting,
   updateCarouselInfo,
   resetFilter,
+  showNewCard,
 } from 'src/app/store/actions/StateActions';
 
 import { debounceTime, distinctUntilChanged, distinctUntilKeyChanged, map, tap, withLatestFrom } from 'rxjs/operators';
@@ -199,7 +200,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
       });
     this.subscriptions$.push(sub);
 
-    sub = this.newCardToSet$.pipe(debounceTime(170)).subscribe((card) => this.handleNewCard(card));
+    sub = this.newCardToSet$.pipe(debounceTime(170)).subscribe(this.handleNewCard);
     this.newCardToSet$.pipe(tap((c) => console.log(c)));
     this.subscriptions$.push(sub);
   }
@@ -451,17 +452,25 @@ export class CarouselComponent implements OnInit, OnDestroy {
    * @param cards available cards (currently filtered by tags)
    */
   private handleNewCard(newCard: Card) {
-    let currCarouselInfo = this.carouselInfo$.getValue();
-    if (!newCard && currCarouselInfo.allCardsSorted?.length > 0) newCard = currCarouselInfo.allCardsSorted[0];
-    let cards = currCarouselInfo.allCardsSorted;
-    // if (currCarouselInfo.currentCard?._id === newCard._id) return; //newCard is already shown
+    const currCarouselInfo = this.carouselInfo$.getValue();
+    if (!newCard) return;
+    if (!(currCarouselInfo.allCardsSorted?.length > 0)) {
+      console.error('no cards in carouselinfo');
+    }
+    const cards = currCarouselInfo.allCardsSortedAndFiltered;
     let index = cards?.findIndex((card) => card._id === newCard._id);
+    if (index === -1) {
+      const card = currCarouselInfo.allCardsSorted?.find((card) => card._id === newCard._id);
+      if (!card) return console.error('card not found in allcards');
+      this.store.dispatch(resetFilter());
+      this.store.dispatch(showNewCard({ card: card })); //dirty trick it would be cleaner here to wait for resetFilter and then find the index and use selectSlide
+    }
     this.selectSlide(index);
   }
 
   selectSlide(n?: number) {
     let currCarouselInfo = this.carouselInfo$.getValue();
-    if (n === undefined) n = currCarouselInfo.allCardsSortedAndFiltered.length - 1;
+    if (n === undefined) n = currCarouselInfo.allCardsSortedAndFiltered?.length - 1;
 
     if (!this.carousel || !this.cardsToShowInCarousel || n < 0) return;
     if (this.formMode == 'edit') {
