@@ -33,6 +33,7 @@ import {
   CardsSortedAndFiltered,
   CardToShow,
   UserId,
+  CurrentTab,
 } from 'src/app/store/selector';
 import { CarouselInfo } from 'src/app/models/CarouselInfo';
 
@@ -89,6 +90,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
   authorized$ = this.store.select(authorized);
 
   subscriptions$: Subscription[] = []; //holds all subscriptions from observables they are unsubscribed in ngOnDestroy
+  currentTab: number = 0;
 
   sortOption$: BehaviorSubject<{
     type: SortType;
@@ -98,7 +100,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
   @ViewChild('mycarousel', { static: false }) public carousel: NgbCarousel; //ref to the ngbootsrap carousel
 
   @HostListener('window:keyup', ['$event']) handleKeyDown(event: KeyboardEvent) {
-    if (!this.inTypingField) {
+    if (!this.inTypingField && this.currentTab === 0) {
       //allow arrow keys navigation if user is not in an input field
       if (event.key == 'ArrowRight') {
         this.goToNext();
@@ -144,6 +146,13 @@ export class CarouselComponent implements OnInit, OnDestroy {
         this.inTypingField = val;
       });
     this.subscriptions$.push(sub);
+
+    sub = this.store
+      .select(CurrentTab)
+      .pipe(distinctUntilChanged())
+      .subscribe((tab) => {
+        this.currentTab = tab;
+      });
 
     //get the user id to check if user has the rigth to edit the card
     sub = this.store
