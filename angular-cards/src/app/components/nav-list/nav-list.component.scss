@@ -13,13 +13,13 @@ mat-icon {
 
 /*only ios devices*/
 @supports (-webkit-touch-callout: none) {
-  mat-nav-list {
-    // position: relative;
-    height: inherit;
-  }
+ //make div always stick to the bottom 
+ mat-nav-list{
+  margin-bottom: 2.1 * $nav-height;
+}
   // .bottom {
-  //   position: absolute;
-  //   bottom: 2.1 * $nav-height;
+  //   position: static;
+  //   bottom: 0;
   // }
 }
 
@@ -29,7 +29,6 @@ mat-icon {
   }
 }
 mat-nav-list{
-  
   display: flex;
   flex-direction: column;
   justify-content: space-between;
