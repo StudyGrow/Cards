@@ -48,7 +48,18 @@ export class ThemesService {
    * The theme is returned as a string
    */
   get currentTheme(): Observable<string> {
-    return this.currTheme.asObservable().pipe(map((theme: Theme) => Theme[theme]));
+    return this.currTheme.asObservable().pipe(
+      map((theme: Theme) => Theme[theme]),
+      map((theme: string) => (theme === 'default' ? this.getBrowserPreference() : theme))
+    );
+  }
+
+  /**
+   * returns the value of currTheme.
+   * The theme is returned as Theme type
+   */
+  get themeValue(): Observable<Theme> {
+    return this.currTheme.asObservable();
   }
 
   /**
