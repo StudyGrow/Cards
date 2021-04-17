@@ -13,7 +13,6 @@ import VotesService from "../../services/votes.service";
 // )
 export default class CardsRoute {
   constructor({ cardsService, votesService, lectureService }) {
-    // this.logger = logger;
     this.cardsService = cardsService;
     this.votesService = votesService;
     this.lectureService = lectureService;
@@ -43,48 +42,48 @@ export default class CardsRoute {
       });
   }
 
-    @route("/data")
-    @GET()
-    @before(
-      inject(({ validationFactory }) => validationFactory.validateLectureAbbreviation()),
+  @route("/data")
+  @GET()
+  @before(
+    inject(({ validationFactory }) =>
+      validationFactory.validateLectureAbbreviation()
     )
-    async getCardsData(req,res){
-      let abrv = req.query.abrv;
-      let cards = this.cardsService.findByAbrv(abrv);
-      let vl = this.lectureService.findByAbrv(abrv);
-      let allVotes = this.votesService.getAllVotesByLectureAbrv(abrv);
-      let userid;
-      let username;
-      // if (req.isAuthenticated()) {
-        // userid = req.user._id;
-      // }
-      res.setHeader('Access-Control-Allow-Origin', '*');
-      Promise.all([cards, vl, allVotes])
-        .then(([cards, lecture, votes]) =>
-          res.json({
-            cards: cards,
-            votes: votes,
-            lecture: lecture,
-            uid: userid,
-            username: username,
-          })
-        )
-        .catch((err) => {
-          res.status(422).send(err.message);
-        });
-      }
+  )
+  async getCardsData(req, res) {
+    let abrv = req.query.abrv;
+    let cards = this.cardsService.findByAbrv(abrv);
+    let vl = this.lectureService.findByAbrv(abrv);
+    let allVotes = this.votesService.getAllVotesByLectureAbrv(abrv);
+    // let userid;
+    let username;
+    // if (req.isAuthenticated()) {
+    // userid = req.user._id;
+    // }
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    Promise.all([cards, vl, allVotes])
+      .then(([cards, lecture, votes]) =>
+        res.json({
+          cards: cards,
+          votes: votes,
+          lecture: lecture,
+          // uid: userid,
+          username: username,
+        })
+      )
+      .catch((err) => {
+        res.status(422).send(err.message);
+      });
+  }
 
   @route("/new")
   @POST()
   @before(inject(({ authorizationMiddleware }) => authorizationMiddleware))
   @before(
-    inject(({ validationFactory }) =>
-      validationFactory.validateCardToAdd()
-    )
+    inject(({ validationFactory }) => validationFactory.validateCardToAdd())
   )
   async addCard(req: any, res: Response) {
     this.cardsService
-      .addCard(req.body.card, req.user)
+      .addCard(req.body.card, req._id)
       .then((card: ICard) => {
         res.status(200).json(card);
       })
@@ -93,19 +92,15 @@ export default class CardsRoute {
       });
   }
 
-
-
   @route("/upate")
   @PUT()
   @before(inject(({ authorizationMiddleware }) => authorizationMiddleware))
   @before(
-    inject(({ validationFactory }) =>
-      validationFactory.validateCardToAdd()
-    )
+    inject(({ validationFactory }) => validationFactory.validateCardToAdd())
   )
   async updateCard(req: any, res: Response) {
     this.cardsService
-      .updateCard(req.body.card, req.user)
+      .updateCard(req.body.card, req._id)
       .then((card: ICard) => {
         res.status(200).json(card);
       })
@@ -114,19 +109,14 @@ export default class CardsRoute {
       });
   }
 
-
-
   @route("/upate")
   @PUT()
   @before(inject(({ authorizationMiddleware }) => authorizationMiddleware))
   @before(
-    inject(({ validationFactory }) =>
-      validationFactory.validateCardToAdd()
-    )
+    inject(({ validationFactory }) => validationFactory.validateCardToAdd())
   )
   async castCard(req: any, res: Response) {
     let vote = parseInt(req.body.value);
-
     this.votesService
       .castVote(req)
       .then(() => {
@@ -212,7 +202,6 @@ export default class CardsRoute {
 //     }
 //   }
 // );
-
 
 // //Update MultipleChoiceCard to the database, body passed should be of form:
 // // {

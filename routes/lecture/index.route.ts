@@ -9,6 +9,7 @@ export default class LectureRoute {
     this.lectureService = lectureService;
   }
   lectureService: LectureService;
+
   @route("")
   @GET()
   async getAllLectures(req, res) {
@@ -50,8 +51,9 @@ export default class LectureRoute {
 
   @route("/new")
   @POST()
+  @before(inject(({ authorizationMiddleware }) => authorizationMiddleware))
   @before(
-    inject(({ validationFactory }) => validationFactory.validateLectureToAdd())
+    inject(({ validationFactory }) => validationFactory.validateLectureNameAndAbbreviation())
   )
   async addLecture(req, res) {
     this.lectureService
@@ -69,7 +71,7 @@ export default class LectureRoute {
   @route("/check")
   @POST()
   @before(
-    inject(({ validationFactory }) => validationFactory.validateLectureToAdd())
+    inject(({ validationFactory }) => validationFactory.validateLectureNameAndAbbreviation())
   )
   async checkUniqueLecture(req, res) {
     this.lectureService

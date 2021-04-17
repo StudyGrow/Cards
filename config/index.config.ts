@@ -33,6 +33,7 @@ export default {
     google: {
       clientId: process.env.APP_AUTH_GOOGLE_CLIENTID,
       secret: process.env.APP_AUTH_GOOGLE_SECRET,
+      redirect_uri: process.env.APP_AUTH_GOOGLE_REDIRECT_URI,
     },
   },
   database: {

@@ -1,18 +1,21 @@
 import { Model } from "mongoose";
 import { ICard } from "../models/cards.model";
 import { ILecture } from "../models/lecture.model";
+import UserService from "./user.service";
 
 
 //service which provides card related services
 const MultipleChoiceCard = require("../models/MultipleChoiceCard");
 
 export default class CardsService {
-  constructor({ cardsModel,lectureModel }) {
+  constructor({ cardsModel,lectureModel,userService }) {
     this.cardsModel = cardsModel;
     this.lectureModel=lectureModel;
+    this.userService = userService;
   }  
-  cardsModel: Model<ICard, {}>;;
-  lectureModel: Model<ILecture, {}>;;
+  cardsModel: Model<ICard, {}>;
+  lectureModel: Model<ILecture, {}>;
+  userService: UserService;
   //returns all the cards matching the query
   getCardsFromQuery(query){
     // console.log(query)
@@ -33,15 +36,17 @@ export default class CardsService {
   };
 
   // //creates a new card and adds it to the database
-  addCard = async (form, user) => {
+  addCard = async (form, _id) => {
       const card = new this.cardsModel(form);
       card.date = new Date();
       card.vorlesung = form.abrv;
       card.latex = form.latex;
-      if (user) {
-        card.authorId = user._id; //add user as author of card
-        card.authorName = user.username;
+      let user = await this.userService.getUser({_id: _id})
+      if (!user) {
+        throw { status: 401, message: `Not logged in` };
       }
+      card.authorId = user._id; //add user as author of card
+      card.authorName = user.username;
 
       this.updateTags(card.vorlesung, card.tags);
       await card.save();
@@ -108,16 +113,16 @@ export default class CardsService {
   };
 
   // //updates a card in the database
-  updateCard = async (card, user) => {
+  updateCard = async (card, _id) => {
    
       let tmp = await this.cardsModel.findById(card._id); //find the card in the database
-      if (tmp && tmp.authorId && !user) {
+      if (tmp && tmp.authorId && !_id) {
         //There is an author, but there is no user logged in
         throw new Error(
           "Fehler: Du bist nicht der Author dieser Karte. Bitte logge dich ein."
         );
       }
-      if (tmp.authorId && tmp.authorId != "" && tmp.authorId != user._id) {
+      if (tmp.authorId && tmp.authorId != "" && tmp.authorId != _id) {
         //The user is not the author of the card
         throw new Error("Fehler: Du bist nicht der Author dieser Karte.");
       }

@@ -2,9 +2,6 @@ import { scopePerRequest, loadControllers } from "awilix-express";
 // import logger from "./logger.loader";
 import cors from "cors";
 import config from "../config/index.config";
-const session = require("express-session");
-const sessionConfig = require("../config/session");
-
 import bodyParser from "body-parser";
 import swaggerJsdoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
@@ -13,7 +10,7 @@ import passport from "passport";
 import { CelebrateError } from "celebrate";
 
 const helmet = require("helmet");
-const express = require("express");
+import express from "express"
 export default ({ app, container }) => {
   app.use(function (req, res, next) {
     if (req.secure || process.env.NODE_ENV.indexOf("development") > -1) {
@@ -33,11 +30,6 @@ export default ({ app, container }) => {
     next();
   });
 
-  app.use(session(sessionConfig));
-  require("../config/passport")(passport);
-
-  app.use(passport.initialize());
-  app.use(passport.session());
   app.use(scopePerRequest(container));
 
   const routes = loadControllers("../routes/**/*.ts", {

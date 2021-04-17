@@ -5,10 +5,79 @@ import {
   createContainer,
   Lifetime,
 } from "awilix";
-
+import config from '../config/index.config';
 import path from "path";
-export default async () => {
+import passport from "passport";
+import { User } from "../models/user.model";
+import mongoose from 'mongoose';
+import jwt from 'jsonwebtoken';
+import cryptoRandomString from 'crypto-random-string';
+var GoogleStrategy = require('passport-google-oauth20').Strategy;
+
+const bcrypt = require("bcryptjs");
+
+const LocalStrategy = require("passport-local").Strategy;
+
+export default async ({app}) => {
   const container = createContainer();
+  container.register({
+    database: asValue(mongoose),
+  });
+  container.register({
+    jwt: asValue(jwt),
+  });
+  container.register({
+    cryptoRandomString: asValue(cryptoRandomString),
+  });
+  container.register({
+    config: asValue(config),
+  });
+  app.use(passport.initialize());
+  app.use(passport.session());
+  container.register({
+    passport: asValue(
+      passport.use(
+        // new LocalStrategy(async function (username, password, done) {
+        //   try {
+        //     let user = await User.findOne({ username: username });
+        //     console.log(user)
+        //     if (!user) {
+        //       throw new Error("Benutzername oder Passwort falsch");
+        //     }
+        //     let validation = await bcrypt.compare(password, user.password);
+        //     console.log(validation)
+        //     if (validation) {
+        //       return done(null, user);
+        //     } else {
+        //       throw new Error("Benutzername oder Passwort falsch");
+        //     }
+        //   } catch (error) {
+        //     return done(error);
+        //   }
+        // }),
+        new GoogleStrategy(
+          {
+            clientID: config.authentication.google.clientId,
+            clientSecret: config.authentication.google.secret,
+            callbackURL: config.authentication.google.redirect_uri,
+          },
+          function (accessToken, refreshToken, profile, cb) {
+            return cb(null, profile);
+          },
+        ),
+      ),
+    ),
+  });
+  passport.serializeUser(function (user, done) {
+    if (user) done(null, user);
+    else console.log("error on serializing user");
+  });
+
+  passport.deserializeUser(function (user, done) {
+    User.findById(user, function (err, user) {
+      done(err, user);
+    });
+  });
   container.loadModules(
     [
       [

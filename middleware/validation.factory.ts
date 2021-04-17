@@ -9,7 +9,7 @@ export default class ValidationFactory {
     });
   }
 
-  validateLectureToAdd() {
+  validateLectureNameAndAbbreviation() {
     return celebrate({
       [Segments.BODY]: Joi.object().keys({
         name: Joi.string().min(3).max(7).required(),
@@ -37,14 +37,28 @@ export default class ValidationFactory {
     });
   }
 
-  validateUserEmail() {
+  validateUserSignUp() {
+    console.log("email")
     return celebrate({
       [Segments.BODY]: Joi.object().keys({
         email: Joi.string().email(),
+        password: Joi.string().min(7),
+        username: Joi.string().min(5).max(20),
+      }),
+    });
+  }
+  validateUserSignIn() {
+    console.log("email")
+    return celebrate({
+      [Segments.BODY]: Joi.object().keys({
+        email: Joi.string().email(),
+        password: Joi.string().min(7),
       }),
     });
   }
   validateUserPassword() {
+    console.log("passsword")
+
     return celebrate({
       [Segments.BODY]: Joi.object().keys({
         password: Joi.string().min(7),
@@ -52,6 +66,8 @@ export default class ValidationFactory {
     });
   }
   validateUserUsername() {
+    console.log("usrname")
+
     return celebrate({
       [Segments.BODY]: Joi.object().keys({
         username: Joi.string().min(5).max(20),

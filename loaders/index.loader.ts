@@ -5,7 +5,9 @@ import databaseLoader from './database.loader';
 
 export default async ({ app }: { app: any }) => {
   const db = await databaseLoader();
-  const container = await dependencyLoader();
+  const container = await dependencyLoader({
+    app: app
+  });
   await expressLoader({ app: app, container: container });
 //   logger.info('Loading complete.');
 };
