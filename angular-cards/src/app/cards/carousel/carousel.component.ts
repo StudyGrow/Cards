@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, OnDestroy, HostListener } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, HostListener, isDevMode } from '@angular/core';
 import { Card } from '../../models/Card';
 
 import { Subscription, Observable, combineLatest, BehaviorSubject } from 'rxjs';
@@ -200,7 +200,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
       });
     this.subscriptions$.push(sub);
 
-    sub = this.newCardToSet$.pipe(debounceTime(170)).subscribe(this.handleNewCard);
+    sub = this.newCardToSet$.pipe(debounceTime(170)).subscribe((card) => this.handleNewCard(card));
     this.newCardToSet$.pipe(tap((c) => console.log(c)));
     this.subscriptions$.push(sub);
   }
@@ -365,25 +365,6 @@ export class CarouselComponent implements OnInit, OnDestroy {
         this.carousel.select(String(this.cardsToShowInCarousel.indexOf(state.currentCard) + 1));
       } else if (currentCardIndexAccordingToAllCard == indexOfLastCardInAllCards) {
         this.showRejection();
-        // var begin = 0;
-        // var end = 0;
-        // if (begin + this.chunkSize > { ...this.carouselInfo$.getValue() }.allCardsSorted.length) {
-        //   end = { ...this.carouselInfo$.getValue() }.allCardsSorted.length;
-        // } else {
-        //   end = begin + this.chunkSize;
-        // }
-        // var newChunk = { ...this.carouselInfo$.getValue() }.allCardsSorted.slice(begin, end);
-        // newChunk = await this.cardsToShowInCarousel.concat(newChunk);
-        // newChunk = [...new Set(newChunk)];
-        // var sortedReference = { ...this.carouselInfo$.getValue() }.allCardsSorted;
-        // newChunk = await newChunk.sort(function (a, b) {
-        //   return sortedReference.indexOf(a) - sortedReference.indexOf(b);
-        // });
-        // this.cardsToShowInCarousel = await newChunk;
-        // setTimeout(() => {
-        //   document.getElementById('slide-' + String(this.cardsToShowInCarousel.length - 1)).classList.remove('active');
-        //   this.carousel.select('0');
-        // }, 100);
       } else {
         let begin = state.allCardsSortedAndFiltered.indexOf(state.currentCard) + 1;
         let end = 0;
@@ -451,11 +432,13 @@ export class CarouselComponent implements OnInit, OnDestroy {
    * @param newCard card which should be displayed in carousel
    * @param cards available cards (currently filtered by tags)
    */
-  private handleNewCard(newCard: Card) {
-    const currCarouselInfo = this.carouselInfo$.getValue();
+  handleNewCard(newCard: Card) {
+    const currCarouselInfo = this.carouselInfo$?.getValue();
     if (!newCard) return;
-    if (!(currCarouselInfo.allCardsSorted?.length > 0)) {
-      console.error('no cards in carouselinfo');
+    if (!(currCarouselInfo?.allCardsSorted?.length > 0)) {
+      return isDevMode()
+        ? console.error('Cannot set new card as no cards are present in the carousel info')
+        : undefined;
     }
     const cards = currCarouselInfo.allCardsSortedAndFiltered;
     let index = cards?.findIndex((card) => card._id === newCard._id);
@@ -463,7 +446,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
       const card = currCarouselInfo.allCardsSorted?.find((card) => card._id === newCard._id);
       if (!card) return console.error('card not found in allcards');
       this.store.dispatch(resetFilter());
-      this.store.dispatch(showNewCard({ card: card })); //dirty trick it would be cleaner here to wait for resetFilter and then find the index and use selectSlide
+      return this.store.dispatch(showNewCard({ card: card })); //dirty trick it would be cleaner here to wait for resetFilter and then find the index and use selectSlide
     }
     this.selectSlide(index);
   }

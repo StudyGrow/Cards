@@ -5,7 +5,7 @@ import { combineLatest } from 'rxjs';
 import { delay, distinctUntilChanged, map } from 'rxjs/operators';
 import { Card } from 'src/app/models/Card';
 import { ThemesService } from 'src/app/services/themes.service';
-import { CardsSorted, CurrentLecture, Theme } from 'src/app/store/selector';
+import { CardsSorted, CurrentLecture } from 'src/app/store/selector';
 import { chartOptions } from './chart.options';
 
 @Component({
