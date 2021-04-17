@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, OnDestroy, HostListener } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, HostListener, isDevMode } from '@angular/core';
 import { Card } from '../../models/Card';
 
 import { Subscription, Observable, combineLatest, BehaviorSubject } from 'rxjs';
@@ -436,7 +436,9 @@ export class CarouselComponent implements OnInit, OnDestroy {
     const currCarouselInfo = this.carouselInfo$?.getValue();
     if (!newCard) return;
     if (!(currCarouselInfo?.allCardsSorted?.length > 0)) {
-      console.error('no cards in carouselinfo');
+      return isDevMode()
+        ? console.error('Cannot set new card as no cards are present in the carousel info')
+        : undefined;
     }
     const cards = currCarouselInfo.allCardsSortedAndFiltered;
     let index = cards?.findIndex((card) => card._id === newCard._id);
