@@ -12,27 +12,24 @@ mat-icon {
 }
 
 /*only ios devices*/
-// @supports (-webkit-touch-callout: none) {
-//   mat-nav-list {
-//     position: relative;
-//     height: inherit;
-//   }
-//   .bottom {
-//     position: absolute;
-//     bottom: 2.1 * $nav-height;
-//   }
-// }
+@supports (-webkit-touch-callout: none) {
+  mat-nav-list {
+    // position: relative;
+    height: inherit;
+  }
+  // .bottom {
+  //   position: absolute;
+  //   bottom: 2.1 * $nav-height;
+  // }
+}
 
-// @supports not (-webkit-touch-callout: none) {
-//   mat-nav-list{
-//     height: $full-height - $nav-height;
-//     display: flex;
-//     flex-direction: column;
-//     justify-content: space-between;
-//   }
-// }
+@supports not (-webkit-touch-callout: none) {
+  mat-nav-list{
+    height: $full-height - $nav-height;
+  }
+}
 mat-nav-list{
-  height: $full-height - $nav-height;
+  
   display: flex;
   flex-direction: column;
   justify-content: space-between;
