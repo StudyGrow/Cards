@@ -17,7 +17,6 @@ export const initialState: Mode = {
   loading: 0,
   tags: [],
   currTab: 0,
-  theme: localStorage.getItem('theme'),
   cardsChanged: undefined,
   sortType: SortType.DATE_ASC,
   startIndex: 0,
@@ -39,15 +38,6 @@ const _modeReducer = createReducer(
     ...state,
     newCard: card,
   })),
-  on(StateActions.changeTheme, (state, { theme }) =>
-    theme === state.theme
-      ? state
-      : {
-          ...state,
-          theme: theme,
-        }
-  ),
-
   on(StateActions.changeTab, (state, { tab }) => (tab === state.currTab ? state : { ...state, currTab: tab })),
 
   on(StateActions.setFormMode, (state, { mode }) =>
