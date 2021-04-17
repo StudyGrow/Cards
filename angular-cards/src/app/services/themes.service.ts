@@ -11,15 +11,6 @@ export class ThemesService {
 
   constructor(private rendererFactory: RendererFactory2) {
     this.renderer = this.rendererFactory.createRenderer(null, null);
-    // let initTheme = localStorage.getItem('theme');
-    // switch (initTheme) {
-    //   case 'dark-theme': {
-    //     this.currTheme = new BehaviorSubject(Theme['dark-theme']);
-    //   }
-    //   default: {
-    //     this.currTheme = new BehaviorSubject(Theme['default']);
-    //   }
-    // }
   }
   /**
    * Changes the current theme of the application, by adding the respective theme class to the body of the document
@@ -65,6 +56,7 @@ export class ThemesService {
    * If no theme is cached it will use the default theme.
    */
   initTheme() {
+    if (this.currTheme.getValue()) return; //Theme already initialized
     let initialTheme = localStorage.getItem('theme');
     if (!initialTheme) initialTheme = 'default';
     this.changeTheme(initialTheme);
