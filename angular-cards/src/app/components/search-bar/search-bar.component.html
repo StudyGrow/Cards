@@ -4,42 +4,44 @@
     placeholder="Frage"
     aria-label="Frage"
     matInput
+    #search
     [formControl]="uInput"
     [matAutocomplete]="auto"
     (focus)="inField()"
     (blur)="resetNav()"
   />
   <mat-icon matSuffix>search</mat-icon>
-  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelected($event)" (optionActivated)="onOptionActivated($event)">
-    <div 
-      *ngIf="
-        (suggestions$ | async)?.length > 0 &&
-        (allSuggestions$ | async)?.length > 0
-      "
-      mat-subheader
-    >
+  <mat-autocomplete
+    #auto="matAutocomplete"
+    (optionSelected)="onSelected($event)"
+    (optionActivated)="onOptionActivated($event)"
+  >
+    <div *ngIf="(suggestions$ | async)?.length > 0 && (allSuggestions$ | async)?.length > 0" mat-subheader>
       Aktuell angezeigt
     </div>
     <mat-option
       *ngFor="let suggestion of suggestions$ | async"
-      
       (mouseover)="beginScroll(paragraph)"
       (mouseleave)="endScroll(paragraph)"
     >
-      <div #paragraph class="txtA">{{ suggestion.title }}<div style="display: none;">#{{suggestion.id}}</div></div>
+      <div #paragraph class="txtA">
+        {{ suggestion.title }}
+        <div style="display: none">#{{ suggestion.id }}</div>
+      </div>
     </mat-option>
 
     <mat-divider></mat-divider>
 
-    <div *ngIf="(allSuggestions$ | async)?.length > 0" mat-subheader>
-      Alle Karten
-    </div>
+    <div *ngIf="(allSuggestions$ | async)?.length > 0" mat-subheader>Alle Karten</div>
     <mat-option
       *ngFor="let suggestion of allSuggestions$ | async"
       (mouseover)="beginScroll(paragraph)"
       (mouseleave)="endScroll(paragraph)"
     >
-      <div #paragraph class="txtA">{{ suggestion.title }}<div style="display: none;">#{{suggestion.id}}</div> </div>
+      <div #paragraph class="txtA">
+        {{ suggestion.title }}
+        <div style="display: none">#{{ suggestion.id }}</div>
+      </div>
     </mat-option>
   </mat-autocomplete>
 </mat-form-field>

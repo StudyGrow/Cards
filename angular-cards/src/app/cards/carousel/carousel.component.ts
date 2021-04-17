@@ -102,10 +102,13 @@ export class CarouselComponent implements OnInit, OnDestroy {
   @HostListener('window:keyup', ['$event']) handleKeyDown(event: KeyboardEvent) {
     if (!this.inTypingField) {
       //allow arrow keys navigation if user is not in an input field
-      if (event.key == 'ArrowRight') {
-        this.goToNext();
-      } else if (event.key == 'ArrowLeft') {
-        this.goToPrev();
+      switch (event.key) {
+        case 'ArrowRight':
+          this.goToNext();
+          break;
+        case 'ArrowLeft':
+          this.goToPrev();
+          break;
       }
     }
   }

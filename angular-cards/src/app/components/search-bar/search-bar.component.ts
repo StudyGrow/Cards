@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener, ViewChild, ElementRef } from '@angular/core';
 import { Card } from '../../models/Card';
 import { SearchSuggestion } from '../../models/SearchSuggestion';
 import { Subscription, Observable } from 'rxjs';
@@ -38,6 +38,17 @@ export class SearchBarComponent implements OnInit, OnDestroy {
   clearSuggestions: boolean; //wether to clear search suggestions
 
   form = new FormControl();
+  @ViewChild('search') searchElement: ElementRef;
+  @HostListener('window:keyup', ['$event']) handleKeyDown(event: KeyboardEvent) {
+    if (event.key === 'S' && event.ctrlKey.valueOf() && event.shiftKey.valueOf()) {
+      this.inField();
+      this.searchElement.nativeElement.focus();
+    }
+    if (event.key === 'Escape') {
+      this.resetNav();
+      this.searchElement.nativeElement.blur();
+    }
+  }
 
   ngOnInit(): void {
     let sub = this.store.pipe(map((state) => state.mode.hideSearchResults)).subscribe((hide) => {
