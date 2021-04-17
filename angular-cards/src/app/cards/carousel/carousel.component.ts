@@ -200,7 +200,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
       });
     this.subscriptions$.push(sub);
 
-    sub = this.newCardToSet$.pipe(debounceTime(170)).subscribe(this.handleNewCard);
+    sub = this.newCardToSet$.pipe(debounceTime(170)).subscribe((card) => this.handleNewCard(card));
     this.newCardToSet$.pipe(tap((c) => console.log(c)));
     this.subscriptions$.push(sub);
   }
@@ -451,10 +451,10 @@ export class CarouselComponent implements OnInit, OnDestroy {
    * @param newCard card which should be displayed in carousel
    * @param cards available cards (currently filtered by tags)
    */
-  private handleNewCard(newCard: Card) {
-    const currCarouselInfo = this.carouselInfo$.getValue();
+  handleNewCard(newCard: Card) {
+    const currCarouselInfo = this.carouselInfo$?.getValue();
     if (!newCard) return;
-    if (!(currCarouselInfo.allCardsSorted?.length > 0)) {
+    if (!(currCarouselInfo?.allCardsSorted?.length > 0)) {
       console.error('no cards in carouselinfo');
     }
     const cards = currCarouselInfo.allCardsSortedAndFiltered;
