@@ -1,4 +1,4 @@
-import { Injectable, Renderer2, RendererFactory2 } from '@angular/core';
+import { Injectable, isDevMode, Renderer2, RendererFactory2 } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Theme } from '../models/Themes';
@@ -7,19 +7,10 @@ import { Theme } from '../models/Themes';
 })
 export class ThemesService {
   private renderer: Renderer2;
-  private currTheme: BehaviorSubject<Theme>;
+  private currTheme: BehaviorSubject<Theme> = new BehaviorSubject(undefined);
 
   constructor(private rendererFactory: RendererFactory2) {
     this.renderer = this.rendererFactory.createRenderer(null, null);
-    let initTheme = localStorage.getItem('theme');
-    switch (initTheme) {
-      case 'dark-theme': {
-        this.currTheme = new BehaviorSubject(Theme['dark-theme']);
-      }
-      default: {
-        this.currTheme = new BehaviorSubject(Theme['default']);
-      }
-    }
   }
   /**
    * Changes the current theme of the application, by adding the respective theme class to the body of the document
@@ -27,41 +18,55 @@ export class ThemesService {
    * @param cacheTheme wether to save the new theme in localstorage
    * @returns the newly set theme or undefined if the theme is already set
    */
-  changeTheme(theme?: string, cacheTheme?: boolean) {
-    if (this.currTheme.getValue() === Theme[theme]) return;
-    let newTheme: Theme = Theme[theme];
-    if (newTheme === null) {
-      newTheme = this.currTheme.getValue();
-      // if (!newTheme) return;
-    }
+  changeTheme(theme?: string) {
+    const current = this.currTheme.getValue();
 
-    this.renderer.removeClass(document.body, Theme[this.currTheme.getValue()]); //remove the old theme
-    this.renderer.addClass(document.body, Theme[newTheme]); //add the new theme
-    if (cacheTheme) localStorage.setItem('theme', Theme[newTheme]); //update cache
+    if (current === Theme[theme]) return;
+    let newTheme: Theme = Theme[theme]; //transform into enum
+    if (newTheme === null) return console.error(theme + ' not matching any Theme enum');
 
-    this.currTheme.next(newTheme);
+    localStorage.setItem('theme', theme); //update cache
+    this.currTheme.next(newTheme); //update observable
+
+    if (theme === 'default') theme = this.getBrowserPreference();
+
+    this.renderer.removeClass(document.body, Theme[current]); //remove the current theme
+    this.renderer.addClass(document.body, theme);
+
     return theme;
   }
 
   /**
-   * returns an observable of the theme which is currently set
+   * Returns dark/light theme based on browser preference
    */
-  get currentTheme(): Observable<string> {
-    return this.currTheme.asObservable().pipe(map((theme: Theme) => Theme[theme]));
+  private getBrowserPreference() {
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark-theme' : 'light-theme';
   }
 
   /**
-   * Initialize the theme. The function will first check if a theme is cached. If no theme is cached it will check if the browser has set a
-   * preference.
+   * returns an observable of the theme which is currently set.
+   * The theme is returned as a string
+   */
+  get currentTheme(): Observable<string> {
+    return this.currTheme.asObservable().pipe(
+      map((theme: Theme) => Theme[theme]),
+      map((theme: string) => {
+        if (theme === 'default') {
+          return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark-theme' : 'light-theme';
+        }
+        return theme;
+      })
+    );
+  }
+
+  /**
+   * Initialize the theme. The function will first check if a theme is cached.
+   * If no theme is cached it will use the default theme.
    */
   initTheme() {
-    let cachedTheme = localStorage.getItem('theme');
-
-    if (cachedTheme) {
-      this.changeTheme(cachedTheme, false);
-    } else {
-      let theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark-theme' : 'default'; //check if browser set dark mode preference
-      this.changeTheme(theme, false);
-    }
+    if (this.currTheme.getValue()) return; //Theme already initialized
+    let initialTheme = localStorage.getItem('theme');
+    if (!initialTheme) initialTheme = 'default';
+    this.changeTheme(initialTheme);
   }
 }

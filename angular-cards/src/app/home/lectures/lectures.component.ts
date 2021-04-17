@@ -7,10 +7,18 @@ import { fetchLectures } from 'src/app/store/actions/LectureActions';
 import { map } from 'rxjs/operators';
 import { Lectures } from 'src/app/store/selector';
 import { AppState } from 'src/app/models/state';
+import {
+  fadeInUpAnimation,
+  slideInDownAnimation,
+  slideInDownOnEnterAnimation,
+  slideInLeftOnEnterAnimation,
+  slideInRightOnEnterAnimation,
+} from 'angular-animations';
 @Component({
   selector: 'app-lectures',
   templateUrl: './lectures.component.html',
   styleUrls: ['./lectures.component.scss'],
+  animations: [slideInLeftOnEnterAnimation()],
 })
 export class LecturesComponent implements OnInit {
   lectures$: Observable<Vorlesung[]>;

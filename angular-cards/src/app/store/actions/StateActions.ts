@@ -23,7 +23,6 @@ enum ActionTypes {
   GO_NEXT = '[Cards] Go to the next slide ',
   GO_PREV = '[Cards] Go to the prev. slide ',
   CHANGE_SORTING = '[SortType] change the sortType applied to the cards',
-
   RESET_CARDSDATA = '[CardsData] reset the cardsdata which are specific to the cards route',
   FAIL = 'Action failed',
 }
@@ -37,17 +36,11 @@ export const fail = createAction(ActionTypes.FAIL, props<{ reason: string }>());
 export const changeTab = createAction(ActionTypes.CHANGE_TAB, props<{ tab: number }>());
 export const changeSorting = createAction(ActionTypes.CHANGE_SORTING, props<{ sortType: SortType }>());
 export const applyFilter = createAction(ActionTypes.APPLY_FILTER, props<{ tags: string[] }>());
-export const changeTheme = createAction(ActionTypes.CHABGE_THEME, props<{ theme: string }>());
 export const addTag = createAction(ActionTypes.ADD_TAG, props<{ tag: string }>());
-
 export const removeTag = createAction(ActionTypes.REMOVE_TAG, props<{ tag: string }>());
-
 export const resetFilter = createAction(ActionTypes.RESET_FILTER);
-
 export const setFormMode = createAction(ActionTypes.SET_FORM_MODE, props<{ mode: string }>());
-
 export const setTypingMode = createAction(ActionTypes.SET_TYPING_MODE, props<{ typing: boolean }>());
-
 export const setSuggestionsMode = createAction(ActionTypes.SET_SUGGESTIONS_VISIBILITY_MODE, props<{ hide: boolean }>());
 
 // export const setActiveCardIndex = createAction(ActionTypes.SET_ACITVE_CARD_INDEX, props<{ index: number }>());

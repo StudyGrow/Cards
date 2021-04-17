@@ -10,6 +10,11 @@ export interface AppState {
   mode: Mode;
 }
 
+export interface Data {
+  cardData: CardsData;
+  userData: UserData;
+  lectureData: LecturesData;
+}
 export interface CardsData {
   votes: Vote[]; // votes made by the community
   cards: Card[]; //cards added by the community
@@ -30,12 +35,6 @@ export interface LecturesData {
   lastUpdated: Date; //last update to the lectures
 }
 
-export interface Data {
-  cardData: CardsData;
-  userData: UserData;
-  lectureData: LecturesData;
-}
-
 export interface Mode {
   activeIndex: number;
   currentCard: Card; //Card that should be displayed in the carousel
@@ -46,11 +45,10 @@ export interface Mode {
   tags: string[];
   cardsChanged: Date;
   currTab: number;
-  theme: string;
   sortType: SortType;
   startIndex: number;
   endIndex: number;
-  newCard:Card
+  newCard: Card;
 }
 export enum formMode {
   ADD = 'add',
