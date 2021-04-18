@@ -89,6 +89,7 @@ export default class UserRoute {
   @GET()
   async logoutUser(req, res: Response) {
     res.cookie("auth", "");
+    res.cookie("refresh", "");
     res.send(true);
   }
 }

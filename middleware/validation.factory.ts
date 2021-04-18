@@ -13,6 +13,14 @@ export default class ValidationFactory {
       }),
     });
   }
+  validateVoteCardId() {
+    return celebrate({
+      [Segments.BODY]: Joi.object().keys({
+        id: Joi.string().required(),
+        value: Joi.number().valid(0,1),
+      }),
+    });
+  }
   validateLectureAbbreviation() {
     return celebrate({
       [Segments.QUERY]: Joi.object().keys({

@@ -3,6 +3,7 @@ import bcryptjs from "bcryptjs";
 import crypto from "crypto-random-string";
 import { Request } from "express";
 import MailService from "./mail.service";
+import TokenService from "./token.service";
 
 export default class AuthService {
   constructor({ userService, tokenService, mailService, logger }) {
@@ -12,18 +13,38 @@ export default class AuthService {
     this.logger = logger;
   }
   userService: UserService;
-  tokenService;
+  tokenService: TokenService;
   mailService: MailService;
   logger;
   async authorizeRequest(req: Request) {
-    var header = req.headers.cookie;
+    const header = req.headers.cookie;
     let token;
     const value = `; ${header}`;
     const parts = value.split(`; auth=`);
     token = parts.pop().split(";").shift();
-
-    if (!token) throw Error("Authorization header empty");
-    return this.tokenService.verifyAuthToken(token);
+    if (!token) throw Error("Cookies not valid");
+    try {
+      let _id = await this.tokenService.verifyAuthToken(token);
+      return { _id: _id };
+    } catch (e) {
+      let refreshToken;
+      const refreshValue = `; ${header}`;
+      const refreshParts = refreshValue.split(`; refresh=`);
+      refreshToken = refreshParts.pop().split(";").shift();
+      let _id;
+      try {
+        _id = await this.tokenService.verifyRefreshToken(refreshToken);
+        let newAuthToken = await this.tokenService.createAuthToken(_id);
+        let newRefreshToken = await this.tokenService.createAuthToken(_id);
+        return {
+          _id: _id,
+          newAuthToken: newAuthToken,
+          newRefreshToken: newRefreshToken,
+        };
+      } catch (e) {
+        throw Error("Cookies not valid");
+      }
+    }
   }
   async externalSignin(payload, provider) {
     this.logger.info(`${provider} signin attempt`);
@@ -112,7 +133,7 @@ export default class AuthService {
     if (!user) {
       throw new Error("Email or Password wrong");
     } else if (user && !user.confirmed) {
-      throw { status: 403, message: 'Email not confirmed' };
+      throw { status: 403, message: "Email not confirmed" };
     }
 
     let validation = await bcryptjs.compare(password, user.password);

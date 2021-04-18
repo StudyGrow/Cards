@@ -10,7 +10,7 @@ export default class VotesService {
     this.lectureModel = lectureModel;
   }
   cardsModel: Model<ICard, {}>;
-  voteModel: Model<IVote, {}>;
+  voteModel;
   lectureModel: Model<ILecture, {}>;
   getVotesByQuery = async (query) => {
     let votes = await this.voteModel.find(query);
@@ -40,7 +40,7 @@ export default class VotesService {
   };
 
   castVote = async (req) => {
-    if (!req.isAuthenticated()) {
+    if (!req._id) {
       throw Error("Bitte logge dich erst ein");
     }
     let card = await this.cardsModel.findById(req.body.id);
@@ -48,29 +48,30 @@ export default class VotesService {
       throw Error("Karte konnte nicht gefunden werden");
     }
     let vote = await this.voteModel
-      .findOne({ cardId: req.body.id, userId: req.user._id })
+      .findOne({ cardId: req.body.id, userId: req._id })
       .lean();
     if (vote) {
-      updateVote(vote, req.body.value);
+      this.updateVote(vote, req.body.value);
     } else {
-      return await createVote(req, card.vorlesung);
+      return await this.createVote(req, card.vorlesung);
     }
   };
-}
 
-async function updateVote(vote, newValue) {
-  checkVote(newValue);
+
+async updateVote(vote, newValue) {
+  this.checkVote(newValue);
 
   await this.voteModel.updateOne({ _id: vote._id }, { value: newValue });
+  return vote;
   //TODO: might need to return the updated vote here
 }
 
-async function createVote(req, abrv) {
-  checkVote(req.body.value);
+async createVote(req, abrv) {
+  this.checkVote(req.body.value);
   let lecture = await this.lectureModel.findOne({ abrv: abrv });
   let vote = new this.voteModel({
     cardId: req.body.id,
-    userId: req.user._id,
+    userId: req._id,
     lectureId: lecture._id,
     value: req.body.value,
   });
@@ -82,12 +83,12 @@ async function createVote(req, abrv) {
 //   Vote.findOneAndDelete({ cardId: req.body.id, userId: req.user._id }, callback);
 // }
 
-function checkVote(vote) {
+checkVote(vote) {
   if (vote !== 1 && vote !== 0) {
     throw new Error("Vote invalid, only 0 and 1 are allowed");
   }
 }
-
+}
 //this function should be called periodically to calculate the new rating
 //calculate the new rating by finding all votes that were made for a specific card and then update the value with the summation of the votes
 // async function updateTotalVotes(id, val) {

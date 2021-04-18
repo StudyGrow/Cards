@@ -2,16 +2,19 @@ import { route, POST, GET, before, inject } from "awilix-express";
 import { Request, Response } from "express";
 import passport from "passport";
 import AuthService from "../../services/auth.service";
+import TokenService from "../../services/token.service";
 import userService from "../../services/user.service";
 
 @route("/auth")
 export default class UserRoute {
-  constructor({ userService, authService }) {
+  constructor({ userService, authService, tokenService }) {
     this.userService = userService;
     this.authService = authService;
+    this.tokenService = tokenService;
   }
   userService: userService;
   authService: AuthService;
+  tokenService: TokenService;
 
   /**
    * @swagger
@@ -51,7 +54,7 @@ export default class UserRoute {
       .then((response: any) => {
         res.cookie("auth", response.tokens.auth);
         res.cookie("refresh", response.tokens.refresh);
-        return res.status(200).redirect('/');
+        return res.status(200).redirect("/");
       })
       .catch((err: any) => {
         return res
@@ -98,7 +101,6 @@ export default class UserRoute {
       });
   }
 
-
   @route("/signin")
   @POST()
   @before(
@@ -134,5 +136,47 @@ export default class UserRoute {
       .catch((err) => {
         res.status(422).send(err.message);
       });
+  }
+
+  /**
+   * @swagger
+   *
+   * /auth/refresh:
+   *   post:
+   *     description: Gert a new auth token
+   *     produces:
+   *       - application/json
+   *     parameters:
+   *       - name: refresh_token
+   *         description: An refresh JWT token
+   *         in:  body
+   *         required: true
+   *         type: string
+   *         example: {refreshToken: <required> }
+   *     responses:
+   *       200:
+   *         description: Returns new authToken
+   *         content:
+   *          application/json:
+   *              schema:
+   *                type: string
+   *                example: {authToken: <token>}
+   */
+  @route("/refresh")
+  @POST()
+  @before(inject(({ validationFactory }) => validationFactory.refresh()))
+  async refresh(req: any, res: any) {
+    const { refreshToken } = req.body;
+
+    this.tokenService.verifyRefreshToken(refreshToken).then(
+      async (payload: any) => {
+        let token = await this.tokenService.createAuthToken(payload);
+        res.cookie("auth", token);
+        res.send({ authToken: token });
+      },
+      (error: any) => {
+        return res.sendStatus(403);
+      }
+    );
   }
 }

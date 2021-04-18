@@ -24,6 +24,7 @@ export default class TokenService {
     const token = await this.jwt.sign(
       { data: payload },
       this.config.authentication.secret,
+      { expiresIn: this.config.authentication.refreshExpiration },
     );
     return token;
   }

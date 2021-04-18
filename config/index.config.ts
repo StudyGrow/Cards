@@ -22,7 +22,8 @@ export default {
   },
   authentication: {
     secret: process.env.APP_AUTH_SECRET,
-    expiration: "15m",
+    expiration: "1m",
+    refreshExpiration: "3d",
     apple: {
       clientId: process.env.APP_APPLE_CLIENTID,
       teamId: process.env.APP_APPLE_TEAMID,

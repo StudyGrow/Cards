@@ -49,16 +49,15 @@ export default class CardsRoute {
       validationFactory.validateLectureAbbreviation()
     )
   )
+  @before(inject(({ authenticationMiddleware }) => authenticationMiddleware))
   async getCardsData(req, res) {
     let abrv = req.query.abrv;
     let cards = this.cardsService.findByAbrv(abrv);
     let vl = this.lectureService.findByAbrv(abrv);
     let allVotes = this.votesService.getAllVotesByLectureAbrv(abrv);
-    // let userid;
+    let userid;
     let username;
-    // if (req.isAuthenticated()) {
-    // userid = req.user._id;
-    // }
+    userid = req._id;
     res.setHeader("Access-Control-Allow-Origin", "*");
     Promise.all([cards, vl, allVotes])
       .then(([cards, lecture, votes]) =>
@@ -66,7 +65,7 @@ export default class CardsRoute {
           cards: cards,
           votes: votes,
           lecture: lecture,
-          // uid: userid,
+          uid: userid,
           username: username,
         })
       )
@@ -109,18 +108,18 @@ export default class CardsRoute {
       });
   }
 
-  @route("/upate")
+  @route("/vote")
   @PUT()
   @before(inject(({ authorizationMiddleware }) => authorizationMiddleware))
   @before(
-    inject(({ validationFactory }) => validationFactory.validateCardToAdd())
+    inject(({ validationFactory }) => validationFactory.validateVoteCardId())
   )
   async castCard(req: any, res: Response) {
-    let vote = parseInt(req.body.value);
+    // let vote = parseInt(req.body.value);
     this.votesService
       .castVote(req)
-      .then(() => {
-        res.status(200);
+      .then((vote) => {
+        res.status(200).send(vote);
       })
       .catch((err) => {
         res.status(422).send(err.message);
