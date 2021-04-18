@@ -1,32 +1,49 @@
 <mat-nav-list class="p-0">
   <div>
-    <a mat-list-item color="primary" class="{{ isActive('/') }}" routerLink="/"
+    <a mat-list-item color="primary" class="{{ isActive('/') }}" routerLink="/" aria-label="Zurück zur Startseite"
       ><mat-icon>home</mat-icon> Vorlesungen</a
     >
     <ng-container *ngIf="!(loggedIn$ | async)">
-      <a mat-list-item mat-ripple class=" {{ isActive('/login') }}" routerLink="/login"
+      <a mat-list-item mat-ripple class=" {{ isActive('/login') }}" routerLink="/login" aria-label="Login Seite"
         ><mat-icon>person</mat-icon>Login</a
       >
 
-      <a mat-list-item class="{{ isActive('/signup') }}" routerLink="/signup"
+      <a mat-list-item class="{{ isActive('/signup') }}" routerLink="/signup" aria-label="Neuen Account registrieren"
         ><mat-icon>add_box</mat-icon> Registrieren</a
       >
     </ng-container>
     <div *ngIf="loggedIn$ | async">
       <div mat-subheader>Account</div>
 
-      <a mat-list-item routerLink="/account/overview" class=" {{ isActive('/account/overview') }}">
+      <a
+        mat-list-item
+        routerLink="/account/overview"
+        class=" {{ isActive('/account/overview') }}"
+        aria-label="Profilübersicht"
+      >
         <mat-icon>account_box</mat-icon> Übersicht</a
       >
-      <a mat-list-item routerLink="/account/cards" class=" {{ isActive('/account/cards') }}">
+      <a mat-list-item routerLink="/account/cards" class=" {{ isActive('/account/cards') }}" aria-label="Meine Karten">
         <mat-icon>style</mat-icon> Meine Karten</a
       >
     </div>
     <div mat-subheader>Über uns</div>
-    <a mat-list-item routerLink="/about" [fragment]="'info'" class=" {{ isActive('/about#info') }}">
+    <a
+      mat-list-item
+      routerLink="/about"
+      [fragment]="'info'"
+      class=" {{ isActive('/about#info') }}"
+      aria-label="Mehr informationen zur Webseite"
+    >
       <mat-icon>contacts</mat-icon> Infos
     </a>
-    <a mat-list-item routerLink="/about" [fragment]="'FAQ'" class=" {{ isActive('/about#FAQ') }}">
+    <a
+      mat-list-item
+      routerLink="/about"
+      [fragment]="'FAQ'"
+      class=" {{ isActive('/about#FAQ') }}"
+      aria-label="Häufig gestellte Fragen"
+    >
       <mat-icon>question_answer</mat-icon> FAQ
     </a>
     <div mat-subheader>Aussehen</div>
@@ -44,7 +61,7 @@
     </mat-radio-group>
   </div>
   <div class="bottom">
-    <a mat-list-item (click)="logout()" class="mb-0" id="logout" *ngIf="loggedIn$ | async">
+    <a mat-list-item (click)="logout()" class="mb-0" id="logout" *ngIf="loggedIn$ | async" aria-label="Ausloggen">
       <mat-icon>exit_to_app</mat-icon> Logout
     </a>
   </div>

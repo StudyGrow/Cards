@@ -9,6 +9,7 @@ import { MatSlideToggle, MatSlideToggleChange } from '@angular/material/slide-to
 import { ThemesService } from 'src/app/services/themes.service';
 import { AppState, Data, Mode } from 'src/app/models/state';
 import { FormControl } from '@angular/forms';
+import { Theme } from 'src/app/models/Themes';
 
 @Component({
   selector: 'app-nav-list',
@@ -25,7 +26,7 @@ export class NavListComponent implements OnInit {
   constructor(private router: Router, private store: Store, private themeManager: ThemesService) {}
 
   ngOnInit(): void {
-    this.theme$ = this.themeManager.currentTheme;
+    this.theme$ = this.themeManager.themeValue.pipe(map((theme) => Theme[theme]));
     this.loggedIn$ = this.store.select(authorized);
     this.theme.valueChanges.subscribe((value) => {
       this.themeManager.changeTheme(value);

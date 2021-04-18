@@ -30,10 +30,10 @@ button {
 #left {
   left: 0;
 }
-mat-icon {
-  text-align: center;
-  width: 100%;
-}
+// mat-icon {
+//   // text-align: center;
+//   // width: 100%;
+// }
 .navig {
   display: inline-flex;
   align-items: center;
@@ -50,4 +50,24 @@ mat-icon {
 
 mat-spinner {
   margin: auto;
+}
+mat-icon{
+  vertical-align: middle;
+}
+.d-inline-flex{
+  align-items: center;
+}
+.BTN{
+  margin-left: 0.15rem;
+  margin-right: 0.15rem;
+}
+.navigationInfo{
+  text-align: center;
+  position: fixed;
+  width: 100vw;
+  color: rgb(160, 160, 160);
+  bottom:1rem;
+  left: 0;
+  z-index: -1;
+  font-size: small;
 }
