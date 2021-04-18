@@ -8,7 +8,7 @@ export default class PassportFactory {
   passportRedirectGoogle() {
     let passport = this.passport;
     return function (req: any, res: Response, next: any) {
-      passport.authenticate('google', {
+        passport.authenticate('google', {
         scope: 'https://www.googleapis.com/auth/userinfo.email',
       })(req, res, next);
     };

@@ -183,6 +183,7 @@ export default class UserRoute {
 
   @route("")
   @GET()
+  @before(inject(({ authorizationMiddleware }) => authorizationMiddleware))
   async checkIfUserAuthenticated(req, res) {
     if (req._id) {
       res.status(200).send(true);
