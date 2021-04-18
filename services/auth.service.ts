@@ -22,8 +22,8 @@ export default class AuthService {
     const value = `; ${header}`;
     const parts = value.split(`; auth=`);
     token = parts.pop().split(";").shift();
-    if (!token) throw Error("Cookies not valid");
     try {
+      if (!token) throw Error("Cookies not valid");
       let _id = await this.tokenService.verifyAuthToken(token);
       return { _id: _id };
     } catch (e) {
@@ -35,7 +35,7 @@ export default class AuthService {
       try {
         _id = await this.tokenService.verifyRefreshToken(refreshToken);
         let newAuthToken = await this.tokenService.createAuthToken(_id);
-        let newRefreshToken = await this.tokenService.createAuthToken(_id);
+        let newRefreshToken = await this.tokenService.createRefreshToken(_id);
         return {
           _id: _id,
           newAuthToken: newAuthToken,

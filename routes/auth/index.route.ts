@@ -179,4 +179,23 @@ export default class UserRoute {
       }
     );
   }
+
+
+  @route("")
+  @GET()
+  async checkIfUserAuthenticated(req, res) {
+    if (req._id) {
+      res.status(200).send(true);
+    } else {
+      res.status(200).send(false);
+    }
+  }
+
+  @route("/logout")
+  @GET()
+  async logoutUser(req, res: Response) {
+    res.cookie("auth", "");
+    res.cookie("refresh", "");
+    res.send(true);
+  }
 }
