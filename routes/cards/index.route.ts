@@ -92,7 +92,7 @@ export default class CardsRoute {
       });
   }
 
-  @route("/upate")
+  @route("/update")
   @PUT()
   @before(inject(({ authorizationMiddleware }) => authorizationMiddleware))
   @before(
@@ -127,24 +127,28 @@ export default class CardsRoute {
       });
   }
 
-  @route("/user/votes")
+  @route("/votes")
   @GET()
   @before(
     inject(({ validationFactory }) =>
       validationFactory.validateLectureAbbreviation()
     )
   )
+  @before(inject(({ authenticationMiddleware }) => authenticationMiddleware))
   async getLectureVotesByUser(req: any, res: Response) {
     let vote = parseInt(req.body.value);
-
-    this.votesService
-      .getVotesByLectureAbrv(req.query.abrv, req.user._id)
-      .then((votes) => {
-        res.status(200).send(votes);
-      })
-      .catch((err) => {
-        res.status(422).send(err.message);
-      });
+    if (req._id) {
+      this.votesService
+        .getVotesByLectureAbrv(req.query.abrv, req._id)
+        .then((votes) => {
+          res.status(200).send(votes);
+        })
+        .catch((err) => {
+          res.status(422).send(err.message);
+        });
+    } else {
+      res.status(200).send([]);
+    }
   }
 }
 

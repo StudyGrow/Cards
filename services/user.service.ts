@@ -1,6 +1,5 @@
 //Service that provides functions associated with users
 import { Model } from "mongoose";
-import { IUser, User } from "../models/user.model";
 import { Card } from "../models/cards.model";
 import bcryptjs from "bcryptjs";
 import mailService from "./mail.service";
@@ -49,16 +48,17 @@ export default class UserService {
   async updatePassword(newPassword, _id) {
     try {
       let hashedPassword = hashPassword(newPassword);
-      await User.findByIdAndUpdate(_id, { password: hashedPassword });
+      await this.userModel.findByIdAndUpdate(_id, { password: hashedPassword });
     } catch (e) {
       throw new Error("Error updating password");
     }
   }
   deleteAccount = async (req) => {
-    await User.findByIdAndDelete(req._id);
+    await this.userModel.findByIdAndDelete(req._id);
     return true;
   };
-  async updateAccount(user, form) {
+  async updateAccount(_id, form) {
+    let user = await this.getUser({_id: _id});
     if (user.username != form.username && user.email != form.email) {
       if (user.email == form.email && user.username != form.username) {
         await this.checkUniqueUser(null, form.username);
@@ -68,7 +68,7 @@ export default class UserService {
         await this.checkUniqueUser(form.email, form.username);
       }
     }
-    let updatedUser = await User.findByIdAndUpdate(
+    let updatedUser = await this.userModel.findByIdAndUpdate(
       user._id,
       {
         username: form.username,
@@ -86,13 +86,13 @@ export default class UserService {
   async checkUniqueUser(email: string, username: string) {
     let user;
     if (email) {
-      user = await User.findOne({ email: email }); //check if email is already registered
+      user = await this.userModel.findOne({ email: email }); //check if email is already registered
     }
     if (user) {
       throw new Error("Diese Email adresse ist bereits registriert");
     }
     if (username) {
-      user = await User.findOne({ username: username }); //check if username is already taken
+      user = await this.userModel.findOne({ username: username }); //check if username is already taken
     }
 
     if (user) {
@@ -100,50 +100,6 @@ export default class UserService {
     }
   }
 }
-
-//check if username and email provided are unique in the database
-// async function checkUnique(email, username) {
-//   let user;
-//   if (email) {
-//     user = await User.findOne({ email: email }); //check if email is already registered
-//   }
-//   if (user) {
-//     throw new Error("Diese Email adresse ist bereits registriert");
-//   }
-//   if (username) {
-//     user = await User.findOne({ username: username }); //check if username is already taken
-//   }
-
-//   if (user) {
-//     throw new Error("Der Benutzername existiert bereits");
-//   }
-// }
-//function to add an account to the database
-//creates a new user and decrypts the password before saving it to the database
-// function addAccount(form): IUser {
-//   let user = new User({
-//     username: form.username,
-//     email: form.email,
-//     creationDate: new Date(),
-//     confirmed: false,
-//   });
-//   let newUser: IUser;
-//   try {
-//     let password = hashPassword(form.password);
-//     user.password = password;
-//     user.save((err, savedUser) => {
-//       if (err) {
-//         throw new Error("Error saving user");
-//       } else {
-//         // mailService.sendConfirmationMail(savedUser);
-//         newUser = savedUser;
-//       }
-//     });
-//     return newUser;
-//   } catch (e) {
-//     throw new Error("Ein unbekannter Fehler ist aufgetreten");
-//   }
-// }
 
 // generates a secure hash for the password
 function hashPassword(password): string {

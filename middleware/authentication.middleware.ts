@@ -1,6 +1,6 @@
 import AuthService from "../services/auth.service";
 
-export default function authorize({
+export default function autenticate({
   authService,
   logger,
 }: {
@@ -16,7 +16,7 @@ export default function authorize({
       })
       .catch((error: any) => {
         logger.error(error);
-        return res.sendStatus(401);
+        next();
       });
   };
 }

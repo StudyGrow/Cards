@@ -1,17 +1,15 @@
 import { scopePerRequest, loadControllers } from "awilix-express";
-// import logger from "./logger.loader";
 import cors from "cors";
 import config from "../config/index.config";
 import bodyParser from "body-parser";
 import swaggerJsdoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 import path from "path";
-import passport from "passport";
 import { CelebrateError } from "celebrate";
 
 const helmet = require("helmet");
-import express from "express"
-export default ({ app, container }) => {
+import express from "express";
+export default ({ app, container, logger }) => {
   app.use(function (req, res, next) {
     if (req.secure || process.env.NODE_ENV.indexOf("development") > -1) {
       next();
@@ -26,7 +24,7 @@ export default ({ app, container }) => {
 
   app.enable("trust proxy");
   app.use((req: any, _res: any, next: any) => {
-    console.log(req.path);
+    logger.info(req.path);
     next();
   });
 
@@ -85,8 +83,4 @@ export default ({ app, container }) => {
       return next(err);
     }
   });
-  // app.use((err: any, _req: any, _res: any, next: any) => {
-  //   console.log(err);
-  //   return next(err);
-  // });
 };

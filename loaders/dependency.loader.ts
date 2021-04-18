@@ -18,8 +18,11 @@ const bcrypt = require("bcryptjs");
 
 const LocalStrategy = require("passport-local").Strategy;
 
-export default async ({app}) => {
+export default async ({app, logger}) => {
   const container = createContainer();
+  container.register({
+    logger: asValue(logger),
+  });
   container.register({
     database: asValue(mongoose),
   });
@@ -115,6 +118,6 @@ export default async ({app}) => {
       },
     }
   );
-  console.log("Dependency Injector loaded.");
+  logger.info("Dependency Injector loaded.");
   return container;
 };

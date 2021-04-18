@@ -50,7 +50,7 @@ export class UserService implements CanActivate {
   }
   createAccount(form: User): Observable<User> {
     return this.http
-      .post<User>(this.config.urlBase + 'user/new', form, {
+      .post<User>(this.config.urlBase + 'auth/signup', form, {
         headers: this.config.headers,
         observe: 'response',
       })

@@ -101,12 +101,10 @@ export default class UserRoute {
 
   @route("/signin")
   @POST()
-  // @before(
-  //   inject(({ validationFactory }) => validationFactory.validateUserSignIn())
-  // )
+  @before(
+    inject(({ validationFactory }) => validationFactory.validateUserSignIn())
+  )
   async signInEmailOrUsername(req: Request, res: any) {
-    console.log(req.headers)
-    console.log(req.body)
     const { username, password } = req.body;
     this.authService
       .signInByEmailOrUsername(username, password)

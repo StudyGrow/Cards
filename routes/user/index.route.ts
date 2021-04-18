@@ -4,9 +4,7 @@ import userService from "../../services/user.service";
 
 //route to get the cards from a specific lecture
 @route("/user")
-@before(
-  inject(({ authorizationMiddleware }) => authorizationMiddleware),
-)
+@before(inject(({ authorizationMiddleware }) => authorizationMiddleware))
 export default class UserRoute {
   constructor({ userService }) {
     this.userService = userService;
@@ -18,7 +16,6 @@ export default class UserRoute {
   async getUserId(req, res) {
     res.status(200).send(req._id);
   }
-
 
   @route("/info")
   @GET()
@@ -36,7 +33,7 @@ export default class UserRoute {
   @route("/updatePassword")
   @PUT()
   @before(
-    inject(({ validationFactory }) => validationFactory.validateUserPassword())
+    inject(({ validationFactory }) => validationFactory.validateUserNewPassword())
   )
   async updateUserPassword(req, res) {
     this.userService
@@ -52,10 +49,7 @@ export default class UserRoute {
   @route("/updateAccount")
   @PUT()
   @before(
-    inject(({ validationFactory }) => validationFactory.validateUserUsername())
-  )
-  @before(
-    inject(({ validationFactory }) => validationFactory.validateUserEmail())
+    inject(({ validationFactory }) => validationFactory.validateUserUserUpdate())
   )
   async updateUserAccount(req, res) {
     this.userService
@@ -84,13 +78,17 @@ export default class UserRoute {
   @route("/auth")
   @GET()
   async checkIfUserAuthenticated(req, res) {
-    res.status(200).send(false);
+    if (req._id) {
+      res.status(200).send(true);
+    } else {
+      res.status(200).send(false);
+    }
   }
 
   @route("/logout")
   @GET()
   async logoutUser(req, res: Response) {
-    res.cookie('auth', '')
+    res.cookie("auth", "");
     res.send(true);
   }
 }

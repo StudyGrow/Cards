@@ -53,7 +53,7 @@ export default class LectureRoute {
   @POST()
   @before(inject(({ authorizationMiddleware }) => authorizationMiddleware))
   @before(
-    inject(({ validationFactory }) => validationFactory.validateLectureNameAndAbbreviation())
+    inject(({ validationFactory }) => validationFactory.validateLecture())
   )
   async addLecture(req, res) {
     this.lectureService
@@ -71,7 +71,7 @@ export default class LectureRoute {
   @route("/check")
   @POST()
   @before(
-    inject(({ validationFactory }) => validationFactory.validateLectureNameAndAbbreviation())
+    inject(({ validationFactory }) => validationFactory.validateLecture())
   )
   async checkUniqueLecture(req, res) {
     this.lectureService

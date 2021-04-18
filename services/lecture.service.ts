@@ -29,8 +29,8 @@ export default class LectureService {
 
   //adds a lecture to the database
   addLecture = async (lecture) => {
-    await checkUniqueAbrv(lecture.abrv);
-    await checkUniqueName(lecture.name);
+    await this.checkUniqueAbrv(lecture.abrv);
+    await this.checkUniqueName(lecture.name);
 
     const vl = new Lecture();
     vl.name = lecture.name.trim();
@@ -41,18 +41,18 @@ export default class LectureService {
   };
 
   checkUnique = async (lecture) => {
-    await checkUniqueName(lecture.name);
-    await checkUniqueAbrv(lecture.abrv);
+    await this.checkUniqueName(lecture.name);
+    await this.checkUniqueAbrv(lecture.abrv);
     return true;
   };
-}
-async function checkUniqueAbrv(abrv) {
-  const vl = await this.lectureModel.findOne({ abrv: abrv });
-  if (vl)
-    throw new Error("Eine Vorlesung mit dieser Abkürzung existiert bereits.");
-}
-
-async function checkUniqueName(name) {
-  const vl = await this.lectureModel.findOne({ name: name });
-  if (vl) throw new Error("Eine Vorlesung mit diesem Namen existiert bereits.");
+  async checkUniqueAbrv(abrv) {
+    const vl = await this.lectureModel.findOne({ abrv: abrv });
+    if (vl)
+      throw new Error("Eine Vorlesung mit dieser Abkürzung existiert bereits.");
+  }
+  
+  async checkUniqueName(name) {
+    const vl = await this.lectureModel.findOne({ name: name });
+    if (vl) throw new Error("Eine Vorlesung mit diesem Namen existiert bereits.");
+  }
 }
