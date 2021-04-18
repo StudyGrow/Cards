@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-// import logger from './logger.loader';
+import logger from './logger.loader';
 import config from "../config/index.config";
 import promiseRetry from "promise-retry";
 export default async () => {
@@ -17,7 +17,7 @@ async function _connect(retryOptions: any) {
   let connectionString = config.database.url;
   const options = config.database.options;
   return promiseRetry((retry, number) => {
-    console.log(`Attempt no. ${number} connecting to: ${connectionString}`);
+    logger.info(`Attempt no. ${number} connecting to: ${connectionString}`);
     return mongoose
       .connect(connectionString, {
         useNewUrlParser: true,
@@ -31,7 +31,7 @@ async function _connect(retryOptions: any) {
       })
       .catch(retry);
   }, retryOptions).catch((err) => {
-    console.log(`Failed connecting to: ${connectionString}`);
+    logger.info(`Failed connecting to: ${connectionString}`);
     process.exit(1);
   });
 }
