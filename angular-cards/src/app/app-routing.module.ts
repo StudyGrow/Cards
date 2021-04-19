@@ -42,7 +42,7 @@ const routes: Routes = [
 
 @NgModule({
   imports: [
-    RouterModule.forRoot(routes, { preloadingStrategy: AppCustomPreloader }),
+    RouterModule.forRoot(routes, { preloadingStrategy: AppCustomPreloader, useHash: true, urlUpdateStrategy: 'eager' }),
   ],
   exports: [RouterModule],
   providers: [AppCustomPreloader],
