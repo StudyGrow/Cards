@@ -48,7 +48,7 @@ export default class AuthService {
   }
   async externalSignin(payload, provider) {
     this.logger.info(`${provider} signin attempt`);
-    let email = payload.emails[0].value;
+    let email: string = payload.emails[0].value;
     let user;
     try {
       user = await this.userService.getUser({
@@ -70,7 +70,7 @@ export default class AuthService {
       }
     } else {
       try {
-        let username = email.split("@")[0];
+        let username: string = email.split("@")[0].slice(0, 20);
         user = await this.userService.createUser({
           externalId: payload.id,
           email: email,

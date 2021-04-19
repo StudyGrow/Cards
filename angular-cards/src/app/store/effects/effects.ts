@@ -29,6 +29,7 @@ import {
   authenticated,
   logoutSuccess,
   createAccount,
+  googleCallback,
 } from '../actions/UserActions';
 import { UserService } from 'src/app/services/user.service';
 
@@ -263,6 +264,25 @@ export class CardsEffects {
     )
   );
 
+  googleCallback$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(googleCallback),
+      exhaustMap(({callbackUrl}) =>
+        this.user.googleCallbackLogin(callbackUrl).pipe(
+          tap((user) => {
+            if (user) {
+              this.router.navigateByUrl('/');
+              this.notifications.addNotification(new SuccessMessage(`Willkommen ${user.username}`));
+              this.store.dispatch(fetchUserData());
+            }
+          }),
+          map((user) => loginSuccess(user)),
+          catchError((reason) => of(LoadFailure({ reason: reason })))
+        )
+      ),
+      share()
+    )
+  );
   logout$ = createEffect(() =>
     this.actions$.pipe(
       ofType(logout),

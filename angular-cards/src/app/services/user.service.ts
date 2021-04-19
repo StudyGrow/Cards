@@ -45,6 +45,12 @@ export class UserService implements CanActivate {
       headers: this.config.headers,
     });
   }
+  //used to login the user with google callback
+  googleCallbackLogin(callbackUrl: string): Observable<User> {
+    return this.http.get<User>(callbackUrl, {
+      headers: this.config.headers,
+    });
+  }
   logoutServer(): Observable<boolean> {
     return this.http.get<boolean>(this.config.urlBase + 'auth/logout');
   }

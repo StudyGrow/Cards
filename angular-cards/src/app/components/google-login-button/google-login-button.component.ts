@@ -3,6 +3,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { environment } from 'src/environments/environment';
+
 const googleLogoURL = 'https://raw.githubusercontent.com/fireflysemantics/logo/master/Google.svg';
 
 @Component({
@@ -23,7 +24,7 @@ export class GoogleLoginButtonComponent implements OnInit {
     if (environment.production) {
       window.location.href = 'https://www.' + environment.domain + '/api/auth/google';
     } else {
-      window.location.href = 'http://' + environment.domain + '/api/auth/google';
+      window.location.href = 'http://' + environment.domain + ':' + environment.port + '/api/auth/google';
     }
   }
 }

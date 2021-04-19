@@ -54,7 +54,7 @@ export default class UserRoute {
       .then((response: any) => {
         res.cookie("auth", response.tokens.auth);
         res.cookie("refresh", response.tokens.refresh);
-        return res.status(200).redirect("/");
+        return res.status(200).redirect('/');
       })
       .catch((err: any) => {
         return res
@@ -113,7 +113,7 @@ export default class UserRoute {
       .then((response) => {
         res.cookie("auth", response.tokens.auth);
         res.cookie("refresh", response.tokens.refresh);
-        return res.status(200).send(response);
+        return res.status(200).send(response.user);
       })
       .catch((err: any) => {
         return res
