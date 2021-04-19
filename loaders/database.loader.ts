@@ -17,7 +17,7 @@ async function _connect(retryOptions: any) {
   let connectionString = config.database.url;
   const options = config.database.options;
   return promiseRetry((retry, number) => {
-    logger.info(`Attempt no. ${number} connecting to: ${connectionString}`);
+    logger.info(`Attempt no. ${number} connecting to database}`);
     return mongoose
       .connect(connectionString, {
         useNewUrlParser: true,
@@ -31,7 +31,7 @@ async function _connect(retryOptions: any) {
       })
       .catch(retry);
   }, retryOptions).catch((err) => {
-    logger.info(`Failed connecting to: ${connectionString}`);
+    logger.info(`Failed connecting to database}`);
     process.exit(1);
   });
 }
