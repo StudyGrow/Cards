@@ -4,12 +4,12 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "NODE_ENV=production ts-node start.ts",
+    "start": "cross-env NODE_ENV=production ts-node start.ts",
     "watch": "cross-env NODE_ENV=development nodemon --exec ts-node start.ts",
     "buildng": "cd angular-cards && ng build --prod",
     "stop": "ts-node stop.js",
-    "heroku-prebuild": "npm install && cd angular-cards && npm install",
-    "heroku-postbuild": "cd angular-cards && ng build --configuration=production"
+    "heroku-prebuild": "npm install",
+    "heroku-postbuild": "cd angular-cards"
   },
   "repository": {
     "type": "git",
