@@ -31,18 +31,18 @@ const routes: Routes = [
       import('./cards/cards.module').then((m) => m.CardsModule),
     data: { preload: true },
   },
-  // {
-  //   path: 'api/auth/googleCallback',
-  //   component: GoogleCallbackComponent,
-  //   pathMatch: 'prefix',
-  //   data: { preload: true }
-  // },
+  {
+    path: 'api/auth/googleCallback',
+    component: GoogleCallbackComponent,
+    pathMatch: 'prefix',
+    data: { preload: true }
+  },
   { path: '**', component: ErrorPageComponent },
 ];
 
 @NgModule({
   imports: [
-    RouterModule.forRoot(routes, { preloadingStrategy: AppCustomPreloader, useHash: true, urlUpdateStrategy: 'deferred' }),
+    RouterModule.forRoot(routes, { preloadingStrategy: AppCustomPreloader, useHash: true, urlUpdateStrategy: 'deferred'}),
   ],
   exports: [RouterModule],
   providers: [AppCustomPreloader],
