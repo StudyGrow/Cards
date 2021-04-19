@@ -1,7 +1,7 @@
 {
     "/api": {
         "target": "localhost:${process.env.PORT}",
-        "secure": false,
+        "secure": true,
         "changeOrigin": true,
         "logLevel": "debug"
     }
