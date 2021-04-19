@@ -10,6 +10,18 @@ To test this project locally you should clone this repository.
 
 To run this project you need to have the Node Package Manager installed, which can be downloaded here: https://www.npmjs.com/get-npm/
 
+Additionally, following environment variables should be present:  
+PORT=  
+APP_AUTH_SECRET=  
+APP_AUTH_GOOGLE_CLIENTID=  
+APP_AUTH_GOOGLE_SECRET=  
+APP_AUTH_GOOGLE_REDIRECT_URI=  
+MONGO_URL_PRODUCTION=  
+MONGO_URL_TEST=  
+SECRET=  
+AUTH_TOKEN_EXPIRATION=  
+REFRESH_TOKEN_EXPIRATION=  
+
 ### Installing
 
 Using the command line navigate to the projects folder and type in the following command:

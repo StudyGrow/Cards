@@ -19,7 +19,7 @@
         "NODE_ENV": "development"
       },
       "runtimeExecutable": "nodemon",
-      "program": "${workspaceFolder}/start.js",
+      "program": "${workspaceFolder}/start.ts",
       "restart": true,
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen",
