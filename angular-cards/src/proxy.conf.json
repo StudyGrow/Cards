@@ -1,7 +1,8 @@
 {
     "/api": {
-        "target": "https://studydrive.me",
+        "target": "localhost:${process.env.PORT}",
         "secure": false,
-        "changeOrigin": true
+        "changeOrigin": true,
+        "logLevel": "debug"
     }
 }
