@@ -7,7 +7,7 @@ const app = express();
 async function start() {
   logger.info(`Started in ${process.env.NODE_ENV}`);
   await loader({ app: app });
-  await app.listen("3000", () => {
+  await app.listen(config.app.port, () => {
     app.emit("serverStarted");
     logger.info(`
       #+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#
