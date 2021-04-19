@@ -31,13 +31,13 @@ const routes: Routes = [
       import('./cards/cards.module').then((m) => m.CardsModule),
     data: { preload: true },
   },
-  // {
-  //   path: 'api/auth/googleCallbac',
-  //   component: GoogleCallbackComponent,
-  //   pathMatch: 'prefix',
-  //   data: { preload: true }
-  // },
-  // { path: '**', component: ErrorPageComponent },
+  {
+    path: 'api/auth/googleCallback',
+    component: GoogleCallbackComponent,
+    pathMatch: 'prefix',
+    data: { preload: true }
+  },
+  { path: '**', component: ErrorPageComponent },
 ];
 
 @NgModule({

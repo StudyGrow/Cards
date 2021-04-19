@@ -1,0 +1,7 @@
+{
+    "/api": {
+        "target": "https://studydrive.me",
+        "secure": false,
+        "changeOrigin": true
+    }
+}
