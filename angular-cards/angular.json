@@ -68,11 +68,13 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "angular-cards:build"
+            "browserTarget": "angular-cards:build",
+            "proxyConfig": "src/proxy.config.json"
           },
           "configurations": {
             "production": {
-              "browserTarget": "angular-cards:build:production"
+              "browserTarget": "angular-cards:build:production",
+              "proxyConfig": "src/proxy.config.json"
             }
           }
         },

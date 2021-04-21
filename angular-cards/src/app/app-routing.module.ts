@@ -7,6 +7,7 @@ import { AboutComponent } from './routes/about/about.component';
 import { UserService as AuthGuard } from './services/user.service';
 import { ErrorPageComponent } from './routes/error-page/error-page.component';
 import { ConfirmationPageComponent } from './routes/confirmation-page/confirmation-page.component';
+import { GoogleCallbackComponent } from './components/google-callback/google-callback.component';
 const routes: Routes = [
   {
     path: '',
@@ -30,12 +31,18 @@ const routes: Routes = [
       import('./cards/cards.module').then((m) => m.CardsModule),
     data: { preload: true },
   },
+  {
+    path: 'api/auth/googleCallback',
+    component: GoogleCallbackComponent,
+    pathMatch: 'prefix',
+    data: { preload: true }
+  },
   { path: '**', component: ErrorPageComponent },
 ];
 
 @NgModule({
   imports: [
-    RouterModule.forRoot(routes, { preloadingStrategy: AppCustomPreloader }),
+    RouterModule.forRoot(routes, { preloadingStrategy: AppCustomPreloader, urlUpdateStrategy: 'eager'}),
   ],
   exports: [RouterModule],
   providers: [AppCustomPreloader],

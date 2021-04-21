@@ -36,7 +36,6 @@ export class OverviewComponent implements OnInit {
 
   ngOnInit(): void {
     this.user$ = this.store.select(user);
-    this.data$.subscribe((data) => console.log(data));
     this.theme.currentTheme.pipe(distinctUntilChanged()).subscribe((theme) => {
       let textStyle = { color: '#000' };
       if (theme === 'dark-theme') {

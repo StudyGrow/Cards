@@ -10,6 +10,7 @@ enum ActionTypes {
   LOGOUT_USER = '[User] logout',
   LOGOUT_USER_SUCCESS = '[User] logout success',
   LOGIN_USER = '[User] login',
+  GOOGLE_CALLBACK = '[User] google callback',
   LOGIN_USER_SUCCESS = '[User] login success',
   AUTHENTICATE = '[User] check if user is authenticated',
   AUTHENTICATED = '[User]  user is authenticated',
@@ -18,6 +19,7 @@ enum ActionTypes {
 }
 
 export const login = createAction(ActionTypes.LOGIN_USER, props<User>());
+export const googleCallback = createAction(ActionTypes.GOOGLE_CALLBACK, props<{callbackUrl: string}>());
 
 export const loginSuccess = createAction(ActionTypes.LOGIN_USER_SUCCESS, props<User>());
 export const createAccount = createAction(ActionTypes.REGISTER, props<User>());

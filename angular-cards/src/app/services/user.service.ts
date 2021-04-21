@@ -37,20 +37,26 @@ export class UserService implements CanActivate {
   //it makes the http authentication call only the first time
   //and caches the result in a subject which is returned on subsequent calls
   authentication(): Observable<boolean> {
-    return this.http.get<boolean>(this.config.urlBase + 'user/auth').pipe(share());
+    return this.http.get<boolean>(this.config.urlBase + '/auth').pipe(share());
   }
   //used to login the user
   login(form: User): Observable<User> {
-    return this.http.post<User>(this.config.urlBase + 'login', form, {
+    return this.http.post<User>(this.config.urlBase + 'auth/signin', form, {
+      headers: this.config.headers,
+    });
+  }
+  //used to login the user with google callback
+  googleCallbackLogin(callbackUrl: string): Observable<User> {
+    return this.http.get<User>(callbackUrl, {
       headers: this.config.headers,
     });
   }
   logoutServer(): Observable<boolean> {
-    return this.http.get<boolean>(this.config.urlBase + 'user/logout');
+    return this.http.get<boolean>(this.config.urlBase + 'auth/logout');
   }
   createAccount(form: User): Observable<User> {
     return this.http
-      .post<User>(this.config.urlBase + 'user/new', form, {
+      .post<User>(this.config.urlBase + 'auth/signup', form, {
         headers: this.config.headers,
         observe: 'response',
       })
