@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { map } from 'rxjs/operators';
 import { authorized, Lectures } from '../store/selector';
 import { AppState } from '../models/state';
-import { fadeInUpAnimation, slideInUpOnEnterAnimation } from 'angular-animations';
+import { fadeInUpAnimation, slideInDownOnEnterAnimation, slideInUpOnEnterAnimation } from 'angular-animations';
 import { Vorlesung } from '../models/Vorlesung';
 import { fetchLectures } from '../store/actions/LectureActions';
 
@@ -12,7 +12,7 @@ import { fetchLectures } from '../store/actions/LectureActions';
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
-  animations: [slideInUpOnEnterAnimation()],
+  animations: [slideInDownOnEnterAnimation()],
 })
 export class HomeComponent implements OnInit {
   authorized$: Observable<boolean>;
