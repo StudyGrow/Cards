@@ -11,6 +11,7 @@ import { CardsSortedAndFiltered, CardToShow, DisplayedCards } from './store/sele
 import { CardsEffects } from './store/effects/effects';
 import { Failure } from './store/actions/CardActions';
 import { NotificationsService } from './services/notifications.service';
+import { fetchLectures } from './store/actions/LectureActions';
 
 @Component({
   selector: 'app-root',
