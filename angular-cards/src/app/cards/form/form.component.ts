@@ -22,7 +22,7 @@ import { addCard, updateCard } from 'src/app/store/actions/CardActions';
 import { addLercture } from 'src/app/store/actions/LectureActions';
 import { CardsEffects } from 'src/app/store/effects/effects';
 import { AppState } from '../../models/state';
-import { parse, HtmlGenerator } from 'latex.js/dist/latex.js';
+import { parse, HtmlGenerator } from 'latex.js';
 import { AllTags, CurrentCard, CurrentLecture, FormMode, user } from 'src/app/store/selector';
 
 class CardFormData {
