@@ -49,7 +49,7 @@
           <mat-icon matChipRemove>cancel</mat-icon>
         </mat-chip>
         <input
-          formControlName="tag"
+          #tagRef
           [matAutocomplete]="auto"
           [matChipInputFor]="chipList"
           [matChipInputSeparatorKeyCodes]="separatorKeysCodes"

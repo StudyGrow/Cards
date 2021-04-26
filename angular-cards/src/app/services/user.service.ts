@@ -37,7 +37,7 @@ export class UserService implements CanActivate {
   //it makes the http authentication call only the first time
   //and caches the result in a subject which is returned on subsequent calls
   authentication(): Observable<boolean> {
-    return this.http.get<boolean>(this.config.urlBase + '/auth').pipe(share());
+    return this.http.get<boolean>(this.config.urlBase + 'auth').pipe(share());
   }
   //used to login the user
   login(form: User): Observable<User> {

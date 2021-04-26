@@ -9,12 +9,11 @@ async function start() {
   await loader({ app: app });
   await app.listen(process.env.PORT, () => {
     app.emit("serverStarted");
-    logger.info(`
-      #+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#
-      Server started on port: http://${config.app.host}:${config.app.port}/${config.app.prefix}
-      Visit the api documentation on: http://${config.app.host}:${config.app.port}/docs
-      #+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#
-    `);
+    logger.info(
+      `
+Server started on port: http://${config.app.host}:${config.app.port}/${config.app.prefix}
+Visit the api documentation on: http://${config.app.host}:${config.app.port}/docs`
+    );
   });
 }
 start();
