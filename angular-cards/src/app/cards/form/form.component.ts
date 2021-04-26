@@ -38,6 +38,7 @@ class CardFormData {
 })
 export class FormComponent implements OnInit, OnDestroy {
   @ViewChild('latex') toggleRef: MatSlideToggle;
+  @ViewChild('tagRef') tagRef;
   @Input() neu: boolean = false; //true if we are adding a card for a new lecture
 
   //Form
@@ -59,7 +60,6 @@ export class FormComponent implements OnInit, OnDestroy {
   //List of available Tags displayed as suggestions with autocomplete
   tagsSuggestions$: Observable<string[]>;
 
-  private tagRef: FormControl;
   private subscriptions$: Subscription[] = [];
 
   constructor(
@@ -134,11 +134,9 @@ export class FormComponent implements OnInit, OnDestroy {
    * Initialiizes the form group
    */
   createFormGroup() {
-    this.tagRef = new FormControl('');
     return new FormGroup({
       thema: new FormControl(''),
       content: new FormControl(''),
-      tag: this.tagRef,
     });
   }
 
@@ -173,8 +171,9 @@ export class FormComponent implements OnInit, OnDestroy {
   }
 
   submitForm(formMode: string) {
-    let uinput = this.form.value.tag?.trim();
+    let uinput = this.tagRef.nativeElement.value?.trim();
     if (uinput?.length > 0 && !this.selectedTags.includes(uinput)) {
+      this.tagRef.nativeElement.value = '';
       this.selectedTags.push(uinput); //add last user input in case user forgot to add chip
     }
     let latexState: number;
@@ -300,14 +299,19 @@ export class FormComponent implements OnInit, OnDestroy {
   }
 
   addChip(event: MatChipInputEvent): void {
-    let newTag = event.value;
+    let newTag = event.value.trim();
+    if (!newTag || newTag.length == 0) {
+      return;
+    }
     if (!this.selectedTags.includes(newTag)) this.selectedTags.push(newTag);
-    this.tagRef.reset(''); //TODO: fix this if adding a tag the input string should be cleared
+    event.input.value = '';
+    // this.form.reset(); //TODO: fix this if adding a tag the input string should be cleared
+    // this.form.setValue({ ...this.form.value, tag: '' });
   }
   onSelectOption(event: MatAutocompleteSelectedEvent) {
     let newTag = event.option.viewValue;
     if (!this.selectedTags.includes(newTag)) this.selectedTags.push(newTag);
-    this.form.reset({ ...this.form.value, tag: '' });
+    // this.form.reset({ ...this.form.value, tag: '' });
   }
   private _filter(tags: string[], value: string): string[] {
     if (!value || value.trim().length == 0) return tags;

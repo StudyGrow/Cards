@@ -1,13 +1,14 @@
-<div class="container mt-3">
+<div class="container mt-3" [@slideInDownOnEnter] *ngIf="lectures$ | async as lectures">
   <div *ngIf="authorized$ | async; else elseBlock" class="row">
     <div class="col-md-6 col-xs-12 mb-2">
-      <app-lectures></app-lectures>
-      <br />
+      <app-lectures [lectures]="lectures"></app-lectures>
     </div>
-
     <div class="col-md-6 col-xs-12">
       <app-add-lecture-form></app-add-lecture-form>
     </div>
   </div>
-  <ng-template #elseBlock> <app-lectures></app-lectures></ng-template>
+
+  <ng-template #elseBlock>
+    <app-lectures [lectures]="lectures"></app-lectures>
+  </ng-template>
 </div>
