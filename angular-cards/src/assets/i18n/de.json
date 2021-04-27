@@ -1,0 +1,169 @@
+{
+  "flash-cards": "Karteikarten",
+  "edit": "Bearbeiten",
+  "add": "Hinzufügen",
+  "overview": "Übersicht",
+  "lectures": "Vorlesungen",
+  "lecture": "Vorlesung",
+  "add-lecture": "Vorlesung hinzufügen",
+  "btn": {
+    "add": "Hinzufügen",
+    "update": "Aktualisieren",
+    "change": "Ändern",
+    "delete": "Löschen",
+    "save": "Speichern",
+    "cancel": "Abbruch"
+  },
+  "lecture-form": {
+    "lecture-name": "Vorlesungsname",
+    "lecture-abrv": "Abkürzung",
+    "error-message": {
+      "abrv": "Die Abkürzung muss zwischen 3 und 7 Zeichen enthalten",
+      "name": "Der Vorlesungsname muss zwischen 3 und 500 Zeichen enthalten"
+    }
+  },
+  "card-form": {
+    "card-question": "Frage",
+    "card-answer": "Antwort",
+    "card-tags": "Tags",
+    "card-tags-separate": "Trenne Tags mit ENTER",
+    "card-activate-latex": "Aktiviere die Latex Formattierung",
+    "error-message": {
+      "question": "Die Frage muss mind. 3 Zeichen enthalten",
+      "answer": "Die Antwort muss zwischen 1 und 1000 Zeichen enthalten"
+    }
+  },
+  "lecture-overview-title": "Beiträge über Zeit",
+
+  "card-carousel": {
+    "keyboard-shortcuts": "Tastatur Shortcuts",
+    "no-cards-found": "Keine Karten gefunden",
+    "search-question": "Frage suchen",
+    "next": "Nächste Karte",
+    "previous": "Vorherige Karte",
+    "close-card": "Karte schließen",
+    "open-card": "Karte öffnen"
+  },
+  "answer": "Antwort",
+  "author": "Ersteller",
+  "card-actions": {
+    "share": "Teilen",
+    "report": "Melden",
+    "like": "Gefällt mir"
+  },
+  "newvl": { "title": "Füge deine erste Karteikarte hinzu" },
+  "firstname": "Vorname",
+  "lastname": "Nachname",
+  "email": "Email Adresse",
+  "confirm-account": "Überprüfe dein Email Postfach, um deinen Account zu bestätigen",
+  "profile": {
+    "overview": {
+      "title": "Übersicht",
+      "cardscount": "Anzahl hinzugefügter Karten",
+      "member-since": "Mitglied seit",
+      "cards-distribution": "Verteilung der Karten auf die Vorlesungen"
+    },
+    "manage": {
+      "title": "Profildaten ändern",
+      "change-data": "Accountdaten ändern",
+      "username": "Benutzername",
+      "username-hint": "Max. 20 characters",
+      "change-password": "Passwort ändern",
+      "new-password": "Neues Passwort",
+      "password-hint": "Wenigstens 7 Zeichen",
+      "new-password-repeat": "Neues Passwort wiederholen",
+      "delete-account": "Account löschen"
+    }
+  },
+  "about": {
+    "cards": {
+      "title": "Cards",
+      "text": "Cards ist eine Webseite, die dir dabei helfen soll dich auf deine Klausuren und Prüfungen vorzubereiten. Das Konzept von Cards beruht auf den klassischen Karteikarten. Anders als die klassischen Karteikarten brauchst du jedoch nicht deinen Stapel an Karten überall mitzuschleppen. Unsere Webseite eignet sich vor allem auch für Smartphones, somit kannst du dir deine Karteikarten auch unterwegs anschauen. Sie richtet sich vor allem an Studenten.",
+      "create-account-one": "Erstelle einen Account",
+      "create-account-two": ", um alle Vorteile unserer Webseite zu nutzen."
+    },
+    "sharing-is-caring": {
+      "title": "Sharing is Caring",
+      "text-one": "Karteikarten, die du auf unserer Webseite hinzufügst, sind automatisch für alle anderen Nutzer sichtbar. Andererseits kannst du dir auch Karten von anderen Nutzern anschauen.Dies sorgt dafür, dass du optimal auf deine Klausur vorbereitet bist",
+      "text-two": "Wenn du mit einer Karte nicht zufrieden bist, oder du glaubst ihr Inhalt wäre falsch oder unvollständig, kannst du sie bearbeiten. Karten, welche von registrierten Nutzern erstellt worden sind, kannst du leider nicht bearbeiten. In einer späteren Version wird es möglich sein für diese Karte einen Verberungsvorschlag an den Ertseller der Karte zu senden."
+    },
+    "feedback": {
+      "title": "Wir freuen uns über Feedback",
+      "text-one": "Wir bemühen uns, die Seite fehlerfrei zu gestalten. Trotzdem kann es sein, dass sich der ein oder andere Fehler eingeschlichen hat. Diesen kannst du uns gerne melden indem du",
+      "text-two": "hier",
+      "text-three": "ein Issue erstellst (hierzu wird ein Gitlab Account benötigt) oder uns eine",
+      "text-four": "schreibst. Wir versuchen den Fehler, dann so schnell wie möglich zu beheben. Du kannst uns dort auch gerne Feedback hinterlassen."
+    },
+    "cookies": {
+      "title": "Über cookies",
+      "text-one": "Auf unserer Webseite verwenden wir sogenannte cookies um eingeloggte Nutzer zu authentifizieren.",
+      "text-two": "Mehr zu cookies"
+    },
+    "where-find-cards": {
+      "title": "Wo finde ich die Karteikarten zu meiner Vorlesung?",
+      "text-one": "Auf unserer",
+      "text-two": "Startseite",
+      "text-three": "findest du eine Liste aller Vorlesungen, für die bisher Karten hinzugefügt wurden. Wähle deine Vorlesung aus. Falls du die Vorlesung nich in der Liste findest, dann kannst du sie hinzufügen.",
+      "text-four": "Dafür musst du dich jedoch",
+      "text-five": "einloggen",
+      "text-six": "oder einen",
+      "text-seven": "Account erstellen",
+      "text-eight": "Nachdem du auf die Vorlesung gedrückt hast kommst du auf eine neue Seite, auf der du dir alle Karteikarten, die zu der Vorlesung bereits hinzugefügt wurden, anschauen. Nutze die Pfeiltasten oder wische horizontal über die Karte, um dir weitere Karten anzuschauen. Du kannst den Inhalt der Karte aufklappen indem du auf \"Mehr dazu\" drückst.",
+      "text-nine": "Du kannst auch die Suchfunktion in der Navigationsleiste nutzen, um nach bestimmten Karten zu suchen."
+    },
+    "no-lecture-present": {
+      "title": "Meine Vorlesung ist nicht in der Liste. Wie kann ich sie hinzufügen?",
+      "text-one": "Falls du die Vorlesung nich in der Liste findest, dann kannst du sie hinzufügen indem du das Formular ausfüllst und auf \"Hinzufügen\" drückst.",
+      "text-two": "Dafür musst du dich jedoch",
+      "text-three": "einloggen",
+      "text-four": " oder einen",
+      "text-five": " Account erstellen",
+      "text-six": "Nachdem du auf hinzufügen gedrückt hast kommst du auf eine neue Seite, auf der du deine erste Karte hinzufügen kannst."
+    },
+
+    "how-to-create-card": {
+      "title": "Wie erstelle ich eine Karte?",
+      "text-one": "Auf unserer",
+      "text-two": "Startseite",
+      "text-three": "siehst du eine Liste von Vorlesungen. Wähle die Vorlesung aus zu der du eine Karteikarte hinzufügen möchtest. Falls deine Vorlesung nicht findest, kannst du sie über das Formular hinzufügen.",
+      "text-four": "Nachdem du auf die Seite der Vorlesung navigiert bist kannst du eine neue Karte hinzufügen indem du auf den \"Hinzufügen\" Tab drückst. Nun kannst du deine Karteikarte hinzufügen indem du das Formular ausfüllst und auf den \"Hinzufügen\" Knopf drückst.",
+      "text-five": "Erstelle am Besten einen",
+      "text-six": "Account",
+      "text-seven": ", oder ",
+      "text-eight": "logge dich ein",
+      "text-nine": ", damit du Ertseller dieser Karte wirst und nur du diese bearbeiten kannst.",
+      "text-ten": "Pro-Tip: du kannst auch mathematische Symbole schreiben indem du Latex Befehle verwendest und diese mit $ Zeichen umhüllst. Mehr zu den Latex Befehlen findest du",
+      "text-eleven": "hier"
+    },
+    "how-to-edit-card": {
+      "title": "Wie bearbeite ich eine Karte?",
+      "text-one": "Wähle zuerst die Karteikarte aus die du bearbeiten möchtest. Drücke auf das \"Bleistift\" Symbol. Bearbeite deine Karte im Formular und drücke auf \"Sichern\". Bitte beachte, dass du nur öffentliche und deine eigenen Karten bearbeiten kannst. Karten, die von anderen registrierten Nutzern erstellt worden sind kannst du leider nicht bearbeit. In einer späteren Version wird es möglich sein für diese Karte einen Verbessungsvorschlag an den Ertseller der Karte zu senden."
+    },
+    "how-to-use-latex": {
+      "title": "Wie kann ich Latex verwenden?",
+      "text-one": "Mithilfe von Latex kannst du Formeln in Karten besser darstellen. Umhülle den Latex Teil dazu mit $-Zeichen und aktiviere den Latex Switch. Karten können nur abgesendet werden, wenn die Latex Formatierung korrekt ist. Mehr zu den Latex Befehlen findest du",
+      "text-two": "hier"
+    }
+  },
+  "account": { "title": "Mein Profil", "overview": "Übersicht", "cards": "Meine Karten" },
+  "sign-in": "Anmelden",
+  "sign-up": "Registrieren",
+  "about-us": "Über uns",
+  "info": "Infos",
+  "faq": "FAQ",
+  "appearance-menu": {
+    "appearance": "Aussehen",
+    "light": "Hell",
+    "dark": "Dunkel",
+    "browser-settings": "Wie Browser",
+    "language": "Sprache"
+  },
+  "logout": "Ausloggen",
+  "ITEMS_PER_PAGE_LABEL": "Elemente pro Seite:",
+  "NEXT_PAGE_LABEL": "Nächste Seite",
+  "PREVIOUS_PAGE_LABEL": "Vorherige Seite",
+  "FIRST_PAGE_LABEL": "Erste Seite",
+  "LAST_PAGE_LABEL": "Letzte Seite",
+  "RANGE_PAGE_LABEL_1": "0 von {{length}}",
+  "RANGE_PAGE_LABEL_2": "{{startIndex}} - {{endIndex}} von {{length}}"
+}

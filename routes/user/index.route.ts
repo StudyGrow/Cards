@@ -4,7 +4,7 @@ import userService from "../../services/user.service";
 
 //route to get the cards from a specific lecture
 @route("/user")
-@before(inject(({ authorizationMiddleware }) => authorizationMiddleware))
+@before(inject(({ authenticationMiddleware }) => authenticationMiddleware))
 export default class UserRoute {
   constructor({ userService }) {
     this.userService = userService;
@@ -33,7 +33,9 @@ export default class UserRoute {
   @route("/updatePassword")
   @PUT()
   @before(
-    inject(({ validationFactory }) => validationFactory.validateUserNewPassword())
+    inject(({ validationFactory }) =>
+      validationFactory.validateUserNewPassword()
+    )
   )
   async updateUserPassword(req, res) {
     this.userService
@@ -49,7 +51,9 @@ export default class UserRoute {
   @route("/updateAccount")
   @PUT()
   @before(
-    inject(({ validationFactory }) => validationFactory.validateUserUserUpdate())
+    inject(({ validationFactory }) =>
+      validationFactory.validateUserUserUpdate()
+    )
   )
   async updateUserAccount(req, res) {
     this.userService

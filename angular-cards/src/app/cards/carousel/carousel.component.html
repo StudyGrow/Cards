@@ -90,20 +90,28 @@
 </div>
 
 <div class="row" *ngIf="cardsToShowInCarousel?.length === 0">
-  <p class="text-muted text-center w-100 mt-2">Keine Karten gefunden</p>
+  <p class="text-muted text-center w-100 mt-2">{{ 'card-carousel.no-cards-found' | translate }}</p>
 </div>
 <div *ngIf="!this.isTouchDevice()" class="navigationInfo">
-  Keyboard Shortcuts:
+  {{ 'card-carousel.keyboard-shortcuts' | translate }}:
   <div class="d-flex justify-content-center">
-    <div class="d-inline-flex mx-2"><mat-icon>keyboard_arrow_left</mat-icon>Vorherige Karte</div>
-    <div class="d-inline-flex mx-2"><mat-icon>keyboard_arrow_down</mat-icon>Karte öffnen</div>
-    <div class="d-inline-flex mx-2"><mat-icon>keyboard_arrow_up</mat-icon>Karte schließen</div>
-    <div class="d-inline-flex mx-2"><mat-icon>keyboard_arrow_right</mat-icon>Nächste Karte</div>
+    <div class="d-inline-flex mx-2">
+      <mat-icon>keyboard_arrow_left</mat-icon>{{ 'card-carousel.previous' | translate }}
+    </div>
+    <div class="d-inline-flex mx-2">
+      <mat-icon>keyboard_arrow_down</mat-icon>{{ 'card-carousel.open-card' | translate }}
+    </div>
+    <div class="d-inline-flex mx-2">
+      <mat-icon>keyboard_arrow_up</mat-icon>{{ 'card-carousel.close-card' | translate }}
+    </div>
+    <div class="d-inline-flex mx-2">
+      <mat-icon>keyboard_arrow_right</mat-icon>{{ 'card-carousel.next' | translate }}
+    </div>
   </div>
   <div class="d-flex justify-content-center">
     <div class="d-inline-flex mx-2">
       <span class="badge badge-secondary BTN">Ctrl</span> + <span class="badge badge-secondary mx-1">Shift</span> +
-      <span class="badge badge-secondary BTN">S</span> Frage suchen
+      <span class="badge badge-secondary BTN">S</span> {{ 'card-carousel.search-question' | translate }}
     </div>
   </div>
 </div>

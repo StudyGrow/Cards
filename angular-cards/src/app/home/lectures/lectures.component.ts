@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { Vorlesung } from '../../models/Vorlesung';
 
 @Component({
@@ -9,7 +10,7 @@ import { Vorlesung } from '../../models/Vorlesung';
 export class LecturesComponent implements OnInit {
   @Input() lectures: Vorlesung[];
 
-  constructor() {}
+  constructor(private translate: TranslateService) {}
 
   ngOnInit(): void {}
 

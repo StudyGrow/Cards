@@ -13,10 +13,10 @@ mat-icon {
 
 /*only ios devices*/
 @supports (-webkit-touch-callout: none) {
- //make div always stick to the bottom 
- mat-nav-list{
-  margin-bottom: 2.1 * $nav-height;
-}
+  //make div always stick to the bottom
+  mat-nav-list {
+    margin-bottom: 2.1 * $nav-height;
+  }
   // .bottom {
   //   position: static;
   //   bottom: 0;
@@ -24,11 +24,11 @@ mat-icon {
 }
 
 @supports not (-webkit-touch-callout: none) {
-  mat-nav-list{
+  mat-nav-list {
     height: $full-height - $nav-height;
   }
 }
-mat-nav-list{
+mat-nav-list {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -37,16 +37,21 @@ mat-nav-list{
 .example-radio-group {
   display: flex;
   flex-direction: column;
- 
-padding: 0 16px;
-  
+
+  padding: 0 16px;
 }
 
 .example-radio-button {
-  align-items: baseline!important;
-  
+  align-items: baseline !important;
 }
-mat-icon{
+mat-icon {
   margin-right: 7px;
   vertical-align: middle;
+}
+img {
+  height: 1.2em;
+  margin: auto;
+}
+.attribution_text {
+  display: none;
 }

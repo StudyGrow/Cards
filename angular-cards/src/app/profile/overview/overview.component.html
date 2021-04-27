@@ -1,5 +1,5 @@
 <div *ngIf="(user$ | async)?.confirmed == false" class="alert alert-info">
-  Überprüfe dein Email Postfach, um deinen Account zu bestätigen
+  {{ 'confirm-account' | translate }}
 </div>
 <mat-card *ngIf="user$ | async as user" class="mb-2">
   <mat-card-header>
@@ -22,7 +22,7 @@
       >
       <mat-list-item role="listitem" *ngIf="user.name" class="mb-2"
         ><div class="row w-100">
-          <div class="col col-sm-5">Vorname</div>
+          <div class="col col-sm-5">{{ 'firstname' | translate }}</div>
           <div class="col col-sm-7">
             {{ user.name }}
           </div>
@@ -30,7 +30,7 @@
       >
       <mat-list-item role="listitem" *ngIf="user.surname" class="mb-2">
         <div class="row w-100">
-          <div class="col col-sm-5">Nachname</div>
+          <div class="col col-sm-5">{{ 'lastname' | translate }}</div>
           <div class="col col-sm-7">
             {{ user.surname }}
           </div>
@@ -38,7 +38,7 @@
       >
       <mat-list-item role="listitem" *ngIf="user.creationDate" class="mb-2">
         <div class="row w-100">
-          <div class="col col-sm-5">Mitglied seit</div>
+          <div class="col col-sm-5">{{ 'profile.overview.member-since' | translate }}</div>
           <div class="col col-sm-7">
             {{ user.creationDate | date: 'longDate':'de' }}
           </div>
@@ -46,7 +46,7 @@
       ><ng-container *ngIf="cardCount$ | async as count">
         <mat-list-item role="listitem" *ngIf="count > 0" class="mb-2">
           <div class="row w-100">
-            <div class="col col-sm-5">Anzahl hinzugefügter Karten</div>
+            <div class="col col-sm-5">{{ 'profile.overview.cardscount' | translate }}</div>
             <div class="col col-sm-7">
               {{ count }}
             </div>
@@ -60,7 +60,7 @@
   <google-chart
     class="fade-in"
     *ngIf="data$ | async as data"
-    [title]="'Verteilung der Karten auf die Vorlesungen'"
+    [title]="'profile.overview.cards-distribution' | translate"
     [type]="'PieChart'"
     [data]="data"
     [columns]="['Vorlesung', 'Cards']"

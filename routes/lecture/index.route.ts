@@ -51,7 +51,7 @@ export default class LectureRoute {
 
   @route("/new")
   @POST()
-  @before(inject(({ authorizationMiddleware }) => authorizationMiddleware))
+  @before(inject(({ authenticationMiddleware }) => authenticationMiddleware))
   @before(
     inject(({ validationFactory }) => validationFactory.validateLecture())
   )

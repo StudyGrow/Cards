@@ -4,6 +4,7 @@ import { UserService } from 'src/app/services/user.service';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { delay } from 'rxjs/operators';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-about',
@@ -16,7 +17,7 @@ export class AboutComponent implements OnInit, OnDestroy {
   @ViewChild('TOP') fragmentTOP: ElementRef;
   public loggedIn: boolean;
   private subs: Subscription[] = [];
-  constructor(private user: UserService, private route: ActivatedRoute) {}
+  constructor(private user: UserService, private route: ActivatedRoute, private translate: TranslateService) {}
 
   ngOnInit(): void {
     this.route.fragment.pipe(delay(200)).subscribe((frag) => {

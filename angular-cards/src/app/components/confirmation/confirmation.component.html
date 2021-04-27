@@ -1,9 +1,15 @@
-<div *ngIf="tokenCheckStatus == 2" class="statusText">
-  CONFIRMING
+<ng-container *ngSwitch="tokenCheckStatus">
+  <div *ngSwitchCase="2">CONFIRMING</div>
+  <div *ngSwitchCase="1">CONFIRMED</div>
+  <div *ngSwitchCase="0">INVALID</div>
+</ng-container>
+
+<!-- <div *ngIf="tokenCheckStatus == 2" class="statusText">
+  
 </div>
 <div *ngIf="tokenCheckStatus == 1" class="statusText">
-  CONFIRMED
+  
 </div>
 <div *ngIf="tokenCheckStatus == 0" class="statusText">
-  INVALID
-</div>
+ 
+</div> -->
