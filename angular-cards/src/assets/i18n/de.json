@@ -1,14 +1,37 @@
 {
+  "flash-cards": "Karteikarten",
   "lectures": "Vorlesungen",
   "lecture": "Vorlesung",
   "add-lecture": "Vorlesung hinzufügen",
-  "btn": { "add": "Hinzufügen" },
+  "btn": { "add": "Hinzufügen", "update": "Aktualisieren", "change": "Ändern", "delete": "Löschen" },
   "lecture-form": {
     "lecture-name": "Vorlesungsname",
     "lecture-abrv": "Abkürzung",
     "error-message": {
       "abrv": "Die Abkürzung muss zwischen 3 und 7 Zeichen enthalten",
       "name": "Der Vorlesungsname muss zwischen 3 und 500 Zeichen enthalten"
+    }
+  },
+  "firstname": "Vorname",
+  "lastname": "Nachname",
+  "email": "Email Adresse",
+  "confirm-account": "Überprüfe dein Email Postfach, um deinen Account zu bestätigen",
+  "profile": {
+    "overview": {
+      "title": "Übersicht",
+      "cardscount": "Anzahl hinzugefügter Karten",
+      "member-since": "Mitglied seit",
+      "cards-distribution": "Verteilung der Karten auf die Vorlesungen"
+    },
+    "manage": {
+      "title": "Profildaten ändern",
+      "change-data": "Accountdaten ändern",
+      "username": "Benutzername",
+      "change-password": "Passwort ändern",
+      "new-password": "Neues Passwort",
+      "password-hint": "Wenigstens 7 Zeichen",
+      "new-password-repeat": "Neues Passwort wiederholen",
+      "delete-account": "Account löschen"
     }
   },
   "account": { "title": "Mein Profil", "overview": "Übersicht", "cards": "Meine Karten" },

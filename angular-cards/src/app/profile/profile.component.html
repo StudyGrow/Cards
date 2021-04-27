@@ -4,18 +4,11 @@
       <mat-card class="p-0" id="list">
         <mat-nav-list class="pt-0">
           <a mat-list-item routerLinkActive="active" routerLink="overview">
-            Übersicht
+            {{ 'profile.overview.title' | translate }}
           </a>
-          <a mat-list-item routerLinkActive="active" routerLink="manage">
-            Profildaten ändern
-          </a>
-          <a
-            mat-list-item
-            *ngIf="cardCount > 0"
-            routerLink="cards"
-            routerLinkActive="active"
-          >
-            Karteikarten
+          <a mat-list-item routerLinkActive="active" routerLink="manage"> {{ 'profile.manage.title' | translate }} </a>
+          <a mat-list-item *ngIf="cardCount > 0" routerLink="cards" routerLinkActive="active">
+            {{ 'flash-cards' | translate }}
           </a>
         </mat-nav-list>
       </mat-card>
