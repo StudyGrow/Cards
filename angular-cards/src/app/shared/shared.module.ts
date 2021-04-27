@@ -37,7 +37,8 @@ import { MatDividerModule } from '@angular/material/divider';
 import { GoogleChartsModule } from 'angular-google-charts';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HttpClient } from '@angular/common/http';
-import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
+import { PaginatorI18n } from './i18n.paginator';
 @NgModule({
   imports: [
     MatDialogModule,
@@ -52,7 +53,15 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
     }),
   ],
   declarations: [SafeHtmlPipe, DialogueComponent],
-  providers: [DatePipe, AsyncPipe, { provide: MatPaginatorIntl, useValue: getGermanPaginatorIntl() }],
+  providers: [
+    DatePipe,
+    AsyncPipe,
+    {
+      provide: MatPaginatorIntl,
+      deps: [TranslateService],
+      useFactory: (translateService: TranslateService) => new PaginatorI18n(translateService).getPaginatorIntl(),
+    },
+  ],
   exports: [
     CommonModule,
     SafeHtmlPipe,

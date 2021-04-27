@@ -47,5 +47,12 @@
     "browser-settings": "Wie Browser",
     "language": "Sprache"
   },
-  "logout": "Ausloggen"
+  "logout": "Ausloggen",
+  "ITEMS_PER_PAGE_LABEL": "Elemente pro Seite:",
+  "NEXT_PAGE_LABEL": "Nächste Seite",
+  "PREVIOUS_PAGE_LABEL": "Vorherige Seite",
+  "FIRST_PAGE_LABEL": "Erste Seite",
+  "LAST_PAGE_LABEL": "Letzte Seite",
+  "RANGE_PAGE_LABEL_1": "0 von {{length}}",
+  "RANGE_PAGE_LABEL_2": "{{startIndex}} - {{endIndex}} von {{length}}"
 }
