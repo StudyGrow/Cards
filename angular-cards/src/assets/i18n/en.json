@@ -3,7 +3,9 @@
   "lecture": "Lecture",
   "sign-in": "Sign in",
   "sign-up": "Sign up",
+  "account": { "title": "Account", "overview": "Overview", "cards": "My Cards" },
   "about-us": "About us",
+
   "info": "Info",
   "faq": "FAQ",
   "appearance-menu": {

@@ -12,8 +12,8 @@
         ><mat-icon>add_box</mat-icon> {{ 'sign-up' | translate }}</a
       >
     </ng-container>
-    <div *ngIf="loggedIn$ | async">
-      <div mat-subheader>Account</div>
+    <ng-container *ngIf="loggedIn$ | async">
+      <div mat-subheader>{{ 'account.title' | translate }}</div>
 
       <a
         mat-list-item
@@ -21,12 +21,12 @@
         class=" {{ isActive('/account/overview') }}"
         aria-label="Profilübersicht"
       >
-        <mat-icon>account_box</mat-icon> Übersicht</a
+        <mat-icon>account_box</mat-icon> {{ 'account.overview' | translate }}</a
       >
       <a mat-list-item routerLink="/account/cards" class=" {{ isActive('/account/cards') }}" aria-label="Meine Karten">
-        <mat-icon>style</mat-icon> Meine Karten</a
+        <mat-icon>style</mat-icon> {{ 'account.cards' | translate }}</a
       >
-    </div>
+    </ng-container>
     <div mat-subheader>{{ 'about-us' | translate }}</div>
     <a
       mat-list-item

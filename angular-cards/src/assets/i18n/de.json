@@ -1,6 +1,7 @@
 {
   "lectures": "Vorlesungen",
   "lecture": "Vorlesung",
+  "account": { "title": "Mein Profil", "overview": "Übersicht", "cards": "Meine Karten" },
   "sign-in": "Anmelden",
   "sign-up": "Registrieren",
   "about-us": "Über uns",
