@@ -31,14 +31,14 @@ export class AppComponent implements OnInit, OnDestroy {
   ) {
     this.store.dispatch(auth());
 
-    this.themeManager.initTheme(); //initialize theme
+    this.themeManager.initTheme(); // initialize theme
 
     if (isDevMode()) {
       this.store.select(CardsSortedAndFiltered).subscribe((a) => {
         console.log(a);
       });
     }
-    //log state only in development mode
+    // log state only in development mode
 
     this.titleService.setTitle('Home');
   }
@@ -70,7 +70,7 @@ export class AppComponent implements OnInit, OnDestroy {
     // this.subscriptioins$.push(sub);
     this.actionState.login$.pipe(delay(3000)).subscribe((action) => {
       this.notifs.clearNotifications();
-      if (action.type == Failure) {
+      if (action.type === Failure) {
         console.log(action.reason);
 
         this.cookies.open();

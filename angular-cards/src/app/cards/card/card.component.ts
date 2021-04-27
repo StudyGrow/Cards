@@ -2,7 +2,7 @@ import { Component, OnInit, Input, OnDestroy, HostListener } from '@angular/core
 import { Card } from '../../models/Card';
 import { ViewChild } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
-import { parse, HtmlGenerator } from 'latex.js/dist/latex.js';
+import { parse, HtmlGenerator } from 'latex.js';
 import { Store } from '@ngrx/store';
 import { map } from 'rxjs/operators';
 import { AppState } from 'src/app/models/state';
