@@ -37,6 +37,10 @@ export class NavListComponent implements OnInit {
     this.theme.valueChanges.subscribe((value) => {
       this.themeManager.changeTheme(value);
     });
+    const lang = localStorage.getItem('language');
+    if (lang) {
+      this.lang.setValue(lang);
+    }
     this.lang.valueChanges.subscribe((language) => {
       this.switchLanguage(language);
     });
@@ -51,6 +55,7 @@ export class NavListComponent implements OnInit {
 
   private switchLanguage(language?: string): void {
     if (!language) language = 'en';
+    localStorage.setItem('language', language);
     this.translate.use(language);
   }
   /**

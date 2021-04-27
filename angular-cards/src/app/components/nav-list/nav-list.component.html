@@ -63,8 +63,32 @@
 
     <div mat-subheader><mat-icon>translate</mat-icon> {{ 'appearance-menu.language' | translate }}</div>
     <mat-radio-group aria-labelledby="example-radio-group-label" class="example-radio-group" [formControl]="lang">
-      <mat-radio-button mat-list-item class="example-radio-button" value="en"> English </mat-radio-button>
-      <mat-radio-button class="example-radio-button" value="de"> Deutsch </mat-radio-button>
+      <mat-radio-button mat-list-item class="example-radio-button" value="en">
+        <div class="d-flex justify-content-between">
+          <img class="img-fluid mr-2" src="assets/united-states.svg" alt="U.S. flag" /> English
+        </div>
+        <span class="attribution_text"
+          ><div>
+            Icons made by
+            <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a>
+            from
+            <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a>
+          </div></span
+        >
+      </mat-radio-button>
+      <mat-radio-button class="example-radio-button w-100" value="de">
+        <div class="d-flex justify-content-between w-100">
+          <img class="img-fluid mr-2" src="assets/germany.svg" alt="German flag" />Deutsch
+        </div>
+        <span class="attribution_text"
+          ><div>
+            Icons made by
+            <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a>
+            from
+            <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a>
+          </div></span
+        ></mat-radio-button
+      >
     </mat-radio-group>
   </div>
   <div class="bottom">
