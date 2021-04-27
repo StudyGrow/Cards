@@ -9,6 +9,7 @@ import {
   slideInRightOnEnterAnimation,
   slideInUpOnEnterAnimation,
 } from 'angular-animations';
+import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'app-add-lecture-form',
   templateUrl: './add-lecture-form.component.html',
@@ -17,7 +18,7 @@ import {
 })
 export class AddLectureFormComponent implements OnInit {
   subscriptions$: Subscription[] = [];
-  constructor(private router: Router, private lectureService: LecturesService) {}
+  constructor(private router: Router, private lectureService: LecturesService, private translate: TranslateService) {}
   initialized: boolean;
 
   ngOnInit(): void {}
