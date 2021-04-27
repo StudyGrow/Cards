@@ -1,6 +1,16 @@
 {
   "lectures": "Vorlesungen",
   "lecture": "Vorlesung",
+  "add-lecture": "Vorlesung hinzufügen",
+  "btn": { "add": "Hinzufügen" },
+  "lecture-form": {
+    "lecture-name": "Vorlesungsname",
+    "lecture-abrv": "Abkürzung",
+    "error-message": {
+      "abrv": "Die Abkürzung muss zwischen 3 und 7 Zeichen enthalten",
+      "name": "Der Vorlesungsname muss zwischen 3 und 500 Zeichen enthalten"
+    }
+  },
   "account": { "title": "Mein Profil", "overview": "Übersicht", "cards": "Meine Karten" },
   "sign-in": "Anmelden",
   "sign-up": "Registrieren",
