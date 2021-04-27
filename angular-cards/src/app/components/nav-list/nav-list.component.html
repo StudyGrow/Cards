@@ -13,7 +13,7 @@
       >
     </ng-container>
     <ng-container *ngIf="loggedIn$ | async">
-      <div mat-subheader><mat-icon>person</mat-icon>{{ 'account.title' | translate }}</div>
+      <div mat-subheader class="mt-2"><mat-icon>person</mat-icon>{{ 'account.title' | translate }}</div>
 
       <a
         mat-list-item
@@ -28,7 +28,7 @@
         <mat-icon>style</mat-icon> {{ 'account.cards' | translate }}</a
       >
     </ng-container>
-    <div mat-subheader><mat-icon>info</mat-icon>{{ 'about-us' | translate }}</div>
+    <div mat-subheader class="mt-2"><mat-icon>info</mat-icon>{{ 'about-us' | translate }}</div>
     <a
       mat-list-item
       routerLink="/about"
@@ -48,7 +48,7 @@
       <mat-icon>question_answer</mat-icon> {{ 'faq' | translate }}
     </a>
 
-    <div mat-subheader><mat-icon>visibility</mat-icon>{{ 'appearance-menu.appearance' | translate }}</div>
+    <div mat-subheader class="mt-2"><mat-icon>visibility</mat-icon>{{ 'appearance-menu.appearance' | translate }}</div>
 
     <mat-radio-group aria-labelledby="example-radio-group-label" class="example-radio-group" [formControl]="theme">
       <mat-radio-button mat-list-item class="example-radio-button" value="light-theme">
@@ -62,7 +62,7 @@
       </mat-radio-button>
     </mat-radio-group>
 
-    <div mat-subheader><mat-icon>translate</mat-icon> {{ 'appearance-menu.language' | translate }}</div>
+    <div mat-subheader class="mt-2"><mat-icon>translate</mat-icon> {{ 'appearance-menu.language' | translate }}</div>
     <mat-radio-group aria-labelledby="example-radio-group-label" class="example-radio-group" [formControl]="lang">
       <mat-radio-button mat-list-item class="example-radio-button" value="en">
         <div class="d-flex justify-content-between">
