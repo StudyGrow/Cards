@@ -35,8 +35,22 @@ import { getGermanPaginatorIntl } from '../profile/cards-overview/paginator.opti
 
 import { MatDividerModule } from '@angular/material/divider';
 import { GoogleChartsModule } from 'angular-google-charts';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { HttpClient } from '@angular/common/http';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 @NgModule({
-  imports: [MatDialogModule, MatButtonModule],
+  imports: [
+    MatDialogModule,
+    MatButtonModule,
+    TranslateModule.forChild({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient],
+      },
+      isolate: false,
+    }),
+  ],
   declarations: [SafeHtmlPipe, DialogueComponent],
   providers: [DatePipe, AsyncPipe, { provide: MatPaginatorIntl, useValue: getGermanPaginatorIntl() }],
   exports: [
@@ -72,6 +86,10 @@ import { GoogleChartsModule } from 'angular-google-charts';
     MatPaginatorModule,
     MatButtonModule,
     MatButtonToggleModule,
+    TranslateModule,
   ],
 })
 export class SharedModule {}
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http);
+}

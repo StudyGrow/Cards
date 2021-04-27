@@ -1,17 +1,16 @@
 import { Component, isDevMode, OnDestroy, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Store } from '@ngrx/store';
-import { Observable, Subscription } from 'rxjs';
-import { delay, map } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
+import { delay } from 'rxjs/operators';
 import { AppState } from './models/state';
 import { ThemesService } from './services/themes.service';
 import { auth } from './store/actions/UserActions';
 import { NgcCookieConsentService } from 'ngx-cookieconsent';
-import { CardsSortedAndFiltered, CardToShow, DisplayedCards } from './store/selector';
+import { CardsSortedAndFiltered } from './store/selector';
 import { CardsEffects } from './store/effects/effects';
 import { Failure } from './store/actions/CardActions';
 import { NotificationsService } from './services/notifications.service';
-import { fetchLectures } from './store/actions/LectureActions';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
@@ -34,17 +33,19 @@ export class AppComponent implements OnInit, OnDestroy {
     this.store.dispatch(auth());
     translate.setDefaultLang('de');
     this.themeManager.initTheme(); // initialize theme
-    if (isDevMode()) {
-      this.store.select(CardsSortedAndFiltered).subscribe((a) => {
-        console.log(a);
-      });
-    }
+
     // log state only in development mode
 
     this.titleService.setTitle('Home');
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
+    if (isDevMode()) {
+      const sub = this.store.select(CardsSortedAndFiltered).subscribe((a) => {
+        console.log(a);
+      });
+      this.subscriptioins$.push(sub);
+    }
     // let sub = this.cookies.popupOpen$.subscribe(() => {
     //   // you can use this.cookies.getConfig() to do stuff...
     // });
@@ -69,7 +70,7 @@ export class AppComponent implements OnInit, OnDestroy {
     //   // you can use this.cookies.getConfig() to do stuff...
     // });
     // this.subscriptioins$.push(sub);
-    this.actionState.login$.pipe(delay(3000)).subscribe((action) => {
+    const sub = this.actionState.login$.pipe(delay(3000)).subscribe((action) => {
       this.notifs.clearNotifications();
       if (action.type === Failure) {
         console.log(action.reason);
@@ -77,12 +78,10 @@ export class AppComponent implements OnInit, OnDestroy {
         this.cookies.open();
       }
     });
+    this.subscriptioins$.push(sub);
   }
 
-  switchLanguage(language: string) {
-    this.translate.use(language);
-  }
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     // unsubscribe to cookieconsent observables to prevent memory leaks
     // this.subscriptioins$.forEach((sub) => sub.unsubscribe());
   }

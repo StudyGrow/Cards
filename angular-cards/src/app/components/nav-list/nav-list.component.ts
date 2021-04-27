@@ -1,15 +1,15 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { delay, map, take } from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
 import { authorized } from 'src/app/store/selector';
 import { Observable, Subscription } from 'rxjs';
 import { logout as logoutUser } from 'src/app/store/actions/UserActions';
-import { MatSlideToggle, MatSlideToggleChange } from '@angular/material/slide-toggle';
+import { MatSlideToggle } from '@angular/material/slide-toggle';
 import { ThemesService } from 'src/app/services/themes.service';
-import { AppState, Data, Mode } from 'src/app/models/state';
 import { FormControl } from '@angular/forms';
 import { Theme } from 'src/app/models/Themes';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-nav-list',
@@ -20,10 +20,16 @@ export class NavListComponent implements OnInit {
   loggedIn$: Observable<boolean>;
   theme$: Observable<string>;
   theme = new FormControl('');
+  lang = new FormControl('');
   sub: Subscription;
   @ViewChild('darkmode') toggle: MatSlideToggle;
 
-  constructor(private router: Router, private store: Store, private themeManager: ThemesService) {}
+  constructor(
+    private router: Router,
+    private store: Store,
+    private themeManager: ThemesService,
+    private translate: TranslateService
+  ) {}
 
   ngOnInit(): void {
     this.theme$ = this.themeManager.themeValue.pipe(map((theme) => Theme[theme]));
@@ -31,15 +37,22 @@ export class NavListComponent implements OnInit {
     this.theme.valueChanges.subscribe((value) => {
       this.themeManager.changeTheme(value);
     });
+    this.lang.valueChanges.subscribe((language) => {
+      this.switchLanguage(language);
+    });
   }
 
   ngAfterViewInit() {
     this.theme$.pipe(take(1)).subscribe((theme) => {
-      //initially select the value in the list
+      // initially select the value in the list
       this.theme.setValue(theme);
     });
   }
 
+  private switchLanguage(language?: string): void {
+    if (!language) language = 'en';
+    this.translate.use(language);
+  }
   /**
    * Logout the user from the site
    */

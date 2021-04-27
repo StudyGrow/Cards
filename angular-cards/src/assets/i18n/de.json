@@ -1,0 +1,17 @@
+{
+  "lectures": "Vorlesungen",
+  "lecture": "Vorlesung",
+  "sign-in": "Anmelden",
+  "sign-up": "Registrieren",
+  "about-us": "Über uns",
+  "info": "Infos",
+  "faq": "FAQ",
+  "appearance-menu": {
+    "appearance": "Aussehen",
+    "light": "Hell",
+    "dark": "Dunkel",
+    "browser-settings": "Wie Browser",
+    "language": "Sprache"
+  },
+  "logout": "Ausloggen"
+}

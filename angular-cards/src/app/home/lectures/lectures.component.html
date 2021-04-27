@@ -1,5 +1,5 @@
 <div *ngIf="lectures">
-  <h2>Vorlesungen</h2>
+  <h2>{{ 'lectures' | translate }}</h2>
   <mat-nav-list>
     <a mat-list-item *ngFor="let lecture of lectures" [routerLink]="setLink(lecture)" class="mr-2">
       {{ lecture.name }}

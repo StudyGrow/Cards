@@ -1,0 +1,17 @@
+{
+  "lectures": "Lectures",
+  "lecture": "Lecture",
+  "sign-in": "Sign in",
+  "sign-up": "Sign up",
+  "about-us": "About us",
+  "info": "Info",
+  "faq": "FAQ",
+  "appearance-menu": {
+    "appearance": "Appearance",
+    "light": "Light",
+    "dark": "Dark",
+    "browser-settings": "Browser Settings",
+    "language": "Language"
+  },
+  "logout": "Logout"
+}

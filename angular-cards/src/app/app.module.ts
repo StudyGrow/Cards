@@ -1,6 +1,6 @@
 // Core Modules
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, Injectable, LOCALE_ID, Renderer2 } from '@angular/core';
+import { NgModule, Injectable, LOCALE_ID } from '@angular/core';
 import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { SharedModule } from './shared/shared.module';
 import { AppRoutingModule } from './app-routing.module';
@@ -47,25 +47,24 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { LoadingInterceptorService } from './services/loading-interceptor.service';
 
-//NG-Bootstrap
+// NG-Bootstrap
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
-//Cookie Consent
+// Cookie Consent
 import { NgcCookieConsentModule } from 'ngx-cookieconsent';
 import { cookieConfig } from './cookie.config';
-import { GoogleChartsModule } from 'angular-google-charts';
 import { GoogleLoginButtonComponent } from './components/google-login-button/google-login-button.component';
 import { GoogleCallbackComponent } from './components/google-callback/google-callback.component';
 
-//NGX Translate
+// NGX Translate
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
-declare var Hammer: any;
+declare const Hammer: any;
 // Config to allow swipe gestures on carousel
 @Injectable()
 export class MyHammerConfig extends HammerGestureConfig {
-  overrides = <any>{
+  overrides = {
     pan: { direction: Hammer.DIRECTION_All },
     swipe: { direction: Hammer.DIRECTION_VERTICAL },
   };
@@ -112,7 +111,6 @@ export class MyHammerConfig extends HammerGestureConfig {
     BrowserAnimationsModule,
     HttpClientModule,
     SharedModule,
-
     MatProgressBarModule,
     MatSidenavModule,
     HammerModule,
@@ -130,6 +128,7 @@ export class MyHammerConfig extends HammerGestureConfig {
         useFactory: HttpLoaderFactory,
         deps: [HttpClient],
       },
+      isolate: false,
     }),
   ],
   providers: [
