@@ -12,6 +12,7 @@ import { CardsEffects } from './store/effects/effects';
 import { Failure } from './store/actions/CardActions';
 import { NotificationsService } from './services/notifications.service';
 import { fetchLectures } from './store/actions/LectureActions';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-root',
@@ -27,12 +28,12 @@ export class AppComponent implements OnInit, OnDestroy {
     private cookies: NgcCookieConsentService,
     private actionState: CardsEffects,
     private themeManager: ThemesService,
-    private notifs: NotificationsService
+    private notifs: NotificationsService,
+    private translate: TranslateService
   ) {
     this.store.dispatch(auth());
-
+    translate.setDefaultLang('de');
     this.themeManager.initTheme(); // initialize theme
-
     if (isDevMode()) {
       this.store.select(CardsSortedAndFiltered).subscribe((a) => {
         console.log(a);
@@ -78,6 +79,9 @@ export class AppComponent implements OnInit, OnDestroy {
     });
   }
 
+  switchLanguage(language: string) {
+    this.translate.use(language);
+  }
   ngOnDestroy() {
     // unsubscribe to cookieconsent observables to prevent memory leaks
     // this.subscriptioins$.forEach((sub) => sub.unsubscribe());

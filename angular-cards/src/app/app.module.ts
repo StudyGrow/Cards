@@ -1,7 +1,7 @@
 // Core Modules
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, Injectable, LOCALE_ID, Renderer2 } from '@angular/core';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { SharedModule } from './shared/shared.module';
 import { AppRoutingModule } from './app-routing.module';
 import { StoreModule } from '@ngrx/store';
@@ -56,6 +56,10 @@ import { cookieConfig } from './cookie.config';
 import { GoogleChartsModule } from 'angular-google-charts';
 import { GoogleLoginButtonComponent } from './components/google-login-button/google-login-button.component';
 import { GoogleCallbackComponent } from './components/google-callback/google-callback.component';
+
+//NGX Translate
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 declare var Hammer: any;
 // Config to allow swipe gestures on carousel
@@ -120,6 +124,13 @@ export class MyHammerConfig extends HammerGestureConfig {
     }),
     NgcCookieConsentModule.forRoot(cookieConfig),
     NgbModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient],
+      },
+    }),
   ],
   providers: [
     {
@@ -136,3 +147,7 @@ export class MyHammerConfig extends HammerGestureConfig {
   bootstrap: [AppComponent],
 })
 export class AppModule {}
+
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http);
+}
