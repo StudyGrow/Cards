@@ -36,6 +36,7 @@ import {
   CurrentTab,
 } from 'src/app/store/selector';
 import { CarouselInfo } from 'src/app/models/CarouselInfo';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-bottom-sheet',
@@ -48,7 +49,7 @@ export class BottomSheetComponent {
     icon?: string;
   }[];
 
-  constructor(private _bottomSheetRef: MatBottomSheetRef<BottomSheetComponent>) {
+  constructor(private _bottomSheetRef: MatBottomSheetRef<BottomSheetComponent>, private translate: TranslateService) {
     this.options = sortOptions;
   }
   sort(key: SortType) {

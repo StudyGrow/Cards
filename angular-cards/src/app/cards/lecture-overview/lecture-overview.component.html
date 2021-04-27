@@ -3,28 +3,28 @@
     {{ lecture.name }}
   </h3>
   <div class="chartContainer" *ngIf="initialized">
-  <google-chart
-    class="fade-in"
-    *ngIf="activities$ | async as activities"
-    [title]="'Beiträge über Zeit'"
-    [type]="'LineChart'"
-    [data]="activities"
-    [columns]="['Date', 'Cards']"
-    [options]="chartOptions"
-    [dynamicResize]="true"
-  >
-  </google-chart>
+    <google-chart
+      class="fade-in"
+      *ngIf="activities$ | async as activities"
+      [title]="'lecture-overview-title' | translate"
+      [type]="'LineChart'"
+      [data]="activities"
+      [columns]="['Date', 'Cards']"
+      [options]="chartOptions"
+      [dynamicResize]="true"
+    >
+    </google-chart>
 
-  <google-chart
-    class="fade-in"
-    *ngIf="contributors$ | async as contributors"
-    [title]="'Top Authoren'"
-    [type]="'PieChart'"
-    [data]="contributors"
-    [columns]="['Author', 'Cards']"
-    [options]="chartOptions"
-    [dynamicResize]="true"
-  >
-  </google-chart>
-</div>
+    <google-chart
+      class="fade-in"
+      *ngIf="contributors$ | async as contributors"
+      [title]="'Top Authoren'"
+      [type]="'PieChart'"
+      [data]="contributors"
+      [columns]="['Author', 'Cards']"
+      [options]="chartOptions"
+      [dynamicResize]="true"
+    >
+    </google-chart>
+  </div>
 </div>

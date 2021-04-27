@@ -41,6 +41,7 @@ import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-transla
 import { PaginatorI18n } from './i18n.paginator';
 @NgModule({
   imports: [
+    CommonModule,
     MatDialogModule,
     MatButtonModule,
     TranslateModule.forChild({

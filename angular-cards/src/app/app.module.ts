@@ -35,7 +35,6 @@ import { LoginPageComponent } from './routes/login-page/login-page.component';
 import { LoginFormComponent } from './components/login-form/login-form.component';
 import { SignupPageComponent } from './routes/signup-page/signup-page.component';
 import { SignupFormComponent } from './components/signup-form/signup-form.component';
-import { FooterComponent } from './components/footer/footer.component';
 import { AboutComponent } from './routes/about/about.component';
 import { ErrorPageComponent } from './routes/error-page/error-page.component';
 import { ConfirmationPageComponent } from './routes/confirmation-page/confirmation-page.component';
@@ -95,7 +94,6 @@ export class MyHammerConfig extends HammerGestureConfig {
     LoginFormComponent,
     SignupPageComponent,
     SignupFormComponent,
-    FooterComponent,
     AboutComponent,
     ErrorPageComponent,
     ConfirmationPageComponent,

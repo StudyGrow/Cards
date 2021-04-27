@@ -11,6 +11,7 @@ import { authorized, CurrentTab, getCardsData } from '../store/selector';
 import { AppState } from '../models/state';
 import { NotificationsService } from '../services/notifications.service';
 import { WarnMessage } from '../models/Notification';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-cards',
@@ -38,7 +39,12 @@ export class CardsComponent implements OnInit, OnDestroy {
 
   public lecture$: Observable<Vorlesung> = this.data$.pipe(map((data) => data.currLecture));
 
-  constructor(private store: Store<AppState>, private title: Title, private notifs: NotificationsService) {}
+  constructor(
+    private store: Store<AppState>,
+    private title: Title,
+    private notifs: NotificationsService,
+    private translate: TranslateService
+  ) {}
 
   ngOnInit(): void {
     this.title.setTitle('Cards');
