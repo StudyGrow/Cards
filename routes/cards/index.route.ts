@@ -49,7 +49,7 @@ export default class CardsRoute {
       validationFactory.validateLectureAbbreviation()
     )
   )
-  @before(inject(({ authenticationMiddleware }) => authenticationMiddleware))
+  @before(inject(({ authorizationMiddleware }) => authorizationMiddleware))
   async getCardsData(req, res) {
     let abrv = req.query.abrv;
     let cards = this.cardsService.findByAbrv(abrv);
