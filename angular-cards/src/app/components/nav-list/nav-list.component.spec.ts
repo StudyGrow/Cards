@@ -1,9 +1,4 @@
-import {
-  async,
-  ComponentFixture,
-  TestBed,
-  waitForAsync,
-} from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, waitForAsync, } from '@angular/core/testing';
 
 import { NavListComponent } from './nav-list.component';
 
