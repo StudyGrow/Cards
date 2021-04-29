@@ -7,7 +7,7 @@ import { Card } from 'src/app/models/Card';
 import { SortType } from 'src/app/models/SortType';
 
 export const pageSize = 30;
-//initial state of the app
+// initial state of the app
 export const initialState: Mode = {
   currentCard: undefined,
   activeIndex: 0,
@@ -24,7 +24,7 @@ export const initialState: Mode = {
   newCard: undefined,
 };
 
-//Reducer which will dispatch changes to the store
+// Reducer which will dispatch changes to the store
 const _modeReducer = createReducer(
   initialState,
   on(StateActions.updateCarouselInfo, (state, { info }) => ({
@@ -45,7 +45,7 @@ const _modeReducer = createReducer(
       ? state
       : {
           ...state,
-          formMode: mode,
+          formMode: formMode[mode],
         }
   ),
 
@@ -127,12 +127,12 @@ function removeInArray(items: string[], item: string) {
 }
 
 function addTag(origin: string[], tag: string) {
-  //adds one tag to the original array without duplicates
+  // adds one tag to the original array without duplicates
 
   return origin.includes(tag) ? origin : [...origin, tag];
 }
 
 function findIndex(cards: Card[], id: string) {
-  let res = cards.findIndex((card) => card._id == id);
+  const res = cards.findIndex((card) => card._id == id);
   return res >= 0 ? res : 0;
 }

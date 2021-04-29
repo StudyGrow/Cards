@@ -42,7 +42,12 @@
     "next": "Nächste Karte",
     "previous": "Vorherige Karte",
     "close-card": "Karte schließen",
-    "open-card": "Karte öffnen"
+    "open-card": "Karte öffnen",
+    "sort": "Sortieren",
+    "random": "Zufall",
+    "first-card": "Erste Karte",
+    "last-card": "Nächste Karte",
+    "edit": "Bearbeiten"
   },
   "answer": "Antwort",
   "author": "Ersteller",
@@ -75,6 +80,7 @@
       "delete-account": "Account löschen"
     }
   },
+  "question": "Frage",
   "about": {
     "cards": {
       "title": "Cards",

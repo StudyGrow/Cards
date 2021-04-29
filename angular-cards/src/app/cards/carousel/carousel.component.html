@@ -6,7 +6,7 @@
   <div class="col-auto" *ngIf="this.cardsToShowInCarousel !== undefined">
     <button
       mat-icon-button
-      matTooltip="Sortieren"
+      matTooltip="{{ 'card-carousel.sort' | translate }}"
       matTooltipPosition="above"
       aria-label="sortieren"
       (click)="openBottomSheet()"
@@ -16,7 +16,7 @@
 
     <button
       mat-icon-button
-      matTooltip="Zufall"
+      matTooltip="{{ 'card-carousel.random' | translate }}"
       matTooltipPosition="above"
       aria-label="zufall"
       (click)="showRandomCard()"
@@ -26,7 +26,7 @@
     </button>
     <button
       mat-icon-button
-      matTooltip="Erste Karte"
+      matTooltip="{{ 'card-carousel.first-card' | translate }}"
       matTooltipPosition="above"
       aria-label="zufall"
       (click)="selectSlide(0)"
@@ -36,7 +36,7 @@
     </button>
     <button
       mat-icon-button
-      matTooltip="Letzte Karte"
+      matTooltip="{{ 'card-carousel.last-card' | translate }}"
       matTooltipPosition="above"
       aria-label="zufall"
       (click)="selectSlide(undefined)"
@@ -52,7 +52,7 @@
       aria-label="bearbeiten"
       [disabled]="isDisabled()"
       (click)="enableEdit()"
-      matTooltip="Bearbeiten"
+      matTooltip="{{ 'card-carousel.edit' | translate }}"
       matTooltipPosition="above"
     >
       <mat-icon>edit</mat-icon>

@@ -42,7 +42,12 @@
     "next": "Next card",
     "previous": "Previous card",
     "close-card": "Close card",
-    "open-card": "Open card"
+    "open-card": "Open card",
+    "sort": "Sort Cards",
+    "random": "Random",
+    "first-card": "First Card",
+    "last-card": "Last Card",
+    "edit": "Edit"
   },
   "answer": "Answer",
   "author": "Author",
@@ -75,6 +80,7 @@
       "delete-account": "Permenantly delete Account"
     }
   },
+  "question": "Question",
   "about": {
     "cards": {
       "title": "Cards",

@@ -28,14 +28,14 @@ export class SearchBarComponent implements OnInit, OnDestroy {
   uInput = new FormControl();
 
   constructor(private store: Store<AppState>, private notifs: NotificationsService) {}
-  currentSelection: Card[]; //Cards which are currently shown
-  subscriptions$: Subscription[] = []; //holds all subscriptions from observables to later unsub
-  allCards: Card[]; //all cards
-  suggestions$: Observable<SearchSuggestion[]>; //search suggestions
+  currentSelection: Card[]; // Cards which are currently shown
+  subscriptions$: Subscription[] = []; // holds all subscriptions from observables to later unsub
+  allCards: Card[]; // all cards
+  suggestions$: Observable<SearchSuggestion[]>; // search suggestions
   formMode: string;
 
-  allSuggestions$: Observable<SearchSuggestion[]>; //search suggestions
-  clearSuggestions: boolean; //wether to clear search suggestions
+  allSuggestions$: Observable<SearchSuggestion[]>; // search suggestions
+  clearSuggestions: boolean; // wether to clear search suggestions
 
   form = new FormControl();
   @ViewChild('search') searchElement: ElementRef;
@@ -53,24 +53,24 @@ export class SearchBarComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     let sub = this.store.pipe(map((state) => state.mode.hideSearchResults)).subscribe((hide) => {
       if (hide !== this.clearSuggestions) {
-        //only reset
+        // only reset
         this.clearSuggestions = hide;
         // this.uInput.reset();
       }
     });
     this.subscriptions$.push(sub);
-    let allCards$ = this.store.select(CardsSorted);
+    const allCards$ = this.store.select(CardsSorted);
     sub = allCards$.subscribe((allCards) => {
       this.allCards = allCards;
     });
     this.subscriptions$.push(sub);
-    let DisplayedCards$ = this.store.select(DisplayedCards);
+    const DisplayedCards$ = this.store.select(DisplayedCards);
     sub = DisplayedCards$.subscribe((filtered) => {
       this.currentSelection = filtered;
     });
     this.subscriptions$.push(sub);
 
-    let filteredSuggestions = this.uInput.valueChanges.pipe(
+    const filteredSuggestions = this.uInput.valueChanges.pipe(
       withLatestFrom(allCards$, DisplayedCards$),
       map(
         ([input, allCards, filteredCards]) =>
@@ -97,13 +97,13 @@ export class SearchBarComponent implements OnInit, OnDestroy {
     this.store.dispatch(setTypingMode({ typing: false }));
   }
   findMatches(
-    input: string, //user input
-    allCards: Card[], //all cards
-    filteredCards: Card[] //cards currently in carousel
+    input: string, // user input
+    allCards: Card[], // all cards
+    filteredCards: Card[] // cards currently in carousel
   ): { suggestions: SearchSuggestion[]; allSuggestions: SearchSuggestion[] } {
-    if (this.clearSuggestions) this.store.dispatch(setSuggestionsMode({ hide: false })); //show suggestions
-    let suggestions: SearchSuggestion[] = []; //suggestions from cards currently in the carousel
-    let allSuggestions: SearchSuggestion[] = []; //suggestions from all cards, more specifically from cards not in the carousel
+    if (this.clearSuggestions) this.store.dispatch(setSuggestionsMode({ hide: false })); // show suggestions
+    const suggestions: SearchSuggestion[] = []; // suggestions from cards currently in the carousel
+    const allSuggestions: SearchSuggestion[] = []; // suggestions from all cards, more specifically from cards not in the carousel
 
     if (input?.length > 2) {
       const regex = new RegExp(`${input}`, 'gi');
@@ -124,13 +124,13 @@ export class SearchBarComponent implements OnInit, OnDestroy {
     e.preventDefault();
     this.uInput.reset();
     if (this.formMode == 'edit') {
-      let message = 'Du musst erst die Bearbeitung der Karteikarte abschließen';
+      const message = 'Du musst erst die Bearbeitung der Karteikarte abschließen';
       this.notifs.addNotification(new WarnMessage(message));
       return;
     }
     this.store.dispatch(changeTab({ tab: 0 }));
     this.store.dispatch(setSuggestionsMode({ hide: true }));
-    let newCard = this.allCards.find((card) => card._id === id);
+    const newCard = this.allCards.find((card) => card._id === id);
     // to always tell that something has been selected
     // this.store.dispatch(showNewCard({ card: null }));
     this.store.dispatch(showNewCard({ card: newCard }));
@@ -146,7 +146,7 @@ export class SearchBarComponent implements OnInit, OnDestroy {
     }
     this.size = paragraph.offsetWidth;
     this.enabled = true;
-    var time = this.size * 0.02;
+    const time = this.size * 0.02;
     paragraph.classList.add('textToScroll');
     paragraph.style.setProperty('--time', time.toString());
   }
@@ -159,7 +159,7 @@ export class SearchBarComponent implements OnInit, OnDestroy {
     if (!e.option) {
       return;
     }
-    let paragraphs = e.option._getHostElement().parentElement.getElementsByClassName('txtA');
+    const paragraphs = e.option._getHostElement().parentElement.getElementsByClassName('txtA');
     for (let index = 0; index < paragraphs.length; index++) {
       this.endScroll(paragraphs[index]);
     }
@@ -167,8 +167,8 @@ export class SearchBarComponent implements OnInit, OnDestroy {
   }
 
   onSelected(e: MatAutocompleteSelectedEvent) {
-    let value: Array<any> = e.option.viewValue.split('#'); // e.option.viewValue will be of form [title]#[id]
-    let id = value[value.length - 1]; //get the id of the card
+    const value: Array<any> = e.option.viewValue.split('#'); // e.option.viewValue will be of form [title]#[id]
+    const id = value[value.length - 1]; // get the id of the card
     // console.log(id);
     this.navigateTo(new Event(''), id);
   }
