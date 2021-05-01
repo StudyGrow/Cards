@@ -8,9 +8,7 @@
     "watch": "cross-env NODE_ENV=development nodemon --exec ts-node start.ts",
     "buildng": "cd angular-cards && ng build --prod",
     "stop": "ts-node stop.js",
-    "heroku-prebuild": "npm install && cd angular-cards && npm install",
-    "build:prod": "npm install && cd angular-cards && npm install && ng build --configuration=production",
-    "build:test": "npm install && cd angular-cards && npm install && ng build --configuration=develop"
+    "heroku-postbuild": "chmod +x ./build.sh && ./build.sh"
   },
   "repository": {
     "type": "git",
