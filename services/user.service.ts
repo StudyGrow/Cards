@@ -62,14 +62,12 @@ export default class UserService {
         .find({})
         .select("resourceId")
         .lean();
-      console.log(reports);
       const cleanedReports = reports.map((report) => report.resourceId);
-      console.log(cleanedReports);
-      let models = [];
+      const models = [];
       models.push(this.cardsModel);
       models.push(this.lectureModel);
-      // let s = model("s");
-      const reportedResources = Promise.all(
+
+      const reportedResources = await Promise.all(
         models.map((model) =>
           model
             .find({
@@ -78,14 +76,12 @@ export default class UserService {
             .lean()
         )
       );
-      // const reportedResources = await s.find({
-      //   _id: { $in: reports },
-      // });
-      reportedResources.then((res) => {
-        console.log(res);
-        info.reports = res;
-        return info;
-      });
+
+      info.reports = {
+        cards: reportedResources[0],
+        lectures: reportedResources[1],
+      };
+      return info;
     }
   }
 
