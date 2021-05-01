@@ -1,8 +1,7 @@
 import { Card } from './Card';
-import { Report } from './Report';
+import { Reports } from './Report';
 import { SortType } from './SortType';
 import { User } from './User';
-import { UserInfo } from './UserInfo';
 import { Vorlesung } from './Vorlesung';
 import { Vote } from './Vote';
 
@@ -29,7 +28,7 @@ export interface UserData {
   user: User; // current user if authenticated
   authenticated: boolean; // user is logged in or not
   lastUpdated: Date; // last update of userdata
-  reports: Report[];
+  reports: Reports;
 }
 
 export interface LecturesData {

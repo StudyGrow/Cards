@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
-import { Report } from 'src/app/models/Report';
+import { map } from 'rxjs/operators';
+import { Reports } from 'src/app/models/Report';
 import { UserReports } from 'src/app/store/selector';
 
 @Component({
@@ -11,9 +12,11 @@ import { UserReports } from 'src/app/store/selector';
 })
 export class NotificationsComponent implements OnInit {
   subscriptions$: Subscription[] = [];
-  reports$: Observable<Report[]> = this.store.select(UserReports);
+  reports$: Observable<string[][]> = this.store.select(UserReports).pipe(map((reports) => Object.entries(reports)));
 
   constructor(private store: Store) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.reports$.subscribe((a) => console.log(a));
+  }
 }

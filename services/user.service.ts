@@ -8,18 +8,18 @@ import mailService from './mail.service';
 // const mail = require("./mailService");
 import crypto from 'crypto-random-string';
 export default class UserService {
-  constructor({ userModel, lecutreModel, reportService, cardsModel, reportModel }) {
+  constructor({ userModel, lectureModel, reportService, cardsModel, reportModel }) {
     this.userModel = userModel;
     this.reportService = reportService;
     this.cardsModel = cardsModel;
     this.reportModel = reportModel;
-    this.lecutreModel = lecutreModel;
+    this.lectureModel = lectureModel;
   }
   userModel;
   cardsModel;
   reportModel;
   reportService;
-  lecutreModel;
+  lectureModel;
 
   createUser(user) {
     return this.userModel.create(user);
@@ -51,19 +51,18 @@ export default class UserService {
     const cards = await Card.find({ authorId: _id }).lean();
     info.cards = cards;
     if (user.status === 'admin') {
-      const reports = await this.reportModel
-        .find()
-        .select('resourceId')
-        .map((report) => report._id);
+      const reports = await this.reportModel.find({}).select('resourceId').lean();
 
-      let models = [this.cardsModel, this.lecutreModel, this.userModel];
+      const reportsCleaned = reports.map((report) => report.resourceId);
+
+      const models = [this.cardsModel, this.lectureModel, this.userModel];
 
       const reportedResources = await Promise.all(
-        models.map((model) => model.find({ _id: { $in: reports } }))
+        models.map((model) => model.find({ _id: { $in: reportsCleaned } }).lean())
       );
 
       info.reports = {
-        cards: reportedResources[0],
+        'flash-cards': reportedResources[0],
         lectures: reportedResources[1],
         users: reportedResources[2],
       };

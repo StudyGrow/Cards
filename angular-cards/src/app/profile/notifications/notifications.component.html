@@ -1,6 +1,8 @@
-<h1>{{ 'reports' | translate }}</h1>
-<mat-card>
-  <p *ngFor="let report of reports$ | async">
-    {{ report._id }}
-  </p>
-</mat-card>
+<ng-container *ngFor="let report of reports$ | async">
+  <h2>{{ report[0] | translate }}</h2>
+  <mat-card class="mb-1" *ngFor="let r of report[1]">
+    <p>
+      {{ r._id }}
+    </p>
+  </mat-card>
+</ng-container>
