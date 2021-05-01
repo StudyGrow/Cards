@@ -2,3 +2,6 @@
 .env
 angular-cards/debug.log
 angular-cards/debug.log
+.DS_Store
+.vscode
+*/package-lock.json

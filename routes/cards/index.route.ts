@@ -9,7 +9,7 @@ import VotesService from "../../services/votes.service";
 //route to get the cards from a specific lecture
 @route("/cards")
 // @before(
-//   inject(({ authorizationMiddleware }) => authorizationMiddleware),
+//   inject(({ authenticationMiddleware }) => authenticationMiddleware),
 // )
 export default class CardsRoute {
   constructor({ cardsService, votesService, lectureService }) {
@@ -49,7 +49,7 @@ export default class CardsRoute {
       validationFactory.validateLectureAbbreviation()
     )
   )
-  @before(inject(({ authenticationMiddleware }) => authenticationMiddleware))
+  @before(inject(({ authorizationMiddleware }) => authorizationMiddleware))
   async getCardsData(req, res) {
     let abrv = req.query.abrv;
     let cards = this.cardsService.findByAbrv(abrv);
@@ -76,7 +76,7 @@ export default class CardsRoute {
 
   @route("/new")
   @POST()
-  @before(inject(({ authorizationMiddleware }) => authorizationMiddleware))
+  @before(inject(({ authenticationMiddleware }) => authenticationMiddleware))
   @before(
     inject(({ validationFactory }) => validationFactory.validateCardToAdd())
   )
@@ -93,7 +93,7 @@ export default class CardsRoute {
 
   @route("/update")
   @PUT()
-  @before(inject(({ authorizationMiddleware }) => authorizationMiddleware))
+  @before(inject(({ authenticationMiddleware }) => authenticationMiddleware))
   @before(
     inject(({ validationFactory }) => validationFactory.validateCardToAdd())
   )
@@ -110,7 +110,7 @@ export default class CardsRoute {
 
   @route("/vote")
   @PUT()
-  @before(inject(({ authorizationMiddleware }) => authorizationMiddleware))
+  @before(inject(({ authenticationMiddleware }) => authenticationMiddleware))
   @before(
     inject(({ validationFactory }) => validationFactory.validateVoteCardId())
   )

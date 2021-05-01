@@ -4,16 +4,16 @@
   animationDuration="0ms"
   (selectedIndexChange)="setActiveTab($event)"
 >
-  <mat-tab [disabled]="this.formMode == 'edit'" label="Karteikarten">
+  <mat-tab [disabled]="this.formMode == 'edit'" label="{{ 'flash-cards' | translate }}">
     <div class="container my-1" id="carousel-container">
       <app-carousel></app-carousel>
     </div>
   </mat-tab>
-  <mat-tab *ngIf="authorized$ | async" [label]="formMode === 'edit' ? 'Bearbeiten' : 'Hinzufügen'"
+  <mat-tab *ngIf="authorized$ | async" [label]="formMode === 'edit' ? ('edit' | translate) : ('add' | translate)"
     ><div class="container py-1">
       <app-form></app-form></div
   ></mat-tab>
-  <mat-tab [disabled]="this.formMode == 'edit'" label="Übersicht">
+  <mat-tab [disabled]="this.formMode == 'edit'" label="{{ 'overview' | translate }}">
     <ng-template matTabContent>
       <app-lecture-overview></app-lecture-overview>
     </ng-template>

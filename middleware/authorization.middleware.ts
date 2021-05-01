@@ -1,5 +1,5 @@
-import { Response } from "express";
 import AuthService from "../services/auth.service";
+import { Response } from "express";
 
 export default function authorize({
   authService,
@@ -24,7 +24,7 @@ export default function authorize({
       .catch((error: any) => {
         authService;
         logger.error(error);
-        return res.sendStatus(401);
+        next();
       });
   };
 }
