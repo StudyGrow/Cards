@@ -9,7 +9,8 @@
     "buildng": "cd angular-cards && ng build --prod",
     "stop": "ts-node stop.js",
     "heroku-prebuild": "npm install && cd angular-cards && npm install",
-    "heroku-postbuild": "cd angular-cards && ng build --configuration=production"
+    "build:prod": "npm install && cd angular-cards && npm install && ng build --configuration=production",
+    "build:test": "npm install && cd angular-cards && npm install && ng build --configuration=develop"
   },
   "repository": {
     "type": "git",
