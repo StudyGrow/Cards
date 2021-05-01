@@ -1,20 +1,14 @@
 // Service that provides functions associated with users
-import { Document, model, Model, Schema, Schema } from "mongoose";
-import { Card } from "../models/cards.model";
-import bcryptjs from "bcryptjs";
-import mailService from "./mail.service";
+import { Document, model, Model, Schema } from 'mongoose';
+import { Card } from '../models/cards.model';
+import bcryptjs from 'bcryptjs';
+import mailService from './mail.service';
 
 // const bcryptjs = require("bcryptjs"); //used to encrypt and decrypt passwords
 // const mail = require("./mailService");
-import crypto from "crypto-random-string";
+import crypto from 'crypto-random-string';
 export default class UserService {
-  constructor({
-    userModel,
-    mailService,
-    reportService,
-    cardsModel,
-    reportModel,
-  }) {
+  constructor({ userModel, mailService, reportService, cardsModel, reportModel }) {
     this.userModel = userModel;
     this.reportService = reportService;
     this.cardsModel = cardsModel;
@@ -47,16 +41,16 @@ export default class UserService {
   // get account info for a user, for now only cards
   async getAccountInfo(_id) {
     if (!_id) {
-      throw new Error("Bitte logge dich erst ein");
+      throw new Error('Bitte logge dich erst ein');
     }
-    const info = Object.create({ user: "", card: "" });
+    const info = Object.create({ user: '', card: '' });
     const user = await this.getUser({ _id: _id });
     info.user = { ...user, password: null };
     const cards = await Card.find({ authorId: _id }).lean();
     info.cards = cards;
-    if (user.status === "admin") {
-      const reports = await this.reportModel.find().select("resourceId");
-      let s = model("s");
+    if (user.status === 'admin') {
+      const reports = await this.reportModel.find().select('resourceId');
+      let s = model('s');
       const reportedResources = await s.find({
         _id: { $in: reports },
       });
@@ -70,7 +64,7 @@ export default class UserService {
       const hashedPassword = hashPassword(newPassword);
       await this.userModel.findByIdAndUpdate(_id, { password: hashedPassword });
     } catch (e) {
-      throw new Error("Error updating password");
+      throw new Error('Error updating password');
     }
   }
   deleteAccount = async (req) => {
@@ -109,14 +103,14 @@ export default class UserService {
       user = await this.userModel.findOne({ email: email }); // check if email is already registered
     }
     if (user) {
-      throw new Error("Diese Email adresse ist bereits registriert");
+      throw new Error('Diese Email adresse ist bereits registriert');
     }
     if (username) {
       user = await this.userModel.findOne({ username: username }); // check if username is already taken
     }
 
     if (user) {
-      throw new Error("Der Benutzername existiert bereits");
+      throw new Error('Der Benutzername existiert bereits');
     }
   }
 }
