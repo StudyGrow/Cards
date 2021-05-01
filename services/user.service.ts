@@ -1,5 +1,5 @@
 // Service that provides functions associated with users
-import { Model } from "mongoose";
+import { Document, model, Model, Schema, Schema } from "mongoose";
 import { Card } from "../models/cards.model";
 import bcryptjs from "bcryptjs";
 import mailService from "./mail.service";
@@ -8,11 +8,21 @@ import mailService from "./mail.service";
 // const mail = require("./mailService");
 import crypto from "crypto-random-string";
 export default class UserService {
-  constructor({ userModel, mailService, reportService }) {
+  constructor({
+    userModel,
+    mailService,
+    reportService,
+    cardsModel,
+    reportModel,
+  }) {
     this.userModel = userModel;
     this.reportService = reportService;
+    this.cardsModel = cardsModel;
+    this.reportModel = reportModel;
   }
   userModel;
+  cardsModel;
+  reportModel;
   reportService;
 
   createUser(user) {
@@ -45,8 +55,12 @@ export default class UserService {
     const cards = await Card.find({ authorId: _id }).lean();
     info.cards = cards;
     if (user.status === "admin") {
-      const reports = await this.reportService.getAdminReports();
-      info.reports = reports;
+      const reports = await this.reportModel.find().select("resourceId");
+      let s = model("s");
+      const reportedResources = await s.find({
+        _id: { $in: reports },
+      });
+      info.reports = reportedResources;
     }
     return info;
   }
