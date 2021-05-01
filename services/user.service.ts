@@ -13,15 +13,18 @@ export default class UserService {
     mailService,
     reportService,
     cardsModel,
+    lectureModel,
     reportModel,
   }) {
     this.userModel = userModel;
     this.reportService = reportService;
     this.cardsModel = cardsModel;
     this.reportModel = reportModel;
+    this.lectureModel = lectureModel;
   }
   userModel;
   cardsModel;
+  lectureModel;
   reportModel;
   reportService;
 
@@ -55,14 +58,35 @@ export default class UserService {
     const cards = await Card.find({ authorId: _id }).lean();
     info.cards = cards;
     if (user.status === "admin") {
-      const reports = await this.reportModel.find().select("resourceId");
-      let s = model("s");
-      const reportedResources = await s.find({
-        _id: { $in: reports },
+      const reports = await this.reportModel
+        .find({})
+        .select("resourceId")
+        .lean();
+      console.log(reports);
+      const cleanedReports = reports.map((report) => report.resourceId);
+      console.log(cleanedReports);
+      let models = [];
+      models.push(this.cardsModel);
+      models.push(this.lectureModel);
+      // let s = model("s");
+      const reportedResources = Promise.all(
+        models.map((model) =>
+          model
+            .find({
+              _id: { $in: cleanedReports },
+            })
+            .lean()
+        )
+      );
+      // const reportedResources = await s.find({
+      //   _id: { $in: reports },
+      // });
+      reportedResources.then((res) => {
+        console.log(res);
+        info.reports = res;
+        return info;
       });
-      info.reports = reportedResources;
     }
-    return info;
   }
 
   async updatePassword(newPassword, _id) {
