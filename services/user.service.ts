@@ -8,10 +8,12 @@ import mailService from "./mail.service";
 // const mail = require("./mailService");
 import crypto from "crypto-random-string";
 export default class UserService {
-  constructor({ userModel, mailService }) {
+  constructor({ userModel, mailService, reportService }) {
     this.userModel = userModel;
+    this.reportService = reportService;
   }
   userModel;
+  reportService;
 
   createUser(user) {
     return this.userModel.create(user);
@@ -22,7 +24,7 @@ export default class UserService {
   }
 
   getUser(req) {
-    return this.userModel.findOne(req);
+    return this.userModel.findOne(req).lean();
   }
 
   updateUser(req) {
@@ -40,8 +42,12 @@ export default class UserService {
     const info = Object.create({ user: "", card: "" });
     const user = await this.getUser({ _id: _id });
     info.user = { ...user._doc, password: null };
-    const cards = await Card.find({ authorId: _id });
+    const cards = await Card.find({ authorId: _id }).lean();
     info.cards = cards;
+    if (user.status === "admin") {
+      const reports = await this.reportService.getAdminReports();
+      info.reports = reports;
+    }
     return info;
   }
 

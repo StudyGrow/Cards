@@ -1,5 +1,6 @@
 import { Document, Model } from "mongoose";
 import { Logger } from "winston";
+import { UserService } from "../angular-cards/src/app/services/user.service";
 import { ICard } from "../models/cards.model";
 import { ILecture } from "../models/lecture.model";
 import { IReport } from "../models/report.model";
@@ -78,5 +79,9 @@ export default class ReportService {
         blockedById: userId,
       })
       .lean();
+  };
+
+  getAdminReports = async (): Promise<IReport[]> => {
+    return await this.reportModel.find().lean();
   };
 }
