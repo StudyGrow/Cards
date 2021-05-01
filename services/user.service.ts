@@ -8,16 +8,18 @@ import mailService from './mail.service';
 // const mail = require("./mailService");
 import crypto from 'crypto-random-string';
 export default class UserService {
-  constructor({ userModel, mailService, reportService, cardsModel, reportModel }) {
+  constructor({ userModel, lecutreModel, reportService, cardsModel, reportModel }) {
     this.userModel = userModel;
     this.reportService = reportService;
     this.cardsModel = cardsModel;
     this.reportModel = reportModel;
+    this.lecutreModel = lecutreModel;
   }
   userModel;
   cardsModel;
   reportModel;
   reportService;
+  lecutreModel;
 
   createUser(user) {
     return this.userModel.create(user);
@@ -49,12 +51,22 @@ export default class UserService {
     const cards = await Card.find({ authorId: _id }).lean();
     info.cards = cards;
     if (user.status === 'admin') {
-      const reports = await this.reportModel.find().select('resourceId');
-      let s = model('s');
-      const reportedResources = await s.find({
-        _id: { $in: reports },
-      });
-      info.reports = reportedResources;
+      const reports = await this.reportModel
+        .find()
+        .select('resourceId')
+        .map((report) => report._id);
+
+      let models = [this.cardsModel, this.lecutreModel, this.userModel];
+
+      const reportedResources = await Promise.all(
+        models.map((model) => model.find({ _id: { $in: reports } }))
+      );
+
+      info.reports = {
+        cards: reportedResources[0],
+        lectures: reportedResources[1],
+        users: reportedResources[2],
+      };
     }
     return info;
   }

@@ -13,6 +13,7 @@ import { chartOptions } from './chart.options';
 export class OverviewComponent implements OnInit {
   user$ = this.store.select(user);
   cardCount$ = this.store.select(UserCards).pipe(map((cards) => cards?.length));
+
   chartOptions;
   init: boolean;
   data$ = this.store.select(UserCards).pipe(
@@ -36,7 +37,7 @@ export class OverviewComponent implements OnInit {
 
   ngOnInit(): void {
     this.user$ = this.store.select(user);
-    this.user$.subscribe((user) => console.log(user));
+    this.store.subscribe((user) => console.log(user));
     this.theme.currentTheme.pipe(distinctUntilChanged()).subscribe((theme) => {
       const textStyle = { color: '#000' };
       if (theme === 'dark-theme') {
