@@ -1,6 +1,5 @@
 import { celebrate, Segments, Joi } from "celebrate";
 export default class ValidationFactory {
-  constructor({}) {}
   validateLecture() {
     return celebrate({
       [Segments.BODY]: Joi.object({
@@ -17,24 +16,28 @@ export default class ValidationFactory {
     return celebrate({
       [Segments.BODY]: Joi.object().keys({
         id: Joi.string().required(),
-        value: Joi.number().valid(0,1),
+        value: Joi.number().valid(0, 1),
       }),
     });
   }
   validateLectureAbbreviation() {
     return celebrate({
-      [Segments.QUERY]: Joi.object().keys({
-        abrv: Joi.string().min(3).max(7).required(),
-      }).unknown(true),
+      [Segments.QUERY]: Joi.object()
+        .keys({
+          abrv: Joi.string().min(3).max(7).required(),
+        })
+        .unknown(true),
     });
   }
 
   validateLectureNameAndAbbreviation() {
     return celebrate({
-      [Segments.BODY]: Joi.object().keys({
-        abrv: Joi.string().min(3).max(7).required(),
-        name: Joi.string().min(1).max(500).required(),
-      }).unknown(true),
+      [Segments.BODY]: Joi.object()
+        .keys({
+          abrv: Joi.string().min(3).max(7).required(),
+          name: Joi.string().min(1).max(500).required(),
+        })
+        .unknown(true),
     });
   }
 
@@ -55,11 +58,13 @@ export default class ValidationFactory {
   }
   validateCardToUpdate() {
     return celebrate({
-      [Segments.BODY]: Joi.object().keys({
-        _id: Joi.string().min(1).max(500).required(),
-        thema: Joi.string().min(3).max(500).required(),
-        content: Joi.string().min(1).max(1000).required(),
-      }).unknown(true),
+      [Segments.BODY]: Joi.object()
+        .keys({
+          _id: Joi.string().min(1).max(500).required(),
+          thema: Joi.string().min(3).max(500).required(),
+          content: Joi.string().min(1).max(1000).required(),
+        })
+        .unknown(true),
     });
   }
 
@@ -106,12 +111,25 @@ export default class ValidationFactory {
   }
   validateUserUserUpdate() {
     return celebrate({
-      [Segments.BODY]: Joi.object().keys({
-        username: Joi.string().min(5).max(20).required(),
-        email: Joi.string().email().required(),
-        name: Joi.allow(),
-        surname: Joi.allow(),
-      }).unknown(true),
+      [Segments.BODY]: Joi.object()
+        .keys({
+          username: Joi.string().min(5).max(20).required(),
+          email: Joi.string().email().required(),
+          name: Joi.allow(),
+          surname: Joi.allow(),
+        })
+        .unknown(true),
+    });
+  }
+
+  validateReportCard() {
+    return celebrate({
+      [Segments.BODY]: Joi.object()
+        .keys({
+          resourceId: Joi.string().required(),
+          lectureId: Joi.string().required(),
+        })
+        .unknown(true),
     });
   }
 }

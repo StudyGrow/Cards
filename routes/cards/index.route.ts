@@ -1,25 +1,28 @@
-//handles all card specific routes
+// handles all card specific routes
 import { route, GET, PUT, POST, DELETE, before, inject } from "awilix-express";
 import { Request, Response } from "express";
 import { ICard } from "../../models/cards.model";
 import CardsService from "../../services/cards.service";
 import LectureService from "../../services/lecture.service";
+import ReportService from "../../services/report.service";
 import VotesService from "../../services/votes.service";
 
-//route to get the cards from a specific lecture
+// route to get the cards from a specific lecture
 @route("/cards")
 // @before(
 //   inject(({ authenticationMiddleware }) => authenticationMiddleware),
 // )
 export default class CardsRoute {
-  constructor({ cardsService, votesService, lectureService }) {
+  constructor({ cardsService, votesService, lectureService, reportService }) {
     this.cardsService = cardsService;
     this.votesService = votesService;
     this.lectureService = lectureService;
+    this.reportService = reportService;
   }
   cardsService: CardsService;
   lectureService: LectureService;
   votesService: VotesService;
+  reportService: ReportService;
   @route("")
   @GET()
   @before(
@@ -51,14 +54,13 @@ export default class CardsRoute {
   )
   @before(inject(({ authorizationMiddleware }) => authorizationMiddleware))
   async getCardsData(req, res) {
-    let abrv = req.query.abrv;
-    let cards = this.cardsService.findByAbrv(abrv);
-    let vl = this.lectureService.findByAbrv(abrv);
-    let allVotes = this.votesService.getAllVotesByLectureAbrv(abrv);
-    let userid;
+    const abrv = req.query.abrv;
+    const cards = this.cardsService.findByAbrv(abrv, req._id);
+    const vl = this.lectureService.findByAbrv(abrv);
+    const allVotes = this.votesService.getAllVotesByLectureAbrv(abrv);
+    const userid = req._id;
     let username;
-    userid = req._id;
-    res.setHeader("Access-Control-Allow-Origin", "*");
+
     Promise.all([cards, vl, allVotes])
       .then(([cards, lecture, votes]) =>
         res.json({
@@ -135,7 +137,7 @@ export default class CardsRoute {
   )
   @before(inject(({ authenticationMiddleware }) => authenticationMiddleware))
   async getLectureVotesByUser(req: any, res: Response) {
-    let vote = parseInt(req.body.value);
+    const vote = parseInt(req.body.value);
     if (req._id) {
       this.votesService
         .getVotesByLectureAbrv(req.query.abrv, req._id)
@@ -146,7 +148,64 @@ export default class CardsRoute {
           res.status(422).send(err.message);
         });
     } else {
-      res.status(200).send([]);
+      res.status(422).send();
+    }
+  }
+
+  /**
+   * @swagger
+   *
+   * /cards/report:
+   *   post:
+   *     description: Report a card
+   *     produces:
+   *       - application/json
+   *     parameters:
+   *       - name: resourceId
+   *         description: The id of the card to be reported
+   *         in:  body
+   *         required: true
+   *         type: string
+   *         example: <resourceId>
+   *       - name: lectureId
+   *         description: The lecture id where the card belongs to
+   *         in:  body
+   *         required: true
+   *         type: string
+   *         example: <lectureId>
+   *     responses:
+   *       200:
+   *         description: Returns the blocked card
+   *         content:
+   *          application/json:
+   *              schema:
+   *                type: string
+   *                example: {}
+   */
+  @route("/report")
+  @POST()
+  @before(inject(({ authenticationMiddleware }) => authenticationMiddleware))
+  @before(
+    inject(({ validationFactory }) => validationFactory.validateReportCard())
+  )
+  async reportCard(req: any, res: Response) {
+    if (req._id) {
+      const resourceId = req.body.resourceId;
+      const lectureId = req.body.lectureId;
+      this.reportService
+        .reportResource(
+          { resourceId: resourceId, resourceType: "card" },
+          req._id,
+          lectureId
+        )
+        .then((blockedResource) => {
+          res.status(200).send(blockedResource);
+        })
+        .catch((err) => {
+          res.status(422).send(err.message);
+        });
+    } else {
+      res.status(422).send();
     }
   }
 }

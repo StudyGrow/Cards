@@ -1,4 +1,4 @@
-//Service that provides functions associated with users
+// Service that provides functions associated with users
 import { Model } from "mongoose";
 import { Card } from "../models/cards.model";
 import bcryptjs from "bcryptjs";
@@ -6,7 +6,7 @@ import mailService from "./mail.service";
 
 // const bcryptjs = require("bcryptjs"); //used to encrypt and decrypt passwords
 // const mail = require("./mailService");
-const crypto = require("crypto-random-string");
+import crypto from "crypto-random-string";
 export default class UserService {
   constructor({ userModel, mailService }) {
     this.userModel = userModel;
@@ -26,28 +26,28 @@ export default class UserService {
   }
 
   updateUser(req) {
-    let user = req.body;
+    const user = req.body;
     return this.userModel.findOneAndUpdate({ _id: user._id }, user, {
       new: true,
     });
   }
 
-  //get account info for a user, for now only cards
+  // get account info for a user, for now only cards
   async getAccountInfo(_id) {
     if (!_id) {
       throw new Error("Bitte logge dich erst ein");
     }
-    let info = Object.create({ user: "", card: "" });
-    let user = await this.getUser({ _id: _id });
+    const info = Object.create({ user: "", card: "" });
+    const user = await this.getUser({ _id: _id });
     info.user = { ...user._doc, password: null };
-    let cards = await Card.find({ authorId: _id });
+    const cards = await Card.find({ authorId: _id });
     info.cards = cards;
     return info;
   }
 
   async updatePassword(newPassword, _id) {
     try {
-      let hashedPassword = hashPassword(newPassword);
+      const hashedPassword = hashPassword(newPassword);
       await this.userModel.findByIdAndUpdate(_id, { password: hashedPassword });
     } catch (e) {
       throw new Error("Error updating password");
@@ -58,7 +58,7 @@ export default class UserService {
     return true;
   };
   async updateAccount(_id, form) {
-    let user = await this.getUser({_id: _id});
+    const user = await this.getUser({ _id: _id });
     if (user.username != form.username && user.email != form.email) {
       if (user.email == form.email && user.username != form.username) {
         await this.checkUniqueUser(null, form.username);
@@ -68,7 +68,7 @@ export default class UserService {
         await this.checkUniqueUser(form.email, form.username);
       }
     }
-    let updatedUser = await this.userModel.findByIdAndUpdate(
+    const updatedUser = await this.userModel.findByIdAndUpdate(
       user._id,
       {
         username: form.username,
@@ -86,13 +86,13 @@ export default class UserService {
   async checkUniqueUser(email: string, username: string) {
     let user;
     if (email) {
-      user = await this.userModel.findOne({ email: email }); //check if email is already registered
+      user = await this.userModel.findOne({ email: email }); // check if email is already registered
     }
     if (user) {
       throw new Error("Diese Email adresse ist bereits registriert");
     }
     if (username) {
-      user = await this.userModel.findOne({ username: username }); //check if username is already taken
+      user = await this.userModel.findOne({ username: username }); // check if username is already taken
     }
 
     if (user) {
