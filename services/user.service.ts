@@ -1,5 +1,5 @@
 // Service that provides functions associated with users
-import { Document, model, Model, Schema, Schema } from "mongoose";
+import { model } from "mongoose";
 import { Card } from "../models/cards.model";
 import bcryptjs from "bcryptjs";
 import mailService from "./mail.service";
