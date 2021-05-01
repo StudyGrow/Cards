@@ -20,6 +20,7 @@ const initialState: Data = {
     authenticated: undefined,
     user: new User(),
     lastUpdated: undefined,
+    reports: undefined,
   },
   lectureData: {
     lectures: undefined,
@@ -126,6 +127,7 @@ const _dataReducer = createReducer(
       cards: info.cards,
       user: info.user,
       lastUpdated: new Date(),
+      reports: info.reports,
     },
   })),
 

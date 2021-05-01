@@ -10,6 +10,9 @@
           <a mat-list-item *ngIf="cardCount > 0" routerLink="cards" routerLinkActive="active">
             {{ 'flash-cards' | translate }}
           </a>
+          <a mat-list-item *ngIf="isAdmin$" routerLink="notifications" routerLinkActive="active">
+            {{ 'notifications' | translate }}
+          </a>
         </mat-nav-list>
       </mat-card>
     </div>

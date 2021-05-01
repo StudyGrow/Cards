@@ -6,6 +6,7 @@ import { Vote } from '../models/Vote';
 import { Card } from '../models/Card';
 import { Vorlesung } from '../models/Vorlesung';
 import { AppState } from '../models/state';
+import { Observable } from 'rxjs';
 
 const maxCards = 50; // maximum amount of cards which should be displayed in carousel
 export const selectAllCards = (state: AppState) => state.data?.cardData?.cards;
@@ -16,7 +17,8 @@ export const selectAllCards = (state: AppState) => state.data?.cardData?.cards;
  * @deprecated Use CardsSorted instead
  */
 const AllCards = (state: AppState) => state.data?.cardData?.cards;
-
+export const UserStatus = (state: AppState): string => state.data.userData?.user?.status;
+export const UserReports = (state: AppState) => state.data.userData.reports;
 /**
  * Get the votes that were made by a user for a certain card
  * @param state  state of the store

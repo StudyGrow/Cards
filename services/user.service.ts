@@ -23,8 +23,8 @@ export default class UserService {
     return this.userModel.findOne({ email: email });
   }
 
-  getUser(req) {
-    return this.userModel.findOne(req).lean();
+  getUser(query) {
+    return this.userModel.findOne(query).lean();
   }
 
   updateUser(req) {
@@ -41,7 +41,7 @@ export default class UserService {
     }
     const info = Object.create({ user: "", card: "" });
     const user = await this.getUser({ _id: _id });
-    info.user = { ...user._doc, password: null };
+    info.user = { ...user, password: null };
     const cards = await Card.find({ authorId: _id }).lean();
     info.cards = cards;
     if (user.status === "admin") {
