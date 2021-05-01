@@ -1,31 +1,17 @@
-import { model, Schema, Model, Document } from "mongoose";
-/**
- * Describe this fancy interface
- */
-export interface IReport extends Document {
-  resourceId: string;
-  lectureId: string;
-  resourceType: string;
-  blockedById: string[]; // ids of users
-}
+import { prop as Property } from "@typegoose/typegoose";
 
-const reportSchema = new Schema({
-  resourceId: {
-    type: String,
-    required: true,
-  },
-  lectureId: {
-    type: String,
-  },
-  resourceType: {
-    type: String,
-    required: true,
-  },
-  blockedById: {
-    type: [String],
-    required: true,
-  },
-});
-// export const Report: Model<Document<IReport>> = model("Report", reportSchema);
-export const Report: Model<IReport> = model("Report", reportSchema);
-export default model("Report", reportSchema);
+export class Report {
+  readonly _id!: string;
+
+  @Property({ required: true })
+  resourceId!: string;
+
+  @Property({ required: false })
+  lectureId?: string;
+
+  @Property({ required: true })
+  resourceType!: string;
+
+  @Property({ required: true })
+  blockedById!: string[];
+}

@@ -1,5 +1,4 @@
 // Service that provides functions associated with users
-import { model } from 'mongoose';
 import { Card } from '../models/cards.model';
 import bcryptjs from 'bcryptjs';
 import mailService from './mail.service';
@@ -7,19 +6,19 @@ import mailService from './mail.service';
 // const bcryptjs = require("bcryptjs"); //used to encrypt and decrypt passwords
 // const mail = require("./mailService");
 import crypto from 'crypto-random-string';
+import { getModelForClass } from '@typegoose/typegoose';
+import { Report } from '../models/report.model';
 export default class UserService {
-  constructor({ userModel, lectureModel, reportService, cardsModel, reportModel }) {
+  constructor({ userModel, mailService, reportService, cardsModel, lectureModel }) {
     this.userModel = userModel;
     this.reportService = reportService;
     this.cardsModel = cardsModel;
-    this.reportModel = reportModel;
     this.lectureModel = lectureModel;
   }
   userModel;
   cardsModel;
-  reportModel;
-  reportService;
   lectureModel;
+  reportService;
 
   createUser(user) {
     return this.userModel.create(user);
@@ -51,7 +50,7 @@ export default class UserService {
     const cards = await Card.find({ authorId: _id }).lean();
     info.cards = cards;
     if (user.status === 'admin') {
-      const reports = await this.reportModel.find({}).select('resourceId').lean();
+      const reports = await getModelForClass(Report).find({}).select('resourceId').lean();
 
       const reportsCleaned = reports.map((report) => report.resourceId);
 

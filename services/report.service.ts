@@ -3,16 +3,15 @@ import { Logger } from "winston";
 import { UserService } from "../angular-cards/src/app/services/user.service";
 import { ICard } from "../models/cards.model";
 import { ILecture } from "../models/lecture.model";
-import { IReport } from "../models/report.model";
+import { getModelForClass } from "@typegoose/typegoose";
+import { Report } from "../models/report.model";
 
 export default class ReportService {
-  constructor({ cardsModel, lectureModel, logger, reportModel }) {
+  constructor({ cardsModel, lectureModel, logger }) {
     this.cardsModel = cardsModel;
     this.lectureModel = lectureModel;
     this.logger = logger;
-    this.reportModel = reportModel;
   }
-  reportModel: Model<Document<IReport>>;
   cardsModel: Model<ICard>;
   lectureModel: Model<ILecture>;
   logger: Logger;
@@ -23,26 +22,28 @@ export default class ReportService {
     currentUserId: string,
     lectureId?: string
   ) => {
-    let existingReport = await this.reportModel.findOne({
+    let existingReport = await getModelForClass(Report).findOne({
       resourceId: report.resourceId,
     });
     if (!existingReport) {
       if (report.resourceType === "card") {
         if (!lectureId) throw new Error("Lecture id not provided ");
-        existingReport = new this.reportModel({
+        const reportModel = getModelForClass(Report);
+        existingReport = new reportModel({
           ...report,
           blockedById: [currentUserId],
           lectureId: lectureId,
         });
       } else {
-        existingReport = new this.reportModel({
+        const reportModel = getModelForClass(Report);
+        existingReport = new reportModel({
           ...report,
           blockedById: [currentUserId],
         });
       }
       await existingReport.save();
     } else {
-      await this.reportModel.updateOne(report, {
+      await getModelForClass(Report).updateOne(report, {
         $addToSet: { blockedById: currentUserId },
       });
     }
@@ -51,7 +52,7 @@ export default class ReportService {
 
   getUserReports = async (userId: string) => {
     if (userId) {
-      const reportedResourcesByUser = await this.reportModel.find({
+      const reportedResourcesByUser = await getModelForClass(Report).find({
         blockedById: userId,
       });
       return reportedResourcesByUser;
@@ -63,9 +64,9 @@ export default class ReportService {
   getUserCardReports = async (
     userId: string,
     lectureId?: string
-  ): Promise<IReport[]> => {
+  ): Promise<Report[]> => {
     if (lectureId)
-      return await this.reportModel
+      return await getModelForClass(Report)
         .find({
           resourceType: "card",
           blockedById: userId,
@@ -73,7 +74,7 @@ export default class ReportService {
         })
         .lean();
 
-    return await this.reportModel
+    return await getModelForClass(Report)
       .find({
         resourceType: "card",
         blockedById: userId,
@@ -81,7 +82,7 @@ export default class ReportService {
       .lean();
   };
 
-  getAdminReports = async (): Promise<IReport[]> => {
-    return await this.reportModel.find().lean();
+  getAdminReports = async (): Promise<Report[]> => {
+    return await getModelForClass(Report).find().lean();
   };
 }
