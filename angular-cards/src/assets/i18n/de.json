@@ -1,7 +1,11 @@
 {
   "flash-cards": "Karteikarten",
   "notifications": "Benachrichtigungen",
+  "report-type": "Report Typ",
   "users": "Nutzer",
+  "clear-report": "Report auflösen",
+  "delete-resource": "Ressource löschen",
+  "show-in-lecture": "Karte in Vorlesung anzeigen",
   "edit": "Bearbeiten",
   "add": "Hinzufügen",
   "overview": "Übersicht",
@@ -80,6 +84,10 @@
       "password-hint": "Wenigstens 7 Zeichen",
       "new-password-repeat": "Neues Passwort wiederholen",
       "delete-account": "Account löschen"
+    },
+    "notifications": {
+      "no-new-notifications": "Du hast keine neuen Benachrichtigungen",
+      "reports": "Meldungen von Nutzern"
     }
   },
   "question": "Frage",

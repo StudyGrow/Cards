@@ -10,11 +10,7 @@
     </mat-paginator>
   </div>
 
-  <mat-card
-    *ngFor="let card of cards.slice(start, end)"
-    [@fadeInOnEnter]
-    class="w-100 h-100 mb-2"
-  >
+  <mat-card *ngFor="let card of cards.slice(start, end)" [@fadeInOnEnter] class="w-100 h-100 mb-2">
     <mat-card-header>
       <mat-card-title>
         {{ card.thema }}
@@ -25,7 +21,7 @@
       <button
         color="primary"
         mat-icon-button
-        matTooltip="In Vorlesung anzeigen"
+        matTooltip="{{ 'show-in-lecture' | translate }}"
         matTooltipPosition="above"
         class="ml-auto"
         (click)="navigate(card)"

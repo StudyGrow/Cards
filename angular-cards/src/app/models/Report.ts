@@ -3,7 +3,7 @@ import { User } from './User';
 import { Vorlesung } from './Vorlesung';
 
 export interface Reports {
-  cards: Card[];
+  'flash-cards': Card[];
   lectures: Vorlesung[];
   users: User[];
 }

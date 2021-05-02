@@ -2,6 +2,10 @@
   "flash-cards": "Flash cards",
   "notifications": "Notifications",
   "users": "Users",
+  "report-type": "Report Type",
+  "clear-report": "Clear report",
+  "delete-resource": "Delete ressource",
+  "show-in-lecture": "Show card in lecture",
   "edit": "Edit",
   "add": "Add",
   "overview": "Overview",
@@ -80,6 +84,10 @@
       "password-hint": "At least 7 characters",
       "new-password-repeat": "Repeat new password",
       "delete-account": "Permenantly delete Account"
+    },
+    "notifications": {
+      "no-new-notifications": "You have no notifications yet",
+      "reports": "User reports"
     }
   },
   "question": "Question",

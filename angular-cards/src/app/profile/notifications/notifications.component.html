@@ -1,8 +1,39 @@
-<ng-container *ngFor="let report of reports$ | async">
-  <h2>{{ report[0] | translate }}</h2>
-  <mat-card class="mb-1" *ngFor="let r of report[1]">
-    <p>
-      {{ r._id }}
-    </p>
-  </mat-card>
+<section *ngIf="false">
+  <h2>{{ 'notifications' | translate }}</h2>
+  <p *ngIf="true" class="text-muted text-center w-100 mt-2">
+    {{ 'profile.notifications.no-new-notifications' | translate }}
+  </p>
+</section>
+
+<section *ngIf="isAdmin$ | async">
+  <h2>{{ 'profile.notifications.reports' | translate }}</h2>
+  <mat-form-field appearance="standard">
+    <mat-label>{{ 'report-type' | translate }}</mat-label>
+    <mat-select [(value)]="selected">
+      <mat-option *ngFor="let option of selectOptions$ | async" [value]="option">{{ option | translate }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <ng-container *ngIf="reports$ | async as reports">
+    <h4>{{ selected | translate }}</h4>
+    <div *ngIf="selected == 'flash-cards'">
+      <app-card-report *ngFor="let cardReport of reports[selected]" [cardReport]="cardReport"></app-card-report>
+    </div>
+    <div *ngIf="selected == 'lectures'">
+      <app-lecture-report
+        *ngFor="let letureReport of reports[selected]"
+        [lectureReport]="letureReport"
+      ></app-lecture-report>
+    </div>
+    <div *ngIf="selected == 'users'">
+      <app-user-report *ngFor="let userReport of reports[selected]" [userReport]="userReport"></app-user-report>
+    </div>
+  </ng-container>
+</section>
+<!-- 
+<ng-container *ngIf="(lectureReports$ | async)?.length > 0">
+  <h2>{{ 'lectures' | translate }}</h2>
 </ng-container>
+
+<ng-container *ngIf="(userReports$ | async)?.length > 0">
+  <h2>{{ 'users' | translate }}</h2>
+</ng-container> -->

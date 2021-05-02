@@ -8,6 +8,9 @@ import { CardsOverviewComponent } from './cards-overview/cards-overview.componen
 import { OverviewComponent } from './overview/overview.component';
 import { NotificationsComponent } from './notifications/notifications.component';
 import { ChangeProfileComponent } from './change-profile/change-profile.component';
+import { CardReportComponent } from './notifications/reports/card-report/card-report.component';
+import { LectureReportComponent } from './notifications/reports/lecture-report/lecture-report.component';
+import { UserReportComponent } from './notifications/reports/user-report/user-report.component';
 
 @NgModule({
   declarations: [
@@ -16,6 +19,9 @@ import { ChangeProfileComponent } from './change-profile/change-profile.componen
     OverviewComponent,
     NotificationsComponent,
     ChangeProfileComponent,
+    CardReportComponent,
+    LectureReportComponent,
+    UserReportComponent,
   ],
   imports: [ProfileRoutingModule, SharedModule],
 })

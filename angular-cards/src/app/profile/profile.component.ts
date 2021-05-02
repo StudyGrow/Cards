@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { map } from 'rxjs/operators';
-import { userInfo, UserStatus } from '../store/selector';
+import { userInfo, UserNotificationsCount, UserStatus } from '../store/selector';
 import { Observable, Subscription } from 'rxjs';
 import { AppState } from '../models/state';
 
@@ -13,7 +13,7 @@ import { AppState } from '../models/state';
 export class ProfileComponent implements OnInit, OnDestroy {
   public page: string;
   public cardCount = 0;
-  isAdmin$: Observable<boolean>;
+  notificationCount$ = this.store.select(UserNotificationsCount);
   private subs: Subscription[] = [];
   constructor(private store: Store<AppState>) {}
 
@@ -31,7 +31,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
         }
       });
     this.subs.push(sub);
-    this.isAdmin$ = this.store.select(UserStatus).pipe(map((status) => status === 'admin'));
   }
   ngOnDestroy() {
     this.subs.forEach((sub) => sub.unsubscribe());
