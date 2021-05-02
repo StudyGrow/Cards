@@ -26,6 +26,14 @@
     "error-message": {
       "question": "Question must contain at least 3 characters",
       "answer": "The answer must be between 1 and 1000 characters"
+    },
+    "cancel": {
+      "dialog": {
+        "title": "Cancel Edit",
+        "content": "Are you sure, you want to cancel editing this card? The changes will be discarded.",
+        "abort": "No, continue editing",
+        "confirm": "Yes, discard my changes"
+      }
     }
   },
   "lecture-overview-title": "Posts over time",

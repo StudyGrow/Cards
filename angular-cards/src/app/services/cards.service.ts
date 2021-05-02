@@ -48,7 +48,7 @@ export class CardsService {
         }
       )
       .pipe(
-        //    tap((res) => console.log(res.body)),
+        tap((res) => console.log(res.body)),
         map((res) => res.body)
       );
   }

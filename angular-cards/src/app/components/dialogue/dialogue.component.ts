@@ -45,6 +45,6 @@ export class DialogueComponent implements OnInit {
 }
 export enum DialogueType {
   REPORT = 'report',
-  CANCEL_EDIT = 'form.cancel',
+  CANCEL_EDIT = 'card-form.cancel',
   DELETE_PROFILE = 'profile.delete',
 }

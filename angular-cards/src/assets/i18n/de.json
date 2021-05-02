@@ -26,6 +26,14 @@
     "error-message": {
       "question": "Die Frage muss mind. 3 Zeichen enthalten",
       "answer": "Die Antwort muss zwischen 1 und 1000 Zeichen enthalten"
+    },
+    "cancel": {
+      "dialog": {
+        "title": "Abbruch",
+        "content": "Bist du sicher, dass du das Bearbeiten der Karte abbrechen und alle Änderungen verwerfen möchtest?",
+        "abort": "Nein, weiter bearbeiten",
+        "confirm": "Ja verwerfe alle Änderungen"
+      }
     }
   },
   "lecture-overview-title": "Beiträge über Zeit",

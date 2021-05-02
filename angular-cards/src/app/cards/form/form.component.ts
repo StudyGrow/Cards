@@ -325,11 +325,11 @@ export class FormComponent implements OnInit, OnDestroy {
     this.dialog.open(DialogueComponent, {
       width: '400px',
       data: {
-        title: this.translate.instant('form.cancel.dialog.title'),
-        content: this.translate.instant('form.cancel.dialog.content'),
-        abortText: this.translate.instant('form.cancel.dialog.abort'),
-        proceedText: this.translate.instant('form.cancel.dialog.confirm'),
-        type: 'form.cancel',
+        title: this.translate.instant('card-form.cancel.dialog.title'),
+        content: this.translate.instant('card-form.cancel.dialog.content'),
+        abortText: this.translate.instant('card-form.cancel.dialog.abort'),
+        proceedText: this.translate.instant('card-form.cancel.dialog.confirm'),
+        type: 'card-form.cancel',
       },
     });
   }
