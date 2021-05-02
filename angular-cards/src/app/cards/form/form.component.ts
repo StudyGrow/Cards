@@ -40,25 +40,25 @@ class CardFormData {
 export class FormComponent implements OnInit, OnDestroy {
   @ViewChild('latex') toggleRef: MatSlideToggle;
   @ViewChild('tagRef') tagRef;
-  @Input() neu: boolean = false; //true if we are adding a card for a new lecture
+  @Input() neu = false; // true if we are adding a card for a new lecture
 
-  //Form
+  // Form
   form: FormGroup;
   formMode$: Observable<string>;
 
-  //Card data
+  // Card data
   private lecture: Vorlesung;
   private author: User;
-  private cardCopy: Card = new Card('', ''); //Stores a copy of the current card. If we update the card, we use this copy and only overwrite some fields  (thema content tags latex)
-  //Tags that were selected
+  private cardCopy: Card = new Card('', ''); // Stores a copy of the current card. If we update the card, we use this copy and only overwrite some fields  (thema content tags latex)
+  // Tags that were selected
   selectedTags = [];
 
   private generator: HtmlGenerator;
 
-  //Autocomplete
+  // Autocomplete
   separatorKeysCodes: number[] = [ENTER];
 
-  //List of available Tags displayed as suggestions with autocomplete
+  // List of available Tags displayed as suggestions with autocomplete
   tagsSuggestions$: Observable<string[]>;
 
   private subscriptions$: Subscription[] = [];
@@ -79,15 +79,15 @@ export class FormComponent implements OnInit, OnDestroy {
   }
   ngOnInit(): void {
     this.form = this.createFormGroup();
-    let currentCard$ = this.store.select(CurrentCard);
-    //input from tagfield
-    let tagInput$ = this.form.valueChanges.pipe(map((val: CardFormData) => val.tag));
-    let allTags$ = this.store.select(AllTags); //get all tags for the lecture
+    const currentCard$ = this.store.select(CurrentCard);
+    // input from tagfield
+    const tagInput$ = this.form.valueChanges.pipe(map((val: CardFormData) => val.tag));
+    const allTags$ = this.store.select(AllTags); // get all tags for the lecture
 
     let sub: Subscription;
 
     sub = this.store
-      .select(user) //get user
+      .select(user) // get user
       .pipe(distinctUntilChanged((old, current) => old._id === current._id))
       .subscribe((user) => {
         if (user && this.author !== user) {
@@ -96,15 +96,15 @@ export class FormComponent implements OnInit, OnDestroy {
       });
     this.subscriptions$.push(sub);
 
-    //FormMode
+    // FormMode
     this.formMode$ = this.store.select(FormMode);
 
-    //suggestions for autocomplete
+    // suggestions for autocomplete
     this.tagsSuggestions$ = tagInput$.pipe(
-      startWith(''), //show all suggestions if input is null
-      withLatestFrom(allTags$), //holds all available tags
-      map(([input, tags]) => this._filter(tags, input)), //filter tags with input
-      map((list) => (list ? [...list].sort() : list)) //sort tags
+      startWith(''), // show all suggestions if input is null
+      withLatestFrom(allTags$), // holds all available tags
+      map(([input, tags]) => this._filter(tags, input)), // filter tags with input
+      map((list) => (list ? [...list].sort() : list)) // sort tags
     );
 
     sub = this.store.select(CurrentLecture).subscribe((lect) => {
@@ -157,14 +157,14 @@ export class FormComponent implements OnInit, OnDestroy {
             this.toggleRef.toggle();
           }
         }
-        this.form.reset({ ...this.cardCopy }); //overwrite form with content of the card
-        this.selectedTags = this.cardCopy?.tags //load the selecteed tags for the current card
+        this.form.reset({ ...this.cardCopy }); // overwrite form with content of the card
+        this.selectedTags = this.cardCopy?.tags // load the selecteed tags for the current card
           ? [...this.cardCopy.tags]
           : [];
         break;
 
       case 'add':
-        this.resetForm(); //clear data from form when mode is "add"
+        this.resetForm(); // clear data from form when mode is "add"
         if (this.toggleRef?.checked) {
           this.toggleRef.toggle();
         }
@@ -173,18 +173,18 @@ export class FormComponent implements OnInit, OnDestroy {
   }
 
   submitForm(formMode: string) {
-    let uinput = this.tagRef.nativeElement.value?.trim();
+    const uinput = this.tagRef.nativeElement.value?.trim();
     if (uinput?.length > 0 && !this.selectedTags.includes(uinput)) {
       this.tagRef.nativeElement.value = '';
-      this.selectedTags.push(uinput); //add last user input in case user forgot to add chip
+      this.selectedTags.push(uinput); // add last user input in case user forgot to add chip
     }
     let latexState: number;
 
     if (this.toggleRef.checked) {
-      //check if the content can be parsed
+      // check if the content can be parsed
       try {
         this.generator = new HtmlGenerator({ hyphenate: false });
-        let doc = parse(this.form.value.content, {
+        const doc = parse(this.form.value.content, {
           generator: this.generator,
         });
         doc.htmlDocument().body;
@@ -201,11 +201,11 @@ export class FormComponent implements OnInit, OnDestroy {
     } else {
       latexState = 0;
     }
-    //replaces the characters for newline for latex
-    let content = latexState === 1 ? this.form.value.content.replace(/\n/g, '\\\\ ') : this.form.value.content;
+    // replaces the characters for newline for latex
+    const content = latexState === 1 ? this.form.value.content.replace(/\n/g, '\\\\ ') : this.form.value.content;
 
     if (formMode === 'add') {
-      //Create Card from form
+      // Create Card from form
       if (this.neu && !this.lecture) {
         this.lecture = JSON.parse(localStorage.getItem('vl')).abrv;
         if (!this.lecture) {
@@ -215,7 +215,7 @@ export class FormComponent implements OnInit, OnDestroy {
         }
       }
 
-      let card = new Card(this.form.value.thema, content, this.selectedTags, this.lecture.abrv);
+      const card = new Card(this.form.value.thema, content, this.selectedTags, this.lecture.abrv);
       card.latex = latexState;
       this.addCard(card);
     } else if (formMode === 'edit') {
@@ -232,7 +232,7 @@ export class FormComponent implements OnInit, OnDestroy {
       this.store.dispatch(addLercture({ lecture: JSON.parse(localStorage.getItem('vl')) }));
     }
     this.store.dispatch(addCard({ card: card }));
-    let sub = this.actionState.addCard$.subscribe((card) => {
+    const sub = this.actionState.addCard$.subscribe((card) => {
       if (card) {
         this.resetForm();
       }
@@ -241,7 +241,7 @@ export class FormComponent implements OnInit, OnDestroy {
   }
 
   private updateCard(thema: string, content: string, tags: string[], latex: number) {
-    //dispatch update by overwriting the fields of cardCopy
+    // dispatch update by overwriting the fields of cardCopy
     this.store.dispatch(
       updateCard({
         card: {
@@ -253,7 +253,7 @@ export class FormComponent implements OnInit, OnDestroy {
         },
       })
     );
-    let sub = this.actionState.updateCard$.subscribe((card) => {
+    const sub = this.actionState.updateCard$.subscribe((card) => {
       if (card) {
         this.store.dispatch(setFormMode({ mode: 'add' }));
         this.store.dispatch(changeTab({ tab: 0 }));
@@ -264,11 +264,11 @@ export class FormComponent implements OnInit, OnDestroy {
     });
   }
 
-  //disables the casousel navigation by arrow
+  // disables the casousel navigation by arrow
   inField() {
     this.store.dispatch(setTypingMode({ typing: true }));
   }
-  //enables the casousel navigation by arrow
+  // enables the casousel navigation by arrow
   resetNav() {
     this.store.dispatch(setTypingMode({ typing: false }));
   }
@@ -301,7 +301,7 @@ export class FormComponent implements OnInit, OnDestroy {
   }
 
   addChip(event: MatChipInputEvent): void {
-    let newTag = event.value.trim();
+    const newTag = event.value.trim();
     if (!newTag || newTag.length == 0) {
       return;
     }
@@ -311,7 +311,7 @@ export class FormComponent implements OnInit, OnDestroy {
     // this.form.setValue({ ...this.form.value, tag: '' });
   }
   onSelectOption(event: MatAutocompleteSelectedEvent) {
-    let newTag = event.option.viewValue;
+    const newTag = event.option.viewValue;
     if (!this.selectedTags.includes(newTag)) this.selectedTags.push(newTag);
     // this.form.reset({ ...this.form.value, tag: '' });
   }
@@ -325,10 +325,11 @@ export class FormComponent implements OnInit, OnDestroy {
     this.dialog.open(DialogueComponent, {
       width: '400px',
       data: {
-        title: 'Abbruch',
-        content: 'Bist du sicher, dass du das Bearbeiten dieser Karte abbrechen möchtest?',
-        abortText: 'Nein, zurück',
-        proceedText: 'Ja',
+        title: this.translate.instant('form.cancel.dialog.title'),
+        content: this.translate.instant('form.cancel.dialog.content'),
+        abortText: this.translate.instant('form.cancel.dialog.abort'),
+        proceedText: this.translate.instant('form.cancel.dialog.confirm'),
+        type: 'form.cancel',
       },
     });
   }

@@ -16,10 +16,12 @@ enum ActionTypes {
   AUTHENTICATED = '[User]  user is authenticated',
   REGISTER = '[User] register user account on server',
   REGISTRY_SUCCESS = '[User] Account registry was successfull',
+  DELETE_ACCOUNT = '[User] Permanently delete account',
+  DELETE_ACCOUNT_SUCCESS = '[User] Permanently delete account successfully',
 }
 
 export const login = createAction(ActionTypes.LOGIN_USER, props<User>());
-export const googleCallback = createAction(ActionTypes.GOOGLE_CALLBACK, props<{callbackUrl: string}>());
+export const googleCallback = createAction(ActionTypes.GOOGLE_CALLBACK, props<{ callbackUrl: string }>());
 
 export const loginSuccess = createAction(ActionTypes.LOGIN_USER_SUCCESS, props<User>());
 export const createAccount = createAction(ActionTypes.REGISTER, props<User>());
@@ -39,3 +41,7 @@ export const logoutSuccess = createAction(ActionTypes.LOGOUT_USER_SUCCESS);
 export const logout = createAction(ActionTypes.LOGOUT_USER);
 
 export const updateUserDataSuccess = createAction(ActionTypes.UPDATE_USER_DATA, props<User>());
+
+export const deleteProfile = createAction(ActionTypes.DELETE_ACCOUNT);
+
+export const deleteProfileSuccess = createAction(ActionTypes.DELETE_ACCOUNT_SUCCESS);

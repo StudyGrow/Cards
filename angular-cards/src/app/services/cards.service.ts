@@ -8,21 +8,22 @@ import { Router } from '@angular/router';
 import { HttpConfig } from './config';
 import { HttpClient } from '@angular/common/http';
 import { NotificationsService } from './notifications.service';
+import { Vorlesung } from '../models/Vorlesung';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CardsService {
-  private config = new HttpConfig(); //configuration for http communication with the server
+  private config = new HttpConfig(); // configuration for http communication with the server
 
   constructor(
-    private http: HttpClient, //to make calls to the server
-    private router: Router //used to get the lecture abreviation from the route
+    private http: HttpClient, // to make calls to the server
+    private router: Router // used to get the lecture abreviation from the route
   ) {}
 
-  //This loads all cards specific data which is needed on the route of a specific lecture
+  // This loads all cards specific data which is needed on the route of a specific lecture
   fetchCardsData(): Observable<CardsData> {
-    let abrv = this.router.url.split(/vorlesung\//)[1]; //get the lecture abreviation from the route
+    const abrv = this.router.url.split(/vorlesung\//)[1]; // get the lecture abreviation from the route
 
     return this.http
       .get<CardsData>(this.config.urlBase + 'cards/data?abrv=' + abrv, { observe: 'response' })
@@ -36,7 +37,7 @@ export class CardsService {
   }
 
   updateCard(card: Card): Observable<Card> {
-    //send update to server using http service
+    // send update to server using http service
     return this.http
       .put<Card>(
         this.config.urlBase + 'cards/update',
@@ -53,7 +54,7 @@ export class CardsService {
   }
 
   addCard(card: Card): Observable<Card> {
-    //send new card to server using http service
+    // send new card to server using http service
     return this.http
       .post<Card>(
         this.config.urlBase + 'cards/new',
@@ -66,6 +67,26 @@ export class CardsService {
       .pipe(
         //  tap((res) => console.log(res)),
         map((res) => res.body)
+      );
+  }
+
+  reportCard(card: Card, lecutre: Vorlesung): Observable<Card> {
+    // send new card to server using http service
+    return this.http
+      .post<string>(
+        this.config.urlBase + 'cards/report',
+        { resourceId: card._id, lectureId: lecutre._id },
+        {
+          headers: this.config.headers,
+          observe: 'response',
+        }
+      )
+      .pipe(
+        tap((res) => console.log(res)),
+        map((res) => {
+          if (res.body === card._id) return card;
+          throw new Error('Card not matching');
+        })
       );
   }
 }

@@ -18,11 +18,14 @@ button {
   color: #ff5722;
 }
 
-#report {
+.report {
   transition: 0.2s;
 }
-#report:hover {
+.report:hover {
   color: rgb(255, 145, 0);
+}
+.report:hover > mat-icon {
+  color: rgb(255, 145, 0)!important;
 }
 
 .actions {

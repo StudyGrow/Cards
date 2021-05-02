@@ -3,4 +3,5 @@ export interface DialogData {
   content: string;
   abortText: string;
   proceedText: string;
+  type: string;
 }

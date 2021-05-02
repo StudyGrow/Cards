@@ -33,7 +33,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.store.dispatch(auth());
     let language = localStorage.getItem('language');
     if (!language || (language != 'en' && language != 'de')) language = 'de';
-    translate.setDefaultLang(language);
+    this.translate.setDefaultLang(language);
     this.themeManager.initTheme(); // initialize theme
 
     // log state only in development mode

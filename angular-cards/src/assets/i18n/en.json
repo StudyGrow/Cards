@@ -70,7 +70,13 @@
       "new-password": "New password",
       "password-hint": "At least 7 characters",
       "new-password-repeat": "Repeat new password",
-      "delete-account": "Permenantly delete Account"
+      "delete-account": "Permenantly delete Account",
+      "dialog": {
+        "title": "Delete permenantly",
+        "content": "Are you sure, you want to permanently delete your account?",
+        "abort": "No, abort",
+        "confirm": "Yes, delete permanently"
+      }
     },
     "notifications": {
       "no-new-notifications": "You have no notifications yet",
@@ -160,6 +166,14 @@
     "dark": "Dark",
     "browser-settings": "Browser Settings",
     "language": "Language"
+  },
+  "report": {
+    "dialog": {
+      "title": "Report card",
+      "content": "Are you sure, you want to report this card?",
+      "abort": "No",
+      "confirm": "Yes"
+    }
   },
   "logout": "Logout",
   "ITEMS_PER_PAGE_LABEL": "Elements per page:",

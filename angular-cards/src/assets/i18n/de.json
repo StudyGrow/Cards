@@ -70,7 +70,13 @@
       "new-password": "Neues Passwort",
       "password-hint": "Wenigstens 7 Zeichen",
       "new-password-repeat": "Neues Passwort wiederholen",
-      "delete-account": "Account löschen"
+      "delete-account": "Account löschen",
+      "dialog": {
+        "title": "Für immer löschen",
+        "content": "Bist du dir sicher, dass du deinen Account für immer löschen willst?",
+        "abort": "Nein, zurück",
+        "confirm": "Ja, unwiderruflich löschen"
+      }
     },
     "notifications": {
       "no-new-notifications": "Du hast keine neuen Benachrichtigungen",
@@ -160,6 +166,14 @@
     "dark": "Dunkel",
     "browser-settings": "Wie Browser",
     "language": "Sprache"
+  },
+  "report": {
+    "dialog": {
+      "title": "Karte melden",
+      "content": "Bist du dir sicher, dass du diese Karte melden möchtest?",
+      "abort": "Nein",
+      "confirm": "Ja"
+    }
   },
   "logout": "Ausloggen",
   "ITEMS_PER_PAGE_LABEL": "Elemente pro Seite:",
