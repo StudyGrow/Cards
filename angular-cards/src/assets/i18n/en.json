@@ -1,17 +1,4 @@
 {
-  "flash-cards": "Flash cards",
-  "notifications": "Notifications",
-  "users": "Users",
-  "report-type": "Report Type",
-  "clear-report": "Clear report",
-  "delete-resource": "Delete ressource",
-  "show-in-lecture": "Show card in lecture",
-  "edit": "Edit",
-  "add": "Add",
-  "overview": "Overview",
-  "lectures": "Lectures",
-  "lecture": "Lecture",
-  "add-lecture": "Add Lecture",
   "btn": {
     "add": "Add",
     "update": "Update",
@@ -181,5 +168,19 @@
   "FIRST_PAGE_LABEL": "First Page",
   "LAST_PAGE_LABEL": "Last Page",
   "RANGE_PAGE_LABEL_1": "0 of {{length}}",
-  "RANGE_PAGE_LABEL_2": "{{startIndex}} - {{endIndex}} of {{length}}"
+  "RANGE_PAGE_LABEL_2": "{{startIndex}} - {{endIndex}} of {{length}}",
+  "flash-cards": "Flash cards",
+  "notifications": "Notifications",
+  "users": "Users",
+  "number-of-cards": "Number of cards",
+  "report-type": "Report Type",
+  "clear-report": "Clear report",
+  "delete-resource": "Delete ressource",
+  "show-in-lecture": "Show card in lecture",
+  "edit": "Edit",
+  "add": "Add",
+  "overview": "Overview",
+  "lectures": "Lectures",
+  "lecture": "Lecture",
+  "add-lecture": "Add Lecture"
 }

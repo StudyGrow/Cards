@@ -1,17 +1,4 @@
 {
-  "flash-cards": "Karteikarten",
-  "notifications": "Benachrichtigungen",
-  "report-type": "Report Typ",
-  "users": "Nutzer",
-  "clear-report": "Report auflösen",
-  "delete-resource": "Ressource löschen",
-  "show-in-lecture": "Karte in Vorlesung anzeigen",
-  "edit": "Bearbeiten",
-  "add": "Hinzufügen",
-  "overview": "Übersicht",
-  "lectures": "Vorlesungen",
-  "lecture": "Vorlesung",
-  "add-lecture": "Vorlesung hinzufügen",
   "btn": {
     "add": "Hinzufügen",
     "update": "Aktualisieren",
@@ -181,5 +168,19 @@
   "FIRST_PAGE_LABEL": "Erste Seite",
   "LAST_PAGE_LABEL": "Letzte Seite",
   "RANGE_PAGE_LABEL_1": "0 von {{length}}",
-  "RANGE_PAGE_LABEL_2": "{{startIndex}} - {{endIndex}} von {{length}}"
+  "RANGE_PAGE_LABEL_2": "{{startIndex}} - {{endIndex}} von {{length}}",
+  "flash-cards": "Karteikarten",
+  "notifications": "Benachrichtigungen",
+  "report-type": "Report Typ",
+  "users": "Nutzer",
+  "clear-report": "Report auflösen",
+  "number-of-cards": "Number of cards",
+  "delete-resource": "Ressource löschen",
+  "show-in-lecture": "Karte in Vorlesung anzeigen",
+  "edit": "Bearbeiten",
+  "add": "Hinzufügen",
+  "overview": "Übersicht",
+  "lectures": "Vorlesungen",
+  "lecture": "Vorlesung",
+  "add-lecture": "Vorlesung hinzufügen"
 }
