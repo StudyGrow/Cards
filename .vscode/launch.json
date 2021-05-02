@@ -23,7 +23,8 @@
       "restart": true,
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen",
-      "skipFiles": ["<node_internals>/**", "angular-cards/*"]
+      "skipFiles": ["<node_internals>/**"],
+      "args": ["--ignore", " ./angular-cards/"]
     }
   ]
 }
