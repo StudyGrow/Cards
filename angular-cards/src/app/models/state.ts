@@ -39,7 +39,7 @@ export interface LecturesData {
 export interface Mode {
   activeIndex: number;
   currentCard: Card; // Card that should be displayed in the carousel
-  formMode: formMode;
+  formMode: string;
   typingMode: boolean;
   hideSearchResults: boolean;
   loading: number;

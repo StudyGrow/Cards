@@ -16,6 +16,8 @@
     }
   },
   "card-form": {
+    "add-flash-card": "Karteikarte hinzufügen",
+    "edit-flash-card": "Karteikarte bearbeiten",
     "card-question": "Frage",
     "card-answer": "Antwort",
     "card-tags": "Tags",

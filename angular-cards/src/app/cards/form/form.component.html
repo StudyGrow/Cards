@@ -1,6 +1,5 @@
 <ng-container *ngIf="formMode$ | async as mode">
-  <h4 *ngIf="mode == 'add'" class="mt-2">Karteikarte hinzufügen</h4>
-  <h4 *ngIf="mode == 'edit'" class="mt-2">Karteikarte bearbeiten</h4>
+  <h4 class="mt-2">{{ 'card-form.' + mode + '-flash-card' | translate }}</h4>
 
   <form [formGroup]="form" (ngSubmit)="submitForm(mode)" novalidate autocomplete="off">
     <mat-form-field appearance="outline" class="mb-1 w-100">
