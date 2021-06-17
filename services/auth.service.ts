@@ -133,7 +133,7 @@ export default class AuthService {
     if (!user) {
       throw new Error("Email or Password wrong");
     } else if (user && !user.confirmed) {
-      throw { status: 403, message: "Email not confirmed" };
+      // throw { status: 403, message: "Email not confirmed" };
     }
 
     let validation = await bcryptjs.compare(password, user.password);
