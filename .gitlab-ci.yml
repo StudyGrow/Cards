@@ -1,25 +1,6 @@
-# deploy:
-#   stage: deploy
-#   script:
-#   - cd ~/project
-#   - git fetch
-#   - git pull origin master --force
-#   - git push heroku master
-#   only:
-#     - master
-
-# deploy-beta:
-#   stage: deploy
-#   script:
-#   - cd ~/project-beta
-#   - git fetch
-#   - git pull origin develop --force
-#   - git push heroku master
-#   only:
-#     - develop
-
 stages:
   - deploy
+  - deploy-dev
 
 Deploy:
   image: ruby:latest
@@ -31,3 +12,13 @@ Deploy:
     - apt-get install -y ruby-dev
     - gem install dpl
     - dpl --provider=heroku --app=$APP_NAME_HEROKU --api-key=$HEROKU_API_KEY  --skip_cleanup=true
+Deploy-Dev:
+  image: ruby:latest
+  only:
+    - develop
+  stage: deploy-dev
+  script:
+    - apt-get update -qy
+    - apt-get install -y ruby-dev
+    - gem install dpl
+    - dpl --provider=heroku --app=$APP_NAME_HEROKU_DEVELOP --api-key=$API_KEY_HEROKU_DEVELOP  --skip_cleanup=true
