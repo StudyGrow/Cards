@@ -1,12 +1,12 @@
-//handles all card specific routes
-import { route, GET, PUT, POST, DELETE, before, inject } from "awilix-express";
-import { Request, Response } from "express";
+// handles all card specific routes
+import { route, GET, PUT, POST, before, inject } from "awilix-express";
+import { Response } from "express";
 import { ICard } from "../../models/cards.model";
 import CardsService from "../../services/cards.service";
 import LectureService from "../../services/lecture.service";
 import VotesService from "../../services/votes.service";
 
-//route to get the cards from a specific lecture
+// route to get the cards from a specific lecture
 @route("/cards")
 // @before(
 //   inject(({ authenticationMiddleware }) => authenticationMiddleware),
@@ -20,6 +20,30 @@ export default class CardsRoute {
   cardsService: CardsService;
   lectureService: LectureService;
   votesService: VotesService;
+
+  /**
+   * @swagger
+   *
+   *  /cards:
+   *    get:
+   *      description: Gets cards by abbreviation
+   *      produces:
+   *        - application/json
+   *      parameters:
+   *        - name: abrv
+   *          description: Abbreviation of lecture
+   *          in:  query
+   *          required: true
+   *          type: string
+   *          example: BuK
+   *      responses:
+   *        '200':
+   *          description: Lecture data corresponding to provided lecture abbreviation
+   *        '401':
+   *          description: Query validation error
+   *        '500':
+   *          description: Error getting cards
+   */
   @route("")
   @GET()
   @before(
@@ -42,38 +66,45 @@ export default class CardsRoute {
       });
   }
 
-  @route("/data")
-  @GET()
-  @before(
-    inject(({ validationFactory }) =>
-      validationFactory.validateLectureAbbreviation()
-    )
-  )
-  @before(inject(({ authorizationMiddleware }) => authorizationMiddleware))
-  async getCardsData(req, res) {
-    let abrv = req.query.abrv;
-    let cards = this.cardsService.findByAbrv(abrv);
-    let vl = this.lectureService.findByAbrv(abrv);
-    let allVotes = this.votesService.getAllVotesByLectureAbrv(abrv);
-    let userid;
-    let username;
-    userid = req._id;
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    Promise.all([cards, vl, allVotes])
-      .then(([cards, lecture, votes]) =>
-        res.json({
-          cards: cards,
-          votes: votes,
-          lecture: lecture,
-          uid: userid,
-          username: username,
-        })
-      )
-      .catch((err) => {
-        res.status(422).send(err.message);
-      });
-  }
-
+  /**
+   * @swagger
+   *  /cards/new:
+   *    post:
+   *      description: Add a new card
+   *      requestBody:
+   *        content:
+   *          application/json:
+   *            schema:
+   *              type: object
+   *              properties:
+   *                card:
+   *                  type: object
+   *                  properties:
+   *                    abrv:
+   *                      type: string
+   *                    thema:
+   *                      type: string
+   *                    content:
+   *                      type: string
+   *                    latex:
+   *                      type: number
+   *                    taglist:
+   *                      type: array
+   *            example:
+   *              card:
+   *                thema: Berechenbarkeit und Komplexität
+   *                abrv: BuK
+   *                content: Some card content
+   *                latex: 0
+   *                taglist: [BuK]
+   *      responses:
+   *        '200':
+   *          description: Card which was added
+   *        '422':
+   *          description: Error adding card
+   *        '401':
+   *          description: Unauthorized add of card not allowed
+   */
   @route("/new")
   @POST()
   @before(inject(({ authenticationMiddleware }) => authenticationMiddleware))
@@ -91,11 +122,79 @@ export default class CardsRoute {
       });
   }
 
+  /**
+   * @swagger
+   *
+   * /cards/update:
+   *   put:
+   *     description: Update an existing card
+   *     produces:
+   *       - application/json
+   *     parameters:
+   *       - name: card
+   *         description: Info of card to update
+   *         in:  body
+   *         required: true
+   *         type: json
+   *         example: {
+          _id: "834bnj3k2hg432iuh32bkj",
+          abrv: "BuK",
+          thema: "Some card question",
+          content: "Some card content",
+          latex: 0,
+          authorName: 'bob',
+          tags: [],
+          authorId: "1234"}
+   *     responses:
+   *       200: Card which was updated
+   *       422: Error updating card
+   */
+
+  /**
+   * @swagger
+   *  /cards/update:
+   *    put:
+   *      description: Update an existing card, only user who created card can update it
+   *      requestBody:
+   *        content:
+   *          application/json:
+   *            schema:
+   *              type: object
+   *              properties:
+   *                card:
+   *                  type: object
+   *                  properties:
+   *                    _id:
+   *                      type: string
+   *                    thema:
+   *                      type: string
+   *                    content:
+   *                      type: string
+   *                    latex:
+   *                      type: number
+   *                    taglist:
+   *                      type: array
+   *            example:
+   *              card:
+   *                _id: Berechenbarkeit und Komplexität
+   *                thema: Berechenbarkeit und Komplexität
+   *                abrv: BuK
+   *                content: Some card content
+   *                latex: 0
+   *                taglist: [BuK]
+   *      responses:
+   *        '200':
+   *          description: Card which was updated
+   *        '422':
+   *          description: Error updating card
+   *        '422':
+   *          description: Unauthorized update of card not allowed
+   */
   @route("/update")
   @PUT()
   @before(inject(({ authenticationMiddleware }) => authenticationMiddleware))
   @before(
-    inject(({ validationFactory }) => validationFactory.validateCardToAdd())
+    inject(({ validationFactory }) => validationFactory.validateCardToUpdate())
   )
   async updateCard(req: any, res: Response) {
     this.cardsService
@@ -135,7 +234,7 @@ export default class CardsRoute {
   )
   @before(inject(({ authenticationMiddleware }) => authenticationMiddleware))
   async getLectureVotesByUser(req: any, res: Response) {
-    let vote = parseInt(req.body.value);
+    const vote = parseInt(req.body.value);
     if (req._id) {
       this.votesService
         .getVotesByLectureAbrv(req.query.abrv, req._id)
@@ -148,6 +247,38 @@ export default class CardsRoute {
     } else {
       res.status(200).send([]);
     }
+  }
+
+  @route("/data")
+  @GET()
+  @before(
+    inject(({ validationFactory }) =>
+      validationFactory.validateLectureAbbreviation()
+    )
+  )
+  @before(inject(({ authorizationMiddleware }) => authorizationMiddleware))
+  async getCardsData(req, res) {
+    const abrv = req.query.abrv;
+    const cards = this.cardsService.findByAbrv(abrv);
+    const vl = this.lectureService.findByAbrv(abrv);
+    const allVotes = this.votesService.getAllVotesByLectureAbrv(abrv);
+    const userId = req._id;
+    let username;
+
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    Promise.all([cards, vl, allVotes])
+      .then(([cards, lecture, votes]) =>
+        res.json({
+          cards: cards,
+          votes: votes,
+          lecture: lecture,
+          uid: userId,
+          username: username,
+        })
+      )
+      .catch((err) => {
+        res.status(422).send(err.message);
+      });
   }
 }
 
