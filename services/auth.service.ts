@@ -107,16 +107,20 @@ export default class AuthService {
         userToSave.email,
         userToSave.username
       );
-      let hashedPassword = await this.hashPassword(userToSave.password);
+      const hashedPassword = await this.hashPassword(userToSave.password);
 
-      let user = await this.userService.createUser({
+      const user = await this.userService.createUser({
         email: userToSave.email,
         password: hashedPassword,
         username: userToSave.username,
         token: crypto({ length: 42 }),
       });
-      this.mailService.sendConfirmationMail(user);
-      return true;
+      const signinResponse = this.signInByEmailOrUsername(
+        userToSave.email,
+        userToSave.password
+      );
+      // this.mailService.sendConfirmationMail(user);
+      return signinResponse;
     } catch (error) {
       this.logger.info("Email signUp failed");
       this.logger.debug(error.stack);

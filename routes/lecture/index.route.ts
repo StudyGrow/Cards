@@ -144,7 +144,7 @@ export default class LectureRoute {
    *      description: Check if lecture with provided information exists
    *      requestBody:
    *        content:
-   *          application/json:
+   *          'application/json':
    *            schema:
    *              type: object
    *              properties:

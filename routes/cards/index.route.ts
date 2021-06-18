@@ -124,34 +124,6 @@ export default class CardsRoute {
 
   /**
    * @swagger
-   *
-   * /cards/update:
-   *   put:
-   *     description: Update an existing card
-   *     produces:
-   *       - application/json
-   *     parameters:
-   *       - name: card
-   *         description: Info of card to update
-   *         in:  body
-   *         required: true
-   *         type: json
-   *         example: {
-          _id: "834bnj3k2hg432iuh32bkj",
-          abrv: "BuK",
-          thema: "Some card question",
-          content: "Some card content",
-          latex: 0,
-          authorName: 'bob',
-          tags: [],
-          authorId: "1234"}
-   *     responses:
-   *       200: Card which was updated
-   *       422: Error updating card
-   */
-
-  /**
-   * @swagger
    *  /cards/update:
    *    put:
    *      description: Update an existing card, only user who created card can update it
