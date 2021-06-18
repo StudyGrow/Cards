@@ -3,8 +3,8 @@ import { ICard } from "../models/cards.model";
 import { ILecture } from "../models/lecture.model";
 import UserService from "./user.service";
 
-//service which provides card related services
-const MultipleChoiceCard = require("../models/MultipleChoiceCard");
+// service which provides card related services
+// const MultipleChoiceCard = require("../models/MultipleChoiceCard");
 
 export default class CardsService {
   constructor({ cardsModel, lectureModel, userService }) {
@@ -12,12 +12,12 @@ export default class CardsService {
     this.lectureModel = lectureModel;
     this.userService = userService;
   }
-  cardsModel: Model<ICard, {}>;
-  lectureModel: Model<ILecture, {}>;
+  cardsModel: Model<ICard>;
+  lectureModel: Model<ILecture>;
   userService: UserService;
-  //returns all the cards matching the query
+  // returns all the cards matching the query
   getCardsFromQuery(query) {
-    let cards = this.cardsModel
+    const cards = this.cardsModel
       .find(query)
       .select("tags thema content vorlesung latex");
     return cards;
@@ -38,11 +38,11 @@ export default class CardsService {
     card.date = new Date();
     card.vorlesung = form.abrv;
     card.latex = form.latex;
-    let user = await this.userService.getUser({ _id: _id });
+    const user = await this.userService.getUser({ _id: _id });
     if (!user) {
       throw { status: 401, message: `Not logged in` };
     }
-    card.authorId = user._id; //add user as author of card
+    card.authorId = user._id; // add user as author of card
     card.authorName = user.username;
 
     this.updateTags(card.vorlesung, card.tags);
@@ -55,74 +55,74 @@ export default class CardsService {
   };
 
   // //creates a new card and adds it to the database
-  addMultipleChoiceCard = async (form, user) => {
-    let lectureExists = await this.lectureModel.findByIdAndUpdate(
-      form.cardDeckID,
-      {
-        $inc: { totalCards: 1 },
-      }
-    );
-    if (!lectureExists) {
-      throw new Error("CardDeck (Lecture) does not exist");
-    }
-    const multipleChoiceCard = new MultipleChoiceCard(form);
-    multipleChoiceCard.date = new Date();
-    if (user) {
-      multipleChoiceCard.authorId = user._id; //add user as author of card
-      multipleChoiceCard.authorName = user.username;
-    }
+  // addMultipleChoiceCard = async (form, user) => {
+  //   const lectureExists = await this.lectureModel.findByIdAndUpdate(
+  //     form.cardDeckID,
+  //     {
+  //       $inc: { totalCards: 1 },
+  //     }
+  //   );
+  //   if (!lectureExists) {
+  //     throw new Error("CardDeck (Lecture) does not exist");
+  //   }
+  //   const multipleChoiceCard = new MultipleChoiceCard(form);
+  //   multipleChoiceCard.date = new Date();
+  //   if (user) {
+  //     multipleChoiceCard.authorId = user._id; // add user as author of card
+  //     multipleChoiceCard.authorName = user.username;
+  //   }
 
-    this.updateTags(multipleChoiceCard.vorlesung, multipleChoiceCard.tags);
-    await multipleChoiceCard.save();
+  //   this.updateTags(multipleChoiceCard.vorlesung, multipleChoiceCard.tags);
+  //   await multipleChoiceCard.save();
 
-    return multipleChoiceCard;
-  };
+  //   return multipleChoiceCard;
+  // };
 
-  //updates a MultipleChoiceCard in the database
-  updateMultipleChoiceCard = async (card, user) => {
-    let tmp = await MultipleChoiceCard.findById(card._id); //find the card in the database
-    if (tmp == null) {
-      throw new Error("MultipleChoiceCard doesn't exist");
-    }
-    let lectureExists = await this.lectureModel.findById(card.cardDeckID);
-    if (lectureExists == null) {
-      throw new Error("CardDeck (Lecture) does not exist");
-    }
-    if (tmp && tmp.authorId && !user) {
-      //There is an author, but there is no user logged in
-      throw new Error(
-        "Fehler: Du bist nicht der Author dieser Karte. Bitte logge dich ein."
-      );
-    }
-    if (tmp.authorId && tmp.authorId != "" && tmp.authorId != user._id) {
-      //The user is not the author of the card
-      throw new Error("Fehler: Du bist nicht der Author dieser Karte.");
-    }
-    let updatedCard = await MultipleChoiceCard.findByIdAndUpdate(
-      card._id,
-      card,
-      {
-        new: true,
-      }
-    );
-    return updatedCard;
-  };
+  // updates a MultipleChoiceCard in the database
+  // updateMultipleChoiceCard = async (card, user) => {
+  //   const tmp = await MultipleChoiceCard.findById(card._id); // find the card in the database
+  //   if (tmp == null) {
+  //     throw new Error("MultipleChoiceCard doesn't exist");
+  //   }
+  //   const lectureExists = await this.lectureModel.findById(card.cardDeckID);
+  //   if (lectureExists == null) {
+  //     throw new Error("CardDeck (Lecture) does not exist");
+  //   }
+  //   if (tmp && tmp.authorId && !user) {
+  //     // There is an author, but there is no user logged in
+  //     throw new Error(
+  //       "Fehler: Du bist nicht der Author dieser Karte. Bitte logge dich ein."
+  //     );
+  //   }
+  //   if (tmp.authorId && tmp.authorId != "" && tmp.authorId != user._id) {
+  //     // The user is not the author of the card
+  //     throw new Error("Fehler: Du bist nicht der Author dieser Karte.");
+  //   }
+  //   const updatedCard = await MultipleChoiceCard.findByIdAndUpdate(
+  //     card._id,
+  //     card,
+  //     {
+  //       new: true,
+  //     }
+  //   );
+  //   return updatedCard;
+  // };
 
   // //updates a card in the database
   updateCard = async (card, _id) => {
-    let tmp = await this.cardsModel.findById(card._id); //find the card in the database
+    const tmp = await this.cardsModel.findById(card._id); // find the card in the database
     if (tmp && tmp.authorId && !_id) {
-      //There is an author, but there is no user logged in
+      // There is an author, but there is no user logged in
       throw new Error(
         "Fehler: Du bist nicht der Author dieser Karte. Bitte logge dich ein."
       );
     }
     if (tmp.authorId && tmp.authorId != "" && tmp.authorId != _id) {
-      //The user is not the author of the card
+      // The user is not the author of the card
       throw new Error("Fehler: Du bist nicht der Author dieser Karte.");
     }
     this.updateTags(card.vorlesung, card.tags);
-    let newCard = {
+    const newCard = {
       thema: card.thema,
       content: card.content,
       latex: card.latex,
@@ -131,13 +131,13 @@ export default class CardsService {
     await this.cardsModel.findByIdAndUpdate(
       card._id,
       newCard
-      //returns old content
+      // returns old content
     );
     // newCard._id = card._id;
     return newCard;
   };
 
-  //used to migrate data
+  // used to migrate data
   // cardsService.renew = async () => {
   //   let cards = await Card.find({ vorlesung: "mal" });
   //   cards.forEach((card) => {

@@ -1,4 +1,5 @@
-import { route, GET, PUT, POST, DELETE, before, inject } from "awilix-express";
+import { route, GET, POST, before, inject } from "awilix-express";
+import { Request, Response } from "express";
 import { ILecture } from "../../models/lecture.model";
 import LectureService from "../../services/lecture.service";
 
@@ -26,7 +27,7 @@ export default class LectureRoute {
    */
   @route("")
   @GET()
-  async getAllLectures(req, res) {
+  async getAllLectures(req: Request, res: Response): Promise<void> {
     this.lectureService
       .getLectures()
       .then((lectures: ILecture[]) => {
@@ -68,7 +69,7 @@ export default class LectureRoute {
       validationFactory.validateLectureAbbreviation()
     )
   )
-  async getLecturesByAbbreviation(req, res) {
+  async getLecturesByAbbreviation(req: Request, res: Response): Promise<void> {
     this.lectureService
       .getLectureByQuery({
         abrv: req.query.abrv,
@@ -123,7 +124,7 @@ export default class LectureRoute {
   @before(
     inject(({ validationFactory }) => validationFactory.validateLecture())
   )
-  async addLecture(req, res) {
+  async addLecture(req: Request, res: Response): Promise<void> {
     this.lectureService
       .addLecture(req.body.lecture)
       .then((lecture: ILecture) => {
@@ -169,7 +170,7 @@ export default class LectureRoute {
   @before(
     inject(({ validationFactory }) => validationFactory.validateLecture())
   )
-  async checkUniqueLecture(req, res) {
+  async checkUniqueLecture(req: Request, res: Response): Promise<void> {
     this.lectureService
       .checkUnique(req.body.lecture)
       .then(() => {

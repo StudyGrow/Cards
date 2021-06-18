@@ -186,9 +186,7 @@ export default class CardsRoute {
    *        '200':
    *          description: Card which was updated
    *        '422':
-   *          description: Error updating card
-   *        '422':
-   *          description: Unauthorized update of card not allowed
+   *          description: Error updating card, Unauthorized update of card not allowed
    */
   @route("/update")
   @PUT()
