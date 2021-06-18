@@ -51,6 +51,11 @@
     "winston": "^3.3.3"
   },
   "devDependencies": {
+    "@angular-devkit/build-angular": "^0.1102.11",
+    "@angular/cli": "^11.2.11",
+    "@angular/compiler": "^11.2.12",
+    "@angular/compiler-cli": "^11.2.12",
+    "@angular/language-service": "~11.2.12",
     "@types/bcrypt": "^3.0.1",
     "@types/bcryptjs": "^2.4.2",
     "@types/body-parser": "^1.19.0",
