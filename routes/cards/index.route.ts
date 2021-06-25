@@ -1,14 +1,14 @@
 // handles all card specific routes
-import { route, GET, PUT, POST, DELETE, before, inject } from 'awilix-express';
-import { Request, Response } from 'express';
-import { ICard } from '../../models/cards.model';
-import CardsService from '../../services/cards.service';
-import LectureService from '../../services/lecture.service';
+import { route, GET, PUT, POST, before, inject } from "awilix-express";
+import { Response } from "express";
+import { ICard } from "../../models/cards.model";
+import CardsService from "../../services/cards.service";
+import LectureService from "../../services/lecture.service";
 import ReportService from '../../services/report.service';
-import VotesService from '../../services/votes.service';
+import VotesService from "../../services/votes.service";
 
 // route to get the cards from a specific lecture
-@route('/cards')
+@route("/cards")
 // @before(
 //   inject(({ authenticationMiddleware }) => authenticationMiddleware),
 // )
@@ -23,7 +23,32 @@ export default class CardsRoute {
   lectureService: LectureService;
   votesService: VotesService;
   reportService: ReportService;
-  @route('')
+
+
+  /**
+   * @swagger
+   *
+   *  /cards:
+   *    get:
+   *      description: Gets cards by abbreviation
+   *      produces:
+   *        - application/json
+   *      parameters:
+   *        - name: abrv
+   *          description: Abbreviation of lecture
+   *          in:  query
+   *          required: true
+   *          type: string
+   *          example: BuK
+   *      responses:
+   *        '200':
+   *          description: Lecture data corresponding to provided lecture abbreviation
+   *        '401':
+   *          description: Query validation error
+   *        '500':
+   *          description: Error getting cards
+   */
+  @route("")
   @GET()
   @before(inject(({ validationFactory }) => validationFactory.validateLectureAbbreviation()))
   async getCardsByAbbreviation(req, res) {
@@ -39,34 +64,46 @@ export default class CardsRoute {
       });
   }
 
-  @route('/data')
-  @GET()
-  @before(inject(({ validationFactory }) => validationFactory.validateLectureAbbreviation()))
-  @before(inject(({ authorizationMiddleware }) => authorizationMiddleware))
-  async getCardsData(req, res) {
-    const abrv = req.query.abrv;
-    const cards = this.cardsService.findByAbrv(abrv, req._id);
-    const vl = this.lectureService.findByAbrv(abrv);
-    const allVotes = this.votesService.getAllVotesByLectureAbrv(abrv);
-    const userid = req._id;
-    let username;
-
-    Promise.all([cards, vl, allVotes])
-      .then(([cards, lecture, votes]) =>
-        res.json({
-          cards: cards,
-          votes: votes,
-          lecture: lecture,
-          uid: userid,
-          username: username,
-        })
-      )
-      .catch((err) => {
-        res.status(422).send(err.message);
-      });
-  }
-
-  @route('/new')
+  /**
+   * @swagger
+   *  /cards/new:
+   *    post:
+   *      description: Add a new card
+   *      requestBody:
+   *        content:
+   *          application/json:
+   *            schema:
+   *              type: object
+   *              properties:
+   *                card:
+   *                  type: object
+   *                  properties:
+   *                    abrv:
+   *                      type: string
+   *                    thema:
+   *                      type: string
+   *                    content:
+   *                      type: string
+   *                    latex:
+   *                      type: number
+   *                    taglist:
+   *                      type: array
+   *            example:
+   *              card:
+   *                thema: Berechenbarkeit und Komplexität
+   *                abrv: BuK
+   *                content: Some card content
+   *                latex: 0
+   *                taglist: [BuK]
+   *      responses:
+   *        '200':
+   *          description: Card which was added
+   *        '422':
+   *          description: Error adding card
+   *        '401':
+   *          description: Unauthorized add of card not allowed
+   */
+  @route("/new")
   @POST()
   @before(inject(({ authenticationMiddleware }) => authenticationMiddleware))
   @before(inject(({ validationFactory }) => validationFactory.validateCardToAdd()))
@@ -81,10 +118,50 @@ export default class CardsRoute {
       });
   }
 
-  @route('/update')
+  /**
+   * @swagger
+   *  /cards/update:
+   *    put:
+   *      description: Update an existing card, only user who created card can update it
+   *      requestBody:
+   *        content:
+   *          application/json:
+   *            schema:
+   *              type: object
+   *              properties:
+   *                card:
+   *                  type: object
+   *                  properties:
+   *                    _id:
+   *                      type: string
+   *                    thema:
+   *                      type: string
+   *                    content:
+   *                      type: string
+   *                    latex:
+   *                      type: number
+   *                    taglist:
+   *                      type: array
+   *            example:
+   *              card:
+   *                _id: Berechenbarkeit und Komplexität
+   *                thema: Berechenbarkeit und Komplexität
+   *                abrv: BuK
+   *                content: Some card content
+   *                latex: 0
+   *                taglist: [BuK]
+   *      responses:
+   *        '200':
+   *          description: Card which was updated
+   *        '422':
+   *          description: Error updating card, Unauthorized update of card not allowed
+   */
+  @route("/update")
   @PUT()
   @before(inject(({ authenticationMiddleware }) => authenticationMiddleware))
-  @before(inject(({ validationFactory }) => validationFactory.validateCardToAdd()))
+  @before(
+    inject(({ validationFactory }) => validationFactory.validateCardToUpdate())
+  )
   async updateCard(req: any, res: Response) {
     this.cardsService
       .updateCard(req.body.card, req._id)
@@ -181,6 +258,38 @@ export default class CardsRoute {
     } else {
       res.status(422).send();
     }
+  }
+
+  @route("/data")
+  @GET()
+  @before(
+    inject(({ validationFactory }) =>
+      validationFactory.validateLectureAbbreviation()
+    )
+  )
+  @before(inject(({ authorizationMiddleware }) => authorizationMiddleware))
+  async getCardsData(req, res) {
+    const abrv = req.query.abrv;
+    const cards = this.cardsService.findByAbrv(abrv);
+    const vl = this.lectureService.findByAbrv(abrv);
+    const allVotes = this.votesService.getAllVotesByLectureAbrv(abrv);
+    const userId = req._id;
+    let username;
+
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    Promise.all([cards, vl, allVotes])
+      .then(([cards, lecture, votes]) =>
+        res.json({
+          cards: cards,
+          votes: votes,
+          lecture: lecture,
+          uid: userId,
+          username: username,
+        })
+      )
+      .catch((err) => {
+        res.status(422).send(err.message);
+      });
   }
 }
 

@@ -1,25 +1,24 @@
-image: node:15.14.0
-
 stages:
-  - Deploy
-Develop:
-  image: ruby:latest
-  only:
-    - develop
-  stage: Deploy
-  script:
-    - apt-get update -qy
-    - apt-get install -y ruby-dev
-    - gem install dpl
-    - dpl --provider=heroku --app=$APP_NAME_HEROKU_DEVELOP --api-key=$API_KEY_HEROKU_DEVELOP
+  - deploy
+  - deploy-dev
 
-Master:
+Deploy:
   image: ruby:latest
   only:
     - master
-  stage: Deploy
+  stage: deploy
   script:
     - apt-get update -qy
     - apt-get install -y ruby-dev
     - gem install dpl
-    - dpl --provider=heroku --app=$APP_NAME_HEROKU --api-key=$API_KEY_HEROKU
+    - dpl --provider=heroku --app=$APP_NAME_HEROKU --api-key=$HEROKU_API_KEY  --skip_cleanup=true
+Deploy-Dev:
+  image: ruby:latest
+  only:
+    - develop
+  stage: deploy-dev
+  script:
+    - apt-get update -qy
+    - apt-get install -y ruby-dev
+    - gem install dpl
+    - dpl --provider=heroku --app=$APP_NAME_HEROKU_DEVELOP --api-key=$API_KEY_HEROKU_DEVELOP  --skip_cleanup=true

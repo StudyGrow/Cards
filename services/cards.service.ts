@@ -5,7 +5,7 @@ import ReportService from "./report.service";
 import UserService from "./user.service";
 
 // service which provides card related services
-// import MultipleChoiceCar /MultipleChoiceCard";
+// const MultipleChoiceCard = require("../models/MultipleChoiceCard");
 
 export default class CardsService {
   constructor({ cardsModel, lectureModel, userService, reportService }) {
@@ -18,7 +18,6 @@ export default class CardsService {
   lectureModel: Model<ILecture>;
   userService: UserService;
   reportService: ReportService;
-
   // returns all the cards matching the query
   getCardsFromQuery(query) {
     const cards = this.cardsModel
@@ -69,7 +68,7 @@ export default class CardsService {
     return card;
   };
 
-  // // //creates a new card and adds it to the database
+  // //creates a new card and adds it to the database
   // addMultipleChoiceCard = async (form, user) => {
   //   const lectureExists = await this.lectureModel.findByIdAndUpdate(
   //     form.cardDeckID,
@@ -93,7 +92,7 @@ export default class CardsService {
   //   return multipleChoiceCard;
   // };
 
-  // // updates a MultipleChoiceCard in the database
+  // updates a MultipleChoiceCard in the database
   // updateMultipleChoiceCard = async (card, user) => {
   //   const tmp = await MultipleChoiceCard.findById(card._id); // find the card in the database
   //   if (tmp == null) {

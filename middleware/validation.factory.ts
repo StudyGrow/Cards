@@ -1,6 +1,6 @@
 import { celebrate, Segments, Joi } from "celebrate";
 export default class ValidationFactory {
-  validateLecture() {
+  validateLecture(): unknown {
     return celebrate({
       [Segments.BODY]: Joi.object({
         lecture: Joi.object({
@@ -12,7 +12,7 @@ export default class ValidationFactory {
       }),
     });
   }
-  validateVoteCardId() {
+  validateVoteCardId(): unknown {
     return celebrate({
       [Segments.BODY]: Joi.object().keys({
         id: Joi.string().required(),
@@ -20,7 +20,7 @@ export default class ValidationFactory {
       }),
     });
   }
-  validateLectureAbbreviation() {
+  validateLectureAbbreviation(): unknown {
     return celebrate({
       [Segments.QUERY]: Joi.object()
         .keys({
@@ -30,7 +30,7 @@ export default class ValidationFactory {
     });
   }
 
-  validateLectureNameAndAbbreviation() {
+  validateLectureNameAndAbbreviation(): unknown {
     return celebrate({
       [Segments.BODY]: Joi.object()
         .keys({
@@ -41,7 +41,7 @@ export default class ValidationFactory {
     });
   }
 
-  validateCardToAdd() {
+  validateCardToAdd(): unknown {
     return celebrate({
       [Segments.BODY]: Joi.object().keys({
         card: Joi.object({
@@ -56,7 +56,7 @@ export default class ValidationFactory {
       }),
     });
   }
-  validateCardToUpdate() {
+  validateCardToUpdate(): unknown {
     return celebrate({
       [Segments.BODY]: Joi.object()
         .keys({
@@ -68,7 +68,7 @@ export default class ValidationFactory {
     });
   }
 
-  validateUserSignUp() {
+  validateUserSignUp(): unknown {
     return celebrate({
       [Segments.BODY]: Joi.object({
         email: Joi.string().email().required(),
@@ -78,7 +78,7 @@ export default class ValidationFactory {
       }).unknown(true),
     });
   }
-  validateUserSignIn() {
+  validateUserSignIn(): unknown {
     return celebrate({
       [Segments.BODY]: Joi.object({
         email: Joi.string().email(),
@@ -87,14 +87,14 @@ export default class ValidationFactory {
       }).unknown(true),
     });
   }
-  validateUserPassword() {
+  validateUserPassword(): unknown {
     return celebrate({
       [Segments.BODY]: Joi.object().keys({
         password: Joi.string().min(7),
       }),
     });
   }
-  validateUserNewPassword() {
+  validateUserNewPassword(): unknown {
     return celebrate({
       [Segments.BODY]: Joi.object().keys({
         password: Joi.string().min(7),
@@ -102,14 +102,14 @@ export default class ValidationFactory {
       }),
     });
   }
-  validateUserUsername() {
+  validateUserUsername(): unknown {
     return celebrate({
       [Segments.BODY]: Joi.object().keys({
         username: Joi.string().min(5).max(20),
       }),
     });
   }
-  validateUserUserUpdate() {
+  validateUserUserUpdate(): unknown {
     return celebrate({
       [Segments.BODY]: Joi.object()
         .keys({
