@@ -12,6 +12,8 @@ import {
   fetchVotesSuccess,
   changeVote,
   changeVoteSuccess,
+  reportCard,
+  reportCardSuccess,
 } from '../actions/CardActions';
 import * as LectureActions from '../actions/LectureActions';
 import { CardsService } from '../../services/cards.service';
@@ -40,7 +42,14 @@ import { VotesService } from 'src/app/services/votes.service';
 
 import { Card, CardsData } from 'src/app/models/Card';
 import { fail, navigateToCard, resetFilter, showNewCard, showNewCardSuccess } from '../actions/StateActions';
-import { CardsSorted, CardsSortedAndFiltered, DisplayedCards, authorized } from '../selector';
+import {
+  CardsSorted,
+  CardsSortedAndFiltered,
+  DisplayedCards,
+  authorized,
+  CurrentCard,
+  CurrentLecture,
+} from '../selector';
 
 @Injectable()
 export class CardsEffects {
@@ -61,14 +70,14 @@ export class CardsEffects {
   loadCards$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FetchCardsActions.fetchCards),
-      tap(() => this.store.dispatch(fetchVotes())), //fetch votes of user
+      tap(() => this.store.dispatch(fetchVotes())), // fetch votes of user
       exhaustMap(() =>
         this.cards.fetchCardsData().pipe(
           map((data: CardsData) => FetchCardsActions.LoadSuccess({ data: data })),
           catchError((reason) => of(LoadFailure({ reason: reason })))
         )
       ),
-      share() //share is used for the effects so that components can subscribe to the effect without triggering it multiple times
+      share() // share is used for the effects so that components can subscribe to the effect without triggering it multiple times
     )
   );
 
@@ -79,9 +88,9 @@ export class CardsEffects {
     this.actions$.pipe(
       ofType(fetchVotes),
       withLatestFrom(this.store.select(authorized)),
-      filter(([action, auth]) => auth), //make sure user is logged in before requesting data from server
+      filter(([action, auth]) => auth), // make sure user is logged in before requesting data from server
       exhaustMap(
-        //exhaustMap can be used whenever we are sure that the request is idempotent, as in the case with GET
+        // exhaustMap can be used whenever we are sure that the request is idempotent, as in the case with GET
         () => this.votes.fetchVotes().pipe(map((votes) => fetchVotesSuccess({ votes: votes })))
       ),
       share()
@@ -95,15 +104,15 @@ export class CardsEffects {
     this.actions$.pipe(
       ofType(navigateToCard),
       tap(({ card }) => {
-        let url = `vorlesung/${card.abrv ? card.abrv : card['vorlesung']}`;
-        if (!this.router.url.includes(url)) this.router.navigateByUrl(url); //change routes if we are not on cards route
+        const url = `vorlesung/${card.abrv ? card.abrv : card['vorlesung']}`;
+        if (!this.router.url.includes(url)) this.router.navigateByUrl(url); // change routes if we are not on cards route
       }),
       switchMap(({ card }) =>
         combineLatest([
-          //emits if every inner observable emits at least one value
+          // emits if every inner observable emits at least one value
           of(card),
           this.store.select(DisplayedCards).pipe(
-            filter((cards) => cards !== undefined), //wait for cards to be loaded from the server
+            filter((cards) => cards !== undefined), // wait for cards to be loaded from the server
             take(1)
           ),
         ])
@@ -121,7 +130,7 @@ export class CardsEffects {
     this.actions$.pipe(
       ofType(showNewCard),
       withLatestFrom(
-        this.store.select(CardsSortedAndFiltered) //all cards sorted and filtered by tags which the user selected
+        this.store.select(CardsSortedAndFiltered) // all cards sorted and filtered by tags which the user selected
       ),
       tap(([{ card }, filteredCards]) => {
         if (card && !filteredCards?.find((c) => c._id === card._id)) {
@@ -172,7 +181,7 @@ export class CardsEffects {
     this.actions$.pipe(
       ofType(LectureActions.addLercture),
       mergeMap((
-        action //use merge map here as multiple changes could be made while the request has not terminated
+        action // use merge map here as multiple changes could be made while the request has not terminated
       ) =>
         this.lectures.addLecture(action.lecture).pipe(
           map((res) => LectureActions.addLectureSuccess({ lecture: res })),
@@ -190,7 +199,7 @@ export class CardsEffects {
         this.cards.addCard(cardAction.card).pipe(
           tap((card) => {
             setTimeout(() => {
-              this.store.dispatch(showNewCard({ card: card })); //go to last card
+              this.store.dispatch(showNewCard({ card: card })); // go to last card
             }, 200);
           }),
           map((res) => AddCardActions.addCardSuccess({ card: res })),
@@ -267,7 +276,7 @@ export class CardsEffects {
   googleCallback$ = createEffect(() =>
     this.actions$.pipe(
       ofType(googleCallback),
-      exhaustMap(({callbackUrl}) =>
+      exhaustMap(({ callbackUrl }) =>
         this.user.googleCallbackLogin(callbackUrl).pipe(
           tap((user) => {
             if (user) {
@@ -322,11 +331,25 @@ export class CardsEffects {
         this.user.authentication().pipe(
           map((val) => {
             if (val) {
-              this.store.dispatch(fetchUserData()); //get userData if authorization was sucessfull
+              this.store.dispatch(fetchUserData()); // get userData if authorization was sucessfull
             }
             return authenticated({ auth: val });
           }),
 
+          catchError((reason) => of(LoadFailure({ reason: reason })))
+        )
+      ),
+      share()
+    )
+  );
+
+  report$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(reportCard),
+      withLatestFrom(combineLatest([this.store.select(CurrentCard), this.store.select(CurrentLecture)])),
+      switchMap(([action, [card, lecture]]) =>
+        this.cards.reportCard(card, lecture).pipe(
+          map((c) => reportCardSuccess({ card: c })),
           catchError((reason) => of(LoadFailure({ reason: reason })))
         )
       ),

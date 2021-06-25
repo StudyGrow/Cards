@@ -11,7 +11,7 @@ export const pageSize = 30;
 export const initialState: Mode = {
   currentCard: undefined,
   activeIndex: 0,
-  formMode: formMode.ADD,
+  formMode: 'add',
   typingMode: false,
   hideSearchResults: true,
   loading: 0,
@@ -45,7 +45,7 @@ const _modeReducer = createReducer(
       ? state
       : {
           ...state,
-          formMode: formMode[mode],
+          formMode: mode,
         }
   ),
 

@@ -6,6 +6,8 @@ import { Vote } from '../models/Vote';
 import { Card } from '../models/Card';
 import { Vorlesung } from '../models/Vorlesung';
 import { AppState } from '../models/state';
+import { Observable } from 'rxjs';
+import { Reports } from '../models/Report';
 
 const maxCards = 50; // maximum amount of cards which should be displayed in carousel
 export const selectAllCards = (state: AppState) => state.data?.cardData?.cards;
@@ -16,7 +18,9 @@ export const selectAllCards = (state: AppState) => state.data?.cardData?.cards;
  * @deprecated Use CardsSorted instead
  */
 const AllCards = (state: AppState) => state.data?.cardData?.cards;
-
+export const UserStatus = (state: AppState): string => state.data.userData?.user?.status;
+export const UserReports = (state: AppState) => state.data.userData.reports;
+export const UserNotificationsCount = (state: AppState) => countUserReports(state.data.userData.reports);
 /**
  * Get the votes that were made by a user for a certain card
  * @param state  state of the store
@@ -312,4 +316,9 @@ function _sort(cards: Card[], type: SortType, date: Date, votes: Vote[]): { date
 function countVotesForCard(card: Card, votes: Vote[]) {
   let res = votes.filter((vote) => vote.cardId === card._id && vote.value === 1).length;
   return res;
+}
+
+function countUserReports(reports: Reports) {
+  if (!reports) return undefined;
+  return reports['flash-cards']?.length + reports.lectures?.length + reports.users?.length;
 }

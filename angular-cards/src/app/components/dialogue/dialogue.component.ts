@@ -3,7 +3,9 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
 import { DialogData } from 'src/app/models/DialogueData';
 import { AppState } from 'src/app/models/state';
+import { reportCard } from 'src/app/store/actions/CardActions';
 import { changeTab, setFormMode } from 'src/app/store/actions/StateActions';
+import { deleteProfile } from 'src/app/store/actions/UserActions';
 
 @Component({
   selector: 'app-dialogue',
@@ -17,12 +19,32 @@ export class DialogueComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: DialogData
   ) {}
   ngOnInit() {}
-  cancel() {
-    this.store.dispatch(setFormMode({ mode: 'add' }));
-    this.store.dispatch(changeTab({ tab: 0 }));
+  confirm() {
+    switch (this.data.type) {
+      case DialogueType.CANCEL_EDIT:
+        this.store.dispatch(setFormMode({ mode: 'add' }));
+        this.store.dispatch(changeTab({ tab: 0 }));
+        break;
+      case DialogueType.DELETE_PROFILE:
+        this.store.dispatch(deleteProfile());
+
+        break;
+      case DialogueType.REPORT:
+        this.store.dispatch(reportCard());
+        break;
+      default:
+        console.error('unknown type ' + this.data.type, DialogueType['report']);
+        break;
+    }
+
     this.dialogRef.close();
   }
   onNoClick(): void {
     this.dialogRef.close();
   }
+}
+export enum DialogueType {
+  REPORT = 'report',
+  CANCEL_EDIT = 'card-form.cancel',
+  DELETE_PROFILE = 'profile.delete',
 }

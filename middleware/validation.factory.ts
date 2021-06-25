@@ -45,7 +45,7 @@ export default class ValidationFactory {
     return celebrate({
       [Segments.BODY]: Joi.object().keys({
         card: Joi.object({
-          abrv: Joi.string().min(3).max(7).required(),
+          abrv: Joi.string().min(3).max(7),
           thema: Joi.string().min(3).max(500).required(),
           content: Joi.string().min(1).max(1000).required(),
           latex: Joi.number().required(),
@@ -117,6 +117,17 @@ export default class ValidationFactory {
           email: Joi.string().email().required(),
           name: Joi.allow(),
           surname: Joi.allow(),
+        })
+        .unknown(true),
+    });
+  }
+
+  validateReportCard() {
+    return celebrate({
+      [Segments.BODY]: Joi.object()
+        .keys({
+          resourceId: Joi.string().required(),
+          lectureId: Joi.string().required(),
         })
         .unknown(true),
     });

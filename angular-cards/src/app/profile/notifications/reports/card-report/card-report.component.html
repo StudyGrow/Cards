@@ -1,0 +1,25 @@
+<mat-card class="mb-2">
+  <mat-card-header>
+    <mat-card-title> {{ cardReport.thema }} </mat-card-title>
+    <mat-card-subtitle>
+      {{ cardReport.date | date: 'longDate':'de' }}
+    </mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <p>{{ cardReport.content }}</p>
+  </mat-card-content>
+  <mat-card-actions>
+    <button
+      mat-icon-button
+      matTooltip="{{ 'show-in-lecture' | translate }}"
+      class="mr-3"
+      (click)="navigate(cardReport)"
+    >
+      <mat-icon>launch</mat-icon>
+    </button>
+    <button mat-icon-button class="mr-3" [matTooltip]="'clear-report' | translate"><mat-icon>clear</mat-icon></button>
+    <button mat-icon-button class="mr-3" color="warn" [matTooltip]="'delete-resource' | translate">
+      <mat-icon>delete</mat-icon>
+    </button>
+  </mat-card-actions>
+</mat-card>

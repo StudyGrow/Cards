@@ -1,20 +1,23 @@
 import { Model } from "mongoose";
 import { ICard } from "../models/cards.model";
 import { ILecture } from "../models/lecture.model";
+import ReportService from "./report.service";
 import UserService from "./user.service";
 
 // service which provides card related services
 // const MultipleChoiceCard = require("../models/MultipleChoiceCard");
 
 export default class CardsService {
-  constructor({ cardsModel, lectureModel, userService }) {
+  constructor({ cardsModel, lectureModel, userService, reportService }) {
     this.cardsModel = cardsModel;
     this.lectureModel = lectureModel;
     this.userService = userService;
+    this.reportService = reportService;
   }
   cardsModel: Model<ICard>;
   lectureModel: Model<ILecture>;
   userService: UserService;
+  reportService: ReportService;
   // returns all the cards matching the query
   getCardsFromQuery(query) {
     const cards = this.cardsModel
@@ -23,13 +26,24 @@ export default class CardsService {
     return cards;
   }
 
-  findByAbrv = async (abrv) => {
-    return await this.cardsModel
-      .find({ vorlesung: abrv })
-      .lean()
-      .select(
-        "name thema vorlesung tags latex authorId authorName content date"
-      );
+  findByAbrv = async (abrv: string, userId?: string) => {
+    if (userId) {
+      const reports = await this.reportService.getUserCardReports(userId);
+      const ids = reports.map((report) => report.resourceId);
+      return await this.cardsModel
+        .find({ vorlesung: abrv, _id: { $nin: ids } })
+        .lean()
+        .select(
+          "name thema vorlesung tags latex authorId authorName content date"
+        );
+    } else {
+      return await this.cardsModel
+        .find({ vorlesung: abrv })
+        .lean()
+        .select(
+          "name thema vorlesung tags latex authorId authorName content date"
+        );
+    }
   };
 
   // //creates a new card and adds it to the database

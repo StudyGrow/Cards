@@ -7,7 +7,7 @@ import { AppState } from './models/state';
 import { ThemesService } from './services/themes.service';
 import { auth } from './store/actions/UserActions';
 import { NgcCookieConsentService } from 'ngx-cookieconsent';
-import { CardsSortedAndFiltered } from './store/selector';
+import { CardsSortedAndFiltered, FormMode, UserReports } from './store/selector';
 import { CardsEffects } from './store/effects/effects';
 import { Failure } from './store/actions/CardActions';
 import { NotificationsService } from './services/notifications.service';
@@ -33,7 +33,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.store.dispatch(auth());
     let language = localStorage.getItem('language');
     if (!language || (language != 'en' && language != 'de')) language = 'de';
-    translate.setDefaultLang(language);
+    this.translate.setDefaultLang(language);
     this.themeManager.initTheme(); // initialize theme
 
     // log state only in development mode
@@ -43,7 +43,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     if (isDevMode()) {
-      const sub = this.store.select(CardsSortedAndFiltered).subscribe((a) => {
+      const sub = this.store.select(FormMode).subscribe((a) => {
         console.log(a);
       });
       this.subscriptioins$.push(sub);

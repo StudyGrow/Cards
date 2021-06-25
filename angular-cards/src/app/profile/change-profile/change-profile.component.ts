@@ -11,6 +11,7 @@ import { updateUserData } from 'src/app/store/actions/UserActions';
 import { DialogueComponent } from 'src/app/components/dialogue/dialogue.component';
 import { MatDialog } from '@angular/material/dialog';
 import { AppState } from 'src/app/models/state';
+import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'app-change-profile',
   templateUrl: './change-profile.component.html',
@@ -21,7 +22,12 @@ export class ChangeProfileComponent implements OnInit, OnDestroy {
   subscriptions$: Subscription[] = [];
   public user = new User();
   fileToUpload: File = null;
-  constructor(private userService: UserService, private store: Store<AppState>, public dialog: MatDialog) {}
+  constructor(
+    private translate: TranslateService,
+    private userService: UserService,
+    private store: Store<AppState>,
+    public dialog: MatDialog
+  ) {}
 
   ngOnInit(): void {
     this.user.name = '';
@@ -83,10 +89,11 @@ export class ChangeProfileComponent implements OnInit, OnDestroy {
     this.dialog.open(DialogueComponent, {
       width: '400px',
       data: {
-        title: 'Account löschen',
-        content: 'Bist du sicher, dass du deinen Account unwiderruflich löschen möchtest?',
-        abortText: 'Nein, zurück',
-        proceedText: 'Ja',
+        title: this.translate.instant('profile.manage.dialog.title'),
+        content: this.translate.instant('profile.manage.dialog.content'),
+        abortText: this.translate.instant('profile.manage.dialog.abort'),
+        proceedText: this.translate.instant('profile.manage.dialog.confirm'),
+        type: 'profile.delete',
       },
     });
   }
