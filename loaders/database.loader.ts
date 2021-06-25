@@ -9,12 +9,12 @@ export default async () => {
     minTimeout: config.database.reconnectInterval,
     maxTimeout: Number(config.database.reconnectInterval) * 2,
   };
-  let connection = await _connect(options);
+  const connection = await _connect(options);
   return connection.connection.db;
 };
 
-async function _connect(retryOptions: any) {
-  let connectionString = config.database.url;
+async function _connect(retryOptions: any): Promise<any> {
+  const connectionString = config.database.url;
   const options = config.database.options;
   return promiseRetry((retry, number) => {
     logger.info(`Attempt no. ${number} connecting to database`);
