@@ -63,7 +63,7 @@ export const ActiveTags = (state: AppState) => state.mode.tags;
  * @param state state of the app
  */
 export const AllTags = (state: AppState) => state.data.cardData?.currLecture?.tagList;
-/**select the index of the active card in the array */
+/** select the index of the active card in the array */
 export const ActiveIndex = (state: AppState) => state.mode.activeIndex;
 /**
  * Get the mode of the card form
@@ -202,7 +202,7 @@ function _filter(cards: Card[], filters: string[]): Card[] {
     return cards;
   }
 
-  let res = cards?.filter((card) => {
+  const res = cards?.filter((card) => {
     for (const tag of filters) {
       if (!card.tags) {
         return false;
@@ -227,7 +227,7 @@ function selectRemaining(all: any[], selected: any[]) {
  * @param votes Votes are needed if the user wants to sort cards by the number of likes
  */
 function _sort(cards: Card[], type: SortType, date: Date, votes: Vote[]): { date: Date; cards: Card[] } {
-  let result = { cards: cards, date: new Date() };
+  const result = { cards: cards, date: new Date() };
   if (!cards) {
     return result;
   }
@@ -299,7 +299,7 @@ function _sort(cards: Card[], type: SortType, date: Date, votes: Vote[]): { date
       result.cards = [...cards].sort((a, b) => countVotesForCard(b, votes) - countVotesForCard(a, votes));
       break;
     default:
-      result.date = date; //no changes were made so reset to initial date
+      result.date = date; // no changes were made so reset to initial date
       break;
   }
   return result;
@@ -310,6 +310,6 @@ function _sort(cards: Card[], type: SortType, date: Date, votes: Vote[]): { date
  * @param votes all votes
  */
 function countVotesForCard(card: Card, votes: Vote[]) {
-  let res = votes.filter((vote) => vote.cardId === card._id && vote.value === 1).length;
+  const res = votes.filter((vote) => vote.cardId === card._id && vote.value === 1).length;
   return res;
 }
