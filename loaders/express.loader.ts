@@ -7,7 +7,7 @@ import swaggerUi from "swagger-ui-express";
 import path from "path";
 import { CelebrateError } from "celebrate";
 
-const helmet = require("helmet");
+import helmet from "helmet";
 import express from "express";
 export default ({ app, container, logger }) => {
   app.use(function (req, res, next) {
@@ -35,7 +35,6 @@ export default ({ app, container, logger }) => {
   });
   const options = {
     definition: {
-      openapi: "3.0.0",
       info: {
         title: "Cards Backend",
         version: "0.1.0",
@@ -62,7 +61,7 @@ export default ({ app, container, logger }) => {
   app.use(`/docs`, swaggerUi.serve, swaggerUi.setup(specs, { explorer: true }));
   app.use(`/api/`, [routes]);
 
-  //built angular files
+  // built angular files
   app.use(
     express.static(path.join(__dirname, "../angular-cards/dist/angular-cards/"))
   );
@@ -75,7 +74,7 @@ export default ({ app, container, logger }) => {
   );
   app.use((err: any, _req: any, res: any, next: any) => {
     if (err instanceof CelebrateError) {
-      let message =
+      const message =
         err?.details?.get("body")?.details?.map((msg) => msg.message) ||
         "Validation Error";
       res.status(400).send(message);

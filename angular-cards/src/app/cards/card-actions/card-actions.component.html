@@ -21,13 +21,7 @@
   >
     <mat-icon>share</mat-icon>
   </button>
-  <button disabled class="mr-1 mt-1" id="more" mat-icon-button type="button" [matMenuTriggerFor]="menu">
-    <mat-icon>more_horiz</mat-icon></button
-  ><mat-menu #menu="matMenu">
-    <button mat-menu-item>
-      <button id="report" mat-icon-button type="button">
-        <mat-icon>flag</mat-icon><span>{{ 'card-actions.report' | translate }}</span>
-      </button>
-    </button>
-  </mat-menu>
+  <button class="mr-1 mt-1 report" id="more" mat-icon-button type="button" (click)="reportCard()">
+    <mat-icon [matTooltip]="'card-actions.report' | translate" matTooltipPosition="above">flag</mat-icon>
+  </button>
 </div>

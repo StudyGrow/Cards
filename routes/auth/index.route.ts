@@ -1,6 +1,5 @@
 import { route, POST, GET, before, inject } from "awilix-express";
 import { Request, Response } from "express";
-import passport from "passport";
 import AuthService from "../../services/auth.service";
 import TokenService from "../../services/token.service";
 import userService from "../../services/user.service";
@@ -16,30 +15,6 @@ export default class UserRoute {
   authService: AuthService;
   tokenService: TokenService;
 
-  /**
-   * @swagger
-   *
-   * /auth/googleCallback:
-   *   post:
-   *     description: Creates a user and/or signs user in
-   *     produces:
-   *       - application/json
-   *     parameters:
-   *       - name: code
-   *         description: Google code (implicit flow)
-   *         in:  body
-   *         required: true
-   *         type: string
-   *         example: {code: <token>}
-   *     responses:
-   *       200:
-   *         description: Returns auth tokens for further requests and the user
-   *         content:
-   *          application/json:
-   *              schema:
-   *                type: string
-   *                example: {user: <user>,authToken: <token>, refreshToken: <token>}
-   */
   @route("/googleCallback")
   @GET()
   @before(
@@ -63,17 +38,6 @@ export default class UserRoute {
       });
   }
 
-  /**
-   * @swagger
-   *
-   * /auth/google:
-   *   post:
-   *     description: Redirects user to Google sigIn page
-   *     produces:
-   *       - application/json
-   *     responses:
-   *       302:
-   */
   @route("/google")
   @GET()
   @before(
@@ -101,6 +65,30 @@ export default class UserRoute {
       });
   }
 
+  /**
+   * @swagger
+   *  /auth/signin:
+   *    post:
+   *      description: Sign in by email or username and password, sends authToken and refreshToken back as cookies
+   *      requestBody:
+   *        content:
+   *          application/json:
+   *            schema:
+   *              type: object
+   *              properties:
+   *                username:
+   *                  type: string
+   *                password:
+   *                  type: string
+   *            example:
+   *              username: "bobsname"
+   *              password: "bobspassword"
+   *      responses:
+   *        '200':
+   *          description: Successfully signed in
+   *        '500':
+   *          description: Error signing in
+   */
   @route("/signin")
   @POST()
   @before(
@@ -122,6 +110,34 @@ export default class UserRoute {
       });
   }
 
+  /**
+   * @swagger
+   *  /auth/signup:
+   *    post:
+   *      description: Sign up by email, username and password, sends authToken and refreshToken back as cookies
+   *      requestBody:
+   *        content:
+   *          application/json:
+   *            schema:
+   *              type: object
+   *              properties:
+   *                email:
+   *                  type: object
+   *                  properties:
+   *                    username:
+   *                      type: string
+   *                    password:
+   *                      type: string
+   *            example:
+   *              email: "bobsmail@mail.com"
+   *              username: "bobsname"
+   *              password: "bobspassword"
+   *      responses:
+   *        '200':
+   *          description: Successfully signed up
+   *        '500':
+   *          description: Error signing up
+   */
   @route("/signup")
   @POST()
   @before(
@@ -130,7 +146,9 @@ export default class UserRoute {
   async registerUser(req, res) {
     this.authService
       .signUpByEmail(req.body)
-      .then(() => {
+      .then((response) => {
+        res.cookie("auth", response.tokens.auth);
+        res.cookie("refresh", response.tokens.refresh);
         res.status(200).send();
       })
       .catch((err) => {
@@ -138,30 +156,6 @@ export default class UserRoute {
       });
   }
 
-  /**
-   * @swagger
-   *
-   * /auth/refresh:
-   *   post:
-   *     description: Gert a new auth token
-   *     produces:
-   *       - application/json
-   *     parameters:
-   *       - name: refresh_token
-   *         description: An refresh JWT token
-   *         in:  body
-   *         required: true
-   *         type: string
-   *         example: {refreshToken: <required> }
-   *     responses:
-   *       200:
-   *         description: Returns new authToken
-   *         content:
-   *          application/json:
-   *              schema:
-   *                type: string
-   *                example: {authToken: <token>}
-   */
   @route("/refresh")
   @POST()
   @before(inject(({ validationFactory }) => validationFactory.refresh()))
@@ -170,7 +164,7 @@ export default class UserRoute {
 
     this.tokenService.verifyRefreshToken(refreshToken).then(
       async (payload: any) => {
-        let token = await this.tokenService.createAuthToken(payload);
+        const token = await this.tokenService.createAuthToken(payload);
         res.cookie("auth", token);
         res.send({ authToken: token });
       },

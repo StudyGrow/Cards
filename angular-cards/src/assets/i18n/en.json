@@ -1,11 +1,4 @@
 {
-  "flash-cards": "Flash cards",
-  "edit": "Edit",
-  "add": "Add",
-  "overview": "Overview",
-  "lectures": "Lectures",
-  "lecture": "Lecture",
-  "add-lecture": "Add Lecture",
   "btn": {
     "add": "Add",
     "update": "Update",
@@ -23,6 +16,8 @@
     }
   },
   "card-form": {
+    "add-flash-card": "Add a flash card",
+    "edit-flash-card": "Edit a flash card",
     "card-question": "Question",
     "card-answer": "Answer",
     "card-tags": "Tags",
@@ -31,6 +26,14 @@
     "error-message": {
       "question": "Question must contain at least 3 characters",
       "answer": "The answer must be between 1 and 1000 characters"
+    },
+    "cancel": {
+      "dialog": {
+        "title": "Cancel Edit",
+        "content": "Are you sure, you want to cancel editing this card? The changes will be discarded.",
+        "abort": "No, continue editing",
+        "confirm": "Yes, discard my changes"
+      }
     }
   },
   "lecture-overview-title": "Posts over time",
@@ -77,7 +80,17 @@
       "new-password": "New password",
       "password-hint": "At least 7 characters",
       "new-password-repeat": "Repeat new password",
-      "delete-account": "Permenantly delete Account"
+      "delete-account": "Permenantly delete Account",
+      "dialog": {
+        "title": "Delete permenantly",
+        "content": "Are you sure, you want to permanently delete your account?",
+        "abort": "No, abort",
+        "confirm": "Yes, delete permanently"
+      }
+    },
+    "notifications": {
+      "no-new-notifications": "You have no notifications yet",
+      "reports": "User reports"
     }
   },
   "question": "Question",
@@ -164,6 +177,14 @@
     "browser-settings": "Browser Settings",
     "language": "Language"
   },
+  "report": {
+    "dialog": {
+      "title": "Report card",
+      "content": "Are you sure, you want to report this card?",
+      "abort": "No",
+      "confirm": "Yes"
+    }
+  },
   "logout": "Logout",
   "ITEMS_PER_PAGE_LABEL": "Elements per page:",
   "NEXT_PAGE_LABEL": "Next Page",
@@ -171,5 +192,19 @@
   "FIRST_PAGE_LABEL": "First Page",
   "LAST_PAGE_LABEL": "Last Page",
   "RANGE_PAGE_LABEL_1": "0 of {{length}}",
-  "RANGE_PAGE_LABEL_2": "{{startIndex}} - {{endIndex}} of {{length}}"
+  "RANGE_PAGE_LABEL_2": "{{startIndex}} - {{endIndex}} of {{length}}",
+  "flash-cards": "Flash cards",
+  "notifications": "Notifications",
+  "users": "Users",
+  "number-of-cards": "Number of cards",
+  "report-type": "Report Type",
+  "clear-report": "Clear report",
+  "delete-resource": "Delete ressource",
+  "show-in-lecture": "Show card in lecture",
+  "edit": "Edit",
+  "add": "Add",
+  "overview": "Overview",
+  "lectures": "Lectures",
+  "lecture": "Lecture",
+  "add-lecture": "Add Lecture"
 }

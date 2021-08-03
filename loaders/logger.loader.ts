@@ -1,17 +1,17 @@
-import { createLogger, format, transports, config } from 'winston';
+import { createLogger, format, transports, config } from "winston";
 
 let level, silent;
 switch (process.env.NODE_ENV) {
-  case 'production':
-    level = 'warning';
+  case "production":
+    level = "debug";
     silent = false;
     break;
-  case 'test':
-    level = 'error';
+  case "test":
+    level = "error";
     silent = false;
     break;
   default:
-    level = 'debug';
+    level = "debug";
     silent = false;
     break;
 }
@@ -25,7 +25,7 @@ const enumerateErrorFormat = format((info) => {
         message: info.stack,
         stack: info.stack,
       },
-      info,
+      info
     );
   }
 
@@ -36,11 +36,7 @@ const options = {
     handleExceptions: true,
     level,
     silent,
-    format: format.combine(
-      format.colorize(),
-      format.splat(),
-      formatter,
-    ),
+    format: format.combine(format.colorize(), format.splat(), formatter),
   },
 };
 

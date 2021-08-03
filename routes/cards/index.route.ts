@@ -1,32 +1,56 @@
-//handles all card specific routes
-import { route, GET, PUT, POST, DELETE, before, inject } from "awilix-express";
-import { Request, Response } from "express";
+// handles all card specific routes
+import { route, GET, PUT, POST, before, inject } from "awilix-express";
+import { Response } from "express";
 import { ICard } from "../../models/cards.model";
 import CardsService from "../../services/cards.service";
 import LectureService from "../../services/lecture.service";
+import ReportService from '../../services/report.service';
 import VotesService from "../../services/votes.service";
 
-//route to get the cards from a specific lecture
+// route to get the cards from a specific lecture
 @route("/cards")
 // @before(
 //   inject(({ authenticationMiddleware }) => authenticationMiddleware),
 // )
 export default class CardsRoute {
-  constructor({ cardsService, votesService, lectureService }) {
+  constructor({ cardsService, votesService, lectureService, reportService }) {
     this.cardsService = cardsService;
     this.votesService = votesService;
     this.lectureService = lectureService;
+    this.reportService = reportService;
   }
   cardsService: CardsService;
   lectureService: LectureService;
   votesService: VotesService;
+  reportService: ReportService;
+
+
+  /**
+   * @swagger
+   *
+   *  /cards:
+   *    get:
+   *      description: Gets cards by abbreviation
+   *      produces:
+   *        - application/json
+   *      parameters:
+   *        - name: abrv
+   *          description: Abbreviation of lecture
+   *          in:  query
+   *          required: true
+   *          type: string
+   *          example: BuK
+   *      responses:
+   *        '200':
+   *          description: Lecture data corresponding to provided lecture abbreviation
+   *        '401':
+   *          description: Query validation error
+   *        '500':
+   *          description: Error getting cards
+   */
   @route("")
   @GET()
-  @before(
-    inject(({ validationFactory }) =>
-      validationFactory.validateLectureAbbreviation()
-    )
-  )
+  @before(inject(({ validationFactory }) => validationFactory.validateLectureAbbreviation()))
   async getCardsByAbbreviation(req, res) {
     this.cardsService
       .getCardsFromQuery({
@@ -36,50 +60,53 @@ export default class CardsRoute {
         res.status(200).send(cards);
       })
       .catch((err) => {
-        res
-          .status(err?.status || 500)
-          .send(err?.message || "Internal Server Error");
+        res.status(err?.status || 500).send(err?.message || 'Internal Server Error');
       });
   }
 
-  @route("/data")
-  @GET()
-  @before(
-    inject(({ validationFactory }) =>
-      validationFactory.validateLectureAbbreviation()
-    )
-  )
-  @before(inject(({ authorizationMiddleware }) => authorizationMiddleware))
-  async getCardsData(req, res) {
-    let abrv = req.query.abrv;
-    let cards = this.cardsService.findByAbrv(abrv);
-    let vl = this.lectureService.findByAbrv(abrv);
-    let allVotes = this.votesService.getAllVotesByLectureAbrv(abrv);
-    let userid;
-    let username;
-    userid = req._id;
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    Promise.all([cards, vl, allVotes])
-      .then(([cards, lecture, votes]) =>
-        res.json({
-          cards: cards,
-          votes: votes,
-          lecture: lecture,
-          uid: userid,
-          username: username,
-        })
-      )
-      .catch((err) => {
-        res.status(422).send(err.message);
-      });
-  }
-
+  /**
+   * @swagger
+   *  /cards/new:
+   *    post:
+   *      description: Add a new card
+   *      requestBody:
+   *        content:
+   *          application/json:
+   *            schema:
+   *              type: object
+   *              properties:
+   *                card:
+   *                  type: object
+   *                  properties:
+   *                    abrv:
+   *                      type: string
+   *                    thema:
+   *                      type: string
+   *                    content:
+   *                      type: string
+   *                    latex:
+   *                      type: number
+   *                    taglist:
+   *                      type: array
+   *            example:
+   *              card:
+   *                thema: Berechenbarkeit und Komplexität
+   *                abrv: BuK
+   *                content: Some card content
+   *                latex: 0
+   *                taglist: [BuK]
+   *      responses:
+   *        '200':
+   *          description: Card which was added
+   *        '422':
+   *          description: Error adding card
+   *        '401':
+   *          description: Unauthorized add of card not allowed
+   */
   @route("/new")
   @POST()
   @before(inject(({ authenticationMiddleware }) => authenticationMiddleware))
-  @before(
-    inject(({ validationFactory }) => validationFactory.validateCardToAdd())
-  )
+  @before(inject(({ validationFactory }) => validationFactory.validateCardToAdd()))
   async addCard(req: any, res: Response) {
     this.cardsService
       .addCard(req.body.card, req._id)
@@ -91,11 +118,49 @@ export default class CardsRoute {
       });
   }
 
+  /**
+   * @swagger
+   *  /cards/update:
+   *    put:
+   *      description: Update an existing card, only user who created card can update it
+   *      requestBody:
+   *        content:
+   *          application/json:
+   *            schema:
+   *              type: object
+   *              properties:
+   *                card:
+   *                  type: object
+   *                  properties:
+   *                    _id:
+   *                      type: string
+   *                    thema:
+   *                      type: string
+   *                    content:
+   *                      type: string
+   *                    latex:
+   *                      type: number
+   *                    taglist:
+   *                      type: array
+   *            example:
+   *              card:
+   *                _id: Berechenbarkeit und Komplexität
+   *                thema: Berechenbarkeit und Komplexität
+   *                abrv: BuK
+   *                content: Some card content
+   *                latex: 0
+   *                taglist: [BuK]
+   *      responses:
+   *        '200':
+   *          description: Card which was updated
+   *        '422':
+   *          description: Error updating card, Unauthorized update of card not allowed
+   */
   @route("/update")
   @PUT()
   @before(inject(({ authenticationMiddleware }) => authenticationMiddleware))
   @before(
-    inject(({ validationFactory }) => validationFactory.validateCardToAdd())
+    inject(({ validationFactory }) => validationFactory.validateCardToUpdate())
   )
   async updateCard(req: any, res: Response) {
     this.cardsService
@@ -108,12 +173,10 @@ export default class CardsRoute {
       });
   }
 
-  @route("/vote")
+  @route('/vote')
   @PUT()
   @before(inject(({ authenticationMiddleware }) => authenticationMiddleware))
-  @before(
-    inject(({ validationFactory }) => validationFactory.validateVoteCardId())
-  )
+  @before(inject(({ validationFactory }) => validationFactory.validateVoteCardId()))
   async castCard(req: any, res: Response) {
     // let vote = parseInt(req.body.value);
     this.votesService
@@ -126,16 +189,12 @@ export default class CardsRoute {
       });
   }
 
-  @route("/votes")
+  @route('/votes')
   @GET()
-  @before(
-    inject(({ validationFactory }) =>
-      validationFactory.validateLectureAbbreviation()
-    )
-  )
+  @before(inject(({ validationFactory }) => validationFactory.validateLectureAbbreviation()))
   @before(inject(({ authenticationMiddleware }) => authenticationMiddleware))
   async getLectureVotesByUser(req: any, res: Response) {
-    let vote = parseInt(req.body.value);
+    const vote = parseInt(req.body.value);
     if (req._id) {
       this.votesService
         .getVotesByLectureAbrv(req.query.abrv, req._id)
@@ -146,8 +205,91 @@ export default class CardsRoute {
           res.status(422).send(err.message);
         });
     } else {
-      res.status(200).send([]);
+      res.status(422).send();
     }
+  }
+
+  /**
+   * @swagger
+   *
+   * /cards/report:
+   *   post:
+   *     description: Report a card
+   *     produces:
+   *       - application/json
+   *     parameters:
+   *       - name: resourceId
+   *         description: The id of the card to be reported
+   *         in:  body
+   *         required: true
+   *         type: string
+   *         example: <resourceId>
+   *       - name: lectureId
+   *         description: The lecture id where the card belongs to
+   *         in:  body
+   *         required: true
+   *         type: string
+   *         example: <lectureId>
+   *     responses:
+   *       200:
+   *         description: Returns the id of the blocked card
+   *         content:
+   *          application/json:
+   *              schema:
+   *                type: string
+   *                example: {}
+   */
+  @route('/report')
+  @POST()
+  @before(inject(({ authenticationMiddleware }) => authenticationMiddleware))
+  @before(inject(({ validationFactory }) => validationFactory.validateReportCard()))
+  async reportCard(req: any, res: Response) {
+    if (req._id) {
+      const resourceId = req.body.resourceId;
+      const lectureId = req.body.lectureId;
+      this.reportService
+        .reportResource({ resourceId: resourceId, resourceType: 'card' }, req._id, lectureId)
+        .then((blockedResource) => {
+          res.status(200).send(blockedResource);
+        })
+        .catch((err) => {
+          res.status(422).send(err.message);
+        });
+    } else {
+      res.status(422).send();
+    }
+  }
+
+  @route("/data")
+  @GET()
+  @before(
+    inject(({ validationFactory }) =>
+      validationFactory.validateLectureAbbreviation()
+    )
+  )
+  @before(inject(({ authorizationMiddleware }) => authorizationMiddleware))
+  async getCardsData(req, res) {
+    const abrv = req.query.abrv;
+    const cards = this.cardsService.findByAbrv(abrv);
+    const vl = this.lectureService.findByAbrv(abrv);
+    const allVotes = this.votesService.getAllVotesByLectureAbrv(abrv);
+    const userId = req._id;
+    let username;
+
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    Promise.all([cards, vl, allVotes])
+      .then(([cards, lecture, votes]) =>
+        res.json({
+          cards: cards,
+          votes: votes,
+          lecture: lecture,
+          uid: userId,
+          username: username,
+        })
+      )
+      .catch((err) => {
+        res.status(422).send(err.message);
+      });
   }
 }
 

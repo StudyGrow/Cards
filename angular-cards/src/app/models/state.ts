@@ -1,7 +1,7 @@
 import { Card } from './Card';
+import { Reports } from './Report';
 import { SortType } from './SortType';
 import { User } from './User';
-import { UserInfo } from './UserInfo';
 import { Vorlesung } from './Vorlesung';
 import { Vote } from './Vote';
 
@@ -28,6 +28,7 @@ export interface UserData {
   user: User; // current user if authenticated
   authenticated: boolean; // user is logged in or not
   lastUpdated: Date; // last update of userdata
+  reports: Reports;
 }
 
 export interface LecturesData {
@@ -38,7 +39,7 @@ export interface LecturesData {
 export interface Mode {
   activeIndex: number;
   currentCard: Card; // Card that should be displayed in the carousel
-  formMode: formMode;
+  formMode: string;
   typingMode: boolean;
   hideSearchResults: boolean;
   loading: number;

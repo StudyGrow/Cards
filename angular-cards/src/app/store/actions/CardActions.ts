@@ -5,7 +5,7 @@ import { Vorlesung } from '../../models/Vorlesung';
 
 import { Vote } from 'src/app/models/Vote';
 
-//Types of Actions
+// Types of Actions
 enum ActionTypes {
   FETCH_CARDS = '[Cards] Fetch from server, also loads current lecture and user.id',
   LOAD_SUCCESS = '[Cards] Load success',
@@ -19,10 +19,12 @@ enum ActionTypes {
   CHANGE_VOTE_SUCCESS = '[Vote] Change vote successfull on server',
   FETCH_USER_VOTES = '[Votes] Fetch votes made by the current user from server',
   FETCH_VOTES_SUCCESS = '[Votes] Fetch votes from server success',
+  REPORT_CARD = '[Card] Report card',
+  REPORT_CARD_SUCCESS = '[Card] Report card successful',
 }
 
 export const Failure = ActionTypes.LOAD_FAILURE;
-//Concrete Actions for each type
+// Concrete Actions for each type
 
 export const fetchCards = createAction(ActionTypes.FETCH_CARDS);
 export const fetchVotes = createAction(ActionTypes.FETCH_USER_VOTES);
@@ -47,7 +49,7 @@ export const updateCard = createAction(ActionTypes.UPDATE_CARD, props<{ card: Ca
 export const updateCardSuccess = createAction(ActionTypes.UPDATE_CARD_SUCCESS, props<{ card: Card }>());
 
 export const FetchCardsActions = {
-  //this loads lectures cards and user id
+  // this loads lectures cards and user id
   fetchCards,
   LoadSuccess,
 };
@@ -55,3 +57,7 @@ export const FetchCardsActions = {
 export const AddCardActions = { addCard, addCardSuccess };
 
 export const UpdateCardActions = { updateCard, updateCardSuccess };
+
+export const reportCard = createAction(ActionTypes.REPORT_CARD);
+
+export const reportCardSuccess = createAction(ActionTypes.REPORT_CARD_SUCCESS, props<{ card: Card }>());

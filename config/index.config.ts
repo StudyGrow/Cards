@@ -1,17 +1,6 @@
 import dotenv from "dotenv";
-import path from "path";
 
-if(process.env.NODE_ENV.indexOf("development") > -1){
-  let envPath = path.join(__dirname, `../../.env`);
-  dotenv.config({
-    path: envPath,
-  });
-  const env = dotenv.config();
-  if (env.error) {
-    let error = `Couldn't find ${envPath} file`;
-    throw new Error(error);
-  }
-}
+dotenv.config();
 
 export default {
   app: {

@@ -20,6 +20,7 @@ const initialState: Data = {
     authenticated: undefined,
     user: new User(),
     lastUpdated: undefined,
+    reports: undefined,
   },
   lectureData: {
     lectures: undefined,
@@ -37,16 +38,16 @@ const _dataReducer = createReducer(
       cards: [
         ...state.cardData.cards,
         {
-          //add card
+          // add card
           ...card,
-          authorId: state.userData.user._id, //add user id
-          authorName: state.userData.user.username, //add username
+          authorId: state.userData.user._id, // add user id
+          authorName: state.userData.user.username, // add username
         },
       ],
       currLecture: {
         ...state.cardData.currLecture,
         tagList: addTags(state.cardData.currLecture.tagList ? [...state.cardData.currLecture.tagList] : [], card.tags),
-      }, //add new tags to the lectures taglist
+      }, // add new tags to the lectures taglist
       lastUpdated: new Date(),
     },
   })),
@@ -126,6 +127,7 @@ const _dataReducer = createReducer(
       cards: info.cards,
       user: info.user,
       lastUpdated: new Date(),
+      reports: info.reports,
     },
   })),
 
@@ -164,7 +166,16 @@ const _dataReducer = createReducer(
       votes: initialState.cardData.votes,
       cards: initialState.cardData.cards,
       currLecture: initialState.cardData.currLecture,
-      lastUpdated: initialState.cardData.lastUpdated,
+      lastUpdated: new Date(),
+    },
+  })),
+
+  on(CardActions.reportCardSuccess, (state, { card }) => ({
+    ...state,
+    cardData: {
+      ...state.cardData,
+      cards: state.cardData.cards.filter((c) => c._id !== card._id),
+      lastUpdated: new Date(),
     },
   }))
 );
@@ -186,7 +197,7 @@ function updateObjectInArray(cards: Card[], card: Card) {
 function updateVote(votes: Vote[], vote: Vote) {
   let found: boolean;
   if (!votes) votes = [];
-  let result = [...votes].map((item) => {
+  const result = [...votes].map((item) => {
     if (item._id !== vote._id) {
       // This isn't the item we care about - keep it as-is
       return item;
@@ -227,7 +238,7 @@ function updateVote(votes: Vote[], vote: Vote) {
 // }
 
 function addTags(origin: string[], tags: string[]) {
-  //adds a list of tags to the original array without duplicates
+  // adds a list of tags to the original array without duplicates
   for (const tag of tags) {
     if (!origin.includes(tag)) {
       origin.push(tag);

@@ -325,10 +325,11 @@ export class FormComponent implements OnInit, OnDestroy {
     this.dialog.open(DialogueComponent, {
       width: '400px',
       data: {
-        title: 'Abbruch',
-        content: 'Bist du sicher, dass du das Bearbeiten dieser Karte abbrechen möchtest?',
-        abortText: 'Nein, zurück',
-        proceedText: 'Ja',
+        title: this.translate.instant('card-form.cancel.dialog.title'),
+        content: this.translate.instant('card-form.cancel.dialog.content'),
+        abortText: this.translate.instant('card-form.cancel.dialog.abort'),
+        proceedText: this.translate.instant('card-form.cancel.dialog.confirm'),
+        type: 'card-form.cancel',
       },
     });
   }

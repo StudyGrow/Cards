@@ -1,5 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { Observable, Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { Card } from 'src/app/models/Card';
+import { Reports } from 'src/app/models/Report';
+import { User } from 'src/app/models/User';
+import { Vorlesung } from 'src/app/models/Vorlesung';
+import { UserReports, UserStatus } from 'src/app/store/selector';
 
 @Component({
   selector: 'app-notifications',
@@ -8,7 +15,18 @@ import { Subscription } from 'rxjs';
 })
 export class NotificationsComponent implements OnInit {
   subscriptions$: Subscription[] = [];
-  constructor() {}
+  isAdmin$ = this.store.select(UserStatus).pipe(map((status) => status === 'admin'));
+  reports$: Observable<Reports> = this.store.select(UserReports);
+  cardReports$: Observable<Card[]> = this.reports$.pipe(map((reports) => reports['flash-cards']));
+  lectureReports$: Observable<Vorlesung[]> = this.reports$.pipe(map((reports) => reports.lectures));
+  userReports$: Observable<User[]> = this.reports$.pipe(map((reports) => reports.users));
+  selectOptions$: Observable<string[]> = this.reports$.pipe(
+    map((reports) => (reports ? Object.keys(reports) : undefined))
+  );
+  selected = 'flash-cards';
+  constructor(private store: Store) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.selectOptions$.subscribe((a) => console.log(a));
+  }
 }

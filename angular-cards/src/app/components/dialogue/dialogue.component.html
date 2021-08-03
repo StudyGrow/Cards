@@ -1,13 +1,13 @@
-<h1 mat-dialog-title>{{ data?.title || "Titel" }}</h1>
+<h1 mat-dialog-title>{{ data?.title || 'Titel' }}</h1>
 <div mat-dialog-content>
-  <p>{{ data?.content || "Content" }}</p>
+  <p>{{ data?.content || 'Content' }}</p>
 </div>
 
 <div mat-dialog-actions class="d-flex justify-content-end">
   <button mat-button class="mr-2" (click)="onNoClick()">
-    {{ data?.abortText || "Abbruch" }}
+    {{ data?.abortText || 'Abbruch' }}
   </button>
-  <button mat-button color="warn" (click)="cancel()">
-    {{ data?.proceedText || "Ok" }}
+  <button mat-button color="warn" (click)="confirm()">
+    {{ data?.proceedText || 'Ok' }}
   </button>
 </div>

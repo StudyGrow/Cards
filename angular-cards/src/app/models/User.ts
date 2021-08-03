@@ -6,6 +6,7 @@ export class User {
     public surname?: string,
     public _id?: string,
     public creationDate?: Date,
-    public confirmed?: boolean
+    public confirmed?: boolean,
+    public status?: string
   ) {}
 }

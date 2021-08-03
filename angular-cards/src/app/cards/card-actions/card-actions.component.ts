@@ -8,6 +8,10 @@ import { authorized, UserVote, VoteCount } from 'src/app/store/selector';
 import { changeVote } from '../../store/actions/CardActions';
 import { NotificationsService } from 'src/app/services/notifications.service';
 import { InfoMessage } from 'src/app/models/Notification';
+import { DialogueComponent } from 'src/app/components/dialogue/dialogue.component';
+import { MatDialog } from '@angular/material/dialog';
+import { TranslateService } from '@ngx-translate/core';
+import { CardsEffects } from 'src/app/store/effects/effects';
 
 @Component({
   selector: 'card-actions',
@@ -22,7 +26,14 @@ export class CardActionsComponent implements OnInit, OnDestroy {
   @Input() id: string; // id of card that the vote belongs to
 
   private subscriptions$: Subscription[] = [];
-  constructor(private store: Store<any>, private notification: NotificationsService) {}
+  constructor(
+    private store: Store<any>,
+    private notification: NotificationsService,
+    public dialogue: MatDialog,
+    private translate: TranslateService,
+    private actionState: CardsEffects,
+    private notifs: NotificationsService
+  ) {}
 
   ngOnInit(): void {
     let sub = this.store.pipe(map((state: AppState) => UserVote(state, this.id))).subscribe((init) => {
@@ -42,7 +53,7 @@ export class CardActionsComponent implements OnInit, OnDestroy {
   }
 
   toggleVote() {
-    let newVote: Vote = { ...this.vote, value: this.vote?.value === 1 ? 0 : 1 };
+    const newVote: Vote = { ...this.vote, value: this.vote?.value === 1 ? 0 : 1 };
     if (!newVote.cardId) newVote.cardId = this.id;
     this.store.dispatch(changeVote({ vote: newVote }));
     this.vote.value = newVote.value;
@@ -52,6 +63,23 @@ export class CardActionsComponent implements OnInit, OnDestroy {
       this.voteCount--;
     }
     return this.voteCount;
+  }
+
+  reportCard() {
+    this.dialogue.open(DialogueComponent, {
+      width: '400px',
+      data: {
+        title: this.translate.instant('report.dialog.title'),
+        content: this.translate.instant('report.dialog.content'),
+        abortText: this.translate.instant('report.dialog.abort'),
+        proceedText: this.translate.instant('report.dialog.confirm'),
+        type: 'report',
+      },
+    });
+    const sub = this.actionState.report$.pipe(delay(300)).subscribe((action) => {
+      this.notifs.clearNotifications();
+      this.notifs.addNotification(new InfoMessage('Die Karte wurde erfolgreich gemeldet und entfernt'));
+    });
   }
 
   shareCard() {
