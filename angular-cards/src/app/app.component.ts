@@ -7,7 +7,7 @@ import { AppState } from './models/state';
 import { ThemesService } from './services/themes.service';
 import { auth } from './store/actions/UserActions';
 import { NgcCookieConsentService } from 'ngx-cookieconsent';
-import { CardsSortedAndFiltered, FormMode, UserReports } from './store/selector';
+import { FormMode } from './store/selector';
 import { CardsEffects } from './store/effects/effects';
 import { Failure } from './store/actions/CardActions';
 import { NotificationsService } from './services/notifications.service';
@@ -32,7 +32,9 @@ export class AppComponent implements OnInit, OnDestroy {
   ) {
     this.store.dispatch(auth());
     let language = localStorage.getItem('language');
-    if (!language || (language != 'en' && language != 'de')) language = 'de';
+    if (!language || (language !== 'en' && language !== 'de')) {
+      language = 'de';
+    }
     this.translate.setDefaultLang(language);
     this.themeManager.initTheme(); // initialize theme
 
@@ -42,8 +44,9 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    let sub;
     if (isDevMode()) {
-      const sub = this.store.select(FormMode).subscribe((a) => {
+      sub = this.store.select(FormMode).subscribe((a) => {
         console.log(a);
       });
       this.subscriptioins$.push(sub);
@@ -72,7 +75,7 @@ export class AppComponent implements OnInit, OnDestroy {
     //   // you can use this.cookies.getConfig() to do stuff...
     // });
     // this.subscriptioins$.push(sub);
-    const sub = this.actionState.login$.pipe(delay(3000)).subscribe((action) => {
+    sub = this.actionState.login$.pipe(delay(3000)).subscribe((action) => {
       this.notifs.clearNotifications();
       if (action.type === Failure) {
         console.log(action.reason);
