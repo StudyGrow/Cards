@@ -1,5 +1,6 @@
 import { Card } from './Card';
 import { Reports } from './Report';
+
 import { SortType } from './SortType';
 import { User } from './User';
 import { Vorlesung } from './Vorlesung';
