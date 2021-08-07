@@ -20,7 +20,10 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class AppComponent implements OnInit, OnDestroy {
   private subscriptioins$: Subscription[] = [];
-
+  private SUPPORTED_LANGUAGES = {
+    en: 'english',
+    de: 'german',
+  };
   public constructor(
     private titleService: Title,
     private store: Store<AppState>,
@@ -31,8 +34,18 @@ export class AppComponent implements OnInit, OnDestroy {
     private translate: TranslateService
   ) {
     this.store.dispatch(auth());
-    let language = localStorage.getItem('language');
-    if (!language || (language !== 'en' && language !== 'de')) {
+    let language = localStorage.getItem('language'); // language set specifically by the user
+
+    if (!language) {
+      // try to determine language from navigator preference
+      language = navigator.language;
+      if (navigator.language.includes('-')) {
+        language = navigator.language.split('-')[0];
+      }
+    }
+
+    // check if selected language is supported
+    if (!language || !(language in this.SUPPORTED_LANGUAGES)) {
       language = 'de';
     }
     this.translate.setDefaultLang(language);
