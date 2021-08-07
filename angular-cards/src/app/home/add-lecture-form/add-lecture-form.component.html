@@ -35,8 +35,8 @@
           minlength="3"
           maxlength="7"
         />
-        <mat-hint align="end">{{ abrv.value?.trim().length || 0 }}/7</mat-hint>
-        <mat-error *ngIf="abrv.value && (abrv.value?.trim().length < 3 || abrv.value?.trim().length > 7)">{{
+        <mat-hint align="end">{{ abrv.value?.trim().length || 0 }}/10</mat-hint>
+        <mat-error *ngIf="abrv.value && (abrv.value?.trim().length < 3 || abrv.value?.trim().length > 10)">{{
           'lecture-form.error-message.abrv' | translate
         }}</mat-error>
       </mat-form-field>
