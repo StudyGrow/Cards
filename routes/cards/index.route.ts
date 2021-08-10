@@ -4,7 +4,7 @@ import { Response } from "express";
 import { ICard } from "../../models/cards.model";
 import CardsService from "../../services/cards.service";
 import LectureService from "../../services/lecture.service";
-import ReportService from '../../services/report.service';
+import ReportService from "../../services/report.service";
 import VotesService from "../../services/votes.service";
 
 // route to get the cards from a specific lecture
@@ -23,7 +23,6 @@ export default class CardsRoute {
   lectureService: LectureService;
   votesService: VotesService;
   reportService: ReportService;
-
 
   /**
    * @swagger
@@ -50,18 +49,22 @@ export default class CardsRoute {
    */
   @route("")
   @GET()
-  @before(inject(({ validationFactory }) => validationFactory.validateLectureAbbreviation()))
-  async getCardsByAbbreviation(req, res) {
-    this.cardsService
-      .getCardsFromQuery({
+  @before(
+    inject(({ validationFactory }) =>
+      validationFactory.validateLectureAbbreviation()
+    )
+  )
+  async getCardsByAbbreviation(req, res): Promise<void> {
+    try {
+      const cards: ICard[] = await this.cardsService.getCardsFromQuery({
         vorlesung: req.query.abrv,
-      })
-      .then((cards: ICard[]) => {
-        res.status(200).send(cards);
-      })
-      .catch((err) => {
-        res.status(err?.status || 500).send(err?.message || 'Internal Server Error');
       });
+      res.status(200).send(cards);
+    } catch (error) {
+      res
+        .status(error?.status || 500)
+        .send(error?.message || "Internal Server Error");
+    }
   }
 
   /**
@@ -106,7 +109,9 @@ export default class CardsRoute {
   @route("/new")
   @POST()
   @before(inject(({ authenticationMiddleware }) => authenticationMiddleware))
-  @before(inject(({ validationFactory }) => validationFactory.validateCardToAdd()))
+  @before(
+    inject(({ validationFactory }) => validationFactory.validateCardToAdd())
+  )
   async addCard(req: any, res: Response) {
     this.cardsService
       .addCard(req.body.card, req._id)
@@ -173,10 +178,12 @@ export default class CardsRoute {
       });
   }
 
-  @route('/vote')
+  @route("/vote")
   @PUT()
   @before(inject(({ authenticationMiddleware }) => authenticationMiddleware))
-  @before(inject(({ validationFactory }) => validationFactory.validateVoteCardId()))
+  @before(
+    inject(({ validationFactory }) => validationFactory.validateVoteCardId())
+  )
   async castCard(req: any, res: Response) {
     // let vote = parseInt(req.body.value);
     this.votesService
@@ -189,9 +196,13 @@ export default class CardsRoute {
       });
   }
 
-  @route('/votes')
+  @route("/votes")
   @GET()
-  @before(inject(({ validationFactory }) => validationFactory.validateLectureAbbreviation()))
+  @before(
+    inject(({ validationFactory }) =>
+      validationFactory.validateLectureAbbreviation()
+    )
+  )
   @before(inject(({ authenticationMiddleware }) => authenticationMiddleware))
   async getLectureVotesByUser(req: any, res: Response) {
     const vote = parseInt(req.body.value);
@@ -239,16 +250,22 @@ export default class CardsRoute {
    *                type: string
    *                example: {}
    */
-  @route('/report')
+  @route("/report")
   @POST()
   @before(inject(({ authenticationMiddleware }) => authenticationMiddleware))
-  @before(inject(({ validationFactory }) => validationFactory.validateReportCard()))
+  @before(
+    inject(({ validationFactory }) => validationFactory.validateReportCard())
+  )
   async reportCard(req: any, res: Response) {
     if (req._id) {
       const resourceId = req.body.resourceId;
       const lectureId = req.body.lectureId;
       this.reportService
-        .reportResource({ resourceId: resourceId, resourceType: 'card' }, req._id, lectureId)
+        .reportResource(
+          { resourceId: resourceId, resourceType: "card" },
+          req._id,
+          lectureId
+        )
         .then((blockedResource) => {
           res.status(200).send(blockedResource);
         })

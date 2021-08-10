@@ -3,11 +3,10 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Card, CardsData } from '../models/Card';
 
-import { tap, map, share } from 'rxjs/operators';
+import { tap, map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { HttpConfig } from './config';
 import { HttpClient } from '@angular/common/http';
-import { NotificationsService } from './notifications.service';
 import { Vorlesung } from '../models/Vorlesung';
 
 @Injectable({
@@ -29,7 +28,7 @@ export class CardsService {
       .get<CardsData>(this.config.urlBase + 'cards/data?abrv=' + abrv, { observe: 'response' })
       .pipe(
         map((res) => {
-          if (res.status == 200) return res.body;
+          if (res.status === 200) return res.body;
           this.router.navigateByUrl('/');
           return;
         })
@@ -41,7 +40,7 @@ export class CardsService {
     return this.http
       .put<Card>(
         this.config.urlBase + 'cards/update',
-        { card: card },
+        { card },
         {
           headers: this.config.headers,
           observe: 'response',
@@ -58,7 +57,7 @@ export class CardsService {
     return this.http
       .post<Card>(
         this.config.urlBase + 'cards/new',
-        { card: card },
+        { card },
         {
           headers: this.config.headers,
           observe: 'response',
