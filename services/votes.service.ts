@@ -47,47 +47,46 @@ export default class VotesService {
     if (!card) {
       throw Error("Karte konnte nicht gefunden werden");
     }
-    let vote = await this.voteModel
+    let vote: IVote = await this.voteModel
       .findOne({ cardId: req.body.id, userId: req._id })
       .lean();
     if (vote) {
-      this.updateVote(vote, req.body.value);
+      return await this.updateVote(vote, req.body.value);
     } else {
       return await this.createVote(req, card.vorlesung);
     }
   };
 
+  async updateVote(vote: IVote, newValue) {
+    this.checkVote(newValue);
 
-async updateVote(vote, newValue) {
-  this.checkVote(newValue);
-
-  await this.voteModel.updateOne({ _id: vote._id }, { value: newValue });
-  return vote;
-  //TODO: might need to return the updated vote here
-}
-
-async createVote(req, abrv) {
-  this.checkVote(req.body.value);
-  let lecture = await this.lectureModel.findOne({ abrv: abrv });
-  let vote = new this.voteModel({
-    cardId: req.body.id,
-    userId: req._id,
-    lectureId: lecture._id,
-    value: req.body.value,
-  });
-  await vote.save({ lean: true });
-  return vote;
-}
-
-// function deleteVote(req, callback) {
-//   Vote.findOneAndDelete({ cardId: req.body.id, userId: req.user._id }, callback);
-// }
-
-checkVote(vote) {
-  if (vote !== 1 && vote !== 0) {
-    throw new Error("Vote invalid, only 0 and 1 are allowed");
+    await this.voteModel.updateOne({ _id: vote._id }, { value: newValue });
+    return vote as IVote;
+    //TODO: might need to return the updated vote here
   }
-}
+
+  async createVote(req, abrv) {
+    this.checkVote(req.body.value);
+    let lecture = await this.lectureModel.findOne({ abrv: abrv });
+    let vote = new this.voteModel({
+      cardId: req.body.id,
+      userId: req._id,
+      lectureId: lecture._id,
+      value: req.body.value,
+    });
+    await vote.save({ lean: true });
+    return vote as IVote;
+  }
+
+  // function deleteVote(req, callback) {
+  //   Vote.findOneAndDelete({ cardId: req.body.id, userId: req.user._id }, callback);
+  // }
+
+  checkVote(vote) {
+    if (vote !== 1 && vote !== 0) {
+      throw new Error("Vote invalid, only 0 and 1 are allowed");
+    }
+  }
 }
 //this function should be called periodically to calculate the new rating
 //calculate the new rating by finding all votes that were made for a specific card and then update the value with the summation of the votes
