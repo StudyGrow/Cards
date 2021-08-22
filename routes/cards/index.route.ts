@@ -13,16 +13,27 @@ import VotesService from "../../services/votes.service";
 //   inject(({ authenticationMiddleware }) => authenticationMiddleware),
 // )
 export default class CardsRoute {
-  constructor({ cardsService, votesService, lectureService, reportService }) {
+  cardsService: CardsService;
+  lectureService: LectureService;
+  votesService: VotesService;
+  reportService: ReportService;
+
+  constructor({
+    cardsService,
+    votesService,
+    lectureService,
+    reportService,
+  }: {
+    cardsService: CardsService;
+    votesService: VotesService;
+    lectureService: LectureService;
+    reportService: ReportService;
+  }) {
     this.cardsService = cardsService;
     this.votesService = votesService;
     this.lectureService = lectureService;
     this.reportService = reportService;
   }
-  cardsService: CardsService;
-  lectureService: LectureService;
-  votesService: VotesService;
-  reportService: ReportService;
 
   /**
    * @swagger
@@ -113,14 +124,15 @@ export default class CardsRoute {
     inject(({ validationFactory }) => validationFactory.validateCardToAdd())
   )
   async addCard(req: any, res: Response) {
-    this.cardsService
-      .addCard(req.body.card, req._id)
-      .then((card: ICard) => {
-        res.status(200).json(card);
-      })
-      .catch((err) => {
-        res.status(422).send(err.message);
-      });
+    try {
+      const card: ICard = await this.cardsService.addCard(
+        req.body.card,
+        req._id
+      );
+      res.status(200).json(card);
+    } catch (err) {
+      res.status(422).send(err?.message || "Unknown error");
+    }
   }
 
   /**
@@ -168,14 +180,15 @@ export default class CardsRoute {
     inject(({ validationFactory }) => validationFactory.validateCardToUpdate())
   )
   async updateCard(req: any, res: Response) {
-    this.cardsService
-      .updateCard(req.body.card, req._id)
-      .then((card: ICard) => {
-        res.status(200).json(card);
-      })
-      .catch((err) => {
-        res.status(422).send(err.message);
-      });
+    try {
+      const card: ICard = await this.cardsService.updateCard(
+        req.body.card,
+        req._id
+      );
+      res.status(200).json(card);
+    } catch (err) {
+      res.status(422).send(err.message);
+    }
   }
 
   @route("/vote")
@@ -186,14 +199,12 @@ export default class CardsRoute {
   )
   async castCard(req: any, res: Response) {
     // let vote = parseInt(req.body.value);
-    this.votesService
-      .castVote(req)
-      .then((vote) => {
-        res.status(200).send(vote);
-      })
-      .catch((err) => {
-        res.status(422).send(err.message);
-      });
+    try {
+      const vote = await this.votesService.castVote(req);
+      res.status(200).send(vote);
+    } catch (error) {
+      res.status(422).send(error.message);
+    }
   }
 
   @route("/votes")
@@ -204,7 +215,7 @@ export default class CardsRoute {
     )
   )
   @before(inject(({ authenticationMiddleware }) => authenticationMiddleware))
-  async getLectureVotesByUser(req: any, res: Response) {
+  getLectureVotesByUser(req: any, res: Response) {
     const vote = parseInt(req.body.value);
     if (req._id) {
       this.votesService
@@ -260,20 +271,18 @@ export default class CardsRoute {
     if (req._id) {
       const resourceId = req.body.resourceId;
       const lectureId = req.body.lectureId;
-      this.reportService
-        .reportResource(
+      try {
+        const blockedResource = await this.reportService.reportResource(
           { resourceId: resourceId, resourceType: "card" },
           req._id,
           lectureId
-        )
-        .then((blockedResource) => {
-          res.status(200).send(blockedResource);
-        })
-        .catch((err) => {
-          res.status(422).send(err.message);
-        });
+        );
+        res.status(200).send(blockedResource);
+      } catch (err) {
+        res.status(err?.status || 422).send(err.message);
+      }
     } else {
-      res.status(422).send();
+      res.status(422).send("_id missing");
     }
   }
 
@@ -285,7 +294,7 @@ export default class CardsRoute {
     )
   )
   @before(inject(({ authorizationMiddleware }) => authorizationMiddleware))
-  async getCardsData(req, res) {
+  getCardsData(req, res) {
     const abrv = req.query.abrv;
     const cards = this.cardsService.findByAbrv(abrv);
     const vl = this.lectureService.findByAbrv(abrv);

@@ -158,7 +158,7 @@ export default class CardsService {
       // returns old content
     );
     // newCard._id = card._id;
-    return newCard;
+    return newCard as ICard;
   };
 
   // used to migrate data

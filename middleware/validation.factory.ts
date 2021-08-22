@@ -5,7 +5,7 @@ export default class ValidationFactory {
       [Segments.BODY]: Joi.object({
         lecture: Joi.object({
           name: Joi.string().min(1).max(500).required(),
-          abrv: Joi.string().min(3).max(7).required(),
+          abrv: Joi.string().min(3).max(10).required(),
           tagList: Joi.allow(),
           totalCards: Joi.allow(),
         }).unknown(true),
