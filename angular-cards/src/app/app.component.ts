@@ -7,7 +7,7 @@ import { AppState } from './models/state';
 import { ThemesService } from './services/themes.service';
 import { auth } from './store/actions/UserActions';
 import { NgcCookieConsentService } from 'ngx-cookieconsent';
-import { CardsSortedAndFiltered, FormMode, UserReports } from './store/selector';
+import { FormMode } from './store/selector';
 import { CardsEffects } from './store/effects/effects';
 import { Failure } from './store/actions/CardActions';
 import { NotificationsService } from './services/notifications.service';
@@ -20,7 +20,10 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class AppComponent implements OnInit, OnDestroy {
   private subscriptioins$: Subscription[] = [];
-
+  private SUPPORTED_LANGUAGES = {
+    en: 'english',
+    de: 'german',
+  };
   public constructor(
     private titleService: Title,
     private store: Store<AppState>,
@@ -31,8 +34,20 @@ export class AppComponent implements OnInit, OnDestroy {
     private translate: TranslateService
   ) {
     this.store.dispatch(auth());
-    let language = localStorage.getItem('language');
-    if (!language || (language != 'en' && language != 'de')) language = 'de';
+    let language = localStorage.getItem('language'); // language set specifically by the user
+
+    if (!language) {
+      // try to determine language from navigator preference
+      language = navigator.language;
+      if (navigator.language.includes('-')) {
+        language = navigator.language.split('-')[0];
+      }
+    }
+
+    // check if selected language is supported
+    if (!language || !(language in this.SUPPORTED_LANGUAGES)) {
+      language = 'de';
+    }
     this.translate.setDefaultLang(language);
     this.themeManager.initTheme(); // initialize theme
 
@@ -42,8 +57,9 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    let sub: Subscription;
     if (isDevMode()) {
-      const sub = this.store.select(FormMode).subscribe((a) => {
+      sub = this.store.select(FormMode).subscribe((a) => {
         console.log(a);
       });
       this.subscriptioins$.push(sub);
@@ -72,7 +88,7 @@ export class AppComponent implements OnInit, OnDestroy {
     //   // you can use this.cookies.getConfig() to do stuff...
     // });
     // this.subscriptioins$.push(sub);
-    const sub = this.actionState.login$.pipe(delay(3000)).subscribe((action) => {
+    sub = this.actionState.login$.pipe(delay(3000)).subscribe((action) => {
       this.notifs.clearNotifications();
       if (action.type === Failure) {
         console.log(action.reason);

@@ -58,13 +58,13 @@ export default class ValidationFactory {
   }
   validateCardToUpdate(): unknown {
     return celebrate({
-      [Segments.BODY]: Joi.object()
-        .keys({
+      [Segments.BODY]: Joi.object().keys({
+        card: Joi.object({
           _id: Joi.string().min(1).max(500).required(),
           thema: Joi.string().min(3).max(500).required(),
           content: Joi.string().min(1).max(1000).required(),
-        })
-        .unknown(true),
+        }).unknown(true),
+      }),
     });
   }
 

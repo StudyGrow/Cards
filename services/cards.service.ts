@@ -8,7 +8,17 @@ import UserService from "./user.service";
 // const MultipleChoiceCard = require("../models/MultipleChoiceCard");
 
 export default class CardsService {
-  constructor({ cardsModel, lectureModel, userService, reportService }) {
+  constructor({
+    cardsModel,
+    lectureModel,
+    userService,
+    reportService,
+  }: {
+    cardsModel: Model<ICard>;
+    lectureModel: Model<ILecture>;
+    userService: UserService;
+    reportService: ReportService;
+  }) {
     this.cardsModel = cardsModel;
     this.lectureModel = lectureModel;
     this.userService = userService;
