@@ -34,8 +34,6 @@ export default {
     secret: process.env.SECRET,
     options: {
       useNewUrlParser: true,
-      useUnifiedTopology: true,
-      useFindAndModify: false,
     },
     maxRetries: process.env.DB_MAX_RETRIES || 3,
     reconnectInterval: process.env.DB_RETRY_INTERVAL || 5000,

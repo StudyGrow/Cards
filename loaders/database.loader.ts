@@ -21,17 +21,14 @@ async function _connect(retryOptions: any): Promise<any> {
     return mongoose
       .connect(connectionString, {
         useNewUrlParser: true,
-        useCreateIndex: true,
         autoIndex: true,
         keepAlive: true,
-        useFindAndModify: false,
         keepAliveInitialDelay: Number(config.database.reconnectInterval),
         ...options,
-        useUnifiedTopology: true,
       })
       .catch(retry);
   }, retryOptions).catch((err) => {
-    logger.info(`Failed connecting to database}`);
+    logger.info(`Failed connecting to database, error: ` + err);
     process.exit(1);
   });
 }
