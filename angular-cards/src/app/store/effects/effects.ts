@@ -43,12 +43,12 @@ import { VotesService } from 'src/app/services/votes.service';
 import { Card, CardsData } from 'src/app/models/Card';
 import { fail, navigateToCard, resetFilter, showNewCard, showNewCardSuccess } from '../actions/StateActions';
 import {
-  CardsSorted,
-  CardsSortedAndFiltered,
-  DisplayedCards,
-  authorized,
-  CurrentCard,
-  CurrentLecture,
+  SORTED_CARDS,
+  SORTED_AND_FILTERED_CARDS,
+  SHOWN_CARDS,
+  AUTHORIZED,
+  CURRENT_CARD,
+  SELECTED_LECTURE,
 } from '../selector';
 
 @Injectable()
@@ -87,7 +87,7 @@ export class CardsEffects {
   fetchVotes$ = createEffect(() =>
     this.actions$.pipe(
       ofType(fetchVotes),
-      withLatestFrom(this.store.select(authorized)),
+      withLatestFrom(this.store.select(AUTHORIZED)),
       filter(([action, auth]) => auth), // make sure user is logged in before requesting data from server
       exhaustMap(
         // exhaustMap can be used whenever we are sure that the request is idempotent, as in the case with GET
@@ -111,7 +111,7 @@ export class CardsEffects {
         combineLatest([
           // emits if every inner observable emits at least one value
           of(card),
-          this.store.select(DisplayedCards).pipe(
+          this.store.select(SHOWN_CARDS).pipe(
             filter((cards) => cards !== undefined), // wait for cards to be loaded from the server
             take(1)
           ),
@@ -130,7 +130,7 @@ export class CardsEffects {
     this.actions$.pipe(
       ofType(showNewCard),
       withLatestFrom(
-        this.store.select(CardsSortedAndFiltered) // all cards sorted and filtered by tags which the user selected
+        this.store.select(SORTED_AND_FILTERED_CARDS) // all cards sorted and filtered by tags which the user selected
       ),
       tap(([{ card }, filteredCards]) => {
         if (card && !filteredCards?.find((c) => c._id === card._id)) {
@@ -346,7 +346,7 @@ export class CardsEffects {
   report$ = createEffect(() =>
     this.actions$.pipe(
       ofType(reportCard),
-      withLatestFrom(combineLatest([this.store.select(CurrentCard), this.store.select(CurrentLecture)])),
+      withLatestFrom(combineLatest([this.store.select(CURRENT_CARD), this.store.select(SELECTED_LECTURE)])),
       switchMap(([action, [card, lecture]]) =>
         this.cards.reportCard(card, lecture).pipe(
           map((c) => reportCardSuccess({ card: c })),

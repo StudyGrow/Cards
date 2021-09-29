@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { distinctUntilChanged, map } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
-import { user, UserCards } from 'src/app/store/selector';
+import { USER, USER_CARDS } from 'src/app/store/selector';
 import { ThemesService } from 'src/app/services/themes.service';
 import { chartOptions } from './chart.options';
 
@@ -11,12 +11,12 @@ import { chartOptions } from './chart.options';
   styleUrls: ['./overview.component.scss'],
 })
 export class OverviewComponent implements OnInit {
-  user$ = this.store.select(user);
-  cardCount$ = this.store.select(UserCards).pipe(map((cards) => cards?.length));
+  user$ = this.store.select(USER);
+  cardCount$ = this.store.select(USER_CARDS).pipe(map((cards) => cards?.length));
 
   chartOptions;
   init: boolean;
-  data$ = this.store.select(UserCards).pipe(
+  data$ = this.store.select(USER_CARDS).pipe(
     map((cards) =>
       cards?.map((card: any) => ({
         _id: card._id,
@@ -36,7 +36,7 @@ export class OverviewComponent implements OnInit {
   constructor(private store: Store, private theme: ThemesService) {}
 
   ngOnInit(): void {
-    this.user$ = this.store.select(user);
+    this.user$ = this.store.select(USER);
     this.store.subscribe((user) => console.log(user));
     this.theme.currentTheme.pipe(distinctUntilChanged()).subscribe((theme) => {
       const textStyle = { color: '#000' };

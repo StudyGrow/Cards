@@ -6,7 +6,7 @@ import { Card } from 'src/app/models/Card';
 import { Reports } from 'src/app/models/Report';
 import { User } from 'src/app/models/User';
 import { Vorlesung } from 'src/app/models/Vorlesung';
-import { UserReports, UserStatus } from 'src/app/store/selector';
+import { USER_REPORTS, USER_STATUS } from 'src/app/store/selector';
 
 @Component({
   selector: 'app-notifications',
@@ -15,8 +15,8 @@ import { UserReports, UserStatus } from 'src/app/store/selector';
 })
 export class NotificationsComponent implements OnInit {
   subscriptions$: Subscription[] = [];
-  isAdmin$ = this.store.select(UserStatus).pipe(map((status) => status === 'admin'));
-  reports$: Observable<Reports> = this.store.select(UserReports);
+  isAdmin$ = this.store.select(USER_STATUS).pipe(map((status) => status === 'admin'));
+  reports$: Observable<Reports> = this.store.select(USER_REPORTS);
   cardReports$: Observable<Card[]> = this.reports$.pipe(map((reports) => reports['flash-cards']));
   lectureReports$: Observable<Vorlesung[]> = this.reports$.pipe(map((reports) => reports.lectures));
   userReports$: Observable<User[]> = this.reports$.pipe(map((reports) => reports.users));

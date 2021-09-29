@@ -6,7 +6,7 @@ import { UserService } from 'src/app/services/user.service';
 import { Subscription } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { map } from 'rxjs/operators';
-import { userInfo } from 'src/app/store/selector';
+import { USER_INFO } from 'src/app/store/selector';
 import { updateUserData } from 'src/app/store/actions/UserActions';
 import { DialogueComponent } from 'src/app/components/dialogue/dialogue.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -33,7 +33,7 @@ export class ChangeProfileComponent implements OnInit, OnDestroy {
     this.user.name = '';
     this.user.surname = '';
 
-    let sub = this.store.select(userInfo).subscribe((info) => {
+    let sub = this.store.select(USER_INFO).subscribe((info) => {
       this.userInfo = info;
       if (info && info.user) {
         this.user = { ...info.user };

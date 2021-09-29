@@ -23,7 +23,7 @@ import { addLercture } from 'src/app/store/actions/LectureActions';
 import { CardsEffects } from 'src/app/store/effects/effects';
 import { AppState } from '../../models/state';
 import { parse, HtmlGenerator } from 'latex.js';
-import { AllTags, CurrentCard, CurrentLecture, FormMode, user } from 'src/app/store/selector';
+import { ALL_TAGS, CURRENT_CARD, SELECTED_LECTURE, FORM_MODE, USER } from 'src/app/store/selector';
 import { TranslateService } from '@ngx-translate/core';
 
 class CardFormData {
@@ -79,15 +79,15 @@ export class FormComponent implements OnInit, OnDestroy {
   }
   ngOnInit(): void {
     this.form = this.createFormGroup();
-    const currentCard$ = this.store.select(CurrentCard);
+    const currentCard$ = this.store.select(CURRENT_CARD);
     // input from tagfield
     const tagInput$ = this.form.valueChanges.pipe(map((val: CardFormData) => val.tag));
-    const allTags$ = this.store.select(AllTags); // get all tags for the lecture
+    const allTags$ = this.store.select(ALL_TAGS); // get all tags for the lecture
 
     let sub: Subscription;
 
     sub = this.store
-      .select(user) // get user
+      .select(USER) // get user
       .pipe(distinctUntilChanged((old, current) => old._id === current._id))
       .subscribe((user) => {
         if (user && this.author !== user) {
@@ -97,7 +97,7 @@ export class FormComponent implements OnInit, OnDestroy {
     this.subscriptions$.push(sub);
 
     // FormMode
-    this.formMode$ = this.store.select(FormMode);
+    this.formMode$ = this.store.select(FORM_MODE);
 
     // suggestions for autocomplete
     this.tagsSuggestions$ = tagInput$.pipe(
@@ -107,7 +107,7 @@ export class FormComponent implements OnInit, OnDestroy {
       map((list) => (list ? [...list].sort() : list)) // sort tags
     );
 
-    sub = this.store.select(CurrentLecture).subscribe((lect) => {
+    sub = this.store.select(SELECTED_LECTURE).subscribe((lect) => {
       this.lecture = lect;
     });
     this.subscriptions$.push(sub);

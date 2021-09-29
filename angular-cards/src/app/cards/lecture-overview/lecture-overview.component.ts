@@ -5,7 +5,7 @@ import { combineLatest } from 'rxjs';
 import { delay, distinctUntilChanged, map } from 'rxjs/operators';
 import { Card } from 'src/app/models/Card';
 import { ThemesService } from 'src/app/services/themes.service';
-import { CardsSorted, CurrentLecture } from 'src/app/store/selector';
+import { SORTED_CARDS, SELECTED_LECTURE } from 'src/app/store/selector';
 import { chartOptions } from './chart.options';
 
 @Component({
@@ -18,8 +18,8 @@ export class LectureOverviewComponent implements OnInit {
   initialized: boolean = false;
   textStyle = { color: '#FFF' };
   chartOptions = {};
-  cards$ = this.store.select(CardsSorted);
-  lecture$ = this.store.select(CurrentLecture);
+  cards$ = this.store.select(SORTED_CARDS);
+  lecture$ = this.store.select(SELECTED_LECTURE);
   activities$ = this.cards$.pipe(
     // delay(300), //wait for tab change transition to complete
     map((
