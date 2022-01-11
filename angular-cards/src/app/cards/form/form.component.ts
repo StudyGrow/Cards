@@ -40,6 +40,7 @@ class CardFormData {
 export class FormComponent implements OnInit, OnDestroy {
   @ViewChild('latex') toggleRef: MatSlideToggle;
   @ViewChild('tagRef') tagRef;
+
   @Input() neu = false; // true if we are adding a card for a new lecture
 
   // Form
@@ -160,6 +161,7 @@ export class FormComponent implements OnInit, OnDestroy {
           }
         }
         this.form.reset({ ...this.cardCopy }); // overwrite form with content of the card
+
         this.selectedTags = this.cardCopy?.tags // load the selecteed tags for the current card
           ? [...this.cardCopy.tags]
           : [];
