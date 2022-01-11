@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 
 import { fadeInUpAnimation } from 'angular-animations';
-import { combineLatest } from 'rxjs';
+import { ScriptLoaderService } from 'angular-google-charts';
+import { combineLatest, Subscription } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
 import { Card } from 'src/app/models/Card';
 import { ThemesService } from 'src/app/services/themes.service';
@@ -16,7 +17,6 @@ import { chartOptions } from './chart.options';
   animations: [fadeInUpAnimation({ duration: 500 })],
 })
 export class LectureOverviewComponent implements OnInit {
-
   formatter_medium; // holds the formatter for the date with format type medium
 
   initialized = false;
@@ -41,7 +41,6 @@ export class LectureOverviewComponent implements OnInit {
         obj: Map<string, { date: string }[]> // transform map into data table for google charts
       ) => Object.entries(obj).map((array: [string, string[]]) => [new Date(array[0]), array[1].length])
       // .filter((array) => array[0] != 'Invalid Date') // filter out invalid dates
-
     )
   );
   contributors$ = this.cards$.pipe(
