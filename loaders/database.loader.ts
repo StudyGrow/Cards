@@ -23,9 +23,7 @@ async function _connect(retryOptions: any): Promise<any> {
         useNewUrlParser: true,
         useCreateIndex: true,
         autoIndex: true,
-        keepAlive: true,
         useFindAndModify: false,
-        keepAliveInitialDelay: Number(config.database.reconnectInterval),
         ...options,
         useUnifiedTopology: true,
       })
