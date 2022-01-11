@@ -20,9 +20,6 @@ async function _connect(retryOptions: any): Promise<any> {
     logger.info(`Attempt no. ${number} connecting to database`);
     return mongoose
       .connect(connectionString, {
-        useNewUrlParser: true,
-        autoIndex: true,
-        useFindAndModify: false,
         ...options,
       })
       .catch(retry);
