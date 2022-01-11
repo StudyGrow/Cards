@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { fadeInOnEnterAnimation, fadeInUpAnimation } from 'angular-animations';
+
+import { fadeInUpAnimation } from 'angular-animations';
 import { ScriptLoaderService } from 'angular-google-charts';
 import { combineLatest, Subscription } from 'rxjs';
-import { delay, distinctUntilChanged, map } from 'rxjs/operators';
+import { distinctUntilChanged, map } from 'rxjs/operators';
 import { Card } from 'src/app/models/Card';
 import { ThemesService } from 'src/app/services/themes.service';
 import { SORTED_CARDS, SELECTED_LECTURE } from 'src/app/store/selector';
@@ -17,6 +18,7 @@ import { chartOptions } from './chart.options';
 })
 export class LectureOverviewComponent implements OnInit {
   formatter_medium; // holds the formatter for the date with format type medium
+
   initialized = false;
   textStyle = { color: '#FFF' };
   chartOptions = {};

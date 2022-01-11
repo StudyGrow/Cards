@@ -9,3 +9,11 @@ form {
 mat-error {
   color: red !important;
 }
+.content-wrapper {
+  padding: 0 1em;
+  margin-top: .2rem;
+}
+
+.content-hint {
+  font-size: 75%;
+}
