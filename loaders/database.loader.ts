@@ -22,12 +22,7 @@ async function _connect(retryOptions: any): Promise<any> {
       .connect(connectionString, {
         useNewUrlParser: true,
         autoIndex: true,
-
         useFindAndModify: false,
-
-        keepAlive: true,
-        keepAliveInitialDelay: Number(config.database.reconnectInterval),
-
         ...options,
       })
       .catch(retry);
