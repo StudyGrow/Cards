@@ -1,17 +1,16 @@
-import { model, Schema, Model, Document } from 'mongoose';
-
+import { model, Schema, Model, Document } from "mongoose";
 
 export interface IUser extends Document {
   username: string;
   email: string;
   password: string;
   creationDate: number;
-  name: string,
-  surname: string,
-  status: string,
-  confirmed: Boolean,
-  token: string,
-  tokenExpiration: Date,
+  name: string;
+  surname: string;
+  status: string;
+  confirmed: boolean;
+  token: string;
+  tokenExpiration: Date;
 }
 
 const userSchema = new Schema({
@@ -36,5 +35,5 @@ const userSchema = new Schema({
   tokenExpiration: Date,
 });
 
-export const User:  Model<IUser>  = model('User', userSchema);
-export default model('User', userSchema);
+export const User: Model<IUser> = model("User", userSchema);
+export default model("User", userSchema);

@@ -6,7 +6,7 @@ import { parse, HtmlGenerator } from 'latex.js';
 import { Store } from '@ngrx/store';
 import { map } from 'rxjs/operators';
 import { AppState } from 'src/app/models/state';
-import { authorized } from 'src/app/store/selector';
+import { AUTHORIZED } from 'src/app/store/selector';
 @Component({
   selector: 'app-card',
   templateUrl: './card.component.html',
@@ -16,18 +16,16 @@ export class CardComponent implements OnInit, OnDestroy {
   constructor(private store: Store<AppState>) {}
 
   private mode$ = this.store.select('mode');
-  inTypingField: boolean = false;
+  inTypingField = false;
   activeIndex: number;
-  auth$: Observable<boolean> = this.store.select(authorized);
-
-  parsed: any = [];
+  auth$: Observable<boolean> = this.store.select(AUTHORIZED);
 
   public isCollapsed = true;
 
   @Input() card: Card;
   @Input() index: number;
 
-  @HostListener('window:keyup', ['$event']) handleKeyDown(event: KeyboardEvent) {
+  @HostListener('window:keyup', ['$event']) handleKeyDown(event: KeyboardEvent): void {
     if (!this.inTypingField && this.activeIndex == this.index) {
       if (event.key == 'ArrowDown') {
         event.preventDefault();
@@ -44,7 +42,7 @@ export class CardComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     let sub = this.mode$.pipe(map((state) => state.activeIndex)).subscribe((index) => {
-      //hides the card content when carousel slides
+      // hides the card content when carousel slides
       if (this.activeIndex != index) {
         this.content.close();
       }
@@ -58,16 +56,16 @@ export class CardComponent implements OnInit, OnDestroy {
     this.subscriptions$.push(sub);
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.subscriptions$.forEach((sub) => {
       sub.unsubscribe();
     });
   }
 
-  parse(cardContent: string) {
+  parse(cardContent: string): string {
     if (this.card.latex == 0) return cardContent;
-    let generator = new HtmlGenerator({ hyphenate: false });
-    let doc = parse(cardContent, { generator: generator }).htmlDocument();
+    const generator = new HtmlGenerator({ hyphenate: false });
+    const doc = parse(cardContent, { generator: generator }).htmlDocument();
     return doc.body.innerHTML;
   }
 }

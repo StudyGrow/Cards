@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { map } from 'rxjs/operators';
-import { authorized, Lectures } from '../store/selector';
+import { AUTHORIZED, LECTURES } from '../store/selector';
 import { AppState } from '../models/state';
 import { fadeInUpAnimation, slideInDownOnEnterAnimation, slideInUpOnEnterAnimation } from 'angular-animations';
 import { Vorlesung } from '../models/Vorlesung';
@@ -21,8 +21,8 @@ export class HomeComponent implements OnInit {
   constructor(private store: Store) {}
 
   ngOnInit(): void {
-    this.authorized$ = this.store.select(authorized);
-    this.lectures$ = this.store.select(Lectures);
+    this.authorized$ = this.store.select(AUTHORIZED);
+    this.lectures$ = this.store.select(LECTURES);
     this.store.dispatch(fetchLectures());
   }
 }

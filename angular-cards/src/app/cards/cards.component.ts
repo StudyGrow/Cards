@@ -7,7 +7,7 @@ import { map } from 'rxjs/operators';
 import { fetchCards } from '../store/actions/CardActions';
 import { fadeInOnEnterAnimation } from 'angular-animations';
 import { changeTab, setSuggestionsMode } from '../store/actions/StateActions';
-import { authorized, CurrentTab, getCardsData } from '../store/selector';
+import { AUTHORIZED, SELECTED_TAB, CARDS_DATA_OBJECT } from '../store/selector';
 import { AppState } from '../models/state';
 import { NotificationsService } from '../services/notifications.service';
 import { WarnMessage } from '../models/Notification';
@@ -34,8 +34,8 @@ export class CardsComponent implements OnInit, OnDestroy {
     }
   }
   //holds data from store
-  public data$: Observable<any> = this.store.select(getCardsData);
-  authorized$ = this.store.select(authorized);
+  public data$: Observable<any> = this.store.select(CARDS_DATA_OBJECT);
+  authorized$ = this.store.select(AUTHORIZED);
 
   public lecture$: Observable<Vorlesung> = this.data$.pipe(map((data) => data.currLecture));
 
@@ -51,7 +51,7 @@ export class CardsComponent implements OnInit, OnDestroy {
 
     this.store.dispatch(fetchCards());
 
-    this.selectedTab$ = this.store.select(CurrentTab);
+    this.selectedTab$ = this.store.select(SELECTED_TAB);
 
     let sub = this.store.select('mode').subscribe((state) => {
       if (state.formMode !== this.formMode) {
