@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { fadeInOnEnterAnimation, fadeInUpAnimation } from 'angular-animations';
+import { fadeInUpAnimation } from 'angular-animations';
 import { combineLatest } from 'rxjs';
-import { delay, distinctUntilChanged, map } from 'rxjs/operators';
+import { distinctUntilChanged, map } from 'rxjs/operators';
 import { Card } from 'src/app/models/Card';
 import { ThemesService } from 'src/app/services/themes.service';
 import { CardsSorted, CurrentLecture } from 'src/app/store/selector';
@@ -15,7 +15,7 @@ import { chartOptions } from './chart.options';
   animations: [fadeInUpAnimation({ duration: 500 })],
 })
 export class LectureOverviewComponent implements OnInit {
-  initialized: boolean = false;
+  initialized = false;
   textStyle = { color: '#FFF' };
   chartOptions = {};
   cards$ = this.store.select(CardsSorted);
@@ -23,27 +23,27 @@ export class LectureOverviewComponent implements OnInit {
   activities$ = this.cards$.pipe(
     // delay(300), //wait for tab change transition to complete
     map((
-      cards //transform cards array into array containing objects with only date attribute
+      cards // transform cards array into array containing objects with only date attribute
     ) =>
       cards?.map((card: Card) => ({
         date: new Date(card.date).toLocaleDateString(),
       }))
     ),
     map((
-      dates: { date: string }[] //Group array by date
+      dates: { date: string }[] // Group array by date
     ) => (dates ? LectureOverviewComponent.groupBy(dates, 'date') : [])),
     map(
       (
-        obj: Map<string, { date: string }[]> //transform map into data table for google charts
+        obj: Map<string, { date: string }[]> // transform map into data table for google charts
       ) =>
         Object.entries(obj)
           .map((array: [string, string[]]) => [array[0], array[1].length])
-          .filter((array) => array[0] != 'Invalid Date') //filter out invalid dates
+          .filter((array) => array[0] != 'Invalid Date') // filter out invalid dates
     )
   );
   contributors$ = this.cards$.pipe(
     map((
-      cards //transform cards array into array containing objects with only author info
+      cards // transform cards array into array containing objects with only author info
     ) =>
       cards?.map((card: Card) => ({
         authorName: card.authorName,
@@ -51,20 +51,20 @@ export class LectureOverviewComponent implements OnInit {
       }))
     ),
     map((
-      authors: { authorName: string; authorId: string }[] //Group array by date
-    ) => (authors ? LectureOverviewComponent.groupBy(authors, 'authorId') : [])), //grouping by authorId but authorName should work too as they are distinct
+      authors: { authorName: string; authorId: string }[] // Group array by date
+    ) => (authors ? LectureOverviewComponent.groupBy(authors, 'authorId') : [])), // grouping by authorId but authorName should work too as they are distinct
     map(
       (
-        map: Map<string, { authorName: string; authorId: string }[]> //transform map into data table for google charts
+        map: Map<string, { authorName: string; authorId: string }[]> // transform map into data table for google charts
       ) =>
         Object.entries(map)
-          .map(([id, authors]: [string, { authorName: string; authorId: string }[]]) => [
+          .map(([, authors]: [string, { authorName: string; authorId: string }[]]) => [
             authors[0].authorName,
             authors.length,
           ])
-          .sort(([name, count]: [string, number], [name2, count2]: [string, number]) => count2 - count) //sort by number of cards submitted by author
-          .filter((array) => array[0] != undefined) //filter out invalid authors
-          .slice(0, 10) //top 10 contributors, might be less
+          .sort(([, count]: [string, number], [, count2]: [string, number]) => count2 - count) // sort by number of cards submitted by author
+          .filter((array) => array[0] != undefined) // filter out invalid authors
+          .slice(0, 10) // top 10 contributors, might be less
     )
   );
 
@@ -75,7 +75,7 @@ export class LectureOverviewComponent implements OnInit {
       this.themeManager.currentTheme.pipe(distinctUntilChanged()),
       this.contributors$,
       this.activities$,
-    ]).subscribe(([theme, contr, acti]) => {
+    ]).subscribe(([theme, ,]) => {
       if (theme == 'dark-theme') {
         this.textStyle.color = '#fff';
       } else {
