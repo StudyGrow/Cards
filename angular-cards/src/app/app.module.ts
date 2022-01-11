@@ -6,7 +6,7 @@ import { SharedModule } from './shared/shared.module';
 import { AppRoutingModule } from './app-routing.module';
 import { StoreModule } from '@ngrx/store';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
+import { QuillModule } from 'ngx-quill';
 // Material Modules
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -25,6 +25,7 @@ import { CardsEffects } from './store/effects/effects';
 // Localization
 import { registerLocaleData } from '@angular/common';
 import de from '@angular/common/locales/de';
+
 registerLocaleData(de);
 
 // Components
@@ -113,6 +114,7 @@ export class MyHammerConfig extends HammerGestureConfig {
     MatSidenavModule,
     HammerModule,
     HomeModule,
+    QuillModule.forRoot(),
     StoreModule.forRoot({ data: dataReducer, mode: modeReducer }),
     EffectsModule.forRoot([CardsEffects]),
     ServiceWorkerModule.register('ngsw-worker.js', {
