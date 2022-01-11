@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Actions, Effect, ofType, createEffect } from '@ngrx/effects';
+import { Actions, ofType, createEffect } from '@ngrx/effects';
 import { of, combineLatest } from 'rxjs';
 import { share, tap, withLatestFrom, filter, switchMap, take } from 'rxjs/operators';
 import { catchError, map, mergeMap, exhaustMap } from 'rxjs/operators';
