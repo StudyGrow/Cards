@@ -2,6 +2,7 @@
   <h4 class="mt-2">{{ 'card-form.' + mode + '-flash-card' | translate }}</h4>
 
   <form [formGroup]="form" (ngSubmit)="submitForm(mode)" novalidate autocomplete="off">
+    <!-- question field -->
     <mat-form-field appearance="outline" class="mb-1 w-100">
       <mat-label>{{ 'card-form.card-question' | translate }}</mat-label>
       <input
@@ -20,25 +21,26 @@
       <mat-error *ngIf="thema.value?.trim().length < 3">{{ 'card-form.error-message.question' | translate }}</mat-error>
     </mat-form-field>
 
-    <mat-form-field appearance="outline" class="mb-1 w-100">
-      <mat-label>{{ 'card-form.card-answer' | translate }}</mat-label>
-      <textarea
-        autocomplete="off"
-        matInput
-        #content
-        formControlName="content"
+    <!-- answer field -->
+    <div class="mb-4">
+      <quill-editor
+        (onEditorChanged)="changedEditor($event)"
         maxlength="1000"
         required
         rows="7"
+        formControlName="content"
         (focus)="inField()"
         (blur)="resetNav()"
-      >
-      </textarea>
-      <mat-hint align="end">{{ content.value?.trim().length || 0 }}/1000</mat-hint>
-      <mat-error *ngIf="content.value?.trim().length < 1 || content.value?.trim().length > 1000">{{
+      ></quill-editor>
+      <div class="d-flex content-wrapper">
+        <div class="mat-form-field-hint-spacer"></div>
+        <mat-hint class="content-hint">{{ editorContent?.trim().length || 0 }}/1000</mat-hint>
+      </div>
+
+      <mat-error *ngIf="editorContent?.trim().length > 1000">{{
         'card-form.error-message.answer' | translate
       }}</mat-error>
-    </mat-form-field>
+    </div>
 
     <mat-form-field appearance="outline" class="mb-1 w-100">
       <mat-label>{{ 'card-form.card-tags' | translate }}</mat-label>
@@ -72,13 +74,13 @@
     <div class="m-3"></div>
     <ng-container [ngSwitch]="mode">
       <ng-container *ngSwitchCase="'edit'">
-        <button mat-raised-button color="primary" type="submit" [disabled]="isDisabled(content, thema)">
+        <button mat-raised-button color="primary" type="submit" [disabled]="isDisabled(thema)">
           {{ 'btn.save' | translate }}
         </button>
         <button mat-button type="button" (click)="cancelEdit()">{{ 'btn.cancel' | translate }}</button>
       </ng-container>
       <ng-container *ngSwitchCase="'add'">
-        <button mat-raised-button color="primary" type="submit" [disabled]="isDisabled(content, thema)">
+        <button mat-raised-button color="primary" type="submit" [disabled]="isDisabled(thema)">
           {{ 'btn.add' | translate }}
         </button>
       </ng-container>

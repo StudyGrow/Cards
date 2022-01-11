@@ -12,6 +12,7 @@ import { NewVlComponent } from './new-vl/new-vl.component';
 import { FormComponent } from '../cards/form/form.component';
 import { CardActionsComponent } from './card-actions/card-actions.component';
 import { LectureOverviewComponent } from './lecture-overview/lecture-overview.component';
+import { QuillModule } from 'ngx-quill';
 
 //Pipes
 
@@ -27,6 +28,6 @@ import { LectureOverviewComponent } from './lecture-overview/lecture-overview.co
     FormComponent,
     LectureOverviewComponent,
   ],
-  imports: [CardsRoutingModule, SharedModule, NgbCarouselModule],
+  imports: [CardsRoutingModule, SharedModule, NgbCarouselModule, QuillModule],
 })
 export class CardsModule {}

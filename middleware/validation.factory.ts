@@ -50,7 +50,7 @@ export default class ValidationFactory {
           content: Joi.string().min(1).max(1000).required(),
           latex: Joi.number().required(),
           authorName: Joi.allow(),
-          tags: Joi.allow(),
+          tags: Joi.array().items(Joi.string()),
           authorId: Joi.allow(),
         }).unknown(true),
       }),
@@ -63,6 +63,7 @@ export default class ValidationFactory {
           _id: Joi.string().min(1).max(500).required(),
           thema: Joi.string().min(3).max(500).required(),
           content: Joi.string().min(1).max(1000).required(),
+          tags: Joi.array().items(Joi.string()),
         }).unknown(true),
       }),
     });

@@ -40,11 +40,14 @@ class CardFormData {
 export class FormComponent implements OnInit, OnDestroy {
   @ViewChild('latex') toggleRef: MatSlideToggle;
   @ViewChild('tagRef') tagRef;
+
   @Input() neu = false; // true if we are adding a card for a new lecture
 
   // Form
   form: FormGroup;
   formMode$: Observable<string>;
+  editorContent: string;
+  editorHTML: string;
 
   // Card data
   private lecture: Vorlesung;
@@ -158,6 +161,7 @@ export class FormComponent implements OnInit, OnDestroy {
           }
         }
         this.form.reset({ ...this.cardCopy }); // overwrite form with content of the card
+
         this.selectedTags = this.cardCopy?.tags // load the selecteed tags for the current card
           ? [...this.cardCopy.tags]
           : [];
@@ -201,8 +205,10 @@ export class FormComponent implements OnInit, OnDestroy {
     } else {
       latexState = 0;
     }
+
     // replaces the characters for newline for latex
-    const content = latexState === 1 ? this.form.value.content.replace(/\n/g, '\\\\ ') : this.form.value.content;
+    let content = this.editorHTML;
+    content = latexState === 1 ? content.replace(/\n/g, '\\\\ ') : content;
 
     if (formMode === 'add') {
       // Create Card from form
@@ -285,11 +291,12 @@ export class FormComponent implements OnInit, OnDestroy {
    * @param content
    * @param thema
    */
-  isDisabled(content: FormControl, thema: FormControl) {
-    if (!content.value || !thema.value) {
+  isDisabled(thema: FormControl) {
+    if (!this.editorContent || !thema.value) {
       return true;
     }
-    return thema.value.trim().length < 3 || thema.value.trim().length > 500 || content.value.trim().length > 1000;
+
+    return thema.value.trim().length < 3 || thema.value.trim().length > 500 || this.editorContent.trim().length > 1000;
   }
 
   removeChip(tag: string): void {
@@ -297,6 +304,14 @@ export class FormComponent implements OnInit, OnDestroy {
 
     if (index >= 0) {
       this.selectedTags.splice(index, 1);
+    }
+  }
+
+  changedEditor(e) {
+    if (e.event === 'text-change') {
+      this.editorHTML = e.html;
+      this.editorContent = e.text;
+      console.log(e);
     }
   }
 
