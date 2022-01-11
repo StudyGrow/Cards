@@ -4,7 +4,7 @@ import { Observable, Subscription } from 'rxjs';
 import { delay, map } from 'rxjs/operators';
 import { AppState } from 'src/app/models/state';
 import { Vote } from 'src/app/models/Vote';
-import { authorized, UserVote, VoteCount } from 'src/app/store/selector';
+import { AUTHORIZED, USER_VOTE, VOTE_COUNT } from 'src/app/store/selector';
 import { changeVote } from '../../store/actions/CardActions';
 import { NotificationsService } from 'src/app/services/notifications.service';
 import { InfoMessage } from 'src/app/models/Notification';
@@ -21,7 +21,7 @@ import { CardsEffects } from 'src/app/store/effects/effects';
 export class CardActionsComponent implements OnInit, OnDestroy {
   vote: Vote = new Vote();
   voteCount: number;
-  loggedIn$: Observable<boolean> = this.store.select(authorized);
+  loggedIn$: Observable<boolean> = this.store.select(AUTHORIZED);
 
   @Input() id: string; // id of card that the vote belongs to
 
@@ -36,11 +36,11 @@ export class CardActionsComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    let sub = this.store.pipe(map((state: AppState) => UserVote(state, this.id))).subscribe((init) => {
+    let sub = this.store.pipe(map((state: AppState) => USER_VOTE(state, this.id))).subscribe((init) => {
       if (init && this.vote && this.vote.value != init.value) this.vote = { ...init };
     });
     this.subscriptions$.push(sub);
-    sub = this.store.pipe(map((state) => VoteCount(state, this.id))).subscribe((count) => {
+    sub = this.store.pipe(map((state) => VOTE_COUNT(state, this.id))).subscribe((count) => {
       this.voteCount = count;
     });
     this.subscriptions$.push(sub);

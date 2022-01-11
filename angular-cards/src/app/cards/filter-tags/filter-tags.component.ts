@@ -8,7 +8,7 @@ import { MatAutocompleteSelectedEvent, MatAutocomplete } from '@angular/material
 import { map, startWith, withLatestFrom } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import { setTypingMode, removeTag, addTag } from 'src/app/store/actions/StateActions';
-import { ActiveTags, CurrentLecture, TagOptions } from 'src/app/store/selector';
+import { ACTIVE_TAGS, SELECTED_LECTURE, TAG_OPTIONS } from 'src/app/store/selector';
 import { AppState } from 'src/app/models/state';
 
 @Component({
@@ -17,7 +17,7 @@ import { AppState } from 'src/app/models/state';
   styleUrls: ['./filter-tags.component.scss'],
 })
 export class FilterTagsComponent implements OnInit {
-  lecture$: Observable<Vorlesung> = this.store.select(CurrentLecture);
+  lecture$: Observable<Vorlesung> = this.store.select(SELECTED_LECTURE);
   selected$: Observable<string[]>; //actively selected tags
   separatorKeysCodes: number[] = [ENTER, COMMA];
   formCtrl = new FormControl('');
@@ -30,10 +30,10 @@ export class FilterTagsComponent implements OnInit {
   constructor(private store: Store<AppState>) {}
 
   ngOnInit(): void {
-    this.selected$ = this.store.select(ActiveTags);
+    this.selected$ = this.store.select(ACTIVE_TAGS);
     this.filteredTags$ = combineLatest([
       this.formCtrl.valueChanges.pipe(startWith('')),
-      this.store.select(TagOptions),
+      this.store.select(TAG_OPTIONS),
     ]).pipe(
       map(([input, tags]: [string, string[]]) => {
         return input?.length > 0 ? this._filter(input, tags) : tags;

@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
+
 import { fadeInUpAnimation } from 'angular-animations';
 import { combineLatest } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
 import { Card } from 'src/app/models/Card';
 import { ThemesService } from 'src/app/services/themes.service';
-import { CardsSorted, CurrentLecture } from 'src/app/store/selector';
+import { SORTED_CARDS, SELECTED_LECTURE } from 'src/app/store/selector';
 import { chartOptions } from './chart.options';
 
 @Component({
@@ -15,11 +16,14 @@ import { chartOptions } from './chart.options';
   animations: [fadeInUpAnimation({ duration: 500 })],
 })
 export class LectureOverviewComponent implements OnInit {
+
+  formatter_medium; // holds the formatter for the date with format type medium
+
   initialized = false;
   textStyle = { color: '#FFF' };
   chartOptions = {};
-  cards$ = this.store.select(CardsSorted);
-  lecture$ = this.store.select(CurrentLecture);
+  cards$ = this.store.select(SORTED_CARDS);
+  lecture$ = this.store.select(SELECTED_LECTURE);
   activities$ = this.cards$.pipe(
     // delay(300), //wait for tab change transition to complete
     map((
@@ -35,10 +39,9 @@ export class LectureOverviewComponent implements OnInit {
     map(
       (
         obj: Map<string, { date: string }[]> // transform map into data table for google charts
-      ) =>
-        Object.entries(obj)
-          .map((array: [string, string[]]) => [array[0], array[1].length])
-          .filter((array) => array[0] != 'Invalid Date') // filter out invalid dates
+      ) => Object.entries(obj).map((array: [string, string[]]) => [new Date(array[0]), array[1].length])
+      // .filter((array) => array[0] != 'Invalid Date') // filter out invalid dates
+
     )
   );
   contributors$ = this.cards$.pipe(
@@ -67,15 +70,23 @@ export class LectureOverviewComponent implements OnInit {
           .slice(0, 10) // top 10 contributors, might be less
     )
   );
+  formatters = []; // formatters are used to format js dates into human readable format
 
-  constructor(private store: Store, private themeManager: ThemesService) {}
-
+  constructor(private store: Store, private themeManager: ThemesService, private scriptLoader: ScriptLoaderService) {}
+  subscriptions: Subscription[] = [];
   ngOnInit(): void {
-    combineLatest([
+    let sub = this.scriptLoader.loadChartPackages().subscribe(() => {
+      this.formatter_medium = new google.visualization.DateFormat({
+        formatType: 'medium',
+      });
+      this.formatters.push({ formatter: this.formatter_medium, colIndex: 0 });
+    });
+    this.subscriptions.push(sub);
+    sub = combineLatest([
       this.themeManager.currentTheme.pipe(distinctUntilChanged()),
       this.contributors$,
       this.activities$,
-    ]).subscribe(([theme, ,]) => {
+    ]).subscribe(([theme]) => {
       if (theme == 'dark-theme') {
         this.textStyle.color = '#fff';
       } else {
@@ -87,6 +98,8 @@ export class LectureOverviewComponent implements OnInit {
         this.initialized = true;
       }, 50);
     });
+
+    this.subscriptions.push(sub);
   }
 
   /**
