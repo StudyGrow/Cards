@@ -38,6 +38,7 @@
     "latex.js": "~0.11.0",
     "material-design-icons": "^3.0.1",
     "ngx-cookieconsent": "^2.2.3",
+    "ngx-quill": "^16.1.1",
     "rxjs": "^6.6.7",
     "tslib": "^2.0.0",
     "zone.js": "~0.11.4"
