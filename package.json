@@ -18,6 +18,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@angular/cli": "^13.1.2",
     "@typegoose/typegoose": "^9.0.1",
     "awilix": "^4.3.3",
     "awilix-express": "^4.0.0",
