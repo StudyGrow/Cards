@@ -1,24 +1,27 @@
-import { Component, OnInit, Input, OnDestroy, HostListener } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
+import { map } from 'rxjs/operators';
+import { Component, OnInit, Input, OnDestroy, HostListener, SecurityContext } from '@angular/core';
 import { Card } from '../../models/Card';
 import { ViewChild } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { parse, HtmlGenerator } from 'latex.js';
 import { Store } from '@ngrx/store';
-import { map } from 'rxjs/operators';
 import { AppState } from 'src/app/models/state';
 import { AUTHORIZED } from 'src/app/store/selector';
+
 @Component({
   selector: 'app-card',
   templateUrl: './card.component.html',
   styleUrls: ['./card.component.scss'],
 })
 export class CardComponent implements OnInit, OnDestroy {
-  constructor(private store: Store<AppState>) {}
+  constructor(private store: Store<AppState>, private sanitizer: DomSanitizer) {}
 
   private mode$ = this.store.select('mode');
   inTypingField = false;
   activeIndex: number;
   auth$: Observable<boolean> = this.store.select(AUTHORIZED);
+  parsedContent: string;
 
   public isCollapsed = true;
 
@@ -54,6 +57,8 @@ export class CardComponent implements OnInit, OnDestroy {
       this.inTypingField = val;
     });
     this.subscriptions$.push(sub);
+
+    this.parsedContent = this.sanitizer.sanitize(SecurityContext.HTML, this.parse(this.card.content));
   }
 
   ngOnDestroy(): void {
