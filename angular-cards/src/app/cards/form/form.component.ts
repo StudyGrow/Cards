@@ -1,5 +1,5 @@
 import { ENTER } from '@angular/cdk/keycodes';
-import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, SecurityContext, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatChipInputEvent } from '@angular/material/chips';
@@ -25,7 +25,8 @@ import { AppState } from '../../models/state';
 import { parse, HtmlGenerator } from 'latex.js';
 import { ALL_TAGS, CURRENT_CARD, SELECTED_LECTURE, FORM_MODE, USER } from 'src/app/store/selector';
 import { TranslateService } from '@ngx-translate/core';
-
+import { QuillEditorComponent } from 'ngx-quill';
+import { DomSanitizer } from '@angular/platform-browser';
 class CardFormData {
   thema: string;
   content: string;
@@ -40,7 +41,7 @@ class CardFormData {
 export class FormComponent implements OnInit, OnDestroy {
   @ViewChild('latex') toggleRef: MatSlideToggle;
   @ViewChild('tagRef') tagRef;
-
+  @ViewChild('editor') editor: QuillEditorComponent;
   @Input() neu = false; // true if we are adding a card for a new lecture
 
   // Form
@@ -72,7 +73,8 @@ export class FormComponent implements OnInit, OnDestroy {
     private actionState: CardsEffects,
     private router: Router,
     private notifs: NotificationsService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private sanitizer: DomSanitizer
   ) {}
 
   ngOnDestroy() {
@@ -161,6 +163,15 @@ export class FormComponent implements OnInit, OnDestroy {
           }
         }
         this.form.reset({ ...this.cardCopy }); // overwrite form with content of the card
+        console.log(this.editor);
+        setTimeout(() => {
+          // the form reset is executed asynchronously. this timeout is needed to wait until the form is resetted
+          // otherwise the editor is overwrite by the form which does apply the formattings
+
+          const safeContent = this.sanitizer.sanitize(SecurityContext.HTML, this.cardCopy.content);
+          // sanitizes the content to prevent XSS
+          this.editor.quillEditor.clipboard.dangerouslyPasteHTML(safeContent);
+        });
 
         this.selectedTags = this.cardCopy?.tags // load the selecteed tags for the current card
           ? [...this.cardCopy.tags]
