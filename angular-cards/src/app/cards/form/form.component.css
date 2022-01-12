@@ -11,9 +11,15 @@ mat-error {
 }
 .content-wrapper {
   padding: 0 1em;
-  margin-top: .2rem;
+  margin-top: 0.2rem;
 }
 
 .content-hint {
   font-size: 75%;
+}
+.ql-toolbar {
+  border-radius: 5px 5px 0 0;
+}
+.ql-container {
+  border-radius: 0 0 5px 5px;
 }
