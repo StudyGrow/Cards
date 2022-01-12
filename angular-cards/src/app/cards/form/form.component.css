@@ -17,9 +17,9 @@ mat-error {
 .content-hint {
   font-size: 75%;
 }
-.ql-toolbar {
+::ng-deep .ql-toolbar {
   border-radius: 5px 5px 0 0;
 }
-.ql-container {
+::ng-deep .ql-container {
   border-radius: 0 0 5px 5px;
 }
