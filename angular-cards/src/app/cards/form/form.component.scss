@@ -1,0 +1,45 @@
+// @import '../../../default.theme.scss';
+// $primary-light: map-get($my-app-theme, primary);
+// $primary-dark: map-get($dark-theme,primary);
+
+
+// ::ng-deep .dark-theme .ql-toolbar {
+//   background-color:mat-color($primary-dark, lighter);
+// }
+// ::ng-deep .ql-toolbar {
+//   border-radius: 5px 5px 0 0;
+//   background-color:mat-color($primary, lighter);
+// }
+// ::ng-deep .dark-theme .ql-container{
+//   color: white;
+// }
+// ::ng-deep .dark-theme  .ql-editor.ql-blank::before {
+//     color: white
+// }
+
+h4,
+form {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 90%;
+  max-width: 900px;
+}
+mat-error {
+  color: red !important;
+}
+.content-wrapper {
+  padding: 0 1em;
+  margin-top: 0.2rem;
+}
+
+.content-hint {
+  font-size: 75%;
+}
+
+::ng-deep .ql-container {
+  border-radius: 0 0 5px 5px;
+}
+::ng-deep .ql-editor {
+  font-size: 1rem;
+}
