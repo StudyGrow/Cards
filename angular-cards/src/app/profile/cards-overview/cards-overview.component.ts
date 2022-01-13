@@ -3,7 +3,7 @@ import { Card } from 'src/app/models/Card';
 import { Subscription, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
-import { UserCards } from 'src/app/store/selector';
+import { USER_CARDS } from 'src/app/store/selector';
 import { PageEvent } from '@angular/material/paginator';
 import { fadeInOnEnterAnimation, fadeOutOnLeaveAnimation } from 'angular-animations';
 import { AppState } from 'src/app/models/state';
@@ -26,7 +26,7 @@ export class CardsOverviewComponent implements OnInit, OnDestroy {
   constructor(private store: Store) {}
 
   ngOnInit(): void {
-    this.cards$ = this.store.select(UserCards);
+    this.cards$ = this.store.select(USER_CARDS);
     let sub = this.cards$.subscribe((cards) => (this.cardCount = cards?.length));
     this.subscriptions$.push(sub);
   }

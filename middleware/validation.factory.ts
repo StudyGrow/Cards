@@ -47,7 +47,7 @@ export default class ValidationFactory {
         card: Joi.object({
           abrv: Joi.string().min(3).max(7),
           thema: Joi.string().min(3).max(500).required(),
-          content: Joi.string().min(1).max(1000).required(),
+          content: Joi.string().min(1).max(100000).required(),
           latex: Joi.number().required(),
           authorName: Joi.allow(),
           tags: Joi.array().items(Joi.string()),
@@ -62,7 +62,7 @@ export default class ValidationFactory {
         card: Joi.object({
           _id: Joi.string().min(1).max(500).required(),
           thema: Joi.string().min(3).max(500).required(),
-          content: Joi.string().min(1).max(1000).required(),
+          content: Joi.string().min(1).max(100000).required(),
           tags: Joi.array().items(Joi.string()),
         }).unknown(true),
       }),

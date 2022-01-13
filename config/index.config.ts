@@ -32,11 +32,7 @@ export default {
         : process.env.MONGO_URL_PRODUCTION
     }`,
     secret: process.env.SECRET,
-    options: {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      useFindAndModify: false,
-    },
+    options: {},
     maxRetries: process.env.DB_MAX_RETRIES || 3,
     reconnectInterval: process.env.DB_RETRY_INTERVAL || 5000,
   },

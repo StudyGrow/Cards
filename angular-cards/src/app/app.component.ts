@@ -7,7 +7,6 @@ import { AppState } from './models/state';
 import { ThemesService } from './services/themes.service';
 import { auth } from './store/actions/UserActions';
 import { NgcCookieConsentService } from 'ngx-cookieconsent';
-import { FormMode } from './store/selector';
 import { CardsEffects } from './store/effects/effects';
 import { Failure } from './store/actions/CardActions';
 import { NotificationsService } from './services/notifications.service';
@@ -59,7 +58,7 @@ export class AppComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     let sub: Subscription;
     if (isDevMode()) {
-      sub = this.store.select(FormMode).subscribe((a) => {
+      sub = this.store.subscribe((a) => {
         console.log(a);
       });
       this.subscriptioins$.push(sub);

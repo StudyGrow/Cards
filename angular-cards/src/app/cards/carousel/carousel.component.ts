@@ -26,14 +26,14 @@ import { MatBottomSheet, MatBottomSheetRef } from '@angular/material/bottom-shee
 import { sortOptions } from './sortOptions';
 import { SortType } from 'src/app/models/SortType';
 import {
-  ActiveTags,
-  authorized,
-  CardsSorted,
-  FormMode,
-  CardsSortedAndFiltered,
-  CardToShow,
-  UserId,
-  CurrentTab,
+  ACTIVE_TAGS,
+  AUTHORIZED,
+  SORTED_CARDS,
+  FORM_MODE,
+  SORTED_AND_FILTERED_CARDS,
+  CARD_TO_SHOW_NEXT,
+  USER_ID,
+  SELECTED_TAB,
 } from 'src/app/store/selector';
 import { CarouselInfo } from 'src/app/models/CarouselInfo';
 import { TranslateService } from '@ngx-translate/core';
@@ -74,8 +74,8 @@ export class CarouselComponent implements OnInit, OnDestroy {
 
   loading: boolean;
 
-  newCardToSet$ = this.store.select(CardToShow);
-  filters$: Observable<string[]> = this.store.select(ActiveTags);
+  newCardToSet$ = this.store.select(CARD_TO_SHOW_NEXT);
+  filters$: Observable<string[]> = this.store.select(ACTIVE_TAGS);
   filters: string[];
   // cards: Card[];
 
@@ -88,7 +88,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
 
   formMode: string; // mode in which the form is displayed either add or edit
   notallowed = false; // wether an action is allowed or not
-  authorized$ = this.store.select(authorized);
+  authorized$ = this.store.select(AUTHORIZED);
 
   subscriptions$: Subscription[] = []; // holds all subscriptions from observables they are unsubscribed in ngOnDestroy
   currentTab = 0;
@@ -135,7 +135,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     // Form Mode, depending on the mode different actions are not allowed
-    let sub = this.store.select(FormMode).subscribe((mode) => {
+    let sub = this.store.select(FORM_MODE).subscribe((mode) => {
       this.formMode = mode;
     });
     this.subscriptions$.push(sub);
@@ -152,7 +152,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
     this.subscriptions$.push(sub);
 
     sub = this.store
-      .select(CurrentTab)
+      .select(SELECTED_TAB)
       .pipe(distinctUntilChanged())
       .subscribe((tab) => {
         this.currentTab = tab;
@@ -160,7 +160,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
 
     // get the user id to check if user has the rigth to edit the card
     sub = this.store
-      .select(UserId)
+      .select(USER_ID)
       .pipe(distinctUntilChanged())
       .subscribe((id) => {
         if (this.uid !== id) {
@@ -189,7 +189,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
       this.store.dispatch(updateCarouselInfo({ info: newState })); // sends an update to the store whenever the info has updated
     });
 
-    sub = combineLatest([this.store.select(CardsSorted), this.store.select(CardsSortedAndFiltered), lastChanges$])
+    sub = combineLatest([this.store.select(SORTED_CARDS), this.store.select(SORTED_AND_FILTERED_CARDS), lastChanges$])
       .pipe(withLatestFrom(this.route.fragment.pipe(distinctUntilChanged())))
       .subscribe(([[allCardsSorted, allCardsSortedAndFiltered, changes], cardid]) => {
         if (!allCardsSorted || !allCardsSortedAndFiltered) {

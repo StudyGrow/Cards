@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { map, take } from 'rxjs/operators';
-import { authorized } from 'src/app/store/selector';
+import { AUTHORIZED } from 'src/app/store/selector';
 import { Observable, Subscription } from 'rxjs';
 import { logout as logoutUser } from 'src/app/store/actions/UserActions';
 import { MatSlideToggle } from '@angular/material/slide-toggle';
@@ -33,7 +33,7 @@ export class NavListComponent implements OnInit {
 
   ngOnInit(): void {
     this.theme$ = this.themeManager.themeValue.pipe(map((theme) => Theme[theme]));
-    this.loggedIn$ = this.store.select(authorized);
+    this.loggedIn$ = this.store.select(AUTHORIZED);
     this.theme.valueChanges.subscribe((value) => {
       this.themeManager.changeTheme(value);
     });

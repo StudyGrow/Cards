@@ -1,17 +1,22 @@
+@use 'sass:map';
 @use '@angular/material' as mat;
 @import "@angular/material/theming";
 @include mat.core();
 
-$primary: mat.define-palette(mat.$deep-purple-palette, 600, 300, 900);
+$primary: mat.define-palette(mat.$blue-palette, 800, 200, 900);
 $my-app-accent: mat.define-palette(mat.$amber-palette, 400, 200, 900);
 $warn: mat.define-palette(mat.$deep-orange-palette);
 $my-app-theme: mat.define-light-theme($primary, $my-app-accent, $warn);
-@include mat.all-component-themes($my-app-theme);
 
-$dark-primary: mat.define-palette(mat.$blue-grey-palette);
+$dark-primary: mat.define-palette(mat.$blue-grey-palette,600, 300, 900 );
 $dark-accent: mat.define-palette(mat.$amber-palette, A200, A100, A400);
 $dark-warn: mat.define-palette(mat.$deep-orange-palette);
 $dark-theme: mat.define-dark-theme($dark-primary, $dark-accent, $dark-warn);
+
+
+$foreground-dark: map-get($dark-theme, foreground);
+$label-color-dark:
+    mat.get-color-from-palette($foreground-dark, secondary-text, 0.7);
 
 snack-bar-container.success {
   color: #155724;
@@ -24,11 +29,6 @@ snack-bar-container.info {
   border-color: #bee5eb;
 }
 
-
-
-$foreground: map-get($my-app-theme, foreground);
-$background: map-get($my-app-theme, background);
-
 .mat-paginator {
   background: none;
 }
@@ -36,7 +36,24 @@ pre.dark-theme {
   color: white !important;
 }
 
+:not(.dark-theme){
+  @include mat.all-component-themes($my-app-theme);
+}
+
 .dark-theme {
   background-color: #424242;
   @include mat.all-component-themes($dark-theme);
+}
+.dark-theme .ql-toolbar {
+  background-color:mat-color($dark-primary, lighter);
+}
+ .ql-toolbar {
+  border-radius: 5px 5px 0 0;
+  background-color:mat-color($primary, lighter);
+}
+.dark-theme .ql-container{
+  color: white;
+}
+ .dark-theme  .ql-editor.ql-blank::before {
+  color: $label-color-dark;
 }

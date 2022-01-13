@@ -1,5 +1,5 @@
 import { ENTER } from '@angular/cdk/keycodes';
-import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, SecurityContext, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatChipInputEvent } from '@angular/material/chips';
@@ -23,9 +23,10 @@ import { addLercture } from 'src/app/store/actions/LectureActions';
 import { CardsEffects } from 'src/app/store/effects/effects';
 import { AppState } from '../../models/state';
 import { parse, HtmlGenerator } from 'latex.js';
-import { AllTags, CurrentCard, CurrentLecture, FormMode, user } from 'src/app/store/selector';
+import { ALL_TAGS, CURRENT_CARD, SELECTED_LECTURE, FORM_MODE, USER } from 'src/app/store/selector';
 import { TranslateService } from '@ngx-translate/core';
-
+import { QuillEditorComponent } from 'ngx-quill';
+import { DomSanitizer } from '@angular/platform-browser';
 class CardFormData {
   thema: string;
   content: string;
@@ -35,12 +36,12 @@ class CardFormData {
 @Component({
   selector: 'app-form',
   templateUrl: './form.component.html',
-  styleUrls: ['./form.component.css'],
+  styleUrls: ['./form.component.scss'],
 })
 export class FormComponent implements OnInit, OnDestroy {
   @ViewChild('latex') toggleRef: MatSlideToggle;
   @ViewChild('tagRef') tagRef;
-
+  @ViewChild('editor') editor: QuillEditorComponent;
   @Input() neu = false; // true if we are adding a card for a new lecture
 
   // Form
@@ -72,7 +73,8 @@ export class FormComponent implements OnInit, OnDestroy {
     private actionState: CardsEffects,
     private router: Router,
     private notifs: NotificationsService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private sanitizer: DomSanitizer
   ) {}
 
   ngOnDestroy() {
@@ -82,15 +84,15 @@ export class FormComponent implements OnInit, OnDestroy {
   }
   ngOnInit(): void {
     this.form = this.createFormGroup();
-    const currentCard$ = this.store.select(CurrentCard);
+    const currentCard$ = this.store.select(CURRENT_CARD);
     // input from tagfield
     const tagInput$ = this.form.valueChanges.pipe(map((val: CardFormData) => val.tag));
-    const allTags$ = this.store.select(AllTags); // get all tags for the lecture
+    const allTags$ = this.store.select(ALL_TAGS); // get all tags for the lecture
 
     let sub: Subscription;
 
     sub = this.store
-      .select(user) // get user
+      .select(USER) // get user
       .pipe(distinctUntilChanged((old, current) => old._id === current._id))
       .subscribe((user) => {
         if (user && this.author !== user) {
@@ -100,7 +102,7 @@ export class FormComponent implements OnInit, OnDestroy {
     this.subscriptions$.push(sub);
 
     // FormMode
-    this.formMode$ = this.store.select(FormMode);
+    this.formMode$ = this.store.select(FORM_MODE);
 
     // suggestions for autocomplete
     this.tagsSuggestions$ = tagInput$.pipe(
@@ -110,7 +112,7 @@ export class FormComponent implements OnInit, OnDestroy {
       map((list) => (list ? [...list].sort() : list)) // sort tags
     );
 
-    sub = this.store.select(CurrentLecture).subscribe((lect) => {
+    sub = this.store.select(SELECTED_LECTURE).subscribe((lect) => {
       this.lecture = lect;
     });
     this.subscriptions$.push(sub);
@@ -161,6 +163,15 @@ export class FormComponent implements OnInit, OnDestroy {
           }
         }
         this.form.reset({ ...this.cardCopy }); // overwrite form with content of the card
+        console.log(this.editor);
+        setTimeout(() => {
+          // the form reset is executed asynchronously. this timeout is needed to wait until the form is resetted
+          // otherwise the editor is overwrite by the form which does apply the formattings
+
+          const safeContent = this.sanitizer.sanitize(SecurityContext.HTML, this.cardCopy.content);
+          // sanitizes the content to prevent XSS
+          this.editor.quillEditor.clipboard.dangerouslyPasteHTML(safeContent);
+        });
 
         this.selectedTags = this.cardCopy?.tags // load the selecteed tags for the current card
           ? [...this.cardCopy.tags]
