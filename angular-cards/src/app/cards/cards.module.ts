@@ -14,7 +14,7 @@ import { CardActionsComponent } from './card-actions/card-actions.component';
 import { LectureOverviewComponent } from './lecture-overview/lecture-overview.component';
 import { QuillModule } from 'ngx-quill';
 
-//Pipes
+// Pipes
 
 @NgModule({
   declarations: [

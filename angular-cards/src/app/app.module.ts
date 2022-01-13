@@ -122,11 +122,13 @@ export class MyHammerConfig extends HammerGestureConfig {
           [{ list: 'ordered' }, { list: 'bullet' }],
           [{ script: 'sub' }, { script: 'super' }], // superscript/subscript
           [{ indent: '-1' }, { indent: '+1' }], // outdent/indent
-
           [{ color: [] }, { background: [] }], // dropdown with defaults from theme
           [{ font: [] }],
+          ['formula'],
+          ['image'],
         ],
       },
+      placeholder: 'Text',
     }),
     StoreModule.forRoot({ data: dataReducer, mode: modeReducer }),
     EffectsModule.forRoot([CardsEffects]),
@@ -160,6 +162,6 @@ export class MyHammerConfig extends HammerGestureConfig {
 })
 export class AppModule {}
 
-export function HttpLoaderFactory(http: HttpClient) {
+function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
   return new TranslateHttpLoader(http);
 }
