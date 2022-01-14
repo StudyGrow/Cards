@@ -72,8 +72,8 @@ After the process has finished you can stop the Angular Dev Server and navigate 
 
 ## Authors
 
-- **Erdzan Rastoder** - _Original idea, Initial work_ - [GitLab](https://git.rwth-aachen.de/jungerjunge2)
-- **Ben Lakhoune** - _Initial work_ - [GitLab](https://git.rwth-aachen.de/lakhoune)
+- **Erdzan Rastoder** - _Original idea, Initial work_ - [Github](https://github.com/orgs/StudyGrow/people/erdzan12)
+- **Ben Lakhoune** - _Initial work_ - [Github](https://github.com/lakhoune) - [Website](http://lakhoune.com)
 
 ## License
 
