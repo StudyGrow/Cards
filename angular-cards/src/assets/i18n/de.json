@@ -98,8 +98,8 @@
     "cards": {
       "title": "Cards",
       "text": "Cards ist eine Webseite, die dir dabei helfen soll dich auf deine Klausuren und Prüfungen vorzubereiten. Das Konzept von Cards beruht auf den klassischen Karteikarten. Anders als die klassischen Karteikarten brauchst du jedoch nicht deinen Stapel an Karten überall mitzuschleppen. Unsere Webseite eignet sich vor allem auch für Smartphones, somit kannst du dir deine Karteikarten auch unterwegs anschauen. Sie richtet sich vor allem an Studenten.",
-      "create-account-one": "Erstelle einen Account",
-      "create-account-two": ", um alle Vorteile unserer Webseite zu nutzen."
+      "create-account": ", um alle Vorteile unserer Webseite zu nutzen.",
+      "create-account-link-text": "Erstelle einen Account"
     },
     "sharing-is-caring": {
       "title": "Sharing is Caring",
@@ -110,7 +110,7 @@
       "title": "Wir freuen uns über Feedback",
       "text-one": "Wir bemühen uns, die Seite fehlerfrei zu gestalten. Trotzdem kann es sein, dass sich der ein oder andere Fehler eingeschlichen hat. Diesen kannst du uns gerne melden indem du",
       "text-two": "hier",
-      "text-three": "ein Issue erstellst (hierzu wird ein Gitlab Account benötigt) oder uns eine",
+      "text-three": "ein Issue erstellst (hierzu wird ein Github Account benötigt) oder uns eine",
       "text-four": "schreibst. Wir versuchen den Fehler, dann so schnell wie möglich zu beheben. Du kannst uns dort auch gerne Feedback hinterlassen."
     },
     "cookies": {
