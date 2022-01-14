@@ -98,19 +98,19 @@
     "cards": {
       "title": "Cards",
       "text": "Cards is a website designed to help you prepare for you exams. The concept of our website is based on traditional index cards, with the advantage that you don't need to carry your heavy stack of cards around. Our site is optimized for smartphones, allowing you to view your cards wherever you are.",
-      "create-account-one": "Create an account",
-      "create-account-two": ", to use all features of our website."
+       "create-account":  ", to use all features of our website.",
+       "create-account-link-text": "Create an account"
     },
     "sharing-is-caring": {
       "title": "Sharing is Caring",
-      "text-one": "The cards you add are automatically visible to other users. Meanwhile you can also look at the cards from other users",
+      "text-one": "The cards you add are automatically visible to other users. Meanwhile you can also look at the cards from other users ",
       "text-two": "If you are not satisfied with a card, or you think the content is incorrect or incomplete, then you can edit them. Cards, which were added by other users cannot be edited yet."
     },
     "feedback": {
       "title": "We care about your feedback",
       "text-one": "We try to avoid mistakes. However, we might have overlooked some of them. Please report them to us by following ",
       "text-two": "this link",
-      "text-three": "(you need to have a Gitlab account). We will try to correct them as soon as possible. You can also leave feedback there, or by writing us an ",
+      "text-three": "(you need to have a Github account). We will try to correct them as soon as possible. You can also leave feedback there, or by writing us an ",
       "text-four": ". We try to fix the problem ASAP."
     },
     "cookies": {

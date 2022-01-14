@@ -5,8 +5,8 @@
     {{ 'about.cards.text' | translate }}
   </p>
   <p *ngIf="!loggedIn">
-    <a routerLink="/signup">{{ 'about.cards.account-one' | translate }}</a
-    >{{ 'about.cards.account-two' | translate }}
+    <a routerLink="/signup">{{ 'about.cards.create-account-link-text' | translate }}</a
+    >{{ 'about.cards.create-account' | translate }}
   </p>
   <h4>{{ 'about.sharing-is-caring.title' | translate }}</h4>
   <p>
@@ -16,7 +16,7 @@
   <h4>{{ 'about.feedback.title' | translate }}</h4>
   <p>
     {{ 'about.feedback.text-one' | translate }}
-    <a href="https://git.rwth-aachen.de/card/cards/-/issues" rel="noopener" target="_blank">{{
+    <a href="https://github.com/StudyGrow/Cards/issues" rel="noopener" target="_blank">{{
       'about.feedback.text-two' | translate
     }}</a>
     {{ 'about.feedback.text-three' | translate }}
@@ -90,4 +90,17 @@
     }}</a
     >.
   </p>
+  <hr />
+  <h3>Authors</h3>
+  <ul>
+    <li>
+      <strong>Erdzan Rastoder</strong> -
+      <a href="https://github.com/orgs/StudyGrow/people/erdzan12" target="_blank" rel="noopener noreferrer">Github</a>
+    </li>
+    <li>
+      <strong>Ben Lakhoune</strong> -
+      <a href="https://github.com/lakhoune" target="_blank" rel="noopener noreferrer">Github</a> -
+      <a href="http://lakhoune.com" target="_blank" rel="noopener noreferrer">Website</a>
+    </li>
+  </ul>
 </div>
