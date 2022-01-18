@@ -98,8 +98,8 @@
     "cards": {
       "title": "Cards",
       "text": "Cards is a website designed to help you prepare for you exams. The concept of our website is based on traditional index cards, with the advantage that you don't need to carry your heavy stack of cards around. Our site is optimized for smartphones, allowing you to view your cards wherever you are.",
-       "create-account":  ", to use all features of our website.",
-       "create-account-link-text": "Create an account"
+      "create-account": ", to use all features of our website.",
+      "create-account-link-text": "Create an account"
     },
     "sharing-is-caring": {
       "title": "Sharing is Caring",
@@ -203,6 +203,7 @@
   "show-in-lecture": "Show card in lecture",
   "edit": "Edit",
   "add": "Add",
+  "add-login-warning": "Log in to add cards.",
   "overview": "Overview",
   "lectures": "Lectures",
   "lecture": "Lecture",
