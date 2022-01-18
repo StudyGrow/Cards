@@ -9,7 +9,15 @@
       <app-carousel></app-carousel>
     </div>
   </mat-tab>
-  <mat-tab *ngIf="authorized$ | async" [label]="formMode === 'edit' ? ('edit' | translate) : ('add' | translate)"
+  <mat-tab
+    [disabled]="!(authorized$ | async)"
+    [label]="
+      (authorized$ | async)
+        ? formMode === 'edit'
+          ? ('edit' | translate)
+          : ('add' | translate)
+        : ('add-login-warning' | translate)
+    "
     ><div class="container py-1">
       <app-form></app-form></div
   ></mat-tab>
