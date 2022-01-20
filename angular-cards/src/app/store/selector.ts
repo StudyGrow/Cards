@@ -120,7 +120,7 @@ export const CARD_INDEXES = (state: AppState): number[] => [
 
 export const AUTHORIZED = (state: AppState): boolean => state.data.userData.authenticated;
 
-const SORT_TYPE = (state: AppState): SortType => state.mode.sortType;
+export const SORT_TYPE = (state: AppState): SortType => state.mode.sortType;
 /**
  * select the date at which the filter for the cards have changed
  * @param state state of the app
