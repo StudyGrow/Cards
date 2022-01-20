@@ -187,10 +187,9 @@ export default class CardsService {
     if (tags) {
       tags.forEach((tag: string) => {
         if (tag.length > 0) {
-          this.lectureModel.updateOne(
-            { abrv: vlabrv },
-            { $addToSet: { tagList: tag } }
-          );
+          this.lectureModel
+            .updateOne({ abrv: vlabrv }, { $addToSet: { tagList: tag } })
+            .then();
         }
       });
     }
