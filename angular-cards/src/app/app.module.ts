@@ -118,13 +118,13 @@ export class MyHammerConfig extends HammerGestureConfig {
       modules: {
         toolbar: [
           ['bold', 'italic', 'underline', 'strike'], // toggled buttons
-          ['blockquote', 'code-block'],
+          ['code-block'],
           [{ list: 'ordered' }, { list: 'bullet' }],
           [{ script: 'sub' }, { script: 'super' }], // superscript/subscript
           [{ indent: '-1' }, { indent: '+1' }], // outdent/indent
 
-          [{ color: [] }, { background: [] }], // dropdown with defaults from theme
-          [{ font: [] }],
+          // [{ color: [] }, { background: [] }], // dropdown with defaults from theme
+          // [{ font: [] }],
         ],
       },
     }),
