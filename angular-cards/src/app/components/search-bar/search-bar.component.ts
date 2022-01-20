@@ -40,11 +40,12 @@ export class SearchBarComponent implements OnInit, OnDestroy {
   form = new FormControl();
   @ViewChild('search') searchElement: ElementRef;
   @HostListener('window:keyup', ['$event']) handleKeyDown(event: KeyboardEvent) {
-    if (event.key === 'S' && event.ctrlKey.valueOf() && event.shiftKey.valueOf()) {
+    if (event.key === 'K' && event.ctrlKey.valueOf() && event.shiftKey.valueOf()) {
       this.inField();
       this.searchElement.nativeElement.focus();
     }
     if (event.key === 'Escape') {
+      this.uInput.reset();
       this.resetNav();
       this.searchElement.nativeElement.blur();
     }
