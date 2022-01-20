@@ -307,7 +307,7 @@ export class FormComponent implements OnInit, OnDestroy {
       return true;
     }
 
-    return thema.value.trim().length < 3 || thema.value.trim().length > 500 || this.editorContent.trim().length > 1000;
+    return thema.value.trim().length < 3 || thema.value.trim().length > 500 || this.editorHTML.trim().length > 1000;
   }
 
   removeChip(tag: string): void {

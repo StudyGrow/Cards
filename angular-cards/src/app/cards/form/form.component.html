@@ -35,7 +35,7 @@
       ></quill-editor>
       <div class="d-flex content-wrapper">
         <div class="mat-form-field-hint-spacer"></div>
-        <mat-hint class="content-hint">{{ editorContent?.trim().length || 0 }}/1000</mat-hint>
+        <mat-hint class="content-hint">{{ editorHTML?.trim().length || 0 }}/1000</mat-hint>
       </div>
 
       <mat-error *ngIf="editorContent?.trim().length > 1000">{{
