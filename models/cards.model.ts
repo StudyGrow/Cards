@@ -9,6 +9,7 @@ export interface ICard extends Document {
   date: Date;
   latex: number;
   rating: number;
+  _id?: string;
 }
 
 const cardSchema = new Schema({

@@ -38,14 +38,15 @@ export class CardsService {
   updateCard(card: Card): Observable<Card> {
     // send update to server using http service
     return this.http
-      .put<Card>(this.config.urlBase + 'cards/update', {card}, {
-        headers: this.config.headers,
-        observe: 'response',
-      })
-      .pipe(
-        tap((res) => console.log(res.body)),
-        map((res) => res.body)
-      );
+      .put<Card>(
+        this.config.urlBase + 'cards/update',
+        { card },
+        {
+          headers: this.config.headers,
+          observe: 'response',
+        }
+      )
+      .pipe(map((res) => res.body));
   }
 
   addCard(card: Card): Observable<Card> {
