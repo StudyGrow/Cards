@@ -15,7 +15,16 @@ import {
   showNewCard,
 } from 'src/app/store/actions/StateActions';
 
-import { debounceTime, distinctUntilChanged, distinctUntilKeyChanged, map, tap, withLatestFrom } from 'rxjs/operators';
+import {
+  debounceTime,
+  delay,
+  distinctUntilChanged,
+  distinctUntilKeyChanged,
+  filter,
+  map,
+  tap,
+  withLatestFrom,
+} from 'rxjs/operators';
 
 import { NgbCarousel, NgbSlideEvent } from '@ng-bootstrap/ng-bootstrap';
 import { NotificationsService } from 'src/app/services/notifications.service';
@@ -34,6 +43,7 @@ import {
   CARD_TO_SHOW_NEXT,
   USER_ID,
   SELECTED_TAB,
+  SORT_TYPE,
 } from 'src/app/store/selector';
 import { CarouselInfo } from 'src/app/models/CarouselInfo';
 import { TranslateService } from '@ngx-translate/core';
@@ -73,7 +83,9 @@ export class CarouselComponent implements OnInit, OnDestroy {
   currentCard$ = this.carouselInfo$.asObservable().pipe(map((info) => info.currentCard));
 
   loading: boolean;
-
+  shortTypeHasChanged$ = this.store.select(SORT_TYPE).subscribe(() => {
+    this.handleNewCard();
+  });
   newCardToSet$ = this.store.select(CARD_TO_SHOW_NEXT);
   filters$: Observable<string[]> = this.store.select(ACTIVE_TAGS);
   filters: string[];
@@ -213,8 +225,13 @@ export class CarouselComponent implements OnInit, OnDestroy {
       });
     this.subscriptions$.push(sub);
 
-    sub = this.newCardToSet$.pipe(debounceTime(170)).subscribe((card) => this.handleNewCard(card));
-    this.newCardToSet$.pipe(tap((c) => console.log(c)));
+    sub = this.newCardToSet$
+      .pipe(
+        delay(50),
+        filter((card) => !!card)
+      )
+      .subscribe((card) => this.handleNewCard(card));
+
     this.subscriptions$.push(sub);
   }
 
@@ -258,7 +275,8 @@ export class CarouselComponent implements OnInit, OnDestroy {
       if (this.carousel) {
         this.carousel.select(this.activeSlide.toString());
       }
-    }, 150);
+    }, 10);
+    // this timeout is needed because the carousel is not properly resetting if there is not delay. However, this means that other actions might need to wait longer than this timeout
   }
 
   // this function updates the current slide index in the store and for the component
@@ -427,14 +445,20 @@ export class CarouselComponent implements OnInit, OnDestroy {
    * @param newCard card which should be displayed in carousel
    * @param cards available cards (currently filtered by tags)
    */
-  handleNewCard(newCard: Card) {
+  handleNewCard(newCard?: Card) {
     const currCarouselInfo = this.carouselInfo$?.getValue();
-    if (!newCard) return;
     if (!(currCarouselInfo?.allCardsSorted?.length > 0)) {
       return isDevMode()
         ? console.error('Cannot set new card as no cards are present in the carousel info')
         : undefined;
     }
+    if (!newCard) {
+      setTimeout(() => {
+        this.selectSlide(0);
+      }, 40);
+      return;
+    }
+
     const cards = currCarouselInfo.allCardsSortedAndFiltered;
     const index = cards?.findIndex((card) => card._id === newCard._id);
     if (index === -1) {

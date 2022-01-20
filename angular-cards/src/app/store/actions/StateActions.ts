@@ -28,7 +28,7 @@ enum ActionTypes {
 }
 
 export const updateCarouselInfo = createAction(ActionTypes.UPDATE_CAROUSEL_INFO, props<{ info: CarouselInfo }>());
-export const showNewCard = createAction(ActionTypes.SHOW_CARD, props<{ card: Card }>());
+export const showNewCard = createAction(ActionTypes.SHOW_CARD, props<{ card?: Card }>());
 export const showNewCardSuccess = createAction(ActionTypes.SHOW_CARD_SUCCESS, props<{ card: Card }>());
 
 export const resetCardsState = createAction(ActionTypes.RESET_CARDSDATA);

@@ -41,7 +41,14 @@ import { SuccessMessage } from 'src/app/models/Notification';
 import { VotesService } from 'src/app/services/votes.service';
 
 import { Card, CardsData } from 'src/app/models/Card';
-import { fail, navigateToCard, resetFilter, showNewCard, showNewCardSuccess } from '../actions/StateActions';
+import {
+  changeSorting,
+  fail,
+  navigateToCard,
+  resetFilter,
+  showNewCard,
+  showNewCardSuccess,
+} from '../actions/StateActions';
 import {
   SORTED_CARDS,
   SORTED_AND_FILTERED_CARDS,
@@ -159,6 +166,17 @@ export class CardsEffects {
       share()
     )
   );
+
+  // /**
+  //  * Changes the vote on a card
+  //  */
+  // changeSorting$ = createEffect(() =>
+  //   this.actions$.pipe(
+  //     ofType(changeSorting),
+  //     tap(() => this.store.dispatch(showNewCard({}))),
+  //     share()
+  //   )
+  // );
 
   /**
    * Fetch lectures from the server
