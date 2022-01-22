@@ -16,7 +16,9 @@ pre {
   font-weight: 400;
   line-height: 1.5;
 }
-
+.content{
+    padding: 0 24px 16px;
+}
 //prevent bootstrap stylesheet from forcing black text color
 pre {
   color: inherit !important;
