@@ -24,7 +24,7 @@ export class CardActionsComponent implements OnInit, OnDestroy {
   loggedIn$: Observable<boolean> = this.store.select(AUTHORIZED);
 
   @Input() id: string; // id of card that the vote belongs to
-
+  @Input() tags: string[];
   private subscriptions$: Subscription[] = [];
   constructor(
     private store: Store<any>,
@@ -44,6 +44,11 @@ export class CardActionsComponent implements OnInit, OnDestroy {
       this.voteCount = count;
     });
     this.subscriptions$.push(sub);
+    const tagCount = this.tags.length;
+    if (tagCount > 3) {
+      this.tags = this.tags.slice(0, 3);
+      this.tags.push(`+${tagCount - 3}`);
+    }
   }
 
   ngOnDestroy() {
