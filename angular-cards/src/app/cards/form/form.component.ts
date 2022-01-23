@@ -163,7 +163,7 @@ export class FormComponent implements OnInit, OnDestroy {
           }
         }
         this.form.reset({ ...this.cardCopy }); // overwrite form with content of the card
-        console.log(this.editor);
+
         setTimeout(() => {
           // the form reset is executed asynchronously. this timeout is needed to wait until the form is resetted
           // otherwise the editor is overwrite by the form which does apply the formattings
@@ -204,7 +204,7 @@ export class FormComponent implements OnInit, OnDestroy {
         });
         doc.htmlDocument().body;
       } catch (e) {
-        console.log(e);
+        console.warn(e);
         this.notifs.addNotification(
           new WarnMessage(
             'Der Latex content ist nicht formattiert. Überprüfe ob der content korrekt von $ umhüllt ist '
@@ -303,7 +303,7 @@ export class FormComponent implements OnInit, OnDestroy {
    * @param thema
    */
   isDisabled(thema: FormControl) {
-    if (!this.editorContent || !thema.value) {
+    if (!this.editorHTML || !thema.value) {
       return true;
     }
 
@@ -322,7 +322,6 @@ export class FormComponent implements OnInit, OnDestroy {
     if (e.event === 'text-change') {
       this.editorHTML = e.html;
       this.editorContent = e.text;
-      console.log(e);
     }
   }
 
@@ -332,9 +331,7 @@ export class FormComponent implements OnInit, OnDestroy {
       return;
     }
     if (!this.selectedTags.includes(newTag)) this.selectedTags.push(newTag);
-    event.input.value = '';
-    // this.form.reset(); //TODO: fix this if adding a tag the input string should be cleared
-    // this.form.setValue({ ...this.form.value, tag: '' });
+    event.chipInput.clear(); //clear the chipinput
   }
   onSelectOption(event: MatAutocompleteSelectedEvent) {
     const newTag = event.option.viewValue;
