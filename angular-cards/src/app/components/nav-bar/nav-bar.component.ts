@@ -5,7 +5,7 @@ import { Title } from '@angular/platform-browser';
 import { Subscription, Observable, combineLatest } from 'rxjs';
 import { Store } from '@ngrx/store';
 
-import { filter, map, withLatestFrom } from 'rxjs/operators';
+import { filter, map, tap, withLatestFrom } from 'rxjs/operators';
 import { ACTIVE_INDEX, SORTED_AND_FILTERED_CARDS, SHOWN_CARDS, LOADING } from 'src/app/store/selector';
 import { clearCardData } from 'src/app/store/actions/CardActions';
 import { AppState, Data, Mode } from 'src/app/models/state';
@@ -21,7 +21,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
   loggedIn: boolean;
   cards: Card[] = [];
 
-  experiment: boolean = false;
+  experiment = false;
   subscriptions$: Subscription[] = [];
   showSearch: boolean;
   loading: boolean;
@@ -44,8 +44,8 @@ export class NavBarComponent implements OnInit, OnDestroy {
       });
       this.subscriptions$.push(sub);
 
-      let cardCount$ = this.store.select(SORTED_AND_FILTERED_CARDS).pipe(map((cards) => cards?.length));
-      //progress of carousel. will be undefined if there are no cards
+      const cardCount$ = this.store.select(SORTED_AND_FILTERED_CARDS).pipe(map((cards) => cards?.length));
+      // progress of carousel. will be undefined if there are no cards
       this.progress$ = combineLatest([this.store.select(ACTIVE_INDEX), cardCount$]).pipe(
         map(([curr, all]) => (all > 1 ? (curr / (all - 1)) * 100 : undefined))
       );
@@ -59,18 +59,18 @@ export class NavBarComponent implements OnInit, OnDestroy {
 
   private handleRouteChanges(e: RouterEvent) {
     if (e instanceof RoutesRecognized) {
-      this.nav.close(); //hide drawer when changing route
+      this.nav.close(); // hide drawer when changing route
       this.setPageTitle(e);
       if (e.url.match(/vorlesung/)) {
         this.showSearch = true;
-        //this.store.dispatch(fetchCards());
+        // this.store.dispatch(fetchCards());
       } else {
         this.showSearch = false;
       }
     } else if (e instanceof NavigationEnd) {
       if (!e.url.match(/vorlesung/)) {
         this.store.dispatch(clearCardData());
-        this.store.dispatch(resetCardsState()); //clear card data on store when leaving lecture route}
+        this.store.dispatch(resetCardsState()); // clear card data on store when leaving lecture route}
       }
     }
   }
