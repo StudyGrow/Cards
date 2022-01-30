@@ -30,7 +30,7 @@ const _modeReducer = createReducer(
   on(StateActions.updateCarouselInfo, (state, { info }) => ({
     ...state,
     currentCard: info.currentCard,
-    activeIndex: info.currentIndex,
+    activeIndex: info.absoluteIndex,
     endIndex: info.end,
     startIndex: info.start,
   })),

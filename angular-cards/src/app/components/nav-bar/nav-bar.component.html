@@ -1,9 +1,5 @@
 <mat-toolbar color="primary">
-  <button
-    mat-icon-button
-    (click)="drawerToggle()"
-    aria-label="navigation-sidebar-toggler"
-  >
+  <button mat-icon-button (click)="drawerToggle()" aria-label="navigation-sidebar-toggler">
     <mat-icon>menu</mat-icon>
   </button>
   <span class="spacer"></span>
@@ -12,15 +8,14 @@
 </mat-toolbar>
 
 <div id="progress">
+  <mat-progress-bar *ngIf="loading; else progressBar" mode="indeterminate" color="accent"></mat-progress-bar>
+</div>
+
+<ng-template #progressBar>
   <mat-progress-bar
-    *ngIf="loading"
-    mode="indeterminate"
-    color="accent"
-  ></mat-progress-bar>
-  <mat-progress-bar
-    *ngIf="!loading && (progress$ | async) !== undefined"
+    *ngIf="progress$ | async as progress"
     mode="determinate"
     color="primary"
-    [value]="progress$ | async"
+    [value]="progress"
   ></mat-progress-bar>
-</div>
+</ng-template>

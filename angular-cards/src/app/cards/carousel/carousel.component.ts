@@ -287,9 +287,14 @@ export class CarouselComponent implements OnInit, OnDestroy {
     const newState: CarouselInfo = {
       ...this.carouselInfo$.getValue(),
       currentIndex: currSlideIndex,
+      absoluteIndex: this.carouselInfo$
+        .getValue()
+        .allCardsSortedAndFiltered.findIndex((card) => card._id === this.carouselInfo$.getValue().currentCard._id),
       currentCard: this.cardsToShowInCarousel[currSlideIndex],
       updateAt: new Date(),
     };
+
+    this.store.dispatch(updateCarouselInfo({ info: newState }));
 
     this.carouselInfo$.next(newState);
   }
@@ -345,10 +350,14 @@ export class CarouselComponent implements OnInit, OnDestroy {
       newChunk = [...new Set(newChunk)];
       const sortedReference = state.allCardsSortedAndFiltered;
       newChunk = newChunk.sort((a: any, b: any) => sortedReference.indexOf(a) - sortedReference.indexOf(b));
-      this.cardsToShowInCarousel = await newChunk;
-      this.carousel.activeId = String(this.cardsToShowInCarousel.indexOf(state.currentCard));
+      this.cardsToShowInCarousel = newChunk;
+
+      const newIndex = this.cardsToShowInCarousel.indexOf(state.currentCard);
+
+      this.carousel.activeId = String(newIndex);
       setTimeout(() => {
         this.carousel.prev();
+        // this.store.dispatch(updateCarouselInfo({ info })); // this is used to update the active index in the store
       }, 150);
     }
   }
@@ -374,7 +383,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
     const currentCardIndexAccordingToAllCard = state.allCardsSortedAndFiltered.indexOf(
       this.cardsToShowInCarousel[this.cardsToShowInCarousel.indexOf(state.currentCard)]
     );
-    if (successorInCarousel !== undefined && successorInCarousel._id == desiredSuccessorInAllCards._id) {
+    if (successorInCarousel !== undefined && successorInCarousel._id == desiredSuccessorInAllCards?._id) {
       this.carousel.select(String(this.cardsToShowInCarousel.indexOf(state.currentCard) + 1));
     } else if (currentCardIndexAccordingToAllCard == indexOfLastCardInAllCards) {
       this.showRejection();
