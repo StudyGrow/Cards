@@ -310,13 +310,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
     /*
      * REPLACE allCards with {...this.carouselInfo$.getValue()}.allCardsSorted or {...this.carouselInfo$.getValue()}.allCardsSortedAndFiltered
      */
-    if (
-      !this.carousel ||
-      !this.cardsToShowInCarousel ||
-      this.cardsToShowInCarousel.length <= 1 ||
-      this.formMode === 'edit' ||
-      this.currentTab !== 0
-    )
+    if (this.formMode === 'edit' || this.currentTab !== 0 || !this.carousel || !this.cardsToShowInCarousel)
       return this.showRejection();
 
     const state = { ...this.carouselInfo$.getValue() };
