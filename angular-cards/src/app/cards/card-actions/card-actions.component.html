@@ -26,7 +26,14 @@
     >
       <mat-icon>share</mat-icon>
     </button>
-    <button class="mr-1 mt-1 report" id="more" mat-icon-button type="button" (click)="reportCard()">
+    <button
+      *ngIf="loggedIn$ | async"
+      class="mr-1 mt-1 report"
+      id="more"
+      mat-icon-button
+      type="button"
+      (click)="reportCard()"
+    >
       <mat-icon [matTooltip]="'card-actions.report' | translate" matTooltipPosition="above">flag</mat-icon>
     </button>
   </div>
