@@ -57,6 +57,7 @@ import {
   CURRENT_CARD,
   SELECTED_LECTURE,
 } from '../selector';
+import { addTagsToLecture } from '../actions/LectureActions';
 
 @Injectable()
 export class CardsEffects {
@@ -145,7 +146,7 @@ export class CardsEffects {
           this.store.dispatch(resetFilter());
         }
       }),
-      map(([{ card }, filteredCards]) => showNewCardSuccess({ card: card })),
+      map(([{ card }]) => showNewCardSuccess({ card: card })),
       share()
     )
   );
@@ -219,6 +220,7 @@ export class CardsEffects {
             setTimeout(() => {
               this.store.dispatch(showNewCard({ card: card })); // go to last card
             }, 200);
+            this.store.dispatch(addTagsToLecture({ tags: card.tags }));
           }),
           map((res) => AddCardActions.addCardSuccess({ card: res })),
 
@@ -236,6 +238,7 @@ export class CardsEffects {
         this.cards.updateCard(action.card).pipe(
           tap((card) => {
             this.store.dispatch(showNewCard({ card: card }));
+            this.store.dispatch(addTagsToLecture({ tags: card.tags }));
           }),
           map((card) => UpdateCardActions.updateCardSuccess({ card: card })),
           catchError((reason) => of(LoadFailure({ reason: reason })))

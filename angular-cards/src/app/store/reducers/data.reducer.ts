@@ -44,10 +44,6 @@ const _dataReducer = createReducer(
           authorName: state.userData.user.username, // add username
         },
       ],
-      currLecture: {
-        ...state.cardData.currLecture,
-        tagList: addTags(state.cardData.currLecture.tagList ? [...state.cardData.currLecture.tagList] : [], card.tags),
-      }, // add new tags to the lectures taglist
       lastUpdated: new Date(),
     },
   })),
@@ -157,6 +153,17 @@ const _dataReducer = createReducer(
   on(UserActions.logoutSuccess, (state) => ({
     ...state,
     userData: initialState.userData,
+  })),
+
+  on(LectureActions.addTagsToLecture, (state, { tags }) => ({
+    ...state,
+    cardData: {
+      ...state.cardData,
+      currLecture: {
+        ...state.cardData.currLecture,
+        tagList: addTags(state.cardData.currLecture.tagList ? [...state.cardData.currLecture.tagList] : [], tags),
+      },
+    },
   })),
 
   on(CardActions.clearCardData, (state) => ({
