@@ -7,7 +7,7 @@ import { Observable, Subscription } from 'rxjs';
 import { parse, HtmlGenerator } from 'latex.js';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/models/state';
-import { AUTHORIZED } from 'src/app/store/selector';
+import { AUTHORIZED, CURRENT_CARD } from 'src/app/store/selector';
 
 @Component({
   selector: 'app-card',
@@ -15,11 +15,12 @@ import { AUTHORIZED } from 'src/app/store/selector';
   styleUrls: ['./card.component.scss'],
 })
 export class CardComponent implements OnInit, OnDestroy {
+  currentCard: Card;
   constructor(private store: Store<AppState>, private sanitizer: DomSanitizer) {}
 
   private mode$ = this.store.select('mode');
   inTypingField = false;
-  activeIndex: number;
+  activeIndex = 0;
   auth$: Observable<boolean> = this.store.select(AUTHORIZED);
   parsedContent: string;
 
@@ -29,7 +30,10 @@ export class CardComponent implements OnInit, OnDestroy {
   @Input() index: number;
 
   @HostListener('window:keyup', ['$event']) handleKeyDown(event: KeyboardEvent): void {
-    if (!this.inTypingField && this.activeIndex == this.index) {
+    if (this.currentCard._id !== this.card._id) {
+      return;
+    }
+    if (!this.inTypingField) {
       if (event.key == 'ArrowDown') {
         event.preventDefault();
         this.content.toggle();
@@ -57,6 +61,9 @@ export class CardComponent implements OnInit, OnDestroy {
       this.inTypingField = val;
     });
     this.subscriptions$.push(sub);
+    this.store.select(CURRENT_CARD).subscribe((card) => {
+      this.currentCard = card;
+    });
 
     this.parsedContent = this.sanitizer.sanitize(SecurityContext.HTML, this.parse(this.card.content));
   }
