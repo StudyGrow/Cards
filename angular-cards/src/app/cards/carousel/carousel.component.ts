@@ -287,12 +287,12 @@ export class CarouselComponent implements OnInit, OnDestroy {
     const newState: CarouselInfo = {
       ...this.carouselInfo$.getValue(),
       currentIndex: currSlideIndex,
-      absoluteIndex: this.carouselInfo$
-        .getValue()
-        .allCardsSortedAndFiltered.findIndex((card) => card._id === this.carouselInfo$.getValue().currentCard._id),
       currentCard: this.cardsToShowInCarousel[currSlideIndex],
       updateAt: new Date(),
     };
+    newState.absoluteIndex = this.carouselInfo$
+      .getValue()
+      .allCardsSortedAndFiltered.findIndex((card) => card._id === newState.currentCard._id);
 
     this.store.dispatch(updateCarouselInfo({ info: newState }));
 
