@@ -31,7 +31,7 @@ const initialState: Data = {
 const _dataReducer = createReducer(
   initialState,
 
-  on(CardActions.addCardSuccess, (state, { card }) => ({
+  on(CardActions.storeCard, (state, { card }) => ({
     ...state,
     cardData: {
       ...state.cardData,
@@ -47,7 +47,7 @@ const _dataReducer = createReducer(
       lastUpdated: new Date(),
     },
   })),
-  on(CardActions.fetchVotesSuccess, (state, { votes }) =>
+  on(CardActions.storeVotes, (state, { votes }) =>
     votes
       ? {
           ...state,
@@ -59,7 +59,7 @@ const _dataReducer = createReducer(
         }
       : state
   ),
-  on(CardActions.changeVoteSuccess, (state, { vote }) => ({
+  on(CardActions.updateVoteChange, (state, { vote }) => ({
     ...state,
     cardData: {
       ...state.cardData,
@@ -88,7 +88,7 @@ const _dataReducer = createReducer(
     },
   })),
 
-  on(CardActions.updateCardSuccess, (state, { card }) => ({
+  on(CardActions.updateChangedCard, (state, { card }) => ({
     ...state,
     cardData: {
       ...state.cardData,
@@ -97,7 +97,7 @@ const _dataReducer = createReducer(
     },
   })),
 
-  on(CardActions.LoadSuccess, (state, { data }) => ({
+  on(CardActions.storeCardData, (state, { data }) => ({
     ...state,
     cardData: {
       ...state.cardData,
@@ -177,7 +177,7 @@ const _dataReducer = createReducer(
     },
   })),
 
-  on(CardActions.reportCardSuccess, (state, { card }) => ({
+  on(CardActions.updateReportedCard, (state, { card }) => ({
     ...state,
     cardData: {
       ...state.cardData,
