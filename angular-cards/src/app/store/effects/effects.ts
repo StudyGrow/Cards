@@ -3,18 +3,7 @@ import { Actions, ofType, createEffect } from '@ngrx/effects';
 import { of, combineLatest } from 'rxjs';
 import { share, tap, withLatestFrom, filter, switchMap, take } from 'rxjs/operators';
 import { catchError, map, mergeMap, exhaustMap } from 'rxjs/operators';
-import {
-  LoadFailure,
-  FetchCardsActions,
-  AddCardActions,
-  UpdateCardActions,
-  fetchVotes,
-  fetchVotesSuccess,
-  changeVote,
-  changeVoteSuccess,
-  reportCard,
-  reportCardSuccess,
-} from '../actions/CardActions';
+import * as CardActions from '../actions/CardActions';
 import * as LectureActions from '../actions/LectureActions';
 import { CardsService } from '../../services/cards.service';
 import { LecturesService } from '../../services/lectures.service';
@@ -77,12 +66,12 @@ export class CardsEffects {
    */
   loadCards$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(FetchCardsActions.fetchCards),
-      tap(() => this.store.dispatch(fetchVotes())), // fetch votes of user
+      ofType(CardActions.fetchCards),
+      tap(() => this.store.dispatch(CardActions.fetchVotes())), // fetch votes of user
       exhaustMap(() =>
         this.cards.fetchCardsData().pipe(
-          map((data: CardsData) => FetchCardsActions.LoadSuccess({ data: data })),
-          catchError((reason) => of(LoadFailure({ reason: reason })))
+          map((data: CardsData) => CardActions.storeCardData({ data: data })),
+          catchError((reason) => of(CardActions.httpFailure({ reason: reason })))
         )
       ),
       share() // share is used for the effects so that components can subscribe to the effect without triggering it multiple times
@@ -94,12 +83,12 @@ export class CardsEffects {
    */
   fetchVotes$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(fetchVotes),
+      ofType(CardActions.fetchVotes),
       withLatestFrom(this.store.select(AUTHORIZED)),
-      filter(([action, auth]) => auth), // make sure user is logged in before requesting data from server
+      filter(([, auth]) => auth), // make sure user is logged in before requesting data from server
       exhaustMap(
         // exhaustMap can be used whenever we are sure that the request is idempotent, as in the case with GET
-        () => this.votes.fetchVotes().pipe(map((votes) => fetchVotesSuccess({ votes: votes })))
+        () => this.votes.fetchVotes().pipe(map((votes) => CardActions.storeVotes({ votes: votes })))
       ),
       share()
     )
@@ -125,7 +114,7 @@ export class CardsEffects {
           ),
         ])
       ),
-      map(([newCard, cards]) => showNewCard({ card: newCard }))
+      map(([newCard]) => showNewCard({ card: newCard }))
     )
   );
 
@@ -156,11 +145,11 @@ export class CardsEffects {
    */
   changeVote$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(changeVote),
+      ofType(CardActions.changeVote),
       switchMap((action) =>
         this.votes.castVote(action.vote).pipe(
           map((vote) => {
-            return changeVoteSuccess({ vote: vote });
+            return CardActions.updateVoteChange({ vote: vote });
           })
         )
       ),
@@ -204,7 +193,7 @@ export class CardsEffects {
       ) =>
         this.lectures.addLecture(action.lecture).pipe(
           map((res) => LectureActions.addLectureSuccess({ lecture: res })),
-          catchError((reason) => of(LoadFailure({ reason: reason })))
+          catchError((reason) => of(CardActions.httpFailure({ reason: reason })))
         )
       ),
       share()
@@ -213,7 +202,7 @@ export class CardsEffects {
 
   addCard$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(AddCardActions.addCard),
+      ofType(CardActions.addCard),
       exhaustMap((cardAction) =>
         this.cards.addCard(cardAction.card).pipe(
           tap((card) => {
@@ -222,9 +211,9 @@ export class CardsEffects {
             }, 200);
             this.store.dispatch(addTagsToLecture({ tags: card.tags }));
           }),
-          map((res) => AddCardActions.addCardSuccess({ card: res })),
+          map((res) => CardActions.storeCard({ card: res })),
 
-          catchError((reason) => of(LoadFailure({ reason: reason })))
+          catchError((reason) => of(CardActions.httpFailure({ reason: reason })))
         )
       ),
       share()
@@ -233,15 +222,15 @@ export class CardsEffects {
 
   updateCard$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(UpdateCardActions.updateCard),
+      ofType(CardActions.updateCard),
       switchMap((action) =>
         this.cards.updateCard(action.card).pipe(
           tap((card) => {
             this.store.dispatch(showNewCard({ card: card }));
             this.store.dispatch(addTagsToLecture({ tags: card.tags }));
           }),
-          map((card) => UpdateCardActions.updateCardSuccess({ card: card })),
-          catchError((reason) => of(LoadFailure({ reason: reason })))
+          map((card) => CardActions.updateChangedCard({ card: card })),
+          catchError((reason) => of(CardActions.httpFailure({ reason: reason })))
         )
       ),
       share()
@@ -254,7 +243,7 @@ export class CardsEffects {
       exhaustMap(() =>
         this.user.getUserInfo().pipe(
           map((info) => fetchUserDataSuccess(info)),
-          catchError((reason) => of(LoadFailure({ reason: reason })))
+          catchError((reason) => of(CardActions.httpFailure({ reason: reason })))
         )
       ),
       share()
@@ -267,7 +256,7 @@ export class CardsEffects {
       switchMap((action) =>
         this.user.updateAccount(action).pipe(
           map((user) => updateUserDataSuccess(user)),
-          catchError((reason) => of(LoadFailure({ reason: reason })))
+          catchError((reason) => of(CardActions.httpFailure({ reason: reason })))
         )
       ),
       share()
@@ -287,7 +276,7 @@ export class CardsEffects {
             }
           }),
           map((user) => loginSuccess(user)),
-          catchError((reason) => of(LoadFailure({ reason: reason })))
+          catchError((reason) => of(CardActions.httpFailure({ reason: reason })))
         )
       ),
       share()
@@ -307,7 +296,7 @@ export class CardsEffects {
             }
           }),
           map((user) => loginSuccess(user)),
-          catchError((reason) => of(LoadFailure({ reason: reason })))
+          catchError((reason) => of(CardActions.httpFailure({ reason: reason })))
         )
       ),
       share()
@@ -323,7 +312,7 @@ export class CardsEffects {
             if (success) this.notifications.addNotification(new SuccessMessage('Erfolgreich abgemeldet'));
           }),
           map(() => logoutSuccess()),
-          catchError((reason) => of(LoadFailure({ reason: reason })))
+          catchError((reason) => of(CardActions.httpFailure({ reason: reason })))
         )
       ),
       share()
@@ -338,7 +327,7 @@ export class CardsEffects {
           map((user) => {
             return auth();
           }),
-          catchError((reason) => of(LoadFailure({ reason: reason })))
+          catchError((reason) => of(CardActions.httpFailure({ reason: reason })))
         )
       ),
       share()
@@ -357,7 +346,7 @@ export class CardsEffects {
             return authenticated({ auth: val });
           }),
 
-          catchError((reason) => of(LoadFailure({ reason: reason })))
+          catchError((reason) => of(CardActions.httpFailure({ reason: reason })))
         )
       ),
       share()
@@ -366,12 +355,12 @@ export class CardsEffects {
 
   report$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(reportCard),
+      ofType(CardActions.reportCard),
       withLatestFrom(combineLatest([this.store.select(CURRENT_CARD), this.store.select(SELECTED_LECTURE)])),
-      switchMap(([action, [card, lecture]]) =>
+      switchMap(([, [card, lecture]]) =>
         this.cards.reportCard(card, lecture).pipe(
-          map((c) => reportCardSuccess({ card: c })),
-          catchError((reason) => of(LoadFailure({ reason: reason })))
+          map((c) => CardActions.updateReportedCard({ card: c })),
+          catchError((reason) => of(CardActions.httpFailure({ reason: reason })))
         )
       ),
       share()
