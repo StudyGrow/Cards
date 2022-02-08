@@ -323,10 +323,14 @@ export class CarouselComponent implements OnInit, OnDestroy {
       this.showRejection();
       return;
     }
-    // check if prev card is already present in cardsToShowInCarousel, then go simply prev in carousel
-    const predecessorInCarousel = this.cardsToShowInCarousel[this.cardsToShowInCarousel.indexOf(state.currentCard) - 1];
-    const desiredPredecessor = state.allCardsSortedAndFiltered[state.allCardsSorted.indexOf(state.currentCard) - 1];
-    if (predecessorInCarousel && predecessorInCarousel._id === desiredPredecessor._id) {
+
+    const indexOfCurrentCardInCarousel = this.cardsToShowInCarousel.indexOf(state.currentCard);
+    const indexOfCurrentCardInAllCardsSortedAndFiltered = state.allCardsSortedAndFiltered.indexOf(state.currentCard);
+
+    const predecessorInCarousel = this.cardsToShowInCarousel[indexOfCurrentCardInCarousel - 1];
+    const desiredPredecessor = state.allCardsSortedAndFiltered[indexOfCurrentCardInAllCardsSortedAndFiltered - 1];
+    if (predecessorInCarousel?._id === desiredPredecessor._id) {
+      // check if prev card is already present in cardsToShowInCarousel, then go simply prev in carousel
       this.carousel.prev();
     }
     // check if current card is the first one so that going prev should go to the last card. We dont want to cycle the carousel so we show rejection
