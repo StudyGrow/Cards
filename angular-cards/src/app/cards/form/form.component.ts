@@ -17,7 +17,7 @@ import { Data, Mode } from 'src/app/models/state';
 import { User } from 'src/app/models/User';
 import { Vorlesung } from 'src/app/models/Vorlesung';
 import { NotificationsService } from 'src/app/services/notifications.service';
-import { changeTab, setFormMode, setTypingMode } from 'src/app/store/actions/StateActions';
+import { changeTab, setFormMode, setTypingMode, showNewCard } from 'src/app/store/actions/StateActions';
 import { addCard, updateCard } from 'src/app/store/actions/CardActions';
 import { addLercture } from 'src/app/store/actions/LectureActions';
 import { CardsEffects } from 'src/app/store/effects/effects';
@@ -249,8 +249,8 @@ export class FormComponent implements OnInit, OnDestroy {
       this.store.dispatch(addLercture({ lecture: JSON.parse(localStorage.getItem('vl')) }));
     }
     this.store.dispatch(addCard({ card: card }));
-    const sub = this.actionState.addCard$.subscribe((card) => {
-      if (card) {
+    const sub = this.actionState.addCard$.subscribe((result) => {
+      if (result) {
         this.resetForm();
       }
       sub.unsubscribe();
@@ -331,7 +331,7 @@ export class FormComponent implements OnInit, OnDestroy {
       return;
     }
     if (!this.selectedTags.includes(newTag)) this.selectedTags.push(newTag);
-    event.chipInput.clear(); //clear the chipinput
+    event.chipInput.clear(); // clear the chipinput
   }
   onSelectOption(event: MatAutocompleteSelectedEvent) {
     const newTag = event.option.viewValue;
@@ -344,7 +344,7 @@ export class FormComponent implements OnInit, OnDestroy {
 
     return [...tags].filter((item) => item.toLowerCase().indexOf(filterValue) === 0);
   }
-  cancelEdit() {
+  cancelEdit(): void {
     this.dialog.open(DialogueComponent, {
       width: '400px',
       data: {
