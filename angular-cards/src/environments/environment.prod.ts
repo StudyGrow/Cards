@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  domain: 'studydrive.me',
+  domain: 'cards.lakhoune.com',
   port: '',
 };
