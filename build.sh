@@ -4,7 +4,7 @@ echo "Server install done"
 cd angular-cards 
 npm install --legacy-peer-deps
 echo "Angular install done"
-cat package.json
+ng update @angular/cli @angular/core --allow-dirty --force
 if [ "$NODE_ENV" == "development" ]; then
   ng build --configuration=develop
 else
