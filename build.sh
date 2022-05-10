@@ -2,7 +2,6 @@
 npm install
 echo "Server install done"
 cd angular-cards 
-npm install -g @angular/cli
 npm install --legacy-peer-deps
 echo "Angular install done"
 cat package.json
