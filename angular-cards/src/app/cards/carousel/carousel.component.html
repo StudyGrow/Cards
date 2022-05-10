@@ -3,7 +3,7 @@
     <app-filter-tags></app-filter-tags>
   </div>
 
-  <div class="col-auto d-flex align-items-center" *ngIf="this.cardsToShowInCarousel !== undefined">
+  <div class="col-auto d-flex align-items-center" *ngIf="this.cardsToShowInCarousel !== undefined; else loading">
     <button
       mat-icon-button
       matTooltip="{{ 'card-carousel.sort' | translate }}"
@@ -44,19 +44,6 @@
     >
       <mat-icon>last_page</mat-icon>
     </button>
-
-    <button
-      *ngIf="authorized$ | async"
-      mat-icon-button
-      type="button"
-      aria-label="bearbeiten"
-      [disabled]="isDisabled()"
-      (click)="enableEdit()"
-      matTooltip="{{ 'card-carousel.edit' | translate }}"
-      matTooltipPosition="above"
-    >
-      <mat-icon>edit</mat-icon>
-    </button>
   </div>
 </div>
 <div class="row" id="carousel-row" *ngIf="cardsToShowInCarousel?.length > 0" [@fadeInOnEnter]>
@@ -76,7 +63,7 @@
       [showNavigationIndicators]="false"
     >
       <ng-template ngbSlide *ngFor="let card of cardsToShowInCarousel; index as i" [id]="i.toString()">
-        <app-card [card]="card" [index]="i"></app-card>
+        <app-card [card]="card" [index]="i" (onEditClicked)="enableEdit()"></app-card>
       </ng-template>
     </ngb-carousel>
   </div>
@@ -114,3 +101,5 @@
     </div>
   </div>
 </div>
+
+<ng-template #loading></ng-template>

@@ -57,3 +57,6 @@ pre.dark-theme {
  .dark-theme  .ql-editor.ql-blank::before {
   color: $label-color-dark;
 }
+.visually-hidden {
+  display: none !important;
+}
