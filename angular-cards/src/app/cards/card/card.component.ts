@@ -1,13 +1,22 @@
 import { DomSanitizer } from '@angular/platform-browser';
-import { map } from 'rxjs/operators';
-import { Component, OnInit, Input, OnDestroy, HostListener, SecurityContext } from '@angular/core';
+import { distinctUntilChanged, map } from 'rxjs/operators';
+import {
+  Component,
+  OnInit,
+  Input,
+  OnDestroy,
+  HostListener,
+  SecurityContext,
+  EventEmitter,
+  Output,
+} from '@angular/core';
 import { Card } from '../../models/Card';
 import { ViewChild } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { parse, HtmlGenerator } from 'latex.js';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/models/state';
-import { AUTHORIZED, CURRENT_CARD } from 'src/app/store/selector';
+import { AUTHORIZED, CURRENT_CARD, FORM_MODE, USER_ID } from 'src/app/store/selector';
 
 @Component({
   selector: 'app-card',
@@ -16,7 +25,10 @@ import { AUTHORIZED, CURRENT_CARD } from 'src/app/store/selector';
 })
 export class CardComponent implements OnInit, OnDestroy {
   currentCard: Card;
+  formMode: string;
+  uid: string;
   constructor(private store: Store<AppState>, private sanitizer: DomSanitizer) {}
+  @Output() onEditClicked = new EventEmitter();
 
   private mode$ = this.store.select('mode');
   inTypingField = false;
@@ -66,6 +78,20 @@ export class CardComponent implements OnInit, OnDestroy {
     });
 
     this.parsedContent = this.sanitizer.sanitize(SecurityContext.HTML, this.parse(this.card.content));
+
+    sub = this.store.select(FORM_MODE).subscribe((mode) => {
+      this.formMode = mode;
+    });
+    this.subscriptions$.push(sub);
+    sub = this.store
+      .select(USER_ID)
+      .pipe(distinctUntilChanged())
+      .subscribe((id) => {
+        if (this.uid !== id) {
+          this.uid = id;
+        }
+      });
+    this.subscriptions$.push(sub);
   }
 
   ngOnDestroy(): void {
@@ -79,5 +105,18 @@ export class CardComponent implements OnInit, OnDestroy {
     const generator = new HtmlGenerator({ hyphenate: false });
     const doc = parse(cardContent, { generator: generator }).htmlDocument();
     return doc.body.innerHTML;
+  }
+
+  enableEdit() {
+    this.onEditClicked.emit();
+  }
+
+  isDisabled() {
+    if (this.formMode == 'edit') return true;
+
+    if (this.card?.authorId !== this.uid)
+      // there is an author and it is not the current user
+      return true;
+    return false;
   }
 }

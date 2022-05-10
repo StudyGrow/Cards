@@ -1,6 +1,18 @@
 <mat-card class="p-0 my-4 shadow" id="`{{ card._id }}`">
-  <div class="d-flex">
+  <div class="d-flex justify-content-between">
     <mat-card-title> {{ card.thema }} </mat-card-title>
+    <button
+      *ngIf="!isDisabled() && auth$ | async"
+      mat-icon-button
+      type="button"
+      class="mx-1"
+      aria-label="bearbeiten"
+      (click)="enableEdit()"
+      matTooltip="{{ 'card-carousel.edit' | translate }}"
+      matTooltipPosition="above"
+    >
+      <mat-icon>edit</mat-icon>
+    </button>
   </div>
 
   <mat-expansion-panel #answer class="mat-elevation-z0 p-0">
