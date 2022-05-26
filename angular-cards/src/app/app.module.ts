@@ -125,6 +125,7 @@ export class MyHammerConfig extends HammerGestureConfig {
 
           // [{ color: [] }, { background: [] }], // dropdown with defaults from theme
           // [{ font: [] }],
+          ['formula'],
         ],
       },
     }),
