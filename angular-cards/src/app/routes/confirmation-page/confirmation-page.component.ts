@@ -5,8 +5,6 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './confirmation-page.component.html',
   styleUrls: ['./confirmation-page.component.scss'],
 })
-export class ConfirmationPageComponent implements OnInit {
+export class ConfirmationPageComponent {
   constructor() {}
-
-  ngOnInit(): void {}
 }
