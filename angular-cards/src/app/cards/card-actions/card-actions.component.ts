@@ -14,6 +14,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { CardsEffects } from 'src/app/store/effects/effects';
 
 @Component({
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'card-actions',
   templateUrl: './card-actions.component.html',
   styleUrls: ['./card-actions.component.css'],
