@@ -1,4 +1,4 @@
-import { Component, isDevMode, OnDestroy, OnInit } from '@angular/core';
+import { Component, isDevMode, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
@@ -17,7 +17,7 @@ import { TranslateService } from '@ngx-translate/core';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent implements OnInit, OnDestroy {
+export class AppComponent implements OnInit {
   private subscriptioins$: Subscription[] = [];
   private SUPPORTED_LANGUAGES = {
     en: 'english',
@@ -96,10 +96,5 @@ export class AppComponent implements OnInit, OnDestroy {
       }
     });
     this.subscriptioins$.push(sub);
-  }
-
-  ngOnDestroy(): void {
-    // unsubscribe to cookieconsent observables to prevent memory leaks
-    // this.subscriptioins$.forEach((sub) => sub.unsubscribe());
   }
 }
