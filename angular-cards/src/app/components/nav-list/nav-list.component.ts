@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { map, take } from 'rxjs/operators';
@@ -16,7 +16,7 @@ import { TranslateService } from '@ngx-translate/core';
   templateUrl: './nav-list.component.html',
   styleUrls: ['./nav-list.component.scss'],
 })
-export class NavListComponent implements OnInit {
+export class NavListComponent implements OnInit, AfterViewInit {
   loggedIn$: Observable<boolean>;
   theme$: Observable<string>;
   theme = new FormControl('');

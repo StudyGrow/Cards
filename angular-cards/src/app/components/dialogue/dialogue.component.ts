@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
 import { DialogData } from 'src/app/models/DialogueData';
@@ -12,13 +12,13 @@ import { deleteProfile } from 'src/app/store/actions/UserActions';
   templateUrl: './dialogue.component.html',
   styleUrls: ['./dialogue.component.css'],
 })
-export class DialogueComponent implements OnInit {
+export class DialogueComponent {
   constructor(
     public dialogRef: MatDialogRef<DialogueComponent>,
     private store: Store<AppState>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData
   ) {}
-  ngOnInit() {}
+
   confirm() {
     switch (this.data.type) {
       case DialogueType.CANCEL_EDIT:

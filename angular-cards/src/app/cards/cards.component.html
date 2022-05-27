@@ -10,7 +10,7 @@
     </div>
   </mat-tab>
   <mat-tab
-    [disabled]="!(authorized$ | async)"
+    [disabled]="(authorized$ | async) === false"
     [label]="
       (authorized$ | async)
         ? formMode === 'edit'
