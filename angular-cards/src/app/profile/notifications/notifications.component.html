@@ -15,16 +15,16 @@
   </mat-form-field>
   <ng-container *ngIf="reports$ | async as reports">
     <h4>{{ selected | translate }}</h4>
-    <div *ngIf="selected == 'flash-cards'">
+    <div *ngIf="selected === 'flash-cards'">
       <app-card-report *ngFor="let cardReport of reports[selected]" [cardReport]="cardReport"></app-card-report>
     </div>
-    <div *ngIf="selected == 'lectures'">
+    <div *ngIf="selected === 'lectures'">
       <app-lecture-report
         *ngFor="let letureReport of reports[selected]"
         [lectureReport]="letureReport"
       ></app-lecture-report>
     </div>
-    <div *ngIf="selected == 'users'">
+    <div *ngIf="selected === 'users'">
       <app-user-report *ngFor="let userReport of reports[selected]" [userReport]="userReport"></app-user-report>
     </div>
   </ng-container>

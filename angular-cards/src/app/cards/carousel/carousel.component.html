@@ -20,7 +20,7 @@
       matTooltipPosition="above"
       aria-label="zufall"
       (click)="showRandomCard()"
-      [disabled]="formMode == 'edit' || !cardsToShowInCarousel || cardsToShowInCarousel.length == 0"
+      [disabled]="formMode === 'edit' || !cardsToShowInCarousel || cardsToShowInCarousel.length == 0"
     >
       <mat-icon>shuffle</mat-icon>
     </button>
@@ -30,7 +30,7 @@
       matTooltipPosition="above"
       aria-label="zufall"
       (click)="selectSlide(0)"
-      [disabled]="formMode == 'edit' || !cardsToShowInCarousel || cardsToShowInCarousel.length == 0"
+      [disabled]="formMode === 'edit' || !cardsToShowInCarousel || cardsToShowInCarousel.length == 0"
     >
       <mat-icon>first_page</mat-icon>
     </button>
@@ -40,7 +40,7 @@
       matTooltipPosition="above"
       aria-label="zufall"
       (click)="selectSlide(undefined)"
-      [disabled]="formMode == 'edit' || !cardsToShowInCarousel || cardsToShowInCarousel.length == 0"
+      [disabled]="formMode === 'edit' || !cardsToShowInCarousel || cardsToShowInCarousel.length == 0"
     >
       <mat-icon>last_page</mat-icon>
     </button>
