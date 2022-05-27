@@ -33,6 +33,7 @@
     "@ngrx/store-devtools": "^13.0.2",
     "@ngx-translate/core": "^14.0.0",
     "@ngx-translate/http-loader": "^6.0.0",
+    "@popperjs/core": "^2.11.5",
     "angular-animations": "0.0.10",
     "angular-google-charts": "^2.2.2",
     "bootstrap": "^4.6.0",
