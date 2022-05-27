@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Vorlesung } from 'src/app/models/Vorlesung';
 
 @Component({
@@ -6,9 +6,7 @@ import { Vorlesung } from 'src/app/models/Vorlesung';
   templateUrl: './lecture-report.component.html',
   styleUrls: ['./lecture-report.component.scss'],
 })
-export class LectureReportComponent implements OnInit {
+export class LectureReportComponent {
   @Input() lectureReport: Vorlesung;
   constructor() {}
-
-  ngOnInit(): void {}
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { Vorlesung } from '../../models/Vorlesung';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
@@ -16,12 +16,11 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['./add-lecture-form.component.scss'],
   animations: [slideInUpOnEnterAnimation({ delay: 200 })],
 })
-export class AddLectureFormComponent implements OnInit {
+export class AddLectureFormComponent implements OnDestroy {
   subscriptions$: Subscription[] = [];
   constructor(private router: Router, private lectureService: LecturesService, private translate: TranslateService) {}
   initialized: boolean;
 
-  ngOnInit(): void {}
   ngOnDestroy() {
     this.subscriptions$.forEach((sub) => {
       sub.unsubscribe();

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Vorlesung } from '../../models/Vorlesung';
 
@@ -7,12 +7,10 @@ import { Vorlesung } from '../../models/Vorlesung';
   templateUrl: './lectures.component.html',
   styleUrls: ['./lectures.component.scss'],
 })
-export class LecturesComponent implements OnInit {
+export class LecturesComponent {
   @Input() lectures: Vorlesung[];
 
   constructor(private translate: TranslateService) {}
-
-  ngOnInit(): void {}
 
   setLink(lecture: Vorlesung) {
     return '/vorlesung/' + lecture.abrv;
