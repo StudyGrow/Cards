@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Card } from 'src/app/models/Card';
 import { navigateToCard } from 'src/app/store/actions/StateActions';
@@ -8,11 +8,10 @@ import { navigateToCard } from 'src/app/store/actions/StateActions';
   templateUrl: './card-report.component.html',
   styleUrls: ['./card-report.component.scss'],
 })
-export class CardReportComponent implements OnInit {
+export class CardReportComponent {
   @Input() cardReport: Card;
   constructor(private store: Store) {}
 
-  ngOnInit(): void {}
   navigate(card: Card) {
     this.store.dispatch(navigateToCard({ card: card }));
   }

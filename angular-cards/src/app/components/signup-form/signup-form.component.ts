@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { createAccount } from 'src/app/store/actions/UserActions';
@@ -7,19 +7,14 @@ import { createAccount } from 'src/app/store/actions/UserActions';
   templateUrl: './signup-form.component.html',
   styleUrls: ['./signup-form.component.scss'],
 })
-export class SignupFormComponent implements OnInit {
+export class SignupFormComponent {
   constructor(private store: Store) {}
 
-  ngOnInit(): void {}
   submit(form: NgForm) {
     this.store.dispatch(createAccount(form.value));
   }
   setStyle(password, password2) {
-    if (
-      password2.value &&
-      password2.value.length > 5 &&
-      password2.value != password.value
-    ) {
+    if (password2.value && password2.value.length > 5 && password2.value != password.value) {
       return 'box-shadow:0 0 3px #CC0000;';
     }
     return '';
