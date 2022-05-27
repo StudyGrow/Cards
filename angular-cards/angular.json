@@ -22,14 +22,20 @@
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
-            "assets": ["src/favicon.ico", "src/assets", "src/manifest.webmanifest"],
+            "assets": [
+              "src/favicon.ico",
+              "src/assets",
+              "src/manifest.webmanifest"
+            ],
             "styles": [
               "src/default.theme.scss",
               "src/styles.scss",
               "node_modules/material-design-icons/iconfont/material-icons.css",
               "node_modules/cookieconsent/build/cookieconsent.min.css"
             ],
-            "scripts": ["node_modules/cookieconsent/build/cookieconsent.min.js"],
+            "scripts": [
+              "node_modules/cookieconsent/build/cookieconsent.min.js"
+            ],
             "vendorChunk": true,
             "extractLicenses": false,
             "buildOptimizer": false,
@@ -125,7 +131,11 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.spec.json",
             "karmaConfig": "karma.conf.js",
-            "assets": ["src/favicon.ico", "src/assets", "src/manifest.webmanifest"],
+            "assets": [
+              "src/favicon.ico",
+              "src/assets",
+              "src/manifest.webmanifest"
+            ],
             "styles": [
               "src/styles.scss",
               "src/default.theme.scss",
@@ -145,13 +155,23 @@
               "devServerTarget": "angular-cards:serve:production"
             }
           }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
+            ]
+          }
         }
       }
     }
   },
   "defaultProject": "angular-cards",
   "cli": {
-    "analytics": "af23c165-cea7-45f2-9097-2ed149d9ccbf"
+    "analytics": "af23c165-cea7-45f2-9097-2ed149d9ccbf",
+    "defaultCollection": "@angular-eslint/schematics"
   },
   "schematics": {
     "@schematics/angular:component": {
