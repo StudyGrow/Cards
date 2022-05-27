@@ -11,6 +11,7 @@
     "start": "cross-env NODE_ENV=production ts-node start.ts",
     "watch": "cross-env NODE_ENV=development nodemon --exec ts-node start.ts --ignore ./angular-cards/",
     "buildng": "cd angular-cards && ng build --prod",
+    "heroku-ng-build": "cd angular-cards && npm i && ng build --prod --output-path ../dist/angular-cards",
     "stop": "ts-node stop.js",
     "heroku-postbuild": "chmod +x ./build.sh && ./build.sh"
   },
