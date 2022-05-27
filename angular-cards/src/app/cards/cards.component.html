@@ -4,7 +4,7 @@
   animationDuration="0ms"
   (selectedIndexChange)="setActiveTab($event)"
 >
-  <mat-tab [disabled]="this.formMode == 'edit'" label="{{ 'flash-cards' | translate }}">
+  <mat-tab [disabled]="this.formMode === 'edit'" label="{{ 'flash-cards' | translate }}">
     <div class="container my-1" id="carousel-container">
       <app-carousel></app-carousel>
     </div>
@@ -21,7 +21,7 @@
     ><div class="container py-1">
       <app-form></app-form></div
   ></mat-tab>
-  <mat-tab [disabled]="this.formMode == 'edit'" label="{{ 'overview' | translate }}">
+  <mat-tab [disabled]="this.formMode === 'edit'" label="{{ 'overview' | translate }}">
     <ng-template matTabContent>
       <app-lecture-overview></app-lecture-overview>
     </ng-template>
