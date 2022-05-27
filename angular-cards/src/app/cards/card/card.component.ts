@@ -28,6 +28,7 @@ export class CardComponent implements OnInit, OnDestroy {
   formMode: string;
   uid: string;
   constructor(private store: Store<AppState>, private sanitizer: DomSanitizer) {}
+  // eslint-disable-next-line @angular-eslint/no-output-on-prefix
   @Output() onEditClicked = new EventEmitter();
 
   private mode$ = this.store.select('mode');
