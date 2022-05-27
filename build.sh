@@ -1,11 +1,10 @@
 #!/bin/bash
 npm install
 echo "Server install done"
-cd angular-cards 
-npm i --force
+npm run heroku-ng-build
 echo "Angular install done"
-if [ "$NODE_ENV" == "development" ]; then
-  ng build --configuration=develop
-else
-  npm run build 
-fi
+# if [ "$NODE_ENV" == "development" ]; then
+#   ng build --configuration=develop
+# else
+#   npm run build 
+# fi
