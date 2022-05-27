@@ -3,7 +3,7 @@
     <a mat-list-item color="primary" class="{{ isActive('/') }}" routerLink="/" aria-label="Zurück zur Startseite"
       ><mat-icon>home</mat-icon> {{ 'lectures' | translate }}</a
     >
-    <ng-container *ngIf="(loggedIn$ | async) === false">
+    <ng-container *ngIf="(loggedIn$ | async) === null">
       <a mat-list-item mat-ripple class=" {{ isActive('/login') }}" routerLink="/login" aria-label="Login Seite"
         ><mat-icon>person</mat-icon>{{ 'sign-in' | translate }}</a
       >
