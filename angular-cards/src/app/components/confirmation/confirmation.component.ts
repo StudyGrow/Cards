@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MailService } from '../../services/mail.service';
 import { Subscription } from 'rxjs';
 @Component({
@@ -6,18 +6,16 @@ import { Subscription } from 'rxjs';
   templateUrl: './confirmation.component.html',
   styleUrls: ['./confirmation.component.scss'],
 })
-export class ConfirmationComponent implements OnInit {
+export class ConfirmationComponent implements OnInit, OnDestroy {
   constructor(private mailService: MailService) {}
   subs$: Subscription[] = [];
   tokenCheckStatus: any = 2;
   tokenCheckStatusSub: Subscription;
 
   ngOnInit(): void {
-    let sub = this.mailService
-      .getTokenCheckStatusUpdateListener()
-      .subscribe((tokenStatus) => {
-        this.tokenCheckStatus = tokenStatus;
-      });
+    let sub = this.mailService.getTokenCheckStatusUpdateListener().subscribe((tokenStatus) => {
+      this.tokenCheckStatus = tokenStatus;
+    });
     setTimeout(() => this.mailService.confirmAccount(), 3000);
     this.subs$.push(sub);
   }
