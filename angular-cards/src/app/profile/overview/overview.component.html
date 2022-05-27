@@ -1,4 +1,4 @@
-<div *ngIf="(user$ | async)?.confirmed == false" class="alert alert-info">
+<div *ngIf="(user$ | async)?.confirmed === false" class="alert alert-info">
   {{ 'confirm-account' | translate }}
 </div>
 <mat-card *ngIf="user$ | async as user" class="mb-2">
