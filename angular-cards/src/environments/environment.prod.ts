@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  domain: 'cards.lakhoune.com',
+  domain: 'studygrow-cards.herokuapp.com',
   port: '',
 };
