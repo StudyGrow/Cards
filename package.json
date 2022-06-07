@@ -8,7 +8,7 @@
   },
   "scripts": {
     "start": "cross-env NODE_ENV=production ts-node start.ts",
-    "watch": "cross-env NODE_ENV=development nodemon --exec ts-node start.ts --ignore ./angular-cards/",
+    "watch": "cross-env NODE_ENV=development nodemon --exec ./node_modules/.bin/ts-node start.ts --ignore ./angular-cards/",
     "buildng": "cd angular-cards && ng build --prod",
     "heroku-ng-build": "cd angular-cards && npm i --force && ng build --prod --output-path ../dist/angular-cards",
     "stop": "ts-node stop.js",
@@ -53,7 +53,7 @@
     "socket.io-client": "^2.4.0",
     "swagger-jsdoc": "^6.1.0",
     "swagger-ui-express": "^4.1.6",
-    "ts-node": "^10.4.0",
+    "ts-node": "^10.8.1",
     "typescript": "^4.1.6",
     "uniqid": "^5.3.0",
     "winston": "^3.3.3"
