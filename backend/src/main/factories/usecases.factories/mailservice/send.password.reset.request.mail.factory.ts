@@ -4,14 +4,14 @@ import { RandomNumberGeneratorAdapter } from "../../../../infrastructure/cryptog
 import { AccountMongoRepository } from "../../../../infrastructure/db/mongodb/account/account.mongodb.repository";
 import { makeMailService } from "./mail.service.factory";
 
-export const makeSendPasswordResetRequestMail = (): ISendPasswordResetRequestMail => {
-  const mailService = makeMailService()
-  const accountMongoRepository = new AccountMongoRepository()
-  const randomNumberGenerator = new RandomNumberGeneratorAdapter()
-  return new SendPasswordResetRequestMail(
-    mailService,
-    accountMongoRepository,
-    accountMongoRepository,
-    randomNumberGenerator,
-  );
-}
+export const makeSendPasswordResetRequestMail =
+  (): ISendPasswordResetRequestMail => {
+    const mailService = makeMailService();
+    const accountMongoRepository = new AccountMongoRepository();
+    const randomNumberGenerator = new RandomNumberGeneratorAdapter();
+    return new SendPasswordResetRequestMail(
+      mailService,
+      accountMongoRepository,
+      randomNumberGenerator
+    );
+  };

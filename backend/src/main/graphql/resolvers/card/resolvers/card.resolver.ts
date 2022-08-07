@@ -18,7 +18,7 @@ export class CardResolver {
     description: `Add a new card with for a given lecture.`,
   })
   @UseMiddleware(Authentication)
-  async addProject(
+  async addCard(
     @Arg("data") data: AddCardInput,
     @Ctx() ctx: MyCont
   ): Promise<Card> {

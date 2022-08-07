@@ -1,10 +1,13 @@
-import { EditUserRepository } from "../../../data/protocols/db/account/edit.user.repository";
-import { LoadAccountByEmailRepository } from "../../../data/protocols/db/account/load.account.by.email.repository";
 import { SendPasswordResetMail } from "../../../data/protocols/mail.service/send.password.reset.mail";
 import { ResetAccountPasswordInput } from "../../../main/graphql/resolvers/user/input/reset.account.password.input";
 import { NotFoundError } from "../../errors/not.found.error";
 import { UnauthorizedError } from "../../errors/unauthorized.error";
-import { badRequest, ok, serverError, unauthorized } from "../../helpers/http.helper";
+import {
+  badRequest,
+  ok,
+  serverError,
+  unauthorized,
+} from "../../helpers/http.helper";
 import { Controller } from "../../protocols/controller";
 import { HttpResponse } from "../../protocols/http.response";
 import { Validation } from "../../protocols/validation";
@@ -19,17 +22,16 @@ export interface MyCont {
 export class ResetAccountPasswordController<
   T1 extends ResetAccountPasswordController.Request,
   T2 extends ResetAccountPasswordController.Response
-  > implements Controller<any, any>
+> implements Controller<any, any>
 {
   constructor(
     private readonly sendPasswordResetMail: SendPasswordResetMail,
-    private readonly validation: Validation,
-
-  ) { }
+    private readonly validation: Validation
+  ) {}
 
   /**
    * Sends reset mail and saves reset token with timestamp
-   * 
+   *
    * @param request contains mail of user that wants to reset password
    * @returns boolean indicating success of operation
    */
@@ -44,23 +46,18 @@ export class ResetAccountPasswordController<
       const passwordResetOrError = await this.sendPasswordResetMail.send({
         email: request.data.email,
         code: request.data.code,
-        password: request.data.password
+        password: request.data.password,
       });
       if (passwordResetOrError instanceof NotFoundError) {
         return badRequest(passwordResetOrError);
-      }
-      else if (passwordResetOrError instanceof UnauthorizedError) {
+      } else if (passwordResetOrError instanceof UnauthorizedError) {
         return unauthorized(passwordResetOrError);
-      }
-      else if (passwordResetOrError === true) {
+      } else if (passwordResetOrError === true) {
         return ok<T2>(true as T2);
-      }
-      else {
+      } else {
         return serverError(new Error("An unexpected error occured"));
       }
-
     } catch (error: any) {
-
       return serverError(error);
     }
   }
@@ -70,5 +67,5 @@ export namespace ResetAccountPasswordController {
   export type Request = {
     data: ResetAccountPasswordInput;
   };
-  export type Response = boolean
+  export type Response = boolean;
 }

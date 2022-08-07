@@ -12,7 +12,6 @@ export const makeSendPasswordResetMail = (): ISendPasswordResetMail => {
   return new SendPasswordResetMail(
     mailService,
     accountMongoRepository,
-    accountMongoRepository,
-    bcryptAdapter,
+    bcryptAdapter
   );
-}
+};

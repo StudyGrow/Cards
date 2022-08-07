@@ -11,7 +11,7 @@ export class AddCardInput {
   @Field({ nullable: false })
   content!: string;
 
-  @Field({ nullable: false })
+  @Field((type) => [String], { nullable: false })
   tags!: string[];
 
   @Field({ nullable: false })

@@ -18,7 +18,7 @@ export class LectureResolver {
     description: `Add a new lecture with a given unique abbreviation.`,
   })
   @UseMiddleware(Authentication)
-  async addProject(
+  async addLecture(
     @Arg("data") data: AddLectureInput,
     @Ctx() ctx: MyCont
   ): Promise<Lecture> {

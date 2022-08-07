@@ -8,6 +8,6 @@ export class AddLectureInput {
   @Field({ nullable: false })
   abrv!: string;
 
-  @Field({ nullable: true })
+  @Field((type) => [String], { nullable: true })
   tagList?: string[];
 }
