@@ -12,6 +12,7 @@ import { LoginResolver } from "../graphql/resolvers/user/resolvers/login.resolve
 import { UserResolver } from "../graphql/resolvers/user/resolvers/user.resolver";
 import { LectureResolver } from "../graphql/resolvers/lecture/resolvers/lecture.resolver";
 import { CardResolver } from "../graphql/resolvers/card/resolvers/card.resolver";
+import { VoteResolver } from "../graphql/resolvers/vote/resolvers/vote.resolver";
 
 declare global {
   namespace Express {
@@ -52,6 +53,7 @@ export default async (app: Express) => {
       UserResolver,
       LectureResolver,
       CardResolver,
+      VoteResolver,
     ],
   });
 

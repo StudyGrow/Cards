@@ -13,7 +13,8 @@ export class DbAddLecture implements AddLecture {
     if (!uniqueAbreviation) {
       return null;
     }
-
+    console.log(params);
+    console.log(uniqueAbreviation);
     const addedLecture = await this.lectureRepository.add({
       ...params,
       name: params.name.trim(),

@@ -13,27 +13,33 @@ import { Card } from "../../../../main/docs/models/card.model";
 export class CardMongoRepository implements CardRepository {
   async add(data: AddCardRepository.Params): Promise<AddCardRepository.Result> {
     const result = await getModelForClass(Card).create(data);
-    return result;
+    return { ...result, id: result._id.toString() };
   }
 
   async update(
     data: UpdateCardRepository.Params
   ): Promise<UpdateCardRepository.Result> {
     const card = await getModelForClass(Card).findByIdAndUpdate(
-      { _id: data._id },
+      { _id: data.id },
       { data },
       { new: true }
     );
-    return card;
+    if (card) {
+      return { ...card, id: card._id.toString() };
+    }
+    return null;
   }
 
   async delete(
     data: DeleteCardRepository.Params
   ): Promise<DeleteCardRepository.Result> {
     const deleted = await getModelForClass(Card).findByIdAndDelete({
-      _id: data._id,
+      _id: data.id,
     });
-    return deleted;
+    if (deleted) {
+      return { ...deleted, id: deleted._id.toString() };
+    }
+    return null;
   }
 
   async getByLectureAbbreviation(
@@ -43,11 +49,17 @@ export class CardMongoRepository implements CardRepository {
       lecture: data.lectureAbreviation,
     });
 
-    return result;
+    return result.map((card) => ({
+      ...card,
+      id: card._id.toString(),
+    }));
   }
 
   async getById(params: GetCardById.Params): Promise<GetCardById.Result> {
     const result = await getModelForClass(Card).findById(params.id);
-    return result;
+    if (result) {
+      return { ...result, id: result._id.toString() };
+    }
+    return null;
   }
 }

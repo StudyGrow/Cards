@@ -8,6 +8,7 @@ import {
   GetAllLecturesRepository,
   IncrementTotalCardsRepository,
   CheckUniqueLectureAbreviationRepository,
+  GetByIdRepository,
 } from "../../../../data/protocols/db/lecture/lecture.repository";
 import { Lecture } from "../../../../main/docs/models/lecture.model";
 
@@ -16,45 +17,70 @@ export class LectureMongoRepository implements LectureRepository {
     data: AddLectureRepository.Params
   ): Promise<AddLectureRepository.Result> {
     const result = await getModelForClass(Lecture).create(data);
-    return result;
+    return { ...result, id: result._id.toString() };
   }
 
   async update(
     data: UpdateLectureRepository.Params
   ): Promise<UpdateLectureRepository.Result> {
     const lecture = await getModelForClass(Lecture).findByIdAndUpdate(
-      { _id: data._id },
+      { _id: data.id },
       {
         abrv: data.abrv,
         name: data.name,
       },
       { new: true }
     );
-    return lecture;
+    if (lecture) {
+      return { ...lecture, id: lecture._id.toString() };
+    }
+    return null;
   }
 
   async delete(
     data: DeleteLectureRepository.Params
   ): Promise<DeleteLectureRepository.Result> {
     const deleted = await getModelForClass(Lecture).findByIdAndDelete({
-      _id: data._id,
+      _id: data.id,
     });
-    return deleted;
+    if (deleted) {
+      return { ...deleted, id: deleted._id.toString() };
+    }
+    return null;
   }
 
   async getByLectureAbbreviation(
     data: GetByLectureAbbreviationRepository.Params
   ): Promise<GetByLectureAbbreviationRepository.Result> {
-    const result = await getModelForClass(Lecture).find({
+    const result = await getModelForClass(Lecture).findOne({
       abbreviation: data.lectureAbreviation,
     });
 
-    return result;
+    if (result) {
+      return { ...result, id: result._id.toString() };
+    }
+    return null;
+  }
+
+  async getById(
+    data: GetByIdRepository.Params
+  ): Promise<GetByIdRepository.Result> {
+    const result = await getModelForClass(Lecture).findOne({
+      _id: data.id,
+    });
+
+    if (result) {
+      return { ...result, id: result._id.toString() };
+    }
+    return null;
   }
 
   async getAll(): Promise<GetAllLecturesRepository.Result> {
     const result = await getModelForClass(Lecture).find();
-    return result;
+    return result.map((lecture) => ({
+      ...lecture,
+      id: lecture._id.toString(),
+    }));
   }
 
   async incrementTotalCards(
