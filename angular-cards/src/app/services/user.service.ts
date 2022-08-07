@@ -13,6 +13,7 @@ import { Store } from '@ngrx/store';
 
 import { AUTHORIZED } from '../store/selector';
 import { AppState } from '../models/state';
+import { GetUserGQL } from 'src/generated/graphql';
 
 @Injectable({
   providedIn: 'root',
@@ -24,7 +25,8 @@ export class UserService implements CanActivate {
     private http: HttpClient, //for sending http requests
     private store: Store<AppState>,
     private router: Router, //to redirect
-    private notifications: NotificationsService //to show notifications
+    private notifications: NotificationsService, //to show notifications
+    private getUserGQL: GetUserGQL
   ) {}
 
   //checks wheter page can be accessed. returns the authentication subject while redirecting
@@ -37,7 +39,20 @@ export class UserService implements CanActivate {
   //it makes the http authentication call only the first time
   //and caches the result in a subject which is returned on subsequent calls
   authentication(): Observable<boolean> {
-    return this.http.get<boolean>(this.config.urlBase + 'auth').pipe(share());
+    try {
+      return this.getUserGQL.watch().valueChanges.pipe(
+        map((res) => {
+          if (res.data.getUser) {
+            return true;
+          } else {
+            return false;
+          }
+        })
+      );
+    } catch (error) {
+      console.log(error);
+      return Observable.apply(false);
+    }
   }
   //used to login the user
   login(form: User): Observable<User> {

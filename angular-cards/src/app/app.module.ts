@@ -7,6 +7,12 @@ import { AppRoutingModule } from './app-routing.module';
 import { StoreModule } from '@ngrx/store';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { QuillModule } from 'ngx-quill';
+
+// GraphQL
+import { Apollo } from 'apollo-angular';
+import { WebSocketLink } from '@apollo/client/link/ws';
+import { InMemoryCache } from '@apollo/client/core';
+
 // Material Modules
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -59,6 +65,7 @@ import { GoogleCallbackComponent } from './components/google-callback/google-cal
 // NGX Translate
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { GraphQLModule } from './graphql.module';
 
 declare const Hammer: any;
 // Config to allow swipe gestures on carousel
@@ -143,6 +150,7 @@ export class MyHammerConfig extends HammerGestureConfig {
       },
       isolate: false,
     }),
+    GraphQLModule,
   ],
   providers: [
     {

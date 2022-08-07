@@ -45,7 +45,7 @@ export class FilterTagsComponent implements OnInit {
   remove(tag: string): void {
     //remove tag from the filters
     this.store.dispatch(removeTag({ tag: tag }));
-    this.formCtrl.reset({ ...this.formCtrl.value });
+    this.formCtrl.reset(...this.formCtrl.value);
   }
 
   select(event: MatAutocompleteSelectedEvent): void {

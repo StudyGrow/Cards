@@ -10,8 +10,7 @@ import { modelOptions, prop as Property, Severity } from "@typegoose/typegoose";
 @ObjectType()
 export class Lecture {
   @Field({ nullable: true })
-  @Property({ required: false })
-  id?: string;
+  readonly _id?: string;
 
   @Field({ nullable: true })
   @Property({ required: true })

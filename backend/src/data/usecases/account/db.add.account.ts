@@ -19,6 +19,8 @@ export class DbAddAccount implements AddAccount {
         password: hashedPassword,
         status: "active",
         role: RoleEnum.user,
+        confirmed: false,
+        creationDate: new Date(),
       });
     }
     return account;

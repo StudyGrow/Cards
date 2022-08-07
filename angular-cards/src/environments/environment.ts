@@ -6,6 +6,7 @@ export const environment = {
   production: false,
   domain: 'localhost',
   port: '80',
+  graphqlEndpoint: 'http://localhost:4444/graphql',
 };
 
 /*

@@ -25,6 +25,7 @@ export class DbAddCard implements AddCard {
         ...params.data,
         authorId: user._id,
         authorName: user.username,
+        date: new Date(),
       });
 
       await this.lectureRepository.incrementTotalCards({

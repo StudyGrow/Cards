@@ -22,7 +22,7 @@ import { addCard, updateCard } from 'src/app/store/actions/CardActions';
 import { addLercture } from 'src/app/store/actions/LectureActions';
 import { CardsEffects } from 'src/app/store/effects/effects';
 import { AppState } from '../../models/state';
-import { parse, HtmlGenerator } from 'latex.js';
+// import { parse, HtmlGenerator } from 'latex.js';
 import { ALL_TAGS, CURRENT_CARD, SELECTED_LECTURE, FORM_MODE, USER } from 'src/app/store/selector';
 import { TranslateService } from '@ngx-translate/core';
 import { QuillEditorComponent } from 'ngx-quill';
@@ -57,7 +57,7 @@ export class FormComponent implements OnInit, OnDestroy {
   // Tags that were selected
   selectedTags = [];
 
-  private generator: HtmlGenerator;
+  // private generator: HtmlGenerator;
 
   // Autocomplete
   separatorKeysCodes: number[] = [ENTER];
@@ -198,11 +198,11 @@ export class FormComponent implements OnInit, OnDestroy {
     if (this.toggleRef.checked) {
       // check if the content can be parsed
       try {
-        this.generator = new HtmlGenerator({ hyphenate: false });
-        const doc = parse(this.form.value.content, {
-          generator: this.generator,
-        });
-        doc.htmlDocument().body;
+        // this.generator = new HtmlGenerator({ hyphenate: false });
+        // const doc = parse(this.form.value.content, {
+        //   generator: this.generator,
+        // });
+        // doc.htmlDocument().body;
       } catch (e) {
         console.warn(e);
         this.notifs.addNotification(

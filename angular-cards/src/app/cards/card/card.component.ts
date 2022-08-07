@@ -13,7 +13,7 @@ import {
 import { Card } from '../../models/Card';
 import { ViewChild } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
-import { parse, HtmlGenerator } from 'latex.js';
+// import { parse, HtmlGenerator } from 'latex.js';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/models/state';
 import { AUTHORIZED, CURRENT_CARD, FORM_MODE, USER_ID } from 'src/app/store/selector';
@@ -103,9 +103,9 @@ export class CardComponent implements OnInit, OnDestroy {
 
   parse(cardContent: string): string {
     if (this.card.latex == 0) return cardContent;
-    const generator = new HtmlGenerator({ hyphenate: false });
-    const doc = parse(cardContent, { generator: generator }).htmlDocument();
-    return doc.body.innerHTML;
+    // const generator = new HtmlGenerator({ hyphenate: false });
+    // const doc = parse(cardContent, { generator: generator }).htmlDocument();
+    // return doc.body.innerHTML;
   }
 
   enableEdit() {
