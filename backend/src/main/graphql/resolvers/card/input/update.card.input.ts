@@ -11,7 +11,7 @@ export class UpdateCardInput {
   @Field({ nullable: true })
   content!: string;
 
-  @Field({ nullable: true })
+  @Field((type) => [String], { nullable: true })
   tags!: string[];
 
   @Field({ nullable: true })

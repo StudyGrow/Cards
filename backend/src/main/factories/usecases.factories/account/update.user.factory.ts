@@ -7,10 +7,5 @@ export const makeDbUpdateUser = (): UpdateUser => {
   const salt = 12;
   const bcryptAdapter = new BcryptAdapter(salt);
   const accountMongoRepository = new AccountMongoRepository();
-  return new DbUpdateUser(
-    bcryptAdapter,
-    accountMongoRepository,
-    accountMongoRepository,
-    accountMongoRepository
-  );
+  return new DbUpdateUser(bcryptAdapter, accountMongoRepository);
 };

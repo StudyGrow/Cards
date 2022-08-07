@@ -19,7 +19,7 @@ export class Card {
   @Property({ required: true })
   content!: string;
 
-  @Field({ nullable: true })
+  @Field((type) => [String], { nullable: true })
   @Property({ required: false })
   tags?: string[];
 

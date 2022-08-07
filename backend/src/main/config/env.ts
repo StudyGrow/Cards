@@ -15,10 +15,14 @@ export default {
     refreshExpiration: process.env.REFRESH_TOKEN_EXPIRATION,
     authTokenCookieName: process.env.AUTH_TOKEN_COOKIE_NAME || "authToken",
     redisAuthTokenKey: process.env.REDIS_AUTH_TOKEN_KEY || "auth_token",
-    jwtAuthTokenValidityDuration: process.env.REDIS_AUTH_TOKEN_VALIDITY_DURATION || "10m",
-    refreshTokenCookieName: process.env.REFRESH_TOKEN_COOKIE_NAME || "refreshToken",
-    redisRefreshTokenKey: process.env.REDIS_REFRESH_TOKEN_KEY || "refresh_token",
-    jwtRefreshTokenValidityDuration: process.env.REDIS_REFRESH_TOKEN_VALIDITY_DURATION || "30d",
+    jwtAuthTokenValidityDuration:
+      process.env.REDIS_AUTH_TOKEN_VALIDITY_DURATION || "10m",
+    refreshTokenCookieName:
+      process.env.REFRESH_TOKEN_COOKIE_NAME || "refreshToken",
+    redisRefreshTokenKey:
+      process.env.REDIS_REFRESH_TOKEN_KEY || "refresh_token",
+    jwtRefreshTokenValidityDuration:
+      process.env.REDIS_REFRESH_TOKEN_VALIDITY_DURATION || "30d",
     apple: {
       clientId: process.env.APP_APPLE_CLIENTID,
       teamId: process.env.APP_APPLE_TEAMID,

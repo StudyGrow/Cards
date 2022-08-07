@@ -15,7 +15,7 @@ export class Lecture {
   @Property({ required: true })
   abrv!: string;
 
-  @Field({ nullable: true })
+  @Field((type) => [String], { nullable: true })
   @Property({ required: false })
   tagList?: string[];
 
