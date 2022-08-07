@@ -31,9 +31,19 @@ export interface AccountRepository {
   ) => Promise<GetUsersRepository.Result>;
 
   loadByEmail: (email: string) => Promise<LoadAccountByEmailRepository.Result>;
+
+  loadByUsername: (
+    username: string
+  ) => Promise<LoadAccountByUsernameRepository.Result>;
 }
 
 export namespace LoadAccountByEmailRepository {
+  export type Result = {
+    user: User;
+  } | null;
+}
+
+export namespace LoadAccountByUsernameRepository {
   export type Result = {
     user: User;
   } | null;

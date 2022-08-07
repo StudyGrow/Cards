@@ -87,7 +87,6 @@ export type Lecture = {
 };
 
 export type LoginInput = {
-  email: Scalars['String'];
   password: Scalars['String'];
   username: Scalars['String'];
 };
@@ -317,7 +316,6 @@ export type GetUserQuery = { __typename?: 'Query', getUser: { __typename?: 'User
 
 export type LoginQueryVariables = Exact<{
   username: Scalars['String'];
-  email: Scalars['String'];
   password: Scalars['String'];
 }>;
 
@@ -332,6 +330,17 @@ export type RegisterMutationVariables = Exact<{
 
 
 export type RegisterMutation = { __typename?: 'Mutation', register: { __typename?: 'User', _id: string, role: RoleEnum, username: string, email: string, creationDate?: any | null, name?: string | null, surname?: string | null, status: string, confirmed: boolean } };
+
+export type UpdateCardMutationVariables = Exact<{
+  _id: Scalars['String'];
+  thema: Scalars['String'];
+  content: Scalars['String'];
+  tags: Array<Scalars['String']> | Scalars['String'];
+  latex: Scalars['Float'];
+}>;
+
+
+export type UpdateCardMutation = { __typename?: 'Mutation', updateCard: { __typename?: 'Card', _id?: string | null, lectureAbreviation: string, thema: string, content: string, tags?: Array<string> | null, authorId?: string | null, authorName?: string | null, date?: any | null, latex?: number | null, rating?: number | null } };
 
 export const AddCardDocument = gql`
     mutation AddCard($lectureAbreviation: String!, $thema: String!, $content: String!, $tags: [String!]!, $latex: Float!) {
@@ -516,8 +525,8 @@ export const GetUserDocument = gql`
     }
   }
 export const LoginDocument = gql`
-    query Login($username: String!, $email: String!, $password: String!) {
-  login(data: {username: $username, email: $email, password: $password}) {
+    query Login($username: String!, $password: String!) {
+  login(data: {username: $username, password: $password}) {
     _id
     role
     username
@@ -562,6 +571,36 @@ export const RegisterDocument = gql`
   })
   export class RegisterGQL extends Apollo.Mutation<RegisterMutation, RegisterMutationVariables> {
     document = RegisterDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const UpdateCardDocument = gql`
+    mutation UpdateCard($_id: String!, $thema: String!, $content: String!, $tags: [String!]!, $latex: Float!) {
+  updateCard(
+    data: {_id: $_id, thema: $thema, content: $content, tags: $tags, latex: $latex}
+  ) {
+    _id
+    lectureAbreviation
+    thema
+    content
+    content
+    tags
+    authorId
+    authorName
+    date
+    latex
+    rating
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class UpdateCardGQL extends Apollo.Mutation<UpdateCardMutation, UpdateCardMutationVariables> {
+    document = UpdateCardDocument;
     
     constructor(apollo: Apollo.Apollo) {
       super(apollo);

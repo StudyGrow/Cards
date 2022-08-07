@@ -9,6 +9,8 @@ import { HttpConfig } from './config';
 import { HttpClient } from '@angular/common/http';
 import { Vorlesung } from '../models/Vorlesung';
 import { GetLectureByAbbreviationWithCardsAndVotesGQL } from 'src/generated/graphql';
+import { AddCardGQL } from 'src/generated/graphql';
+import { UpdateCardGQL } from 'src/generated/graphql';
 
 @Injectable({
   providedIn: 'root',
@@ -19,13 +21,15 @@ export class CardsService {
   constructor(
     private http: HttpClient, // to make calls to the server
     private router: Router, // used to get the lecture abreviation from the route
-    private getLectureByAbbreviationWithCardsAndVotesGQL: GetLectureByAbbreviationWithCardsAndVotesGQL
+    private getLectureByAbbreviationWithCardsAndVotesGQL: GetLectureByAbbreviationWithCardsAndVotesGQL,
+    private addCardGQL: AddCardGQL,
+    private updateCardGQL: UpdateCardGQL
   ) {}
 
   // This loads all cards specific data which is needed on the route of a specific lecture
   fetchCardsData(): Observable<CardsData> {
     const abrv = this.router.url.split(/vorlesung\//)[1]; // get the lecture abreviation from the route
-    const ss = this.getLectureByAbbreviationWithCardsAndVotesGQL.watch({ abrv: abrv }).valueChanges.pipe(
+    return this.getLectureByAbbreviationWithCardsAndVotesGQL.watch({ abrv: abrv }).valueChanges.pipe(
       map((res) => {
         return {
           lecture: {
@@ -41,38 +45,40 @@ export class CardsService {
         } as CardsData;
       })
     );
-
-    return ss;
   }
 
   updateCard(card: Card): Observable<Card> {
     // send update to server using http service
-    return this.http
-      .put<Card>(
-        this.config.urlBase + 'cards/update',
-        { card },
-        {
-          headers: this.config.headers,
-          observe: 'response',
-        }
-      )
-      .pipe(map((res) => res.body));
+
+    return this.updateCardGQL
+      .mutate({
+        _id: card._id,
+        thema: card.thema,
+        content: card.content,
+        latex: card.latex,
+        tags: card.tags,
+      })
+      .pipe(
+        map((res) => {
+          return res.data.updateCard;
+        })
+      );
   }
 
   addCard(card: Card): Observable<Card> {
     // send new card to server using http service
-    return this.http
-      .post<Card>(
-        this.config.urlBase + 'cards/new',
-        { card },
-        {
-          headers: this.config.headers,
-          observe: 'response',
-        }
-      )
+    return this.addCardGQL
+      .mutate({
+        lectureAbreviation: card.lectureAbreviation,
+        thema: card.thema,
+        content: card.content,
+        latex: card.latex,
+        tags: card.tags,
+      })
       .pipe(
-        //  tap((res) => console.log(res)),
-        map((res) => res.body)
+        map((res) => {
+          return res.data.addCard;
+        })
       );
   }
 

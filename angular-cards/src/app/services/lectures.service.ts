@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 import { HttpConfig } from './config';
 //Models
 import { Vorlesung } from '../models/Vorlesung';
-import { GetLecturesGQL, GetLecturesQuery } from 'src/generated/graphql';
+import { GetLecturesGQL, AddLectureGQL } from 'src/generated/graphql';
 
 @Injectable({
   providedIn: 'root',
@@ -18,7 +18,8 @@ export class LecturesService {
 
   constructor(
     private http: HttpClient, //for sending http requests
-    private getLecturesGQL: GetLecturesGQL
+    private getLecturesGQL: GetLecturesGQL,
+    private addLectureGQL: AddLectureGQL
   ) {}
 
   //get an array of all lectures
@@ -39,15 +40,16 @@ export class LecturesService {
 
   //add a lecture to the database on the server
   addLecture(lecture: Vorlesung): Observable<Vorlesung> {
-    return this.http
-      .post<any>(
-        this.config.urlBase + 'lectures/new',
-        { lecture: lecture },
-        {
-          headers: this.config.headers,
-          observe: 'response',
-        }
-      )
-      .pipe(map((res) => res.body));
+    return this.addLectureGQL
+      .mutate({
+        abrv: lecture.abrv,
+        name: lecture.name,
+        tagList: lecture.tagList,
+      })
+      .pipe(
+        map((res) => {
+          return res.data.addLecture;
+        })
+      );
   }
 }
