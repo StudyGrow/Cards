@@ -4,8 +4,8 @@ import { CardRepository } from "../../protocols/db/card/card.repository";
 
 export class DbUpdateCard implements UpdateCard {
   constructor(
-    private readonly cardRepository: CardRepository,
-    private readonly accountRepository: AccountRepository
+    private readonly accountRepository: AccountRepository,
+    private readonly cardRepository: CardRepository
   ) {}
 
   async update(params: UpdateCard.Params): Promise<UpdateCard.Result> {

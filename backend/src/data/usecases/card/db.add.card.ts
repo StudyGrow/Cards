@@ -16,14 +16,22 @@ export class DbAddCard implements AddCard {
       return null;
     }
 
-    const addedCard = await this.cardRepository.add({
-      ...params.data,
-      authorId: user._id,
-      authorName: user.username,
+    const lecture = await this.lectureRepository.getByLectureAbbreviation({
+      lectureAbreviation: params.data.lectureAbreviation,
     });
-    await this.lectureRepository.incrementTotalCards({
-      lectureAbbreviation: params.data.lectureAbreviation,
-    });
-    return addedCard;
+
+    if (lecture) {
+      const addedCard = await this.cardRepository.add({
+        ...params.data,
+        authorId: user._id,
+        authorName: user.username,
+      });
+
+      await this.lectureRepository.incrementTotalCards({
+        lectureAbbreviation: params.data.lectureAbreviation,
+      });
+      return addedCard;
+    }
+    return null;
   }
 }

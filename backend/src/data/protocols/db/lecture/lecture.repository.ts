@@ -19,6 +19,10 @@ export interface LectureRepository {
     params: GetByLectureAbbreviationRepository.Params
   ) => Promise<GetByLectureAbbreviationRepository.Result>;
 
+  getById: (
+    params: GetByIdRepository.Params
+  ) => Promise<GetByIdRepository.Result>;
+
   getAll: () => Promise<GetAllLecturesRepository.Result>;
 
   incrementTotalCards: (
@@ -48,7 +52,15 @@ export namespace DeleteLectureRepository {
 export namespace GetByLectureAbbreviationRepository {
   export type Params = GetCardsByLectureAbbreviationInput;
 
-  export type Result = Lecture[];
+  export type Result = Lecture | null;
+}
+
+export namespace GetByIdRepository {
+  export type Params = {
+    id: string;
+  };
+
+  export type Result = Lecture | null;
 }
 
 export namespace GetAllLecturesRepository {

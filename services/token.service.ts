@@ -1,5 +1,3 @@
-import uniqid from 'uniqid';
-
 export default class TokenService {
   constructor({ jwt, config }) {
     this.jwt = jwt;
@@ -9,13 +7,13 @@ export default class TokenService {
   }
   jwt;
   config;
-//   appleAuth;
-//   googleAuth;
+  //   appleAuth;
+  //   googleAuth;
   async createAuthToken(payload) {
     const token = await this.jwt.sign(
       { data: payload },
       this.config.authentication.secret,
-      { expiresIn: this.config.authentication.expiration },
+      { expiresIn: this.config.authentication.expiration }
     );
     return token;
   }
@@ -24,7 +22,7 @@ export default class TokenService {
     const token = await this.jwt.sign(
       { data: payload },
       this.config.authentication.secret,
-      { expiresIn: this.config.authentication.refreshExpiration },
+      { expiresIn: this.config.authentication.refreshExpiration }
     );
     return token;
   }
@@ -48,7 +46,7 @@ export default class TokenService {
       this.jwt.verify(
         token,
         this.config.authentication.secret,
-        (err, payload) => (err ? reject(err) : resolve(payload.data)),
+        (err, payload) => (err ? reject(err) : resolve(payload.data))
       );
     });
   }
@@ -57,18 +55,18 @@ export default class TokenService {
       this.jwt.verify(
         token,
         this.config.authentication.secret,
-        (err, payload) => (err ? reject(err) : resolve(payload.data)),
+        (err, payload) => (err ? reject(err) : resolve(payload.data))
       );
     });
   }
 
   async verifyProviderToken(token, provider) {
     switch (provider) {
-      case 'Apple': {
+      case "Apple": {
         return this.verifyAppleToke(token);
         break;
       }
-      case 'Google': {
+      case "Google": {
         return this.verifyGoogleToken(token);
         break;
       }

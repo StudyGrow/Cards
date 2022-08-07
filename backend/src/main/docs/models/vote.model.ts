@@ -16,7 +16,7 @@ export class Vote {
 
   @Field({ nullable: true })
   @Property({ required: true })
-  lectureId!: string[];
+  lectureId!: string;
 
   @Field({ nullable: true })
   @Property({ required: true })

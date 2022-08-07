@@ -8,7 +8,6 @@ export class LoginInput {
   email!: string;
 
   @Field()
-  @IsEmail()
   username!: string;
 
   @Field()

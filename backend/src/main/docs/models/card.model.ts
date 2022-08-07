@@ -1,11 +1,17 @@
 import { Field, ObjectType } from "type-graphql";
-import { prop as Property } from "@typegoose/typegoose";
+import { modelOptions, prop as Property, Severity } from "@typegoose/typegoose";
 
+@modelOptions({
+  options: {
+    allowMixed: Severity.ALLOW,
+    customName: "Card",
+  },
+})
 @ObjectType()
 export class Card {
   @Field({ nullable: true })
   @Property({ required: false })
-  _id?: string;
+  id?: string;
 
   @Field({ nullable: true })
   @Property({ required: true })
