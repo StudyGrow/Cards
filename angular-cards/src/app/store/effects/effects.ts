@@ -101,7 +101,7 @@ export class CardsEffects {
     this.actions$.pipe(
       ofType(navigateToCard),
       tap(({ card }) => {
-        const url = `vorlesung/${card.abrv ? card.abrv : card['vorlesung']}`;
+        const url = `vorlesung/${card.lectureAbreviation ? card.lectureAbreviation : card['vorlesung']}`;
         if (!this.router.url.includes(url)) this.router.navigateByUrl(url); // change routes if we are not on cards route
       }),
       switchMap(({ card }) =>
@@ -188,13 +188,14 @@ export class CardsEffects {
   addLecture$ = createEffect(() =>
     this.actions$.pipe(
       ofType(LectureActions.addLercture),
-      mergeMap((
-        action // use merge map here as multiple changes could be made while the request has not terminated
-      ) =>
-        this.lectures.addLecture(action.lecture).pipe(
-          map((res) => LectureActions.addLectureSuccess({ lecture: res })),
-          catchError((reason) => of(CardActions.httpFailure({ reason: reason })))
-        )
+      mergeMap(
+        (
+          action // use merge map here as multiple changes could be made while the request has not terminated
+        ) =>
+          this.lectures.addLecture(action.lecture).pipe(
+            map((res) => LectureActions.addLectureSuccess({ lecture: res })),
+            catchError((reason) => of(CardActions.httpFailure({ reason: reason })))
+          )
       ),
       share()
     )

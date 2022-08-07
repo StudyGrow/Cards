@@ -1,0 +1,28 @@
+query GetLecturesWithCardsAndVotes {
+  getLectures {
+    _id
+    name
+    abrv
+    tagList
+    totalCards
+    cards {
+      _id
+      lectureAbreviation
+      thema
+      content
+      tags
+      authorId
+      authorName
+      date
+      latex
+      rating
+    }
+    votes {
+      _id
+      userId
+      cardId
+      lectureId
+      value
+    }
+  }
+}

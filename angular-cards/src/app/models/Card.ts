@@ -6,7 +6,7 @@ export class Card {
     public thema?: string,
     public content?: string,
     public tags?: string[],
-    public abrv?: string,
+    public lectureAbreviation?: string,
     public latex?: number,
     public positionIndex?: number,
     public _id?: string,

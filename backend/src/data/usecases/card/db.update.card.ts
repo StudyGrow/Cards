@@ -17,11 +17,13 @@ export class DbUpdateCard implements UpdateCard {
     const oldCard = await this.cardRepository.getById({
       id: params.data._id,
     });
-    const updatedCard = await this.cardRepository.update({
-      ...oldCard,
-      ...params.data,
-    });
-
-    return updatedCard;
+    if (oldCard) {
+      const updatedCard = await this.cardRepository.update({
+        ...oldCard,
+        ...params.data,
+      });
+      return updatedCard;
+    }
+    return null;
   }
 }

@@ -1,5 +1,7 @@
 import { Field, ObjectType } from "type-graphql";
 import { modelOptions, prop as Property, Severity } from "@typegoose/typegoose";
+import { Card } from "./card.model";
+import { Vote } from "./vote.model";
 
 @modelOptions({
   options: {
@@ -27,4 +29,10 @@ export class Lecture {
   @Field({ nullable: true })
   @Property({ required: false })
   totalCards?: number;
+
+  @Field((type) => [Card], { nullable: true })
+  cards?: Card[];
+
+  @Field((type) => [Vote], { nullable: true })
+  votes?: Vote[];
 }
