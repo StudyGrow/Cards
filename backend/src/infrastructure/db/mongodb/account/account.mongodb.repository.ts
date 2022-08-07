@@ -35,6 +35,18 @@ export class AccountMongoRepository implements AccountRepository {
       return null;
     }
   }
+
+  async loadByUsername(
+    username: string
+  ): Promise<LoadAccountByEmailRepository.Result> {
+    const user = await getModelForClass(User).findOne({ username: username });
+    if (user) {
+      return { user: { ...user.toObject(), _id: user._id!!.toString() } };
+    } else {
+      return null;
+    }
+  }
+
   async checkByEmail(
     email: string
   ): Promise<CheckAccountByEmailRepository.Result> {

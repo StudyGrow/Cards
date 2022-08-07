@@ -13,7 +13,7 @@ import { Store } from '@ngrx/store';
 
 import { AUTHORIZED } from '../store/selector';
 import { AppState } from '../models/state';
-import { GetUserGQL } from 'src/generated/graphql';
+import { GetUserGQL, LoginGQL, RegisterGQL } from 'src/generated/graphql';
 
 @Injectable({
   providedIn: 'root',
@@ -26,7 +26,9 @@ export class UserService implements CanActivate {
     private store: Store<AppState>,
     private router: Router, //to redirect
     private notifications: NotificationsService, //to show notifications
-    private getUserGQL: GetUserGQL
+    private getUserGQL: GetUserGQL,
+    private loginGQL: LoginGQL,
+    private registerGQL: RegisterGQL
   ) {}
 
   //checks wheter page can be accessed. returns the authentication subject while redirecting
@@ -55,10 +57,17 @@ export class UserService implements CanActivate {
     }
   }
   //used to login the user
-  login(form: User): Observable<User> {
-    return this.http.post<User>(this.config.urlBase + 'auth/signin', form, {
-      headers: this.config.headers,
-    });
+  login(form: any): Observable<User> {
+    return this.loginGQL
+      .watch({
+        password: form.password,
+        username: form.username,
+      })
+      .valueChanges.pipe(
+        map((res) => {
+          return res.data.login;
+        })
+      );
   }
   //used to login the user with google callback
   googleCallbackLogin(callbackUrl: string): Observable<User> {
@@ -69,16 +78,26 @@ export class UserService implements CanActivate {
   logoutServer(): Observable<boolean> {
     return this.http.get<boolean>(this.config.urlBase + 'auth/logout');
   }
-  createAccount(form: User): Observable<User> {
-    return this.http
-      .post<User>(this.config.urlBase + 'auth/signup', form, {
-        headers: this.config.headers,
-        observe: 'response',
+  createAccount(form: any): Observable<User> {
+    return this.registerGQL
+      .mutate({
+        email: form.email,
+        password: form.password,
+        username: form.username,
       })
-      .pipe(map((res) => res.body));
+      .pipe(
+        map((res) => {
+          return res.data.register;
+        })
+      );
   }
 
   getUserInfo(): Observable<UserInfo> {
+    return this.getUserGQL.watch().valueChanges.pipe(
+      map((res) => {
+        return { user: res.data.getUser };
+      })
+    );
     return this.http
       .get<UserInfo>(this.config.urlBase + 'user/info', {
         observe: 'response',

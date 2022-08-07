@@ -8,7 +8,7 @@ export interface Authentication {
 
 export namespace Authentication {
   export type Params = {
-    email: string;
+    username: string;
     password: string;
   };
 

@@ -14,8 +14,8 @@ export class DbAuthentication implements Authentication {
   async auth(
     authenticationParams: Authentication.Params
   ): Promise<Authentication.Result> {
-    const account = await this.accountRepository.loadByEmail(
-      authenticationParams.email
+    const account = await this.accountRepository.loadByUsername(
+      authenticationParams.username
     );
     if (account) {
       const isValid = await this.hashComparer.compare(
