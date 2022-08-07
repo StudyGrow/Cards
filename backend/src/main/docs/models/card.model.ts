@@ -12,15 +12,15 @@ export class Card {
   @Field({ nullable: true })
   _id?: string;
 
-  @Field({ nullable: true })
+  @Field({ nullable: false })
   @Property({ required: true })
   lectureAbreviation!: string;
 
-  @Field({ nullable: true })
+  @Field({ nullable: false })
   @Property({ required: true })
   thema!: string;
 
-  @Field({ nullable: true })
+  @Field({ nullable: false })
   @Property({ required: true })
   content!: string;
 

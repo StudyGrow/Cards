@@ -36,13 +36,13 @@ export type Card = {
   _id?: Maybe<Scalars['String']>;
   authorId?: Maybe<Scalars['String']>;
   authorName?: Maybe<Scalars['String']>;
-  content?: Maybe<Scalars['String']>;
+  content: Scalars['String'];
   date?: Maybe<Scalars['DateTime']>;
   latex?: Maybe<Scalars['Float']>;
-  lectureAbreviation?: Maybe<Scalars['String']>;
+  lectureAbreviation: Scalars['String'];
   rating?: Maybe<Scalars['Float']>;
   tags?: Maybe<Array<Scalars['String']>>;
-  thema?: Maybe<Scalars['String']>;
+  thema: Scalars['String'];
 };
 
 export type CastVoteInput = {
@@ -62,6 +62,14 @@ export type EditUserInput = {
   userId: Scalars['String'];
 };
 
+export type GetCardsInput = {
+  lectureAbbreviation: Scalars['String'];
+};
+
+export type GetLectureInput = {
+  abrv: Scalars['String'];
+};
+
 export type GetVotesInput = {
   lectureAbbreviation: Scalars['String'];
   userId?: InputMaybe<Scalars['String']>;
@@ -71,9 +79,11 @@ export type Lecture = {
   __typename?: 'Lecture';
   _id?: Maybe<Scalars['String']>;
   abrv?: Maybe<Scalars['String']>;
+  cards?: Maybe<Array<Card>>;
   name?: Maybe<Scalars['String']>;
   tagList?: Maybe<Array<Scalars['String']>>;
   totalCards?: Maybe<Scalars['Float']>;
+  votes?: Maybe<Array<Vote>>;
 };
 
 export type LoginInput = {
@@ -159,6 +169,9 @@ export type MutationUpdateUserArgs = {
 
 export type Query = {
   __typename?: 'Query';
+  /** Get cards for a given lecture. */
+  getCards: Array<Card>;
+  getLecture: Lecture;
   getLectures: Array<Lecture>;
   getUser: User;
   getUsers: Array<User>;
@@ -173,6 +186,16 @@ export type Query = {
    *       an error with message "Refresh Token invalid" or "Refresh Token expired" will be returned.
    */
   login: User;
+};
+
+
+export type QueryGetCardsArgs = {
+  data: GetCardsInput;
+};
+
+
+export type QueryGetLectureArgs = {
+  data: GetLectureInput;
 };
 
 
@@ -259,7 +282,7 @@ export type AddCardMutationVariables = Exact<{
 }>;
 
 
-export type AddCardMutation = { __typename?: 'Mutation', addCard: { __typename?: 'Card', _id?: string | null, lectureAbreviation?: string | null, thema?: string | null, content?: string | null, tags?: Array<string> | null, authorId?: string | null, authorName?: string | null, date?: any | null, latex?: number | null, rating?: number | null } };
+export type AddCardMutation = { __typename?: 'Mutation', addCard: { __typename?: 'Card', _id?: string | null, lectureAbreviation: string, thema: string, content: string, tags?: Array<string> | null, authorId?: string | null, authorName?: string | null, date?: any | null, latex?: number | null, rating?: number | null } };
 
 export type AddLectureMutationVariables = Exact<{
   name: Scalars['String'];
@@ -270,10 +293,22 @@ export type AddLectureMutationVariables = Exact<{
 
 export type AddLectureMutation = { __typename?: 'Mutation', addLecture: { __typename?: 'Lecture', _id?: string | null, name?: string | null, abrv?: string | null, tagList?: Array<string> | null, totalCards?: number | null } };
 
+export type GetLectureByAbbreviationWithCardsAndVotesQueryVariables = Exact<{
+  abrv: Scalars['String'];
+}>;
+
+
+export type GetLectureByAbbreviationWithCardsAndVotesQuery = { __typename?: 'Query', getLecture: { __typename?: 'Lecture', _id?: string | null, name?: string | null, abrv?: string | null, tagList?: Array<string> | null, totalCards?: number | null, cards?: Array<{ __typename?: 'Card', _id?: string | null, lectureAbreviation: string, thema: string, content: string, tags?: Array<string> | null, authorId?: string | null, authorName?: string | null, date?: any | null, latex?: number | null, rating?: number | null }> | null, votes?: Array<{ __typename?: 'Vote', _id?: string | null, userId?: string | null, cardId?: string | null, lectureId?: string | null, value?: number | null }> | null } };
+
 export type GetLecturesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetLecturesQuery = { __typename?: 'Query', getLectures: Array<{ __typename?: 'Lecture', _id?: string | null, name?: string | null, abrv?: string | null, tagList?: Array<string> | null, totalCards?: number | null }> };
+
+export type GetLecturesWithCardsAndVotesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetLecturesWithCardsAndVotesQuery = { __typename?: 'Query', getLectures: Array<{ __typename?: 'Lecture', _id?: string | null, name?: string | null, abrv?: string | null, tagList?: Array<string> | null, totalCards?: number | null, cards?: Array<{ __typename?: 'Card', _id?: string | null, lectureAbreviation: string, thema: string, content: string, tags?: Array<string> | null, authorId?: string | null, authorName?: string | null, date?: any | null, latex?: number | null, rating?: number | null }> | null, votes?: Array<{ __typename?: 'Vote', _id?: string | null, userId?: string | null, cardId?: string | null, lectureId?: string | null, value?: number | null }> | null }> };
 
 export type GetUserQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -350,6 +385,47 @@ export const AddLectureDocument = gql`
       super(apollo);
     }
   }
+export const GetLectureByAbbreviationWithCardsAndVotesDocument = gql`
+    query GetLectureByAbbreviationWithCardsAndVotes($abrv: String!) {
+  getLecture(data: {abrv: $abrv}) {
+    _id
+    name
+    abrv
+    tagList
+    totalCards
+    cards {
+      _id
+      lectureAbreviation
+      thema
+      content
+      tags
+      authorId
+      authorName
+      date
+      latex
+      rating
+    }
+    votes {
+      _id
+      userId
+      cardId
+      lectureId
+      value
+    }
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class GetLectureByAbbreviationWithCardsAndVotesGQL extends Apollo.Query<GetLectureByAbbreviationWithCardsAndVotesQuery, GetLectureByAbbreviationWithCardsAndVotesQueryVariables> {
+    document = GetLectureByAbbreviationWithCardsAndVotesDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
 export const GetLecturesDocument = gql`
     query GetLectures {
   getLectures {
@@ -367,6 +443,47 @@ export const GetLecturesDocument = gql`
   })
   export class GetLecturesGQL extends Apollo.Query<GetLecturesQuery, GetLecturesQueryVariables> {
     document = GetLecturesDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const GetLecturesWithCardsAndVotesDocument = gql`
+    query GetLecturesWithCardsAndVotes {
+  getLectures {
+    _id
+    name
+    abrv
+    tagList
+    totalCards
+    cards {
+      _id
+      lectureAbreviation
+      thema
+      content
+      tags
+      authorId
+      authorName
+      date
+      latex
+      rating
+    }
+    votes {
+      _id
+      userId
+      cardId
+      lectureId
+      value
+    }
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class GetLecturesWithCardsAndVotesGQL extends Apollo.Query<GetLecturesWithCardsAndVotesQuery, GetLecturesWithCardsAndVotesQueryVariables> {
+    document = GetLecturesWithCardsAndVotesDocument;
     
     constructor(apollo: Apollo.Apollo) {
       super(apollo);

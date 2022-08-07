@@ -1,5 +1,5 @@
 import { Card } from "../../../main/docs/models/card.model";
-import { UpdateCardInput } from "../../../main/graphql/resolvers/user/input/card/update.card.input";
+import { UpdateCardInput } from "../../../main/graphql/resolvers/card/input/update.card.input";
 
 export interface UpdateCard {
   update: (params: UpdateCard.Params) => Promise<UpdateCard.Result>;
