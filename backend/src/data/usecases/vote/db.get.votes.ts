@@ -17,12 +17,12 @@ export class DbGetVotes implements GetVotes {
     }
     if (params.data.userId) {
       return this.voteRepository.getAllVotesOfUserByLectureId({
-        lectureId: lecture.id!,
+        lectureId: lecture._id!,
         userId: params.data.userId,
       });
     } else {
       return this.voteRepository.getAllVotesByLectureId({
-        lectureId: lecture.id!,
+        lectureId: lecture._id!,
       });
     }
   }

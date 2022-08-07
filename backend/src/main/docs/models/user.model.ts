@@ -39,7 +39,7 @@ export class User {
 
   @Field({ nullable: true })
   @Property({ required: false })
-  creationDate?: number;
+  creationDate?: Date;
 
   @Field({ nullable: true })
   @Property({ required: false })
@@ -55,5 +55,5 @@ export class User {
 
   @Field({ nullable: false })
   @Property({ required: false })
-  confirmed?: boolean;
+  confirmed!: boolean;
 }

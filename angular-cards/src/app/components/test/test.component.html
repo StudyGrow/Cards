@@ -1,8 +1,0 @@
-<p>test works!</p>
-
-
-<button (click)="imagePicker.click()"></button>
-<input type="file" #imagePicker (change)="imagePicked($event)">
-<div class="imagePreview" *ngIf="imagePreview !== '' && imagePreview && form.get('image').valid">
-  <img [src]="imagePreview" [alt]="form.value.title">
-</div>

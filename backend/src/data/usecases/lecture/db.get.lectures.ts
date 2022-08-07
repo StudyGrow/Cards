@@ -6,6 +6,7 @@ export class DbGetLectures implements GetLectures {
 
   async get(params: GetLectures.Params): Promise<GetLectures.Result> {
     const lectures = await this.lectureRepository.getAll();
+    console.log(lectures);
     return lectures;
   }
 }

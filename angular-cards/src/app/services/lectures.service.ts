@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { HttpConfig } from './config';
 //Models
 import { Vorlesung } from '../models/Vorlesung';
+import { GetLecturesGQL, GetLecturesQuery } from 'src/generated/graphql';
 
 @Injectable({
   providedIn: 'root',
@@ -16,21 +17,14 @@ export class LecturesService {
   private config = new HttpConfig();
 
   constructor(
-    private http: HttpClient //for sending http requests
+    private http: HttpClient, //for sending http requests
+    private getLecturesGQL: GetLecturesGQL
   ) {}
 
   //get an array of all lectures
   getAllLectures(): Observable<Vorlesung[]> {
     //load lectures from the server
-
-    return this.http
-      .get<Vorlesung[]>(this.config.urlBase + 'lectures', {
-        observe: 'response',
-      })
-      .pipe(
-        map((res) => res.body),
-        shareReplay(1)
-      );
+    return this.getLecturesGQL.watch().valueChanges.pipe(map((res) => res.data.getLectures));
   }
 
   checkUniqueLecture(lecture: Vorlesung): Observable<boolean> {

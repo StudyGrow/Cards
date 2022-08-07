@@ -1,9 +1,17 @@
 import { Request, Response } from "express";
 
-import { Arg, Ctx, Mutation, Resolver, UseMiddleware } from "type-graphql";
+import {
+  Arg,
+  Ctx,
+  Mutation,
+  Query,
+  Resolver,
+  UseMiddleware,
+} from "type-graphql";
 import { adaptResolver } from "../../../../adapters/apollo.server.resolver.adapter";
 import { Lecture } from "../../../../docs/models/lecture.model";
 import { makeAddLectureController } from "../../../../factories/controllers/lecture.factories/add.lecture.controller.factory";
+import { makeGetLecturesController } from "../../../../factories/controllers/lecture.factories/get.lectures.controller.factory";
 import { Authentication } from "../../../directives/authentication.directive";
 import { AddLectureInput } from "../input/add.lecture.input";
 
@@ -32,5 +40,10 @@ export class LectureResolver {
       },
       ctx
     );
+  }
+
+  @Query(() => [Lecture], {})
+  async getLectures(@Ctx() ctx: MyCont): Promise<Lecture[]> {
+    return adaptResolver(makeGetLecturesController(), null, ctx);
   }
 }

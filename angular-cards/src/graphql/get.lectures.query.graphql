@@ -1,0 +1,9 @@
+query GetLectures {
+  getLectures {
+    _id
+    name
+    abrv
+    tagList
+    totalCards
+  }
+}

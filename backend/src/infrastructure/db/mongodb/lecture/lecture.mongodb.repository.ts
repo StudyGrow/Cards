@@ -17,36 +17,32 @@ export class LectureMongoRepository implements LectureRepository {
     data: AddLectureRepository.Params
   ): Promise<AddLectureRepository.Result> {
     const result = await getModelForClass(Lecture).create(data);
-    return { ...result, id: result._id.toString() };
+    return result;
   }
 
   async update(
     data: UpdateLectureRepository.Params
   ): Promise<UpdateLectureRepository.Result> {
     const lecture = await getModelForClass(Lecture).findByIdAndUpdate(
-      { _id: data.id },
+      { _id: data._id },
       {
         abrv: data.abrv,
         name: data.name,
       },
       { new: true }
     );
-    if (lecture) {
-      return { ...lecture, id: lecture._id.toString() };
-    }
-    return null;
+
+    return lecture;
   }
 
   async delete(
     data: DeleteLectureRepository.Params
   ): Promise<DeleteLectureRepository.Result> {
     const deleted = await getModelForClass(Lecture).findByIdAndDelete({
-      _id: data.id,
+      _id: data._id,
     });
-    if (deleted) {
-      return { ...deleted, id: deleted._id.toString() };
-    }
-    return null;
+
+    return deleted;
   }
 
   async getByLectureAbbreviation(
@@ -56,10 +52,7 @@ export class LectureMongoRepository implements LectureRepository {
       abbreviation: data.lectureAbreviation,
     });
 
-    if (result) {
-      return { ...result, id: result._id.toString() };
-    }
-    return null;
+    return result;
   }
 
   async getById(
@@ -68,19 +61,17 @@ export class LectureMongoRepository implements LectureRepository {
     const result = await getModelForClass(Lecture).findOne({
       _id: data.id,
     });
-
-    if (result) {
-      return { ...result, id: result._id.toString() };
-    }
-    return null;
+    return result;
   }
 
   async getAll(): Promise<GetAllLecturesRepository.Result> {
     const result = await getModelForClass(Lecture).find();
-    return result.map((lecture) => ({
+    const ok = result.map((lecture) => ({
       ...lecture,
-      id: lecture._id.toString(),
+      // id: lecture._id.toString(),
     }));
+    console.log(ok);
+    return result;
   }
 
   async incrementTotalCards(

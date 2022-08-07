@@ -33,6 +33,8 @@ const handleErrors = (response: any, errors: readonly GraphQLError[]): void => {
       response.http.status = 401;
     } else if (checkError(error, "ForbiddenError")) {
       response.http.status = 403;
+    } else if (checkError(error, "UnauthenticatedError")) {
+      response.http.status = 401;
     } else {
       response.http.status = 500;
     }
