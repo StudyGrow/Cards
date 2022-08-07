@@ -1,0 +1,18 @@
+# cd /backend
+# docker-compose -f backend/docker-compose_dev.yml build
+version: "3.7"
+
+services:
+  planningbackenddev:
+    build:
+      context: ..
+      dockerfile: Dockerfile_dev
+    volumes:
+      - .:/backend
+    ports:
+      - "4444:4444"
+
+  redis:
+    image: "redis:alpine"
+    ports:
+      - "6379:6379"

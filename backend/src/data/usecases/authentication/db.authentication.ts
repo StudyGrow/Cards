@@ -1,0 +1,40 @@
+import { Authentication } from "../../../domain/usecases/authentication/authentication";
+import { TokenGenerator } from "../../protocols/cryptography/token.generator";
+import { HashComparer } from "../../protocols/cryptography/hash.comparer";
+import { LoadAccountByEmailRepository } from "../../protocols/db/account/load.account.by.email.repository";
+import { TokenType } from "../../protocols/cryptography/token.type";
+
+export class DbAuthentication implements Authentication {
+  constructor(
+    private readonly loadAccountByEmailRepository: LoadAccountByEmailRepository,
+    private readonly hashComparer: HashComparer,
+    private readonly TokenGenerator: TokenGenerator
+  ) { }
+
+  async auth(
+    authenticationParams: Authentication.Params
+  ): Promise<Authentication.Result> {
+    const account = await this.loadAccountByEmailRepository.loadByEmail(
+      authenticationParams.email
+    );
+    if (account) {
+      const isValid = await this.hashComparer.compare(
+        authenticationParams.password,
+        account.user.password
+      );
+      if (isValid) {
+
+        const authToken = await this.TokenGenerator.generateToken(account.user._id!, account.user.role, TokenType.AuthToken);
+        const refreshToken = await this.TokenGenerator.generateToken(account.user._id!, account.user.role, TokenType.RefreshToken);
+
+        return {
+          authToken: authToken,
+          refreshToken: refreshToken,
+          user: account.user,
+        };
+      }
+      return null;
+    }
+    return null;
+  }
+}
