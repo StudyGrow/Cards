@@ -96,7 +96,7 @@ export class CardsComponent implements OnInit, OnDestroy {
     const message = this.translate.instant('notifications.pick-up');
     await firstValueFrom(
       this._snackBar
-        .open(message, 'Yes', { duration: 5000, politeness: 'assertive' })
+        .open(message, this.translate.instant('yes'), { duration: 5000, politeness: 'assertive' })
         .onAction()
         .pipe(take(1), timeout(6000))
     );

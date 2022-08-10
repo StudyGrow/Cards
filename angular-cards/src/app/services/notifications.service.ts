@@ -60,12 +60,14 @@ export class NotificationsService {
         if (error.url.includes('api/login')) this.addNotification(new InfoMessage(err));
         break;
       case 403:
-        this.addNotification(new WarnMessage('Du musst dich erst einloggen'));
+        this.addNotification(new WarnMessage(this.translate.instant('notifications.login-required')));
         break;
       case 422:
         if (error.url.includes('?abrv')) {
           this.router.navigateByUrl('/');
-          this.addNotification(new WarnMessage('Die angegebene Vorlesung existiert nicht', error.status));
+          this.addNotification(
+            new WarnMessage(this.translate.instant('notifications.lecture-not-found'), error.status)
+          );
           break;
         }
         if (typeof err == 'string') {
@@ -100,9 +102,7 @@ export class NotificationsService {
         break;
       default:
         message = this.translate.instant('notifications.unknown-error') + ' ' + this.translate.instant('check-later');
-        this.addNotification(
-          new WarnMessage('Ein unbekannter Fehler ist aufgetreten. Versuche es später erneut.', error.status)
-        );
+        this.addNotification(new WarnMessage(message, error.status));
         break;
     }
   }

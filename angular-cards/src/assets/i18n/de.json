@@ -200,7 +200,9 @@
     "pick-up": "Möchtest du zu deiner zuletzt besuchten Karte zurückkehren?",
     "server-offline": "Der Server scheint offline zu sein.",
     "check-later": "Versuche es später erneut.",
-    "unknown-error": "Ein unbekannter Fehler ist aufgetreten."
+    "unknown-error": "Ein unbekannter Fehler ist aufgetreten.",
+    "lecture-not-found": "Die Vorlesung konnte nicht gefunden werden.",
+    "login-required": "Du musst dich einloggen, um diese Aktion durchführen zu können."
   },
   "report-type": "Report Typ",
   "users": "Nutzer",
@@ -214,5 +216,6 @@
   "overview": "Übersicht",
   "lectures": "Vorlesungen",
   "lecture": "Vorlesung",
-  "add-lecture": "Vorlesung hinzufügen"
+  "add-lecture": "Vorlesung hinzufügen",
+  "yes": "Ja"
 }

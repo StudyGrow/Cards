@@ -200,7 +200,9 @@
     "pick-up": "Do you want to pick up where you left off?",
     "server-offline": "The server is offline.",
     "check-later": "Please try again later.",
-    "unknown-error": "An unknown error occured."
+    "unknown-error": "An unknown error occured.",
+    "lecture-not-found": "The lecture you are looking for could not be found.",
+    "login-required": "You need to be logged in to access this page."
   },
   "users": "Users",
   "number-of-cards": "Number of cards",
@@ -214,5 +216,6 @@
   "overview": "Overview",
   "lectures": "Lectures",
   "lecture": "Lecture",
-  "add-lecture": "Add Lecture"
+  "add-lecture": "Add Lecture",
+  "yes": "Yes"
 }
