@@ -3,12 +3,13 @@ import { Observable, BehaviorSubject } from 'rxjs';
 import { Notification, WarnMessage, InfoMessage } from '../models/Notification';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
+import { TranslateService } from '@ngx-translate/core';
 @Injectable({
   providedIn: 'root',
 })
 export class NotificationsService {
   private notifications$ = new BehaviorSubject<Notification[]>([]);
-  constructor(private router: Router) {}
+  constructor(private router: Router, private translate: TranslateService) {}
 
   addNotification(n: Notification) {
     setTimeout(() => {
@@ -88,17 +89,17 @@ export class NotificationsService {
         }
         break;
       case 500:
-        this.addNotification(
-          new WarnMessage('Der Server scheint offline zu sein. Versuche es später erneut.', error.status)
-        );
+        let message =
+          this.translate.instant('notifications.server-offline') + ' ' + this.translate.instant('check-later');
+        this.addNotification(new WarnMessage(message, error.status));
         this.router.navigateByUrl('/');
         break;
       case 504:
-        this.addNotification(
-          new WarnMessage('Der Server scheint offline zu sein. Versuche es später erneut.', error.status)
-        );
+        message = this.translate.instant('notifications.server-offline') + ' ' + this.translate.instant('check-later');
+        this.addNotification(new WarnMessage(message, error.status));
         break;
       default:
+        message = this.translate.instant('notifications.unknown-error') + ' ' + this.translate.instant('check-later');
         this.addNotification(
           new WarnMessage('Ein unbekannter Fehler ist aufgetreten. Versuche es später erneut.', error.status)
         );
