@@ -197,7 +197,10 @@
   "notifications": {
     "notifications": "Benachrichtigungen",
     "add-card-success": "Deine Karte wurde erfolgreich hinzugefügt.",
-    "pick-up": "Möchtest du zu deiner zuletzt besuchten Karte zurückkehren?"
+    "pick-up": "Möchtest du zu deiner zuletzt besuchten Karte zurückkehren?",
+    "server-offline": "Der Server scheint offline zu sein.",
+    "check-later": "Versuche es später erneut.",
+    "unknown-error": "Ein unbekannter Fehler ist aufgetreten."
   },
   "report-type": "Report Typ",
   "users": "Nutzer",
