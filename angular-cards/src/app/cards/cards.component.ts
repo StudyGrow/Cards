@@ -2,8 +2,8 @@ import { Component, OnInit, HostListener, ViewChild, ElementRef, OnDestroy } fro
 import { Vorlesung } from 'src/app/models/Vorlesung';
 import { Title } from '@angular/platform-browser';
 import { Store } from '@ngrx/store';
-import { Observable, Subscription } from 'rxjs';
-import { map, take } from 'rxjs/operators';
+import { Observable, Subscription, firstValueFrom } from 'rxjs';
+import { map, take, timeout } from 'rxjs/operators';
 import { fetchCards } from '../store/actions/CardActions';
 import { fadeInOnEnterAnimation } from 'angular-animations';
 import { changeTab, setSuggestionsMode, showNewCard } from '../store/actions/StateActions';
@@ -45,7 +45,12 @@ export class CardsComponent implements OnInit, OnDestroy {
 
   public lecture$: Observable<Vorlesung> = this.data$.pipe(map((data) => data.currLecture));
 
-  constructor(private store: Store<AppState>, private title: Title, private _snackBar: MatSnackBar) {}
+  constructor(
+    private store: Store<AppState>,
+    private title: Title,
+    private _snackBar: MatSnackBar,
+    private translate: TranslateService
+  ) {}
 
   ngOnInit(): void {
     this.title.setTitle('Cards');
@@ -87,15 +92,18 @@ export class CardsComponent implements OnInit, OnDestroy {
     this.store.dispatch(changeTab({ tab: index }));
   }
 
-  openSnackBar(card: Card) {
-    this._snackBar
-      .open('Do you want to pick up where you left off?', 'Yes', { duration: 5000, politeness: 'assertive' })
-      .onAction()
-      .subscribe(async () => {
-        this.store.dispatch(showNewCard({ card: card }));
-        const currentLecture = await this.store.select(SELECTED_LECTURE).pipe(take(1)).toPromise();
-        localStorage.remove(currentLecture._id);
-      });
+  async openSnackBar(card: Card) {
+    const message = this.translate.instant('notifications.pick-up');
+    await firstValueFrom(
+      this._snackBar
+        .open(message, 'Yes', { duration: 5000, politeness: 'assertive' })
+        .onAction()
+        .pipe(take(1), timeout(6000))
+    );
+
+    this.store.dispatch(showNewCard({ card: card }));
+    const currentLecture = await this.store.select(SELECTED_LECTURE).pipe(take(1)).toPromise();
+    localStorage.remove(currentLecture._id);
   }
 
   async ngOnDestroy() {
