@@ -11,7 +11,7 @@
             {{ 'flash-cards' | translate }}
           </a>
           <a mat-list-item routerLink="notifications" routerLinkActive="active">
-            {{ 'notifications' | translate }}
+            {{ 'notifications.notifications' | translate }}
             <span class="badge badge-danger ml-2" *ngIf="notificationCount$ | async as notificationCount">{{
               notificationCount || '0'
             }}</span>

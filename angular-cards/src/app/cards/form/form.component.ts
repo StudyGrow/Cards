@@ -18,7 +18,7 @@ import { User } from 'src/app/models/User';
 import { Vorlesung } from 'src/app/models/Vorlesung';
 import { NotificationsService } from 'src/app/services/notifications.service';
 import { changeTab, setFormMode, setTypingMode, showNewCard } from 'src/app/store/actions/StateActions';
-import { addCard, updateCard } from 'src/app/store/actions/CardActions';
+import { addCard, httpFailure, updateCard } from 'src/app/store/actions/CardActions';
 import { addLercture } from 'src/app/store/actions/LectureActions';
 import { CardsEffects } from 'src/app/store/effects/effects';
 import { AppState } from '../../models/state';
@@ -132,8 +132,15 @@ export class FormComponent implements OnInit, OnDestroy {
       );
       this.subscriptions$.push(sub);
     }
-    sub = this.actionState.addCard$.subscribe(() => {
-      this.notifs.addNotification(new SuccessMessage('Deine Karte wurde erfolgreich hinzugefügt.'));
+    sub = this.actionState.addCard$.subscribe((res) => {
+      if (res.type === httpFailure.type) {
+        this.notifs.addNotification(
+          new WarnMessage('Ein fehler  ist passiert: ' + (res as any as { reason: string }).reason)
+        );
+      } else {
+        const message = this.translate.instant('notifications.add-card-success');
+        this.notifs.addNotification(new SuccessMessage(message));
+      }
     });
     this.subscriptions$.push(sub);
   }

@@ -75,11 +75,7 @@ export class CardsService {
         latex: card.latex,
         tags: card.tags,
       })
-      .pipe(
-        map((res) => {
-          return res.data.addCard;
-        })
-      );
+      .pipe(map((res) => res.data.addCard));
   }
 
   reportCard(card: Card, lecutre: Vorlesung): Observable<Card> {
