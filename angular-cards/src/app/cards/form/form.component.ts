@@ -22,7 +22,7 @@ import { addCard, updateCard } from 'src/app/store/actions/CardActions';
 import { addLercture } from 'src/app/store/actions/LectureActions';
 import { CardsEffects } from 'src/app/store/effects/effects';
 import { AppState } from '../../models/state';
-// import { parse, HtmlGenerator } from 'latex.js';
+import { parse, HtmlGenerator } from 'latex.js';
 import { ALL_TAGS, CURRENT_CARD, SELECTED_LECTURE, FORM_MODE, USER } from 'src/app/store/selector';
 import { TranslateService } from '@ngx-translate/core';
 import { QuillEditorComponent } from 'ngx-quill';
