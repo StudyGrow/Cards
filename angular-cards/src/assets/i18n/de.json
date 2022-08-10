@@ -196,7 +196,8 @@
   "flash-cards": "Karteikarten",
   "notifications": {
     "notifications": "Benachrichtigungen",
-    "add-card-success": "Deine Karte wurde erfolgreich hinzugefügt."
+    "add-card-success": "Deine Karte wurde erfolgreich hinzugefügt.",
+    "pick-up": "Möchtest du zu deiner zuletzt besuchten Karte zurückkehren?"
   },
   "report-type": "Report Typ",
   "users": "Nutzer",
