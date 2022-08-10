@@ -194,7 +194,10 @@
   "RANGE_PAGE_LABEL_1": "0 von {{length}}",
   "RANGE_PAGE_LABEL_2": "{{startIndex}} - {{endIndex}} von {{length}}",
   "flash-cards": "Karteikarten",
-  "notifications": "Benachrichtigungen",
+  "notifications": {
+    "notifications": "Benachrichtigungen",
+    "add-card-success": "Deine Karte wurde erfolgreich hinzugefügt."
+  },
   "report-type": "Report Typ",
   "users": "Nutzer",
   "clear-report": "Report auflösen",

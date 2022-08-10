@@ -213,7 +213,6 @@ export class CardsEffects {
             this.store.dispatch(addTagsToLecture({ tags: card.tags }));
           }),
           map((res) => CardActions.storeCard({ card: res })),
-
           catchError((reason) => of(CardActions.httpFailure({ reason: reason })))
         )
       ),

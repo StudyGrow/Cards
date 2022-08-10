@@ -194,7 +194,7 @@
   "RANGE_PAGE_LABEL_1": "0 of {{length}}",
   "RANGE_PAGE_LABEL_2": "{{startIndex}} - {{endIndex}} of {{length}}",
   "flash-cards": "Flash cards",
-  "notifications": "Notifications",
+  "notifications": { "notifications": "Notifications", "add-card-success": "Your card has been added successfully" },
   "users": "Users",
   "number-of-cards": "Number of cards",
   "report-type": "Report Type",
