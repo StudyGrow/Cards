@@ -46,9 +46,9 @@ The server will tell you on which port it will be running in the console (80 by 
 
 You can checkout the graphql playground by navigatin to `http://localhost:<port>/<API_ENDPOINT>` , where port is the port provdided by the server and ``API_ENDPOINT`` being the API endpoint provided in `./backend/.env`.
 
-## Modifiying the frontend
+## Frontend installation
 
-The frontend is built using Angular. The Angular project folder is located in angular-cards. Download and install Angular with:
+The frontend is built using Angular. The Angular project folder is located in ``./angular-cards``. Download and install Angular with:
 
 ```shell
 npm install -g @angular/cli
