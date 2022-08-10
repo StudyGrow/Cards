@@ -10,21 +10,27 @@ To test this project locally you should clone this repository.
 
 To run this project you need to have the Node Package Manager installed, which can be downloaded here: <https://www.npmjs.com/get-npm/>
 
-Additionally, following environment variables should be present:  
-PORT=  
-APP_AUTH_SECRET=  
-APP_AUTH_GOOGLE_CLIENTID=  
-APP_AUTH_GOOGLE_SECRET=  
-APP_AUTH_GOOGLE_REDIRECT_URI=  
-MONGO_URL_PRODUCTION=  
-MONGO_URL_TEST=  
-SECRET=  
-AUTH_TOKEN_EXPIRATION=  
-REFRESH_TOKEN_EXPIRATION=  
+Additionally, following environment variables should be present in the `./backend` folder:  
 
-### Installing
+```txt
+PORT=
+API_ENDPOINT=
+APP_AUTH_SECRET=
+AUTH_TOKEN_EXPIRATION=
+REFRESH_TOKEN_EXPIRATION=
+MONGO_URL_TEST=
+MONGO_URL_TEST_DB=
+MAIL_HOST=
+MAIL_PORT=
+MAIL_USER=
+MAIL_PASS=
+MAIL_WEBSITE=
+MAIL_PASSWORD_RESET_PATH=
+```
 
-Using the command line navigate to the projects folder and type in the following command:
+## Backend installation
+
+Using the command line navigate to the `./backend` folder and type in the following command:
 
 ```shell
 npm install
@@ -33,10 +39,12 @@ npm install
 npm will install all the dependencies for you. After that use the following command to start the server:
 
 ```shell
-npm run watch
+npm run dev
 ```
 
-The server will tell you on which port it will be running in the console (80 by default). Navigate to `http://localhost:port`, where port is the port provdided by the server.
+The server will tell you on which port it will be running in the console (80 by default). Navigate to `http://localhost:<port>`, where port is the port provdided by the server.
+
+You can checkout the graphql playground by navigatin to `http://localhost:<port>/<API_ENDPOINT>` , where port is the port provdided by the server and ``API_ENDPOINT`` being the API endpoint provided in `./backend/.env`.
 
 ## Modifiying the frontend
 
