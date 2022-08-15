@@ -409,7 +409,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
       this.cardsToShowInCarousel = newChunk;
       setTimeout(() => {
         this.carousel.next();
-      }, 100);
+      }, 10);
     }
   }
 
