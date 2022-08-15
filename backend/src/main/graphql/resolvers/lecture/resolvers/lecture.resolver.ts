@@ -56,7 +56,9 @@ export class LectureResolver {
     return adaptResolver(makeGetLecturesController(), null, ctx);
   }
 
-  @Query(() => Lecture, {})
+  @Query(() => Lecture, {
+    nullable: true,
+  })
   async getLecture(
     @Arg("data") data: GetLectureInput,
     @Ctx() ctx: MyCont

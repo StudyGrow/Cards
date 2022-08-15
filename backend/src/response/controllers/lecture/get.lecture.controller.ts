@@ -17,11 +17,8 @@ export class GetLectureController<
   async handle(request: T1): Promise<HttpResponse<T2>> {
     try {
       const project = await this.getLecture.get(request);
-
       if (!project) {
-        return forbidden(
-          new UserFeedbackError({ message: "Some Error Occurred" })
-        );
+        return ok<T2>(null as unknown as T2);
       } else {
         return ok<T2>(project as unknown as T2);
       }
