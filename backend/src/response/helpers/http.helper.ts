@@ -20,7 +20,7 @@ export const notFound = (error: Error): HttpResponse<any> => ({
 });
 
 export const unauthorized = (error?: Error): HttpResponse<any> => {
-  if(error){
+  if (error) {
     return {
       statusCode: 401,
       body: error

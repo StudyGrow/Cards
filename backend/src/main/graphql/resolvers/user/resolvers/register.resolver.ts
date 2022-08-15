@@ -38,7 +38,7 @@ export class RegisterResolver {
   ): Promise<boolean> {
     return adaptResolver(
       makeRequestAccountPasswordResetController(),
-      {data: data},
+      { data: data },
       ctx
     );
   }
@@ -51,7 +51,7 @@ export class RegisterResolver {
   ): Promise<boolean> {
     return adaptResolver(
       makeResetAccountPasswordController(),
-      {data: data},
+      { data: data },
       ctx
     );
   }

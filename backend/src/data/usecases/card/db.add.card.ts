@@ -8,7 +8,7 @@ export class DbAddCard implements AddCard {
     private readonly accountRepository: AccountRepository,
     private readonly cardRepository: CardRepository,
     private readonly lectureRepository: LectureRepository
-  ) {}
+  ) { }
 
   async add(params: AddCard.Params): Promise<AddCard.Result> {
     const user = await this.accountRepository.getById(params.user.id);

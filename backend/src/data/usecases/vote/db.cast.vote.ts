@@ -6,7 +6,7 @@ export class DbCastVote implements CastVote {
   constructor(
     private readonly lectureRepository: LectureRepository,
     private readonly voteRepository: VoteRepository
-  ) {}
+  ) { }
 
   async vote(params: CastVote.Params): Promise<CastVote.Result> {
     const lecture = await this.lectureRepository.getById({

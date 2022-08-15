@@ -10,9 +10,9 @@ import { GetLecture } from "../../../domain/usecases/lecture/get.lecture";
 export class GetLectureController<
   T1 extends GetLectureController.Request,
   T2 extends GetLectureController.Response
-> implements Controller<any, T2>
+  > implements Controller<any, T2>
 {
-  constructor(private readonly getLecture: GetLecture) {}
+  constructor(private readonly getLecture: GetLecture) { }
 
   async handle(request: T1): Promise<HttpResponse<T2>> {
     try {

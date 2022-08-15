@@ -62,10 +62,10 @@ export namespace GetAccountByIdRepository {
 export namespace EditUserRepository {
   export type Request = {
     data:
-      | EditUserInput
-      | UpdateUserInput
-      | ResetPasswordTokenInput
-      | ChangeUserPasswordInput;
+    | EditUserInput
+    | UpdateUserInput
+    | ResetPasswordTokenInput
+    | ChangeUserPasswordInput;
     userId: string;
   };
   export type Result = User | null;

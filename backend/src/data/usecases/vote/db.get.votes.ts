@@ -6,7 +6,7 @@ export class DbGetVotes implements GetVotes {
   constructor(
     private readonly lectureRepository: LectureRepository,
     private readonly voteRepository: VoteRepository
-  ) {}
+  ) { }
 
   async get(params: GetVotes.Params): Promise<GetVotes.Result> {
     const lecture = await this.lectureRepository.getByLectureAbbreviation({

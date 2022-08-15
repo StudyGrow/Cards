@@ -20,12 +20,12 @@ export class Authentication implements MiddlewareInterface<MyCont> {
         );
         if (httpResponse.statusCode === 200) {
           context.req.user = { _id: httpResponse.body.user.id };
-          
-          if(httpResponse.body.user.authToken){
+
+          if (httpResponse.body.user.authToken) {
             context.res.cookie("authToken", httpResponse.body.user.authToken);
           }
 
-          if(httpResponse.body.user.refreshToken){
+          if (httpResponse.body.user.refreshToken) {
             context.res.cookie("refreshToken", httpResponse.body.user.refreshToken);
           }
           return next();

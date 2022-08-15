@@ -3,7 +3,7 @@ import { prop as Property } from "@typegoose/typegoose";
 
 @ObjectType()
 export class Report {
-  @Field({ nullable: true})
+  @Field({ nullable: true })
   readonly _id!: string;
 
   @Field({ nullable: true })

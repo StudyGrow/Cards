@@ -29,19 +29,18 @@ export const resetRequestMailContent = (
       <a href="${resetLink}">${resetLink}</a>
       </p>
       <p>
-        Falls Sie diese E-Mail nicht angefordert haben, können Sie diese ignorieren.  
+        Falls Sie diese E-Mail nicht angefordert haben, können Sie diese ignorieren.
       </p>
     `;
 };
 
 export class SendPasswordResetRequestMail
-  implements ISendPasswordResetRequestMail
-{
+  implements ISendPasswordResetRequestMail {
   constructor(
     private readonly mailService: IMailService,
     private readonly accountRepository: AccountRepository,
     private readonly randomNumberGenerator: RandomNumberGenerator
-  ) {}
+  ) { }
 
   async send(
     data: ISendPasswordResetRequestMail.Params

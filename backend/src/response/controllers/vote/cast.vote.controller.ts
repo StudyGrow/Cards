@@ -15,12 +15,12 @@ import { CastVote } from "../../../domain/usecases/vote/cast.vote";
 export class CastVoteController<
   T1 extends CastVoteController.Request,
   T2 extends CastVoteController.Response
-> implements Controller<any, T2>
+  > implements Controller<any, T2>
 {
   constructor(
     private readonly validation: Validation,
     private readonly castVote: CastVote
-  ) {}
+  ) { }
 
   async handle(request: T1): Promise<HttpResponse<T2>> {
     try {

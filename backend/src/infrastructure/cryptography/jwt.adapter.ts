@@ -19,12 +19,12 @@ export class JwtAdapter implements TokenGenerator, TokenChecker {
   constructor(private readonly secret: string) { }
 
   /**
-   * Generates a new token and saves it in redis with additional meta data 
+   * Generates a new token and saves it in redis with additional meta data
    * the meta data is used to check the validity of the token and identify users based on their tokens later
-   * 
+   *
    * @param id the id of the user thats authenticating
    * @param role the role of the user thats authenticating
-   * @param tokenType e.g. Refresh token or authentication token 
+   * @param tokenType e.g. Refresh token or authentication token
    * @returns the generated token
    */
   async generateToken(id: string, role: RoleEnum, tokenType: TokenType) {
@@ -44,10 +44,10 @@ export class JwtAdapter implements TokenGenerator, TokenChecker {
 
   /**
    * checks validity of a token
-   * 
-   * @param token 
+   *
+   * @param token
    * @param tokenType
-   * @returns 
+   * @returns
    */
   async checkToken(token: string, tokenType: TokenType): Promise<{ id: string, role: RoleEnum }> {
     let verifiedPayload: ITokenData;
@@ -113,7 +113,7 @@ export class JwtAdapter implements TokenGenerator, TokenChecker {
 
   /**
    * Generates a random token
-   * 
+   *
    * @param length length of the generated random id
    * @returns the random id
    */
@@ -130,9 +130,9 @@ export class JwtAdapter implements TokenGenerator, TokenChecker {
 
   /**
    * Should calculate the expiration date of a token
-   * 
-   * @param tokenType 
-   * @returns 
+   *
+   * @param tokenType
+   * @returns
    */
   getExpiration(tokenType: TokenType) {
     const tokenLifetime = tokenType === TokenType.AuthToken ? env.authentication.jwtAuthTokenValidityDuration : tokenType === TokenType.RefreshToken ? env.authentication.jwtRefreshTokenValidityDuration : "10s";

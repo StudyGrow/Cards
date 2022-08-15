@@ -15,12 +15,12 @@ import { UpdateCard } from "../../../domain/usecases/card/update.card";
 export class UpdateCardController<
   T1 extends UpdateCardController.Request,
   T2 extends UpdateCardController.Response
-> implements Controller<any, T2>
+  > implements Controller<any, T2>
 {
   constructor(
     private readonly validation: Validation,
     private readonly updateCard: UpdateCard
-  ) {}
+  ) { }
 
   async handle(request: T1): Promise<HttpResponse<T2>> {
     try {

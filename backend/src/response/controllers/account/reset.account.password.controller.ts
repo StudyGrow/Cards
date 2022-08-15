@@ -22,12 +22,12 @@ export interface MyCont {
 export class ResetAccountPasswordController<
   T1 extends ResetAccountPasswordController.Request,
   T2 extends ResetAccountPasswordController.Response
-> implements Controller<any, any>
+  > implements Controller<any, any>
 {
   constructor(
     private readonly sendPasswordResetMail: SendPasswordResetMail,
     private readonly validation: Validation
-  ) {}
+  ) { }
 
   /**
    * Sends reset mail and saves reset token with timestamp

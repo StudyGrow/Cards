@@ -2,7 +2,7 @@ import { GetAccountById } from "../../../domain/usecases/account/get.account.by.
 import { AccountRepository } from "../../protocols/db/account/account.repository";
 
 export class DbGetAccountById implements GetAccountById {
-  constructor(private readonly accountRepository: AccountRepository) {}
+  constructor(private readonly accountRepository: AccountRepository) { }
 
   async get(
     accountData: GetAccountById.Params
