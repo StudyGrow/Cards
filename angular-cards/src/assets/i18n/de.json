@@ -202,7 +202,9 @@
     "check-later": "Versuche es später erneut.",
     "unknown-error": "Ein unbekannter Fehler ist aufgetreten.",
     "lecture-not-found": "Die Vorlesung konnte nicht gefunden werden.",
-    "login-required": "Du musst dich einloggen, um diese Aktion durchführen zu können."
+    "login-required": "Du musst dich einloggen, um diese Aktion durchführen zu können.",
+    "lecture-abrv-already-exists": "Eine Vorlesung mit dieser Abkürzung existiert bereits.",
+    "welcome": "Willkommen, {{username}}"
   },
   "report-type": "Report Typ",
   "users": "Nutzer",

@@ -103,7 +103,7 @@ export class CardsComponent implements OnInit, OnDestroy {
 
     this.store.dispatch(showNewCard({ card: card }));
     const currentLecture = await this.store.select(SELECTED_LECTURE).pipe(take(1)).toPromise();
-    localStorage.remove(currentLecture._id);
+    localStorage.removeItem(currentLecture._id);
   }
 
   async ngOnDestroy() {

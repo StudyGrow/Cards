@@ -299,6 +299,13 @@ export type GetLectureByAbbreviationWithCardsAndVotesQueryVariables = Exact<{
 
 export type GetLectureByAbbreviationWithCardsAndVotesQuery = { __typename?: 'Query', getLecture: { __typename?: 'Lecture', _id?: string | null, name?: string | null, abrv?: string | null, tagList?: Array<string> | null, totalCards?: number | null, cards?: Array<{ __typename?: 'Card', _id?: string | null, lectureAbreviation: string, thema: string, content: string, tags?: Array<string> | null, authorId?: string | null, authorName?: string | null, date?: any | null, latex?: number | null, rating?: number | null }> | null, votes?: Array<{ __typename?: 'Vote', _id?: string | null, userId?: string | null, cardId?: string | null, lectureId?: string | null, value?: number | null }> | null } };
 
+export type GetLectureQueryVariables = Exact<{
+  abrv: Scalars['String'];
+}>;
+
+
+export type GetLectureQuery = { __typename?: 'Query', getLecture: { __typename?: 'Lecture', _id?: string | null, name?: string | null, abrv?: string | null, tagList?: Array<string> | null, totalCards?: number | null } };
+
 export type GetLecturesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -430,6 +437,28 @@ export const GetLectureByAbbreviationWithCardsAndVotesDocument = gql`
   })
   export class GetLectureByAbbreviationWithCardsAndVotesGQL extends Apollo.Query<GetLectureByAbbreviationWithCardsAndVotesQuery, GetLectureByAbbreviationWithCardsAndVotesQueryVariables> {
     document = GetLectureByAbbreviationWithCardsAndVotesDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const GetLectureDocument = gql`
+    query getLecture($abrv: String!) {
+  getLecture(data: {abrv: $abrv}) {
+    _id
+    name
+    abrv
+    tagList
+    totalCards
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class GetLectureGQL extends Apollo.Query<GetLectureQuery, GetLectureQueryVariables> {
+    document = GetLectureDocument;
     
     constructor(apollo: Apollo.Apollo) {
       super(apollo);

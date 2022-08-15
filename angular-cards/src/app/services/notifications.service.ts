@@ -54,7 +54,7 @@ export class NotificationsService {
   //because errors suck and we dont have a unified error handling system in the backend
   handleErrors(error: HttpErrorResponse) {
     let err = error.error;
-    // console.log(error);
+    let message = this.translate.instant('notifications.unknown-error'); //default error message
     switch (error.status) {
       case 401:
         if (error.url.includes('api/login')) this.addNotification(new InfoMessage(err));
@@ -91,17 +91,25 @@ export class NotificationsService {
         }
         break;
       case 500:
-        let message =
-          this.translate.instant('notifications.server-offline') + ' ' + this.translate.instant('check-later');
+        message =
+          this.translate.instant('notifications.server-offline') +
+          ' ' +
+          this.translate.instant('notifications.check-later');
         this.addNotification(new WarnMessage(message, error.status));
         this.router.navigateByUrl('/');
         break;
       case 504:
-        message = this.translate.instant('notifications.server-offline') + ' ' + this.translate.instant('check-later');
+        message =
+          this.translate.instant('notifications.server-offline') +
+          ' ' +
+          this.translate.instant('notifications.check-later');
         this.addNotification(new WarnMessage(message, error.status));
         break;
       default:
-        message = this.translate.instant('notifications.unknown-error') + ' ' + this.translate.instant('check-later');
+        message =
+          this.translate.instant('notifications.unknown-error') +
+          ' ' +
+          this.translate.instant('notifications.check-later');
         this.addNotification(new WarnMessage(message, error.status));
         break;
     }
