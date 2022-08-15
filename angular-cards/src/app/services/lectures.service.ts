@@ -1,14 +1,17 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Observable, BehaviorSubject, of } from 'rxjs';
-import { tap, map, share, shareReplay, catchError } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { map, timeout } from 'rxjs/operators';
 
-import { NotificationsService } from './notifications.service';
-import { Router } from '@angular/router';
 import { HttpConfig } from './config';
 //Models
 import { Vorlesung } from '../models/Vorlesung';
-import { GetLecturesGQL, AddLectureGQL } from 'src/generated/graphql';
+import {
+  GetLecturesGQL,
+  AddLectureGQL,
+  GetLectureByAbbreviationWithCardsAndVotesGQL,
+  GetLectureGQL,
+} from 'src/generated/graphql';
 
 @Injectable({
   providedIn: 'root',
@@ -19,7 +22,8 @@ export class LecturesService {
   constructor(
     private http: HttpClient, //for sending http requests
     private getLecturesGQL: GetLecturesGQL,
-    private addLectureGQL: AddLectureGQL
+    private addLectureGQL: AddLectureGQL,
+    private getLectureGQL: GetLectureGQL
   ) {}
 
   //get an array of all lectures
@@ -29,13 +33,12 @@ export class LecturesService {
   }
 
   checkUniqueLecture(lecture: Vorlesung): Observable<boolean> {
-    return this.http
-      .post<any>(
-        this.config.urlBase + 'lectures/check',
-        { lecture: lecture },
-        { headers: this.config.headers, observe: 'response' }
-      )
-      .pipe(map((res) => res.status === 204));
+    return this.getLectureGQL.watch({ abrv: lecture.abrv }).valueChanges.pipe(
+      timeout(3000),
+      map((res) => {
+        return !res.data.getLecture?._id;
+      })
+    );
   }
 
   //add a lecture to the database on the server
@@ -47,6 +50,7 @@ export class LecturesService {
         tagList: lecture.tagList,
       })
       .pipe(
+        timeout(3000),
         map((res) => {
           return res.data.addLecture;
         })

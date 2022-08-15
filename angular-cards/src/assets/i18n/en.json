@@ -202,7 +202,9 @@
     "check-later": "Please try again later.",
     "unknown-error": "An unknown error occured.",
     "lecture-not-found": "The lecture you are looking for could not be found.",
-    "login-required": "You need to be logged in to access this page."
+    "login-required": "You need to be logged in to access this page.",
+    "lecture-abrv-already-exists": "The abreviation for the lecture you are trying to add already exists.",
+    "welcome": "Welcome {{username}}"
   },
   "users": "Users",
   "number-of-cards": "Number of cards",

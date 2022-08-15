@@ -1,0 +1,9 @@
+query getLecture($abrv: String!) {
+  getLecture(data: { abrv: $abrv }) {
+    _id
+    name
+    abrv
+    tagList
+    totalCards
+  }
+}

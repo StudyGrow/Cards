@@ -47,6 +47,7 @@ import {
   SELECTED_LECTURE,
 } from '../selector';
 import { addTagsToLecture } from '../actions/LectureActions';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable()
 export class CardsEffects {
@@ -58,7 +59,8 @@ export class CardsEffects {
     private lectures: LecturesService,
     private store: Store,
     private router: Router,
-    private notifications: NotificationsService
+    private notifications: NotificationsService,
+    private translate: TranslateService
   ) {}
 
   /**
@@ -271,7 +273,9 @@ export class CardsEffects {
           tap((user) => {
             if (user) {
               this.router.navigateByUrl('/');
-              this.notifications.addNotification(new SuccessMessage(`Willkommen ${user.username}`));
+              this.notifications.addNotification(
+                new SuccessMessage(this.translate.instant('notifications.welcome', { username: user.username }))
+              );
               this.store.dispatch(fetchUserData());
             }
           }),

@@ -10,6 +10,8 @@ import {
   slideInUpOnEnterAnimation,
 } from 'angular-animations';
 import { TranslateService } from '@ngx-translate/core';
+import { NotificationsService } from 'src/app/services/notifications.service';
+import { WarnMessage } from 'src/app/models/Notification';
 @Component({
   selector: 'app-add-lecture-form',
   templateUrl: './add-lecture-form.component.html',
@@ -18,7 +20,12 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class AddLectureFormComponent implements OnDestroy {
   subscriptions$: Subscription[] = [];
-  constructor(private router: Router, private lectureService: LecturesService, private translate: TranslateService) {}
+  constructor(
+    private router: Router,
+    private lectureService: LecturesService,
+    private translate: TranslateService,
+    private notifications: NotificationsService
+  ) {}
   initialized: boolean;
 
   ngOnDestroy() {
@@ -33,6 +40,9 @@ export class AddLectureFormComponent implements OnDestroy {
       if (success) {
         localStorage.setItem('vl', JSON.stringify(newLecture));
         this.router.navigateByUrl('/vorlesung/neu');
+      } else {
+        const m = this.translate.instant('notifications.lecture-abrv-already-exists');
+        this.notifications.addNotification(new WarnMessage(m));
       }
     });
   }
