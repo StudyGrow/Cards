@@ -48,12 +48,9 @@ export class LectureMongoRepository implements LectureRepository {
   async getByLectureAbbreviation(
     data: GetByLectureAbbreviationRepository.Params
   ): Promise<GetByLectureAbbreviationRepository.Result> {
-    console.log(data);
-
     const result = await getModelForClass(Lecture).findOne({
       abrv: data.lectureAbreviation,
     });
-    console.log(result);
     return result;
   }
 
