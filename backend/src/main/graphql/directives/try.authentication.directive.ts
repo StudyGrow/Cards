@@ -9,10 +9,10 @@ interface MyCont {
 }
 
 /**
- *  Used to allow getting the users id from the token 
+ *  Used to allow getting the users id from the token
  * or to continue without authentication.
  * This is needed for example for public projects.
- *  
+ *
  * */
 export class TryAuthentication implements MiddlewareInterface<MyCont> {
   async use({ context, info }: ResolverData<MyCont>, next: NextFn) {

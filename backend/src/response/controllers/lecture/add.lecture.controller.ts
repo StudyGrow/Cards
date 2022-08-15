@@ -15,12 +15,12 @@ import { UserFeedbackError } from "../../errors/user.feedback.error";
 export class AddLectureController<
   T1 extends AddLectureController.Request,
   T2 extends AddLectureController.Response
-> implements Controller<any, T2>
+  > implements Controller<any, T2>
 {
   constructor(
     private readonly validation: Validation,
     private readonly addLecture: AddLecture
-  ) {}
+  ) { }
 
   async handle(request: T1): Promise<HttpResponse<T2>> {
     try {

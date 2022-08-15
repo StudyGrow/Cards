@@ -16,12 +16,12 @@ import { Validation } from "../../protocols/validation";
 export class LoginController<
   T1 extends LoginController.Request,
   T2 extends User
-> implements Controller<any, any>
+  > implements Controller<any, any>
 {
   constructor(
     private readonly authentication: Authentication,
     private readonly validation: Validation
-  ) {}
+  ) { }
 
   async handle(request: T1): Promise<HttpResponse<User>> {
     try {

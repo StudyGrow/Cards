@@ -4,14 +4,14 @@ import { MailService as IMailService } from "../../../../data/protocols/mail.ser
 import MailService from "../../../../data/usecases/mailservice/mail.service";
 
 export const makeMailService = (): IMailService => {
-    const transporter = nodemailer.createTransport({
-        host: config.mail.host,
-        port: config.mail.port,
-        auth: {
-            user: config.mail.auth.user,
-            pass: config.mail.auth.pass
-        }
-    });
+  const transporter = nodemailer.createTransport({
+    host: config.mail.host,
+    port: config.mail.port,
+    auth: {
+      user: config.mail.auth.user,
+      pass: config.mail.auth.pass
+    }
+  });
 
-    return new MailService(transporter);
+  return new MailService(transporter);
 }

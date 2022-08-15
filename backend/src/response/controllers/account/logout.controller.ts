@@ -8,33 +8,33 @@ export class LogoutController<T1 extends LogoutController.Request> implements Co
     const redis = RedisClientInstance.getInstance();
 
     try {
-      if(!request.data.authenticationToken) { 
+      if (!request.data.authenticationToken) {
         return badRequest(new Error("Auth token must be set in request cookies"));
       }
 
-      if(!request.data.refreshToken) { 
+      if (!request.data.refreshToken) {
         return badRequest(new Error("Refresh token must be set in request cookies"));
       }
 
       const authenticationTokenId = JSON.parse(String(await redis.get(request.data.authenticationToken))).id;
       const refreshTokenId = JSON.parse(String(await redis.get(request.data.refreshToken))).id;
-      
-      if(!authenticationTokenId) {
+
+      if (!authenticationTokenId) {
         return badRequest(new Error("Authentication token could not be resolved"));
       }
 
-      if(!refreshTokenId) {
+      if (!refreshTokenId) {
         return badRequest(new Error("Refresh token could not be resolved"));
       }
 
-      if(authenticationTokenId !== refreshTokenId) { 
+      if (authenticationTokenId !== refreshTokenId) {
         return badRequest(new Error("IDs associated to tokens do not match"));
       }
 
       await redis.del(request.data.authenticationToken);
       await redis.del(request.data.refreshToken);
 
-      return ok({id: authenticationTokenId});
+      return ok({ id: authenticationTokenId });
     } catch (error: any) {
       return serverError(error);
     }
@@ -42,7 +42,7 @@ export class LogoutController<T1 extends LogoutController.Request> implements Co
 }
 export namespace LogoutController {
   export type Request = {
-    data : {
+    data: {
       authenticationToken: string;
       refreshToken: string;
     }

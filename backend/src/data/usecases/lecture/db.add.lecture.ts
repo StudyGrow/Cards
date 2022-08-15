@@ -2,7 +2,7 @@ import { AddLecture } from "../../../domain/usecases/lecture/add.lecture";
 import { LectureRepository } from "../../protocols/db/lecture/lecture.repository";
 
 export class DbAddLecture implements AddLecture {
-  constructor(private readonly lectureRepository: LectureRepository) {}
+  constructor(private readonly lectureRepository: LectureRepository) { }
 
   async add(params: AddLecture.Params): Promise<AddLecture.Result> {
     const uniqueAbreviation =

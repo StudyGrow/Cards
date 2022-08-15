@@ -9,7 +9,7 @@ export class DbAuthentication implements Authentication {
     private readonly accountRepository: AccountRepository,
     private readonly hashComparer: HashComparer,
     private readonly TokenGenerator: TokenGenerator
-  ) {}
+  ) { }
 
   async auth(
     authenticationParams: Authentication.Params

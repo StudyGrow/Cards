@@ -90,8 +90,8 @@ describe("DbAuthentication UseCase", () => {
 
     // assert
     expect(model).toEqual({
-      authToken: "authToken"+loadAccountByEmailRepositorySpy.result?.user._id+loadAccountByEmailRepositorySpy.result?.user.role,
-      refreshToken: "refreshToken"+loadAccountByEmailRepositorySpy.result?.user._id+loadAccountByEmailRepositorySpy.result?.user.role,
+      authToken: "authToken" + loadAccountByEmailRepositorySpy.result?.user._id + loadAccountByEmailRepositorySpy.result?.user.role,
+      refreshToken: "refreshToken" + loadAccountByEmailRepositorySpy.result?.user._id + loadAccountByEmailRepositorySpy.result?.user.role,
       user: loadAccountByEmailRepositorySpy.result?.user
     });
   });
@@ -99,15 +99,15 @@ describe("DbAuthentication UseCase", () => {
   test("Should throw if TokenGenerator throws", async () => {
     // arrange
     const { sut, tokenGeneratorSpy } = makeSut();
-    jest.spyOn(tokenGeneratorSpy, "generateToken").mockImplementationOnce(() => {throw new Error("some error")});
+    jest.spyOn(tokenGeneratorSpy, "generateToken").mockImplementationOnce(() => { throw new Error("some error") });
 
     // act
-    try{
+    try {
       await sut.auth(mockAuthenticationParams());
 
       // assert
       fail("should have thrown an error")
-    } catch (error){
+    } catch (error) {
       expect((error as any).message).toEqual("some error");
     }
   });

@@ -15,12 +15,12 @@ import { GetVotes } from "../../../domain/usecases/vote/get.votes";
 export class GetVotesController<
   T1 extends GetVotesController.Request,
   T2 extends GetVotesController.Response
-> implements Controller<any, T2>
+  > implements Controller<any, T2>
 {
   constructor(
     private readonly validation: Validation,
     private readonly getVotes: GetVotes
-  ) {}
+  ) { }
 
   async handle(request: T1): Promise<HttpResponse<T2>> {
     try {

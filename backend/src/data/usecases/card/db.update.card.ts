@@ -6,7 +6,7 @@ export class DbUpdateCard implements UpdateCard {
   constructor(
     private readonly accountRepository: AccountRepository,
     private readonly cardRepository: CardRepository
-  ) {}
+  ) { }
 
   async update(params: UpdateCard.Params): Promise<UpdateCard.Result> {
     const user = await this.accountRepository.getById(params.user.id);

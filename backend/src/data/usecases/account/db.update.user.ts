@@ -7,7 +7,7 @@ export class DbUpdateUser implements UpdateUser {
   constructor(
     private readonly hasher: Hasher,
     private readonly accountRepository: AccountRepository
-  ) {}
+  ) { }
 
   async update(data: UpdateUser.Params): Promise<UpdateUser.Result> {
     if (data.data.email) {

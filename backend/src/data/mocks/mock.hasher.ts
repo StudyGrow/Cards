@@ -29,8 +29,8 @@ export class HashComparerSpy implements HashComparer {
 }
 
 export class TokenGeneratorSpy implements TokenGenerator {
-  async generateToken (id: string, role: RoleEnum, tokenType: TokenType) {
-    return tokenType + id + role 
+  async generateToken(id: string, role: RoleEnum, tokenType: TokenType) {
+    return tokenType + id + role
   }
 }
 
@@ -38,7 +38,7 @@ export class TokenCheckerSpy implements TokenChecker {
   _id = "";
   _role = "" as RoleEnum;
 
-  async checkToken (token: string, tokenType: TokenType) {
+  async checkToken(token: string, tokenType: TokenType) {
     return {
       id: this._id,
       role: this._role

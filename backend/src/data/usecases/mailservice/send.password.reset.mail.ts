@@ -28,7 +28,7 @@ export class SendPasswordResetMail implements ISendPasswordResetMail {
     private readonly mailService: IMailService,
     private readonly accountRepository: AccountRepository,
     private readonly hasher: Hasher
-  ) {}
+  ) { }
 
   async send(
     data: ISendPasswordResetMail.Params

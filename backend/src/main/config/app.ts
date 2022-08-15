@@ -12,6 +12,6 @@ setupApolloServer(app);
 setupStaticFiles(app);
 setupRoutes(app);
 if (process.env.NODE_ENV !== "testing") {
-    setupCronJob();
+  setupCronJob();
 }
 export default app;

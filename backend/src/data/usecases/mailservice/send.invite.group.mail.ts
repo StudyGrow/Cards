@@ -23,7 +23,7 @@ export const sendInviteGroupRequestContent = (code: string, firstName: string, l
         Sei cool und trete bei! Das ist dein Code: ${code}. Verlier ihn nicht, denn dann hast du keine Chance cool zu sein.
       </h1>
       <p>
-        Falls Sie diese E-Mail nicht angefordert haben, sind Sie nicht cool.  
+        Falls Sie diese E-Mail nicht angefordert haben, sind Sie nicht cool.
       </p>
     `;
 }
@@ -47,18 +47,18 @@ export class SendInviteGroupMail implements ISendInviteGroupMail {
       return new NotFoundError({ message: `No user found by mail ${data.email}` });
     }
 
-    const group = await this.groupMongodbRepository.getGroupById({groupId: data.groupId})
+    const group = await this.groupMongodbRepository.getGroupById({ groupId: data.groupId })
 
-    if(!group) {
-      throw notFound({name:"not found", message: "group not found by id"})
+    if (!group) {
+      throw notFound({ name: "not found", message: "group not found by id" })
     }
     //generate random reset token
     const inviteCode = await this.randomNumberGenerator.generateNumber(6)
     await this.mailService.send({ recipient: data.email, subject: "Gruppeneinladung", content: sendInviteGroupRequestContent(inviteCode, userData.user.firstName || "", userData.user.lastName || "", data.email, group.name) });
 
-    // store code 
+    // store code
     //Set reset data in user object
-    await this.groupMongodbRepository.updateInviteCode(data.groupId, userData?.user._id||"", inviteCode);
+    await this.groupMongodbRepository.updateInviteCode(data.groupId, userData?.user._id || "", inviteCode);
 
     return true;
   }

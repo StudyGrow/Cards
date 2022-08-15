@@ -37,7 +37,7 @@ export class LoginResolver {
     description: `Login user.
       Returns user with authentication token and refresh token.
       Authentication token is valid for ${env.authentication.jwtAuthTokenValidityDuration} and refresh token is valid for  ${env.authentication.jwtRefreshTokenValidityDuration}.
-      If refresh token is still valid authentication token will be generated automatically 
+      If refresh token is still valid authentication token will be generated automatically
       on every request which needs authentication and returned.
       If refresh token is expired, user must login again, in this case
       an error with message "Refresh Token invalid" or "Refresh Token expired" will be returned.`,

@@ -4,16 +4,16 @@ import { DbRemoveUser } from "./db.remove.user";
 
 describe("DbRemoveUser Usecase", () => {
   let sut: DbRemoveUser;
-  const deleteUserRepositorySpy = { deleteUser : jest.fn() } ;
-  const groupMongodbRepositorySpy = { deleteGroupEntities : jest.fn() } ;
+  const deleteUserRepositorySpy = { deleteUser: jest.fn() };
+  const groupMongodbRepositorySpy = { deleteGroupEntities: jest.fn() };
 
   beforeEach(() => {
     sut = new DbRemoveUser(
-        deleteUserRepositorySpy as any, 
-        groupMongodbRepositorySpy as any
-      )
+      deleteUserRepositorySpy as any,
+      groupMongodbRepositorySpy as any
+    )
   })
-  
+
   afterEach(() => {
     jest.clearAllMocks();
   })
@@ -26,8 +26,8 @@ describe("DbRemoveUser Usecase", () => {
 
     // Act
     try {
-      await sut.remove({user:{userId: "userId"}})
-     
+      await sut.remove({ user: { userId: "userId" } })
+
       // Assert
       fail("Should have thrown")
     } catch (error) {
@@ -42,8 +42,8 @@ describe("DbRemoveUser Usecase", () => {
 
     // Act
     try {
-      await sut.remove({user:{userId: "userId"}})
-     
+      await sut.remove({ user: { userId: "userId" } })
+
       // Assert
       fail("Should have thrown")
     } catch (error) {
@@ -56,8 +56,8 @@ describe("DbRemoveUser Usecase", () => {
     deleteUserRepositorySpy.deleteUser.mockResolvedValueOnce("deletedUser")
 
     // Act
-    const user = await sut.remove({user:{userId: "userId"}})
-     
+    const user = await sut.remove({ user: { userId: "userId" } })
+
     // Assert
     expect(user).toEqual("deletedUser")
   });
