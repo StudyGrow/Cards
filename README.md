@@ -42,6 +42,12 @@ npm will install all the dependencies for you. After that use the following comm
 npm run dev
 ```
 
+### Redis
+The server also requires a redis connection to manage user session. Run 
+```sh
+docker run redis/redis-stack-server:latest
+```
+
 The server will tell you on which port it will be running in the console (80 by default). Navigate to `http://localhost:<port>`, where port is the port provdided by the server.
 
 You can checkout the graphql playground by navigatin to `http://localhost:<port>/<API_ENDPOINT>` , where port is the port provdided by the server and ``API_ENDPOINT`` being the API endpoint provided in `./backend/.env`.
