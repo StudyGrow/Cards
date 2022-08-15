@@ -110,6 +110,8 @@ export class CardsComponent implements OnInit, OnDestroy {
     this.subscriptions$.forEach((sub) => sub.unsubscribe());
     const currentLecture = await this.store.select(SELECTED_LECTURE).pipe(take(1)).toPromise();
     const currentCard = await this.store.select(CURRENT_CARD).pipe(take(1)).toPromise();
-    localStorage.setItem(currentLecture._id, JSON.stringify(currentCard));
+    if (currentCard) {
+      localStorage.setItem(currentLecture._id, JSON.stringify(currentCard));
+    }
   }
 }
