@@ -50,7 +50,7 @@ export class LectureMongoRepository implements LectureRepository {
   ): Promise<GetByLectureAbbreviationRepository.Result> {
     const result = await getModelForClass(Lecture)
       .findOne({
-        abrv: data.lectureAbreviation,
+        abrv: data.lectureAbbreviation,
       })
       .lean();
     return result;

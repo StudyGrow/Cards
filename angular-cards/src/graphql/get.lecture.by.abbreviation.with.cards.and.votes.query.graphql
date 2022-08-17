@@ -7,7 +7,7 @@ query GetLectureByAbbreviationWithCardsAndVotes($abrv: String!) {
     totalCards
     cards {
       _id
-      lectureAbreviation
+      lectureAbbreviation
       thema
       content
       tags

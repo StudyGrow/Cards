@@ -69,7 +69,7 @@ export class CardsService {
     // send new card to server using http service
     return this.addCardGQL
       .mutate({
-        lectureAbreviation: card.lectureAbreviation,
+        lectureAbbreviation: card.lectureAbbreviation,
         thema: card.thema,
         content: card.content,
         latex: card.latex,

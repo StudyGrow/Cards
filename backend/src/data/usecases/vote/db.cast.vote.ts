@@ -13,7 +13,7 @@ export class DbCastVote implements CastVote {
   async vote(params: CastVote.Params): Promise<CastVote.Result> {
     const card = await this.cardRepository.getById({ id: params.data.cardId });
     const lecture = await this.lectureRepository.getByLectureAbbreviation({
-      lectureAbreviation: card!!.lectureAbreviation,
+      lectureAbbreviation: card!!.lectureAbbreviation,
     });
     const vote = await this.voteRepository.castVote({
       data: { input: params.data, lectureId: lecture?._id!! },

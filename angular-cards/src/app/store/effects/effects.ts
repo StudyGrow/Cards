@@ -103,7 +103,7 @@ export class CardsEffects {
     this.actions$.pipe(
       ofType(navigateToCard),
       tap(({ card }) => {
-        const url = `vorlesung/${card.lectureAbreviation ? card.lectureAbreviation : card['vorlesung']}`;
+        const url = `vorlesung/${card.lectureAbbreviation ? card.lectureAbbreviation : card['vorlesung']}`;
         if (!this.router.url.includes(url)) this.router.navigateByUrl(url); // change routes if we are not on cards route
       }),
       switchMap(({ card }) =>
