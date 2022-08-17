@@ -17,7 +17,7 @@ export interface VoteRepository {
 
 export namespace CastVoteRepository {
   export type Params = {
-    data: CastVoteInput;
+    data: { input: CastVoteInput; lectureId: string };
     userId: string;
   };
   export type Result = Vote;

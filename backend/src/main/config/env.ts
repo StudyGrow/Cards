@@ -35,6 +35,11 @@ export default {
       secret: process.env.APP_AUTH_GOOGLE_SECRET,
       redirect_uri: process.env.APP_AUTH_GOOGLE_REDIRECT_URI,
     },
+    firebase: {
+      applicationCredentials: process.env.GOOGLE_APPLICATION_CREDENTIALS || "",
+      secret: process.env.APP_AUTH_GOOGLE_SECRET,
+      redirect_uri: process.env.APP_AUTH_GOOGLE_REDIRECT_URI,
+    },
   },
   database: {
     url: process.env.MONGO_URL_TEST,

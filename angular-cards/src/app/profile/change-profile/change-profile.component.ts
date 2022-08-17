@@ -72,7 +72,7 @@ export class ChangeProfileComponent implements OnInit, OnDestroy {
     return s1 && s1.length > 7 && s1 === s2;
   }
   validate(form: NgForm) {
-    if (this.checkEmail(form.value.email) && form.value.username && form.value.username.length >= 5) {
+    if (form.value.username && form.value.username.length >= 5) {
       return true;
     } else {
       return false;

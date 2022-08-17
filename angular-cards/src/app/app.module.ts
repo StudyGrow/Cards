@@ -67,6 +67,14 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { GraphQLModule } from './graphql.module';
 
+// Firebase
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFireAuthModule } from '@angular/fire/compat/auth';
+import { AngularFireStorageModule } from '@angular/fire/compat/storage';
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
+import { GraphqlInterceptorService } from './services/graphql.interceptor.service';
+
 declare const Hammer: any;
 // Config to allow swipe gestures on carousel
 @Injectable()
@@ -151,8 +159,18 @@ export class MyHammerConfig extends HammerGestureConfig {
       isolate: false,
     }),
     GraphQLModule,
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireAuthModule,
+    AngularFirestoreModule,
+    AngularFireStorageModule,
+    AngularFireDatabaseModule,
   ],
   providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: GraphqlInterceptorService,
+      multi: true,
+    },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: LoadingInterceptorService,

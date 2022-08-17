@@ -1,6 +1,5 @@
 import { SendPasswordResetMail as ISendPasswordResetMail } from "../../protocols/mail.service/send.password.reset.mail";
 import { MailService as IMailService } from "../../protocols/mail.service/mail.service";
-import { Hasher } from "../../protocols/cryptography/hasher";
 import { NotFoundError } from "../../../response/errors/not.found.error";
 import { UnauthorizedError } from "../../../response/errors/unauthorized.error";
 import { ResetPasswordTokenInput } from "../../../main/graphql/resolvers/user/input/edit.user.reset.password.input";
@@ -26,9 +25,8 @@ export const resetMailContent = (firstName: string, lastName: string) => {
 export class SendPasswordResetMail implements ISendPasswordResetMail {
   constructor(
     private readonly mailService: IMailService,
-    private readonly accountRepository: AccountRepository,
-    private readonly hasher: Hasher
-  ) { }
+    private readonly accountRepository: AccountRepository
+  ) {}
 
   async send(
     data: ISendPasswordResetMail.Params

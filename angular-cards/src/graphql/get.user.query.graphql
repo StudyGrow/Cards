@@ -1,9 +1,7 @@
 query GetUser {
   getUser {
     _id
-    role
     username
-    email
     creationDate
     name
     surname

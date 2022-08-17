@@ -1,23 +1,27 @@
 import { EditUser } from "../../../domain/usecases/account/edit.user";
-import { GetAccountById } from "../../../domain/usecases/account/get.account.by.id";
 import { User } from "../../../main/docs/models/user.model";
 import { EditUserInput } from "../../../main/graphql/resolvers/user/input/edit.user.input";
-import { MyCont } from "../../../main/graphql/resolvers/user/resolvers/register.resolver";
-import { unauthenticated, unauthorized, ok, serverError, badRequest } from "../../helpers/http.helper";
+import {
+  unauthenticated,
+  unauthorized,
+  ok,
+  serverError,
+  badRequest,
+} from "../../helpers/http.helper";
 import { Controller } from "../../protocols/controller";
 import { HttpResponse } from "../../protocols/http.response";
 import { Validation } from "../../protocols/validation";
-
+import { MyCont } from "./request.account.password.reset.controller";
 
 export class EditUserController<
   T1 extends EditUserController.Request,
   T2 extends User
-  > implements Controller<any, any>
+> implements Controller<any, any>
 {
   constructor(
     private readonly editAccount: EditUser,
     private readonly validation: Validation
-  ) { }
+  ) {}
 
   async handle(request: T1): Promise<HttpResponse<User>> {
     try {

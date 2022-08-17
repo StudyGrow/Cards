@@ -15,9 +15,9 @@ import { GetCards } from "../../../domain/usecases/card/get.cards";
 export class GetCardsController<
   T1 extends GetCardsController.Request,
   T2 extends GetCardsController.Response
-  > implements Controller<any, T2>
+> implements Controller<any, T2>
 {
-  constructor(private readonly getCards: GetCards) { }
+  constructor(private readonly getCards: GetCards) {}
 
   async handle(request: T1): Promise<HttpResponse<T2>> {
     try {

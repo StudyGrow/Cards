@@ -47,19 +47,13 @@ export type Card = {
 
 export type CastVoteInput = {
   cardId: Scalars['String'];
-  lectureId: Scalars['String'];
   value: Scalars['Float'];
 };
 
-export type DeleteUserInput = {
-  userId: Scalars['String'];
-};
-
-export type EditUserInput = {
+export type CreateAccountInput = {
   firstName?: InputMaybe<Scalars['String']>;
   lastName?: InputMaybe<Scalars['String']>;
-  role?: InputMaybe<RoleEnum>;
-  userId: Scalars['String'];
+  username: Scalars['String'];
 };
 
 export type GetCardsInput = {
@@ -86,11 +80,6 @@ export type Lecture = {
   votes?: Maybe<Array<Vote>>;
 };
 
-export type LoginInput = {
-  password: Scalars['String'];
-  username: Scalars['String'];
-};
-
 export type Mutation = {
   __typename?: 'Mutation';
   /** Add a new card with for a given lecture. */
@@ -98,21 +87,12 @@ export type Mutation = {
   /** Add a new lecture with a given unique abbreviation. */
   addLecture: Lecture;
   castVote: Vote;
-  /** ADMIN ONLY: Remove user by admin by providing userId */
-  deleteUser: Scalars['Boolean'];
-  /** ADMIN ONLY: Admin only can edit user by providing userId */
-  editUser: User;
-  /** Password should pass this regex validation test:  /^[w!@#%&/(){}[]=?+*^~-.:,;]{1,32}$/ */
-  register: User;
+  createAccount: User;
   /** Remove user based on logged in user */
   removeUser: Scalars['Boolean'];
-  /** Sends password reset mail. Returns true if mail was sent. */
-  requestAccountPasswordReset: Scalars['Boolean'];
-  /** Sends password reset mail. Returns true if mail was sent. */
-  resetAccountPassword: Scalars['Boolean'];
   /** Update an existing card with for a given lecture. */
   updateCard: Card;
-  /** Update user based on logged in user, Password should pass this regex validation test:  /^[w!@#%&/(){}[]=?+*^~-.:,;]{1,32}$/ */
+  /** Update user based on logged in user */
   updateUser: User;
 };
 
@@ -132,28 +112,8 @@ export type MutationCastVoteArgs = {
 };
 
 
-export type MutationDeleteUserArgs = {
-  data: DeleteUserInput;
-};
-
-
-export type MutationEditUserArgs = {
-  data: EditUserInput;
-};
-
-
-export type MutationRegisterArgs = {
-  data: RegisterInput;
-};
-
-
-export type MutationRequestAccountPasswordResetArgs = {
-  data: RequestAccountPasswordResetInput;
-};
-
-
-export type MutationResetAccountPasswordArgs = {
-  data: ResetAccountPasswordInput;
+export type MutationCreateAccountArgs = {
+  data: CreateAccountInput;
 };
 
 
@@ -170,21 +130,10 @@ export type Query = {
   __typename?: 'Query';
   /** Get cards for a given lecture. */
   getCards: Array<Card>;
-  getLecture: Lecture;
+  getLecture?: Maybe<Lecture>;
   getLectures: Array<Lecture>;
   getUser: User;
-  getUsers: Array<User>;
   getVotes: Array<Vote>;
-  /**
-   * Login user.
-   *       Returns user with authentication token and refresh token.
-   *       Authentication token is valid for 10m and refresh token is valid for  30d.
-   *       If refresh token is still valid authentication token will be generated automatically
-   *       on every request which needs authentication and returned.
-   *       If refresh token is expired, user must login again, in this case
-   *       an error with message "Refresh Token invalid" or "Refresh Token expired" will be returned.
-   */
-  login: User;
 };
 
 
@@ -202,38 +151,6 @@ export type QueryGetVotesArgs = {
   data: GetVotesInput;
 };
 
-
-export type QueryLoginArgs = {
-  data: LoginInput;
-};
-
-export type RegisterInput = {
-  email: Scalars['String'];
-  firstName?: InputMaybe<Scalars['String']>;
-  lastName?: InputMaybe<Scalars['String']>;
-  password: Scalars['String'];
-  username: Scalars['String'];
-};
-
-export type RequestAccountPasswordResetInput = {
-  email: Scalars['String'];
-};
-
-export type ResetAccountPasswordInput = {
-  /** Reset token to verify ownership or access to registered email */
-  code: Scalars['String'];
-  /** Mail of user who want to reset a password */
-  email: Scalars['String'];
-  /** New password. Must satisfy password policy */
-  password: Scalars['String'];
-};
-
-/** RoleEnum */
-export enum RoleEnum {
-  Admin = 'admin',
-  User = 'user'
-}
-
 export type UpdateCardInput = {
   _id: Scalars['String'];
   content?: InputMaybe<Scalars['String']>;
@@ -244,10 +161,9 @@ export type UpdateCardInput = {
 
 export type UpdateUserInput = {
   darkModeEnabled?: InputMaybe<Scalars['Boolean']>;
-  email?: InputMaybe<Scalars['String']>;
   firstName?: InputMaybe<Scalars['String']>;
   lastName?: InputMaybe<Scalars['String']>;
-  password?: InputMaybe<Scalars['String']>;
+  username?: InputMaybe<Scalars['String']>;
 };
 
 export type User = {
@@ -255,11 +171,10 @@ export type User = {
   _id: Scalars['String'];
   confirmed: Scalars['Boolean'];
   creationDate?: Maybe<Scalars['DateTime']>;
-  email: Scalars['String'];
   name?: Maybe<Scalars['String']>;
-  role: RoleEnum;
   status: Scalars['String'];
   surname?: Maybe<Scalars['String']>;
+  uid: Scalars['String'];
   username: Scalars['String'];
 };
 
@@ -292,19 +207,36 @@ export type AddLectureMutationVariables = Exact<{
 
 export type AddLectureMutation = { __typename?: 'Mutation', addLecture: { __typename?: 'Lecture', _id?: string | null, name?: string | null, abrv?: string | null, tagList?: Array<string> | null, totalCards?: number | null } };
 
+export type CastVoteMutationVariables = Exact<{
+  cardId: Scalars['String'];
+  value: Scalars['Float'];
+}>;
+
+
+export type CastVoteMutation = { __typename?: 'Mutation', castVote: { __typename?: 'Vote', _id?: string | null, userId?: string | null, cardId?: string | null, lectureId?: string | null, value?: number | null } };
+
+export type CreateAccountMutationVariables = Exact<{
+  username: Scalars['String'];
+  lastName?: InputMaybe<Scalars['String']>;
+  firstName?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type CreateAccountMutation = { __typename?: 'Mutation', createAccount: { __typename?: 'User', _id: string, username: string, creationDate?: any | null, name?: string | null, surname?: string | null, status: string, confirmed: boolean } };
+
 export type GetLectureByAbbreviationWithCardsAndVotesQueryVariables = Exact<{
   abrv: Scalars['String'];
 }>;
 
 
-export type GetLectureByAbbreviationWithCardsAndVotesQuery = { __typename?: 'Query', getLecture: { __typename?: 'Lecture', _id?: string | null, name?: string | null, abrv?: string | null, tagList?: Array<string> | null, totalCards?: number | null, cards?: Array<{ __typename?: 'Card', _id?: string | null, lectureAbreviation: string, thema: string, content: string, tags?: Array<string> | null, authorId?: string | null, authorName?: string | null, date?: any | null, latex?: number | null, rating?: number | null }> | null, votes?: Array<{ __typename?: 'Vote', _id?: string | null, userId?: string | null, cardId?: string | null, lectureId?: string | null, value?: number | null }> | null } };
+export type GetLectureByAbbreviationWithCardsAndVotesQuery = { __typename?: 'Query', getLecture?: { __typename?: 'Lecture', _id?: string | null, name?: string | null, abrv?: string | null, tagList?: Array<string> | null, totalCards?: number | null, cards?: Array<{ __typename?: 'Card', _id?: string | null, lectureAbreviation: string, thema: string, content: string, tags?: Array<string> | null, authorId?: string | null, authorName?: string | null, date?: any | null, latex?: number | null, rating?: number | null }> | null, votes?: Array<{ __typename?: 'Vote', _id?: string | null, userId?: string | null, cardId?: string | null, lectureId?: string | null, value?: number | null }> | null } | null };
 
 export type GetLectureQueryVariables = Exact<{
   abrv: Scalars['String'];
 }>;
 
 
-export type GetLectureQuery = { __typename?: 'Query', getLecture: { __typename?: 'Lecture', _id?: string | null, name?: string | null, abrv?: string | null, tagList?: Array<string> | null, totalCards?: number | null } };
+export type GetLectureQuery = { __typename?: 'Query', getLecture?: { __typename?: 'Lecture', _id?: string | null, name?: string | null, abrv?: string | null, tagList?: Array<string> | null, totalCards?: number | null } | null };
 
 export type GetLecturesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -319,24 +251,12 @@ export type GetLecturesWithCardsAndVotesQuery = { __typename?: 'Query', getLectu
 export type GetUserQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetUserQuery = { __typename?: 'Query', getUser: { __typename?: 'User', _id: string, role: RoleEnum, username: string, email: string, creationDate?: any | null, name?: string | null, surname?: string | null, status: string, confirmed: boolean } };
+export type GetUserQuery = { __typename?: 'Query', getUser: { __typename?: 'User', _id: string, username: string, creationDate?: any | null, name?: string | null, surname?: string | null, status: string, confirmed: boolean } };
 
-export type LoginQueryVariables = Exact<{
-  username: Scalars['String'];
-  password: Scalars['String'];
-}>;
+export type RemoveUserMutationVariables = Exact<{ [key: string]: never; }>;
 
 
-export type LoginQuery = { __typename?: 'Query', login: { __typename?: 'User', _id: string, role: RoleEnum, username: string, email: string, creationDate?: any | null, name?: string | null, surname?: string | null, status: string, confirmed: boolean } };
-
-export type RegisterMutationVariables = Exact<{
-  username: Scalars['String'];
-  email: Scalars['String'];
-  password: Scalars['String'];
-}>;
-
-
-export type RegisterMutation = { __typename?: 'Mutation', register: { __typename?: 'User', _id: string, role: RoleEnum, username: string, email: string, creationDate?: any | null, name?: string | null, surname?: string | null, status: string, confirmed: boolean } };
+export type RemoveUserMutation = { __typename?: 'Mutation', removeUser: boolean };
 
 export type UpdateCardMutationVariables = Exact<{
   _id: Scalars['String'];
@@ -348,6 +268,15 @@ export type UpdateCardMutationVariables = Exact<{
 
 
 export type UpdateCardMutation = { __typename?: 'Mutation', updateCard: { __typename?: 'Card', _id?: string | null, lectureAbreviation: string, thema: string, content: string, tags?: Array<string> | null, authorId?: string | null, authorName?: string | null, date?: any | null, latex?: number | null, rating?: number | null } };
+
+export type UpdateUserMutationVariables = Exact<{
+  username?: InputMaybe<Scalars['String']>;
+  firstName?: InputMaybe<Scalars['String']>;
+  lastName?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type UpdateUserMutation = { __typename?: 'Mutation', updateUser: { __typename?: 'User', _id: string, username: string, creationDate?: any | null, name?: string | null, surname?: string | null, status: string, confirmed: boolean } };
 
 export const AddCardDocument = gql`
     mutation AddCard($lectureAbreviation: String!, $thema: String!, $content: String!, $tags: [String!]!, $latex: Float!) {
@@ -396,6 +325,54 @@ export const AddLectureDocument = gql`
   })
   export class AddLectureGQL extends Apollo.Mutation<AddLectureMutation, AddLectureMutationVariables> {
     document = AddLectureDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const CastVoteDocument = gql`
+    mutation CastVote($cardId: String!, $value: Float!) {
+  castVote(data: {cardId: $cardId, value: $value}) {
+    _id
+    userId
+    cardId
+    lectureId
+    value
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class CastVoteGQL extends Apollo.Mutation<CastVoteMutation, CastVoteMutationVariables> {
+    document = CastVoteDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const CreateAccountDocument = gql`
+    mutation CreateAccount($username: String!, $lastName: String, $firstName: String) {
+  createAccount(
+    data: {username: $username, lastName: $lastName, firstName: $firstName}
+  ) {
+    _id
+    username
+    creationDate
+    name
+    surname
+    status
+    confirmed
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class CreateAccountGQL extends Apollo.Mutation<CreateAccountMutation, CreateAccountMutationVariables> {
+    document = CreateAccountDocument;
     
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
@@ -531,9 +508,7 @@ export const GetUserDocument = gql`
     query GetUser {
   getUser {
     _id
-    role
     username
-    email
     creationDate
     name
     surname
@@ -553,53 +528,17 @@ export const GetUserDocument = gql`
       super(apollo);
     }
   }
-export const LoginDocument = gql`
-    query Login($username: String!, $password: String!) {
-  login(data: {username: $username, password: $password}) {
-    _id
-    role
-    username
-    email
-    creationDate
-    name
-    surname
-    status
-    confirmed
-  }
+export const RemoveUserDocument = gql`
+    mutation RemoveUser {
+  removeUser
 }
     `;
 
   @Injectable({
     providedIn: 'root'
   })
-  export class LoginGQL extends Apollo.Query<LoginQuery, LoginQueryVariables> {
-    document = LoginDocument;
-    
-    constructor(apollo: Apollo.Apollo) {
-      super(apollo);
-    }
-  }
-export const RegisterDocument = gql`
-    mutation Register($username: String!, $email: String!, $password: String!) {
-  register(data: {username: $username, email: $email, password: $password}) {
-    _id
-    role
-    username
-    email
-    creationDate
-    name
-    surname
-    status
-    confirmed
-  }
-}
-    `;
-
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class RegisterGQL extends Apollo.Mutation<RegisterMutation, RegisterMutationVariables> {
-    document = RegisterDocument;
+  export class RemoveUserGQL extends Apollo.Mutation<RemoveUserMutation, RemoveUserMutationVariables> {
+    document = RemoveUserDocument;
     
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
@@ -630,6 +569,32 @@ export const UpdateCardDocument = gql`
   })
   export class UpdateCardGQL extends Apollo.Mutation<UpdateCardMutation, UpdateCardMutationVariables> {
     document = UpdateCardDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const UpdateUserDocument = gql`
+    mutation UpdateUser($username: String, $firstName: String, $lastName: String) {
+  updateUser(
+    data: {username: $username, firstName: $firstName, lastName: $lastName}
+  ) {
+    _id
+    username
+    creationDate
+    name
+    surname
+    status
+    confirmed
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class UpdateUserGQL extends Apollo.Mutation<UpdateUserMutation, UpdateUserMutationVariables> {
+    document = UpdateUserDocument;
     
     constructor(apollo: Apollo.Apollo) {
       super(apollo);

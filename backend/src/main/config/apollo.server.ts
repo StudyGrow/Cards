@@ -7,8 +7,6 @@ import { GraphQLError } from "graphql";
 import { buildSchema } from "type-graphql";
 
 import env from "./env";
-import { RegisterResolver } from "../graphql/resolvers/user/resolvers/register.resolver";
-import { LoginResolver } from "../graphql/resolvers/user/resolvers/login.resolver";
 import { UserResolver } from "../graphql/resolvers/user/resolvers/user.resolver";
 import { LectureResolver } from "../graphql/resolvers/lecture/resolvers/lecture.resolver";
 import { CardResolver } from "../graphql/resolvers/card/resolvers/card.resolver";
@@ -49,14 +47,7 @@ const checkError = (error: GraphQLError, errorName: string): boolean => {
 
 export default async (app: Express) => {
   const schema = await buildSchema({
-    resolvers: [
-      LoginResolver,
-      RegisterResolver,
-      UserResolver,
-      LectureResolver,
-      CardResolver,
-      VoteResolver,
-    ],
+    resolvers: [UserResolver, LectureResolver, CardResolver, VoteResolver],
   });
 
   const plugins: PluginDefinition[] = [

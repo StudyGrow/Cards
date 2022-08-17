@@ -1,22 +1,22 @@
 import { CastVote } from "../../../domain/usecases/vote/cast.vote";
+import { CardRepository } from "../../protocols/db/card/card.repository";
 import { LectureRepository } from "../../protocols/db/lecture/lecture.repository";
 import { VoteRepository } from "../../protocols/db/vote/vote.repository";
 
 export class DbCastVote implements CastVote {
   constructor(
     private readonly lectureRepository: LectureRepository,
+    private readonly cardRepository: CardRepository,
     private readonly voteRepository: VoteRepository
-  ) { }
+  ) {}
 
   async vote(params: CastVote.Params): Promise<CastVote.Result> {
-    const lecture = await this.lectureRepository.getById({
-      id: params.data.lectureId,
+    const card = await this.cardRepository.getById({ id: params.data.cardId });
+    const lecture = await this.lectureRepository.getByLectureAbbreviation({
+      lectureAbreviation: card!!.lectureAbreviation,
     });
-    if (!lecture) {
-      return null;
-    }
     const vote = await this.voteRepository.castVote({
-      data: params.data,
+      data: { input: params.data, lectureId: lecture?._id!! },
       userId: params.user.id,
     });
     return vote;

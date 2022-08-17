@@ -1,17 +1,10 @@
-import { IsEmail, IsString } from "class-validator";
+import { IsString } from "class-validator";
 import { Field, InputType } from "type-graphql";
 
 @InputType()
-export class RegisterInput {
+export class CreateAccountInput {
   @Field()
   username!: string;
-
-  @Field()
-  @IsEmail()
-  email!: string;
-
-  @Field()
-  password!: string;
 
   @Field({ nullable: true })
   @IsString()

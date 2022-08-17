@@ -8,13 +8,12 @@ import { GetLectures } from "../../../domain/usecases/lecture/get.lectures";
 export class GetLecturesController<
   T1 extends GetLecturesController.Request,
   T2 extends GetLecturesController.Response
-  > implements Controller<any, T2>
+> implements Controller<any, T2>
 {
-  constructor(private readonly getLectures: GetLectures) { }
+  constructor(private readonly getLectures: GetLectures) {}
 
   async handle(request: T1): Promise<HttpResponse<T2>> {
     try {
-      console.log(request);
       const project = await this.getLectures.get();
 
       if (!project) {

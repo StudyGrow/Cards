@@ -6,8 +6,5 @@ export class CastVoteInput {
   cardId!: string;
 
   @Field({ nullable: false })
-  lectureId!: string;
-
-  @Field({ nullable: false })
   value!: number;
 }
