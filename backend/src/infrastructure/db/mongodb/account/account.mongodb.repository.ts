@@ -14,13 +14,20 @@ import { UpdateUserInput } from "../../../../main/graphql/resolvers/user/input/u
 
 export class AccountMongoRepository implements AccountRepository {
   async getById(id: GetAccountByIdRepository.Request) {
-    return await getModelForClass(User).findById(id);
+    const user = await getModelForClass(User).findOne({
+      uid: id,
+    });
+
+    if (user) {
+      return { ...user.toObject(), _id: user._id!!.toString() };
+    } else {
+      return null;
+    }
   }
   async add(
     data: AddAccountRepository.Params
   ): Promise<AddAccountRepository.Result> {
     // ensure saving users email with lowercase
-    data.email = data.email.toLocaleLowerCase();
     const result = await getModelForClass(User).create(data);
     return result;
   }
@@ -39,9 +46,11 @@ export class AccountMongoRepository implements AccountRepository {
   async loadByUsername(
     username: string
   ): Promise<LoadAccountByEmailRepository.Result> {
-    const user = await getModelForClass(User).findOne({ username: username });
+    const user = await getModelForClass(User)
+      .findOne({ username: username })
+      .lean();
     if (user) {
-      return { user: { ...user.toObject(), _id: user._id!!.toString() } };
+      return { user: { ...user, _id: user._id!!.toString() } };
     } else {
       return null;
     }
@@ -63,14 +72,14 @@ export class AccountMongoRepository implements AccountRepository {
   async editUser(
     data: EditUserRepository.Request
   ): Promise<EditUserRepository.Result> {
-    if ((data.data as UpdateUserInput).email) {
-      (data.data as UpdateUserInput).email = (
-        data.data as UpdateUserInput
-      ).email?.toLocaleLowerCase();
-    }
     const user = await getModelForClass(User).findByIdAndUpdate(
       { _id: data.userId },
-      data.data,
+      {
+        $set: {
+          surname: data.data.lastName,
+          name: data.data.firstName,
+        },
+      },
       { new: true }
     );
     if (user) {

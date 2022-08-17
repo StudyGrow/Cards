@@ -1,8 +1,6 @@
 import { AddAccount } from "../../../../domain/usecases/account/add.account";
 import { User } from "../../../../main/docs/models/user.model";
-import { ChangeUserPasswordInput } from "../../../../main/graphql/resolvers/user/input/change.user.password.input";
 import { EditUserInput } from "../../../../main/graphql/resolvers/user/input/edit.user.input";
-import { ResetPasswordTokenInput } from "../../../../main/graphql/resolvers/user/input/edit.user.reset.password.input";
 import { UpdateUserInput } from "../../../../main/graphql/resolvers/user/input/update.user.input";
 
 export interface AccountRepository {
@@ -61,11 +59,7 @@ export namespace GetAccountByIdRepository {
 
 export namespace EditUserRepository {
   export type Request = {
-    data:
-    | EditUserInput
-    | UpdateUserInput
-    | ResetPasswordTokenInput
-    | ChangeUserPasswordInput;
+    data: UpdateUserInput;
     userId: string;
   };
   export type Result = User | null;

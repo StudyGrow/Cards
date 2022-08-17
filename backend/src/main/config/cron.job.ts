@@ -1,8 +1,5 @@
-import cron from 'node-cron';
-import RedisClientInstance from '../../infrastructure/db/redis/redis.client';
+import cron from "node-cron";
 
 export default (): void => {
-  cron.schedule('* * * * *', function () {
-    RedisClientInstance.getInstance().getClient.BGSAVE();
-  });
+  cron.schedule("* * * * *", function () {});
 };

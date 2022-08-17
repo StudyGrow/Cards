@@ -69,14 +69,14 @@ export class LectureResolver {
   @FieldResolver((type) => [Card], { nullable: true })
   @UseMiddleware(TryAuthentication)
   async cards(
-    @Root() project: Lecture,
+    @Root() lecture: Lecture,
     @Ctx() ctx: MyCont
   ): Promise<Card[] | null> {
     return adaptResolver(
       makeGetCardsController(),
       {
         data: {
-          lectureAbbreviation: project.abrv,
+          lectureAbbreviation: lecture.abrv,
         },
       },
       ctx
@@ -86,14 +86,14 @@ export class LectureResolver {
   @FieldResolver((type) => [Vote], { nullable: true })
   @UseMiddleware(TryAuthentication)
   async votes(
-    @Root() project: Lecture,
+    @Root() lecture: Lecture,
     @Ctx() ctx: MyCont
   ): Promise<Vote[] | null> {
     return adaptResolver(
       makeGetVotesController(),
       {
         data: {
-          lectureAbbreviation: project.abrv,
+          lectureAbbreviation: lecture.abrv,
         },
         user: {
           id: ctx.req.user._id,

@@ -4,8 +4,9 @@ import { HttpClient } from '@angular/common/http';
 import { Vote } from '../models/Vote';
 import { HttpConfig } from './config';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
+import { map, timeout } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { CastVoteGQL, GetLectureByAbbreviationWithCardsAndVotesGQL } from 'src/generated/graphql';
 
 @Injectable({
   providedIn: 'root',
@@ -17,7 +18,9 @@ export class VotesService {
   constructor(
     private notifications: NotificationsService, //display errors to user
     private http: HttpClient, //to make calls to the server)
-    private router: Router
+    private router: Router,
+    private getLectureByAbbreviationWithCardsAndVotesGQL: GetLectureByAbbreviationWithCardsAndVotesGQL,
+    private castVoteGQL: CastVoteGQL
   ) {}
 
   /**
@@ -29,17 +32,12 @@ export class VotesService {
     if (!abrv) {
       abrv = this.router.url.split(/vorlesung\//)[1]; //get the lecture abreviation from the route
     }
-    return this.http
-      .get<Vote[]>(this.config.urlBase + 'cards/votes?abrv=' + abrv, {
-        observe: 'response',
+    return this.getLectureByAbbreviationWithCardsAndVotesGQL.watch({ abrv: abrv }).valueChanges.pipe(
+      timeout(3000),
+      map((res) => {
+        return res.data.getLecture.votes as Vote[];
       })
-      .pipe(
-        map((res) => {
-          if (res.status === 403) return [];
-
-          return res.body;
-        })
-      );
+    );
   }
 
   //used for vote component to load the initial value of the respective vote
@@ -50,15 +48,11 @@ export class VotesService {
   }
 
   castVote(vote: Vote): Observable<Vote> {
-    return this.http
-      .put<Vote>(
-        this.config.urlBase + 'cards/vote',
-        { value: vote.value, id: vote.cardId },
-        {
-          headers: this.config.headers,
-          observe: 'response',
-        }
-      )
-      .pipe(map((res) => res.body));
+    return this.castVoteGQL.mutate({ cardId: vote.cardId, value: vote.value }).pipe(
+      timeout(3000),
+      map((res) => {
+        return res.data.castVote as Vote;
+      })
+    );
   }
 }

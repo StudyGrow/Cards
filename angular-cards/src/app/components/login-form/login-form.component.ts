@@ -16,13 +16,14 @@ export class LoginFormComponent {
   public check = true;
 
   submit(form: NgForm) {
+    console.log(form.value);
     this.store.dispatch(login({ ...form.value, enable_session: this.enableSession }));
   }
 
-  isDisabled(username, password) {
-    if (!(username.value && password.value)) {
+  isDisabled(email, password) {
+    if (!(email.value && password.value)) {
       return true;
     }
-    return username.value.length < 5 || password.value.length < 7;
+    return email.value.length < 5 || password.value.length < 7;
   }
 }

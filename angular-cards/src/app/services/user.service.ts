@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { UserInfo } from '../models/UserInfo';
 import { Observable, BehaviorSubject, of, Subject, Subscription } from 'rxjs';
 import { Router, CanActivate } from '@angular/router';
-import { tap, map, share } from 'rxjs/operators';
+import { tap, map, switchMap } from 'rxjs/operators';
+import { defer, from } from 'rxjs';
 import { InfoMessage, WarnMessage, SuccessMessage } from '../models/Notification';
 import { NotificationsService } from './notifications.service';
 import { HttpConfig } from './config';
@@ -13,7 +14,11 @@ import { Store } from '@ngrx/store';
 
 import { AUTHORIZED } from '../store/selector';
 import { AppState } from '../models/state';
-import { GetUserGQL, LoginGQL, RegisterGQL } from 'src/generated/graphql';
+import { GetUserGQL, UpdateUserGQL, CreateAccountGQL, RemoveUserGQL } from 'src/generated/graphql';
+
+import * as auth from 'firebase/auth';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/compat/firestore';
 
 @Injectable({
   providedIn: 'root',
@@ -27,8 +32,12 @@ export class UserService implements CanActivate {
     private router: Router, //to redirect
     private notifications: NotificationsService, //to show notifications
     private getUserGQL: GetUserGQL,
-    private loginGQL: LoginGQL,
-    private registerGQL: RegisterGQL
+    // private loginGQL: LoginGQL,
+    private createAccountGQL: CreateAccountGQL,
+    private updateUserGQL: UpdateUserGQL,
+    private removeUserGQL: RemoveUserGQL,
+    public afs: AngularFirestore, // Inject Firestore service
+    public firebaseAuth: AngularFireAuth // Inject Firebase auth service
   ) {}
 
   //checks wheter page can be accessed. returns the authentication subject while redirecting
@@ -58,16 +67,16 @@ export class UserService implements CanActivate {
   }
   //used to login the user
   login(form: any): Observable<User> {
-    return this.loginGQL
-      .watch({
-        password: form.password,
-        username: form.username,
+    return from(this.firebaseAuth.signInWithEmailAndPassword(form.email, form.password)).pipe(
+      map((credentials) => credentials.user),
+      switchMap((user) => {
+        return this.getUserGQL.watch().valueChanges.pipe(
+          map((res) => {
+            return res.data.getUser;
+          })
+        );
       })
-      .valueChanges.pipe(
-        map((res) => {
-          return res.data.login;
-        })
-      );
+    );
   }
   //used to login the user with google callback
   googleCallbackLogin(callbackUrl: string): Observable<User> {
@@ -76,20 +85,25 @@ export class UserService implements CanActivate {
     });
   }
   logoutServer(): Observable<boolean> {
-    return this.http.get<boolean>(this.config.urlBase + 'auth/logout');
+    this.firebaseAuth.signOut();
+    return Observable.apply(true);
   }
+
   createAccount(form: any): Observable<User> {
-    return this.registerGQL
-      .mutate({
-        email: form.email,
-        password: form.password,
-        username: form.username,
+    return from(this.firebaseAuth.createUserWithEmailAndPassword(form.email, form.password)).pipe(
+      map((credentials) => credentials.user),
+      switchMap((user) => {
+        return this.createAccountGQL
+          .mutate({
+            username: form.username,
+          })
+          .pipe(
+            map((res) => {
+              return res.data.createAccount;
+            })
+          );
       })
-      .pipe(
-        map((res) => {
-          return res.data.register;
-        })
-      );
+    );
   }
 
   getUserInfo(): Observable<UserInfo> {
@@ -121,12 +135,11 @@ export class UserService implements CanActivate {
   }
 
   removeAcc(): Observable<any> {
-    return this.http
-      .put(this.config.urlBase + 'user/delete', null, {
-        headers: this.config.headers,
-        observe: 'response',
+    return this.removeUserGQL.mutate().pipe(
+      map((res) => {
+        return res.data.removeUser;
       })
-      .pipe(map((res) => res.body));
+    );
   }
 
   uploadFile(file: FormData): Observable<boolean> {
@@ -154,31 +167,26 @@ export class UserService implements CanActivate {
     return of(true);
   }
   updateAccount(form: User): Observable<User> {
-    return this.http
-      .put<any>(this.config.urlBase + 'user/updateAccount', form, {
-        headers: this.config.headers,
-        observe: 'response',
+    return this.updateUserGQL
+      .mutate({
+        username: form.username,
+        firstName: form.name,
+        lastName: form.surname,
       })
       .pipe(
-        tap((res) => {
-          this.notifications.addNotification(new SuccessMessage('Deine Informationen wurden erfolgreich aktualisiert'));
-        }),
         map((res) => {
-          return form;
+          return res.data.updateUser;
         })
       );
   }
 
   updatePassword(form) {
-    return this.http
-      .put<any>(this.config.urlBase + 'user/updatePassword', form, {
-        headers: this.config.headers,
-        observe: 'response',
-      })
-      .pipe(
-        tap((res) => {
-          this.notifications.addNotification(new SuccessMessage('Dein Passwort wurde erfolgreich aktualisiert'));
-        })
-      );
+    // firebase update password
+    return from(this.firebaseAuth.currentUser).pipe(
+      switchMap((user) => {
+        return from(user.updatePassword(form.password));
+      }),
+      map(() => this.getUserInfo())
+    );
   }
 }

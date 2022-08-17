@@ -31,13 +31,17 @@ export class VoteMongoRepository implements VoteRepository {
     data: CastVoteRepository.Params
   ): Promise<CastVoteRepository.Result> {
     const vote = await getModelForClass(Vote).findOne({
-      cardId: data.data.cardId,
+      cardId: data.data.input.cardId,
       userId: data.userId,
     });
     if (vote) {
-      return await this.updateVote(vote, data.data);
+      return await this.updateVote(vote, data.data.input);
     } else {
-      return await this.createVote(data.userId, data.data);
+      return await this.createVote(
+        data.userId,
+        data.data.input,
+        data.data.lectureId
+      );
     }
   }
 
@@ -50,12 +54,12 @@ export class VoteMongoRepository implements VoteRepository {
     return vote;
   }
 
-  async createVote(userId: string, newVote: CastVoteInput) {
+  async createVote(userId: string, newVote: CastVoteInput, lectureId: string) {
     this.checkVote(newVote.value);
     const vote = await getModelForClass(Vote).create({
       cardId: newVote.cardId,
       userId: userId,
-      lectureId: newVote.lectureId,
+      lectureId: lectureId,
       value: newVote.value,
     });
     return vote;
