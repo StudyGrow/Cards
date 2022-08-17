@@ -14,7 +14,7 @@ export class Card {
 
   @Field({ nullable: false })
   @Property({ required: true })
-  lectureAbreviation!: string;
+  lectureAbbreviation!: string;
 
   @Field({ nullable: false })
   @Property({ required: true })

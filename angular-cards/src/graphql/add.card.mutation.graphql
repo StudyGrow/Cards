@@ -1,9 +1,9 @@
-mutation AddCard($lectureAbreviation: String!, $thema: String!, $content: String!, $tags: [String!]!, $latex: Float!) {
+mutation AddCard($lectureAbbreviation: String!, $thema: String!, $content: String!, $tags: [String!]!, $latex: Float!) {
   addCard(
-    data: { lectureAbreviation: $lectureAbreviation, thema: $thema, content: $content, tags: $tags, latex: $latex }
+    data: { lectureAbbreviation: $lectureAbbreviation, thema: $thema, content: $content, tags: $tags, latex: $latex }
   ) {
     _id
-    lectureAbreviation
+    lectureAbbreviation
     thema
     content
     content

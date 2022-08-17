@@ -3,7 +3,7 @@ import { Field, InputType } from "type-graphql";
 @InputType()
 export class AddCardInput {
   @Field({ nullable: false })
-  lectureAbreviation!: string;
+  lectureAbbreviation!: string;
 
   @Field({ nullable: false })
   thema!: string;

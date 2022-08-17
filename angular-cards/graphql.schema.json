@@ -47,7 +47,7 @@
             "deprecationReason": null
           },
           {
-            "name": "lectureAbreviation",
+            "name": "lectureAbbreviation",
             "description": null,
             "type": {
               "kind": "NON_NULL",
@@ -262,7 +262,7 @@
             "deprecationReason": null
           },
           {
-            "name": "lectureAbreviation",
+            "name": "lectureAbbreviation",
             "description": null,
             "args": [],
             "type": {

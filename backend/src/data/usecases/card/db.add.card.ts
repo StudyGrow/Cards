@@ -8,7 +8,7 @@ export class DbAddCard implements AddCard {
     private readonly accountRepository: AccountRepository,
     private readonly cardRepository: CardRepository,
     private readonly lectureRepository: LectureRepository
-  ) { }
+  ) {}
 
   async add(params: AddCard.Params): Promise<AddCard.Result> {
     const user = await this.accountRepository.getById(params.user.id);
@@ -17,7 +17,7 @@ export class DbAddCard implements AddCard {
     }
 
     const lecture = await this.lectureRepository.getByLectureAbbreviation({
-      lectureAbreviation: params.data.lectureAbreviation,
+      lectureAbbreviation: params.data.lectureAbbreviation,
     });
 
     if (lecture) {
@@ -29,7 +29,7 @@ export class DbAddCard implements AddCard {
       });
 
       await this.lectureRepository.incrementTotalCards({
-        lectureAbbreviation: params.data.lectureAbreviation,
+        lectureAbbreviation: params.data.lectureAbbreviation,
       });
       return addedCard;
     }

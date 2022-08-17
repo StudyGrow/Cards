@@ -41,7 +41,7 @@ export class CardMongoRepository implements CardRepository {
     data: GetCardsByLectureAbbreviation.Params
   ): Promise<GetCardsByLectureAbbreviation.Result> {
     const result = await getModelForClass(Card).find({
-      lectureAbreviation: data.lectureAbreviation,
+      lectureAbbreviation: data.lectureAbbreviation,
     });
 
     return result;

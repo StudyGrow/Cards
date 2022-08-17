@@ -1,7 +1,7 @@
 mutation UpdateCard($_id: String!, $thema: String!, $content: String!, $tags: [String!]!, $latex: Float!) {
   updateCard(data: { _id: $_id, thema: $thema, content: $content, tags: $tags, latex: $latex }) {
     _id
-    lectureAbreviation
+    lectureAbbreviation
     thema
     content
     content
