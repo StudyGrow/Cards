@@ -55,19 +55,7 @@ export class AppComponent implements OnInit {
 
     this.titleService.setTitle('Home');
 
-    firstValueFrom(
-      this.translate.get(['cookies.uses_cookies', 'cookies.allow', 'cookies.deny', 'cookies.learn_more'])
-    ).then((data) => {
-      this.cookies.getConfig().content = this.cookies.getConfig().content || {};
-      // Override default messages with the translated ones
-      this.cookies.getConfig().content.message = data['cookies.uses_cookies'];
-      this.cookies.getConfig().content.allow = data['cookies.allow'];
-      this.cookies.getConfig().content.deny = data['cookies.deny'];
-      this.cookies.getConfig().content.link = data['cookies.learn_more'];
-      console.log(this.cookies.getConfig().content);
-      this.cookies.destroy(); // remove previous cookie bar (with default messages)
-      this.cookies.init(this.cookies.getConfig()); // update config with translated messages
-    });
+    this.initCookieConsentBanner();
   }
 
   ngOnInit(): void {
@@ -78,30 +66,7 @@ export class AppComponent implements OnInit {
       });
       this.subscriptioins$.push(sub);
     }
-    // let sub = this.cookies.popupOpen$.subscribe(() => {
-    //   // you can use this.cookies.getConfig() to do stuff...
-    // });
-    // this.subscriptioins$.push(sub);
-    // sub = this.cookies.popupClose$.subscribe(() => {
-    //   // you can use this.cookies.getConfig() to do stuff...
-    // });
-    // this.subscriptioins$.push(sub);
-    // sub = this.cookies.initialize$.subscribe((event: NgcInitializeEvent) => {
-    //   // you can use this.cookies.getConfig() to do stuff...
-    // });
-    // this.subscriptioins$.push(sub);
-    // sub = this.cookies.statusChange$.subscribe((event: NgcStatusChangeEvent) => {
-    //   // you can use this.cookies.getConfig() to do stuff...
-    // });
-    // this.subscriptioins$.push(sub);
-    // sub = this.cookies.revokeChoice$.subscribe(() => {
-    //   // you can use this.cookies.getConfig() to do stuff...
-    // });
-    // this.subscriptioins$.push(sub);
-    // sub = this.cookies.noCookieLaw$.subscribe((event: NgcNoCookieLawEvent) => {
-    //   // you can use this.cookies.getConfig() to do stuff...
-    // });
-    // this.subscriptioins$.push(sub);
+
     sub = this.actionState.login$.pipe(delay(3000)).subscribe((action) => {
       this.notifs.clearNotifications();
       if (action.type === Failure) {
@@ -111,5 +76,20 @@ export class AppComponent implements OnInit {
       }
     });
     this.subscriptioins$.push(sub);
+  }
+
+  initCookieConsentBanner() {
+    firstValueFrom(
+      this.translate.get(['cookies.uses_cookies', 'cookies.allow', 'cookies.deny', 'cookies.learn_more'])
+    ).then((data) => {
+      this.cookies.getConfig().content = this.cookies.getConfig().content || {};
+      // Override default messages with the translated ones
+      this.cookies.getConfig().content.message = data['cookies.uses_cookies'];
+      this.cookies.getConfig().content.allow = data['cookies.allow'];
+      this.cookies.getConfig().content.deny = data['cookies.deny'];
+      this.cookies.getConfig().content.link = data['cookies.learn_more'];
+      this.cookies.destroy(); // remove previous cookie bar (with default messages)
+      this.cookies.init(this.cookies.getConfig()); // update config with translated messages
+    });
   }
 }
