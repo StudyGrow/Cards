@@ -62,16 +62,15 @@ export default ({ app, container, logger }) => {
   app.use(`/api/`, [routes]);
 
   // built angular files
-  app.use(
-    express.static(path.join(__dirname, "../angular-cards/dist/angular-cards/"))
-  );
+  app.use(express.static(path.join(__dirname, "../frontend/dist/frontend/")));
 
   // //angular index.html file to always serve after client uses browser navigation
   app.get("*", (req, res) =>
-    res.sendFile(
-      path.join(__dirname, "../angular-cards/dist/angular-cards/index.html")
-    )
+    res.sendFile(path.join(__dirname, "../frontend/dist/frontend/index.html"))
   );
+  frontend;
+  frontend;
+  frontend;
   app.use((err: any, _req: any, res: any, next: any) => {
     if (err instanceof CelebrateError) {
       const message =

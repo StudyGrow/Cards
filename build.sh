@@ -1,7 +1,7 @@
 #!/bin/bash
 npm install
 echo "Server install done"
-cd angular-cards
+cd frontend
 if [ "$NODE_ENV" == "development" ]; then
   ng build --configuration=develop
 else
