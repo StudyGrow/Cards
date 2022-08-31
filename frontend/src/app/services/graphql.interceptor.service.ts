@@ -13,10 +13,11 @@ export class GraphqlInterceptorService implements HttpInterceptor {
   constructor(
     public firebaseAuth: AngularFireAuth // Inject Firebase auth service
   ) {
-    this.firebaseAuth.onAuthStateChanged((user) => {
-      user.getIdToken(true).then((idToken) => {
-        this.IdToken = idToken;
-      });
+    this.firebaseAuth.onAuthStateChanged(async (user) => {
+      if (!user) return;
+      const idToken = await user.getIdToken(true);
+      user.getIdToken(true);
+      this.IdToken = idToken;
     });
   }
 
