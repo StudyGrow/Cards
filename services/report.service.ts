@@ -1,6 +1,6 @@
 import { Document, Model } from "mongoose";
 import { Logger } from "winston";
-import { UserService } from "../angular-cards/src/app/services/user.service";
+import { UserService } from "../frontend/src/app/services/user.service";
 import { ICard } from "../models/cards.model";
 import { ILecture } from "../models/lecture.model";
 import { getModelForClass } from "@typegoose/typegoose";

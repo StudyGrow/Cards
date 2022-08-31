@@ -54,13 +54,13 @@ You can checkout the graphql playground by navigatin to `http://localhost:<port>
 
 ## Frontend installation
 
-The frontend is built using Angular. The Angular project folder is located in ``./angular-cards``. Download and install Angular with:
+The frontend is built using Angular. The Angular project folder is located in ``./frontend``. Download and install Angular with:
 
 ```shell
 npm install -g @angular/cli
 ```
 
-Then navigate to the angular-cards folder and start the Angular Dev Server with the following command:
+Then navigate to the frontend folder and start the Angular Dev Server with the following command:
 
 ```shell
 ng serve --proxy-config proxy.conf.json --open
