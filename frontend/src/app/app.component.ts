@@ -56,15 +56,15 @@ export class AppComponent implements OnInit {
     this.titleService.setTitle('Home');
 
     firstValueFrom(
-      this.translate.get(['cookies.uses_cookies', 'cookies.allow', 'cookies.deny', 'cookies.policy'])
+      this.translate.get(['cookies.uses_cookies', 'cookies.allow', 'cookies.deny', 'cookies.learn_more'])
     ).then((data) => {
       this.cookies.getConfig().content = this.cookies.getConfig().content || {};
       // Override default messages with the translated ones
       this.cookies.getConfig().content.message = data['cookies.uses_cookies'];
       this.cookies.getConfig().content.allow = data['cookies.allow'];
       this.cookies.getConfig().content.deny = data['cookies.deny'];
-      this.cookies.getConfig().content.policy = data['cookies.policy'];
-
+      this.cookies.getConfig().content.link = data['cookies.learn_more'];
+      console.log(this.cookies.getConfig().content);
       this.cookies.destroy(); // remove previous cookie bar (with default messages)
       this.cookies.init(this.cookies.getConfig()); // update config with translated messages
     });
