@@ -206,6 +206,12 @@
     "lecture-abrv-already-exists": "The abreviation for the lecture you are trying to add already exists.",
     "welcome": "Welcome {{username}}"
   },
+  "cookies": {
+    "uses_cookies": "This website uses cookies 🍪 to ensure you get the best experience on our website.",
+    "allow": "Allow",
+    "deny": "Deny",
+    "policy": "More about cookies"
+  },
   "users": "Users",
   "number-of-cards": "Number of cards",
   "report-type": "Report Type",

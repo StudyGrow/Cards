@@ -11,6 +11,7 @@ import { CardsEffects } from './store/effects/effects';
 import { Failure } from './store/actions/CardActions';
 import { NotificationsService } from './services/notifications.service';
 import { TranslateService } from '@ngx-translate/core';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -53,6 +54,20 @@ export class AppComponent implements OnInit {
     // log state only in development mode
 
     this.titleService.setTitle('Home');
+
+    firstValueFrom(
+      this.translate.get(['cookies.uses_cookies', 'cookies.allow', 'cookies.deny', 'cookies.policy'])
+    ).then((data) => {
+      this.cookies.getConfig().content = this.cookies.getConfig().content || {};
+      // Override default messages with the translated ones
+      this.cookies.getConfig().content.message = data['cookies.uses_cookies'];
+      this.cookies.getConfig().content.allow = data['cookies.allow'];
+      this.cookies.getConfig().content.deny = data['cookies.deny'];
+      this.cookies.getConfig().content.policy = data['cookies.policy'];
+
+      this.cookies.destroy(); // remove previous cookie bar (with default messages)
+      this.cookies.init(this.cookies.getConfig()); // update config with translated messages
+    });
   }
 
   ngOnInit(): void {

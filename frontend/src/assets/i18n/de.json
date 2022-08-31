@@ -206,6 +206,12 @@
     "lecture-abrv-already-exists": "Eine Vorlesung mit dieser Abkürzung existiert bereits.",
     "welcome": "Willkommen, {{username}}"
   },
+  "cookies": {
+    "uses_cookies": "Diese Webseite verwendet cookies 🍪 für ein optimales Nutzererlebnis.",
+    "allow": "Akzeptieren",
+    "deny": "Ablehnen",
+    "more": "Mehr Infos"
+  },
   "report-type": "Report Typ",
   "users": "Nutzer",
   "clear-report": "Report auflösen",
