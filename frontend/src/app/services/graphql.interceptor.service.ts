@@ -16,7 +16,6 @@ export class GraphqlInterceptorService implements HttpInterceptor {
     this.firebaseAuth.onAuthStateChanged(async (user) => {
       if (!user) return;
       const idToken = await user.getIdToken(true);
-      user.getIdToken(true);
       this.IdToken = idToken;
     });
   }
