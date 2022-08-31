@@ -35,8 +35,7 @@ export class GraphqlInterceptorService implements HttpInterceptor {
 
   getCurrentIdToken() {
     return new Promise((resolve, reject) => {
-      const unsubscribe = this.firebaseAuth.onIdTokenChanged(async (user) => {
-        (await unsubscribe)();
+      this.firebaseAuth.onIdTokenChanged(async (user) => {
         if (user) {
           user.getIdToken().then((token) => {
             resolve(token);
