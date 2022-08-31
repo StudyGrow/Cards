@@ -42,7 +42,7 @@ export class GraphqlInterceptorService implements HttpInterceptor {
             resolve(token);
           });
         } else {
-          reject(null);
+          resolve(null);
         }
       }, reject);
     });
