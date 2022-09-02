@@ -86,7 +86,7 @@ export class UserService implements CanActivate {
   }
   logoutServer(): Observable<boolean> {
     this.firebaseAuth.signOut();
-    return Observable.apply(true);
+    return of(true);
   }
 
   createAccount(form: any): Observable<User> {
