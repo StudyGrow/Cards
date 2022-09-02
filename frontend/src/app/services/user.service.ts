@@ -62,7 +62,7 @@ export class UserService implements CanActivate {
       );
     } catch (error) {
       console.log(error);
-      return Observable.apply(false);
+      return of(false);
     }
   }
   //used to login the user
