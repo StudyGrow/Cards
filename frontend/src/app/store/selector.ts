@@ -280,21 +280,21 @@ function _sort(cards: Card[], type: SortType, date: Date, votes: Vote[]): { date
     case SortType.TAGS_ASC:
       result.cards = [...cards].sort((a, b) => {
         if (!a.tags && !b.tags) return 0;
-        if (!a.tags) return 1;
+        if (!a.tags) return -1;
         if (!b.tags) return -1;
         if (a.tags[0] > b.tags[0]) return 1;
         if (a.tags[0] < b.tags[0]) return -1;
-        return 0;
+        return -1;
       });
       break;
     case SortType.TAGS_DSC:
       result.cards = [...cards].sort((a, b) => {
         if (!a.tags && !b.tags) return 0;
-        if (!a.tags) return 1;
+        if (!a.tags) return -1;
         if (!b.tags) return -1;
         if (a.tags[0] > b.tags[0]) return -1;
         if (a.tags[0] < b.tags[0]) return 1;
-        return 0;
+        return -1;
       });
       break;
     case SortType.LIKES_ASC:
@@ -303,8 +303,8 @@ function _sort(cards: Card[], type: SortType, date: Date, votes: Vote[]): { date
     case SortType.LIKES_DSC:
       result.cards = [...cards].sort((a, b) => countVotesForCard(b, votes) - countVotesForCard(a, votes));
       break;
-    default:
-      result.date = date; // no changes were made so reset to initial date
+    default: // no changes were made so reset to initial date
+      result.date = date;
       break;
   }
   return result;
