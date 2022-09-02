@@ -323,13 +323,13 @@ export class CardsEffects {
     )
   );
 
-  registerAccount$ = createEffect(() =>
+  createAccount$ = createEffect(() =>
     this.actions$.pipe(
       ofType(createAccount),
       exhaustMap((user) =>
         this.user.createAccount(user).pipe(
           map((user) => {
-            return auth();
+            return auth({ user: user });
           }),
           catchError((reason) => of(CardActions.httpFailure({ reason: reason })))
         )
@@ -341,10 +341,13 @@ export class CardsEffects {
   auth$ = createEffect(() =>
     this.actions$.pipe(
       ofType(auth),
-      switchMap(() =>
+      switchMap(({ user }) =>
         this.user.authentication().pipe(
           map((val) => {
             if (val) {
+              this.notifications.addNotification(
+                new SuccessMessage(this.translate.instant('notifications.welcome', { username: user.username }))
+              );
               this.store.dispatch(fetchUserData()); // get userData if authorization was sucessfull
             }
             return authenticated({ auth: val });

@@ -33,7 +33,7 @@ export class AppComponent implements OnInit {
     private notifs: NotificationsService,
     private translate: TranslateService
   ) {
-    this.store.dispatch(auth());
+    this.store.dispatch(auth({}));
     let language = localStorage.getItem('language'); // language set specifically by the user
 
     if (!language) {

@@ -27,7 +27,7 @@ export const loginSuccess = createAction(ActionTypes.LOGIN_USER_SUCCESS, props<U
 export const createAccount = createAction(ActionTypes.REGISTER, props<User>());
 export const createAccountSuccess = createAction(ActionTypes.REGISTRY_SUCCESS, props<User>());
 
-export const auth = createAction(ActionTypes.AUTHENTICATE);
+export const auth = createAction(ActionTypes.AUTHENTICATE, props<{ user?: any }>());
 export const authenticated = createAction(ActionTypes.AUTHENTICATED, props<{ auth: boolean }>());
 
 export const fetchUserData = createAction(ActionTypes.FETCH_USER_DATA);

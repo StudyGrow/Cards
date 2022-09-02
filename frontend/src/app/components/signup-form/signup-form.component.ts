@@ -2,16 +2,24 @@ import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { createAccount } from 'src/app/store/actions/UserActions';
+import { firstValueFrom } from 'rxjs';
+import { CardsEffects } from 'src/app/store/effects/effects';
+import { take } from 'rxjs/operators';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-signup-form',
   templateUrl: './signup-form.component.html',
   styleUrls: ['./signup-form.component.scss'],
 })
 export class SignupFormComponent {
-  constructor(private store: Store) {}
+  constructor(private store: Store, private effects: CardsEffects, private router: Router) {}
 
-  submit(form: NgForm) {
+  async submit(form: NgForm) {
     this.store.dispatch(createAccount(form.value));
+    const success = await firstValueFrom(this.effects.auth$.pipe(take(1)));
+    if (success) {
+      this.router.navigateByUrl('/');
+    }
   }
   setStyle(password, password2) {
     if (password2.value && password2.value.length > 5 && password2.value != password.value) {
