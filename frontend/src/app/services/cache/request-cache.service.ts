@@ -15,7 +15,7 @@ export class RequestCache {
       try {
         localStorage.setItem(url, JSON.stringify(entry));
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     }
   }

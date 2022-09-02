@@ -90,7 +90,6 @@ export class CardsService {
         }
       )
       .pipe(
-        tap((res) => console.log(res)),
         map((res) => {
           if (res.body === card._id) return card;
           throw new Error('Card not matching');

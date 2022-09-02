@@ -70,7 +70,7 @@ export class AppComponent implements OnInit {
     sub = this.actionState.login$.pipe(delay(3000)).subscribe((action) => {
       this.notifs.clearNotifications();
       if (action.type === Failure) {
-        console.log(action.reason);
+        console.error(action.reason);
 
         this.cookies.open();
       }

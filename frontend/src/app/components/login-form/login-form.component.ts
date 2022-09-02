@@ -16,7 +16,6 @@ export class LoginFormComponent {
   public check = true;
 
   submit(form: NgForm) {
-    console.log(form.value);
     this.store.dispatch(login({ ...form.value, enable_session: this.enableSession }));
   }
 

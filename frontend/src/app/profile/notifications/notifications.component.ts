@@ -26,7 +26,5 @@ export class NotificationsComponent implements OnInit {
   selected = 'flash-cards';
   constructor(private store: Store) {}
 
-  ngOnInit(): void {
-    this.selectOptions$.subscribe((a) => console.log(a));
-  }
+  ngOnInit(): void {}
 }

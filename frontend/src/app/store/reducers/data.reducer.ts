@@ -226,7 +226,6 @@ function updateVote(votes: Vote[], vote: Vote) {
 }
 
 // function updateTotalVotes(cards: Card[], vote: Vote) {
-//   console.log(cards[0].allVotes);
 //   let res = cards.map((card) => {
 //     if (card._id !== vote.cardId) {
 //       return card;

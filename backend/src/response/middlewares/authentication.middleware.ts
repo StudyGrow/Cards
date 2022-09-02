@@ -27,7 +27,7 @@ export class AuthMiddleware<
       user.uid = userData.uid;
       user.email = userData.email;
     } catch (err) {
-      console.log(err);
+      console.error(err);
       return unauthorized();
     }
 

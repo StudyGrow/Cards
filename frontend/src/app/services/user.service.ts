@@ -61,7 +61,7 @@ export class UserService implements CanActivate {
         })
       );
     } catch (error) {
-      console.log(error);
+      console.error(error);
       return of(false);
     }
   }
@@ -159,7 +159,7 @@ export class UserService implements CanActivate {
     //       },
     //       (error) => {
     //         this.statesService.setLoadingState(false);
-    //         console.log(error);
+    //         console.error(error);
     //       }
     //     ),
     //     map((res) => res.body)

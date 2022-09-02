@@ -24,12 +24,13 @@ export class OverviewComponent implements OnInit {
       }))
     ),
     map((cards) => OverviewComponent.groupBy(cards || [], 'vorlesung')),
-    map((
-      map: Map<string, { _id: string; vorlesung: string }[]> //transform map into data table for google charts
-    ) =>
-      Object.entries(map)
-        .map(([vorlesung, array]: [string, { _id: string; vorlesung: string }[]]) => [vorlesung, array.length])
-        .sort((a: [string, number], b: [string, number]) => b[1] - a[1])
+    map(
+      (
+        map: Map<string, { _id: string; vorlesung: string }[]> //transform map into data table for google charts
+      ) =>
+        Object.entries(map)
+          .map(([vorlesung, array]: [string, { _id: string; vorlesung: string }[]]) => [vorlesung, array.length])
+          .sort((a: [string, number], b: [string, number]) => b[1] - a[1])
     ),
     map((data) => data.slice(0, 5).concat([['Others', data.slice(5, data.length).length]]))
   );
@@ -37,7 +38,6 @@ export class OverviewComponent implements OnInit {
 
   ngOnInit(): void {
     this.user$ = this.store.select(USER);
-    this.store.subscribe((user) => console.log(user));
     this.theme.currentTheme.pipe(distinctUntilChanged()).subscribe((theme) => {
       const textStyle = { color: '#000' };
       if (theme === 'dark-theme') {
