@@ -212,6 +212,16 @@
     "deny": "Ablehnen",
     "learn_more": "Mehr Infos"
   },
+  "sort_options": {
+    "likes_desc": "Likes (absteigend)",
+    "likes_asc": "Likes (aufsteigend)",
+    "author_desc": "Ersteller (Z-A)",
+    "author_asc": "Ersteller (A-Z)",
+    "tags_desc": "Tags (Z-A)",
+    "tags_asc": "Tags (A-Z)",
+    "date_desc": "Datum (neueste zuerst)",
+    "date_asc": "Datum (älteste zuerst)"
+  },
   "report-type": "Report Typ",
   "users": "Nutzer",
   "clear-report": "Report auflösen",

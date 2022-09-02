@@ -1,12 +1,7 @@
 <mat-action-list style="width: max-content">
-  <button
-    *ngFor="let option of options"
-    [value]="option.key"
-    mat-list-item
-    (click)="sort(option.key)"
-  >
+  <button *ngFor="let option of options" [value]="option.key" mat-list-item (click)="sort(option.key)">
     <div class="d-flex justify-content-between w-100">
-      {{ option.value }}
+      {{ option.value | translate }}
       <mat-icon *ngIf="option.icon" class="ml-3">{{ option.icon }}</mat-icon>
     </div>
   </button>

@@ -212,6 +212,16 @@
     "deny": "Deny",
     "learn_more": "More about cookies"
   },
+  "sort_options": {
+    "likes_desc": "Likes (most liked first)",
+    "likes_asc": "Likes (least liked first)",
+    "author_desc": "Author (Z-A)",
+    "author_asc": "Author (A-Z)",
+    "tags_desc": "Tags (Z-A)",
+    "tags_asc": "Tags (A-Z)",
+    "date_desc": "Date (newest first)",
+    "date_asc": "Date (oldest first)"
+  },
   "users": "Users",
   "number-of-cards": "Number of cards",
   "report-type": "Report Type",

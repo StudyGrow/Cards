@@ -3,43 +3,43 @@ import { SortType } from 'src/app/models/SortType';
 export const sortOptions = [
   {
     key: SortType.DATE_DSC,
-    value: 'Neueste',
+    value: 'sort_options.date_desc',
     icon: 'today',
   },
   {
     key: SortType.LIKES_DSC,
-    value: 'Meisten Likes',
+    value: 'sort_options.likes_desc',
     icon: 'favorite',
   },
 
   {
     key: SortType.AUTHOR_ASC,
-    value: 'Author (A-Z)',
+    value: 'sort_options.author_asc',
     icon: 'person',
   },
   {
     key: SortType.AUTHOR_DSC,
-    value: 'Author (Z-A)',
+    value: 'sort_options.author_desc',
     icon: 'person',
   },
   {
     key: SortType.TAGS_ASC,
-    value: 'Tags (A-Z)',
+    value: 'sort_options.tags_asc',
     icon: 'local_offer',
   },
   {
     key: SortType.TAGS_DSC,
-    value: 'Tags (Z-A)',
+    value: 'sort_options.tags_desc',
     icon: 'local_offer',
   },
   {
     key: SortType.DATE_ASC,
-    value: 'Älteste',
+    value: 'sort_options.date_asc',
     icon: 'today',
   },
   {
     key: SortType.LIKES_ASC,
-    value: 'Wenigsten Likes',
+    value: 'sort_options.likes_asc',
     icon: 'favorite',
   },
 ];
