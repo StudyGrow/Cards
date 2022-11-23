@@ -1,3 +1,7 @@
 .DS_Store
 .vscode
 backend/firebase-admin.json
+node_modules
+angular-cards/.angular/cache
+angular-cards/dist
+.env
