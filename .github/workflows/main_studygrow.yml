@@ -6,7 +6,7 @@ name: Build and deploy Node.js app to Azure Web App - studygrow
 on:
   push:
     branches:
-      - master
+      - master, dockerize
   workflow_dispatch:
 
 jobs:
