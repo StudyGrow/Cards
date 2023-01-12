@@ -1,0 +1,27 @@
+<div class="container mt-2">
+  <div class="row mb-2">
+    <div class="col-md-4 col-xs-12">
+      <mat-card class="p-0" id="list">
+        <mat-nav-list class="pt-0">
+          <a mat-list-item routerLinkActive="active" routerLink="overview">
+            {{ 'profile.overview.title' | translate }}
+          </a>
+          <a mat-list-item routerLinkActive="active" routerLink="manage"> {{ 'profile.manage.title' | translate }} </a>
+          <a mat-list-item *ngIf="cardCount > 0" routerLink="cards" routerLinkActive="active">
+            {{ 'flash-cards' | translate }}
+          </a>
+          <a mat-list-item routerLink="notifications" routerLinkActive="active">
+            {{ 'notifications.notifications' | translate }}
+            <span class="badge badge-danger ml-2" *ngIf="notificationCount$ | async as notificationCount">{{
+              notificationCount || '0'
+            }}</span>
+          </a>
+        </mat-nav-list>
+      </mat-card>
+    </div>
+
+    <div class="col-md-8 col-xs-12" id="sub">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,17 @@
+mutation AddCard($lectureAbbreviation: String!, $thema: String!, $content: String!, $tags: [String!]!, $latex: Float!) {
+  addCard(
+    data: { lectureAbbreviation: $lectureAbbreviation, thema: $thema, content: $content, tags: $tags, latex: $latex }
+  ) {
+    _id
+    lectureAbbreviation
+    thema
+    content
+    content
+    tags
+    authorId
+    authorName
+    date
+    latex
+    rating
+  }
+}

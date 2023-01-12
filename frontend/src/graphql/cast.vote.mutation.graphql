@@ -1,0 +1,9 @@
+mutation CastVote($cardId: String!, $value: Float!) {
+  castVote(data: { cardId: $cardId, value: $value }) {
+    _id
+    userId
+    cardId
+    lectureId
+    value
+  }
+}

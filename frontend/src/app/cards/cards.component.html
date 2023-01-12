@@ -1,0 +1,29 @@
+<mat-tab-group
+  [selectedIndex]="selectedTab$ | async"
+  mat-align-tabs="center"
+  animationDuration="0ms"
+  (selectedIndexChange)="setActiveTab($event)"
+>
+  <mat-tab [disabled]="this.formMode === 'edit'" label="{{ 'flash-cards' | translate }}">
+    <div class="container my-1" id="carousel-container">
+      <app-carousel></app-carousel>
+    </div>
+  </mat-tab>
+  <mat-tab
+    [disabled]="!(authorized$ | async)"
+    [label]="
+      (authorized$ | async)
+        ? formMode === 'edit'
+          ? ('edit' | translate)
+          : ('add' | translate)
+        : ('add-login-warning' | translate)
+    "
+    ><div class="container py-1">
+      <app-form></app-form></div
+  ></mat-tab>
+  <mat-tab [disabled]="this.formMode === 'edit'" label="{{ 'overview' | translate }}">
+    <ng-template matTabContent>
+      <app-lecture-overview></app-lecture-overview>
+    </ng-template>
+  </mat-tab>
+</mat-tab-group>

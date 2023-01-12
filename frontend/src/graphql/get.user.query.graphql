@@ -1,0 +1,11 @@
+query GetUser {
+  getUser {
+    _id
+    username
+    creationDate
+    name
+    surname
+    status
+    confirmed
+  }
+}

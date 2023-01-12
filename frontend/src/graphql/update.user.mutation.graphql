@@ -1,0 +1,11 @@
+mutation UpdateUser($username: String, $firstName: String, $lastName: String) {
+  updateUser(data: { username: $username, firstName: $firstName, lastName: $lastName }) {
+    _id
+    username
+    creationDate
+    name
+    surname
+    status
+    confirmed
+  }
+}
