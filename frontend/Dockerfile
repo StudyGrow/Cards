@@ -1,5 +1,7 @@
 FROM node:18-alpine AS app-build
 
+ENV BACKEND_URL = "http://localhost:8080"
+
 WORKDIR /app
 COPY . .
 
