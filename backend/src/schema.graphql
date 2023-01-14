@@ -1,0 +1,171 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+input AddCardInput {
+  content: String!
+  latex: Float!
+  lectureAbbreviation: String!
+  tags: [String!]!
+  thema: String!
+}
+
+input AddLectureInput {
+  abrv: String!
+  name: String!
+  tagList: [String!]
+}
+
+type Auth {
+  """JWT access token"""
+  accessToken: String!
+
+  """JWT refresh token"""
+  refreshToken: String!
+
+  """User"""
+  user: User!
+}
+
+type Card {
+  author: User!
+  authorName: String
+  content: String!
+  date: DateTime
+  id: String
+  latex: Float
+  lecture: Lecture!
+  rating: Float
+  tags: [String!]
+  thema: String!
+}
+
+type CardEdge {
+  cursor: String!
+  node: Card!
+}
+
+type CardEdges {
+  edges: [CardEdge!]
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+input CardOrder {
+  direction: OrderDirection!
+}
+
+input CastVoteInput {
+  cardId: String!
+  value: Float!
+}
+
+input CreateUserInput {
+  email: String!
+  firstname: String
+  lastname: String
+  password: String!
+  username: String!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Lecture {
+  abrv: String
+  cards: [Card!]
+  id: String
+  name: String
+  tagList: [String!]
+  totalCards: Float
+}
+
+type LectureEdge {
+  cursor: String!
+  node: Lecture!
+}
+
+type LectureEdges {
+  edges: [LectureEdge!]
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+input LectureOrder {
+  direction: OrderDirection!
+}
+
+input LoginInput {
+  email: String!
+  password: String!
+}
+
+type Mutation {
+  addCard(data: AddCardInput!): Card!
+  addLecture(data: AddLectureInput!): Lecture!
+  castVote(data: CastVoteInput!): Vote!
+  login(data: LoginInput!): Auth!
+  refreshToken(token: String!): Token!
+  register(data: CreateUserInput!): Auth!
+  updateCard(input: UpdateCardInput!): Card!
+}
+
+"""
+Possible directions in which to order a list of items when provided an `orderBy` argument.
+"""
+enum OrderDirection {
+  asc
+  desc
+}
+
+type PageInfo {
+  endCursor: String
+  hasNextPage: Boolean
+  hasPreviousPage: Boolean
+  startCursor: String
+}
+
+type Query {
+  card(id: ID!): Card!
+  cards(orderBy: CardOrder): CardEdges!
+  lecture(abrv: String, id: ID): Lecture
+  lectures(orderBy: LectureOrder): LectureEdges!
+  votes(lectureAbbreviation: String): [Vote!]
+}
+
+type Token {
+  """JWT access token"""
+  accessToken: String!
+
+  """JWT refresh token"""
+  refreshToken: String!
+}
+
+input UpdateCardInput {
+  content: String
+  id: String!
+  latex: Float
+  tags: [String!]
+  thema: String
+}
+
+type User {
+  createdAt: DateTime!
+  id: ID!
+  updatedAt: DateTime!
+}
+
+type Vote {
+  card: Card!
+  id: String
+  lecture: Lecture!
+  user: User!
+  value: Float!
+}
+
+type VoteEdge {
+  cursor: String!
+  node: Vote!
+}

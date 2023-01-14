@@ -1,67 +1,73 @@
-# Cards Backend
+<p align="center">
+  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
+</p>
 
-To start the backend create an .env file in the backend folder with following entries, where MONGO_URL_TEST and MONGO_URL_TEST_DB are urls to a mongo db which can be created for free on mongodb.com:
+[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
+[circleci-url]: https://circleci.com/gh/nestjs/nest
 
-```
-PORT=4444
-API_ENDPOINT=/graphql
-APP_AUTH_SECRET=some_secret
-AUTH_TOKEN_EXPIRATION=15m
-REFRESH_TOKEN_EXPIRATION=1d
-MONGO_URL_TEST=
-MONGO_URL_TEST_DB=
-MAIL_HOST=smtp.ionos.de
-MAIL_PORT=587
-MAIL_USER=info@renergi.de
-MAIL_PASS=
-MAIL_WEBSITE=https://www.app.renergi.de
-MAIL_PASSWORD_RESET_PATH=reset_password
-```
+  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
+    <p align="center">
+<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
+<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
+<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
+<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
+<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
+<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
+<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
+<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
+  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
+    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
+  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
+</p>
+  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
+  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
-## **<ins>There are two main possibilities to start the backend:**
+## Description
 
-## 1. You install redis and nodejs on your pc, and start redis. Then you can run the backend with
+[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
-```
-npm run start
-```
+## Installation
 
-If you wish to develop you can start the backend with
-
-```
-npm run dev
-```
-
-## 2. You install docker and run the docker image of the backend.
-
-## **Only starting docker image**
-
-To build the docker image you should run:
-
-```
-docker build -t cardsbackend .
+```bash
+$ yarn install
 ```
 
-Then you can run the backend with:
+## Running the app
 
-```
-docker run -p 4444:4444 cardsbackend
-```
+```bash
+# development
+$ yarn run start
 
-## **Developing with docker**
+# watch mode
+$ yarn run start:dev
 
-To develop using the docker image build the image with:
-
-```
-docker build -f Dockerfile_dev -t cardsbackend .
-```
-
-Then run the image and mount your local backend folder to the container by using the -v option, where you set YOUR_PATH_TO_THE_BACKEND_FOLDER to the path of your backend folder like for example: `"/Users/username/Documents/backendcards/backend"`:
-
-```
-docker run -v "YOUR_PATH_TO_THE_BACKEND_FOLDER:/backend" -p 4444:4444 cardsbackend
+# production mode
+$ yarn run start:prod
 ```
 
-Now when you edit some files in the backend folder, the server should pick these changes up and update.
+## Test
 
-![Image](overview.drawio.png)
+```bash
+# unit tests
+$ yarn run test
+
+# e2e tests
+$ yarn run test:e2e
+
+# test coverage
+$ yarn run test:cov
+```
+
+## Support
+
+Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+
+## Stay in touch
+
+- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
+- Website - [https://nestjs.com](https://nestjs.com/)
+- Twitter - [@nestframework](https://twitter.com/nestframework)
+
+## License
+
+Nest is [MIT licensed](LICENSE).
