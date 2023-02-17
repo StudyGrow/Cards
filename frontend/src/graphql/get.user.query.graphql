@@ -1,5 +1,12 @@
 query GetUser {
   me {
     id
+    confirmed
+    createdAt
+    email
+    firstname
+    lastname
+    status
+    updatedAt
   }
 }

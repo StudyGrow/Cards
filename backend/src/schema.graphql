@@ -166,8 +166,13 @@ input UpdateUserInput {
 }
 
 type User {
+  confirmed: Boolean!
   createdAt: DateTime!
+  email: String!
+  firstname: String!
   id: ID!
+  lastname: String!
+  status: String!
   updatedAt: DateTime!
 }
 

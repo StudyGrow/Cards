@@ -1,4 +1,9 @@
-import { ObjectType, registerEnumType, HideField } from '@nestjs/graphql';
+import {
+  ObjectType,
+  registerEnumType,
+  HideField,
+  Field,
+} from '@nestjs/graphql';
 import { BaseEntity } from 'src/common/base.entity';
 
 export enum Role {
@@ -14,12 +19,17 @@ registerEnumType(Role, {
 @ObjectType()
 export class User extends BaseEntity {
   id: string;
+  @Field()
   email: string;
+  @Field()
   firstname?: string;
+  @Field()
   lastname?: string;
   // role: Role;
   @HideField()
   password: string;
+  @Field()
   status: string;
+  @Field()
   confirmed: boolean;
 }
