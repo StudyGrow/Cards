@@ -5,3 +5,4 @@ node_modules
 angular-cards/.angular/cache
 angular-cards/dist
 .env
+backend/src/schema.graphql
