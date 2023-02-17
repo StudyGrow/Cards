@@ -53,7 +53,7 @@ export class UserService implements CanActivate {
     try {
       return this.getUserGQL.watch().valueChanges.pipe(
         map((res) => {
-          if (res.data.getUser) {
+          if (res.data.me) {
             return true;
           } else {
             return false;
@@ -72,7 +72,7 @@ export class UserService implements CanActivate {
       switchMap((user) => {
         return this.getUserGQL.watch().valueChanges.pipe(
           map((res) => {
-            return res.data.getUser;
+            return res.data.me;
           })
         );
       })
@@ -96,10 +96,14 @@ export class UserService implements CanActivate {
         return this.createAccountGQL
           .mutate({
             username: form.username,
+            email: form.email,
+            firstName: form.name,
+            lastName: form.surname,
+            password: form.password,
           })
           .pipe(
             map((res) => {
-              return res.data.createAccount;
+              return res.data.register.user;
             })
           );
       })
@@ -109,7 +113,7 @@ export class UserService implements CanActivate {
   getUserInfo(): Observable<UserInfo> {
     return this.getUserGQL.watch().valueChanges.pipe(
       map((res) => {
-        return { user: res.data.getUser };
+        return { user: res.data.me };
       })
     );
     return this.http
@@ -137,7 +141,7 @@ export class UserService implements CanActivate {
   removeAcc(): Observable<any> {
     return this.removeUserGQL.mutate().pipe(
       map((res) => {
-        return res.data.removeUser;
+        return res.data.deleteUser;
       })
     );
   }
@@ -169,9 +173,8 @@ export class UserService implements CanActivate {
   updateAccount(form: User): Observable<User> {
     return this.updateUserGQL
       .mutate({
-        username: form.username,
-        firstName: form.name,
-        lastName: form.surname,
+        firstname: form.name,
+        lastname: form.surname,
       })
       .pipe(
         map((res) => {
