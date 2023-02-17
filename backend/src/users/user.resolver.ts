@@ -37,4 +37,14 @@ export class UserResolver {
       changePassword,
     );
   }
+
+  @Mutation(() => Boolean)
+  async deleteUser(@UserEntity() user: User) {
+    await this.prisma.user.delete({
+      where: {
+        id: user.id,
+      },
+    });
+    return true;
+  }
 }

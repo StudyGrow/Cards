@@ -1,11 +1,5 @@
 query GetUser {
-  user {
+  me {
     id
-    username
-    creationDate
-    name
-    surname
-    status
-    confirmed
   }
 }

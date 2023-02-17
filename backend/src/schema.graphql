@@ -60,6 +60,11 @@ input CastVoteInput {
   value: Float!
 }
 
+input ChangePasswordInput {
+  newPassword: String!
+  oldPassword: String!
+}
+
 input CreateUserInput {
   email: String!
   firstname: String
@@ -106,10 +111,13 @@ type Mutation {
   addCard(data: AddCardInput!): Card!
   addLecture(data: AddLectureInput!): Lecture!
   castVote(data: CastVoteInput!): Vote!
+  changePassword(data: ChangePasswordInput!): User!
+  deleteUser: Boolean!
   login(data: LoginInput!): Auth!
   refreshToken(token: String!): Token!
   register(data: CreateUserInput!): Auth!
   updateCard(input: UpdateCardInput!): Card!
+  updateUser(data: UpdateUserInput!): User!
 }
 
 """
@@ -132,6 +140,7 @@ type Query {
   cards(orderBy: CardOrder): CardEdges!
   lecture(abrv: String, id: ID): Lecture
   lectures(orderBy: LectureOrder): LectureEdges!
+  me: User!
   votes(lectureAbbreviation: String): [Vote!]
 }
 
@@ -149,6 +158,11 @@ input UpdateCardInput {
   latex: Float
   tags: [String!]
   thema: String
+}
+
+input UpdateUserInput {
+  firstname: String
+  lastname: String
 }
 
 type User {

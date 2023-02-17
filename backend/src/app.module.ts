@@ -8,6 +8,7 @@ import config from './config/config';
 import { LecturesModule } from './lectures/lectures.module';
 import { CardsModule } from './cards/cards.module';
 import { VotesModule } from './votes/votes.module';
+import { UserModule } from './users/user.module';
 
 @Module({
   imports: [
@@ -40,6 +41,7 @@ import { VotesModule } from './votes/votes.module';
     LecturesModule,
     VotesModule,
     CardsModule,
+    UserModule,
   ],
   controllers: [],
   providers: [],
