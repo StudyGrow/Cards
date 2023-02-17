@@ -254,8 +254,13 @@ export type UpdateUserInput = {
 
 export type User = {
   __typename?: 'User';
+  confirmed: Scalars['Boolean'];
   createdAt: Scalars['DateTime'];
+  email: Scalars['String'];
+  firstname: Scalars['String'];
   id: Scalars['ID'];
+  lastname: Scalars['String'];
+  status: Scalars['String'];
   updatedAt: Scalars['DateTime'];
 };
 
@@ -340,7 +345,7 @@ export type GetLecturesWithCardsAndVotesQuery = { __typename?: 'Query', lectures
 export type GetUserQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetUserQuery = { __typename?: 'Query', me: { __typename?: 'User', id: string } };
+export type GetUserQuery = { __typename?: 'Query', me: { __typename?: 'User', id: string, confirmed: boolean, createdAt: any, email: string, firstname: string, lastname: string, status: string, updatedAt: any } };
 
 export type RemoveUserMutationVariables = Exact<{ [key: string]: never; }>;
 
@@ -364,7 +369,7 @@ export type UpdateUserMutationVariables = Exact<{
 }>;
 
 
-export type UpdateUserMutation = { __typename?: 'Mutation', updateUser: { __typename?: 'User', id: string } };
+export type UpdateUserMutation = { __typename?: 'Mutation', updateUser: { __typename?: 'User', id: string, confirmed: boolean, createdAt: any, email: string, firstname: string, lastname: string, status: string, updatedAt: any } };
 
 export const AddCardDocument = gql`
     mutation AddCard($lectureAbbreviation: String!, $thema: String!, $content: String!, $tags: [String!]!, $latex: Float!) {
@@ -610,6 +615,13 @@ export const GetUserDocument = gql`
     query GetUser {
   me {
     id
+    confirmed
+    createdAt
+    email
+    firstname
+    lastname
+    status
+    updatedAt
   }
 }
     `;
@@ -678,6 +690,13 @@ export const UpdateUserDocument = gql`
     mutation UpdateUser($firstname: String, $lastname: String) {
   updateUser(data: {firstname: $firstname, lastname: $lastname}) {
     id
+    confirmed
+    createdAt
+    email
+    firstname
+    lastname
+    status
+    updatedAt
   }
 }
     `;
