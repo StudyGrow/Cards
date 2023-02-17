@@ -1,6 +1,7 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import PaginatedResponse from '../common/pagination/pagination';
 import { Card } from 'src/cards/card.entity';
+import { Vote } from 'src/votes/vote.entity';
 
 @ObjectType()
 export class Lecture {
@@ -22,8 +23,8 @@ export class Lecture {
   @Field(() => [Card], { nullable: true })
   cards?: Card[];
 
-  // @Field(() => [Vote], { nullable: true })
-  // votes?: Vote[];
+  @Field(() => [Vote], { nullable: true })
+  votes?: Vote[];
 }
 
 @ObjectType()

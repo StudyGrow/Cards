@@ -4,5 +4,15 @@ mutation CreateAccount($username: String!, $lastName: String, $firstName: String
   ) {
     refreshToken
     accessToken
+    user {
+      id
+      confirmed
+      createdAt
+      email
+      firstname
+      lastname
+      status
+      updatedAt
+    }
   }
 }

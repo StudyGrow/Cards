@@ -35,7 +35,7 @@ export class VotesService {
     return this.getLectureByAbbreviationWithCardsAndVotesGQL.watch({ abrv: abrv }).valueChanges.pipe(
       timeout(3000),
       map((res) => {
-        return res.data.getLecture.votes as Vote[];
+        return res.data.votes as Vote[];
       })
     );
   }

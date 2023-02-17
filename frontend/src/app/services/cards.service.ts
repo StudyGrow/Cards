@@ -33,15 +33,15 @@ export class CardsService {
       map((res) => {
         return {
           lecture: {
-            _id: res.data.getLecture._id,
-            abrv: res.data.getLecture.abrv,
-            name: res.data.getLecture.name,
-            tagList: res.data.getLecture.tagList,
-            totalCards: res.data.getLecture.totalCards,
+            _id: res.data.lecture.id,
+            abrv: res.data.lecture.abrv,
+            name: res.data.lecture.name,
+            tagList: res.data.lecture.tagList,
+            totalCards: res.data.lecture.totalCards,
           },
-          cards: res.data.getLecture.cards,
+          cards: res.data.lecture.cards,
           uid: null,
-          votes: res.data.getLecture.votes,
+          // votes: res.data.lecture,
         } as CardsData;
       })
     );
@@ -52,7 +52,7 @@ export class CardsService {
 
     return this.updateCardGQL
       .mutate({
-        _id: card._id,
+        id: card._id,
         thema: card.thema,
         content: card.content,
         latex: card.latex,

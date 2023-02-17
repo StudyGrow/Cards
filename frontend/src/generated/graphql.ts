@@ -98,6 +98,7 @@ export type Lecture = {
   name?: Maybe<Scalars['String']>;
   tagList?: Maybe<Array<Scalars['String']>>;
   totalCards?: Maybe<Scalars['Float']>;
+  votes?: Maybe<Array<Vote>>;
 };
 
 export type LectureEdge = {
@@ -316,7 +317,7 @@ export type CreateAccountMutationVariables = Exact<{
 }>;
 
 
-export type CreateAccountMutation = { __typename?: 'Mutation', register: { __typename?: 'Auth', refreshToken: string, accessToken: string } };
+export type CreateAccountMutation = { __typename?: 'Mutation', register: { __typename?: 'Auth', refreshToken: string, accessToken: string, user: { __typename?: 'User', id: string, confirmed: boolean, createdAt: any, email: string, firstname: string, lastname: string, status: string, updatedAt: any } } };
 
 export type GetLectureByAbbreviationWithCardsAndVotesQueryVariables = Exact<{
   abrv: Scalars['String'];
@@ -459,6 +460,16 @@ export const CreateAccountDocument = gql`
   ) {
     refreshToken
     accessToken
+    user {
+      id
+      confirmed
+      createdAt
+      email
+      firstname
+      lastname
+      status
+      updatedAt
+    }
   }
 }
     `;

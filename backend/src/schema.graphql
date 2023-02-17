@@ -85,6 +85,7 @@ type Lecture {
   name: String
   tagList: [String!]
   totalCards: Float
+  votes: [Vote!]
 }
 
 type LectureEdge {

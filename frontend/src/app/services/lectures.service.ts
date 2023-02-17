@@ -29,14 +29,16 @@ export class LecturesService {
   //get an array of all lectures
   getAllLectures(): Observable<Vorlesung[]> {
     //load lectures from the server
-    return this.getLecturesGQL.watch().valueChanges.pipe(map((res) => res.data.getLectures));
+    return this.getLecturesGQL
+      .watch()
+      .valueChanges.pipe(map((res) => res.data.lectures.edges.map((edge) => edge.node)));
   }
 
   checkUniqueLecture(lecture: Vorlesung): Observable<boolean> {
     return this.getLectureGQL.watch({ abrv: lecture.abrv }).valueChanges.pipe(
       timeout(3000),
       map((res) => {
-        return !res.data.getLecture?._id;
+        return !res.data.lecture?.id;
       })
     );
   }
