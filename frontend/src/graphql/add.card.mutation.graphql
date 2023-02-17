@@ -2,16 +2,17 @@ mutation AddCard($lectureAbbreviation: String!, $thema: String!, $content: Strin
   addCard(
     data: { lectureAbbreviation: $lectureAbbreviation, thema: $thema, content: $content, tags: $tags, latex: $latex }
   ) {
-    _id
-    lectureAbbreviation
+    id
     thema
     content
     content
     tags
-    authorId
     authorName
     date
     latex
     rating
+    lecture {
+      abrv
+    }
   }
 }

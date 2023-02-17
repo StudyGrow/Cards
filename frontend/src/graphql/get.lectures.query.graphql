@@ -1,9 +1,20 @@
 query GetLectures {
-  getLectures {
-    _id
-    name
-    abrv
-    tagList
-    totalCards
+  lectures {
+    edges {
+      node {
+        id
+        name
+        abrv
+        tagList
+        totalCards
+      }
+    }
+    pageInfo {
+      endCursor
+      hasNextPage
+      hasPreviousPage
+      startCursor
+    }
+    totalCount
   }
 }

@@ -1,6 +1,6 @@
 query GetUser {
-  getUser {
-    _id
+  user {
+    id
     username
     creationDate
     name

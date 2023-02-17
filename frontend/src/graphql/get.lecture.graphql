@@ -1,6 +1,6 @@
 query getLecture($abrv: String!) {
-  getLecture(data: { abrv: $abrv }) {
-    _id
+  lecture(abrv: $abrv) {
+    id
     name
     abrv
     tagList

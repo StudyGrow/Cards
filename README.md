@@ -28,6 +28,12 @@ MAIL_WEBSITE=
 MAIL_PASSWORD_RESET_PATH=
 ```
 
+### Postgresql
+
+```bash
+docker run --name some-postgres -p 5432:5432 -e POSTGRES_PASSWORD=mysecretpassword -e POSTGRES_DB=studycards -d postgres 
+```
+
 ## Backend installation
 
 Using the command line navigate to the `./backend` folder and type in the following command:
@@ -39,7 +45,7 @@ npm install
 npm will install all the dependencies for you. After that use the following command to start the server:
 
 ```shell
-npm run dev
+npm run start
 ```
 
 ### Redis

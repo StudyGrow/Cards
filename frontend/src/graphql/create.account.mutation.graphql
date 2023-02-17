@@ -1,11 +1,8 @@
-mutation CreateAccount($username: String!, $lastName: String, $firstName: String) {
-  createAccount(data: { username: $username, lastName: $lastName, firstName: $firstName }) {
-    _id
-    username
-    creationDate
-    name
-    surname
-    status
-    confirmed
+mutation CreateAccount($username: String!, $lastName: String, $firstName: String, $email: String!, $password: String!) {
+  register(
+    data: { username: $username, lastname: $lastName, firstname: $firstName, email: $email, password: $password }
+  ) {
+    refreshToken
+    accessToken
   }
 }

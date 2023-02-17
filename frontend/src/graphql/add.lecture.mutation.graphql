@@ -1,6 +1,6 @@
 mutation AddLecture($name: String!, $abrv: String!, $tagList: [String!]) {
   addLecture(data: { name: $name, abrv: $abrv, tagList: $tagList }) {
-    _id
+    id
     name
     abrv
     tagList

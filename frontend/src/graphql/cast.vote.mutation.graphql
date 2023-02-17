@@ -1,9 +1,15 @@
 mutation CastVote($cardId: String!, $value: Float!) {
   castVote(data: { cardId: $cardId, value: $value }) {
-    _id
-    userId
-    cardId
-    lectureId
+    id
+    user {
+      id
+    }
+    card {
+      id
+    }
+    lecture {
+      id
+    }
     value
   }
 }
