@@ -99,11 +99,10 @@ export class UserService implements CanActivate {
             email: form.email,
             firstName: form.name,
             lastName: form.surname,
-            password: form.password,
           })
           .pipe(
             map((res) => {
-              return res.data.register.user;
+              return res.data.register;
             })
           );
       })

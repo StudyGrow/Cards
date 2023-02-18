@@ -4,6 +4,8 @@ import { User } from '../users/user.entity';
 import { UserEntity } from '../users/decorators/user.decorator';
 import { CastVoteInput } from './models/cast.vote.input';
 import { Vote } from './vote.entity';
+import { GqlFirebaseAuthGuard } from 'src/auth/strategies/jwt/firebase.guard';
+import { UseGuards } from '@nestjs/common';
 
 // We use this to make sure that the "document" field isn't selected, by default
 // (see https://github.com/prisma/prisma-client-js/issues/649)
@@ -17,6 +19,7 @@ const DEFAULT_SELECT = {
   totalCards: true,
 };
 
+@UseGuards(GqlFirebaseAuthGuard)
 @Resolver(() => Vote)
 export class VotesResolver {
   constructor(private prisma: PrismaService) {}

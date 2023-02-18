@@ -8,6 +8,9 @@ import { PaginationArgs } from 'src/common/pagination/pagination.args';
 import { findManyCursorConnection } from '@devoxa/prisma-relay-cursor-connection';
 import { OrderDirection } from 'src/common/order/order.direction';
 import { LectureOrder, LectureOrderField } from './models/lecture.entity';
+import { Public } from 'src/auth/decorators/public.decorator';
+import { UseGuards } from '@nestjs/common';
+import { GqlFirebaseAuthGuard } from 'src/auth/strategies/jwt/firebase.guard';
 
 // We use this to make sure that the "document" field isn't selected, by default
 // (see https://github.com/prisma/prisma-client-js/issues/649)
@@ -21,6 +24,7 @@ const DEFAULT_SELECT = {
   totalCards: true,
 };
 
+@UseGuards(GqlFirebaseAuthGuard)
 @Resolver(() => Lecture)
 export class LecturesResolver {
   constructor(private prisma: PrismaService) {}
@@ -30,7 +34,6 @@ export class LecturesResolver {
     @Args('data') data: AddLectureInput,
     @UserEntity() user: User,
   ): Promise<Lecture> {
-    console.log('addLecture', 'data');
     return this.prisma.lecture.create({
       data: {
         name: data.name,
@@ -40,6 +43,7 @@ export class LecturesResolver {
     });
   }
 
+  @Public()
   @Query(() => LectureEdges, { name: 'lectures' })
   async findAll(
     @Args({ nullable: true })
@@ -55,13 +59,13 @@ export class LecturesResolver {
       (args) =>
         this.prisma.lecture.findMany({
           select: DEFAULT_SELECT,
-          where: { userId: user.id },
+          where: user ? { userId: user.id } : {},
           orderBy: orderBy ? { [orderBy.field]: orderBy.direction } : null,
           ...args,
         }),
       () =>
         this.prisma.lecture.count({
-          where: { userId: user.id },
+          where: user ? { userId: user.id } : {},
         }),
       paginationArgs,
     );

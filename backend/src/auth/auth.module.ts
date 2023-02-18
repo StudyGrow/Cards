@@ -4,17 +4,19 @@ import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from './strategies/jwt/jwt.strategy';
-import { GqlJwtAuthGuard } from './strategies/jwt/jwt.guard';
 import { ConfigService } from '@nestjs/config';
 import { SecurityConfig } from 'src/config/config.interface';
-import { APP_GUARD } from '@nestjs/core';
 import { PasswordService } from 'src/common/password.service';
 import { PrismaService } from 'src/common/prisma.service';
 import { UserService } from 'src/users/services/user.service';
+import { FirebaseStrategy } from './strategies/jwt/firebase.strategy';
+import { FirebaseAdminModule } from '@tfarras/nestjs-firebase-admin';
+import * as admin from 'firebase-admin';
+import { FirebaseOkStrategy } from './strategies/jwt/firebase.only.strategy';
 
 @Module({
   imports: [
-    PassportModule.register({ defaultStrategy: 'jwt' }),
+    PassportModule.register({ defaultStrategy: 'firebase' }),
     JwtModule.registerAsync({
       useFactory: async (configService: ConfigService) => {
         const securityConfig = configService.get<SecurityConfig>('security');
@@ -27,18 +29,21 @@ import { UserService } from 'src/users/services/user.service';
       },
       inject: [ConfigService],
     }),
+    FirebaseAdminModule.forRootAsync({
+      useFactory: () => ({
+        credential: admin.credential.applicationDefault(),
+      }),
+    }),
   ],
   providers: [
     AuthService,
     AuthResolver,
     JwtStrategy,
+    FirebaseOkStrategy,
+    FirebaseStrategy,
     PasswordService,
     PrismaService,
     UserService,
-    {
-      provide: APP_GUARD,
-      useClass: GqlJwtAuthGuard,
-    },
   ],
   exports: [],
 })

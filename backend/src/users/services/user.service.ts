@@ -1,5 +1,4 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
-import { ChangePasswordInput } from '../models/change.password.input';
+import { Injectable } from '@nestjs/common';
 import { UpdateUserInput } from '../models/update.user.input';
 import { PrismaService } from 'src/common/prisma.service';
 import { PasswordService } from 'src/common/password.service';
@@ -12,15 +11,12 @@ export class UserService {
     private passwordService: PasswordService,
   ) {}
 
-  async createUser(newUserData: CreateUserInput) {
-    const hashedPassword = await this.passwordService.hashPassword(
-      newUserData.password,
-    );
+  async createUser(newUserData: CreateUserInput, firebaseId: string) {
     return this.prisma.user.create({
       data: {
         confirmed: false,
         email: newUserData.email,
-        password: hashedPassword,
+        firebaseId: firebaseId,
         status: 'ACTIVE',
         username: newUserData.username,
         firstname: newUserData.firstname,
@@ -38,27 +34,11 @@ export class UserService {
     });
   }
 
-  async changePassword(
-    userId: string,
-    userPassword: string,
-    changePassword: ChangePasswordInput,
-  ) {
-    const passwordValid = await this.passwordService.validatePassword(
-      changePassword.oldPassword,
-      userPassword,
-    );
-    if (!passwordValid) {
-      throw new BadRequestException('Invalid password');
-    }
-
-    const hashedPassword = await this.passwordService.hashPassword(
-      changePassword.newPassword,
-    );
-    return this.prisma.user.update({
-      data: {
-        password: hashedPassword,
+  async getUserByFirebaseId(firebaseId: string) {
+    return this.prisma.user.findUnique({
+      where: {
+        firebaseId,
       },
-      where: { id: userId },
     });
   }
 }

@@ -31,16 +31,6 @@ export type AddLectureInput = {
   tagList?: InputMaybe<Array<Scalars['String']>>;
 };
 
-export type Auth = {
-  __typename?: 'Auth';
-  /** JWT access token */
-  accessToken: Scalars['String'];
-  /** JWT refresh token */
-  refreshToken: Scalars['String'];
-  /** User */
-  user: User;
-};
-
 export type Card = {
   __typename?: 'Card';
   author: User;
@@ -77,16 +67,10 @@ export type CastVoteInput = {
   value: Scalars['Float'];
 };
 
-export type ChangePasswordInput = {
-  newPassword: Scalars['String'];
-  oldPassword: Scalars['String'];
-};
-
 export type CreateUserInput = {
   email: Scalars['String'];
   firstname?: InputMaybe<Scalars['String']>;
   lastname?: InputMaybe<Scalars['String']>;
-  password: Scalars['String'];
   username: Scalars['String'];
 };
 
@@ -118,21 +102,13 @@ export type LectureOrder = {
   direction: OrderDirection;
 };
 
-export type LoginInput = {
-  email: Scalars['String'];
-  password: Scalars['String'];
-};
-
 export type Mutation = {
   __typename?: 'Mutation';
   addCard: Card;
   addLecture: Lecture;
   castVote: Vote;
-  changePassword: User;
   deleteUser: Scalars['Boolean'];
-  login: Auth;
-  refreshToken: Token;
-  register: Auth;
+  register: User;
   updateCard: Card;
   updateUser: User;
 };
@@ -150,21 +126,6 @@ export type MutationAddLectureArgs = {
 
 export type MutationCastVoteArgs = {
   data: CastVoteInput;
-};
-
-
-export type MutationChangePasswordArgs = {
-  data: ChangePasswordInput;
-};
-
-
-export type MutationLoginArgs = {
-  data: LoginInput;
-};
-
-
-export type MutationRefreshTokenArgs = {
-  token: Scalars['String'];
 };
 
 
@@ -232,14 +193,6 @@ export type QueryVotesArgs = {
   lectureAbbreviation?: InputMaybe<Scalars['String']>;
 };
 
-export type Token = {
-  __typename?: 'Token';
-  /** JWT access token */
-  accessToken: Scalars['String'];
-  /** JWT refresh token */
-  refreshToken: Scalars['String'];
-};
-
 export type UpdateCardInput = {
   content?: InputMaybe<Scalars['String']>;
   id: Scalars['String'];
@@ -258,9 +211,9 @@ export type User = {
   confirmed: Scalars['Boolean'];
   createdAt: Scalars['DateTime'];
   email: Scalars['String'];
-  firstname: Scalars['String'];
+  firstname?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
-  lastname: Scalars['String'];
+  lastname?: Maybe<Scalars['String']>;
   status: Scalars['String'];
   updatedAt: Scalars['DateTime'];
 };
@@ -313,11 +266,10 @@ export type CreateAccountMutationVariables = Exact<{
   lastName?: InputMaybe<Scalars['String']>;
   firstName?: InputMaybe<Scalars['String']>;
   email: Scalars['String'];
-  password: Scalars['String'];
 }>;
 
 
-export type CreateAccountMutation = { __typename?: 'Mutation', register: { __typename?: 'Auth', refreshToken: string, accessToken: string, user: { __typename?: 'User', id: string, confirmed: boolean, createdAt: any, email: string, firstname: string, lastname: string, status: string, updatedAt: any } } };
+export type CreateAccountMutation = { __typename?: 'Mutation', register: { __typename?: 'User', id: string, confirmed: boolean, createdAt: any, email: string, firstname?: string | null, lastname?: string | null, status: string, updatedAt: any } };
 
 export type GetLectureByAbbreviationWithCardsAndVotesQueryVariables = Exact<{
   abrv: Scalars['String'];
@@ -346,7 +298,7 @@ export type GetLecturesWithCardsAndVotesQuery = { __typename?: 'Query', lectures
 export type GetUserQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetUserQuery = { __typename?: 'Query', me: { __typename?: 'User', id: string, confirmed: boolean, createdAt: any, email: string, firstname: string, lastname: string, status: string, updatedAt: any } };
+export type GetUserQuery = { __typename?: 'Query', me: { __typename?: 'User', id: string, confirmed: boolean, createdAt: any, email: string, firstname?: string | null, lastname?: string | null, status: string, updatedAt: any } };
 
 export type RemoveUserMutationVariables = Exact<{ [key: string]: never; }>;
 
@@ -370,7 +322,7 @@ export type UpdateUserMutationVariables = Exact<{
 }>;
 
 
-export type UpdateUserMutation = { __typename?: 'Mutation', updateUser: { __typename?: 'User', id: string, confirmed: boolean, createdAt: any, email: string, firstname: string, lastname: string, status: string, updatedAt: any } };
+export type UpdateUserMutation = { __typename?: 'Mutation', updateUser: { __typename?: 'User', id: string, confirmed: boolean, createdAt: any, email: string, firstname?: string | null, lastname?: string | null, status: string, updatedAt: any } };
 
 export const AddCardDocument = gql`
     mutation AddCard($lectureAbbreviation: String!, $thema: String!, $content: String!, $tags: [String!]!, $latex: Float!) {
@@ -454,22 +406,18 @@ export const CastVoteDocument = gql`
     }
   }
 export const CreateAccountDocument = gql`
-    mutation CreateAccount($username: String!, $lastName: String, $firstName: String, $email: String!, $password: String!) {
+    mutation CreateAccount($username: String!, $lastName: String, $firstName: String, $email: String!) {
   register(
-    data: {username: $username, lastname: $lastName, firstname: $firstName, email: $email, password: $password}
+    data: {username: $username, lastname: $lastName, firstname: $firstName, email: $email}
   ) {
-    refreshToken
-    accessToken
-    user {
-      id
-      confirmed
-      createdAt
-      email
-      firstname
-      lastname
-      status
-      updatedAt
-    }
+    id
+    confirmed
+    createdAt
+    email
+    firstname
+    lastname
+    status
+    updatedAt
   }
 }
     `;

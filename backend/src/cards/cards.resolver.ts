@@ -9,6 +9,8 @@ import { Card, CardEdges } from './card.entity';
 import { AddCardInput } from './models/add.card.input';
 import { CardOrder, CardOrderField } from './models/card.order.entity';
 import { UpdateCardInput } from './models/update.card.input';
+import { GqlFirebaseAuthGuard } from 'src/auth/strategies/jwt/firebase.guard';
+import { UseGuards } from '@nestjs/common';
 
 // We use this to make sure that the "document" field isn't selected, by default
 // (see https://github.com/prisma/prisma-client-js/issues/649)
@@ -21,7 +23,7 @@ const DEFAULT_SELECT = {
   tagList: true,
   totalCards: true,
 };
-
+@UseGuards(GqlFirebaseAuthGuard)
 @Resolver(() => Card)
 export class CardsResolver {
   constructor(private prisma: PrismaService) {}
@@ -30,9 +32,7 @@ export class CardsResolver {
   async addCard(
     @Args('data') data: AddCardInput,
     @UserEntity() user: User,
-  ): //
-
-  Promise<Card> {
+  ): Promise<Card> {
     const lecture = await this.prisma.lecture.findFirst({
       where: { abrv: data.lectureAbbreviation, userId: user.id },
     });

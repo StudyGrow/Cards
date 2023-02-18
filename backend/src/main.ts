@@ -4,6 +4,7 @@ import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { CorsConfig, NestConfig } from './config/config.interface';
 import { NestExpressApplication } from '@nestjs/platform-express';
+import * as admin from 'firebase-admin';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -16,6 +17,11 @@ async function bootstrap() {
   const nestConfig = configService.get<NestConfig>('nest');
   const corsConfig = configService.get<CorsConfig>('cors');
 
+  admin.initializeApp({
+    credential: admin.credential.cert(
+      configService.get('authentication.firebase.applicationCredentials'),
+    ),
+  });
   if (corsConfig.enabled) {
     app.enableCors();
   }
