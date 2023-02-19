@@ -23,10 +23,31 @@ DB_PORT=5432
 DB_HOST=localhost:${DB_PORT}
 DB_NAME=studycards
 DB_SCHEMA=studycards
-DB_URL=postgresql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}?schema=${DB_SCHEMA}&sslmode=prefer
-JWT_SECRET=myjwtsecret
+# DB_URL=postgresql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}?schema=${DB_SCHEMA}&sslmode=prefer
+DB_URL=postgresql://postgres:mysecretpassword@localhost:5432/studycards?schema=studycards&sslmode=prefer
+JWT_SECRET=myJWTsecret
 PORT=4444
 HOST=localhost
+
+# Firebase config
+FIREBASE_TYPE=service_account
+FIREBASE_PROJECT_ID=
+PRIVATE_KEY_ID=
+PRIVATE_KEY=
+CLIENT_EMAIL=
+CLIENT_ID=
+AUTH_URI=
+TOKEN_URI=
+AUTH_PROVIDER_X509_CERT_URL=
+CLIENT_X509_CERT_URL=
+```
+
+```shell
+npx prisma db push
+```
+
+```shell
+npx prisma generate
 ```
 
 ### Frontend
