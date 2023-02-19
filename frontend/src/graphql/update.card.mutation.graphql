@@ -1,0 +1,19 @@
+mutation UpdateCard($id: String!, $thema: String!, $content: String!, $tags: [String!]!, $latex: Float!) {
+  updateCard(input: { id: $id, thema: $thema, content: $content, tags: $tags, latex: $latex }) {
+    id
+    lecture {
+      abrv
+    }
+    author {
+      id
+    }
+    thema
+    content
+    content
+    tags
+    authorName
+    date
+    latex
+    rating
+  }
+}

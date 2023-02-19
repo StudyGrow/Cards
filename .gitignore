@@ -1,4 +1,10 @@
-/node_modules
-.env
 .DS_Store
 .vscode
+backend/firebase-admin.json
+node_modules
+angular-cards/.angular/cache
+angular-cards/dist
+.env
+backend/src/schema.graphql
+backend/package-lock.json
+backend/yarn.lock

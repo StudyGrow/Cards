@@ -1,0 +1,9 @@
+mutation AddLecture($name: String!, $abrv: String!, $tagList: [String!]) {
+  addLecture(data: { name: $name, abrv: $abrv, tagList: $tagList }) {
+    id
+    name
+    abrv
+    tagList
+    totalCards
+  }
+}

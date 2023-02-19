@@ -1,0 +1,28 @@
+query GetLecturesWithCardsAndVotes {
+  lectures {
+    edges {
+      cursor
+      node {
+        abrv
+        cards {
+          author {
+            id
+          }
+          authorName
+          content
+          date
+          id
+          latex
+          rating
+          tags
+          thema
+        }
+        id
+        name
+        tagList
+        totalCards
+      }
+    }
+    totalCount
+  }
+}
