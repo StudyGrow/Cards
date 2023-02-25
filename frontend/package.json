@@ -16,8 +16,8 @@
   },
   "private": true,
   "devDependencies": {
-    "@angular-devkit/build-angular": "^14.1.1",
-    "@angular/cli": "^14.1.1",
+    "@angular-devkit/build-angular": "^15.2.0",
+    "@angular/cli": "^15.2.0",
     "@graphql-codegen/cli": "^2.11.3",
     "@graphql-codegen/introspection": "^2.2.0",
     "@graphql-codegen/typescript": "^2.7.2",
