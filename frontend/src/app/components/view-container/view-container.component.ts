@@ -8,7 +8,7 @@ import { MatDrawerContent, MatDrawer } from '@angular/material/sidenav';
 import { map, startWith } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
-import { MatSnackBar, MatSnackBarRef, TextOnlySnackBar } from '@angular/material/snack-bar';
+import { MatLegacySnackBar as MatSnackBar, MatLegacySnackBarRef as MatSnackBarRef, LegacyTextOnlySnackBar as TextOnlySnackBar } from '@angular/material/legacy-snack-bar';
 import { AppState, Data, Mode } from 'src/app/models/state';
 import { NavbarToggleService } from 'src/app/services/navbar-toggle.service';
 @Component({

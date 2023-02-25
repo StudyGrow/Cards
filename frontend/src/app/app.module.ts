@@ -14,7 +14,7 @@ import { WebSocketLink } from '@apollo/client/link/ws';
 import { InMemoryCache } from '@apollo/client/core';
 
 // Material Modules
-import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatLegacyProgressBarModule as MatProgressBarModule } from '@angular/material/legacy-progress-bar';
 import { MatSidenavModule } from '@angular/material/sidenav';
 
 // Gestures

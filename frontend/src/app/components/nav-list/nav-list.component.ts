@@ -5,7 +5,7 @@ import { map, take } from 'rxjs/operators';
 import { AUTHORIZED } from 'src/app/store/selector';
 import { Observable, Subscription } from 'rxjs';
 import { logout as logoutUser } from 'src/app/store/actions/UserActions';
-import { MatSlideToggle } from '@angular/material/slide-toggle';
+import { MatLegacySlideToggle as MatSlideToggle } from '@angular/material/legacy-slide-toggle';
 import { ThemesService } from 'src/app/services/themes.service';
 import { FormControl } from '@angular/forms';
 import { Theme } from 'src/app/models/Themes';
