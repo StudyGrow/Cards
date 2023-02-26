@@ -43,6 +43,10 @@ CLIENT_X509_CERT_URL=
 ```
 
 ```shell
+docker run --name some-postgres -p 5432:5432 -e POSTGRES_PASSWORD=mysecretpassword -e POSTGRES_DB=studycards -d postgres 
+```
+
+```shell
 npx prisma db push
 ```
 
