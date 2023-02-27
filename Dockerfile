@@ -49,14 +49,17 @@ RUN npm i --only=production --force
 # Copy backend build
 COPY --from=build /app/backend/dist/ ./dist/
 
+WORKDIR /app/frontend
+
 # Copy frontend build
-COPY --from=build /app/frontend/dist/ ../frontend/dist/
+COPY --from=build /app/frontend/dist/ ./dist/
 
 
 # replace localhost with db  (docker-compose service name for db container) Note: this might also replace localhost in other places in the .env file
 RUN sed -i 's/localhost/db/g' .env
 
-COPY ./docker-entrypoint.sh ./
+
+WORKDIR /app
 
 # copy env.sample file
 # COPY ./backend/.env.sample ./
@@ -64,7 +67,7 @@ COPY ./docker-entrypoint.sh ./
 # # replace env.sample with .env
 # RUN mv .env.sample .env
 
-WORKDIR /app
+COPY ./docker-entrypoint.sh ./
 
 # Expose application port
 EXPOSE 4444
