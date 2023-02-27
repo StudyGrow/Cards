@@ -52,7 +52,6 @@ COPY --from=build /app/backend/dist/ ./dist/
 # Copy frontend build
 COPY --from=build /app/frontend/dist/ ../frontend/dist/
 
-COPY ./backend/.env ./ba
 
 # replace localhost with db
 RUN sed -i 's/localhost/db/g' .env
@@ -64,6 +63,8 @@ COPY ./docker-entrypoint.sh ./
 
 # # replace env.sample with .env
 # RUN mv .env.sample .env
+
+WORKDIR /app
 
 # Expose application port
 EXPOSE 4444
