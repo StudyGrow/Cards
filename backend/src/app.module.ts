@@ -9,6 +9,8 @@ import { LecturesModule } from './lectures/lectures.module';
 import { CardsModule } from './cards/cards.module';
 import { VotesModule } from './votes/votes.module';
 import { UserModule } from './users/user.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -42,6 +44,9 @@ import { UserModule } from './users/user.module';
     VotesModule,
     CardsModule,
     UserModule,
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', '..', 'frontend', 'dist', 'frontend'),
+    }),
   ],
   controllers: [],
   providers: [],
