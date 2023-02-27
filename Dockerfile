@@ -53,7 +53,7 @@ COPY --from=build /app/backend/dist/ ./dist/
 COPY --from=build /app/frontend/dist/ ../frontend/dist/
 
 
-# replace localhost with db
+# replace localhost with db  (docker-compose service name for db container) Note: this might also replace localhost in other places in the .env file
 RUN sed -i 's/localhost/db/g' .env
 
 COPY ./docker-entrypoint.sh ./
