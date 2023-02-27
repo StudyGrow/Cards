@@ -1,4 +1,5 @@
 #!/bin/sh
+cd backend  
 
 npx prisma db push 
 

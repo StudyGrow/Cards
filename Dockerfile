@@ -1,47 +1,38 @@
 # Building layer
 FROM node:16-alpine as build
 
-# Optional NPM automation (auth) token build argument
-# ARG NPM_TOKEN
-
-# Optionally authenticate NPM registry
-# RUN npm set //registry.npmjs.org/:_authToken ${NPM_TOKEN}
-
 WORKDIR /app
 
 COPY . .
 
+# _________________________________________________________ Backend _________________________________________________________
 WORKDIR /app/backend
 
 RUN npm i --force
 
 RUN npm run build
 
+# _________________________________________________________ Frontend _________________________________________________________
+
 WORKDIR /app/frontend
 
 RUN npm i 
 
-# Build application (produces dist/ folder)
 RUN npm run build:prod
 
-
+# _________________________________________________________ Step 2: Production _________________________________________________________
 # Runtime (production) layer
 FROM node:16-alpine as production
 
-# Optional NPM automation (auth) token build argument
-# ARG NPM_TOKEN
-
-# Optionally authenticate NPM registry
-# RUN npm set //registry.npmjs.org/:_authToken ${NPM_TOKEN}
-
-WORKDIR /app
-
-RUN mkdir backend
-
-# Copy backend files
-COPY ./backend/* ./backend
+# ___________________________________________________________ Backend _____________________________________________________________
 
 WORKDIR /app/backend
+
+# Copy backend files
+COPY ./backend/* ./
+
+# replace localhost with db  (docker-compose service name for db container) Note: this might also replace localhost in other places in the .env file
+RUN sed -i 's/localhost/db/g' .env
 
 # Install runtime dependecies (without dev/test dependecies)
 RUN npm i --only=production --force
@@ -49,23 +40,16 @@ RUN npm i --only=production --force
 # Copy backend build
 COPY --from=build /app/backend/dist/ ./dist/
 
+# ___________________________________________________________ Frontend _____________________________________________________________
+
 WORKDIR /app/frontend
 
 # Copy frontend build
 COPY --from=build /app/frontend/dist/ ./dist/
 
-
-# replace localhost with db  (docker-compose service name for db container) Note: this might also replace localhost in other places in the .env file
-RUN sed -i 's/localhost/db/g' .env
-
+# ___________________________________________________________ Step 3: Entrypoint _________________________________________________________
 
 WORKDIR /app
-
-# copy env.sample file
-# COPY ./backend/.env.sample ./
-
-# # replace env.sample with .env
-# RUN mv .env.sample .env
 
 COPY ./docker-entrypoint.sh ./
 
