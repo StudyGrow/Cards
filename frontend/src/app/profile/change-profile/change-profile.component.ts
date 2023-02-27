@@ -9,7 +9,7 @@ import { map } from 'rxjs/operators';
 import { USER_INFO } from 'src/app/store/selector';
 import { updateUserData } from 'src/app/store/actions/UserActions';
 import { DialogueComponent } from 'src/app/components/dialogue/dialogue.component';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { AppState } from 'src/app/models/state';
 import { TranslateService } from '@ngx-translate/core';
 @Component({

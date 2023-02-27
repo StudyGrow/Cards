@@ -13,7 +13,7 @@ import { NotificationsService } from '../services/notifications.service';
 import { WarnMessage } from '../models/Notification';
 import { TranslateService } from '@ngx-translate/core';
 import { Card } from '../models/Card';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 
 @Component({
   selector: 'app-cards',

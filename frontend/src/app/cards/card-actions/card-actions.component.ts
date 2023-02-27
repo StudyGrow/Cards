@@ -9,7 +9,7 @@ import { changeVote } from '../../store/actions/CardActions';
 import { NotificationsService } from 'src/app/services/notifications.service';
 import { InfoMessage } from 'src/app/models/Notification';
 import { DialogueComponent } from 'src/app/components/dialogue/dialogue.component';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { CardsEffects } from 'src/app/store/effects/effects';
 
