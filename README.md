@@ -43,7 +43,7 @@ CLIENT_X509_CERT_URL=
 ```
 
 ```shell
-docker run --name some-postgres -p 5432:5432 -e POSTGRES_PASSWORD=mysecretpassword -e POSTGRES_DB=studycards -d postgres 
+docker run --name some-postgres -p 5432:5432 -e POSTGRES_PASSWORD=mysecretpassword -e POSTGRES_DB=studycards -d postgres
 ```
 
 ```shell
@@ -54,6 +54,12 @@ npx prisma db push
 npx prisma generate
 ```
 
+If you want to have some sample data, you can run
+
+```shell
+npx prisma db seed
+```
+
 ### Frontend
 
 Download and install Angular with:
@@ -62,7 +68,7 @@ Download and install Angular with:
 npm install -g @angular/cli
 ```
 
-Navigate to ``./frontend``. Run:
+Navigate to `./frontend`. Run:
 
 ```shell
 npm install
@@ -73,10 +79,10 @@ npm install
 The database is started using the following command:
 
 ```bash
-docker run --name some-postgres -p 5432:5432 -e POSTGRES_PASSWORD=mysecretpassword -e POSTGRES_DB=studycards -d postgres 
+docker run --name some-postgres -p 5432:5432 -e POSTGRES_PASSWORD=mysecretpassword -e POSTGRES_DB=studycards -d postgres
 ```
 
- After that use the following command to start the server:
+After that use the following command to start the server:
 
 ```shell
 npm run start
