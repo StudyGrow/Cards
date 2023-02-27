@@ -16,4 +16,4 @@ services:
     environment:
       DATABASE_URL: DB_URL=postgresql://postgres:mysecretpassword@db:5432/studycards?schema=studycards&sslmode=prefer
     ports:
-      - "80:4444"
+      - "4444:4444"
