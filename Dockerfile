@@ -29,7 +29,7 @@ FROM node:16-alpine as production
 WORKDIR /app/backend
 
 # Copy backend files
-COPY ./backend/* ./
+COPY ./backend .
 
 # replace localhost with db  (docker-compose service name for db container) Note: this might also replace localhost in other places in the .env file
 RUN sed -i 's/localhost/db/g' .env

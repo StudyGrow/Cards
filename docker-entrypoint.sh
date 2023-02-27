@@ -5,6 +5,6 @@ npx prisma db push
 
 npx prisma generate
 
-npx prisma db seed
+node dist/prisma/seed.js
 
-node dist/main.js
+node dist/src/main.js
