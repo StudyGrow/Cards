@@ -12,7 +12,7 @@ async function main() {
     update: {},
     create: {
       email: 'alice@example.com',
-      firebaseId: '123',
+      firebaseId: 'zQClTFVV8POcZa6PpVCZtH2RFGZ2',
       username: 'alice',
       status: 'ACTIVE',
       confirmed: true,
