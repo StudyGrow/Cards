@@ -24,6 +24,9 @@ RUN npm run build:prod
 # Runtime (production) layer
 FROM node:16-alpine as production
 
+# install dos2unix (for docker-entrypoint.sh)
+RUN apk add --no-cache dos2unix
+
 # ___________________________________________________________ Backend _____________________________________________________________
 
 WORKDIR /app/backend
@@ -41,19 +44,22 @@ RUN npm i --only=production --force
 COPY --from=build /app/backend/dist/ ./dist/
 
 # ___________________________________________________________ Frontend _____________________________________________________________
+# Frontend served under /app/backend/frontend/dist/frontend/*
+RUN mkdir -p /app/backend/frontend
 
-WORKDIR /app/frontend
-
-# Copy frontend build
-COPY --from=build /app/frontend/dist/ ./dist/
+# Copy frontend build files
+# Note that they will be 
+COPY --from=build /app/frontend ./frontend/
 
 # ___________________________________________________________ Step 3: Entrypoint _________________________________________________________
 
 WORKDIR /app
 
-COPY ./docker-entrypoint.sh ./
+COPY ./docker-entrypoint.sh /app
+
+RUN dos2unix /app/docker-entrypoint.sh
 
 # Expose application port
 EXPOSE 4444
 
-ENTRYPOINT [ "./docker-entrypoint.sh" ]
+ENTRYPOINT [ "/app/docker-entrypoint.sh" ]
