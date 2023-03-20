@@ -58,6 +58,7 @@ WORKDIR /app
 COPY ./docker-entrypoint.sh /app
 
 RUN dos2unix /app/docker-entrypoint.sh
+RUN chmod +x /app/docker-entrypoint.sh
 
 # Expose application port
 EXPOSE 4444
