@@ -8,13 +8,13 @@ export const environment = {
   port: '80',
   graphqlEndpoint: 'http://localhost:4200/graphql',
   firebase: {
-    apiKey: 'AIzaSyCFoT9ClcyHA5m3I08dtqxTJwqaUdoXros',
-    authDomain: 'cards-f14d3.firebaseapp.com',
-    projectId: 'cards-f14d3',
-    storageBucket: 'cards-f14d3.appspot.com',
-    messagingSenderId: '470230281052',
-    appId: '1:470230281052:web:2f7f7a0f9c1196b0866f99',
-    measurementId: 'G-ZVDR8L04S6',
+    apiKey: 'AIzaSyDT3WcXxwWKzJAunov2mhScrX1oWrU-qbg',
+    authDomain: 'studygrow-9dff5.firebaseapp.com',
+    projectId: 'studygrow-9dff5',
+    storageBucket: 'studygrow-9dff5.appspot.com',
+    messagingSenderId: '625159524048',
+    appId: '1:625159524048:web:5b734e98a5044c5ae858d5',
+    measurementId: 'G-K47D697P0J',
   },
 };
 

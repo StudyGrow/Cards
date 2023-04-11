@@ -56,9 +56,6 @@ import { LoadingInterceptorService } from './services/loading-interceptor.servic
 // NG-Bootstrap
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
-// Cookie Consent
-import { NgcCookieConsentModule } from 'ngx-cookieconsent';
-import { cookieConfig } from './cookie.config';
 import { GoogleLoginButtonComponent } from './components/google-login-button/google-login-button.component';
 import { GoogleCallbackComponent } from './components/google-callback/google-callback.component';
 
@@ -148,7 +145,6 @@ export class MyHammerConfig extends HammerGestureConfig {
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production,
     }),
-    NgcCookieConsentModule.forRoot(cookieConfig),
     NgbModule,
     TranslateModule.forRoot({
       loader: {
