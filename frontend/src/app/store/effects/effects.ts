@@ -273,9 +273,7 @@ export class CardsEffects {
           tap((user) => {
             if (user) {
               this.router.navigateByUrl('/');
-              this.notifications.addNotification(
-                new SuccessMessage(this.translate.instant('notifications.welcome', { username: user.username }))
-              );
+              this.notifications.addNotification(new SuccessMessage(this.translate.instant('notifications.welcome')));
               this.store.dispatch(fetchUserData());
             }
           }),
@@ -345,9 +343,7 @@ export class CardsEffects {
         this.user.authentication().pipe(
           map((val) => {
             if (val) {
-              this.notifications.addNotification(
-                new SuccessMessage(this.translate.instant('notifications.welcome', { username: user.username }))
-              );
+              this.notifications.addNotification(new SuccessMessage(this.translate.instant('notifications.welcome')));
               this.store.dispatch(fetchUserData()); // get userData if authorization was sucessfull
             }
             return authenticated({ auth: val });

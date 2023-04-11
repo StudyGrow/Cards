@@ -204,7 +204,7 @@
     "lecture-not-found": "The lecture you are looking for could not be found.",
     "login-required": "You need to be logged in to access this page.",
     "lecture-abrv-already-exists": "The abreviation for the lecture you are trying to add already exists.",
-    "welcome": "Welcome {{username}}"
+    "welcome": "Welcome to Cards!"
   },
   "cookies": {
     "uses_cookies": "This website uses cookies 🍪 to ensure you get the best experience on our website.",

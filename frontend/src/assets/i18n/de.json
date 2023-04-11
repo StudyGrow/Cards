@@ -204,7 +204,7 @@
     "lecture-not-found": "Die Vorlesung konnte nicht gefunden werden.",
     "login-required": "Du musst dich einloggen, um diese Aktion durchführen zu können.",
     "lecture-abrv-already-exists": "Eine Vorlesung mit dieser Abkürzung existiert bereits.",
-    "welcome": "Willkommen, {{username}}"
+    "welcome": "Willkommen bei Cards"
   },
   "cookies": {
     "uses_cookies": "Diese Webseite verwendet cookies 🍪 für ein optimales Nutzererlebnis.",
