@@ -19,7 +19,7 @@
     <google-chart
       class="fade-in"
       *ngIf="contributors$ | async as contributors"
-      [title]="'Top Authoren'"
+      [title]="'top-authors' | translate"
       [type]="'PieChart'"
       [data]="contributors"
       [columns]="['Author', 'Cards']"
