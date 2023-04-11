@@ -35,7 +35,6 @@ export class CardComponent implements OnInit, OnDestroy {
   inTypingField = false;
   activeIndex = 0;
   auth$: Observable<boolean> = this.store.select(AUTHORIZED);
-  parsedContent: string;
 
   public isCollapsed = true;
 
@@ -77,8 +76,6 @@ export class CardComponent implements OnInit, OnDestroy {
     this.store.select(CURRENT_CARD).subscribe((card) => {
       this.currentCard = card;
     });
-
-    this.parsedContent = this.sanitizer.sanitize(SecurityContext.HTML, this.parse(this.card.content));
 
     sub = this.store.select(FORM_MODE).subscribe((mode) => {
       this.formMode = mode;
