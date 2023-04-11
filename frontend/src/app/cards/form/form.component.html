@@ -22,14 +22,15 @@
     </mat-form-field>
     <!-- answer field -->
     <div class="mb-4">
-      <mat-label class="pl-3 text-muted">{{ 'card-form.card-answer' | translate }} *</mat-label>
       <quill-editor
         #editor
         (onEditorChanged)="changedEditor($event)"
         maxlength="1000"
         required
         rows="7"
+        class="w-100"
         formControlName="content"
+        placeholder="{{ 'card-form.card-answer' | translate }} *"
         (focus)="inField()"
         (blur)="resetNav()"
       ></quill-editor>
