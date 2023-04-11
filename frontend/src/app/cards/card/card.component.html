@@ -20,7 +20,8 @@
       <mat-panel-title>{{ 'answer' | translate }}</mat-panel-title>
     </mat-expansion-panel-header>
     <ng-template matExpansionPanelContent>
-      <pre class="mb-1" [innerHtml]="parsedContent"></pre>
+      <hr class="mx-3 mt-0" />
+      <pre class="mb-1" [innerHtml]="this.card.content | safeHtml"></pre>
       <card-actions [id]="card._id" [tags]="card.tags"></card-actions>
     </ng-template>
   </mat-expansion-panel>
