@@ -42,9 +42,9 @@
     "@nestjs/serve-static": "^3.0.1",
     "@nestjs/terminus": "^9.2.2",
     "@prisma/client": "^4.14.0",
-    "apollo-server-express": "3.11.1",
+    "@erdzan/nestjs-firebase-auth": "^2.0.1",
+    "@erdzan/nestjs-firebase-admin": "^2.0.3",
     "bcrypt": "5.1.0",
-    "cheerio": "^1.0.0-rc.12",
     "class-transformer": "0.5.1",
     "class-validator": "0.14.0",
     "firebase-admin": "^11.8.0",
@@ -56,7 +56,6 @@
     "passport-jwt": "4.0.1",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^5.0.0",
-    "rxjs": "^7.8.1",
     "uuid": "^9.0.0"
   },
   "devDependencies": {

@@ -4,7 +4,7 @@ import { UserService } from 'src/users/services/user.service';
 import { CreateUserInput } from 'src/users/models/create.user.input';
 import { User } from 'src/users/user.entity';
 import { UserEntity } from 'src/users/decorators/user.decorator';
-import { FirebaseUser } from '@tfarras/nestjs-firebase-auth';
+import { FirebaseUser } from '@erdzan/nestjs-firebase-auth';
 import { UseGuards } from '@nestjs/common';
 import { GqlFirebaseOnlyAuthGuard } from './strategies/jwt/firebase.only.guard';
 

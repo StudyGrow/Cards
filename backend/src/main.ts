@@ -17,11 +17,6 @@ async function bootstrap() {
   const nestConfig = configService.get<NestConfig>('nest');
   const corsConfig = configService.get<CorsConfig>('cors');
 
-  admin.initializeApp({
-    credential: admin.credential.cert(
-      configService.get('authentication.firebase.applicationCredentials'),
-    ),
-  });
   if (corsConfig.enabled) {
     app.enableCors();
   }

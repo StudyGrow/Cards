@@ -5,7 +5,7 @@ import { User } from '@prisma/client';
 import {
   FirebaseAuthStrategy,
   FirebaseUser,
-} from '@tfarras/nestjs-firebase-auth';
+} from '@erdzan/nestjs-firebase-auth';
 import { UserService } from 'src/users/services/user.service';
 
 @Injectable()

@@ -10,7 +10,7 @@ import { PasswordService } from 'src/common/password.service';
 import { PrismaService } from 'src/common/prisma.service';
 import { UserService } from 'src/users/services/user.service';
 import { FirebaseStrategy } from './strategies/jwt/firebase.strategy';
-import { FirebaseAdminModule } from '@tfarras/nestjs-firebase-admin';
+import { FirebaseAdminModule } from '@erdzan/nestjs-firebase-admin';
 import * as admin from 'firebase-admin';
 import { FirebaseOkStrategy } from './strategies/jwt/firebase.only.strategy';
 

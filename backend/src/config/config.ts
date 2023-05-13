@@ -20,6 +20,7 @@ const config: Config = {
     expiresIn: '4w',
     refreshIn: '4w',
     bcryptSaltOrRound: 10,
+    secret: process.env.JWT_SECRET,
   },
   authentication: {
     firebase: {
