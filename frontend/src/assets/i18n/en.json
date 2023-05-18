@@ -19,6 +19,7 @@
     "add-flash-card": "Add a flash card",
     "edit-flash-card": "Edit a flash card",
     "card-question": "Question",
+    "question-placeholder": "What is a good question?",
     "card-answer": "Answer",
     "card-tags": "Tags",
     "card-tags-separate": "Separate Tags with ENTER",

@@ -19,6 +19,7 @@
     "add-flash-card": "Karteikarte hinzufügen",
     "edit-flash-card": "Karteikarte bearbeiten",
     "card-question": "Frage",
+    "question-placeholder": "Was ist eine gute Frage?",
     "card-answer": "Antwort",
     "card-tags": "Tags",
     "card-tags-separate": "Trenne Tags mit ENTER",
