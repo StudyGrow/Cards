@@ -164,12 +164,12 @@ export class MyHammerConfig extends HammerGestureConfig {
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
-      useClass: GraphqlInterceptorService,
+      useClass: LoadingInterceptorService,
       multi: true,
     },
     {
       provide: HTTP_INTERCEPTORS,
-      useClass: LoadingInterceptorService,
+      useClass: GraphqlInterceptorService,
       multi: true,
     },
     { provide: LOCALE_ID, useValue: 'de' },
