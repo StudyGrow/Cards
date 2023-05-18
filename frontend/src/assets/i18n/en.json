@@ -167,6 +167,19 @@
   },
   "account": { "title": "Account", "overview": "Overview", "cards": "My Cards" },
   "sign-in": "Sign in",
+  "login": {
+    "error": {
+      "firebase": {
+        "auth/email-already-in-use": "The email address is already in use by another account.",
+        "auth/invalid-email": "The email address is badly formatted.",
+        "auth/operation-not-allowed": "The email/password accounts are not enabled. Enable them in the Firebase console, under the Auth tab.",
+        "auth/weak-password": "The password must be 6 characters long or more.",
+        "auth/user-disabled": "The user corresponding to the given email has been disabled.",
+        "auth/user-not-found": "There is no user corresponding to the given email.",
+        "auth/wrong-password": "The password is invalid for the given email, or the account corresponding to the email does not have a password set."
+      }
+    }
+  },
   "sign-up": "Sign up",
   "about-us": "About us",
   "faq": "FAQ",
@@ -236,5 +249,6 @@
   "lectures": "Lectures",
   "lecture": "Lecture",
   "add-lecture": "Add Lecture",
-  "yes": "Yes"
+  "yes": "Yes",
+  "close": "Close"
 }

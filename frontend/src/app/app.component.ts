@@ -10,6 +10,8 @@ import { ThemesService } from './services/themes.service';
 import { Failure } from './store/actions/CardActions';
 import { auth } from './store/actions/UserActions';
 import { CardsEffects } from './store/effects/effects';
+import { WarnMessage } from './models/Notification';
+import { FirebaseError } from 'firebase/app';
 
 @Component({
   selector: 'app-root',
@@ -65,6 +67,13 @@ export class AppComponent implements OnInit {
     sub = this.actionState.login$.pipe(delay(3000)).subscribe((action) => {
       this.notifs.clearNotifications();
       if (action.type === Failure) {
+        let message = this.translate.instant('login.error.unknown');
+        const reason = action.reason;
+        if (reason instanceof FirebaseError) {
+          message = this.translate.instant('login.error.firebase.' + reason.code);
+        }
+
+        this.notifs.addNotification(new WarnMessage(message));
         console.error(action.reason);
       }
     });

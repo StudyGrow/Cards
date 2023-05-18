@@ -43,4 +43,4 @@ export const updateVoteChange = createAction(ActionTypes.CHANGE_VOTE_SUCCESS, pr
 export const fetchVotes = createAction(ActionTypes.FETCH_USER_VOTES);
 export const storeVotes = createAction(ActionTypes.FETCH_VOTES_SUCCESS, props<{ votes: Vote[] }>());
 
-export const httpFailure = createAction(ActionTypes.LOAD_FAILURE, props<{ reason: string }>());
+export const httpFailure = createAction(ActionTypes.LOAD_FAILURE, props<{ reason: string | Error }>());
