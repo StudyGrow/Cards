@@ -22,7 +22,7 @@ export class GoogleLoginButtonComponent {
 
   onGoogleSignIn() {
     if (environment.production) {
-      window.location.href = 'https://www.' + environment.domain + '/api/auth/google';
+      window.location.href = 'https://' + environment.domain + '/api/auth/google';
     } else {
       window.location.href = 'http://' + environment.domain + ':' + environment.port + '/api/auth/google';
     }
