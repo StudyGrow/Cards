@@ -212,6 +212,7 @@
   "notifications": {
     "notifications": "Notifications",
     "add-card-success": "Your card has been added successfully",
+    "add-card-failure": "An error occured while adding your card: {{message}}",
     "pick-up": "Do you want to pick up where you left off?",
     "server-offline": "The server is offline.",
     "check-later": "Please try again later.",
