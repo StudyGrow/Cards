@@ -135,7 +135,11 @@ export class FormComponent implements OnInit, OnDestroy {
     sub = this.actionState.addCard$.subscribe((res) => {
       if (res.type === httpFailure.type) {
         this.notifs.addNotification(
-          new WarnMessage('Ein fehler  ist passiert: ' + (res as any as { reason: string }).reason)
+          new WarnMessage(
+            this.translate.instant('notifications.add-card-failure', {
+              message: (res as any as { reason: string }).reason,
+            })
+          )
         );
       } else {
         const message = this.translate.instant('notifications.add-card-success');

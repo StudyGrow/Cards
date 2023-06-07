@@ -211,6 +211,7 @@
   "notifications": {
     "notifications": "Benachrichtigungen",
     "add-card-success": "Deine Karte wurde erfolgreich hinzugefügt.",
+    "add-card-failure": "Deine Karte konnte nicht hinzugefügt werden. Ein Fehler ist aufgetreten: {{message}}",
     "pick-up": "Möchtest du zu deiner zuletzt besuchten Karte zurückkehren?",
     "server-offline": "Der Server scheint offline zu sein.",
     "check-later": "Versuche es später erneut.",
