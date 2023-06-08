@@ -6,7 +6,7 @@ import { UserService } from 'src/app/services/user.service';
 import { Subscription } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { map } from 'rxjs/operators';
-import { USER_INFO } from 'src/app/store/selector';
+import { USER_INFO } from 'src/app/store/selectors/selector';
 import { updateUserData } from 'src/app/store/actions/UserActions';
 import { DialogueComponent } from 'src/app/components/dialogue/dialogue.component';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';

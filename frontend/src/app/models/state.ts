@@ -8,7 +8,7 @@ import { Vote } from './Vote';
 
 export interface AppState {
   data: Data;
-  mode: Mode;
+  carouselState?: CarouselState;
 }
 
 export interface Data {
@@ -37,10 +37,10 @@ export interface LecturesData {
   lastUpdated: Date; // last update to the lectures
 }
 
-export interface Mode {
+export interface CarouselState {
   activeIndex: number;
   currentCard: Card; // Card that should be displayed in the carousel
-  formMode: string;
+  formMode: CardFormMode;
   typingMode: boolean;
   hideSearchResults: boolean;
   loading: number;
@@ -52,7 +52,7 @@ export interface Mode {
   endIndex: number;
   newCard: Card;
 }
-export enum formMode {
+export enum CardFormMode {
   ADD = 'add',
   EDIT = 'edit',
 }

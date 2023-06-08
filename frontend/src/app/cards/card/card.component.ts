@@ -16,7 +16,7 @@ import { Observable, Subscription } from 'rxjs';
 // import { parse, HtmlGenerator } from 'latex.js';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/models/state';
-import { AUTHORIZED, CURRENT_CARD, FORM_MODE, USER_ID } from 'src/app/store/selector';
+import { AUTHORIZED, CURRENT_CARD, FORM_MODE, USER_ID } from 'src/app/store/selectors/selector';
 
 @Component({
   selector: 'app-card',
@@ -31,7 +31,7 @@ export class CardComponent implements OnInit, OnDestroy {
   // eslint-disable-next-line @angular-eslint/no-output-on-prefix
   @Output() onEditClicked = new EventEmitter();
 
-  private mode$ = this.store.select('mode');
+  private mode$ = this.store.select('carouselState');
   inTypingField = false;
   activeIndex = 0;
   auth$: Observable<boolean> = this.store.select(AUTHORIZED);
@@ -60,7 +60,7 @@ export class CardComponent implements OnInit, OnDestroy {
   subscriptions$: Subscription[] = [];
 
   ngOnInit(): void {
-    let sub = this.mode$.pipe(map((state) => state.activeIndex)).subscribe((index) => {
+    let sub = this.mode$.pipe(map((state) => state?.activeIndex)).subscribe((index) => {
       // hides the card content when carousel slides
       if (this.activeIndex != index) {
         this.content.close();
@@ -69,7 +69,7 @@ export class CardComponent implements OnInit, OnDestroy {
     });
     this.subscriptions$.push(sub);
 
-    sub = this.mode$.pipe(map((state) => state.typingMode)).subscribe((val) => {
+    sub = this.mode$.pipe(map((state) => state?.typingMode)).subscribe((val) => {
       this.inTypingField = val;
     });
     this.subscriptions$.push(sub);

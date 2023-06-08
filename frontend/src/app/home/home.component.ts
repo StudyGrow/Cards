@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { map } from 'rxjs/operators';
-import { AUTHORIZED, LECTURES } from '../store/selector';
+import { AUTHORIZED, LECTURES } from '../store/selectors/selector';
 import { AppState } from '../models/state';
 import { fadeInUpAnimation, slideInDownOnEnterAnimation, slideInUpOnEnterAnimation } from 'angular-animations';
 import { Vorlesung } from '../models/Vorlesung';

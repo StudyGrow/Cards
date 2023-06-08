@@ -45,7 +45,7 @@ import {
   AUTHORIZED,
   CURRENT_CARD,
   SELECTED_LECTURE,
-} from '../selector';
+} from '../selectors/selector';
 import { addTagsToLecture } from '../actions/LectureActions';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -311,7 +311,8 @@ export class CardsEffects {
         this.user.logoutServer().pipe(
           tap((success) => {
             this.router.navigateByUrl('/');
-            if (success) this.notifications.addNotification(new SuccessMessage('Erfolgreich abgemeldet'));
+            if (success)
+              this.notifications.addNotification(new SuccessMessage(this.translate.instant('notifications.logout')));
           }),
           map(() => logoutSuccess()),
           catchError((reason) => of(CardActions.httpFailure({ reason: reason })))

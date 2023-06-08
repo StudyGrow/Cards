@@ -4,11 +4,14 @@ import { Vorlesung } from 'src/app/models/Vorlesung';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { ElementRef, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { MatLegacyAutocompleteSelectedEvent as MatAutocompleteSelectedEvent, MatLegacyAutocomplete as MatAutocomplete } from '@angular/material/legacy-autocomplete';
+import {
+  MatLegacyAutocompleteSelectedEvent as MatAutocompleteSelectedEvent,
+  MatLegacyAutocomplete as MatAutocomplete,
+} from '@angular/material/legacy-autocomplete';
 import { map, startWith, withLatestFrom } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import { setTypingMode, removeTag, addTag } from 'src/app/store/actions/StateActions';
-import { ACTIVE_TAGS, SELECTED_LECTURE, TAG_OPTIONS } from 'src/app/store/selector';
+import { ACTIVE_TAGS, SELECTED_LECTURE, TAG_OPTIONS } from 'src/app/store/selectors/selector';
 import { AppState } from 'src/app/models/state';
 
 @Component({

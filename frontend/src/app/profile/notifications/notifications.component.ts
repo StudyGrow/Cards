@@ -6,7 +6,7 @@ import { Card } from 'src/app/models/Card';
 import { Reports } from 'src/app/models/Report';
 import { User } from 'src/app/models/User';
 import { Vorlesung } from 'src/app/models/Vorlesung';
-import { USER_REPORTS, USER_STATUS } from 'src/app/store/selector';
+import { USER_REPORTS, USER_STATUS } from 'src/app/store/selectors/selector';
 
 @Component({
   selector: 'app-notifications',

@@ -29,7 +29,7 @@ import {
 import { NgbCarousel, NgbSlideEvent } from '@ng-bootstrap/ng-bootstrap';
 import { NotificationsService } from 'src/app/services/notifications.service';
 import { WarnMessage } from 'src/app/models/Notification';
-import { AppState } from 'src/app/models/state';
+import { AppState, CardFormMode } from 'src/app/models/state';
 
 import { MatBottomSheet, MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { sortOptions } from './sortOptions';
@@ -44,7 +44,8 @@ import {
   USER_ID,
   SELECTED_TAB,
   SORT_TYPE,
-} from 'src/app/store/selector';
+  LAST_CARD_CHANGE,
+} from 'src/app/store/selectors/selector';
 import { CarouselInfo } from 'src/app/models/CarouselInfo';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -83,9 +84,12 @@ export class CarouselComponent implements OnInit, OnDestroy {
   currentCard$ = this.carouselInfo$.asObservable().pipe(map((info) => info.currentCard));
 
   loading: boolean;
-  shortTypeHasChanged$ = this.store.select(SORT_TYPE).subscribe(() => {
-    this.handleNewCard();
-  });
+  shortTypeHasChanged$ = this.store
+    .select(SORT_TYPE)
+    .pipe(filter((sortType) => !!sortType))
+    .subscribe(() => {
+      this.handleNewCard();
+    });
   newCardToSet$ = this.store.select(CARD_TO_SHOW_NEXT);
   filters$: Observable<string[]> = this.store.select(ACTIVE_TAGS);
   filters: string[];
@@ -98,8 +102,8 @@ export class CarouselComponent implements OnInit, OnDestroy {
   start: number;
   end: number;
 
-  formMode: string; // mode in which the form is displayed either add or edit
-  notallowed = false; // wether an action is allowed or not
+  formMode = CardFormMode.ADD; // mode in which the form is displayed either add or edit
+  notallowed = true; // wether an action is allowed or not
   authorized$ = this.store.select(AUTHORIZED);
 
   subscriptions$: Subscription[] = []; // holds all subscriptions from observables they are unsubscribed in ngOnDestroy
@@ -148,14 +152,14 @@ export class CarouselComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     // Form Mode, depending on the mode different actions are not allowed
     let sub = this.store.select(FORM_MODE).subscribe((mode) => {
-      this.formMode = mode;
+      this.formMode = mode || CardFormMode.ADD;
     });
     this.subscriptions$.push(sub);
     // see if user is in a typing field. (If so we disable carousel navigation with arrows)
     sub = this.store
-      .select('mode')
+      .select('carouselState')
       .pipe(
-        map((state) => state.typingMode),
+        map((state) => state?.typingMode),
         distinctUntilChanged()
       )
       .subscribe((val) => {
@@ -167,7 +171,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
       .select(SELECTED_TAB)
       .pipe(distinctUntilChanged())
       .subscribe((tab) => {
-        this.currentTab = tab;
+        this.currentTab = tab || 0;
       });
 
     // get the user id to check if user has the rigth to edit the card
@@ -189,11 +193,11 @@ export class CarouselComponent implements OnInit, OnDestroy {
     });
     this.subscriptions$.push(sub);
 
-    const filtered$ = this.store.select('mode').pipe(map((state) => state.cardsChanged)); // observable of timestamp at which user has modified the way cards are displayed
-    const added$ = this.store.select('data').pipe(map((state) => state.cardData.lastUpdated)); // observable of timestamp at the cards were last modified
+    const last_filtered$ = this.store.select(LAST_CARD_CHANGE);
+    const last_added$ = this.store.select('data').pipe(map((state) => state.cardData.lastUpdated)); // observable of timestamp at the cards were last modified
 
     // observable which holds the maximum of filtered$ and added$ which represents the date at which last changes were made
-    const lastChanges$ = combineLatest([filtered$, added$]).pipe(
+    const lastChanges$ = combineLatest([last_filtered$, last_added$]).pipe(
       map(([d1, d2]) => (!d1 && !d2 ? 0 : Math.max(d1?.getTime() || 0, d2?.getTime())))
     );
 
@@ -435,7 +439,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
 
   enableEdit() {
     if (this.formMode != 'edit') {
-      this.store.dispatch(setFormMode({ mode: 'edit' }));
+      this.store.dispatch(setFormMode({ mode: CardFormMode.EDIT }));
       this.store.dispatch(changeTab({ tab: 1 }));
     }
   }
@@ -455,9 +459,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
   handleNewCard(newCard?: Card) {
     const currCarouselInfo = this.carouselInfo$?.getValue();
     if (!(currCarouselInfo?.allCardsSorted?.length > 0)) {
-      return isDevMode()
-        ? console.error('Cannot set new card as no cards are present in the carousel info')
-        : undefined;
+      return isDevMode() && console.error('Cannot set new card as no cards are present in the carousel info');
     }
     if (!newCard) {
       setTimeout(() => {

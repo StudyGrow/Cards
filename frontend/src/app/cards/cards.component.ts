@@ -3,14 +3,20 @@ import { Vorlesung } from 'src/app/models/Vorlesung';
 import { Title } from '@angular/platform-browser';
 import { Store } from '@ngrx/store';
 import { Observable, Subscription, firstValueFrom } from 'rxjs';
-import { map, take, timeout } from 'rxjs/operators';
+import { map, take, timeout, combineLatestWith } from 'rxjs/operators';
 import { fetchCards } from '../store/actions/CardActions';
 import { fadeInOnEnterAnimation } from 'angular-animations';
 import { changeTab, setSuggestionsMode, showNewCard } from '../store/actions/StateActions';
-import { AUTHORIZED, SELECTED_TAB, CARDS_DATA_OBJECT, SELECTED_LECTURE, CURRENT_CARD } from '../store/selector';
+import {
+  AUTHORIZED,
+  SELECTED_TAB,
+  CARDS_DATA_OBJECT,
+  SELECTED_LECTURE,
+  CURRENT_CARD,
+  FORM_MODE,
+  HIDE_CARD_SEARCH_RESULTS,
+} from '../store/selectors/selector';
 import { AppState } from '../models/state';
-import { NotificationsService } from '../services/notifications.service';
-import { WarnMessage } from '../models/Notification';
 import { TranslateService } from '@ngx-translate/core';
 import { Card } from '../models/Card';
 import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
@@ -59,13 +65,15 @@ export class CardsComponent implements OnInit, OnDestroy {
 
     this.selectedTab$ = this.store.select(SELECTED_TAB);
 
-    let sub = this.store.select('mode').subscribe((state) => {
-      if (state.formMode !== this.formMode) {
-        this.formMode = state.formMode;
-      }
-
-      this.hideSuggestion = state.hideSearchResults;
-    });
+    let sub = this.store
+      .select(FORM_MODE)
+      .pipe(combineLatestWith(this.store.select(HIDE_CARD_SEARCH_RESULTS)))
+      .subscribe(([mode, hideSearchResults]) => {
+        if (mode !== this.formMode) {
+          this.formMode = mode;
+        }
+        this.hideSuggestion = hideSearchResults;
+      });
     this.subscriptions$.push(sub);
     sub = this.data$.subscribe((state) => {
       if (this.vlName !== state.currLecture?.name) {
