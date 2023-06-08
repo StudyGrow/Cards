@@ -10,7 +10,7 @@ query GetLecturesWithCardsAndVotes {
           }
           authorName
           content
-          date
+          createdAt
           id
           latex
           rating

@@ -36,7 +36,7 @@ export type Card = {
   author: User;
   authorName?: Maybe<Scalars['String']>;
   content: Scalars['String'];
-  date?: Maybe<Scalars['DateTime']>;
+  createdAt?: Maybe<Scalars['DateTime']>;
   id?: Maybe<Scalars['String']>;
   latex?: Maybe<Scalars['Float']>;
   lecture: Lecture;
@@ -242,7 +242,7 @@ export type AddCardMutationVariables = Exact<{
 }>;
 
 
-export type AddCardMutation = { __typename?: 'Mutation', addCard: { __typename?: 'Card', id?: string | null, thema: string, content: string, tags?: Array<string> | null, authorName?: string | null, date?: any | null, latex?: number | null, rating?: number | null, lecture: { __typename?: 'Lecture', abrv?: string | null } } };
+export type AddCardMutation = { __typename?: 'Mutation', addCard: { __typename?: 'Card', id?: string | null, thema: string, content: string, tags?: Array<string> | null, authorName?: string | null, createdAt?: any | null, latex?: number | null, rating?: number | null, lecture: { __typename?: 'Lecture', abrv?: string | null } } };
 
 export type AddLectureMutationVariables = Exact<{
   name: Scalars['String'];
@@ -276,7 +276,7 @@ export type GetLectureByAbbreviationWithCardsAndVotesQueryVariables = Exact<{
 }>;
 
 
-export type GetLectureByAbbreviationWithCardsAndVotesQuery = { __typename?: 'Query', lecture?: { __typename?: 'Lecture', id?: string | null, name?: string | null, abrv?: string | null, tagList?: Array<string> | null, totalCards?: number | null, cards?: Array<{ __typename?: 'Card', id?: string | null, thema: string, content: string, tags?: Array<string> | null, authorName?: string | null, date?: any | null, latex?: number | null, rating?: number | null }> | null } | null, votes?: Array<{ __typename?: 'Vote', value: number, id?: string | null, card: { __typename?: 'Card', id?: string | null }, lecture: { __typename?: 'Lecture', id?: string | null } }> | null };
+export type GetLectureByAbbreviationWithCardsAndVotesQuery = { __typename?: 'Query', lecture?: { __typename?: 'Lecture', id?: string | null, name?: string | null, abrv?: string | null, tagList?: Array<string> | null, totalCards?: number | null, cards?: Array<{ __typename?: 'Card', id?: string | null, thema: string, content: string, tags?: Array<string> | null, authorName?: string | null, createdAt?: any | null, latex?: number | null, rating?: number | null }> | null } | null, votes?: Array<{ __typename?: 'Vote', value: number, id?: string | null, card: { __typename?: 'Card', id?: string | null }, lecture: { __typename?: 'Lecture', id?: string | null } }> | null };
 
 export type GetLectureQueryVariables = Exact<{
   abrv: Scalars['String'];
@@ -293,7 +293,7 @@ export type GetLecturesQuery = { __typename?: 'Query', lectures: { __typename?: 
 export type GetLecturesWithCardsAndVotesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetLecturesWithCardsAndVotesQuery = { __typename?: 'Query', lectures: { __typename?: 'LectureEdges', totalCount: number, edges?: Array<{ __typename?: 'LectureEdge', cursor: string, node: { __typename?: 'Lecture', abrv?: string | null, id?: string | null, name?: string | null, tagList?: Array<string> | null, totalCards?: number | null, cards?: Array<{ __typename?: 'Card', authorName?: string | null, content: string, date?: any | null, id?: string | null, latex?: number | null, rating?: number | null, tags?: Array<string> | null, thema: string, author: { __typename?: 'User', id: string } }> | null } }> | null } };
+export type GetLecturesWithCardsAndVotesQuery = { __typename?: 'Query', lectures: { __typename?: 'LectureEdges', totalCount: number, edges?: Array<{ __typename?: 'LectureEdge', cursor: string, node: { __typename?: 'Lecture', abrv?: string | null, id?: string | null, name?: string | null, tagList?: Array<string> | null, totalCards?: number | null, cards?: Array<{ __typename?: 'Card', authorName?: string | null, content: string, createdAt?: any | null, id?: string | null, latex?: number | null, rating?: number | null, tags?: Array<string> | null, thema: string, author: { __typename?: 'User', id: string } }> | null } }> | null } };
 
 export type GetUserQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -314,7 +314,7 @@ export type UpdateCardMutationVariables = Exact<{
 }>;
 
 
-export type UpdateCardMutation = { __typename?: 'Mutation', updateCard: { __typename?: 'Card', id?: string | null, thema: string, content: string, tags?: Array<string> | null, authorName?: string | null, date?: any | null, latex?: number | null, rating?: number | null, lecture: { __typename?: 'Lecture', abrv?: string | null }, author: { __typename?: 'User', id: string } } };
+export type UpdateCardMutation = { __typename?: 'Mutation', updateCard: { __typename?: 'Card', id?: string | null, thema: string, content: string, tags?: Array<string> | null, authorName?: string | null, createdAt?: any | null, latex?: number | null, rating?: number | null, lecture: { __typename?: 'Lecture', abrv?: string | null }, author: { __typename?: 'User', id: string } } };
 
 export type UpdateUserMutationVariables = Exact<{
   firstname?: InputMaybe<Scalars['String']>;
@@ -335,7 +335,7 @@ export const AddCardDocument = gql`
     content
     tags
     authorName
-    date
+    createdAt
     latex
     rating
     lecture {
@@ -446,7 +446,7 @@ export const GetLectureByAbbreviationWithCardsAndVotesDocument = gql`
       content
       tags
       authorName
-      date
+      createdAt
       latex
       rating
     }
@@ -542,7 +542,7 @@ export const GetLecturesWithCardsAndVotesDocument = gql`
           }
           authorName
           content
-          date
+          createdAt
           id
           latex
           rating
@@ -628,7 +628,7 @@ export const UpdateCardDocument = gql`
     content
     tags
     authorName
-    date
+    createdAt
     latex
     rating
   }

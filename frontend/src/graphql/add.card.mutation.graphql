@@ -8,7 +8,7 @@ mutation AddCard($lectureAbbreviation: String!, $thema: String!, $content: Strin
     content
     tags
     authorName
-    date
+    createdAt
     latex
     rating
     lecture {

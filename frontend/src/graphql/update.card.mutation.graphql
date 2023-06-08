@@ -12,7 +12,7 @@ mutation UpdateCard($id: String!, $thema: String!, $content: String!, $tags: [St
     content
     tags
     authorName
-    date
+    createdAt
     latex
     rating
   }

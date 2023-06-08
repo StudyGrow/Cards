@@ -230,7 +230,7 @@
             "deprecationReason": null
           },
           {
-            "name": "date",
+            "name": "createdAt",
             "description": null,
             "args": [],
             "type": {
