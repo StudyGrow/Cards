@@ -49,7 +49,7 @@ RUN npm run build
 
 WORKDIR /app/frontend
 
-RUN npm i 
+RUN npm i --force
 
 RUN npm run build:prod
 
