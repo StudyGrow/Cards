@@ -1,0 +1,42 @@
+version: "3.8"
+services:
+  db:
+    image: postgres:14.1-alpine
+    restart: always
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: db_name
+    ports:
+      - "5432:5432"
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+    networks:
+      - backend
+    volumes:
+      - cards_db_data:/var/lib/postgresql/data
+  backend:
+    image: cardsleier/cards
+    depends_on:
+      - db
+    environment:
+      - VIRTUAL_HOST=cards.leier.lu
+      - VIRTUAL_PORT=4444
+      - LETSENCRYPT_HOST=cards.leier.lu
+      - LETSENCRYPT_EMAIL=info@leier.lu
+    ports:
+      - "4444:4444"
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+    networks:
+      - backend
+volumes:
+  cards_db_data:
+networks:
+  backend:
+    external:
+      name: proxied-apps
