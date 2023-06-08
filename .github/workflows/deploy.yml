@@ -44,6 +44,7 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
+    depends-on: build
     steps:
       - name: Checkout codebase
         uses: actions/checkout@v2
@@ -59,4 +60,3 @@ jobs:
           remote_private_key: ${{ secrets.REMOTE_PRIVATE_KEY }}
           stack_file: "StudyGrow/Cards/stack.yml"
           stack_name: "cards"
-          stack_env: "prod"

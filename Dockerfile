@@ -68,7 +68,7 @@ WORKDIR /app/backend
 COPY ./backend .
 
 # replace localhost with db  (docker-compose service name for db container) Note: this might also replace localhost in other places in the .env file
-RUN sed -i 's/localhost/db/g' .env
+# RUN sed -i 's/localhost/db/g' .env
 
 # Install runtime dependecies (without dev/test dependecies)
 RUN npm i --only=production --force
