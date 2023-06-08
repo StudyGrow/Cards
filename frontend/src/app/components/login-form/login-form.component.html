@@ -18,14 +18,11 @@
       <input matInput type="password" name="password" id="password" #password="ngModel" ngModel />
     </mat-form-field>
 
-    <mat-checkbox [checked]="this.enableSession" #remember (change)="this.enableSession = $event.checked"
-      >Eingeloggt bleiben</mat-checkbox
-    >
     <br />
     <button type="submit" mat-flat-button color="primary" [disabled]="isDisabled(email, password)">Login</button>
   </form>
 </mat-card>
 
-<mat-card class="mx-auto mt-4">
+<!-- <mat-card class="mx-auto mt-4">
   <app-google-login-button></app-google-login-button>
-</mat-card>
+</mat-card> -->
