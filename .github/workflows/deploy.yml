@@ -28,6 +28,7 @@ jobs:
           context: .
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/cards:latest
+          platforms: linux/arm64 # This is added for building image for arm64 architecture
           build-args: |
             DB_URL: ${{ secrets.DB_URL }}
             JWT_SECRET: ${{ secrets.JWT_SECRET }}
