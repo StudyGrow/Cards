@@ -15,16 +15,7 @@ import {
   showNewCard,
 } from 'src/app/store/actions/StateActions';
 
-import {
-  debounceTime,
-  delay,
-  distinctUntilChanged,
-  distinctUntilKeyChanged,
-  filter,
-  map,
-  tap,
-  withLatestFrom,
-} from 'rxjs/operators';
+import { delay, distinctUntilChanged, distinctUntilKeyChanged, filter, map, withLatestFrom } from 'rxjs/operators';
 
 import { NgbCarousel, NgbSlideEvent } from '@ng-bootstrap/ng-bootstrap';
 import { NotificationsService } from 'src/app/services/notifications.service';
@@ -48,6 +39,7 @@ import {
 } from 'src/app/store/selectors/selector';
 import { CarouselInfo } from 'src/app/models/CarouselInfo';
 import { TranslateService } from '@ngx-translate/core';
+import { carouselStateKey } from 'src/app/store/reducers/carousel.reducer';
 
 @Component({
   selector: 'app-bottom-sheet',
@@ -157,7 +149,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
     this.subscriptions$.push(sub);
     // see if user is in a typing field. (If so we disable carousel navigation with arrows)
     sub = this.store
-      .select('carouselState')
+      .select(carouselStateKey)
       .pipe(
         map((state) => state?.typingMode),
         distinctUntilChanged()

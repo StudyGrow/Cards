@@ -17,6 +17,7 @@ import { Observable, Subscription } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/models/state';
 import { AUTHORIZED, CURRENT_CARD, FORM_MODE, USER_ID } from 'src/app/store/selectors/selector';
+import { carouselStateKey } from 'src/app/store/reducers/carousel.reducer';
 
 @Component({
   selector: 'app-card',
@@ -31,7 +32,7 @@ export class CardComponent implements OnInit, OnDestroy {
   // eslint-disable-next-line @angular-eslint/no-output-on-prefix
   @Output() onEditClicked = new EventEmitter();
 
-  private mode$ = this.store.select('carouselState');
+  private mode$ = this.store.select(carouselStateKey);
   inTypingField = false;
   activeIndex = 0;
   auth$: Observable<boolean> = this.store.select(AUTHORIZED);

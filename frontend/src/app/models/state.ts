@@ -8,7 +8,7 @@ import { Vote } from './Vote';
 
 export interface AppState {
   data: Data;
-  carouselState?: CarouselState;
+  carousel?: CarouselState;
 }
 
 export interface Data {

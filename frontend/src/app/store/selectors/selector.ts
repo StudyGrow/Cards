@@ -40,7 +40,7 @@ export const ALL_VOTES_FOR_LECTURE = (state: AppState): Vote[] => state.data.car
 /**
  * Holds the card which should be shown
  */
-export const CARD_TO_SHOW_NEXT = (state: AppState): Card => state.carouselState?.newCard;
+export const CARD_TO_SHOW_NEXT = (state: AppState): Card => state.carousel?.newCard;
 
 /**
  * Counts all votes for a certain card
@@ -55,21 +55,23 @@ export const VOTE_COUNT = (state: AppState, cardId: string): number =>
  * Current tags selected by the user
  * @param state state of the app
  */
-export const ACTIVE_TAGS = (state: AppState): string[] => state.carouselState?.tags;
+export const ACTIVE_TAGS = (state: AppState): string[] => state.carousel?.tags;
 /**
  * Select all tags for the current lecture
  * @param state state of the app
  */
 export const ALL_TAGS = (state: AppState): string[] => state.data.cardData?.currLecture?.tagList;
 /** select the index of the active card in the array */
-export const ACTIVE_INDEX = (state: AppState): number => state.carouselState?.activeIndex;
+export const ACTIVE_INDEX = (state: AppState): number => state.carousel?.activeIndex;
 /**
  * Get the mode of the card form
  * @param state state of the app
  */
-export const FORM_MODE = (state: AppState): CardFormMode => state.carouselState?.formMode;
+export const FORM_MODE = (state: AppState): CardFormMode => {
+  return state.carousel?.formMode;
+};
 
-export const HIDE_CARD_SEARCH_RESULTS = (state: AppState) => state.carouselState?.hideSearchResults;
+export const HIDE_CARD_SEARCH_RESULTS = (state: AppState) => state.carousel?.hideSearchResults;
 
 /**
  * Select the current lecture
@@ -85,12 +87,12 @@ export const USER_ID = (state: AppState): string => state.data?.userData?.user?.
  * select the currently active tab in the cards component view
  * @param state state of the app
  */
-export const SELECTED_TAB = (state: AppState): number => state.carouselState?.currTab;
+export const SELECTED_TAB = (state: AppState): number => state.carousel?.currTab;
 /**
  * select the loadig state. Will be true if at least one ressource is loading
  * @param state state of the app
  */
-export const LOADING = (state: AppState): boolean => state.carouselState?.loading > 0;
+export const LOADING = (state: AppState): boolean => state.carousel?.loading > 0;
 /**
  * select all lectures
  * @param state state of the app
@@ -112,19 +114,19 @@ export const USER = (state: AppState): User => state.data.userData.user;
  */
 
 export const CARD_INDEXES = (state: AppState): number[] => [
-  state.carouselState?.startIndex,
-  state.carouselState?.endIndex,
-  state.carouselState?.activeIndex,
+  state.carousel?.startIndex,
+  state.carousel?.endIndex,
+  state.carousel?.activeIndex,
 ];
 
 export const AUTHORIZED = (state: AppState): boolean => state.data.userData.authenticated;
 
-export const SORT_TYPE = (state: AppState): SortType => state.carouselState?.sortType;
+export const SORT_TYPE = (state: AppState): SortType => state.carousel?.sortType;
 /**
  * select the date at which the filter for the cards have changed
  * @param state state of the app
  */
-export const LAST_CARD_CHANGE = (state: AppState): Date => state.carouselState?.cardsChanged;
+export const LAST_CARD_CHANGE = (state: AppState): Date => state.carousel?.cardsChanged;
 /**
  * Select the cards that the user has added
  */
@@ -182,7 +184,7 @@ export const SORTED_AND_FILTERED_CARDS = createSelector(
  * Select the card which is currently shown in the carousel
  * @param state state of the app
  */
-export const CURRENT_CARD = (state: AppState): Card => state.carouselState?.currentCard;
+export const CURRENT_CARD = (state: AppState): Card => state.carousel?.currentCard;
 /**
  * get cards data as one object containing the current lecture, the user id and the cards
  */

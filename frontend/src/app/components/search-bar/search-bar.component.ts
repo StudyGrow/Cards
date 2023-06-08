@@ -55,7 +55,7 @@ export class SearchBarComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    let sub = this.store.pipe(map((state) => state.carouselState?.hideSearchResults)).subscribe((hide) => {
+    let sub = this.store.pipe(map((state) => state.carousel?.hideSearchResults)).subscribe((hide) => {
       if (hide !== this.clearSuggestions) {
         // only reset
         this.clearSuggestions = hide;
