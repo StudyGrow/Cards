@@ -30,9 +30,7 @@ jobs:
           tags: ${{ secrets.DOCKER_USERNAME }}/cards:latest
           build-args:
             DB_URL: ${{ secrets.DB_URL }}
-
             JWT_SECRET: ${{ secrets.JWT_SECRET }}
-
             FIREBASE_TYPE: ${{ secrets.FIREBASE_TYPE }}
             FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
             PRIVATE_KEY_ID: ${{ secrets.PRIVATE_KEY_ID }}
