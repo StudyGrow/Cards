@@ -35,7 +35,7 @@ export class CardsResolver {
     @UserEntity() user: User,
   ): Promise<Card> {
     const lecture = await this.prisma.lecture.findFirst({
-      where: { abrv: data.lectureAbbreviation, userId: user.id },
+      where: { abrv: data.lectureAbbreviation },
     });
 
     return this.prisma.card.create({
