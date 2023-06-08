@@ -28,7 +28,7 @@ model Lecture {
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
   name       String
-  abrv       String
+  abrv       String   @unique
   tagList    String[]
   totalCards Int?
   cards      Card[]
@@ -38,17 +38,16 @@ model Lecture {
 }
 
 model Card {
-  id        String    @id @default(cuid())
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  lecture   Lecture   @relation(fields: [lectureId], references: [id])
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  lecture   Lecture  @relation(fields: [lectureId], references: [id])
   lectureId String
   thema     String
   content   String
   tags      String[]
-  author    User      @relation(fields: [authorId], references: [id])
+  author    User     @relation(fields: [authorId], references: [id])
   authorId  String
-  date      DateTime?
   latex     Int?
   rating    Int?
   votes     Vote[]

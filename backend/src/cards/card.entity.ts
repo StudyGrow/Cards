@@ -24,7 +24,7 @@ export class Card {
   authorName?: string;
 
   @Field({ nullable: true })
-  date?: Date;
+  createdAt?: Date;
 
   @Field({ nullable: true })
   latex?: number;

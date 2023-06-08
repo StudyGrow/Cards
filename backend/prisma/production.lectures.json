@@ -1,0 +1,323 @@
+[{
+  "_id": {
+    "$oid": "5f298fc255900a0045eb5f17"
+  },
+  "tagList": [
+    "Rectangular automata",
+    "Polyhedra",
+    "flowpipe"
+  ],
+  "name": "Modellierung und Analyse hybrider Systeme",
+  "abrv": "hybrid",
+  "__v": 0,
+  "totalCards": 17
+},
+{
+  "_id": {
+    "$oid": "5e3f6108a077957d77b49080"
+  },
+  "name": "Mathematische Logik",
+  "abrv": "MaLo",
+  "__v": 0,
+  "learned": 0,
+  "tagList": [
+    "kapitel2",
+    "kapitel3",
+    "kapitel1",
+    "Zoo von Strukturen",
+    "Normalformen",
+    "kapitel4",
+    "Definitionen"
+  ],
+  "totalCards": 85
+},
+{
+  "_id": {
+    "$oid": "61086f6fb8b905003bcc660e"
+  },
+  "tagList": [],
+  "name": "Web Mining",
+  "abrv": "webmine",
+  "__v": 0,
+  "totalCards": 12
+},
+{
+  "_id": {
+    "$oid": "5fa2c9e6b88ac7003429849c"
+  },
+  "tagList": [
+    "Definitions",
+    "Social Network Analysis"
+  ],
+  "name": "Web Science",
+  "abrv": "websc",
+  "__v": 0,
+  "totalCards": 8
+},
+{
+  "_id": {
+    "$oid": "62c41707c6149c881298b2ab"
+  },
+  "tagList": [
+    "Definitions",
+    "Decision Analysis",
+    "Stakeholder Management",
+    "Risk management",
+    "Monitoring & Controlling",
+    "Effort Estimation",
+    "Planning",
+    "Scrum",
+    "Agility"
+  ],
+  "name": "Software Project Management",
+  "abrv": "spm",
+  "__v": 0,
+  "totalCards": 45
+},
+{
+  "_id": {
+    "$oid": "62e141d9185ffd648612e677"
+  },
+  "tagList": [
+    "fdgfdgdg"
+  ],
+  "name": "dgdf",
+  "abrv": "dfgfdg",
+  "__v": 0,
+  "totalCards": 1
+},
+{
+  "_id": {
+    "$oid": "5e6c9e873c2470594a7e013f"
+  },
+  "name": "Einführung in die BWL",
+  "abrv": "ebwl",
+  "__v": 0,
+  "learned": 0,
+  "tagList": [
+    "1"
+  ],
+  "totalCards": 33
+},
+{
+  "_id": {
+    "$oid": "5fb82306bffef70034b4fe99"
+  },
+  "tagList": [
+    "Defnitionen",
+    "Modul 1",
+    "Modul 2",
+    "Modul 3",
+    "Internes Rewe",
+    "Buchführung",
+    "KFR",
+    "Modul 7",
+    "Modul 4",
+    "Zuschlagskalkulation",
+    "Modul 5",
+    "Modul 6"
+  ],
+  "name": "Buchführung und internes Rechnungswesen",
+  "abrv": "rewe",
+  "__v": 0,
+  "totalCards": 131
+},
+{
+  "_id": {
+    "$oid": "5e41cd12a74634281c1a7244"
+  },
+  "name": "Webtechnologien",
+  "abrv": "Webtech",
+  "__v": 0,
+  "learned": 0,
+  "tagList": [],
+  "totalCards": 7
+},
+{
+  "_id": {
+    "$oid": "5fa1e25cefc65b0034f8f6c0"
+  },
+  "tagList": [
+    "Thema 1",
+    "Thema 2",
+    "Thema 2.20",
+    "Thema 3",
+    "Thema 3 2.0",
+    "Thema 4"
+  ],
+  "name": "Philosophie II",
+  "abrv": "philo2",
+  "__v": 0,
+  "totalCards": 661
+},
+{
+  "_id": {
+    "$oid": "61a7d25908f15d9be1b65e32"
+  },
+  "tagList": [],
+  "name": "Technologie",
+  "abrv": "tech",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "5e3f5e98a1748d551c8deda9"
+  },
+  "name": "Berechenbarkeit und Komplexität",
+  "abrv": "BuK",
+  "__v": 0,
+  "learned": 0,
+  "tagList": [
+    "kapitel1"
+  ],
+  "totalCards": 106
+},
+{
+  "_id": {
+    "$oid": "61a7d2c508f15d9be1b65e3c"
+  },
+  "tagList": [],
+  "name": "technologie",
+  "abrv": "tech fr",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "602f6dad06795900452b3b1b"
+  },
+  "tagList": [
+    "Kapitel 1",
+    "Definitionen",
+    "Grupppenentscheidungen",
+    "Deskriptive Entscheidungslehre",
+    "Präskriptive Entscheidungslehre",
+    "Anwendung",
+    "Expermient"
+  ],
+  "name": "Entscheidungslehre",
+  "abrv": "dectheo",
+  "__v": 0,
+  "totalCards": 64
+},
+{
+  "_id": {
+    "$oid": "5fff89dfd9ec400045ce9c05"
+  },
+  "tagList": [
+    "2"
+  ],
+  "name": "Philosophie I",
+  "abrv": "phil1",
+  "__v": 0,
+  "totalCards": 238
+},
+{
+  "_id": {
+    "$oid": "5f35a5d52706d9003f6ad244"
+  },
+  "tagList": [
+    "Definitionen"
+  ],
+  "name": "Quantitative Methoden",
+  "abrv": "qmor",
+  "__v": 0,
+  "totalCards": 9
+},
+{
+  "_id": {
+    "$oid": "5f13f01aec5ae7004540e16c"
+  },
+  "tagList": [
+    "1",
+    "2",
+    "5",
+    "6",
+    "0",
+    "3",
+    "4",
+    "GSM"
+  ],
+  "name": "Mobile Internet Technology",
+  "abrv": "mit",
+  "__v": 0,
+  "totalCards": 65
+},
+{
+  "_id": {
+    "$oid": "620293a916427b05c21d56ce"
+  },
+  "tagList": [
+    "Introduction",
+    "P2P",
+    "Chord",
+    "i3",
+    "Bitcoin",
+    "Cloud Computing",
+    "Cassandra",
+    "MapReduce",
+    "CPS",
+    "SDN",
+    "NFV",
+    "QoS"
+  ],
+  "name": "Advanced Internet Technology",
+  "abrv": "ait",
+  "__v": 0,
+  "totalCards": 64
+},
+{
+  "_id": {
+    "$oid": "6075bf1894ae5a003fb2539b"
+  },
+  "tagList": [
+    "Malware",
+    "Botnets",
+    "ICS",
+    "DDOS",
+    "Overflow Attacks",
+    "Access Control",
+    "Firewalls",
+    "IDS",
+    "Anonymous Communication",
+    "TOR",
+    "Bitcoin",
+    "Cookies",
+    "XSS",
+    "Biometrics"
+  ],
+  "name": "IT-Sicherheit 2",
+  "abrv": "itsec2",
+  "__v": 0,
+  "totalCards": 65
+},
+{
+  "_id": {
+    "$oid": "610e47e17ace8a004d3245fb"
+  },
+  "tagList": [],
+  "name": "Business Porcess Inteligence",
+  "abrv": "bpi",
+  "__v": 0,
+  "totalCards": 21
+},
+{
+  "_id": {
+    "$oid": "6305e36c3d41241b8e628c37"
+  },
+  "tagList": [
+    "Definitions",
+    "Error",
+    "L01",
+    "L02",
+    "L03",
+    "L04",
+    "L07",
+    "L09",
+    "L10",
+    "L14"
+  ],
+  "name": "Software Quality Assurance",
+  "abrv": "sqa",
+  "__v": 0,
+  "totalCards": 20
+}]
