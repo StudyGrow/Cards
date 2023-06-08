@@ -42,7 +42,7 @@ export class CardComponent implements OnInit, OnDestroy {
   @Input() index: number;
 
   @HostListener('window:keyup', ['$event']) handleKeyDown(event: KeyboardEvent): void {
-    if (this.currentCard._id !== this.card._id) {
+    if (this.currentCard?._id !== this.card._id) {
       return;
     }
     if (!this.inTypingField) {
