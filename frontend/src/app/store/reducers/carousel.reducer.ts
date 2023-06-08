@@ -2,16 +2,18 @@ import * as StateActions from '../actions/StateActions';
 
 import { createReducer, on, Action } from '@ngrx/store';
 
-import { formMode, Mode } from 'src/app/models/state';
+import { CardFormMode, CarouselState } from 'src/app/models/state';
 import { Card } from 'src/app/models/Card';
 import { SortType } from 'src/app/models/SortType';
 
+export const carouselStateKey = 'carousel';
+
 export const pageSize = 30;
 // initial state of the app
-export const initialState: Mode = {
+export const initialState: CarouselState = {
   currentCard: undefined,
   activeIndex: 0,
-  formMode: 'add',
+  formMode: CardFormMode.ADD,
   typingMode: false,
   hideSearchResults: true,
   loading: 0,
@@ -25,7 +27,7 @@ export const initialState: Mode = {
 };
 
 // Reducer which will dispatch changes to the store
-const _modeReducer = createReducer(
+const _carouselStateReducer = createReducer(
   initialState,
   on(StateActions.updateCarouselInfo, (state, { info }) => ({
     ...state,
@@ -114,8 +116,8 @@ const _modeReducer = createReducer(
   on(StateActions.fail, (state) => state)
 );
 
-export function modeReducer(state: Mode, action: Action) {
-  return _modeReducer(state, action);
+export function carouselStateReducer(state: CarouselState, action: Action) {
+  return _carouselStateReducer(state, action);
 }
 
 function removeInArray(items: string[], item: string) {

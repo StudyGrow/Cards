@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { distinctUntilChanged, map } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
-import { USER, USER_CARDS } from 'src/app/store/selector';
+import { USER, USER_CARDS } from 'src/app/store/selectors/selector';
 import { ThemesService } from 'src/app/services/themes.service';
 import { chartOptions } from './chart.options';
 

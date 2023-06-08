@@ -7,7 +7,7 @@ import { combineLatest, Subscription } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
 import { Card } from 'src/app/models/Card';
 import { ThemesService } from 'src/app/services/themes.service';
-import { SORTED_CARDS, SELECTED_LECTURE } from 'src/app/store/selector';
+import { SORTED_CARDS, SELECTED_LECTURE } from 'src/app/store/selectors/selector';
 import { chartOptions } from './chart.options';
 
 @Component({
@@ -26,16 +26,19 @@ export class LectureOverviewComponent implements OnInit {
   lecture$ = this.store.select(SELECTED_LECTURE);
   activities$ = this.cards$.pipe(
     // delay(300), //wait for tab change transition to complete
-    map((
-      cards // transform cards array into array containing objects with only date attribute
-    ) =>
-      cards?.map((card: Card) => ({
-        date: new Date(card.date).toLocaleDateString(),
-      }))
+    map(
+      (
+        cards // transform cards array into array containing objects with only date attribute
+      ) =>
+        cards?.map((card: Card) => ({
+          date: new Date(card.date).toLocaleDateString(),
+        }))
     ),
-    map((
-      dates: { date: string }[] // Group array by date
-    ) => (dates ? LectureOverviewComponent.groupBy(dates, 'date') : [])),
+    map(
+      (
+        dates: { date: string }[] // Group array by date
+      ) => (dates ? LectureOverviewComponent.groupBy(dates, 'date') : [])
+    ),
     map(
       (
         obj: Map<string, { date: string }[]> // transform map into data table for google charts
@@ -44,17 +47,20 @@ export class LectureOverviewComponent implements OnInit {
     )
   );
   contributors$ = this.cards$.pipe(
-    map((
-      cards // transform cards array into array containing objects with only author info
-    ) =>
-      cards?.map((card: Card) => ({
-        authorName: card.authorName,
-        authorId: card.authorId,
-      }))
+    map(
+      (
+        cards // transform cards array into array containing objects with only author info
+      ) =>
+        cards?.map((card: Card) => ({
+          authorName: card.authorName,
+          authorId: card.authorId,
+        }))
     ),
-    map((
-      authors: { authorName: string; authorId: string }[] // Group array by date
-    ) => (authors ? LectureOverviewComponent.groupBy(authors, 'authorId') : [])), // grouping by authorId but authorName should work too as they are distinct
+    map(
+      (
+        authors: { authorName: string; authorId: string }[] // Group array by date
+      ) => (authors ? LectureOverviewComponent.groupBy(authors, 'authorId') : [])
+    ), // grouping by authorId but authorName should work too as they are distinct
     map(
       (
         map: Map<string, { authorName: string; authorId: string }[]> // transform map into data table for google charts

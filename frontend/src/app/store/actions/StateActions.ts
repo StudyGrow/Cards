@@ -2,6 +2,7 @@ import { createAction, props } from '@ngrx/store';
 import { Card } from 'src/app/models/Card';
 import { SortType } from 'src/app/models/SortType';
 import { CarouselInfo } from 'src/app/models/CarouselInfo';
+import { CardFormMode } from 'src/app/models/state';
 
 enum ActionTypes {
   SET_FORM_MODE = '[Form] set display mode of form (edit, add, none, reset)',
@@ -39,7 +40,7 @@ export const applyFilter = createAction(ActionTypes.APPLY_FILTER, props<{ tags: 
 export const addTag = createAction(ActionTypes.ADD_TAG, props<{ tag: string }>());
 export const removeTag = createAction(ActionTypes.REMOVE_TAG, props<{ tag: string }>());
 export const resetFilter = createAction(ActionTypes.RESET_FILTER);
-export const setFormMode = createAction(ActionTypes.SET_FORM_MODE, props<{ mode: string }>());
+export const setFormMode = createAction(ActionTypes.SET_FORM_MODE, props<{ mode: CardFormMode }>());
 export const setTypingMode = createAction(ActionTypes.SET_TYPING_MODE, props<{ typing: boolean }>());
 export const setSuggestionsMode = createAction(ActionTypes.SET_SUGGESTIONS_VISIBILITY_MODE, props<{ hide: boolean }>());
 

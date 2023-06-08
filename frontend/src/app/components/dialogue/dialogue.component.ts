@@ -1,8 +1,11 @@
 import { Component, Inject } from '@angular/core';
-import { MatLegacyDialogRef as MatDialogRef, MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
+import {
+  MatLegacyDialogRef as MatDialogRef,
+  MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA,
+} from '@angular/material/legacy-dialog';
 import { Store } from '@ngrx/store';
 import { DialogData } from 'src/app/models/DialogueData';
-import { AppState } from 'src/app/models/state';
+import { AppState, CardFormMode } from 'src/app/models/state';
 import { reportCard } from 'src/app/store/actions/CardActions';
 import { changeTab, setFormMode } from 'src/app/store/actions/StateActions';
 import { deleteProfile } from 'src/app/store/actions/UserActions';
@@ -22,7 +25,7 @@ export class DialogueComponent {
   confirm() {
     switch (this.data.type) {
       case DialogueType.CANCEL_EDIT:
-        this.store.dispatch(setFormMode({ mode: 'add' }));
+        this.store.dispatch(setFormMode({ mode: CardFormMode.ADD }));
         this.store.dispatch(changeTab({ tab: 0 }));
         break;
       case DialogueType.DELETE_PROFILE:

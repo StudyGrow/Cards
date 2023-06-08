@@ -2,7 +2,7 @@ import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { map, take } from 'rxjs/operators';
-import { AUTHORIZED } from 'src/app/store/selector';
+import { AUTHORIZED } from 'src/app/store/selectors/selector';
 import { Observable, Subscription } from 'rxjs';
 import { logout as logoutUser } from 'src/app/store/actions/UserActions';
 import { MatLegacySlideToggle as MatSlideToggle } from '@angular/material/legacy-slide-toggle';

@@ -8,9 +8,14 @@ import { MatDrawerContent, MatDrawer } from '@angular/material/sidenav';
 import { map, startWith } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
-import { MatLegacySnackBar as MatSnackBar, MatLegacySnackBarRef as MatSnackBarRef, LegacyTextOnlySnackBar as TextOnlySnackBar } from '@angular/material/legacy-snack-bar';
-import { AppState, Data, Mode } from 'src/app/models/state';
+import {
+  MatLegacySnackBar as MatSnackBar,
+  MatLegacySnackBarRef as MatSnackBarRef,
+  LegacyTextOnlySnackBar as TextOnlySnackBar,
+} from '@angular/material/legacy-snack-bar';
+import { AppState, Data, CarouselState } from 'src/app/models/state';
 import { NavbarToggleService } from 'src/app/services/navbar-toggle.service';
+import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'app-view-container',
   templateUrl: './view-container.component.html',
@@ -34,7 +39,8 @@ export class ViewContainerComponent implements OnInit {
     private store: Store<AppState>,
     private notifService: NotificationsService,
     private _snackBar: MatSnackBar,
-    private nav: NavbarToggleService
+    private nav: NavbarToggleService,
+    private translate: TranslateService
   ) {}
 
   ngOnInit(): void {
@@ -58,7 +64,7 @@ export class ViewContainerComponent implements OnInit {
             });
             break;
           case NotificationType.WARNING:
-            ref = this._snackBar.open(notif.message, 'Schließen', {
+            ref = this._snackBar.open(notif.message, this.translate.instant('close'), {
               verticalPosition: 'bottom',
               panelClass: notif.type,
             });

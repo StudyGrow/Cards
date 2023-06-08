@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { map } from 'rxjs/operators';
-import { USER_INFO, NOTIFICATION_COUNT, USER_STATUS } from '../store/selector';
+import { USER_INFO, NOTIFICATION_COUNT, USER_STATUS } from '../store/selectors/selector';
 import { Observable, Subscription } from 'rxjs';
 import { AppState } from '../models/state';
 

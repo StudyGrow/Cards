@@ -13,7 +13,7 @@ import { distinctUntilChanged, map, startWith, withLatestFrom } from 'rxjs/opera
 import { DialogueComponent } from 'src/app/components/dialogue/dialogue.component';
 import { Card } from 'src/app/models/Card';
 import { SuccessMessage, WarnMessage } from 'src/app/models/Notification';
-import { Data, Mode } from 'src/app/models/state';
+import { Data, CarouselState, CardFormMode } from 'src/app/models/state';
 import { User } from 'src/app/models/User';
 import { Vorlesung } from 'src/app/models/Vorlesung';
 import { NotificationsService } from 'src/app/services/notifications.service';
@@ -23,7 +23,7 @@ import { addLercture } from 'src/app/store/actions/LectureActions';
 import { CardsEffects } from 'src/app/store/effects/effects';
 import { AppState } from '../../models/state';
 import { parse, HtmlGenerator } from 'latex.js';
-import { ALL_TAGS, CURRENT_CARD, SELECTED_LECTURE, FORM_MODE, USER } from 'src/app/store/selector';
+import { ALL_TAGS, CURRENT_CARD, SELECTED_LECTURE, FORM_MODE, USER } from 'src/app/store/selectors/selector';
 import { TranslateService } from '@ngx-translate/core';
 import { QuillEditorComponent } from 'ngx-quill';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -283,7 +283,7 @@ export class FormComponent implements OnInit, OnDestroy {
     );
     const sub = this.actionState.updateCard$.subscribe((card) => {
       if (card) {
-        this.store.dispatch(setFormMode({ mode: 'add' }));
+        this.store.dispatch(setFormMode({ mode: CardFormMode.ADD }));
         this.store.dispatch(changeTab({ tab: 0 }));
         this.resetForm();
       }

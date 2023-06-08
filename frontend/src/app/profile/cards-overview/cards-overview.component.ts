@@ -3,7 +3,7 @@ import { Card } from 'src/app/models/Card';
 import { Subscription, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
-import { USER_CARDS } from 'src/app/store/selector';
+import { USER_CARDS } from 'src/app/store/selectors/selector';
 import { LegacyPageEvent as PageEvent } from '@angular/material/legacy-paginator';
 import { fadeInOnEnterAnimation, fadeOutOnLeaveAnimation } from 'angular-animations';
 import { AppState } from 'src/app/models/state';

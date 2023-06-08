@@ -12,7 +12,7 @@ import { HttpClient } from '@angular/common/http';
 import { User } from '../models/User';
 import { Store } from '@ngrx/store';
 
-import { AUTHORIZED } from '../store/selector';
+import { AUTHORIZED } from '../store/selectors/selector';
 import { AppState } from '../models/state';
 import { GetUserGQL, UpdateUserGQL, CreateAccountGQL, RemoveUserGQL } from 'src/generated/graphql';
 

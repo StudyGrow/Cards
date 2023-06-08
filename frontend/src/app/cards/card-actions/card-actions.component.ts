@@ -4,7 +4,7 @@ import { Observable, Subscription } from 'rxjs';
 import { delay, map } from 'rxjs/operators';
 import { AppState } from 'src/app/models/state';
 import { Vote } from 'src/app/models/Vote';
-import { AUTHORIZED, USER_VOTE, VOTE_COUNT } from 'src/app/store/selector';
+import { AUTHORIZED, USER_VOTE, VOTE_COUNT } from 'src/app/store/selectors/selector';
 import { changeVote } from '../../store/actions/CardActions';
 import { NotificationsService } from 'src/app/services/notifications.service';
 import { InfoMessage } from 'src/app/models/Notification';
