@@ -11,6 +11,7 @@ import { CardOrder, CardOrderField } from './models/card.order.entity';
 import { UpdateCardInput } from './models/update.card.input';
 import { GqlFirebaseAuthGuard } from 'src/auth/strategies/jwt/firebase.guard';
 import { UseGuards } from '@nestjs/common';
+import { Public } from 'src/auth/decorators/public.decorator';
 
 // We use this to make sure that the "document" field isn't selected, by default
 // (see https://github.com/prisma/prisma-client-js/issues/649)
@@ -51,6 +52,7 @@ export class CardsResolver {
     });
   }
 
+  @Public()
   @Query(() => CardEdges, { name: 'cards' })
   async findAll(
     @Args({ nullable: true })
