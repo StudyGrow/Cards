@@ -4,7 +4,7 @@
   </mat-chip-list>
 
   <div class="d-flex justify-content-end align-items-center" role="group">
-    <div>Likes: {{ this.voteCount }}</div>
+    <div>{{ this.voteCount }} {{ this.voteCount === 1 ? 'like' : 'likes' }}</div>
     <button
       *ngIf="loggedIn$ | async"
       type="button"

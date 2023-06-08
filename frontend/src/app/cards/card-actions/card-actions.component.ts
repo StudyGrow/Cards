@@ -42,7 +42,7 @@ export class CardActionsComponent implements OnInit, OnDestroy {
     });
     this.subscriptions$.push(sub);
     sub = this.store.pipe(map((state) => VOTE_COUNT(state, this.id))).subscribe((count) => {
-      this.voteCount = count;
+      this.voteCount = count || 0;
     });
     this.subscriptions$.push(sub);
     const tagCount = this.tags.length;
