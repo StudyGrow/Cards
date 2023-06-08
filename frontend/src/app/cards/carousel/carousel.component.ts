@@ -323,7 +323,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
       return this.showRejection();
 
     const state = { ...this.carouselInfo$.getValue() };
-    if (this.cardsToShowInCarousel.indexOf(state.currentCard) < 0) {
+    if (state.currentIndex === 0 || this.cardsToShowInCarousel.indexOf(state.currentCard) < 0) {
       this.showRejection();
       return;
     }
@@ -333,7 +333,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
 
     const predecessorInCarousel = this.cardsToShowInCarousel[indexOfCurrentCardInCarousel - 1];
     const desiredPredecessor = state.allCardsSortedAndFiltered[indexOfCurrentCardInAllCardsSortedAndFiltered - 1];
-    if (predecessorInCarousel?._id === desiredPredecessor._id) {
+    if (predecessorInCarousel?._id === desiredPredecessor?._id) {
       // check if prev card is already present in cardsToShowInCarousel, then go simply prev in carousel
       this.carousel.prev();
     }
