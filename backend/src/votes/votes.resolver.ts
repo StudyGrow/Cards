@@ -6,6 +6,7 @@ import { CastVoteInput } from './models/cast.vote.input';
 import { Vote } from './vote.entity';
 import { GqlFirebaseAuthGuard } from 'src/auth/strategies/jwt/firebase.guard';
 import { UseGuards } from '@nestjs/common';
+import { Public } from 'src/auth/decorators/public.decorator';
 
 // We use this to make sure that the "document" field isn't selected, by default
 // (see https://github.com/prisma/prisma-client-js/issues/649)
@@ -65,6 +66,7 @@ export class VotesResolver {
     });
   }
 
+  @Public()
   @Query(() => [Vote], { name: 'votes', nullable: true })
   async findOne(
     @Args('lectureAbbreviation', { nullable: true }) abrv?: string,
