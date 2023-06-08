@@ -80,6 +80,7 @@ export class CardsResolver {
     );
   }
 
+  @Public()
   @Query(() => Card, { name: 'card' })
   async findOne(@Args('id', { type: () => ID }) id: string) {
     return this.prisma.card.findFirst({

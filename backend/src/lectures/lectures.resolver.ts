@@ -71,6 +71,7 @@ export class LecturesResolver {
     );
   }
 
+  @Public()
   @Query(() => Lecture, { name: 'lecture', nullable: true })
   async findOne(
     @Args('id', { nullable: true, type: () => ID }) id?: string,
