@@ -58,5 +58,5 @@ jobs:
           remote_host: ${{ secrets.REMOTE_HOST }}
           remote_user: ${{ secrets.REMOTE_USER }}
           remote_private_key: ${{ secrets.REMOTE_PRIVATE_KEY }}
-          stack_file: "StudyGrow/Cards/stack.yml"
+          stack_file: "/home/ubuntu/StudyGrow/Cards/stack.yml"
           stack_name: "cards"
