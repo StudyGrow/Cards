@@ -1,7 +1,7 @@
 <mat-card class="m-auto">
   <form #form="ngForm" (ngSubmit)="submit(form)" novalidate>
     <mat-form-field appearance="standard" class="w-100">
-      <mat-label>Benutzername</mat-label>
+      <mat-label>{{ 'profile.manage.username' | translate }}</mat-label>
       <input
         matInput
         type="text"
@@ -13,11 +13,13 @@
         #username="ngModel"
         ngModel
       />
-      <mat-hint>Wenigstens 5 Zeichen</mat-hint>
-      <mat-error>Dein Nutzername muss mindestens 5 Zeichen enthalten</mat-error>
+      <mat-hint>{{ 'sign-up.at-least-n-chars' | translate : { n: 5 } }} </mat-hint>
+      <mat-error>
+        {{ 'sign-up.at-least-n-error' | translate : { field: 'username', n: 5 } }}
+      </mat-error>
     </mat-form-field>
     <mat-form-field appearance="standard" class="w-100">
-      <mat-label>Email Adresse</mat-label>
+      <mat-label>{{ 'email' | translate }}</mat-label>
       <input
         matInput
         type="email"
@@ -28,32 +30,18 @@
         #email="ngModel"
         ngModel
       />
-      <mat-error>Bitte überprüfe deine Email Adresse</mat-error>
+      <mat-error>
+        {{ 'sign-up.email-error' | translate }}
+      </mat-error>
     </mat-form-field>
     <mat-form-field appearance="standard" class="w-100">
-      <mat-label>Passwort</mat-label>
-      <input
-        matInput
-        type="password"
-        name="password"
-        id="password"
-        #password="ngModel"
-        ngModel
-        minlength="7"
-      />
-      <mat-hint>Wenigstens 7 Zeichen</mat-hint>
+      <mat-label>{{ 'password' | translate }}</mat-label>
+      <input matInput type="password" name="password" id="password" #password="ngModel" ngModel minlength="7" />
+      <mat-hint>{{ 'sign-up.at-least-n-chars' | translate : { n: 7 } }}</mat-hint>
     </mat-form-field>
     <mat-form-field appearance="standard" class="w-100">
-      <mat-label>Passwort wiederholen</mat-label>
-      <input
-        matInput
-        type="password"
-        name="password2"
-        id="password2"
-        #password2="ngModel"
-        ngModel
-        minlength="7"
-      />
+      <mat-label>{{ 'password-repeat' | translate }}</mat-label>
+      <input matInput type="password" name="password2" id="password2" #password2="ngModel" ngModel minlength="7" />
     </mat-form-field>
 
     <button
@@ -62,7 +50,7 @@
       type="submit"
       [disabled]="isDisabled(username, email, password, password2)"
     >
-      Account erstellen
+      {{ 'sign-up.sign-up' | translate }}
     </button>
   </form>
 </mat-card>

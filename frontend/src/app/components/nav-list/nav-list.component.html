@@ -9,7 +9,7 @@
       >
 
       <a mat-list-item class="{{ isActive('/signup') }}" routerLink="/signup" aria-label="Neuen Account registrieren"
-        ><mat-icon>add_box</mat-icon> {{ 'sign-up' | translate }}</a
+        ><mat-icon>add_box</mat-icon> {{ 'sign-up.title' | translate }}</a
       >
     </ng-container>
     <ng-container *ngIf="loggedIn$ | async">

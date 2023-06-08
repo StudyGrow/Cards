@@ -181,7 +181,13 @@
       }
     }
   },
-  "sign-up": "Sign up",
+  "sign-up": {
+    "title": "Sign up",
+    "at-least-n-chars": "At least {{n}} characters",
+    "sign-up": "Create Account",
+    "at-least-n-error": "At least {{n}} characters are required for {{field}}",
+    "email-error": "Please enter a valid email address"
+  },
   "about-us": "About us",
   "faq": "FAQ",
   "info": "Info",
@@ -253,5 +259,7 @@
   "lecture": "Lecture",
   "add-lecture": "Add Lecture",
   "yes": "Yes",
-  "close": "Close"
+  "close": "Close",
+  "password": "Password",
+  "password-repeat": "Repeat password"
 }

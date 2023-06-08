@@ -180,7 +180,13 @@
       }
     }
   },
-  "sign-up": "Registrieren",
+  "sign-up": {
+    "title": "Sign up",
+    "at-least-n-chars": "Mindestens {{n}} Zeichen",
+    "sign-up": "Account erstellen",
+    "at-least-n-error": "{{field}} muss mindestens {{n}} Zeichen enthalten",
+    "email-error": "Die Email Adresse ist ungültig"
+  },
   "about-us": "Über uns",
   "info": "Infos",
   "faq": "FAQ",
@@ -252,5 +258,7 @@
   "lecture": "Vorlesung",
   "add-lecture": "Vorlesung hinzufügen",
   "yes": "Ja",
-  "close": "Schließen"
+  "close": "Schließen",
+  "password": "Passwort",
+  "password-repeat": "Passwort wiederholen"
 }

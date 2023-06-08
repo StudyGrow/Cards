@@ -1,7 +1,7 @@
 <mat-card class="m-auto">
   <form #form="ngForm" (ngSubmit)="submit(form)" novalidate>
     <mat-form-field appearance="standard" class="w-100">
-      <mat-label>Email</mat-label>
+      <mat-label>{{ 'email' | translate }}</mat-label>
       <input
         matInput
         type="text"
@@ -14,7 +14,7 @@
       />
     </mat-form-field>
     <mat-form-field appearance="standard" class="w-100">
-      <mat-label>Passwort</mat-label>
+      <mat-label>{{ 'password' | translate }}</mat-label>
       <input matInput type="password" name="password" id="password" #password="ngModel" ngModel />
     </mat-form-field>
 
