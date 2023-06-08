@@ -21,7 +21,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { HammerModule, HammerGestureConfig, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
 
 // Reducers
-import { dataReducer } from './store/reducers/data.reducer';
+import { dataReducer, dataReducerKey } from './store/reducers/data.reducer';
 // Effects
 import { EffectsModule } from '@ngrx/effects';
 import { CardsEffects } from './store/effects/effects';
@@ -138,7 +138,7 @@ export class MyHammerConfig extends HammerGestureConfig {
         ],
       },
     }),
-    StoreModule.forRoot({ data: dataReducer }),
+    StoreModule.forRoot({ [dataReducerKey]: dataReducer }),
     EffectsModule.forRoot([CardsEffects]),
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production,

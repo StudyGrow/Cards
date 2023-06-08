@@ -7,6 +7,8 @@ import * as CardActions from '../actions/CardActions';
 import * as LectureActions from '../actions/LectureActions';
 import * as UserActions from '../actions/UserActions';
 
+export const dataReducerKey = 'data';
+
 const initialState: Data = {
   cardData: {
     cards: undefined,
