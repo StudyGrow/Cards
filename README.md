@@ -1,6 +1,6 @@
 # Cards Project
 
-This project provides the code for frontend and backend of our cards website currently hosted on <https://studygrow.tech/>
+This project provides the code for frontend and backend of our cards website currently hosted on <https://cards.leier.lu/>
 
 ## Prerequisites
 
