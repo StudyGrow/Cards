@@ -1,4 +1,4 @@
-import { Vorlesung } from './Vorlesung';
+import { Lecture } from './Vorlesung';
 import { Vote } from './Vote';
 
 export class Card {
@@ -18,7 +18,7 @@ export class Card {
 
 export interface CardsData {
   cards: Card[];
-  lecture: Vorlesung;
+  lecture: Lecture;
   uid: string;
   votes: Vote[];
 }

@@ -5,7 +5,7 @@ import { map, timeout } from 'rxjs/operators';
 
 import { HttpConfig } from './config';
 //Models
-import { Vorlesung } from '../models/Vorlesung';
+import { Lecture } from '../models/Vorlesung';
 import {
   GetLecturesGQL,
   AddLectureGQL,
@@ -27,14 +27,14 @@ export class LecturesService {
   ) {}
 
   //get an array of all lectures
-  getAllLectures(): Observable<Vorlesung[]> {
+  getAllLectures(): Observable<Lecture[]> {
     //load lectures from the server
     return this.getLecturesGQL
       .watch()
       .valueChanges.pipe(map((res) => res.data.lectures.edges.map((edge) => edge.node)));
   }
 
-  checkUniqueLecture(lecture: Vorlesung): Observable<boolean> {
+  checkUniqueLecture(lecture: Lecture): Observable<boolean> {
     return this.getLectureGQL.watch({ abrv: lecture.abrv }).valueChanges.pipe(
       timeout(3000),
       map((res) => {
@@ -44,7 +44,7 @@ export class LecturesService {
   }
 
   //add a lecture to the database on the server
-  addLecture(lecture: Vorlesung): Observable<Vorlesung> {
+  addLecture(lecture: Lecture): Observable<Lecture> {
     return this.addLectureGQL
       .mutate({
         abrv: lecture.abrv,

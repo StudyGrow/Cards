@@ -12,7 +12,7 @@ import { CardActionsComponent } from './card-actions/card-actions.component';
 import { LectureOverviewComponent } from './lecture-overview/lecture-overview.component';
 import { QuillModule } from 'ngx-quill';
 import { StoreModule } from '@ngrx/store';
-import { carouselStateKey, carouselStateReducer } from '../store/reducers/carousel.reducer';
+import { cardsFeatureReducerKey, carouselStateReducer } from '../store/reducers/cards.feature.reducer';
 
 //Pipes
 
@@ -33,7 +33,7 @@ import { carouselStateKey, carouselStateReducer } from '../store/reducers/carous
     SharedModule,
     NgbCarouselModule,
     QuillModule,
-    StoreModule.forFeature(carouselStateKey, carouselStateReducer),
+    StoreModule.forFeature(cardsFeatureReducerKey, carouselStateReducer),
   ],
 })
 export class CardsModule {}

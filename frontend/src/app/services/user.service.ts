@@ -13,7 +13,7 @@ import { User } from '../models/User';
 import { Store } from '@ngrx/store';
 
 import { AUTHORIZED } from '../store/selectors/selector';
-import { AppState } from '../models/state';
+import { AppState } from '../models/State';
 import { GetUserGQL, UpdateUserGQL, CreateAccountGQL, RemoveUserGQL } from 'src/generated/graphql';
 
 import * as auth from 'firebase/auth';

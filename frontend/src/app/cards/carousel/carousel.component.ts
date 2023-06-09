@@ -20,7 +20,7 @@ import { delay, distinctUntilChanged, distinctUntilKeyChanged, filter, map, with
 import { NgbCarousel, NgbSlideEvent } from '@ng-bootstrap/ng-bootstrap';
 import { NotificationsService } from 'src/app/services/notifications.service';
 import { WarnMessage } from 'src/app/models/Notification';
-import { AppState, CardFormMode } from 'src/app/models/state';
+import { AppState, CardFormMode } from 'src/app/models/State';
 
 import { MatBottomSheet, MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { sortOptions } from './sortOptions';
@@ -39,7 +39,7 @@ import {
 } from 'src/app/store/selectors/selector';
 import { CarouselInfo } from 'src/app/models/CarouselInfo';
 import { TranslateService } from '@ngx-translate/core';
-import { carouselStateKey } from 'src/app/store/reducers/carousel.reducer';
+import { cardsFeatureReducerKey } from 'src/app/store/reducers/cards.feature.reducer';
 import { dataReducerKey } from 'src/app/store/reducers/data.reducer';
 
 @Component({
@@ -150,9 +150,9 @@ export class CarouselComponent implements OnInit, OnDestroy {
     this.subscriptions$.push(sub);
     // see if user is in a typing field. (If so we disable carousel navigation with arrows)
     sub = this.store
-      .select(carouselStateKey)
+      .select(cardsFeatureReducerKey)
       .pipe(
-        map((state) => state?.typingMode),
+        map((state) => state?.typingInInputField),
         distinctUntilChanged()
       )
       .subscribe((val) => {

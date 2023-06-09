@@ -1,4 +1,4 @@
-export class Vorlesung {
+export class Lecture {
   constructor(
     public name?: string,
     public abrv?: string,

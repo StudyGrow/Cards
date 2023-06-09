@@ -1,4 +1,4 @@
-import { Vorlesung } from './Vorlesung';
+import { Lecture } from './Vorlesung';
 import { Vote } from './Vote';
 
 export class MultipleChoiceCard {
@@ -17,5 +17,5 @@ export class MultipleChoiceCard {
 
 export interface MultipleChoiceCardsData {
   multipleChoiceCards: MultipleChoiceCard[];
-  lecture: Vorlesung;
+  lecture: Lecture;
 }

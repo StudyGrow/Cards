@@ -2,7 +2,7 @@ import { createAction, props } from '@ngrx/store';
 import { Card } from 'src/app/models/Card';
 import { SortType } from 'src/app/models/SortType';
 import { CarouselInfo } from 'src/app/models/CarouselInfo';
-import { CardFormMode } from 'src/app/models/state';
+import { CardFormMode } from 'src/app/models/State';
 
 enum ActionTypes {
   SET_FORM_MODE = '[Form] set display mode of form (edit, add, none, reset)',

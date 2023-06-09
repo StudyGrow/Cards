@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 import { delay, map } from 'rxjs/operators';
-import { AppState } from 'src/app/models/state';
+import { AppState } from 'src/app/models/State';
 import { Vote } from 'src/app/models/Vote';
 import { AUTHORIZED, USER_VOTE, VOTE_COUNT } from 'src/app/store/selectors/selector';
 import { changeVote } from '../../store/actions/CardActions';

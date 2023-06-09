@@ -5,7 +5,7 @@ import {
 } from '@angular/material/legacy-dialog';
 import { Store } from '@ngrx/store';
 import { DialogData } from 'src/app/models/DialogueData';
-import { AppState, CardFormMode } from 'src/app/models/state';
+import { AppState, CardFormMode } from 'src/app/models/State';
 import { reportCard } from 'src/app/store/actions/CardActions';
 import { changeTab, setFormMode } from 'src/app/store/actions/StateActions';
 import { deleteProfile } from 'src/app/store/actions/UserActions';

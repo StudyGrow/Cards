@@ -6,7 +6,7 @@ import { Store } from '@ngrx/store';
 import { USER_CARDS } from 'src/app/store/selectors/selector';
 import { LegacyPageEvent as PageEvent } from '@angular/material/legacy-paginator';
 import { fadeInOnEnterAnimation, fadeOutOnLeaveAnimation } from 'angular-animations';
-import { AppState } from 'src/app/models/state';
+import { AppState } from 'src/app/models/State';
 import { Router } from '@angular/router';
 import { navigateToCard } from 'src/app/store/actions/StateActions';
 

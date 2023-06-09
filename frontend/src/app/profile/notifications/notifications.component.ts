@@ -5,7 +5,7 @@ import { map } from 'rxjs/operators';
 import { Card } from 'src/app/models/Card';
 import { Reports } from 'src/app/models/Report';
 import { User } from 'src/app/models/User';
-import { Vorlesung } from 'src/app/models/Vorlesung';
+import { Lecture } from 'src/app/models/Vorlesung';
 import { USER_REPORTS, USER_STATUS } from 'src/app/store/selectors/selector';
 
 @Component({
@@ -18,7 +18,7 @@ export class NotificationsComponent implements OnInit {
   isAdmin$ = this.store.select(USER_STATUS).pipe(map((status) => status === 'admin'));
   reports$: Observable<Reports> = this.store.select(USER_REPORTS);
   cardReports$: Observable<Card[]> = this.reports$.pipe(map((reports) => reports['flash-cards']));
-  lectureReports$: Observable<Vorlesung[]> = this.reports$.pipe(map((reports) => reports.lectures));
+  lectureReports$: Observable<Lecture[]> = this.reports$.pipe(map((reports) => reports.lectures));
   userReports$: Observable<User[]> = this.reports$.pipe(map((reports) => reports.users));
   selectOptions$: Observable<string[]> = this.reports$.pipe(
     map((reports) => (reports ? Object.keys(reports) : undefined))

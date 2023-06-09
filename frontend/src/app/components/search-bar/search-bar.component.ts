@@ -12,15 +12,16 @@ import {
   showNewCard,
 } from 'src/app/store/actions/StateActions';
 
-import { SORTED_CARDS, SHOWN_CARDS, FORM_MODE } from 'src/app/store/selectors/selector';
+import { SORTED_CARDS, SHOWN_CARDS, FORM_MODE, HIDE_CARD_SEARCH_RESULTS } from 'src/app/store/selectors/selector';
 import { FormControl } from '@angular/forms';
-import { AppState } from 'src/app/models/state';
+import { AppState } from 'src/app/models/State';
 import { WarnMessage } from 'src/app/models/Notification';
 import { NotificationsService } from 'src/app/services/notifications.service';
 import {
   MatLegacyAutocompleteActivatedEvent as MatAutocompleteActivatedEvent,
   MatLegacyAutocompleteSelectedEvent as MatAutocompleteSelectedEvent,
 } from '@angular/material/legacy-autocomplete';
+import { cardsFeatureReducerKey } from 'src/app/store/reducers/cards.feature.reducer';
 
 @Component({
   selector: 'app-search-bar',
@@ -55,7 +56,7 @@ export class SearchBarComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    let sub = this.store.pipe(map((state) => state.carousel?.hideSearchResults)).subscribe((hide) => {
+    let sub = this.store.select(HIDE_CARD_SEARCH_RESULTS).subscribe((hide) => {
       if (hide !== this.clearSuggestions) {
         // only reset
         this.clearSuggestions = hide;

@@ -10,7 +10,7 @@ import { USER_INFO } from 'src/app/store/selectors/selector';
 import { updateUserData } from 'src/app/store/actions/UserActions';
 import { DialogueComponent } from 'src/app/components/dialogue/dialogue.component';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
-import { AppState } from 'src/app/models/state';
+import { AppState } from 'src/app/models/State';
 import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'app-change-profile',

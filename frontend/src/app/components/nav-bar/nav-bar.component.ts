@@ -8,7 +8,7 @@ import { Store } from '@ngrx/store';
 import { filter, map, tap, withLatestFrom } from 'rxjs/operators';
 import { ACTIVE_INDEX, SORTED_AND_FILTERED_CARDS, SHOWN_CARDS, LOADING } from 'src/app/store/selectors/selector';
 import { clearCardData } from 'src/app/store/actions/CardActions';
-import { AppState, Data, CarouselState } from 'src/app/models/state';
+import { AppState, Data, CardsFeatureState } from 'src/app/models/State';
 import { NavbarToggleService } from 'src/app/services/navbar-toggle.service';
 import { resetCardsState } from 'src/app/store/actions/StateActions';
 

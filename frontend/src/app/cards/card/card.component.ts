@@ -15,9 +15,9 @@ import { ViewChild } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 // import { parse, HtmlGenerator } from 'latex.js';
 import { Store } from '@ngrx/store';
-import { AppState } from 'src/app/models/state';
+import { AppState } from 'src/app/models/State';
 import { AUTHORIZED, CURRENT_CARD, FORM_MODE, USER_ID } from 'src/app/store/selectors/selector';
-import { carouselStateKey } from 'src/app/store/reducers/carousel.reducer';
+import { cardsFeatureReducerKey } from 'src/app/store/reducers/cards.feature.reducer';
 
 @Component({
   selector: 'app-card',
@@ -32,7 +32,7 @@ export class CardComponent implements OnInit, OnDestroy {
   // eslint-disable-next-line @angular-eslint/no-output-on-prefix
   @Output() onEditClicked = new EventEmitter();
 
-  private mode$ = this.store.select(carouselStateKey);
+  private mode$ = this.store.select(cardsFeatureReducerKey);
   inTypingField = false;
   activeIndex = 0;
   auth$: Observable<boolean> = this.store.select(AUTHORIZED);
@@ -61,7 +61,7 @@ export class CardComponent implements OnInit, OnDestroy {
   subscriptions$: Subscription[] = [];
 
   ngOnInit(): void {
-    let sub = this.mode$.pipe(map((state) => state?.activeIndex)).subscribe((index) => {
+    let sub = this.mode$.pipe(map((state) => state?.carousel.activeIndex)).subscribe((index) => {
       // hides the card content when carousel slides
       if (this.activeIndex != index) {
         this.content.close();
@@ -70,7 +70,7 @@ export class CardComponent implements OnInit, OnDestroy {
     });
     this.subscriptions$.push(sub);
 
-    sub = this.mode$.pipe(map((state) => state?.typingMode)).subscribe((val) => {
+    sub = this.mode$.pipe(map((state) => state?.typingInInputField)).subscribe((val) => {
       this.inTypingField = val;
     });
     this.subscriptions$.push(sub);

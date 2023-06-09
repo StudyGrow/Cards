@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import { map } from 'rxjs/operators';
 import { USER_INFO, NOTIFICATION_COUNT, USER_STATUS } from '../store/selectors/selector';
 import { Observable, Subscription } from 'rxjs';
-import { AppState } from '../models/state';
+import { AppState } from '../models/State';
 
 @Component({
   selector: 'app-profile',

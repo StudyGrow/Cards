@@ -1,6 +1,6 @@
 import { Action, createReducer, on } from '@ngrx/store';
 import { Card } from 'src/app/models/Card';
-import { Data } from 'src/app/models/state';
+import { Data } from 'src/app/models/State';
 import { User } from 'src/app/models/User';
 import { Vote } from 'src/app/models/Vote';
 import * as CardActions from '../actions/CardActions';
@@ -8,10 +8,6 @@ import * as LectureActions from '../actions/LectureActions';
 import * as UserActions from '../actions/UserActions';
 
 export const dataReducerKey = 'data';
-
-export const cardsDataReducerKey = 'cards';
-export const userDataReducerKey = 'user';
-export const lectureDataReducerKey = 'lectures';
 
 const initialState: Data = {
   cards: {

@@ -1,9 +1,9 @@
 import { Card } from './Card';
 import { User } from './User';
-import { Vorlesung } from './Vorlesung';
+import { Lecture } from './Vorlesung';
 
 export interface Reports {
   'flash-cards': Card[];
-  lectures: Vorlesung[];
+  lectures: Lecture[];
   users: User[];
 }

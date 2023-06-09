@@ -1,5 +1,5 @@
 import { Component, OnInit, HostListener, ViewChild, ElementRef, OnDestroy } from '@angular/core';
-import { Vorlesung } from 'src/app/models/Vorlesung';
+import { Lecture } from 'src/app/models/Vorlesung';
 import { Title } from '@angular/platform-browser';
 import { Store } from '@ngrx/store';
 import { Observable, Subscription, firstValueFrom } from 'rxjs';
@@ -16,7 +16,7 @@ import {
   FORM_MODE,
   HIDE_CARD_SEARCH_RESULTS,
 } from '../store/selectors/selector';
-import { AppState } from '../models/state';
+import { AppState } from '../models/State';
 import { TranslateService } from '@ngx-translate/core';
 import { Card } from '../models/Card';
 import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
@@ -49,7 +49,7 @@ export class CardsComponent implements OnInit, OnDestroy {
   public data$: Observable<any> = this.store.select(CARDS_DATA_OBJECT);
   authorized$ = this.store.select(AUTHORIZED);
 
-  public lecture$: Observable<Vorlesung> = this.data$.pipe(map((data) => data.currLecture));
+  public lecture$: Observable<Lecture> = this.data$.pipe(map((data) => data.currLecture));
 
   constructor(
     private store: Store<AppState>,

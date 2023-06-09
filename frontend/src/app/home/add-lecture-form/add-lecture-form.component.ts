@@ -1,5 +1,5 @@
 import { Component, OnDestroy } from '@angular/core';
-import { Vorlesung } from '../../models/Vorlesung';
+import { Lecture } from '../../models/Vorlesung';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 import { LecturesService } from 'src/app/services/lectures.service';
@@ -34,7 +34,7 @@ export class AddLectureFormComponent implements OnDestroy {
     });
   }
   onSubmit(f) {
-    let newLecture = new Vorlesung(f.value.vlname.trim(), f.value.abrv.toLowerCase().trim(), []);
+    let newLecture = new Lecture(f.value.vlname.trim(), f.value.abrv.toLowerCase().trim(), []);
 
     this.lectureService.checkUniqueLecture(newLecture).subscribe((success) => {
       if (success) {

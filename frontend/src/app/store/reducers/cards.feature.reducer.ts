@@ -2,28 +2,35 @@ import * as StateActions from '../actions/StateActions';
 
 import { createReducer, on, Action } from '@ngrx/store';
 
-import { CardFormMode, CarouselState } from 'src/app/models/state';
+import { CardsFeatureState } from 'src/app/models/State';
 import { Card } from 'src/app/models/Card';
 import { SortType } from 'src/app/models/SortType';
 
-export const carouselStateKey = 'carousel';
+export const cardsFeatureReducerKey = 'cardsFeature';
+enum CardFormMode {
+  ADD = 'add',
+  EDIT = 'edit',
+}
 
 export const pageSize = 30;
 // initial state of the app
-export const initialState: CarouselState = {
-  currentCard: undefined,
-  activeIndex: 0,
+export const initialState: CardsFeatureState = {
+  carousel: {
+    activeIndex: 0,
+    tags: [],
+    cardsChanged: undefined,
+    sortType: SortType.DATE_ASC,
+    startIndex: 0,
+    endIndex: pageSize,
+    newCard: undefined,
+    currentCard: undefined,
+  },
+
   formMode: CardFormMode.ADD,
-  typingMode: false,
-  hideSearchResults: true,
+  typingInInputField: false,
+  hideQuestionSearchResults: true,
   loading: 0,
-  tags: [],
   currTab: 0,
-  cardsChanged: undefined,
-  sortType: SortType.DATE_ASC,
-  startIndex: 0,
-  endIndex: pageSize,
-  newCard: undefined,
 };
 
 // Reducer which will dispatch changes to the store
@@ -52,19 +59,19 @@ const _carouselStateReducer = createReducer(
   ),
 
   on(StateActions.setTypingMode, (state, { typing }) =>
-    typing === state.typingMode
+    typing === state.typingInInputField
       ? state
       : {
           ...state,
-          typingMode: typing,
+          typingInInputField: typing,
         }
   ),
   on(StateActions.setSuggestionsMode, (state, { hide }) =>
-    hide === state.hideSearchResults
+    hide === state.hideQuestionSearchResults
       ? state
       : {
           ...state,
-          hideSearchResults: hide,
+          hideQuestionSearchResults: hide,
         }
   ),
 
@@ -79,19 +86,19 @@ const _carouselStateReducer = createReducer(
 
   on(StateActions.addTag, (state, { tag }) => ({
     ...state,
-    tags: addTag(state.tags, tag),
+    tags: addTag(state.carousel.tags, tag),
     cardsChanged: new Date(),
   })),
 
   on(StateActions.removeTag, (state, { tag }) => ({
     ...state,
-    tags: removeInArray([...state.tags], tag),
+    tags: removeInArray([...state.carousel.tags], tag),
     cardsChanged: new Date(),
   })),
 
   on(StateActions.resetFilter, (state) => ({
     ...state,
-    tags: initialState.tags,
+    tags: initialState.carousel.tags,
     cardsChanged: new Date(),
   })),
   on(StateActions.changeSorting, (state, { sortType }) => ({
@@ -102,21 +109,21 @@ const _carouselStateReducer = createReducer(
   })),
   on(StateActions.resetCardsState, (state) => ({
     ...state,
-    activeIndex: initialState.activeIndex,
+    activeIndex: initialState.carousel.activeIndex,
     formMode: initialState.formMode,
-    typingMode: false,
-    hideSearchResults: true,
-    tags: initialState.tags,
+    typingInInputField: false,
+    hideQuestionSearchResults: true,
+    tags: initialState.carousel.tags,
     currTab: initialState.currTab,
     cardsChanged: new Date(),
-    sortType: initialState.sortType,
-    startIndex: initialState.startIndex,
-    endIndex: initialState.endIndex,
+    sortType: initialState.carousel.sortType,
+    startIndex: initialState.carousel.startIndex,
+    endIndex: initialState.carousel.endIndex,
   })),
   on(StateActions.fail, (state) => state)
 );
 
-export function carouselStateReducer(state: CarouselState, action: Action) {
+export function carouselStateReducer(state: CardsFeatureState, action: Action) {
   return _carouselStateReducer(state, action);
 }
 

@@ -13,15 +13,15 @@ import { distinctUntilChanged, map, startWith, withLatestFrom } from 'rxjs/opera
 import { DialogueComponent } from 'src/app/components/dialogue/dialogue.component';
 import { Card } from 'src/app/models/Card';
 import { SuccessMessage, WarnMessage } from 'src/app/models/Notification';
-import { Data, CarouselState, CardFormMode } from 'src/app/models/state';
+import { Data, CardsFeatureState, CardFormMode } from 'src/app/models/State';
 import { User } from 'src/app/models/User';
-import { Vorlesung } from 'src/app/models/Vorlesung';
+import { Lecture } from 'src/app/models/Vorlesung';
 import { NotificationsService } from 'src/app/services/notifications.service';
 import { changeTab, setFormMode, setTypingMode, showNewCard } from 'src/app/store/actions/StateActions';
 import { addCard, httpFailure, updateCard } from 'src/app/store/actions/CardActions';
 import { addLercture } from 'src/app/store/actions/LectureActions';
 import { CardsEffects } from 'src/app/store/effects/effects';
-import { AppState } from '../../models/state';
+import { AppState } from '../../models/State';
 import { parse, HtmlGenerator } from 'latex.js';
 import { ALL_TAGS, CURRENT_CARD, SELECTED_LECTURE, FORM_MODE, USER } from 'src/app/store/selectors/selector';
 import { TranslateService } from '@ngx-translate/core';
@@ -51,7 +51,7 @@ export class FormComponent implements OnInit, OnDestroy {
   editorHTML: string;
 
   // Card data
-  private lecture: Vorlesung;
+  private lecture: Lecture;
   private author: User;
   private cardCopy: Card = new Card('', ''); // Stores a copy of the current card. If we update the card, we use this copy and only overwrite some fields  (thema content tags latex)
   // Tags that were selected

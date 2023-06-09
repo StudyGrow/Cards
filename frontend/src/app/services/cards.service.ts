@@ -7,7 +7,7 @@ import { tap, map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { HttpConfig } from './config';
 import { HttpClient } from '@angular/common/http';
-import { Vorlesung } from '../models/Vorlesung';
+import { Lecture } from '../models/Vorlesung';
 import { GetLectureByAbbreviationWithCardsAndVotesGQL } from 'src/generated/graphql';
 import { AddCardGQL } from 'src/generated/graphql';
 import { UpdateCardGQL } from 'src/generated/graphql';
@@ -78,7 +78,7 @@ export class CardsService {
       .pipe(map((res) => res.data.addCard));
   }
 
-  reportCard(card: Card, lecutre: Vorlesung): Observable<Card> {
+  reportCard(card: Card, lecutre: Lecture): Observable<Card> {
     // send new card to server using http service
     return this.http
       .post<string>(

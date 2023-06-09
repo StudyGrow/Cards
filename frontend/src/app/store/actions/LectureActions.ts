@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { Vorlesung } from '../../models/Vorlesung';
+import { Lecture } from '../../models/Vorlesung';
 
 enum ActionTypes {
   FETCH_LECTURES = '[Lectures] Fetch from server',
@@ -12,14 +12,11 @@ enum ActionTypes {
 
 export const fetchLectures = createAction(ActionTypes.FETCH_LECTURES);
 
-export const fetchLecturesSuccess = createAction(
-  ActionTypes.FETCH_LECTURES_SUCCESS,
-  props<{ lectures: Vorlesung[] }>()
-);
+export const fetchLecturesSuccess = createAction(ActionTypes.FETCH_LECTURES_SUCCESS, props<{ lectures: Lecture[] }>());
 
-export const addLercture = createAction(ActionTypes.ADD_LECTURE, props<{ lecture: Vorlesung }>());
+export const addLercture = createAction(ActionTypes.ADD_LECTURE, props<{ lecture: Lecture }>());
 
-export const addLectureSuccess = createAction(ActionTypes.ADD_LECTURE_SUCCESS, props<{ lecture: Vorlesung }>());
+export const addLectureSuccess = createAction(ActionTypes.ADD_LECTURE_SUCCESS, props<{ lecture: Lecture }>());
 
 export const FetchLecturesActions = {
   fetchLectures,

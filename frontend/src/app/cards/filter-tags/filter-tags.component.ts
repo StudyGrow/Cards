@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { combineLatest, Observable } from 'rxjs';
-import { Vorlesung } from 'src/app/models/Vorlesung';
+import { Lecture } from 'src/app/models/Vorlesung';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { ElementRef, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
@@ -12,7 +12,7 @@ import { map, startWith, withLatestFrom } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import { setTypingMode, removeTag, addTag } from 'src/app/store/actions/StateActions';
 import { ACTIVE_TAGS, SELECTED_LECTURE, TAG_OPTIONS } from 'src/app/store/selectors/selector';
-import { AppState } from 'src/app/models/state';
+import { AppState } from 'src/app/models/State';
 
 @Component({
   selector: 'app-filter-tags',
@@ -20,7 +20,7 @@ import { AppState } from 'src/app/models/state';
   styleUrls: ['./filter-tags.component.scss'],
 })
 export class FilterTagsComponent implements OnInit {
-  lecture$: Observable<Vorlesung> = this.store.select(SELECTED_LECTURE);
+  lecture$: Observable<Lecture> = this.store.select(SELECTED_LECTURE);
   selected$: Observable<string[]>; //actively selected tags
   separatorKeysCodes: number[] = [ENTER, COMMA];
   formCtrl = new FormControl('');

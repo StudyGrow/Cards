@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Vorlesung } from 'src/app/models/Vorlesung';
+import { Lecture } from 'src/app/models/Vorlesung';
 
 @Component({
   selector: 'app-lecture-report',
@@ -7,6 +7,6 @@ import { Vorlesung } from 'src/app/models/Vorlesung';
   styleUrls: ['./lecture-report.component.scss'],
 })
 export class LectureReportComponent {
-  @Input() lectureReport: Vorlesung;
+  @Input() lectureReport: Lecture;
   constructor() {}
 }

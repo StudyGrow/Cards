@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { delay } from 'rxjs/operators';
-import { AppState } from './models/state';
+import { AppState } from './models/State';
 import { NotificationsService } from './services/notifications.service';
 import { ThemesService } from './services/themes.service';
 import { Failure } from './store/actions/CardActions';

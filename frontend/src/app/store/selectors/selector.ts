@@ -4,10 +4,11 @@ import { SortType } from '../../models/SortType';
 import { Vote } from '../../models/Vote';
 
 import { Card } from '../../models/Card';
-import { Vorlesung } from '../../models/Vorlesung';
-import { AppState, CardFormMode, UserData } from '../../models/state';
+import { Lecture } from '../../models/Vorlesung';
+import { AppState, CardFormMode, UserData } from '../../models/State';
 import { Reports } from '../../models/Report';
 import { User } from '../../models/User';
+import { cardsFeatureReducerKey } from '../reducers/cards.feature.reducer';
 
 /**
  * Get all cards for a certain lecture from store
@@ -40,7 +41,7 @@ export const ALL_VOTES_FOR_LECTURE = (state: AppState): Vote[] => state.data.car
 /**
  * Holds the card which should be shown
  */
-export const CARD_TO_SHOW_NEXT = (state: AppState): Card => state.carousel?.newCard;
+export const CARD_TO_SHOW_NEXT = (state: AppState): Card => state[cardsFeatureReducerKey]?.carousel.newCard;
 
 /**
  * Counts all votes for a certain card
@@ -55,29 +56,29 @@ export const VOTE_COUNT = (state: AppState, cardId: string): number =>
  * Current tags selected by the user
  * @param state state of the app
  */
-export const ACTIVE_TAGS = (state: AppState): string[] => state.carousel?.tags;
+export const ACTIVE_TAGS = (state: AppState): string[] => state[cardsFeatureReducerKey]?.carousel.tags;
 /**
  * Select all tags for the current lecture
  * @param state state of the app
  */
 export const ALL_TAGS = (state: AppState): string[] => state.data.cards?.currLecture?.tagList;
 /** select the index of the active card in the array */
-export const ACTIVE_INDEX = (state: AppState): number => state.carousel?.activeIndex;
+export const ACTIVE_INDEX = (state: AppState): number => state[cardsFeatureReducerKey]?.carousel.activeIndex;
 /**
  * Get the mode of the card form
  * @param state state of the app
  */
 export const FORM_MODE = (state: AppState): CardFormMode => {
-  return state.carousel?.formMode;
+  return state[cardsFeatureReducerKey]?.formMode;
 };
 
-export const HIDE_CARD_SEARCH_RESULTS = (state: AppState) => state.carousel?.hideSearchResults;
+export const HIDE_CARD_SEARCH_RESULTS = (state: AppState) => state[cardsFeatureReducerKey]?.hideQuestionSearchResults;
 
 /**
  * Select the current lecture
  * @param state state of the app
  */
-export const SELECTED_LECTURE = (state: AppState): Vorlesung => state.data?.cards?.currLecture;
+export const SELECTED_LECTURE = (state: AppState): Lecture => state.data?.cards?.currLecture;
 /**
  * Select the id of the user, if user is logged in
  * @param state state of the app
@@ -87,17 +88,17 @@ export const USER_ID = (state: AppState): string => state.data?.user?.user?._id;
  * select the currently active tab in the cards component view
  * @param state state of the app
  */
-export const SELECTED_TAB = (state: AppState): number => state.carousel?.currTab;
+export const SELECTED_TAB = (state: AppState): number => state[cardsFeatureReducerKey]?.currTab;
 /**
  * select the loadig state. Will be true if at least one ressource is loading
  * @param state state of the app
  */
-export const LOADING = (state: AppState): boolean => state.carousel?.loading > 0;
+export const LOADING = (state: AppState): boolean => state[cardsFeatureReducerKey]?.loading > 0;
 /**
  * select all lectures
  * @param state state of the app
  */
-export const LECTURES = (state: AppState): Vorlesung[] => state.data.lectures.lectures;
+export const LECTURES = (state: AppState): Lecture[] => state.data.lectures.lectures;
 /**
  * Select user information
  * @param state state of the app
@@ -114,19 +115,19 @@ export const USER = (state: AppState): User => state.data.user.user;
  */
 
 export const CARD_INDEXES = (state: AppState): number[] => [
-  state.carousel?.startIndex,
-  state.carousel?.endIndex,
-  state.carousel?.activeIndex,
+  state[cardsFeatureReducerKey]?.carousel.startIndex,
+  state[cardsFeatureReducerKey]?.carousel.endIndex,
+  state[cardsFeatureReducerKey]?.carousel.activeIndex,
 ];
 
 export const AUTHORIZED = (state: AppState): boolean => state.data.user.authenticated;
 
-export const SORT_TYPE = (state: AppState): SortType => state.carousel?.sortType;
+export const SORT_TYPE = (state: AppState): SortType => state[cardsFeatureReducerKey]?.carousel.sortType;
 /**
  * select the date at which the filter for the cards have changed
  * @param state state of the app
  */
-export const LAST_CARD_CHANGE = (state: AppState): Date => state.carousel?.cardsChanged;
+export const LAST_CARD_CHANGE = (state: AppState): Date => state[cardsFeatureReducerKey]?.carousel.cardsChanged;
 /**
  * Select the cards that the user has added
  */
@@ -184,7 +185,7 @@ export const SORTED_AND_FILTERED_CARDS = createSelector(
  * Select the card which is currently shown in the carousel
  * @param state state of the app
  */
-export const CURRENT_CARD = (state: AppState): Card => state.carousel?.currentCard;
+export const CURRENT_CARD = (state: AppState): Card => state[cardsFeatureReducerKey]?.carousel.currentCard;
 /**
  * get cards data as one object containing the current lecture, the user id and the cards
  */
@@ -192,7 +193,7 @@ export const CARDS_DATA_OBJECT = createSelector(
   ALL_CARDS,
   SELECTED_LECTURE,
   USER_ID,
-  (cards: Card[], currLecture: Vorlesung, uid: string) => ({
+  (cards: Card[], currLecture: Lecture, uid: string) => ({
     cards,
     currLecture,
     uid,

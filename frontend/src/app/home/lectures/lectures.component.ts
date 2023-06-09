@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Vorlesung } from '../../models/Vorlesung';
+import { Lecture } from '../../models/Vorlesung';
 
 @Component({
   selector: 'app-lectures',
@@ -8,11 +8,11 @@ import { Vorlesung } from '../../models/Vorlesung';
   styleUrls: ['./lectures.component.scss'],
 })
 export class LecturesComponent {
-  @Input() lectures: Vorlesung[];
+  @Input() lectures: Lecture[];
 
   constructor(private translate: TranslateService) {}
 
-  setLink(lecture: Vorlesung) {
+  setLink(lecture: Lecture) {
     return '/vorlesung/' + lecture.abrv;
   }
 }

@@ -2,7 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { login } from 'src/app/store/actions/UserActions';
-import { AppState } from 'src/app/models/state';
+import { AppState } from 'src/app/models/State';
 import { MatLegacyCheckbox as MatCheckbox } from '@angular/material/legacy-checkbox';
 @Component({
   selector: 'app-login-form',

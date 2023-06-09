@@ -13,7 +13,7 @@ import {
   MatLegacySnackBarRef as MatSnackBarRef,
   LegacyTextOnlySnackBar as TextOnlySnackBar,
 } from '@angular/material/legacy-snack-bar';
-import { AppState, Data, CarouselState } from 'src/app/models/state';
+import { AppState, Data, CardsFeatureState } from 'src/app/models/State';
 import { NavbarToggleService } from 'src/app/services/navbar-toggle.service';
 import { TranslateService } from '@ngx-translate/core';
 @Component({
