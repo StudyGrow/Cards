@@ -1,0 +1,91 @@
+<ng-container *ngIf="formMode$ | async as mode">
+  <h4 class="mt-2">{{ 'card-form.' + mode + '-flash-card' | translate }}</h4>
+
+  <form [formGroup]="form" (ngSubmit)="submitForm(mode)" novalidate autocomplete="off">
+    <!-- question field -->
+    <mat-form-field appearance="outline" class="mb-1 w-100">
+      <mat-label>{{ 'card-form.card-question' | translate }}</mat-label>
+      <input
+        autocomplete="off"
+        matInput
+        type="text"
+        placeholder="{{ 'card-form.question-placeholder' | translate }}"
+        required
+        minlength="3"
+        #thema
+        formControlName="thema"
+        (focus)="inField()"
+        (blur)="resetNav()"
+      />
+      <mat-hint align="end">{{ thema.value?.trim().length || 0 }}/500</mat-hint>
+      <mat-error *ngIf="thema.value?.trim().length < 3">{{ 'card-form.error-message.question' | translate }}</mat-error>
+    </mat-form-field>
+    <!-- answer field -->
+    <div class="mb-4">
+      <quill-editor
+        #editor
+        (onEditorChanged)="changedEditor($event)"
+        maxlength="1000"
+        required
+        rows="7"
+        class="w-100"
+        formControlName="content"
+        placeholder="{{ 'card-form.card-answer' | translate }} *"
+        (focus)="inField()"
+        (blur)="resetNav()"
+      ></quill-editor>
+      <div class="d-flex content-wrapper">
+        <div class="mat-form-field-hint-spacer"></div>
+        <mat-hint class="content-hint">{{ editorHTML?.trim().length || 0 }}/1000</mat-hint>
+      </div>
+
+      <mat-error *ngIf="editorContent?.trim().length > 1000">{{
+        'card-form.error-message.answer' | translate
+      }}</mat-error>
+    </div>
+
+    <mat-form-field appearance="outline" class="mb-1 w-100">
+      <mat-label>{{ 'card-form.card-tags' | translate }}</mat-label>
+      <mat-chip-list #chipList aria-label="Tag selection">
+        <mat-chip *ngFor="let tag of selectedTags" [selectable]="true" [removable]="true" (removed)="removeChip(tag)">
+          {{ tag }}
+          <mat-icon matChipRemove>cancel</mat-icon>
+        </mat-chip>
+        <input
+          #tagRef
+          [matAutocomplete]="auto"
+          [matChipInputFor]="chipList"
+          [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+          (matChipInputTokenEnd)="addChip($event)"
+          (focus)="inField()"
+          (blur)="resetNav()"
+        />
+      </mat-chip-list>
+      <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelectOption($event)">
+        <mat-option *ngFor="let option of tagsSuggestions$ | async" [value]="option">
+          {{ option }}
+        </mat-option>
+      </mat-autocomplete>
+      <mat-hint>{{ 'card-form.card-tags-separate' | translate }}</mat-hint>
+    </mat-form-field>
+    <mat-slide-toggle #latex class="mb-1">Latex</mat-slide-toggle><br />
+    <small>
+      <mat-hint class="mb-4">{{ 'card-form.card-activate-latex' | translate }}</mat-hint>
+    </small>
+
+    <div class="m-3"></div>
+    <ng-container [ngSwitch]="mode">
+      <ng-container *ngSwitchCase="'edit'">
+        <button mat-raised-button color="primary" type="submit" [disabled]="isDisabled(thema)">
+          {{ 'btn.save' | translate }}
+        </button>
+        <button mat-button type="button" (click)="cancelEdit()">{{ 'btn.cancel' | translate }}</button>
+      </ng-container>
+      <ng-container *ngSwitchCase="'add'">
+        <button mat-raised-button color="primary" type="submit" [disabled]="isDisabled(thema)">
+          {{ 'btn.add' | translate }}
+        </button>
+      </ng-container>
+    </ng-container>
+  </form>
+</ng-container>

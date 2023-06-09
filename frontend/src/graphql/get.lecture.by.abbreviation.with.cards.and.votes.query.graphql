@@ -1,0 +1,29 @@
+query GetLectureByAbbreviationWithCardsAndVotes($abrv: String!) {
+  lecture(abrv: $abrv) {
+    id
+    name
+    abrv
+    tagList
+    totalCards
+    cards {
+      id
+      thema
+      content
+      tags
+      authorName
+      createdAt
+      latex
+      rating
+    }
+  }
+  votes {
+    card {
+      id
+    }
+    lecture {
+      id
+    }
+    value
+    id
+  }
+}

@@ -1,0 +1,265 @@
+{
+  "btn": {
+    "add": "Add",
+    "update": "Update",
+    "change": "Change",
+    "delete": "Delete",
+    "save": "Save",
+    "cancel": "Cancel"
+  },
+  "lecture-form": {
+    "lecture-name": "Lecture name",
+    "lecture-abrv": "Abreviation",
+    "error-message": {
+      "abrv": "The abreviation must contain 3 to 7 characters",
+      "name": "The name of the lecture must contain 3 to 500 characters"
+    }
+  },
+  "card-form": {
+    "add-flash-card": "Add a flash card",
+    "edit-flash-card": "Edit a flash card",
+    "card-question": "Question",
+    "question-placeholder": "What is a good question?",
+    "card-answer": "Answer",
+    "card-tags": "Tags",
+    "card-tags-separate": "Separate Tags with ENTER",
+    "card-activate-latex": "Activate latex formating",
+    "error-message": {
+      "question": "Question must contain at least 3 characters",
+      "answer": "The answer must be between 1 and 1000 characters"
+    },
+    "cancel": {
+      "dialog": {
+        "title": "Cancel Edit",
+        "content": "Are you sure, you want to cancel editing this card? The changes will be discarded.",
+        "abort": "No, continue editing",
+        "confirm": "Yes, discard my changes"
+      }
+    }
+  },
+  "lecture-overview-title": "Posts over time",
+  "top-authors": "Top Authors",
+
+  "card-carousel": {
+    "keyboard-shortcuts": "Keyboard Shortcuts",
+    "no-cards-found": "No cards found",
+    "search-question": "Search question",
+    "next": "Next card",
+    "previous": "Previous card",
+    "close-card": "Close card",
+    "open-card": "Open card",
+    "sort": "Sort Cards",
+    "random": "Random",
+    "first-card": "First Card",
+    "last-card": "Last Card",
+    "edit": "Edit"
+  },
+  "answer": "Answer",
+  "author": "Author",
+  "card-actions": {
+    "share": "Share",
+    "report": "Report",
+    "like": "Like"
+  },
+  "newvl": { "title": "Add your first card" },
+  "firstname": "First name",
+  "lastname": "Last name",
+  "email": "Email address",
+  "confirm-account": "Check your inbox to confirm your email",
+  "profile": {
+    "overview": {
+      "title": "Overview",
+      "cardscount": "Number of added cards",
+      "member-since": "Member since",
+      "cards-distribution": "Distribution of cards on lectures"
+    },
+    "manage": {
+      "title": "Manage Account",
+      "change-data": "Change account data",
+      "username-hint": "Max. 20 characters",
+      "username": "Username",
+      "change-password": "Change password",
+      "new-password": "New password",
+      "password-hint": "At least 7 characters",
+      "new-password-repeat": "Repeat new password",
+      "delete-account": "Permenantly delete Account",
+      "dialog": {
+        "title": "Delete permenantly",
+        "content": "Are you sure, you want to permanently delete your account?",
+        "abort": "No, abort",
+        "confirm": "Yes, delete permanently"
+      }
+    },
+    "notifications": {
+      "no-new-notifications": "You have no notifications yet",
+      "reports": "User reports"
+    }
+  },
+  "question": "Question",
+  "about": {
+    "cards": {
+      "title": "Cards",
+      "text": "Cards is a website designed to help you prepare for you exams. The concept of our website is based on traditional index cards, with the advantage that you don't need to carry your heavy stack of cards around. Our site is optimized for smartphones, allowing you to view your cards wherever you are.",
+      "create-account": ", to use all features of our website.",
+      "create-account-link-text": "Create an account"
+    },
+    "sharing-is-caring": {
+      "title": "Sharing is Caring",
+      "text-one": "The cards you add are automatically visible to other users. Meanwhile you can also look at the cards from other users ",
+      "text-two": "If you are not satisfied with a card, or you think the content is incorrect or incomplete, then you can edit them. Cards, which were added by other users cannot be edited yet."
+    },
+    "feedback": {
+      "title": "We care about your feedback",
+      "text-one": "We try to avoid mistakes. However, we might have overlooked some of them. Please report them to us by following ",
+      "text-two": "this link",
+      "text-three": "(you need to have a Github account). We will try to correct them as soon as possible. You can also leave feedback there, or by writing us an ",
+      "text-four": ". We try to fix the problem ASAP."
+    },
+    "cookies": {
+      "title": "About cookies",
+      "text-one": "We are using cookies so that you only have to log in once.",
+      "text-two": "More about cookies"
+    },
+    "where-find-cards": {
+      "title": "Where do I find cards for my lecture?",
+      "text-one": "On our ",
+      "text-two": "Homepage ",
+      "text-three": "you can find a list of all available lectures. Choose your lecture. If you can't find it, you can add it.",
+      "text-four": "You need to be ",
+      "text-five": "signed in",
+      "text-six": "or ",
+      "text-seven": "Create an account",
+      "text-eight": "After following the link you will get to the page, on which all cards for the lecture are displayed. You can use the arrow keys, or swiping, to navigate between different cards. The content of a card can be displayed by clicking on \"Answer\".",
+      "text-nine": " You can use the searchbar in the navigation to search for questions."
+    },
+    "no-lecture-present": {
+      "title": "My lecture is not contained in the list. How can I add it?",
+      "text-one": "If you can't find your lecture in the list, you can add it by submitting the form (\"Add lecture\")",
+      "text-two": "You need to be ",
+      "text-three": "signed in ",
+      "text-four": "or ",
+      "text-five": "create an account",
+      "text-six": "After adding the lecture, you will be redirected to a new page where you can add your first card."
+    },
+
+    "how-to-create-card": {
+      "title": "How do I create a card?",
+      "text-one": "On our ",
+      "text-two": "Homepage ",
+      "text-three": "a list of lectures is displayed. Choose your lecture. If you can't find your lecture, you can add it by using the form.",
+      "text-four": "After navigating to the lecture page, you can add a new card, by navigating to the  \"Add\" tab. Fill out the form and submit it.",
+      "text-five": "Create an ",
+      "text-six": "account ",
+      "text-seven": ", or ",
+      "text-eight": "log in ",
+      "text-nine": ", to be become the author of the card. Cards with authors can only be editet by their authors.",
+      "text-ten": "Pro-Tip: You can add latex formiulas, by wrapping them around $ signs. More information about latex can be found ",
+      "text-eleven": "here"
+    },
+    "how-to-edit-card": {
+      "title": "How do I edit a card?",
+      "text-one": "Choose the card which you want to edit. Click on the  \"pen\" icon. Edit the content in the form and the form. Please note, that only cards with no author, or your own cards, can be editet. "
+    },
+    "how-to-use-latex": {
+      "title": "How can I use latex?",
+      "text-one": "Latex is a great tool to write formulas. Start and close your formula  with $-signs und activate the Latex switch. Make sure that the formatting is correct. More information about latex can be found",
+      "text-two": "here"
+    }
+  },
+  "account": { "title": "Account", "overview": "Overview", "cards": "My Cards" },
+  "sign-in": "Sign in",
+  "login": {
+    "error": {
+      "firebase": {
+        "auth/email-already-in-use": "The email address is already in use by another account.",
+        "auth/invalid-email": "The email address is badly formatted.",
+        "auth/operation-not-allowed": "The email/password accounts are not enabled. Enable them in the Firebase console, under the Auth tab.",
+        "auth/weak-password": "The password must be 6 characters long or more.",
+        "auth/user-disabled": "The user corresponding to the given email has been disabled.",
+        "auth/user-not-found": "There is no user corresponding to the given email.",
+        "auth/wrong-password": "The password is invalid for the given email, or the account corresponding to the email does not have a password set."
+      }
+    }
+  },
+  "sign-up": {
+    "title": "Sign up",
+    "at-least-n-chars": "At least {{n}} characters",
+    "sign-up": "Create Account",
+    "at-least-n-error": "At least {{n}} characters are required for {{field}}",
+    "email-error": "Please enter a valid email address"
+  },
+  "about-us": "About us",
+  "faq": "FAQ",
+  "info": "Info",
+  "appearance-menu": {
+    "appearance": "Appearance",
+    "light": "Light",
+    "dark": "Dark",
+    "browser-settings": "Browser Settings",
+    "language": "Language"
+  },
+  "report": {
+    "dialog": {
+      "title": "Report card",
+      "content": "Are you sure, you want to report this card?",
+      "abort": "No",
+      "confirm": "Yes"
+    }
+  },
+  "logout": "Logout",
+  "ITEMS_PER_PAGE_LABEL": "Elements per page:",
+  "NEXT_PAGE_LABEL": "Next Page",
+  "PREVIOUS_PAGE_LABEL": "Previous page",
+  "FIRST_PAGE_LABEL": "First Page",
+  "LAST_PAGE_LABEL": "Last Page",
+  "RANGE_PAGE_LABEL_1": "0 of {{length}}",
+  "RANGE_PAGE_LABEL_2": "{{startIndex}} - {{endIndex}} of {{length}}",
+  "flash-cards": "Flash cards",
+  "notifications": {
+    "notifications": "Notifications",
+    "add-card-success": "Your card has been added successfully",
+    "add-card-failure": "An error occured while adding your card: {{message}}",
+    "pick-up": "Do you want to pick up where you left off?",
+    "server-offline": "The server is offline.",
+    "check-later": "Please try again later.",
+    "unknown-error": "An unknown error occured.",
+    "lecture-not-found": "The lecture you are looking for could not be found.",
+    "login-required": "You need to be logged in to access this page.",
+    "lecture-abrv-already-exists": "The abreviation for the lecture you are trying to add already exists.",
+    "welcome": "Welcome to Cards!",
+    "logout": "You have been logged out."
+  },
+  "cookies": {
+    "uses_cookies": "This website uses cookies 🍪 to ensure you get the best experience on our website.",
+    "allow": "Allow",
+    "deny": "Deny",
+    "learn_more": "More about cookies"
+  },
+  "sort_options": {
+    "likes_desc": "Likes (most liked first)",
+    "likes_asc": "Likes (least liked first)",
+    "author_desc": "Author (Z-A)",
+    "author_asc": "Author (A-Z)",
+    "tags_desc": "Tags (Z-A)",
+    "tags_asc": "Tags (A-Z)",
+    "date_desc": "Date (newest first)",
+    "date_asc": "Date (oldest first)"
+  },
+  "users": "Users",
+  "number-of-cards": "Number of cards",
+  "report-type": "Report Type",
+  "clear-report": "Clear report",
+  "delete-resource": "Delete ressource",
+  "show-in-lecture": "Show card in lecture",
+  "edit": "Edit",
+  "add": "Add",
+  "add-login-warning": "Log in to add cards.",
+  "overview": "Overview",
+  "lectures": "Lectures",
+  "lecture": "Lecture",
+  "add-lecture": "Add Lecture",
+  "yes": "Yes",
+  "close": "Close",
+  "password": "Password",
+  "password-repeat": "Repeat password"
+}
