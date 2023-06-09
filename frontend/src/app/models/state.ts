@@ -12,9 +12,9 @@ export interface AppState {
 }
 
 export interface Data {
-  cardData: CardsData;
-  userData: UserData;
-  lectureData: LecturesData;
+  cards: CardsData;
+  user: UserData;
+  lectures: LecturesData;
 }
 export interface CardsData {
   votes: Vote[]; // votes made by the community

@@ -187,7 +187,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
     this.subscriptions$.push(sub);
 
     const last_filtered$ = this.store.select(LAST_CARD_CHANGE);
-    const last_added$ = this.store.select(dataReducerKey).pipe(map((state) => state.cardData.lastUpdated)); // observable of timestamp at the cards were last modified
+    const last_added$ = this.store.select(dataReducerKey).pipe(map((state) => state.cards.lastUpdated)); // observable of timestamp at the cards were last modified
 
     // observable which holds the maximum of filtered$ and added$ which represents the date at which last changes were made
     const lastChanges$ = combineLatest([last_filtered$, last_added$]).pipe(

@@ -9,14 +9,18 @@ import * as UserActions from '../actions/UserActions';
 
 export const dataReducerKey = 'data';
 
+export const cardsDataReducerKey = 'cards';
+export const userDataReducerKey = 'user';
+export const lectureDataReducerKey = 'lectures';
+
 const initialState: Data = {
-  cardData: {
+  cards: {
     cards: undefined,
     votes: undefined,
     lastUpdated: undefined,
     currLecture: undefined,
   },
-  userData: {
+  user: {
     votes: undefined,
     cards: undefined,
     authenticated: undefined,
@@ -24,7 +28,7 @@ const initialState: Data = {
     lastUpdated: undefined,
     reports: undefined,
   },
-  lectureData: {
+  lectures: {
     lectures: undefined,
     lastUpdated: undefined,
   },
@@ -35,15 +39,15 @@ const _dataReducer = createReducer(
 
   on(CardActions.storeCard, (state, { card }) => ({
     ...state,
-    cardData: {
-      ...state.cardData,
+    cards: {
+      ...state.cards,
       cards: [
-        ...state.cardData.cards,
+        ...state.cards.cards,
         {
           // add card
           ...card,
-          authorId: state.userData.user._id, // add user id
-          authorName: state.userData.user.username, // add username
+          authorId: state.user.user._id, // add user id
+          authorName: state.user.user.username, // add username
         },
       ],
       lastUpdated: new Date(),
@@ -54,8 +58,8 @@ const _dataReducer = createReducer(
       ? {
           ...state,
 
-          userData: {
-            ...state.userData,
+          user: {
+            ...state.user,
             votes: [...votes],
           },
         }
@@ -63,19 +67,19 @@ const _dataReducer = createReducer(
   ),
   on(CardActions.updateVoteChange, (state, { vote }) => ({
     ...state,
-    cardData: {
-      ...state.cardData,
-      votes: updateVote(state.cardData.votes, vote),
+    cards: {
+      ...state.cards,
+      votes: updateVote(state.cards.votes, vote),
     },
-    userData: {
-      ...state.userData,
-      votes: updateVote(state.userData.votes, vote),
+    user: {
+      ...state.user,
+      votes: updateVote(state.user.votes, vote),
     },
   })),
   on(LectureActions.fetchLecturesSuccess, (state, { lectures }) => ({
     ...state,
-    lectureData: {
-      ...state.lectureData,
+    lectures: {
+      ...state.lectures,
       lectures: [...lectures],
       lastUpdated: new Date(),
     },
@@ -83,35 +87,35 @@ const _dataReducer = createReducer(
 
   on(LectureActions.addLercture, (state, { lecture }) => ({
     ...state,
-    lectureData: {
-      ...state.lectureData,
-      lectures: [...state.lectureData.lectures, lecture],
+    lectures: {
+      ...state.lectures,
+      lectures: [...state.lectures.lectures, lecture],
       lastUpdated: new Date(),
     },
   })),
 
   on(CardActions.updateChangedCard, (state, { card }) => ({
     ...state,
-    cardData: {
-      ...state.cardData,
-      cards: updateObjectInArray(state.cardData.cards, card),
+    cards: {
+      ...state.cards,
+      cards: updateObjectInArray(state.cards.cards, card),
       lastUpdated: new Date(),
     },
   })),
 
   on(CardActions.storeCardData, (state, { data }) => ({
     ...state,
-    cardData: {
-      ...state.cardData,
+    cards: {
+      ...state.cards,
       cards: data.cards,
       lastUpdated: new Date(),
       currLecture: data.lecture,
       votes: data.votes,
     },
-    userData: {
-      ...state.userData,
+    user: {
+      ...state.user,
       user: {
-        ...state.userData.user,
+        ...state.user.user,
         _id: data.uid,
       },
       lastUpdated: new Date(),
@@ -120,8 +124,8 @@ const _dataReducer = createReducer(
 
   on(UserActions.fetchUserDataSuccess, (state, info) => ({
     ...state,
-    userData: {
-      ...state.userData,
+    user: {
+      ...state.user,
       cards: info.cards,
       user: info.user,
       lastUpdated: new Date(),
@@ -131,21 +135,21 @@ const _dataReducer = createReducer(
 
   on(UserActions.updateUserDataSuccess, (state, user) => ({
     ...state,
-    userData: { ...state.userData, user: user, lastUpdated: new Date() },
+    user: { ...state.user, user: user, lastUpdated: new Date() },
   })),
 
   on(UserActions.authenticated, (state, { auth }) => ({
     ...state,
-    userData: {
-      ...state.userData,
+    user: {
+      ...state.user,
       authenticated: auth,
     },
   })),
 
   on(UserActions.loginSuccess, (state, user) => ({
     ...state,
-    userData: {
-      ...state.userData,
+    user: {
+      ...state.user,
       user: user,
       authenticated: true,
       lastUpdated: new Date(),
@@ -154,36 +158,36 @@ const _dataReducer = createReducer(
 
   on(UserActions.logoutSuccess, (state) => ({
     ...state,
-    userData: initialState.userData,
+    user: initialState.user,
   })),
 
   on(LectureActions.addTagsToLecture, (state, { tags }) => ({
     ...state,
-    cardData: {
-      ...state.cardData,
+    cards: {
+      ...state.cards,
       currLecture: {
-        ...state.cardData.currLecture,
-        tagList: addTags(state.cardData.currLecture.tagList ? [...state.cardData.currLecture.tagList] : [], tags),
+        ...state.cards.currLecture,
+        tagList: addTags(state.cards.currLecture.tagList ? [...state.cards.currLecture.tagList] : [], tags),
       },
     },
   })),
 
   on(CardActions.clearCardData, (state) => ({
     ...state,
-    cardData: {
-      ...state.cardData,
-      votes: initialState.cardData.votes,
-      cards: initialState.cardData.cards,
-      currLecture: initialState.cardData.currLecture,
+    cards: {
+      ...state.cards,
+      votes: initialState.cards.votes,
+      cards: initialState.cards.cards,
+      currLecture: initialState.cards.currLecture,
       lastUpdated: new Date(),
     },
   })),
 
   on(CardActions.updateReportedCard, (state, { card }) => ({
     ...state,
-    cardData: {
-      ...state.cardData,
-      cards: state.cardData.cards.filter((c) => c._id !== card._id),
+    cards: {
+      ...state.cards,
+      cards: state.cards.cards.filter((c) => c._id !== card._id),
       lastUpdated: new Date(),
     },
   }))

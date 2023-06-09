@@ -14,28 +14,28 @@ import { User } from '../../models/User';
  * @param state state of the store
  * @deprecated Use CardsSorted instead
  */
-const ALL_CARDS = (state: AppState) => state.data?.cardData?.cards;
-export const USER_STATUS = (state: AppState): string => state.data.userData?.user?.status;
-export const USER_REPORTS = (state: AppState): Reports => state.data.userData.reports;
-export const NOTIFICATION_COUNT = (state: AppState): number => countUserReports(state.data.userData.reports);
+const ALL_CARDS = (state: AppState) => state.data?.cards?.cards;
+export const USER_STATUS = (state: AppState): string => state.data.user?.user?.status;
+export const USER_REPORTS = (state: AppState): Reports => state.data.user.reports;
+export const NOTIFICATION_COUNT = (state: AppState): number => countUserReports(state.data.user.reports);
 /**
  * Get the votes that were made by a user for a certain card
  * @param state  state of the store
  * @param cardId ID of the card for which the vote should be fetched
  */
 export const USER_VOTE = (state: AppState, cardId: string): Vote =>
-  state.data.userData.authenticated ? state.data.userData.votes?.find((vote) => vote.cardId === cardId) : undefined;
+  state.data.user.authenticated ? state.data.user.votes?.find((vote) => vote.cardId === cardId) : undefined;
 /**
  * Returns votes for a certain card
  */
 export const CARD_VOTES = (state: AppState, cardId: string): Vote[] =>
-  state.data.cardData.votes
-    ? state.data.cardData.votes.filter((vote) => vote.cardId === cardId && vote.value === 1)
+  state.data.cards.votes
+    ? state.data.cards.votes.filter((vote) => vote.cardId === cardId && vote.value === 1)
     : undefined;
 /**
  * Returns all votes for the current lecture
  */
-export const ALL_VOTES_FOR_LECTURE = (state: AppState): Vote[] => state.data.cardData.votes;
+export const ALL_VOTES_FOR_LECTURE = (state: AppState): Vote[] => state.data.cards.votes;
 
 /**
  * Holds the card which should be shown
@@ -48,8 +48,8 @@ export const CARD_TO_SHOW_NEXT = (state: AppState): Card => state.carousel?.newC
  * @param cardId id of the card for which the votes should be counted
  */
 export const VOTE_COUNT = (state: AppState, cardId: string): number =>
-  state.data.cardData.votes
-    ? state.data.cardData.votes.filter((vote) => vote.cardId === cardId && vote.value === 1).length
+  state.data.cards.votes
+    ? state.data.cards.votes.filter((vote) => vote.cardId === cardId && vote.value === 1).length
     : undefined;
 /**
  * Current tags selected by the user
@@ -60,7 +60,7 @@ export const ACTIVE_TAGS = (state: AppState): string[] => state.carousel?.tags;
  * Select all tags for the current lecture
  * @param state state of the app
  */
-export const ALL_TAGS = (state: AppState): string[] => state.data.cardData?.currLecture?.tagList;
+export const ALL_TAGS = (state: AppState): string[] => state.data.cards?.currLecture?.tagList;
 /** select the index of the active card in the array */
 export const ACTIVE_INDEX = (state: AppState): number => state.carousel?.activeIndex;
 /**
@@ -77,12 +77,12 @@ export const HIDE_CARD_SEARCH_RESULTS = (state: AppState) => state.carousel?.hid
  * Select the current lecture
  * @param state state of the app
  */
-export const SELECTED_LECTURE = (state: AppState): Vorlesung => state.data?.cardData?.currLecture;
+export const SELECTED_LECTURE = (state: AppState): Vorlesung => state.data?.cards?.currLecture;
 /**
  * Select the id of the user, if user is logged in
  * @param state state of the app
  */
-export const USER_ID = (state: AppState): string => state.data?.userData?.user?._id;
+export const USER_ID = (state: AppState): string => state.data?.user?.user?._id;
 /**
  * select the currently active tab in the cards component view
  * @param state state of the app
@@ -97,17 +97,17 @@ export const LOADING = (state: AppState): boolean => state.carousel?.loading > 0
  * select all lectures
  * @param state state of the app
  */
-export const LECTURES = (state: AppState): Vorlesung[] => state.data.lectureData.lectures;
+export const LECTURES = (state: AppState): Vorlesung[] => state.data.lectures.lectures;
 /**
  * Select user information
  * @param state state of the app
  */
-export const USER_INFO = (state: AppState): UserData => state.data.userData;
+export const USER_INFO = (state: AppState): UserData => state.data.user;
 /**
  * select the current user
  * @param state state of the app
  */
-export const USER = (state: AppState): User => state.data.userData.user;
+export const USER = (state: AppState): User => state.data.user.user;
 /**
  * check if user is logged in
  * @param state state of the app
@@ -119,7 +119,7 @@ export const CARD_INDEXES = (state: AppState): number[] => [
   state.carousel?.activeIndex,
 ];
 
-export const AUTHORIZED = (state: AppState): boolean => state.data.userData.authenticated;
+export const AUTHORIZED = (state: AppState): boolean => state.data.user.authenticated;
 
 export const SORT_TYPE = (state: AppState): SortType => state.carousel?.sortType;
 /**
