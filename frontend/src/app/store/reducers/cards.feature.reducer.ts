@@ -38,14 +38,20 @@ const _carouselStateReducer = createReducer(
   initialState,
   on(StateActions.updateCarouselInfo, (state, { info }) => ({
     ...state,
-    currentCard: info.currentCard,
-    activeIndex: info.absoluteIndex,
-    endIndex: info.end,
-    startIndex: info.start,
+    carousel: {
+      ...state.carousel,
+      currentCard: info.currentCard,
+      activeIndex: info.absoluteIndex,
+      endIndex: info.end,
+      startIndex: info.start,
+    },
   })),
   on(StateActions.showNewCardSuccess, (state, { card }) => ({
     ...state,
-    newCard: card,
+    carousel: {
+      ...state.carousel,
+      newCard: card,
+    },
   })),
   on(StateActions.changeTab, (state, { tab }) => (tab === state.currTab ? state : { ...state, currTab: tab })),
 
@@ -86,39 +92,54 @@ const _carouselStateReducer = createReducer(
 
   on(StateActions.addTag, (state, { tag }) => ({
     ...state,
-    tags: addTag(state.carousel.tags, tag),
-    cardsChanged: new Date(),
+    carousel: {
+      ...state.carousel,
+      tags: addTag(state.carousel.tags, tag),
+      cardsChanged: new Date(),
+    },
   })),
 
   on(StateActions.removeTag, (state, { tag }) => ({
     ...state,
-    tags: removeInArray([...state.carousel.tags], tag),
-    cardsChanged: new Date(),
+    carousel: {
+      ...state.carousel,
+      tags: removeInArray([...state.carousel.tags], tag),
+      cardsChanged: new Date(),
+    },
   })),
 
   on(StateActions.resetFilter, (state) => ({
     ...state,
-    tags: initialState.carousel.tags,
-    cardsChanged: new Date(),
+    carousel: {
+      ...state.carousel,
+      tags: initialState.carousel.tags,
+      cardsChanged: new Date(),
+    },
   })),
   on(StateActions.changeSorting, (state, { sortType }) => ({
     ...state,
-    sortType: sortType,
-    newCard: null,
-    cardsChanged: new Date(),
+    carousel: {
+      ...state.carousel,
+      sortType: sortType,
+      newCard: null,
+      cardsChanged: new Date(),
+    },
   })),
   on(StateActions.resetCardsState, (state) => ({
     ...state,
-    activeIndex: initialState.carousel.activeIndex,
+    carousel: {
+      ...state.carousel,
+      tags: initialState.carousel.tags,
+      activeIndex: initialState.carousel.activeIndex,
+      cardsChanged: new Date(),
+      sortType: initialState.carousel.sortType,
+      startIndex: initialState.carousel.startIndex,
+      endIndex: initialState.carousel.endIndex,
+    },
     formMode: initialState.formMode,
     typingInInputField: false,
     hideQuestionSearchResults: true,
-    tags: initialState.carousel.tags,
     currTab: initialState.currTab,
-    cardsChanged: new Date(),
-    sortType: initialState.carousel.sortType,
-    startIndex: initialState.carousel.startIndex,
-    endIndex: initialState.carousel.endIndex,
   })),
   on(StateActions.fail, (state) => state)
 );
